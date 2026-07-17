@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Télémétrie Astro coupée projet-wide (ADR-0003 / éthos anti-surveillance ; relevé au bootstrap PANO-29).
+env:
+  ASTRO_TELEMETRY_DISABLED: '1'
+
+jobs:
+  web:
+    name: web — lint · typecheck · test · build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          # 22 LTS. Vitest 4 supporte ^20 || ^22 || >=24 — Node 23 (impair) est exclu.
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      # Étapes TS : working-directory: web par étape (panopticool/ Python reste à la racine).
+      - run: npm ci
+        working-directory: web
+      - run: npm run lint
+        working-directory: web
+      - run: npm run typecheck
+        working-directory: web
+      - run: npm run test
+        working-directory: web
+      - run: npm run build
+        working-directory: web
+
+  fixture:
+    name: fixture Python — generate + validate (smoke)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # panopticool = stdlib only, tourne depuis la RACINE (pas de working-directory: web,
+      # sinon le module est introuvable). Smoke : génère un export puis le valide.
+      - name: Generate + validate synthetic export
+        run: |
+          python -m panopticool -o ci.zip
+          python -m panopticool.validate ci.zip

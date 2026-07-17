@@ -1,0 +1,9 @@
+# Dépendances et artefacts de build du package web (TS)
+node_modules/
+dist/
+.astro/
+
+# Runs de benchmark d'anciens outils de R&D (playground WebLLM, retiré). Plus rien ne les produit,
+# mais des runs peuvent subsister en local : ils contiennent le prompt complet et la sortie du modèle
+# sur un export réel — JAMAIS committés (invariant de privacy, CLAUDE.md).
+benchmark-runs/

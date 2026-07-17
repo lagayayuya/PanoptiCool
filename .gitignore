@@ -1,0 +1,33 @@
+# Sorties générées (synthétiques, mais hors versionnement par hygiène)
+out/
+*.zip
+# Exception : l'échantillon de démo est versionné
+!samples/*.zip
+
+# Dépendances JS installées à la racine (le package web a déjà sa propre règle)
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / éditeurs
+.DS_Store
+
+# Claude Code — le cadre (skills, launch.json) est suivi ; seul le local machine-spécifique est ignoré
+.claude/settings.local.json
+
+# Transcripts bruts de session (privés) — seule l'entrée curée d'AI_USAGE.md est publique
+transcripts/
+
+# Instagram (v2) — bac à sable R&D privé : contient un vrai export, sous consentement.
+# Un export réel peut nourrir le travail, il n'entre jamais dans le dépôt (invariant, CLAUDE.md).
+# Ce qui en sort ne peut être qu'une structure ou une statistique — jamais une valeur.
+Instagram/
+
+# Runs de benchmark d'anciens outils de R&D (playground WebLLM, retiré). Plus rien ne les produit,
+# mais des runs peuvent subsister en local : ils contiennent des sorties d'inférence sur données
+# réelles et ne doivent jamais être committés (invariant de privacy, CLAUDE.md).
+benchmark-runs/

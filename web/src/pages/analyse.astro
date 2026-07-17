@@ -1,0 +1,54 @@
+---
+// Parcours d'analyse (refonte design 2026-07-15, maquette « PanoptiCool v4 — parcours guidé »).
+// `?demo` → export synthétique à travers le moteur réel ; sinon dépôt de l'export réel (drag &
+// drop). Toute l'interactivité vit dans l'unique îlot `client:only` (ADR-0002), comme ailleurs.
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '@fontsource/jetbrains-mono/latin-600.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
+import { AnalysisPage } from '../ui/v2/AnalysisPage';
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PanoptiCool — ce que TikTok pourrait déduire</title>
+    <meta
+      name="description"
+      content="Analyse ton export TikTok entièrement dans ton navigateur : rythmes, thèmes, signaux sensibles — rien ne quitte ta machine."
+    />
+  </head>
+  <body>
+    <AnalysisPage client:only="preact" />
+    <style is:global>
+      :root {
+        color-scheme: dark;
+        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px; /* sommaire : les ancres s'arrêtent sous la barre sticky */
+      }
+      /* Mobile (maquette « v4 Mobile ») : la barre sticky est plus haute (rangée logo + chips de
+         sommaire) — même seuil que MOBILE_QUERY (ui/v2/useIsMobile.ts, à garder alignés). */
+      @media (max-width: 720px) {
+        html {
+          scroll-padding-top: 132px;
+        }
+      }
+      body {
+        margin: 0;
+        background: #070b18; /* NAVY.bgPage */
+        color: #e9eefb; /* NAVY.textBright */
+      }
+      /* Spinner de l'écran de chargement (styles inline — le @keyframes global vit ici). */
+      @keyframes pano-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+---
+// Page d'accueil (refonte design 2026-07-15, maquette « Accueil v2 »). L'ancienne page principale
+// vit désormais sur /temp le temps de valider la refonte ; le parcours d'analyse (démo ou export
+// réel) vit sur /analyse. Build statique (ADR-0001/0002) ; l'interactivité (modale de consentement,
+// œil animé) tient dans un unique îlot `client:only`, comme partout ailleurs.
+//
+// Police JetBrains Mono AUTO-HÉBERGÉE (PANO-56) : import ciblé sous-ensemble « latin », 4 graisses,
+// zéro CDN — mêmes imports que la page historique (/temp).
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '@fontsource/jetbrains-mono/latin-600.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
+import { LandingPage } from '../ui/v2/LandingPage';
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PanoptiCool — ce que tes réseaux savent de toi</title>
+    <meta
+      name="description"
+      content="PanoptiCool lit ton export TikTok et te montre ce qu'un algorithme pourrait en déduire — 100 % local, rien n'est envoyé."
+    />
+  </head>
+  <body>
+    <LandingPage client:only="preact" />
+    <style is:global>
+      :root {
+        color-scheme: dark;
+        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+      body {
+        margin: 0;
+        background: #070b18; /* NAVY.bgPage */
+        color: #e9eefb; /* NAVY.textBright */
+      }
+      a {
+        color: #2fd4f0;
+      }
+    </style>
+  </body>
+</html>
