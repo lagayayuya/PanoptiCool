@@ -180,7 +180,7 @@ export function LandingPage() {
             <span style={isMobile ? M_KICKER : KICKER}>
               tes exports de données, décodés chez toi
             </span>
-            <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>Ce que tes réseaux savent de toi.</h1>
+            <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>Découvre ce que tes réseaux savent de toi.</h1>
             <p style={isMobile ? M_HERO_LEDE : HERO_LEDE}>
               Chaque plateforme doit te remettre tes données si tu les demandes. PanoptiCool lit ces
               exports et te montre ce qu’un algorithme pourrait en déduire : tes rythmes, tes
