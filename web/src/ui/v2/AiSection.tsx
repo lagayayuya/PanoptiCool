@@ -64,6 +64,7 @@ type ItemsStatus =
   | { kind: 'error'; message: string };
 
 type ProbeStatus =
+  | { kind: 'idle' }
   | { kind: 'checking' }
   | { kind: 'ok'; modelId: string | null; contextWindow: number | null }
   | { kind: 'error'; message: string };
@@ -153,7 +154,7 @@ function StepTitle({ n, label }: { n: string; label: string }) {
 export function AiSection({ source }: { source: AiSource }) {
   const [items, setItems] = useState<ItemsStatus>({ kind: 'loading' });
   const [url, setUrl] = useState(serverUrl());
-  const [probe, setProbe] = useState<ProbeStatus>({ kind: 'checking' });
+  const [probe, setProbe] = useState<ProbeStatus>({ kind: 'idle' });
   const [probeNonce, setProbeNonce] = useState(0);
   const [mode, setMode] = useState<PromptMode>('default');
   const [editedPrompt, setEditedPrompt] = useState<string | null>(null);
@@ -191,8 +192,14 @@ export function AiSection({ source }: { source: AiSource }) {
     };
   }, [source]);
 
-  // Sondage du serveur — à chaque changement d'adresse ET au clic sur ⟳ (probeNonce, maquette).
+  // Sondage du serveur — JAMAIS au montage : uniquement sur demande explicite (`probeNonce > 0`),
+  // puis à chaque changement d'adresse. Sonder à l'affichage enverrait un `fetch` vers localhost
+  // sans que personne l'ait demandé — le navigateur ouvre alors sa permission « accéder à d'autres
+  // applis et services sur cet appareil » dès l'arrivée sur la page. Rien ne fuite (localhost ne
+  // quitte pas l'appareil), mais un outil qui montre la surveillance ne peut pas ouvrir sur cette
+  // demande-là. Au clic, la même permission arrive APRÈS une intention, où elle se comprend.
   useEffect(() => {
+    if (probeNonce === 0) return; // pas encore demandé — on ne touche à rien
     let cancelled = false;
     setProbe({ kind: 'checking' });
     void probeLlamaCpp(url).then((result) => {
@@ -318,7 +325,9 @@ export function AiSection({ source }: { source: AiSource }) {
       ? { color: NAVY.ok, label: 'serveur détecté' }
       : probe.kind === 'checking'
         ? { color: '#93a0bf', label: 'vérification…' }
-        : { color: NAVY.risk, label: 'serveur non détecté' };
+        : probe.kind === 'idle'
+          ? { color: '#93a0bf', label: 'non vérifié' }
+          : { color: NAVY.risk, label: 'serveur non détecté' };
 
   return (
     <div id="sec-ia" style={BAND}>
@@ -433,14 +442,20 @@ export function AiSection({ source }: { source: AiSource }) {
                 {serverStatus.label}
                 {probe.kind === 'ok' && probe.modelId !== null ? ` : ${probe.modelId}` : ''}
               </span>
+              {/* Tant que rien n'a été sondé, l'action porte son nom en toutes lettres : c'est ELLE
+                  qui déclenche le premier contact avec localhost. Le ⟳ ne revient qu'ensuite. */}
               <button
                 type="button"
-                title="revérifier"
-                aria-label="Revérifier le serveur"
+                title={probe.kind === 'idle' ? 'vérifier la connexion' : 'revérifier'}
+                aria-label={
+                  probe.kind === 'idle'
+                    ? 'Vérifier la connexion au serveur'
+                    : 'Revérifier le serveur'
+                }
                 style={RECHECK_BTN}
                 onClick={() => setProbeNonce((n) => n + 1)}
               >
-                ⟳
+                {probe.kind === 'idle' ? 'vérifier la connexion' : '⟳'}
               </button>
             </div>
           </div>
@@ -563,7 +578,14 @@ export function AiSection({ source }: { source: AiSource }) {
               {run.running ? 'analyse en cours…' : 'Lancer l’analyse'}
             </button>
           </div>
-          {probe.kind !== 'ok' && !run.running && (
+          {probe.kind === 'idle' && !run.running && (
+            <div style={WARN_TEXT}>
+              Serveur non vérifié — lance-le (étape 1) puis clique sur « vérifier la connexion ».
+              Ton navigateur demandera alors l’autorisation de joindre ton réseau local : c’est ce
+              qui permet à cette page de parler au serveur qui tourne chez toi, et rien d’autre.
+            </div>
+          )}
+          {(probe.kind === 'error' || probe.kind === 'checking') && !run.running && (
             <div style={WARN_TEXT}>Serveur non détecté — lance-le (étape 1) puis clique sur ⟳.</div>
           )}
           {/* Rappel « peu de données » à l'étape 3 (maquette CasPeuDeDonnees) — jamais bloquant. */}
