@@ -32,6 +32,14 @@ jobs:
         working-directory: web
       - run: npm run build
         working-directory: web
+      # L'archive de la route B (section IA) est écrite par une INTÉGRATION Astro, pas par un script
+      # `postbuild` : c'est ce qui la rend indépendante de la commande qui lance le build (un
+      # hébergeur appelle `astro build` directement). Ce test vérifie qu'elle sort bien du build —
+      # il ne dit rien de son CONTENU, seulement qu'elle existe. Sans lui, un débranchement de
+      # l'intégration laisserait la CI verte et le lien de téléchargement en 404 en production.
+      - name: L'archive du site sort du build (route B, ADR-0006)
+        run: test -f dist/panopticool-site.zip
+        working-directory: web
 
   fixture:
     name: fixture Python — generate + validate (smoke)

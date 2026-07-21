@@ -35,15 +35,32 @@
     }
   },
   "overrides": [
+    // Biome ne lit PAS le template d'un fichier Astro, seulement son frontmatter. Toute const ou
+    // tout import qui n'y sert que dans le balisage lui paraît donc mort — un faux positif
+    // systématique, et non un signal qu'on choisirait d'ignorer.
     {
       "includes": ["**/*.astro"],
       "linter": {
         "rules": {
           "correctness": {
-            "noUnusedImports": "off"
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
           }
         }
       }
+    },
+    // Les snapshots sont des artefacts GÉNÉRÉS : `vitest -u` les réécrit entièrement, donc aucun
+    // `biome-ignore` n'y survit. Un constat de lint y est structurellement irréparable SUR PLACE —
+    // sa seule correction possible est à la source, où elle est déjà prise et documentée (le
+    // `role="group"` du sélecteur de langue porte son `biome-ignore` ratifié dans SiteHeader.tsx).
+    // Le FORMATEUR les garde : c'est le linter seul qui n'a rien à leur dire.
+    //
+    // CE QUE ÇA COÛTE, et qui doit rester visible (décision yuya, 2026-07-18) : une vraie régression
+    // d'accessibilité qui n'apparaîtrait QUE dans un golden ne serait plus signalée par le lint. Le
+    // diff du golden la montrerait ; encore faut-il la lire.
+    {
+      "includes": ["**/__snapshots__/**"],
+      "linter": { "enabled": false }
     },
     {
       "includes": ["src/engine/**"],
