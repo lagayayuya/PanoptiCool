@@ -1,21 +1,23 @@
 // Pied de page (maquettes « Accueil v2 » / « parcours guidé »).
 
+import { localeHref } from '../../i18n/current';
+import { UI_BRAND, UI_FOOTER } from '../copy';
 import { NAVY } from './palette';
 
 export function SiteFooter() {
   return (
     <div style={WRAP}>
-      <span style={TAGLINE}>PanoptiCool — tes données restent chez toi.</span>
+      <span style={TAGLINE}>{UI_FOOTER.tagline}</span>
       <div style={LINKS}>
-        <a href="/mentions-legales" style={LEGAL}>
-          Mentions légales
+        <a href={localeHref('/mentions-legales')} style={LEGAL}>
+          {UI_FOOTER.legalLink}
         </a>
         <span style={{ color: NAVY.borderInset }}>·</span>
-        <a href="mailto:yuya@panopti.cool" style={MAIL}>
-          yuya@panopti.cool
+        <a href={`mailto:${UI_BRAND.contactMail}`} style={MAIL}>
+          {UI_BRAND.contactMail}
         </a>
       </div>
-      <span style={CREDITS}>Développé par Yuya et Claude (Sonnet 5, Opus 4.8 et Fable 5)</span>
+      <span style={CREDITS}>{UI_FOOTER.credits}</span>
     </div>
   );
 }

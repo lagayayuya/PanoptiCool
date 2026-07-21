@@ -36,11 +36,10 @@ export const NAVY = {
   accentBgSoft: 'rgba(47,212,240,.10)',
   accentBorderSoft: 'rgba(47,212,240,.55)',
 
-  // Confiance — même hue, luminosité décroissante (légende du parcours guidé).
-  confidenceHigh: '#2fd4f0',
-  confidenceMedium: '#1f93a8',
-  confidenceLow: '#31647a',
-  confidenceEmptyOpacity: 0.16,
+  // Opacité des puces « éteintes » (carte « aucune déduction »). Ex-`confidenceEmptyOpacity` : les
+  // teintes de confiance sont parties avec leur affichage (itération 2026-07-20) ; l'opacité, elle,
+  // a un lecteur.
+  dimmedDotOpacity: 0.16,
 
   // Pédagogie (« pour comprendre ») — accent indigo, cadre pointillé.
   learnAccent: '#a5b4ff',

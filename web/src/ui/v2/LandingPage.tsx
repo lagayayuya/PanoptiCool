@@ -1,78 +1,37 @@
 // Page d'accueil (maquette « Accueil v2 », refonte 2026-07-15). Écarts VOULUS vs la maquette
 // (décisions yuya) : pas de section newsletter ; une seule plateforme sélectionnable (TikTok), la
-// chip pointillée devient « Instagram, YouTube… bientôt » ; FR/EN et « Mentions légales » = boutons
-// seuls, sans page ni traduction derrière.
+// chip pointillée devient « Instagram, YouTube… bientôt ».
+//
+// Le sélecteur de langue ne mène quelque part que pour une locale PUBLIÉE — c'est `localeHref` qui
+// porte cette règle, pas cette page. Écrire ici l'inventaire de ce qui a ou non une cible derrière
+// périmerait à la première locale ajoutée, sans que rien ne le signale.
 //
 // La modale de consentement reprend la maquette telle quelle : le clic « Continuer vers l'export »
 // (case cochée obligatoire) mène au parcours réel (/analyse) ; le lien « données fictives » mène à
 // la même page en mode démo (/analyse?demo) — même rendu, source synthétique.
 
 import { useState } from 'preact/hooks';
+import { localeHref } from '../../i18n/current';
+import { UI_CONSENT, UI_LANDING } from '../copy';
 import { EyeLogo } from './EyeLogo';
 import { NAVY } from './palette';
 import { SiteFooter } from './SiteFooter';
 import { SiteHeader } from './SiteHeader';
 import { useIsMobile } from './useIsMobile';
 
-const DEMO_HREF = '/analyse?demo';
-const ANALYSE_HREF = '/analyse';
+// Chemins SANS langue : `localeHref` la pose au moment du rendu. Les garder ici en constantes de
+// module aurait figé la langue au CHARGEMENT du module, avant que la page ne soit forcément lue.
+const DEMO_PATH = '/analyse?demo';
+const ANALYSE_PATH = '/analyse';
 
-const STEPS = [
-  {
-    n: '1',
-    title: 'Récupère ton export TikTok',
-    text: 'Dans l’app : Profil → Paramètres → Compte → Télécharger tes données. Choisis le format JSON — le fichier peut prendre 1 h à 48 h pour être disponible.',
-  },
-  {
-    n: '2',
-    title: 'Dépose-le ici',
-    text: 'Le fichier est lu directement dans ton navigateur. Il ne quitte jamais ton ordinateur, le code est ouvert si tu veux vérifier.',
-  },
-  {
-    n: '3',
-    title: 'Explore les déductions',
-    text: 'Rythmes, thèmes, signaux sensibles avec leur niveau de confiance. Et si tu veux, une IA locale pousse l’analyse plus loin.',
-  },
-] as const;
+const STEPS = UI_LANDING.steps;
 
-interface Feat {
-  tag: string;
-  tagColor: string;
-  border: string;
-  title: string;
-  text: string;
-  /** Badge + texte remplaçant `text` sur MOBILE (maquette « Accueil v2 Mobile »). */
-  mobileBadge?: string;
-  mobileText?: string;
-}
-
-const FEATS: readonly Feat[] = [
-  {
-    tag: 'analyse',
-    tagColor: NAVY.accent,
-    border: NAVY.borderCard,
-    title: 'Ton profil, tel qu’un algorithme le voit',
-    text: 'Chaque déduction est reliée aux données exactes qui la nourrissent — recherches, commentaires, métadonnées — avec un score de confiance.',
-  },
-  {
-    tag: 'ia locale',
-    tagColor: NAVY.accent,
-    border: NAVY.borderCard,
-    title: 'Une IA qui tourne chez toi',
-    text: 'Installe un petit modèle open source et fais-lui analyser tes traces. Coupe le wifi si tu veux : tout fonctionne hors ligne.',
-    // Variante MOBILE (maquette « Accueil v2 Mobile ») : badge « sur ordinateur » + texte adapté —
-    // l'analyse IA locale n'est pas disponible sur téléphone (cf. encart du parcours mobile).
-    mobileBadge: 'sur ordinateur',
-    mobileText:
-      'Installe un petit modèle open source et fais-lui analyser tes traces. Pour l’instant, cette analyse n’est disponible que sur ordinateur.',
-  },
-  {
-    tag: 'pour comprendre',
-    tagColor: '#8fa3ff',
-    border: NAVY.learnBorder,
-    title: 'Apprendre en explorant',
-    text: 'À chaque section, des explications dépliables : comment un algorithme devine, où vont les profils, ce qu’est un token, tes droits RGPD.',
-  },
+/** Habillage des 3 cartes — couleurs SEULES, dans l'ordre du catalogue (`UI_LANDING.feats`).
+ * La prose vit dans le catalogue ; ce tableau ne porte que ce qui n'est pas du texte. */
+const FEAT_COLORS: readonly { tagColor: string; border: string }[] = [
+  { tagColor: NAVY.accent, border: NAVY.borderCard },
+  { tagColor: NAVY.accent, border: NAVY.borderCard },
+  { tagColor: '#8fa3ff', border: NAVY.learnBorder },
 ];
 
 function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: boolean }) {
@@ -85,40 +44,47 @@ function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: bo
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Avant de continuer"
+        aria-label={UI_CONSENT.dialogAriaLabel}
         style={isMobile ? M_MODAL : MODAL}
         onClick={(e) => e.stopPropagation()}
       >
         <div style={MODAL_HEAD}>
-          <span style={KICKER}>avant de continuer</span>
+          <span style={KICKER}>{UI_CONSENT.kicker}</span>
           <span style={{ flex: 1 }} />
-          <button type="button" aria-label="Fermer" style={CLOSE_BTN} onClick={onClose}>
+          <button
+            type="button"
+            aria-label={UI_CONSENT.closeAriaLabel}
+            style={CLOSE_BTN}
+            onClick={onClose}
+          >
             ✕
           </button>
         </div>
-        <span style={MODAL_TITLE}>Tu vas regarder tes données de très près.</span>
+        <span style={MODAL_TITLE}>{UI_CONSENT.title}</span>
         <div style={MODAL_BODY}>
           <div style={MODAL_LINE}>
             <span style={{ color: NAVY.risk, flex: 'none' }}>▲</span>
             <span>
-              Ton export contient des données{' '}
-              <span style={EM}>personnelles, parfois sensibles ou intimes</span> : messages,
-              recherches, horaires nocturnes, lieux. Les voir rassemblées et interprétées peut être{' '}
-              <span style={EM}>déstabilisant</span>
+              {UI_CONSENT.line1Before}
+              <span style={EM}>{UI_CONSENT.line1Strong}</span>
+              {UI_CONSENT.line1Middle}
+              <span style={EM}>{UI_CONSENT.line1Strong2}</span>
             </span>
           </div>
           <div style={MODAL_LINE}>
             <span style={{ color: NAVY.ok, flex: 'none' }}>●</span>
             <span>
-              Tout est analysé <span style={EM}>localement, dans ton navigateur</span>. Rien n’est
-              envoyé, rien n’est conservé après fermeture de l’onglet.
+              {UI_CONSENT.line2Before}
+              <span style={EM}>{UI_CONSENT.line2Strong}</span>
+              {UI_CONSENT.line2After}
             </span>
           </div>
           <div style={MODAL_LINE}>
             <span style={{ color: '#8fa3ff', flex: 'none' }}>●</span>
             <span>
-              Si tu es sur un {isMobile ? 'téléphone partagé' : 'ordinateur partagé ou public'},
-              pense à fermer l’onglet et supprimer le fichier d’export après usage.
+              {UI_CONSENT.line3Before}
+              {isMobile ? UI_CONSENT.line3DeviceMobile : UI_CONSENT.line3DeviceDesktop}
+              {UI_CONSENT.line3After}
             </span>
           </div>
         </div>
@@ -129,16 +95,14 @@ function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: bo
             onChange={(e) => setChecked(e.currentTarget.checked)}
             style={isMobile ? M_CHECKBOX : CHECKBOX}
           />
-          <span style={CONSENT_TEXT}>
-            J’ai compris la nature de ces données et je choisis de consulter mon analyse.
-          </span>
+          <span style={CONSENT_TEXT}>{UI_CONSENT.consentCheckbox}</span>
         </label>
         {/* Mobile (bottom sheet) : boutons EMPILÉS pleine largeur, « Continuer » en premier
             (maquette « Accueil v2 Mobile ») ; desktop : rangée avec « Pas maintenant » à gauche. */}
         <div style={isMobile ? M_MODAL_ACTIONS : MODAL_ACTIONS}>
           {!isMobile && (
             <button type="button" style={LATER_BTN} onClick={onClose}>
-              Pas maintenant
+              {UI_CONSENT.laterButton}
             </button>
           )}
           {!isMobile && <span style={{ flex: 1 }} />}
@@ -150,14 +114,14 @@ function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: bo
               ...(isMobile ? M_FULL_BTN : {}),
             }}
             onClick={() => {
-              if (checked) window.location.href = ANALYSE_HREF;
+              if (checked) window.location.href = localeHref(ANALYSE_PATH);
             }}
           >
-            Continuer vers l’export →
+            {UI_CONSENT.continueButton}
           </button>
           {isMobile && (
             <button type="button" style={{ ...LATER_BTN, ...M_FULL_BTN }} onClick={onClose}>
-              Pas maintenant
+              {UI_CONSENT.laterButton}
             </button>
           )}
         </div>
@@ -177,28 +141,22 @@ export function LandingPage() {
         {/* --- Héros (mobile : colonne unique, logo statique centré — maquette Mobile) --------- */}
         <div style={isMobile ? undefined : HERO}>
           <div style={HERO_COL}>
-            <span style={isMobile ? M_KICKER : KICKER}>
-              tes exports de données, décodés chez toi
-            </span>
-            <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>
-              Découvre ce que tes réseaux savent de toi.
-            </h1>
-            <p style={isMobile ? M_HERO_LEDE : HERO_LEDE}>
-              Chaque plateforme doit te remettre tes données si tu les demandes. PanoptiCool lit ces
-              exports et te montre ce qu’un algorithme pourrait en déduire : tes rythmes, tes
-              centres d’intérêt et les signaux sensibles que tu ne penses pas laisser.
-            </p>
+            <span style={isMobile ? M_KICKER : KICKER}>{UI_LANDING.heroKicker}</span>
+            <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>{UI_LANDING.heroTitle}</h1>
+            <p style={isMobile ? M_HERO_LEDE : HERO_LEDE}>{UI_LANDING.heroLede}</p>
             <div style={PICK_BLOCK}>
-              <span style={PICK_LABEL}>choisis ta plateforme</span>
+              <span style={PICK_LABEL}>{UI_LANDING.pickLabel}</span>
               <div style={isMobile ? M_PICK_COL : PICK_ROW}>
                 <div style={isMobile ? M_PLATFORM_ON : PLATFORM_ON}>
-                  <span style={isMobile ? M_PLATFORM_NAME : PLATFORM_NAME}>TikTok</span>
-                  <span style={isMobile ? M_PLATFORM_SUB : PLATFORM_SUB}>disponible</span>
+                  <span style={isMobile ? M_PLATFORM_NAME : PLATFORM_NAME}>
+                    {UI_LANDING.platformTikTok}
+                  </span>
+                  <span style={isMobile ? M_PLATFORM_SUB : PLATFORM_SUB}>
+                    {UI_LANDING.platformAvailable}
+                  </span>
                 </div>
                 <div style={isMobile ? M_PLATFORM_SOON : PLATFORM_SOON}>
-                  <span style={isMobile ? M_SOON_TEXT : SOON_TEXT}>
-                    Instagram, YouTube… bientôt
-                  </span>
+                  <span style={isMobile ? M_SOON_TEXT : SOON_TEXT}>{UI_LANDING.platformSoon}</span>
                 </div>
               </div>
             </div>
@@ -208,22 +166,20 @@ export function LandingPage() {
                 style={isMobile ? M_CTA : CTA}
                 onClick={() => setConsentOpen(true)}
               >
-                Analyser mes données TikTok{' '}
+                {UI_LANDING.ctaAnalyse}{' '}
                 <span style={{ fontSize: isMobile ? '15px' : '13px' }}>→</span>
               </button>
-              <a href={DEMO_HREF} style={isMobile ? M_DEMO_BTN : DEMO_LINK}>
-                ou essaie d’abord avec des données fictives →
+              <a href={localeHref(DEMO_PATH)} style={isMobile ? M_DEMO_BTN : DEMO_LINK}>
+                {UI_LANDING.ctaDemo}
               </a>
             </div>
             <div style={isMobile ? M_TRUST_COL : TRUST_ROW}>
-              {['100 % local — rien n’est envoyé', 'open source', 'gratuit, sans compte'].map(
-                (t) => (
-                  <span key={t} style={isMobile ? M_TRUST_ITEM : TRUST_ITEM}>
-                    <span style={isMobile ? M_TRUST_DOT : TRUST_DOT} />
-                    {t}
-                  </span>
-                ),
-              )}
+              {UI_LANDING.trust.map((t) => (
+                <span key={t} style={isMobile ? M_TRUST_ITEM : TRUST_ITEM}>
+                  <span style={isMobile ? M_TRUST_DOT : TRUST_DOT} />
+                  {t}
+                </span>
+              ))}
             </div>
           </div>
           {!isMobile && (
@@ -237,14 +193,14 @@ export function LandingPage() {
         <div style={isMobile ? M_SECTION : SECTION}>
           {isMobile ? (
             <div style={M_SECTION_HEAD}>
-              <span style={M_SECTION_TITLE}>Comment ça marche</span>
-              <span style={SECTION_NOTE}>avec TikTok</span>
+              <span style={M_SECTION_TITLE}>{UI_LANDING.howTitle}</span>
+              <span style={SECTION_NOTE}>{UI_LANDING.howNote}</span>
             </div>
           ) : (
             <div style={SECTION_HEAD}>
-              <span style={SECTION_TITLE}>Comment ça marche</span>
+              <span style={SECTION_TITLE}>{UI_LANDING.howTitle}</span>
               <span style={RULE} />
-              <span style={SECTION_NOTE}>avec TikTok</span>
+              <span style={SECTION_NOTE}>{UI_LANDING.howNote}</span>
             </div>
           )}
           <div style={isMobile ? M_CARD_COL : CARD_GRID}>
@@ -261,31 +217,35 @@ export function LandingPage() {
         {/* --- Ce que tu vas découvrir ---------------------------------------------------------- */}
         <div style={isMobile ? M_SECTION : SECTION}>
           {isMobile ? (
-            <span style={M_SECTION_TITLE}>Ce que tu vas découvrir</span>
+            <span style={M_SECTION_TITLE}>{UI_LANDING.discoverTitle}</span>
           ) : (
             <div style={SECTION_HEAD}>
-              <span style={SECTION_TITLE}>Ce que tu vas découvrir</span>
+              <span style={SECTION_TITLE}>{UI_LANDING.discoverTitle}</span>
               <span style={RULE} />
             </div>
           )}
           <div style={isMobile ? M_CARD_COL : CARD_GRID}>
-            {FEATS.map((f) => (
+            {UI_LANDING.feats.map((f, i) => (
               <div
                 key={f.tag}
                 style={{
                   ...(isMobile ? M_FEAT_CARD : FEAT_CARD),
-                  border: `1px solid ${f.border}`,
+                  border: `1px solid ${FEAT_COLORS[i]?.border ?? NAVY.borderCard}`,
                 }}
               >
                 <div style={FEAT_TAG_ROW}>
-                  <span style={{ ...FEAT_TAG, color: f.tagColor }}>{f.tag}</span>
-                  {isMobile && f.mobileBadge !== undefined && (
+                  <span style={{ ...FEAT_TAG, color: FEAT_COLORS[i]?.tagColor ?? NAVY.accent }}>
+                    {f.tag}
+                  </span>
+                  {isMobile && 'mobileBadge' in f && f.mobileBadge !== undefined && (
                     <span style={M_DESKTOP_ONLY_BADGE}>{f.mobileBadge}</span>
                   )}
                 </div>
                 <span style={isMobile ? M_CARD_TITLE : CARD_TITLE}>{f.title}</span>
                 <span style={isMobile ? M_CARD_TEXT : CARD_TEXT}>
-                  {isMobile && f.mobileText !== undefined ? f.mobileText : f.text}
+                  {isMobile && 'mobileText' in f && f.mobileText !== undefined
+                    ? f.mobileText
+                    : f.text}
                 </span>
               </div>
             ))}
@@ -294,14 +254,14 @@ export function LandingPage() {
 
         {/* --- Pourquoi « panopticool » ? ------------------------------------------------------- */}
         <div style={isMobile ? M_WHY_CARD : WHY_CARD}>
-          <span style={isMobile ? M_KICKER : KICKER}>pourquoi « panopticool » ?</span>
+          <span style={isMobile ? M_KICKER : KICKER}>{UI_LANDING.whyKicker}</span>
           <p style={isMobile ? M_WHY_TEXT : WHY_TEXT}>
-            Le panoptique (en anglais, <i>panopticon</i>) est une prison où un seul gardien peut
-            observer tout le monde sans être vu. Les plateformes fonctionnent un peu pareil, mais
-            ici c'est toi qui observes depuis ton ordinateur, et ça c'est... cool?
+            {UI_LANDING.whyTextBefore}
+            <i>{UI_LANDING.whyTextItalic}</i>
+            {UI_LANDING.whyTextAfter}
           </p>
-          <a href={DEMO_HREF} style={isMobile ? M_WHY_LINK : WHY_LINK}>
-            Voir la démo avec des données fictives →
+          <a href={localeHref(DEMO_PATH)} style={isMobile ? M_WHY_LINK : WHY_LINK}>
+            {UI_LANDING.whyLink}
           </a>
         </div>
 

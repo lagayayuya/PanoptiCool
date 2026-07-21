@@ -18,6 +18,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import type { AiItem } from '../../ai/items';
 import { extractAiItemsInWorker } from '../../ai/items-client';
+import { UI_BRAND, UI_NO_DEDUCTION } from '../copy';
 import type { AiSource } from './ai-source';
 import { NAVY } from './palette';
 
@@ -25,11 +26,11 @@ import { NAVY } from './palette';
  * Partagé avec la bannière de la section IA (AiSection). */
 export const LOW_DATA_THRESHOLD = 5;
 
-const GH_ISSUE_BASE = 'https://github.com/lagayayuya/PanoptiCool/issues/new';
-const SUGGEST_MAIL = 'yuya@panopti.cool';
+const GH_ISSUE_BASE = `${UI_BRAND.githubUrl}/issues/new`;
+const SUGGEST_MAIL = UI_BRAND.contactMail;
 
 function suggestBody(text: string): string {
-  return `${text || '(liste tes mots ici)'}\n\n—\nProposé depuis la page résultats de PanoptiCool.`;
+  return UI_NO_DEDUCTION.enrichBody(text || UI_NO_DEDUCTION.enrichBodyPlaceholder);
 }
 
 export function NoDeductionCard({
@@ -68,12 +69,10 @@ export function NoDeductionCard({
   // Bloc d'enrichissement : seulement quand l'export contient du texte non reconnu (maquette).
   const showEnrich = known && !lowData;
 
-  const ndReason = lowData
-    ? 'La raison la plus probable : ton export contient très peu de texte à lire — presque rien à comparer aux lexiques thématiques (cuisine, santé, politique…). Ce n’est pas une anomalie, juste un manque de matière.'
-    : 'Ton export contient pourtant du texte : c’est ton vocabulaire qui ne recoupe pas les thèmes que PanoptiCool sait repérer (cuisine, santé, politique…). Nos lexiques sont rudimentaires, tu peux nous aider à les compléter, plus bas.';
+  const ndReason = lowData ? UI_NO_DEDUCTION.reasonLowData : UI_NO_DEDUCTION.reasonNoMatch;
 
-  const ghHref = `${GH_ISSUE_BASE}?title=${encodeURIComponent('Proposition de mots pour les lexiques')}&body=${encodeURIComponent(suggestBody(suggestText))}`;
-  const mailHref = `mailto:${SUGGEST_MAIL}?subject=${encodeURIComponent('Mots à ajouter aux lexiques PanoptiCool')}&body=${encodeURIComponent(suggestBody(suggestText))}`;
+  const ghHref = `${GH_ISSUE_BASE}?title=${encodeURIComponent(UI_NO_DEDUCTION.enrichIssueTitle)}&body=${encodeURIComponent(suggestBody(suggestText))}`;
+  const mailHref = `mailto:${SUGGEST_MAIL}?subject=${encodeURIComponent(UI_NO_DEDUCTION.enrichMailSubject)}&body=${encodeURIComponent(suggestBody(suggestText))}`;
 
   return (
     <div style={isMobile ? M_CARD : CARD}>
@@ -83,26 +82,23 @@ export function NoDeductionCard({
             <span key={i} style={DOT} />
           ))}
         </div>
-        <span style={isMobile ? M_TITLE : TITLE}>Aucune déduction ne ressort de ton export</span>
+        <span style={isMobile ? M_TITLE : TITLE}>{UI_NO_DEDUCTION.title}</span>
       </div>
       <div style={REASON}>{ndReason}</div>
       <div style={WARN_BOX}>
         <span style={WARN_ICON} aria-hidden="true">
           ▲
         </span>
-        <span style={WARN_TEXT}>
-          Ça ne veut pas dire que TikTok ne déduit rien : l'export ne montre que ~26 % des données
-          collectées, et leurs modèles analysent bien plus finement que nos lexiques.
-        </span>
+        <span style={WARN_TEXT}>{UI_NO_DEDUCTION.warn}</span>
       </div>
 
       {/* --- Tes données, quand même ------------------------------------------------------------ */}
       {known && (
         <div style={DATA_BLOCK}>
           <div style={isMobile ? M_DATA_HEAD : DATA_HEAD}>
-            <span style={DATA_TITLE}>Tes données, quand même</span>
+            <span style={DATA_TITLE}>{UI_NO_DEDUCTION.dataTitle}</span>
             <span style={DATA_COUNTS}>
-              {searches.length} recherche(s) · {comments.length} commentaire(s)
+              {UI_NO_DEDUCTION.dataCounts(searches.length, comments.length)}
             </span>
             {!isMobile && <span style={{ flex: 1 }} />}
             <button
@@ -111,41 +107,38 @@ export function NoDeductionCard({
               aria-expanded={dataOpen}
               onClick={() => setDataOpen(!dataOpen)}
             >
-              {dataOpen ? 'masquer ▴' : 'consulter ▾'}
+              {dataOpen ? UI_NO_DEDUCTION.dataToggleClose : UI_NO_DEDUCTION.dataToggleOpen}
             </button>
           </div>
           {dataOpen && (
             <>
               <div style={isMobile ? M_DATA_GRID : DATA_GRID}>
                 <div style={DATA_COL}>
-                  <span style={DATA_COL_TITLE}>recherches</span>
+                  <span style={DATA_COL_TITLE}>{UI_NO_DEDUCTION.dataColSearches}</span>
                   {searches.map((it) => (
                     <div key={it.index} style={DATA_LINE}>
                       <span style={DATA_CHEVRON}>›</span>
-                      <span>« {it.text} »</span>
+                      <span>{UI_NO_DEDUCTION.dataQuote(it.text)}</span>
                     </div>
                   ))}
                   {searches.length === 0 && (
-                    <span style={DATA_EMPTY}>aucune recherche dans l'export</span>
+                    <span style={DATA_EMPTY}>{UI_NO_DEDUCTION.dataEmptySearches}</span>
                   )}
                 </div>
                 <div style={DATA_COL}>
-                  <span style={DATA_COL_TITLE}>commentaires</span>
+                  <span style={DATA_COL_TITLE}>{UI_NO_DEDUCTION.dataColComments}</span>
                   {comments.map((it) => (
                     <div key={it.index} style={DATA_LINE}>
                       <span style={DATA_CHEVRON}>›</span>
-                      <span>« {it.text} »</span>
+                      <span>{UI_NO_DEDUCTION.dataQuote(it.text)}</span>
                     </div>
                   ))}
                   {comments.length === 0 && (
-                    <span style={DATA_EMPTY}>aucun commentaire dans l'export</span>
+                    <span style={DATA_EMPTY}>{UI_NO_DEDUCTION.dataEmptyComments}</span>
                   )}
                 </div>
               </div>
-              <div style={DATA_FOOT}>
-                C'est exactement ce texte que nos lexiques ont parcouru sans trouver de
-                correspondance.
-              </div>
+              <div style={DATA_FOOT}>{UI_NO_DEDUCTION.dataFoot}</div>
             </>
           )}
         </div>
@@ -154,17 +147,13 @@ export function NoDeductionCard({
       {/* --- Aide-nous à enrichir le vocabulaire -------------------------------------------------- */}
       {showEnrich && (
         <div style={isMobile ? M_ENRICH : ENRICH}>
-          <span style={ENRICH_TITLE}>Aide-nous à enrichir le vocabulaire</span>
-          <span style={ENRICH_TEXT}>
-            Ton export contient du texte, mais nos lexiques ne l'ont pas reconnu. Si tu repères dans
-            tes données des mots qu'on aurait dû comprendre, propose-les anonymement : ils
-            profiteront à tout le monde. Rien n'est envoyé sans ton clic.
-          </span>
+          <span style={ENRICH_TITLE}>{UI_NO_DEDUCTION.enrichTitle}</span>
+          <span style={ENRICH_TEXT}>{UI_NO_DEDUCTION.enrichText}</span>
           <textarea
             value={suggestText}
             spellcheck={false}
-            placeholder="ex. « batch cooking », « air fryer », « mid » …"
-            aria-label="Mots à proposer"
+            placeholder={UI_NO_DEDUCTION.enrichPlaceholder}
+            aria-label={UI_NO_DEDUCTION.enrichAriaLabel}
             style={isMobile ? M_SUGGEST_AREA : SUGGEST_AREA}
             onInput={(e) => setSuggestText(e.currentTarget.value)}
           />
@@ -179,10 +168,10 @@ export function NoDeductionCard({
               >
                 <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
               </svg>
-              Proposer sur GitHub
+              {UI_NO_DEDUCTION.enrichGithubButton}
             </a>
             <a href={mailHref} style={isMobile ? M_MAIL_BTN : MAIL_BTN}>
-              ou par e-mail → {SUGGEST_MAIL}
+              {UI_NO_DEDUCTION.enrichMailButton(SUGGEST_MAIL)}
             </a>
           </div>
         </div>
@@ -191,26 +180,22 @@ export function NoDeductionCard({
       {/* --- Conseils ----------------------------------------------------------------------------- */}
       <div style={isMobile ? M_TIPS : TIPS}>
         <div style={TIP}>
-          <span style={TIP_TITLE}>Vérifie ton export</span>
-          <span style={TIP_TEXT}>
-            Format JSON, toutes les catégories cochées : un export partiel arrive vite.
-          </span>
+          <span style={TIP_TITLE}>{UI_NO_DEDUCTION.tip1Title}</span>
+          <span style={TIP_TEXT}>{UI_NO_DEDUCTION.tip1Text}</span>
         </div>
         <div style={TIP}>
-          <span style={TIP_TITLE}>Essaie l'IA locale</span>
+          <span style={TIP_TITLE}>{UI_NO_DEDUCTION.tip2Title}</span>
           <span style={TIP_TEXT}>
-            Elle lit tes données plus finement que les lexiques :{' '}
-            {isMobile ? 'sur ordinateur, ' : ''}
+            {UI_NO_DEDUCTION.tip2Text}
+            {isMobile ? UI_NO_DEDUCTION.tip2Mobile : ''}
             <a href="#sec-ia" style={{ color: NAVY.accent, textDecoration: 'none' }}>
-              section 04 →
+              {UI_NO_DEDUCTION.tip2Link}
             </a>
           </span>
         </div>
         <div style={TIP}>
-          <span style={TIP_TITLE}>Reviens plus tard</span>
-          <span style={TIP_TEXT}>
-            Un nouvel export dans quelques semaines contiendra plus de traces à lire.
-          </span>
+          <span style={TIP_TITLE}>{UI_NO_DEDUCTION.tip3Title}</span>
+          <span style={TIP_TEXT}>{UI_NO_DEDUCTION.tip3Text}</span>
         </div>
       </div>
     </div>
@@ -235,7 +220,7 @@ const DOT = {
   height: '10px',
   borderRadius: '50%',
   background: NAVY.accent,
-  opacity: NAVY.confidenceEmptyOpacity,
+  opacity: NAVY.dimmedDotOpacity,
 } as const;
 const TITLE = {
   fontSize: '16px',

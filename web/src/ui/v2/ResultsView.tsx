@@ -13,6 +13,7 @@
 import type { VNode } from 'preact';
 import { useState } from 'preact/hooks';
 import type { Analysis } from '../../engine/analysis';
+import { UI_LEARN_PANELS, UI_RESULTS } from '../copy';
 import { AnalyzableShareCard, RhythmCard, VolumesCard } from './ActivitySection';
 import { AiMobileNotice, AiSection } from './AiSection';
 import type { AiSource } from './ai-source';
@@ -31,38 +32,16 @@ import {
 } from './ThemeCardNavy';
 import { useIsMobile } from './useIsMobile';
 
-/**
- * Légende de confiance — « solide » RETIRÉ (décision yuya, Refonte A).
- *
- * `high` n'a AUCUN producteur, et n'en a jamais eu : le plafond `low|medium` de l'inféré couvrait
- * D1 comme D2 (mesuré, §2.1). La légende annonçait donc à l'utilisateur un niveau qu'aucune carte ne
- * peut porter — une légende sans référent, qui promet une gradation que la page ne rend pas.
- *
- * Le TYPE, lui, garde la porte ouverte (FORK 3 : `sensitive: false` autorise `high`) et
- * `LEVEL_LABEL` garde son entrée — permettre n'est pas produire. Si une règle émet un jour du
- * `high` (recoupement multi-canal ?), la légende reviendra CONÇUE, avec ce qui l'atteint.
- *
- * ⚠ C'est le SEUL delta VOULU du golden de rendu sur cette refonte (4 lignes : la légende est rendue
- * une fois par cas). Le reste est à diff strictement nul. Un delta ordonné n'est pas une dérive —
- * mais il devait être isolé pour être lisible comme tel.
- */
-const LEGEND = [
-  { label: 'moyenne', color: NAVY.confidenceMedium },
-  { label: 'incertaine', color: NAVY.confidenceLow },
-] as const;
+// L'AFFICHAGE de la confiance (légende du sommaire + légende inline mobile) est RETIRÉ (itération
+// 2026-07-20 du design v4, tests utilisateurs) : les niveaux n'apparaissent plus nulle part sur la
+// page, et le cadrage « hypothèses, pas un verdict » vit dans l'intro de la section 02
+// (`sec02Framing`). Le moteur GARDE `confidence`, et le CLASSEMENT des cartes le lit toujours
+// (`compareCards` ci-dessous) — c'est l'axe d'affichage qui disparaît, pas la donnée ni la doctrine.
 
-/**
- * HIÉRARCHIE DES CARTES DE DÉDUCTION (FORK 1, option (d) ratifiée yuya — audit §9).
- *
- * Le problème posé n'est PAS le nombre : « onze cartes à plat se neutralisent ; trois cartes fortes +
- * huit repliées, non ». Donc AUCUN constat n'est supprimé ni tu — `HIGHLIGHT_COUNT` cartes ouvrent la
- * section, le reste part derrière UN dépli qui ANNONCE SON COMPTE. Le plafond mesuré reste ~11
- * (≤ 6 signaux D1 + ≤ 5 thèmes D2) ; ce qui change est ce que l'œil rencontre, pas ce que la page dit.
- *
- * Le repli est un SECOND niveau : les cartes étaient déjà fermées une à une, mais onze en-têtes
- * alignés restent onze objets à trier pour le lecteur. C'est cet aplatissement-là qu'on retire.
- */
-const HIGHLIGHT_COUNT = 3;
+// Le DÉPLI lead/rest (FORK 1, option (d)) est RETIRÉ (décision yuya, retouches 2026-07-20) : toutes
+// les cartes s'affichent à la suite, classées par `compareCards`. Ce que le dépli protégeait — onze
+// en-têtes alignés qui se neutralisent — est aujourd'hui porté par les cartes FERMÉES par défaut :
+// un en-tête d'une ligne par carte, pas onze blocs ouverts.
 
 /** Une carte de la section 02, prête à rendre, avec les seuls nombres qui la classent.
  *  (Pas de champ `key` : la clé vit sur le `node`, là où Preact la lit — un champ de plus ici serait
@@ -86,10 +65,10 @@ export interface RankedCard {
  *     d'autres — les mélanger les aplatirait ». Classer sur la seule confiance RE-FUSIONNERAIT les
  *     deux populations que le schéma tient disjointes, en contredisant cette décision depuis l'UI.
  *     Ce que ça coûte est réel et se dit : la page peut s'ouvrir sur « Santé mentale ».
- *  2. CONFIANCE DÉCROISSANTE — l'axe que la page ENSEIGNE déjà (légende du sommaire, 3 puces par
- *     carte). L'ordre se lit donc sans légende neuve : ce qui est en haut est ce que la plateforme
- *     oserait le plus. Et il DISCRIMINE vraiment — D1 comme D2 émettent `low` ET `medium`
- *     (`d1Level` : explicite ⇒ medium ; `d2Level` : auto-déclaré ou volumineux ⇒ medium).
+ *  2. CONFIANCE DÉCROISSANTE — un axe désormais INTERNE (les niveaux ne s'affichent plus,
+ *     itération 2026-07-20) mais qui reste le bon ordre de lecture : ce qui est en haut est ce que
+ *     la plateforme oserait le plus. Et il DISCRIMINE vraiment — D1 comme D2 émettent `low` ET
+ *     `medium` (`d1Level` : explicite ⇒ medium ; `d2Level` : auto-déclaré ou volumineux ⇒ medium).
  *  3. VOLUME DE PREUVES — départage SEULEMENT. Il ne peut pas être le critère principal : D2 s'en
  *     sert déjà pour son top-5 interne (`rankInterests`), le reprendre ici compterait deux fois la
  *     même chose ; et il mesure de quoi l'utilisateur PARLE le plus, quand la page traite de ce qui
@@ -134,101 +113,22 @@ function rankedCards(output: Analysis, reuseMap: ReadonlyMap<string, Citation[]>
   return cards.sort(compareCards);
 }
 
-/** Libellé du dépli — il ANNONCE COMBIEN il cache : replier n'est pas taire (option (d)). */
-function restLabel(n: number): string {
-  return n === 1 ? 'voir 1 autre déduction' : `voir les ${n} autres déductions`;
-}
-
 const TOC = [
-  { n: '01', label: 'Ton activité', href: '#sec-activite' },
-  { n: '02', label: 'Déductions', href: '#sec-deductions' },
-  { n: '03', label: 'En résumé', href: '#sec-resume' },
-  { n: '04', label: 'IA locale', href: '#sec-ia' },
+  { n: '01', label: UI_RESULTS.tocActivity, href: '#sec-activite' },
+  { n: '02', label: UI_RESULTS.tocDeductions, href: '#sec-deductions' },
+  { n: '03', label: UI_RESULTS.tocSummary, href: '#sec-resume' },
+  { n: '04', label: UI_RESULTS.tocAi, href: '#sec-ia' },
 ] as const;
 
-// Contenus pédagogiques statiques (wording de la maquette, validé dans Claude Design).
-const LEARN_RYTHME = {
-  question: 'Pourquoi mes horaires intéressent-ils TikTok ?',
-  columns: [
-    {
-      title: 'Ce qui est mesuré',
-      text: 'Chaque ouverture de l’app, chaque vidéo et chaque pause est horodatée. Ce ne sont pas tes contenus : ce sont des métadonnées — des données sur ton comportement.',
-    },
-    {
-      title: 'Ce que ça permet',
-      text: 'Mises bout à bout, elles dessinent ton rythme de vie : sommeil, trajets, moments creux. L’algorithme s’en sert pour te solliciter quand tu es le plus réceptif.',
-    },
-    {
-      title: 'Pourquoi c’est sensible',
-      text: 'Ces traces paraissent anodines, mais elles révèlent fatigue, insomnie ou disponibilité — des états exploitables commercialement, sans que tu aies rien « publié ».',
-    },
-  ],
-} as const;
-
-const LEARN_DEDUC = {
-  question: 'Comment un algorithme « devine »-t-il ?',
-  columns: [
-    {
-      title: 'Par comparaison',
-      text: 'Il ne comprend pas tes mots : il compare tes traces à celles de millions d’autres comptes. Si ceux qui cherchent X font souvent Y, tu es rangé dans la case Y.',
-    },
-    {
-      title: 'Avec un score',
-      // « solide » RETIRÉ — dernier porteur du mot. Aucune règle n'émet `high` (le plafond de
-      // l'inféré couvre D1 comme D2), et la légende du sommaire l'a déjà perdu (5f58023) pour cette
-      // raison. Cette prose l'annonçait encore : elle promettait au lecteur une graduation à trois
-      // crans que la page n'a jamais rendue — et l'enseignait dans le panneau censé la lui expliquer.
-      // On nomme donc la graduation RÉELLEMENT offerte. Si une règle émet un jour du `high`, le mot
-      // revient ici ET dans la légende, ensemble.
-      text: 'Chaque déduction porte un niveau de confiance — c’est le sens des mentions moyenne / incertaine utilisées ici. Plus les signaux se recoupent, plus le score monte.',
-    },
-    {
-      title: 'Donc faillible',
-      text: 'C’est une corrélation statistique, pas une preuve : chercher « aider quelqu’un qui déprime » ne dit pas qui déprime. Mais la case, elle, reste attachée au profil.',
-    },
-  ],
-  footnote:
-    'Et PanoptiCool, dans cette section ? Rien de tout ça : on repère simplement tes mots dans des lexiques thématiques (cuisine, santé, politique…) — c’est le surlignage que tu vois. Bien plus rudimentaire que les modèles des plateformes, mais ça suffit à montrer le principe.',
-} as const;
-
-const LEARN_MARCHE = {
-  question: 'Où vont ces profils ensuite ?',
-  columns: [
-    {
-      title: 'Enchères en temps réel',
-      text: 'À chaque contenu affiché, des annonceurs enchérissent en quelques millisecondes pour toucher ton profil. Les segments (« cuisine », « anxiété probable ») fixent le prix.',
-    },
-    {
-      title: 'Courtiers de données',
-      text: 'Des intermédiaires agrègent des segments venus de dizaines d’apps et les revendent — à des marques, des assureurs, parfois des autorités.',
-    },
-    {
-      title: 'Tes droits (RGPD)',
-      text: 'En Europe, tu peux demander l’accès à tes données, leur effacement, et t’opposer au profilage. L’export que tu analyses ici vient de ce droit d’accès.',
-    },
-  ],
-} as const;
-
-const DATA_TYPES = [
-  'recherches',
-  'commentaires',
-  'métadonnées de session',
-  'interactions',
-  'visionnage',
-] as const;
-
-const ACTOR_TAKEAWAYS = [
-  'centres d’intérêt et habitudes de consommation',
-  'disponibilité, fatigue, fenêtres d’attention exploitables',
-  'signaux sensibles — santé mentale, opinion politique, conflictualité — assortis d’un niveau de confiance',
-  'des segments revendables à des annonceurs, courtiers de données, voire autorités',
-] as const;
+// Les contenus pédagogiques et les listes du résumé vivent dans le catalogue d'interface
+// (`ui/copy.ts`) — cette vue les rend, elle ne les écrit plus.
 
 function SectionHead({
   id,
   n,
   title,
   sub,
+  framing,
   learn,
   isMobile,
 }: {
@@ -236,6 +136,9 @@ function SectionHead({
   n: string;
   title: string;
   sub?: string;
+  /** Cadrage optionnel sous le sous-titre — DANS l'en-tête (gap resserré de la maquette), pas
+   * dans le flux de la section : entre les deux il y aurait l'espacement inter-blocs, trop grand. */
+  framing?: VNode;
   learn?: { open: boolean; label: string; onToggle: () => void };
   isMobile?: boolean;
 }) {
@@ -252,6 +155,7 @@ function SectionHead({
         )}
       </div>
       {sub !== undefined && <div style={isMobile ? M_SEC_SUB : SEC_SUB}>{sub}</div>}
+      {framing !== undefined && <div style={isMobile ? M_SEC_FRAMING : SEC_FRAMING}>{framing}</div>}
       {isMobile && learn !== undefined && (
         <div style={{ alignSelf: 'flex-start' }}>
           <LearnToggle open={learn.open} label={learn.label} onToggle={learn.onToggle} />
@@ -273,9 +177,6 @@ export function ResultsView({
 }) {
   const [learn, setLearn] = useState<Record<string, boolean>>({});
   const toggleLearn = (key: string) => setLearn((l) => ({ ...l, [key]: !l[key] }));
-  // Fermé par défaut : c'est le repli lui-même. (Le golden force les bascules `false` à `true` — il
-  // voit donc TOUTES les cartes, et « aucune n'a disparu » se prouve par diff.)
-  const [showRest, setShowRest] = useState(false);
   const isMobile = useIsMobile();
 
   // Ventilation par section — lot A1 : il n'y a plus rien à ventiler. Cette vue faisait TROIS
@@ -289,41 +190,29 @@ export function ResultsView({
   const reuseMap = buildReuseMap(output);
   const hasDeductions = output.signals.length > 0 || output.themes.length > 0;
 
-  // FORK 1 (option (d)) : les cartes sont CLASSÉES (`compareCards`) puis coupées en deux — aucune
-  // n'est écartée, la coupe ne décide que du premier regard.
+  // Toutes les cartes, classées (`compareCards`), à la suite — plus de coupe lead/rest (retouches
+  // 2026-07-20).
   const cards = rankedCards(output, reuseMap);
-  const leadCards = cards.slice(0, HIGHLIGHT_COUNT);
-  const restCards = cards.slice(HIGHLIGHT_COUNT);
 
   // Mobile (maquette « v4 Mobile ») : pas de sidebar (le sommaire vit en chips dans le header,
   // cf. SiteHeader/AnalysisPage), héros en colonne SANS l'œil, légende de confiance INLINE sous le
   // héros, kicker portant la mention démo.
   // Le suffixe démo ne vit dans le kicker QUE sur mobile — sur desktop, le badge du header porte
   // déjà l'information (pas de doublon).
-  const kicker =
-    demo && isMobile ? 'résultats d’analyse · démo, données fictives' : 'résultats d’analyse';
+  const kicker = demo && isMobile ? UI_RESULTS.kickerDemo : UI_RESULTS.kicker;
 
   return (
     <div style={PAGE}>
       <div style={isMobile ? M_SHELL : GRID}>
         {!isMobile && (
-          <nav aria-label="Sommaire" style={SIDEBAR}>
-            <span style={TOC_TITLE}>sommaire</span>
+          <nav aria-label={UI_RESULTS.tocAriaLabel} style={SIDEBAR}>
+            <span style={TOC_TITLE}>{UI_RESULTS.tocTitle}</span>
             {TOC.map((t) => (
-              <a key={t.n} href={t.href} style={TOC_LINK}>
+              <a key={t.n} href={t.href} class="hv-toc" style={TOC_LINK}>
                 <span style={TOC_N}>{t.n}</span>
                 {t.label}
               </a>
             ))}
-            <div style={LEGEND_BLOCK}>
-              <span style={TOC_TITLE}>confiance</span>
-              {LEGEND.map((l) => (
-                <div key={l.label} style={LEGEND_ROW}>
-                  <div style={{ ...LEGEND_DOT, background: l.color }} />
-                  <span style={LEGEND_LABEL}>{l.label}</span>
-                </div>
-              ))}
-            </div>
           </nav>
         )}
 
@@ -333,30 +222,13 @@ export function ResultsView({
             <div style={HERO_COL}>
               <span style={isMobile ? M_KICKER : KICKER}>{kicker}</span>
               <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>
-                Ce que TikTok
+                {UI_RESULTS.heroTitleLine1}
                 {!isMobile && <br />}
-                {isMobile ? ' ' : ''}pourrait déduire
+                {isMobile ? ' ' : ''}
+                {UI_RESULTS.heroTitleLine2}
               </h1>
-              <p style={isMobile ? M_HERO_LEDE : HERO_LEDE}>
-                À partir de ce que tu cherches, regardes et commentes, TikTok essaie de deviner des
-                choses sur toi. Ce sont des suppositions, pas des certitudes.
-              </p>
-              <p style={isMobile ? M_HERO_SUB : HERO_SUB}>
-                Quatre étapes, du plus factuel au plus interprété : ton activité brute, les
-                déductions thème par thème, un résumé de l'utilisation de tes données et la
-                possibilité de les analyser localement avec un modèle IA.
-              </p>
-              {isMobile && (
-                <div style={M_LEGEND_ROW}>
-                  <span style={M_LEGEND_LABEL}>confiance :</span>
-                  {LEGEND.map((l) => (
-                    <span key={l.label} style={M_LEGEND_ITEM}>
-                      <span style={{ ...LEGEND_DOT, background: l.color }} />
-                      <span style={LEGEND_LABEL}>{l.label}</span>
-                    </span>
-                  ))}
-                </div>
-              )}
+              <p style={isMobile ? M_HERO_LEDE : HERO_LEDE}>{UI_RESULTS.heroLede}</p>
+              <p style={isMobile ? M_HERO_SUB : HERO_SUB}>{UI_RESULTS.heroSub}</p>
             </div>
             {!isMobile && (
               <div style={HERO_EYE}>
@@ -370,20 +242,26 @@ export function ResultsView({
             id="sec-activite"
             isMobile={isMobile}
             n="01"
-            title="Ton activité en chiffres"
-            sub="Quand tu utilises l'app, et combien de traces tu laisses."
+            title={UI_RESULTS.sec01Title}
+            sub={UI_RESULTS.sec01Sub}
             learn={{
               open: !!learn.rythme,
-              label: 'les métadonnées',
+              label: UI_RESULTS.sec01LearnLabel,
               onToggle: () => toggleLearn('rythme'),
             }}
           />
           {learn.rythme && (
-            <LearnPanel question={LEARN_RYTHME.question} columns={LEARN_RYTHME.columns} />
+            <LearnPanel
+              question={UI_LEARN_PANELS.rhythm.question}
+              columns={UI_LEARN_PANELS.rhythm.columns}
+            />
           )}
           {output.rhythm !== undefined && <RhythmCard rhythm={output.rhythm} />}
           <div style={CARDS_ROW}>
-            <VolumesCard volumes={output.volumes} />
+            <VolumesCard
+              volumes={output.volumes}
+              videosWatchedTotal={output.rhythm?.videosWatched.total}
+            />
             {output.opacity !== undefined && <AnalyzableShareCard opacity={output.opacity} />}
           </div>
 
@@ -392,19 +270,34 @@ export function ResultsView({
             id="sec-deductions"
             isMobile={isMobile}
             n="02"
-            title="Déductions par thème"
-            sub={`Ce que l'algorithme pourrait conclure, thème par thème. ${isMobile ? 'Touche' : 'Clique sur'} une carte pour voir les preuves : le surlignage montre le mot repéré, et chaque donnée propose une lecture principale et une secondaire — ou deux à égalité quand rien ne tranche.`}
+            title={UI_RESULTS.sec02Title}
+            sub={UI_RESULTS.sec02Sub(
+              isMobile ? UI_RESULTS.sec02TapVerbMobile : UI_RESULTS.sec02TapVerbDesktop,
+            )}
+            framing={
+              /* Le CADRAGE de la section : une fois, en intro, « hypothèses, jamais un verdict » —
+                 à la place de l'appareil de confiance que chaque carte répétait. Les deux
+                 mots-exemples portent le style de ce qu'ils nomment (maquette) : « surlignage »
+                 est surligné, « principale » a la teinte de la lecture principale. */
+              <>
+                {UI_RESULTS.sec02FramingLead}
+                <span style={FRAMING_HIGHLIGHT}>{UI_RESULTS.sec02FramingHighlightWord}</span>
+                {UI_RESULTS.sec02FramingMiddle}
+                <span style={FRAMING_PRIMARY}>{UI_RESULTS.sec02FramingPrimaryWord}</span>
+                {UI_RESULTS.sec02FramingTail}
+              </>
+            }
             learn={{
               open: !!learn.deduc,
-              label: 'l’algorithme',
+              label: UI_RESULTS.sec02LearnLabel,
               onToggle: () => toggleLearn('deduc'),
             }}
           />
           {learn.deduc && (
             <LearnPanel
-              question={LEARN_DEDUC.question}
-              columns={LEARN_DEDUC.columns}
-              footnote={LEARN_DEDUC.footnote}
+              question={UI_LEARN_PANELS.deductions.question}
+              columns={UI_LEARN_PANELS.deductions.columns}
+              footnote={UI_LEARN_PANELS.deductions.footnote}
             />
           )}
           {/* L'ordre de la page est une décision de MISE EN SCÈNE : elle vit ici (`compareCards`),
@@ -413,22 +306,7 @@ export function ResultsView({
               `buildPageBlocks`, jamais un choix. Le sensible reste en tête, mais parce qu'un critère
               le dit, et à confiance égale une carte mieux étayée passe devant. */}
           <div style={THEME_LIST}>
-            {leadCards.map((c) => c.node)}
-            {/* Le reste : REPLIÉ, jamais retiré. Le bouton dit son compte, et l'ouvrir rend
-                exactement les cartes que le classement a mises après — mêmes cartes, même rendu. */}
-            {restCards.length > 0 && (
-              <>
-                <button
-                  type="button"
-                  style={MORE_BTN}
-                  aria-expanded={showRest}
-                  onClick={() => setShowRest(!showRest)}
-                >
-                  {showRest ? 'replier ✕' : restLabel(restCards.length)}
-                </button>
-                {showRest && restCards.map((c) => c.node)}
-              </>
-            )}
+            {cards.map((c) => c.node)}
             {/* Cas limite « aucune déduction » (maquettes CasAucuneDeduction) : carte complète —
                 raison probable, rappel d'asymétrie, dépli des textes bruts, enrichissement des
                 lexiques, conseils — à la place de l'ancien paragraphe sec. */}
@@ -440,26 +318,26 @@ export function ResultsView({
             id="sec-resume"
             isMobile={isMobile}
             n="03"
-            title="En résumé"
+            title={UI_RESULTS.sec03Title}
             learn={{
               open: !!learn.marche,
-              label: 'le marché des données',
+              label: UI_RESULTS.sec03LearnLabel,
               onToggle: () => toggleLearn('marche'),
             }}
           />
           {learn.marche && (
-            <LearnPanel question={LEARN_MARCHE.question} columns={LEARN_MARCHE.columns} />
+            <LearnPanel
+              question={UI_LEARN_PANELS.market.question}
+              columns={UI_LEARN_PANELS.market.columns}
+            />
           )}
           <div style={SUMMARY_CARD}>
-            <div style={SUMMARY_LEDE}>
-              Prises une à une, ces données sont banales. Recoupées, elles dessinent un profil où
-              une même donnée anodine peut nourrir plusieurs lectures à la fois.
-            </div>
+            <div style={SUMMARY_LEDE}>{UI_RESULTS.summaryLede}</div>
             <div style={SUMMARY_COLS}>
               <div style={SUMMARY_COL_LEFT}>
-                <div style={SUMMARY_COL_TITLE}>Types de données lues</div>
+                <div style={SUMMARY_COL_TITLE}>{UI_RESULTS.summaryDataTypesTitle}</div>
                 <div style={CHIP_ROW}>
-                  {DATA_TYPES.map((t) => (
+                  {UI_RESULTS.summaryDataTypes.map((t) => (
                     <span key={t} style={DATA_CHIP}>
                       {t}
                     </span>
@@ -467,11 +345,9 @@ export function ResultsView({
                 </div>
               </div>
               <div style={SUMMARY_COL_RIGHT}>
-                <div style={SUMMARY_COL_TITLE}>
-                  Ce que des acteurs comme TikTok ou des agrégateurs peuvent en tirer
-                </div>
+                <div style={SUMMARY_COL_TITLE}>{UI_RESULTS.summaryActorsTitle}</div>
                 <div style={TAKEAWAYS}>
-                  {ACTOR_TAKEAWAYS.map((t) => (
+                  {UI_RESULTS.summaryActorTakeaways.map((t) => (
                     <div key={t} style={TAKEAWAY_ROW}>
                       <span style={{ color: NAVY.textFaint }}>›</span>
                       <span>{t}</span>
@@ -541,17 +417,6 @@ const TOC_LINK = {
   border: '1px solid transparent',
 } as const;
 const TOC_N = { fontSize: '11px', fontWeight: 600, lineHeight: 1, color: NAVY.accent } as const;
-const LEGEND_BLOCK = {
-  marginTop: '14px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '9px',
-  borderTop: `1px solid ${NAVY.borderCard}`,
-  padding: '14px 12px 0',
-} as const;
-const LEGEND_ROW = { display: 'flex', alignItems: 'center', gap: '8px' } as const;
-const LEGEND_DOT = { width: '10px', height: '10px', borderRadius: '50%' } as const;
-const LEGEND_LABEL = { fontSize: '11.5px', lineHeight: 1, color: NAVY.textBody } as const;
 const CONTENT = { display: 'flex', flexDirection: 'column', gap: '26px', minWidth: 0 } as const;
 const HERO = {
   display: 'grid',
@@ -625,6 +490,22 @@ const SEC_SUB = {
   color: NAVY.textMuted,
   paddingLeft: '44px',
 } as const;
+// Cadrage de la section 02 — même retrait que le sous-titre, un ton plus discret (maquette).
+const SEC_FRAMING = {
+  fontSize: '11px',
+  lineHeight: 1.7,
+  color: NAVY.textFaint,
+  paddingLeft: '44px',
+  maxWidth: '720px',
+} as const;
+const M_SEC_FRAMING = { fontSize: '12px', lineHeight: 1.7, color: NAVY.textFaint } as const;
+// Les deux mots-exemples du cadrage — mêmes styles que ce qu'ils désignent (maquette) :
+// le surlignage des sources (`highlight`), la teinte de la lecture principale.
+const FRAMING_HIGHLIGHT = {
+  color: NAVY.textBright,
+  borderBottom: '1px solid rgba(255,255,255,.45)',
+} as const;
+const FRAMING_PRIMARY = { color: '#cdb6f0' } as const;
 const CARDS_ROW = {
   display: 'flex',
   gap: '16px',
@@ -632,24 +513,6 @@ const CARDS_ROW = {
   alignItems: 'stretch',
 } as const;
 const THEME_LIST = { display: 'flex', flexDirection: 'column', gap: '16px' } as const;
-// Dépli du reste : une « carte fantôme » — même gabarit que les cartes (rayon, largeur), mais creuse
-// et pointillée. Elle occupe la place d'une carte sans en avoir le poids : c'est ce contraste qui
-// FAIT la hiérarchie. Pointillé volontairement NEUTRE (bordure de carte), pas l'indigo de
-// `LearnPanel` — celui-ci signale la pédagogie ; ici on montre du contenu, pas une explication.
-const MORE_BTN = {
-  cursor: 'pointer',
-  width: '100%',
-  fontFamily: 'inherit',
-  fontSize: '10.5px',
-  fontWeight: 500,
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: NAVY.textSecondary,
-  background: 'transparent',
-  border: `1px dashed ${NAVY.borderPill}`,
-  borderRadius: '11px',
-  padding: '14px',
-} as const;
 const SUMMARY_CARD = {
   display: 'flex',
   flexDirection: 'column',
@@ -752,21 +615,6 @@ const M_HERO_SUB = {
   lineHeight: 1.7,
   color: NAVY.textMuted,
 } as const;
-const M_LEGEND_ROW = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: '14px',
-  alignItems: 'center',
-  paddingTop: '2px',
-} as const;
-const M_LEGEND_LABEL = {
-  fontSize: '10.5px',
-  lineHeight: 1,
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: NAVY.textMuted,
-} as const;
-const M_LEGEND_ITEM = { display: 'flex', alignItems: 'center', gap: '7px' } as const;
 const M_SEC_TITLE = {
   fontSize: '15.5px',
   fontWeight: 500,

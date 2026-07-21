@@ -2,6 +2,7 @@
 // tel quel de la maquette, dépliable par section via le bouton pointillé de l'en-tête. Le wording
 // est celui de la maquette (validé par yuya dans Claude Design) — pas un gabarit moteur.
 
+import { UI_LEARN } from '../copy';
 import { NAVY } from './palette';
 
 export interface LearnColumn {
@@ -19,8 +20,8 @@ export function LearnPanel({
   footnote?: string;
 }) {
   return (
-    <div style={PANEL}>
-      <span style={KICKER}>pour comprendre</span>
+    <div class="hl-learn" style={PANEL}>
+      <span style={KICKER}>{UI_LEARN.kicker}</span>
       <span style={QUESTION}>{question}</span>
       <div style={GRID}>
         {columns.map((c) => (
@@ -46,8 +47,8 @@ export function LearnToggle({
   onToggle: () => void;
 }) {
   return (
-    <button type="button" style={TOGGLE} onClick={onToggle} aria-expanded={open}>
-      {open ? 'fermer ✕' : `comprendre · ${label}`}
+    <button type="button" class="hl-btn" style={TOGGLE} onClick={onToggle} aria-expanded={open}>
+      {open ? UI_LEARN.close : UI_LEARN.open(label)}
     </button>
   );
 }
@@ -99,6 +100,9 @@ const TOGGLE = {
   cursor: 'pointer',
   flex: 'none',
   fontSize: '10.5px',
+  // `lineHeight` explicite : rend la hauteur de ce chip DÉTERMINISTE (28,5 px) — le badge « 100 %
+  // local » voisin s'y aligne (cf. `LOCAL_BADGE`), ce qui exige une hauteur connue, pas « normal ».
+  lineHeight: 1,
   fontWeight: 500,
   fontFamily: 'inherit',
   letterSpacing: '0.06em',

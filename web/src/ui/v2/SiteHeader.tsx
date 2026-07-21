@@ -5,14 +5,26 @@
 // du héros, cf. ResultsView), et un SOMMAIRE optionnel en chips horizontales scrollables sous la
 // barre (le parcours n'a pas de sidebar sur mobile).
 //
-// FR/EN : BOUTONS SEULS (décision yuya, refonte 2026-07-15) — la traduction anglaise n'existe pas
-// encore. EN est inerte (title « bientôt ») ; aucun état de langue n'est stocké nulle part.
+// LE SÉLECTEUR DE LANGUE EST TOUJOURS VISIBLE, y compris quand une seule langue est publiée.
+// C'est délibéré et ça se paye d'un bouton inerte : il ANNONCE que le site a une notion de langue.
+// Le jour où une bannière suggérera l'anglais à qui arrive en `navigator.language: en`, cette
+// suggestion devra être CORRIGEABLE d'un geste visible — un produit qui dit à quelqu'un ce qu'il a
+// déduit de lui doit lui laisser la main sur cette déduction, sous peine de démontrer le problème
+// qu'il dénonce. Un sélecteur qui n'apparaîtrait qu'une fois l'anglais prêt laisserait ce geste
+// sans place.
+//
+// Une langue déclarée mais non publiée reste INERTE (info-bulle « bientôt disponible ») : elle se
+// voit, elle ne se clique pas. L'état actif se lit sur la page (`<html lang>`), et n'est stocké
+// nulle part — la persistance viendra avec la bannière de suggestion, pas avant.
 
+import { currentLocale, currentPath, localeHref } from '../../i18n/current';
+import { isPublished, LOCALES, type Locale, localePath } from '../../i18n/locales';
+import { UI_BRAND, UI_HEADER } from '../copy';
 import { EyeLogo } from './EyeLogo';
 import { NAVY } from './palette';
 import { useIsMobile } from './useIsMobile';
 
-const GITHUB_URL = 'https://github.com/lagayayuya/PanoptiCool';
+const GITHUB_URL = UI_BRAND.githubUrl;
 
 /** Entrée du sommaire mobile (chips sous la barre). `muted` : section indisponible sur mobile
  * (IA locale) — chip pointillée, texte éteint, mais le lien reste (l'encart explique pourquoi). */
@@ -34,23 +46,44 @@ function GitHubIcon({ size }: { size: number }) {
 export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocChip[] }) {
   const isMobile = useIsMobile();
 
-  // FR/EN masqué tant que la version anglaise n'existe pas (traduction différée). Le markup reste
-  // en place ; repasser SHOW_LANG_TOGGLE à true le rétablit à l'identique.
-  const SHOW_LANG_TOGGLE = false;
-  const langGroup = !SHOW_LANG_TOGGLE ? null : (
-    // biome-ignore lint/a11y/useSemanticElements: un <fieldset> imposerait son chrome de formulaire — deux boutons suffisent (markup de la maquette).
-    <div role="group" aria-label="Langue" style={LANG_GROUP}>
-      <button type="button" style={isMobile ? M_LANG_ON : LANG_ON}>
-        FR
-      </button>
-      <button
-        type="button"
-        style={isMobile ? M_LANG_OFF : LANG_OFF}
-        title="bientôt disponible"
-        aria-disabled="true"
-      >
-        EN
-      </button>
+  const active = currentLocale();
+  const here = currentPath();
+  const langGroup = (
+    // biome-ignore lint/a11y/useSemanticElements: un <fieldset> imposerait son chrome de formulaire — deux contrôles suffisent (markup de la maquette).
+    <div role="group" aria-label={UI_HEADER.langGroupAriaLabel} style={LANG_GROUP}>
+      {LOCALES.map((locale) => {
+        const label = LANG_LABEL[locale];
+        const on = isMobile ? M_LANG_ON : LANG_ON;
+        const off = isMobile ? M_LANG_OFF : LANG_OFF;
+        if (locale === active) {
+          return (
+            <button key={locale} type="button" class="hv-br" style={on} aria-current="true">
+              {label}
+            </button>
+          );
+        }
+        // Publiée : un vrai lien vers LA MÊME page. Non publiée : un bouton mort qui le dit.
+        return isPublished(locale) ? (
+          <a
+            key={locale}
+            href={localePath(locale, here)}
+            class="hv-br"
+            style={{ ...off, ...LANG_LINK }}
+          >
+            {label}
+          </a>
+        ) : (
+          <button
+            key={locale}
+            type="button"
+            style={off}
+            title={UI_HEADER.langUnavailableTitle}
+            aria-disabled="true"
+          >
+            {label}
+          </button>
+        );
+      })}
     </div>
   );
 
@@ -58,11 +91,11 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
     return (
       <div style={M_WRAP}>
         <div style={M_ROW}>
-          <a href="/" style={M_LOGO_CROP} aria-label="PanoptiCool — accueil">
-            <img src="/logo.png" alt="PanoptiCool" style={M_LOGO_IMG} />
+          <a href={localeHref('/')} style={M_LOGO_CROP} aria-label={UI_HEADER.homeAriaLabel}>
+            <img src="/logo.png" alt={UI_HEADER.logoAlt} style={M_LOGO_IMG} />
           </a>
-          <a href="/" style={M_WORDMARK}>
-            PanoptiCool
+          <a href={localeHref('/')} style={M_WORDMARK}>
+            {UI_HEADER.wordmark}
           </a>
           <span style={{ flex: 1 }} />
           {langGroup}
@@ -70,16 +103,17 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
             href={GITHUB_URL}
             target="_blank"
             rel="noreferrer"
-            aria-label="Voir le code sur GitHub"
+            aria-label={UI_HEADER.githubAriaLabel}
+            class="hv-cy"
             style={M_GH_LINK}
           >
             <GitHubIcon size={17} />
           </a>
         </div>
         {toc !== undefined && (
-          <nav aria-label="Sommaire" style={M_TOC}>
+          <nav aria-label={UI_HEADER.tocAriaLabel} style={M_TOC}>
             {toc.map((t) => (
-              <a key={t.n} href={t.href} style={t.muted ? M_CHIP_MUTED : M_CHIP}>
+              <a key={t.n} href={t.href} class="hv-toc" style={t.muted ? M_CHIP_MUTED : M_CHIP}>
                 <span style={{ ...M_CHIP_N, color: t.muted ? NAVY.textDim : NAVY.accent }}>
                   {t.n}
                 </span>
@@ -94,18 +128,18 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
 
   return (
     <div style={BAR}>
-      <a href="/" style={LOGO_LINK} aria-label="PanoptiCool — accueil">
+      <a href={localeHref('/')} style={LOGO_LINK} aria-label={UI_HEADER.homeAriaLabel}>
         <EyeLogo variant="header" />
       </a>
-      <a href="/" style={WORDMARK}>
-        PanoptiCool
+      <a href={localeHref('/')} style={WORDMARK}>
+        {UI_HEADER.wordmark}
       </a>
       {badge !== undefined && <span style={BADGE}>{badge}</span>}
       <span style={{ flex: 1 }} />
       {langGroup}
-      <a href={GITHUB_URL} target="_blank" rel="noreferrer" style={GH_LINK}>
+      <a href={GITHUB_URL} target="_blank" rel="noreferrer" class="hv-cy" style={GH_LINK}>
         <GitHubIcon size={13} />
-        GitHub
+        {UI_HEADER.githubLabel}
       </a>
     </div>
   );
@@ -142,6 +176,10 @@ const BADGE = {
   marginLeft: '4px',
   whiteSpace: 'nowrap',
 } as const;
+/** Le libellé de chaque langue — un code, pas de la prose : il ne se traduit pas d'une langue à
+ * l'autre (« FR » reste « FR » sur le site anglais). Les chaînes vivent au catalogue. */
+const LANG_LABEL: Record<Locale, string> = { fr: UI_HEADER.langFr, en: UI_HEADER.langEn };
+
 const LANG_GROUP = {
   display: 'flex',
   border: `1px solid ${NAVY.borderChip}`,
@@ -157,6 +195,14 @@ const LANG_BASE = {
   padding: '9px 11px',
 } as const;
 const LANG_ON = { ...LANG_BASE, color: NAVY.bgPage, background: NAVY.accent } as const;
+/** Ce qu'il faut à un <a> pour se poser dans le groupe comme le fait un <button> : ni soulignement,
+ * ni ligne de base décalée. Les cotes (taille, padding) restent celles de `LANG_BASE`. */
+const LANG_LINK = {
+  display: 'flex',
+  alignItems: 'center',
+  textDecoration: 'none',
+  cursor: 'pointer',
+} as const;
 const LANG_OFF = {
   ...LANG_BASE,
   color: NAVY.textMuted,

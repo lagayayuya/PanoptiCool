@@ -1,0 +1,93 @@
+/* Effets de survol de la maquette « parcours guidé » — les classes portent les NOMS de la maquette
+ * (helmet du fichier design), pour que le prochain aller-retour design ↔ code se fasse à
+ * correspondance directe. Les composants gardent leurs styles INLINE (état, couleurs) ; seul le
+ * survol vit ici, parce qu'un style inline ne peut pas dire `:hover`.
+ *
+ * Les `!important` ne sont pas un contournement : ils sont la SEULE façon pour une feuille de
+ * style de l'emporter sur un style inline, et c'est exactement le contrat voulu — l'inline dit
+ * l'état de repos, la classe dit le survol. */
+
+/* Cartes de déduction (ThemeCardNavy / SignalCardNavy). */
+.hl-card {
+  transition: border-color 0.15s;
+}
+.hl-card:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  border-color: #5872c4 !important;
+}
+
+/* Panneaux pédagogiques « pour comprendre ». */
+.hl-learn {
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.hl-learn:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  border-color: #8fa3ff !important;
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  background: rgba(124, 150, 255, 0.09) !important;
+}
+
+/* Boutons pointillés (« comprendre · … », déplis). */
+.hl-btn {
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.hl-btn:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  border-color: #8fa3ff !important;
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  background: rgba(143, 163, 255, 0.08) !important;
+}
+
+/* Bordure qui s'allume (commandes, modèles, routes, champs). */
+.hv-bd {
+  transition: border-color 0.15s;
+}
+.hv-bd:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  border-color: #8fa3ff !important;
+}
+
+/* Bordure ET texte qui s'allument (liens-boutons : GitHub, vérifier la connexion…). */
+.hv-cy {
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+.hv-cy:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  color: #8fa3ff !important;
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  border-color: #8fa3ff !important;
+}
+
+/* Boutons pleins (langue, lancer, télécharger) : un simple regain de luminosité. */
+.hv-br {
+  transition: filter 0.15s;
+}
+.hv-br:hover {
+  filter: brightness(1.25);
+}
+
+/* Liens du sommaire (sidebar desktop, chips mobiles). */
+.hv-toc {
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.hv-toc:hover {
+  background: rgba(47, 212, 240, 0.07);
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  border-color: #26325a !important;
+}
+
+/* Liens dans la prose (brew.sh, localhost:8080, section 04 →) : l'éclaircissement cyan de la
+ * maquette (`a:hover`), ciblé par classe parce que la règle globale perdrait contre l'inline. */
+.hv-a:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  color: #7ce6f8 !important;
+  text-decoration: underline;
+}

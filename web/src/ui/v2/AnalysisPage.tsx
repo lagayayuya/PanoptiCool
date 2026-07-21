@@ -12,10 +12,13 @@
 // (le buffer d'origine est détaché par le transfert au worker).
 
 import { useEffect, useState } from 'preact/hooks';
-import { buildSyntheticExportZip } from '../../demo/synthetic-export';
+import { buildDemoExportZip } from '../../demo/synthetic-export';
 import type { Analysis } from '../../engine/analysis';
 import type { EngineResult } from '../../engine/pipeline';
+import { currentLocale, localeHref } from '../../i18n/current';
 import { analyzeExport } from '../../lib/engine-client';
+import { UI_ANALYSE } from '../copy';
+import { formatDecimal } from '../format';
 import type { AiSource } from './ai-source';
 import { NAVY } from './palette';
 import { ResultsView } from './ResultsView';
@@ -54,8 +57,8 @@ function stripDeductionsForTest(output: Analysis): Analysis {
 
 function buildEdgeCaseZip(edgeCase: EdgeCase): Uint8Array {
   return edgeCase === 'lowData'
-    ? buildSyntheticExportZip(LOW_DATA_ITEM_COUNT)
-    : buildSyntheticExportZip();
+    ? buildDemoExportZip(currentLocale(), LOW_DATA_ITEM_COUNT)
+    : buildDemoExportZip(currentLocale());
 }
 
 function DevEdgeCasePanel({
@@ -66,14 +69,14 @@ function DevEdgeCasePanel({
   onPick: (c: EdgeCase) => void;
 }) {
   const options: { id: EdgeCase; label: string }[] = [
-    { id: 'normal', label: 'Normal' },
-    { id: 'noDeductions', label: 'Cas : aucune déduction' },
-    { id: 'lowData', label: 'Cas : peu de données' },
+    { id: 'normal', label: UI_ANALYSE.devCaseNormal },
+    { id: 'noDeductions', label: UI_ANALYSE.devCaseNoDeductions },
+    { id: 'lowData', label: UI_ANALYSE.devCaseLowData },
   ];
   return (
     <div style={DEV_PANEL_OUTER}>
       <div style={DEV_PANEL}>
-        <span style={DEV_LABEL}>🧪 temporaire — test des cas limites</span>
+        <span style={DEV_LABEL}>{UI_ANALYSE.devPanelLabel}</span>
         <div style={DEV_ROW}>
           {options.map((o) => (
             <button
@@ -96,19 +99,24 @@ type Status =
   | { kind: 'loading' }
   | { kind: 'output'; output: Analysis; aiSource: AiSource; demo: boolean };
 
-/** Messages d'échec — mêmes regroupements que l'historique (PANO-63), wording non figé. */
-function errorMessage(result: Extract<EngineResult, { ok: false }>): string {
+/** Messages d'échec — mêmes regroupements que l'historique (PANO-63), wording non figé.
+ *
+ * EXPORTÉ pour le golden d'interface (`ui-golden.test.ts`) : ces quatre phrases ne sont atteignables
+ * par le rendu qu'au prix d'un échec moteur simulé, et la branche `too_large` porte en plus un
+ * formatage décimal (« Mo »). Les figer en appelant la fonction est un filet PLUS DIRECT que de
+ * fabriquer l'état de page qui les affiche — et il couvre les quatre branches, pas une. */
+export function errorMessage(result: Extract<EngineResult, { ok: false }>): string {
   if (result.stage === 'too_large') {
-    const mb = (n: number) => `${(n / (1024 * 1024)).toFixed(1)} Mo`;
-    return `Export trop volumineux pour cette version (${mb(result.originalSize)}, limite ${mb(result.limit)}).`;
+    const mb = (n: number) => UI_ANALYSE.errorMegabytes(formatDecimal(n / (1024 * 1024)));
+    return UI_ANALYSE.errorTooLarge(mb(result.originalSize), mb(result.limit));
   }
   if (result.stage === 'validate') {
-    return 'La structure de cet export ne correspond pas à ce qui est attendu — certaines sections diffèrent ou manquent.';
+    return UI_ANALYSE.errorValidate;
   }
   if (result.error === 'json_entry_not_found') {
-    return 'Format non pris en charge : aucun export JSON trouvé dans l’archive. PanoptiCool lit uniquement le format JSON — vérifie ce choix lors de la demande d’export à TikTok.';
+    return UI_ANALYSE.errorNoJson;
   }
-  return 'Fichier illisible ou corrompu : vérifie que tu as bien sélectionné le .zip de ton export TikTok.';
+  return UI_ANALYSE.errorUnreadable;
 }
 
 /** `?demo` présent dans l'URL AU CHARGEMENT — lu une seule fois, au tout premier rendu (SSR-safe :
@@ -133,7 +141,7 @@ export function AnalysisPage() {
   async function analyze(zipBytes: Uint8Array, aiSource: AiSource, demo: boolean): Promise<void> {
     setStatus({ kind: 'loading' });
     try {
-      const result = await analyzeExport(zipBytes);
+      const result = await analyzeExport(zipBytes, currentLocale());
       if (result.ok) {
         setStatus({ kind: 'output', output: result.output, aiSource, demo });
         return;
@@ -144,7 +152,7 @@ export function AnalysisPage() {
       }
       setStatus({ kind: 'idle', error: errorMessage(result) });
     } catch {
-      setStatus({ kind: 'idle', error: 'Impossible d’analyser ce fichier.' });
+      setStatus({ kind: 'idle', error: UI_ANALYSE.errorUnexpected });
     }
   }
 
@@ -153,7 +161,7 @@ export function AnalysisPage() {
     setEdgeCase(nextEdgeCase);
     setStatus({ kind: 'loading' });
     try {
-      const result = await analyzeExport(buildEdgeCaseZip(nextEdgeCase));
+      const result = await analyzeExport(buildEdgeCaseZip(nextEdgeCase), currentLocale());
       if (!result.ok) {
         setStatus({ kind: 'idle', error: errorMessage(result) });
         return;
@@ -167,7 +175,7 @@ export function AnalysisPage() {
         demo: true,
       });
     } catch {
-      setStatus({ kind: 'idle', error: 'Impossible d’analyser ce fichier.' });
+      setStatus({ kind: 'idle', error: UI_ANALYSE.errorUnexpected });
     }
   }
 
@@ -176,8 +184,8 @@ export function AnalysisPage() {
   useEffect(() => {
     if (isDemoUrl()) {
       void analyze(
-        buildSyntheticExportZip(),
-        () => Promise.resolve(buildSyntheticExportZip()),
+        buildDemoExportZip(currentLocale()),
+        () => Promise.resolve(buildDemoExportZip(currentLocale())),
         true,
       );
     }
@@ -199,8 +207,8 @@ export function AnalysisPage() {
   const badge =
     status.kind === 'output'
       ? status.demo
-        ? 'démo · données fictives'
-        : 'analyse locale'
+        ? UI_ANALYSE.badgeDemo
+        : UI_ANALYSE.badgeReal
       : undefined;
 
   // Sommaire en chips (rendu par SiteHeader sur MOBILE uniquement, maquette « v4 Mobile ») :
@@ -210,10 +218,10 @@ export function AnalysisPage() {
   const toc: TocChip[] | undefined =
     status.kind === 'output'
       ? [
-          { n: '01', label: 'Activité', href: '#sec-activite' },
-          { n: '02', label: 'Déductions', href: '#sec-deductions' },
-          { n: '03', label: 'Résumé', href: '#sec-resume' },
-          { n: '04', label: 'IA locale', href: '#sec-ia', muted: true },
+          { n: '01', label: UI_ANALYSE.tocActivity, href: '#sec-activite' },
+          { n: '02', label: UI_ANALYSE.tocDeductions, href: '#sec-deductions' },
+          { n: '03', label: UI_ANALYSE.tocSummary, href: '#sec-resume' },
+          { n: '04', label: UI_ANALYSE.tocAi, href: '#sec-ia', muted: true },
         ]
       : undefined;
 
@@ -238,21 +246,19 @@ export function AnalysisPage() {
         <div style={isMobile ? M_UPLOAD_SHELL : UPLOAD_SHELL}>
           <div style={LOADING_BOX}>
             <span style={SPINNER} aria-hidden="true" />
-            <span style={DROP_MAIN}>Analyse en cours…</span>
-            <span style={DROP_SUB}>tout se passe sur cet appareil, rien n'est envoyé.</span>
+            <span style={DROP_MAIN}>{UI_ANALYSE.loadingMain}</span>
+            <span style={DROP_SUB}>{UI_ANALYSE.loadingSub}</span>
           </div>
         </div>
       ) : (
         <div style={isMobile ? M_UPLOAD_SHELL : UPLOAD_SHELL}>
-          <span style={KICKER}>analyse locale</span>
+          <span style={KICKER}>{UI_ANALYSE.kicker}</span>
           <h1 style={isMobile ? M_TITLE : TITLE}>
-            {isMobile ? 'Choisis ton export TikTok' : 'Dépose ton export TikTok'}
+            {isMobile ? UI_ANALYSE.titleMobile : UI_ANALYSE.titleDesktop}
           </h1>
           <p style={LEDE}>
-            Le fichier est lu et analysé entièrement sur cet appareil — il n'en sort jamais.{' '}
-            {isMobile
-              ? 'Sélectionne le .zip reçu de TikTok (souvent dans « Fichiers » ou « Téléchargements »).'
-              : 'Glisse le .zip reçu de TikTok, ou clique pour le choisir.'}
+            {UI_ANALYSE.ledeLead}
+            {isMobile ? UI_ANALYSE.ledeMobile : UI_ANALYSE.ledeDesktop}
           </p>
 
           {/* Mobile : gros bouton tactile « Choisir mon fichier » — le drag & drop n'existe pas au
@@ -262,7 +268,7 @@ export function AnalysisPage() {
               <span style={M_PICK_ICON} aria-hidden="true">
                 ⇪
               </span>
-              <span style={M_PICK_MAIN}>Choisir mon fichier .zip</span>
+              <span style={M_PICK_MAIN}>{UI_ANALYSE.pickButtonMobile}</span>
               <input
                 type="file"
                 accept=".zip"
@@ -291,8 +297,8 @@ export function AnalysisPage() {
               <span style={DROP_ICON} aria-hidden="true">
                 ⇣
               </span>
-              <span style={DROP_MAIN}>Glisse ton export ici</span>
-              <span style={DROP_SUB}>ou clique pour choisir le fichier (.zip)</span>
+              <span style={DROP_MAIN}>{UI_ANALYSE.dropMain}</span>
+              <span style={DROP_SUB}>{UI_ANALYSE.dropSub}</span>
               <input
                 type="file"
                 accept=".zip"
@@ -308,10 +314,9 @@ export function AnalysisPage() {
 
           {status.error !== undefined && <p style={ERROR}>{status.error}</p>}
           <p style={HINT}>
-            Pas encore d'export ? Dans l'app TikTok : Profil → Paramètres → Compte → Télécharger tes
-            données (format JSON).{' '}
-            <a href="/analyse?demo" style={DEMO_LINK}>
-              Ou essaie avec des données fictives →
+            {UI_ANALYSE.hintLead}
+            <a href={localeHref('/analyse?demo')} style={DEMO_LINK}>
+              {UI_ANALYSE.hintDemoLink}
             </a>
           </p>
           <div style={{ paddingTop: isMobile ? '32px' : '48px' }}>
