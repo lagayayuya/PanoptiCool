@@ -8,6 +8,7 @@
 //   validation `ok:true` → `data: TikTokExport` → SEULE entrée de `computeInsights`.
 // Le typecheck l'impose par les signatures ; aucun `as` ne court-circuite la frontière.
 
+import type { Locale } from '../i18n/locales';
 import type { Analysis } from './analysis';
 import { analyze } from './analyze';
 import { ingestExportStreaming } from './ingest/ingest-stream';
@@ -33,6 +34,11 @@ export interface ProcessOptions {
    *  tests et la démo la fixent pour que les fenêtres glissantes retombent sur la même horloge que
    *  celle qui a construit l'export. */
   now?: number;
+  /** Langue de la PROSE émise par le moteur (`Analysis` porte du texte depuis ADR-0004). Défaut =
+   *  `DEFAULT_LOCALE`. Elle entre PAR LES OPTIONS et non par un paramètre positionnel pour que les
+   *  ~18 sites d'appel existants — tests, goldens, démo — restent inchangés et continuent de rendre
+   *  du français : le lot anglais AJOUTE une langue, il n'en déplace aucune. */
+  locale?: Locale;
 }
 
 /**
@@ -87,5 +93,5 @@ export function processExport(zipBytes: Uint8Array, options: ProcessOptions = {}
     return ingested.result;
   }
   // Le pipeline n'héberge aucune logique métier : il orchestre, `analyze` compose (lot A1).
-  return { ok: true, output: analyze(ingested.normalized, options.now) };
+  return { ok: true, output: analyze(ingested.normalized, options.now, options.locale) };
 }

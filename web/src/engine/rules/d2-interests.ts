@@ -19,6 +19,7 @@
 // « le non-sensible PEUT afficher élevée »). Aucune règle ne l'émet ; `d2Level` reste plafonné, et
 // c'est désormais une décision de RÈGLE, explicite, plutôt qu'un interdit de type.
 
+import { DEFAULT_LOCALE, type Locale } from '../../i18n/locales';
 import type { AnalysisTheme, Deduction, Evidence } from '../analysis';
 import { detectLabels, type LabelDetection } from '../detect/detect';
 import { INTEREST_LEXICONS } from '../lexicon/interests';
@@ -72,6 +73,10 @@ function rankInterests(detections: readonly LabelDetection[]): LabelDetection[] 
 export function d2Interests(
   input: NormalizedExport,
   lexicons: readonly InterestLexicon[] = INTEREST_LEXICONS,
+  // La langue arrive TROISIÈME, après `lexicons`, et c'est un choix : la mettre deuxième aurait
+  // réécrit les huit appels de test qui nomment leurs lexiques factices — du churn sur des fichiers
+  // qu'une autre passe édite en parallèle, pour aucun gain de lisibilité ici.
+  locale: Locale = DEFAULT_LOCALE,
 ): AnalysisTheme[] {
   const commentsList = input.Comment.Comments.CommentsList;
   const searchList = input['Your Activity'].Searches.SearchList;
@@ -99,7 +104,7 @@ export function d2Interests(
 
     const volume = detection.items.length;
     const deduction: Deduction = {
-      claim: d2InterestClaim(volume),
+      claim: d2InterestClaim(locale, volume),
       sensitive: false,
       confidence: d2Level(
         volume,
@@ -112,10 +117,10 @@ export function d2Interests(
       id: lexicon.label,
       // Textes résolus ICI (A2) : le lexique est INTOUCHABLE et garde ses clés ; `Analysis` porte le
       // texte, donc l'UI n'a plus rien à router (elle n'importe même plus le moteur, lot A3).
-      label: themeLabelText(lexicon.themeLabel),
+      label: themeLabelText(locale, lexicon.themeLabel),
       usage: lexicon.usage.map((u) => ({
-        actor: actorLabel(u.actor),
-        usage: usageText(u.usage.templateId),
+        actor: actorLabel(locale, u.actor),
+        usage: usageText(locale, u.usage.templateId),
       })),
       deductions: [deduction],
     });

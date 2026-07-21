@@ -58,8 +58,26 @@ export interface ReadingFan {
  * plus tant que rien ne l'atteint (une légende sans référent).
  */
 export type Deduction = {
-  /** Texte constant, produit par une fonction typée de `wording.ts` (A2). SEULE ligne rendue. */
-  claim: string;
+  /**
+   * Phrase du constat — PRÉSENTE si et seulement si le constat ne porte AUCUN éventail de lectures.
+   *
+   * La règle n'est pas « sensible ou non », c'est **« y a-t-il un éventail pour porter le sens ? »**.
+   * Un constat à éventail n'a pas besoin de phrase : l'éventail dit les lectures possibles, le titre
+   * de carte dit le sujet, et la phrase ne faisait que répéter le titre qu'on venait de cliquer.
+   * Deux populations n'ont pas d'éventail et gardent donc leur phrase :
+   *   - `conflictual` — pas d'éventail PAR DOCTRINE (B5 : l'insulte émise EST le signal, il n'y a
+   *     pas de lecture plurielle à offrir). Sa phrase porte en plus le critère B5 lui-même (émis,
+   *     visant un autre utilisateur), que le titre « Conflictuel » ne dit pas ;
+   *   - les INTÉRÊTS (D2) — pas d'éventail non plus, et leur phrase porte un décompte.
+   *
+   * POURQUOI OPTIONNEL PLUTÔT QUE DISCRIMINÉ : le « si et seulement si » ne s'exprime pas dans ce
+   * type, parce que l'éventail vit sur `Evidence.readings` et non sur le constat — le type ne peut
+   * pas s'y référer. L'exprimer demanderait de remonter l'éventail au constat, ce qui est un autre
+   * chantier. En attendant, l'invariant est TESTÉ (`claim-fan-invariant.test.ts`) plutôt que laissé
+   * à la discipline : un champ optionnel dont la règle est vérifiée n'est pas un champ dont personne
+   * ne peut raisonner.
+   */
+  claim?: string;
   evidence: Evidence[];
 } & (
   | { sensitive: true; confidence: 'low' | 'medium' }

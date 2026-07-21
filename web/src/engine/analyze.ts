@@ -15,6 +15,7 @@
 // décide de rendre `signals` avant `themes` (elle reproduit l'ordre que produisait l'ancien
 // `insights[]` : D1 émis avant D2). Le moteur ne met plus en scène.
 
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locales';
 import type { Analysis } from './analysis';
 import type { NormalizedExport } from './normalize';
 import { readRhythm } from './rules/activity-rhythm';
@@ -33,14 +34,20 @@ import { readVolumes } from './rules/volumes';
  * `rhythm` et `opacity` sont OMIS (pas mis à `undefined`) quand leur producteur n'a rien : sous
  * `exactOptionalPropertyTypes`, la distinction compte, et « absent » est la sémantique voulue.
  */
-export function analyze(input: NormalizedExport, now: number = Date.now()): Analysis {
+export function analyze(
+  input: NormalizedExport,
+  now: number = Date.now(),
+  locale: Locale = DEFAULT_LOCALE,
+): Analysis {
   const rhythm = readRhythm(input, now);
   const opacity = readOpacity(input);
   return {
     ...(rhythm !== undefined ? { rhythm } : {}),
     volumes: readVolumes(input),
     ...(opacity !== undefined ? { opacity } : {}),
-    themes: d2Interests(input),
-    signals: d1SensitiveTopics(input),
+    // `undefined` = lexiques par défaut : `analyze` n'a pas à connaître `INTEREST_LEXICONS`, et
+    // l'importer ici défairait l'encapsulation que la signature de `d2Interests` installe.
+    themes: d2Interests(input, undefined, locale),
+    signals: d1SensitiveTopics(input, locale),
   };
 }

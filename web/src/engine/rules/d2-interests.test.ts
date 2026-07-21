@@ -123,7 +123,7 @@ describe('d2Interests — forme', () => {
     expect(out[0]?.id).toBe('factice_animal');
     expect(out[0]?.deductions).toHaveLength(1);
     // Le claim porte le VOLUME réel (2 hits) — ex-« claim.templateId ⊆ allowlist ».
-    expect(out[0]?.deductions[0]?.claim).toBe(d2InterestClaim(2));
+    expect(out[0]?.deductions[0]?.claim).toBe(d2InterestClaim('fr', 2));
   });
 });
 

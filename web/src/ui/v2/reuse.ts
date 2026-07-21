@@ -17,13 +17,20 @@
 
 import type { Analysis, Deduction, Evidence } from '../../engine/analysis';
 
-/** Un constat qui cite une miette. `themeLabel` absent ⇒ c'est un signal (D1), qui n'a pas de thème
- *  — c'est alors son `claim` qui le nomme à l'écran (comportement conservé de `reuseLabel`). */
+/**
+ * Un constat qui cite une miette, et le NOM sous lequel il apparaît dans « aussi exploité par ».
+ *
+ * Ce nom était le `claim` pour un signal D1 — sa phrase entière. Il est désormais son `label`
+ * (« Conflictuel », « Santé mentale »), pour deux raisons qui vont dans le même sens : la phrase a
+ * disparu des constats à éventail, et une carte se citait de toute façon mieux par son nom court que
+ * par un syntagme de douze mots. Le renvoi se lit « aussi exploité par : Conflictuel ».
+ */
 export interface Citation {
   /** Identité du constat citeur — l'OBJET lui-même : c'est ce qui permet d'exclure « soi » sans
    *  index global (l'ancien `j !== i` sur `output.insights`, qui n'existe plus). */
   deduction: Deduction;
-  claim: string;
+  /** Nom affiché du citeur : label de thème (D2) ou label de signal (D1). */
+  name: string;
   themeLabel?: string;
 }
 
@@ -38,12 +45,12 @@ export function evidenceKey(e: Pick<Evidence, 'channel' | 'sourceIndex'>): strin
  */
 export function buildReuseMap(analysis: Analysis): Map<string, Citation[]> {
   const map = new Map<string, Citation[]>();
-  const add = (deduction: Deduction, themeLabel?: string) => {
+  const add = (deduction: Deduction, name: string, themeLabel?: string) => {
     for (const e of deduction.evidence) {
       const key = evidenceKey(e);
       const citation: Citation = {
         deduction,
-        claim: deduction.claim,
+        name,
         ...(themeLabel !== undefined ? { themeLabel } : {}),
       };
       map.set(key, [...(map.get(key) ?? []), citation]);
@@ -52,11 +59,11 @@ export function buildReuseMap(analysis: Analysis): Map<string, Citation[]> {
   // `signals` d'abord : D1 était composé avant D2 dans l'ancien `insights[]`, et l'ordre des citeurs
   // décide de l'ordre du libellé joint (« A · B »).
   for (const signal of analysis.signals) {
-    add(signal);
+    add(signal, signal.label);
   }
   for (const theme of analysis.themes) {
     for (const deduction of theme.deductions) {
-      add(deduction, theme.label);
+      add(deduction, theme.label, theme.label);
     }
   }
   return map;
@@ -64,10 +71,12 @@ export function buildReuseMap(analysis: Analysis): Map<string, Citation[]> {
 
 /**
  * Libellé « aussi exploité par » d'une miette, du point de vue du constat qui l'affiche : les AUTRES
- * citeurs, nommés par leur THÈME quand ils en ont un, par leur `claim` sinon (signal D1) ou quand le
- * thème est celui de la carte courante — sinon une carte se citerait elle-même par son propre nom.
+ * citeurs, nommés par leur label — de thème (D2) ou de signal (D1). L'exclusion de « soi » se fait
+ * sur l'IDENTITÉ du constat (`c.deduction !== self`), jamais sur la comparaison des noms : deux
+ * constats d'un même thème sont deux citeurs distincts qui portent le même nom.
  * `null` si personne d'autre ne cite la miette. (Le libellé est clé sur le THÈME, jamais sur une
- * identité de règle — fix `ace3dc3`, préservé.)
+ * identité de règle — correctif délibéré, à ne pas défaire ; son commit d'origine n'a pas survécu
+ * à la réécriture d'historique v1.)
  */
 export function reuseLabel(
   reuseMap: ReadonlyMap<string, Citation[]>,
@@ -75,16 +84,20 @@ export function reuseLabel(
   self: Deduction,
   currentThemeLabel: string | undefined,
 ): string | null {
-  const others = (reuseMap.get(evidenceKey(evidence)) ?? []).filter((c) => c.deduction !== self);
+  // Deux exclusions, et la seconde a été héritée d'un mécanisme disparu : les citeurs du MÊME thème
+  // que la carte courante. L'ancienne version les gardait en les nommant par leur `claim`, faute de
+  // quoi la carte se serait citée par son propre nom. Nommer par label rend ce repli impossible — et
+  // inutile : « aussi exploité par : Cinéma & séries » sur la carte Cinéma & séries n'apprend rien.
+  // On les écarte donc, plutôt que de les renommer. La comparaison exige les DEUX labels définis :
+  // `undefined === undefined` écarterait tous les signaux D1 d'une carte de signal.
+  const others = (reuseMap.get(evidenceKey(evidence)) ?? []).filter(
+    (c) =>
+      c.deduction !== self &&
+      !(currentThemeLabel !== undefined && c.themeLabel === currentThemeLabel),
+  );
   if (others.length === 0) {
     return null;
   }
-  const labels = Array.from(
-    new Set(
-      others.map((c) =>
-        c.themeLabel === undefined || c.themeLabel === currentThemeLabel ? c.claim : c.themeLabel,
-      ),
-    ),
-  );
+  const labels = Array.from(new Set(others.map((c) => c.name)));
   return labels.join(' · ');
 }
