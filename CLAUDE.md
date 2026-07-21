@@ -78,14 +78,77 @@ obligations de doctrine y vivent :
 1. les **filtres du sensible** (négation, citation, 3ᵉ personne) — ce qui empêche de qualifier
    quelqu'un sur une phrase qui dit le contraire ;
 2. l'**ancrage des preuves** — chaque déduction reliée à la miette exacte qui l'a produite ;
-3. le **wording en UN fichier** (`web/src/engine/wording.ts`) — le contrôle humain sur ce que la
-   machine ose dire. Ne pas l'éparpiller.
+3. le **wording en DEUX périmètres ratifiables**, chacun un sélecteur sans prose plus **un fichier
+   de prose par langue** — `web/src/engine/wording.fr.ts` / `.en.ts` (ce que la machine ose
+   déduire ; sans 2ᵉ personne, par doctrine, dans les deux langues) et `web/src/ui/copy.fr.ts` /
+   `.en.ts` (ce que l'interface dit ; le tutoiement est la norme du FR). Le contrôle humain sur ce
+   que le produit ose dire tient à ce qu'on puisse tout relire d'une traite, **une langue à la
+   fois**. Ne pas les éparpiller, ne pas les fusionner : la propriété (a) de `wording.test.ts`
+   balaie les deux langues, et la parité FR↔EN est tenue par le compilateur (`wording-parity`,
+   `copy-parity` — l'annoter en `Record<string, string>` la décrocherait en silence).
 
 Se tromper de cible ici, c'est risquer de nommer quelqu'un « dépressif » à tort. **Tout changement de
-comportement s'y prouve par un golden à diff nul, jamais par « les tests passent ».** Le golden de
-bout en bout est `web/src/ui/v2/render-golden.test.ts` : il inclut la persona de démo **à dessein**
-— les archives de `samples/` n'exercent ni la détection de thèmes ni celle des signaux sensibles
-(0 preuve, 0 thème : mesuré).
+comportement s'y prouve par un golden à diff nul, jamais par « les tests passent ».**
+
+Quatre goldens de bout en bout s'en chargent, et il faut savoir lequel voit quoi :
+
+- `web/src/ui/v2/render-golden.test.ts` — le sous-arbre `ResultsView`, **en desktop et en français
+  uniquement**. Il inclut la persona de démo **à dessein** : les archives de `samples/` n'exercent
+  ni la détection de thèmes ni celle des signaux sensibles (0 preuve, 0 thème : mesuré). Ses
+  variantes `render-golden-mobile` et `render-golden-en` couvrent ce que cette frontière exclut —
+  chacune la sienne, jamais plus.
+- `web/src/ui/v2/ui-golden.test.ts` — accueil, parcours d'analyse, section IA, barre et pied de
+  page, variantes mobiles comprises. Ajouté parce que le premier ne les rendait pas.
+
+Chacun **déclare sa frontière dans son en-tête** ; la règle qui l'impose est ci-dessous.
+
+## Ce qu'un filet prouve
+
+Un mécanisme de preuve — golden, témoin, banc, mesure — **déclare dans son propre fichier ce qu'il NE
+couvre pas**. Pas en annexe : dans son en-tête, là où le lit quiconque s'apprête à le citer.
+
+La raison est un motif observé **sept fois** dans ce dépôt, jamais par malveillance : un filet est écrit
+sur des cas TYPIQUES, puis cité comme s'il couvrait le domaine. L'écart est invisible, parce que ce
+qui manque au filet manque aussi au raisonnement de qui l'invoque. « Mesuré » devient alors un mot
+qui clôt la discussion sans l'avoir ouverte.
+
+Une garantie qui énonce sa frontière ne peut plus être sur-citée : le lecteur suivant voit d'un coup
+d'œil si son cas tombe dedans ou dehors.
+
+**Une assertion négative vérifie ce qu'elle ATTEINT, pas ce qu'elle affirme.** C'est la forme la plus
+coûteuse du motif, parce qu'elle passe au vert pour une raison qui n'est pas la sienne. Le cas
+d'école du dépôt : un test affirmait que `health_physical` n'avait aucune couverture anglaise, et il
+passait — mais le terme EN matchait bel et bien (par tolérance de pluriel), et l'unique item était
+simplement resté sous le SEUIL de répétition. Le test mesurait le seuil et disait « couverture » ;
+les deux ont coïncidé jusqu'au jour où une autre règle a retiré l'écran.
+
+Deux gestes en découlent, et ils ne coûtent rien à l'écriture :
+
+- devant un `expect(...).toBeNull()` ou un `toHaveLength(0)`, se demander **par quel chemin** le zéro
+  arrive, et vérifier que c'est celui qu'on croit — un zéro a souvent plusieurs causes possibles, et
+  le test n'en distingue aucune ;
+- une couverture se vérifie **dans les deux sens**. « Chaque câblage a son texte » et « chaque texte
+  est câblé » sont deux propriétés distinctes : n'en tenir qu'une est ce qui a laissé trois lectures
+  ratifiées vivre sans lecteur, invisibles aux deux filets en place.
+
+**Un témoin se vérifie par MUTATION, jamais par relecture.** Un filet vide et un filet qui tient ont
+exactement la même apparence au vert. La seule vérification qui les distingue est de **casser
+délibérément ce qu'il surveille et de constater qu'il rougit**, puis de rétablir. Ce qui se consigne
+dans le fichier est la mutation **passée** et ce qu'elle a **fait** — jamais ce qu'on croit qu'elle
+ferait.
+
+Trois instances en deux fichiers, toutes trouvées en passant la mutation, **aucune en relisant** :
+
+- un témoin d'exclusion qui ajoutait le terme exclu au **texte** au lieu de muter le **lexique** — un
+  terme exclu n'étant dans aucune liste, il ne pouvait rien changer par construction ;
+- des cadres d'auto-déclaration n'écrivant que « i am », si bien qu'une tête « im » laissait le bloc
+  vert — dix lignes sous un aveu identique du lot précédent ;
+- une sonde « aucune auto-déclaration anglaise ne nomme » interrogeant un terme qui n'était dans
+  aucun tier (lot `religion`).
+
+Corollaire : **une mutation dont le résultat n'est pas celui qu'on avait prévu est le cas le plus
+utile.** Son résultat réel se publie, y compris quand il établit que la mutation ne prouve pas ce
+qu'on lui demandait — c'est ce qu'a fait la mutation 4 de la porte de langue.
 
 ## Le contrat de structure
 

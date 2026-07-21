@@ -84,6 +84,45 @@ ciblées** > marathon.
   Reconstruis périodiquement le modèle mental toi-même.
 - **Validation trop rapide.** Une sortie bien présentée invite à tamponner. Le moment où l'agent
   est le plus convaincant est celui où il faut ralentir — surtout sur les portes de décision.
+- **Le filet écrit par la main qu'il surveille.** Un agent à qui l'on demande de se donner sa propre
+  ligne de base la construira avec le modèle mental qui va ensuite faire le travail — et il sera
+  aveugle aux deux endroits. Demander la **passe inverse** est le geste qui le rattrape (ci-dessous).
+
+---
+
+## Compresser un document normatif — le golden en prose, et sa limite
+
+Employé pour ADR-0003 (571 → 442 lignes, 2026-07-19). La technique : **énumérer tout énoncé
+normatif AVANT de toucher une ligne**, compresser, ré-énumérer, et exiger que l'inventaire soit
+**identique**. La prose rétrécit librement ; une entrée qui disparaît est une règle supprimée, qu'on
+l'ait voulu ou non. C'est le golden à diff nul du dépôt appliqué à un texte.
+
+Ce qu'il faut retenir avant de la réemployer, parce que c'est la partie contre-intuitive :
+
+- **La passe AVANT n'a rien trouvé.** 97 énoncés relevés, 97 retrouvés après compression. Vert plein.
+- **Les deux vraies pertes ont été trouvées par la passe INVERSE** — relire l'original *sans*
+  l'inventaire et chercher ce que l'inventaire n'avait jamais relevé. Onze règles manquaient à la
+  ligne de base ; deux avaient été effectivement supprimées, et la passe avant ne pouvait pas les
+  voir : **elle ne voit que ce que la liste contient**.
+- **La cause n'est pas l'inattention, c'est l'unicité de l'esprit.** La ligne de base et la
+  compression sortaient de la même tête, dans la même passe : une règle invisible à l'inventaire
+  l'était aussi à la compression. Un filet ne peut pas mesurer sa propre maille.
+- **Sept des onze manquantes étaient des règles SUR l'usage des autres règles** — où vit une
+  doctrine, comment elle est rendue vérifiable, ce qu'on a le droit de transférer d'une langue à
+  l'autre. C'est la catégorie qu'on connaît trop bien pour remarquer qu'elle n'a jamais été écrite.
+
+**Donc :** un inventaire à diff nul prouve qu'aucune règle **listée** n'a été perdue. Il ne prouve ni
+la complétude de la liste, ni que la règle est restée **compréhensible** — et la clarté est ici un
+objectif d'arbitrage, pas une finition. Les deux moitiés manquantes se rattrapent par une passe
+inverse **et** une relecture humaine, jamais par le vert.
+
+**Et l'inventaire ne se garde pas.** Un golden en prose ne se régénère pas : il se synchronise à la
+main, donc il pourrit. Celui d'ADR-0003 a été **supprimé une fois l'ADR signé** — une ligne de base
+périmée sous un nom d'ADR aurait été pire que pas de ligne de base du tout. Il a vécu dans
+l'historique de travail (commits « l'inventaire normatif — la ligne de base du golden en prose »,
+puis « l'inventaire était incomplet — onze règles trouvées par la passe INVERSE ») ; la
+recomposition d'historique d'avant publication ne porte que le résultat, et c'est le sort normal
+d'une ligne de base : elle sert, puis elle s'efface.
 
 ---
 

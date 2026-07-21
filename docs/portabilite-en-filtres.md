@@ -86,15 +86,15 @@ stricte** : les goldens FR sont inchangés et verts.
 
 ---
 
-## 4. Dettes ouvertes
+## 4. Dettes ouvertes — état revu après la campagne EN (2026-07-21)
 
-1. **Lot 2 — auto-déclaration EN** (`SELF_DECLARATION_HEADS`/`MODIFIERS`). Aujourd'hui « i'm
-   depressive » ne tague **rien** : défaut de **rappel**, échouant CLOSED. À traiter avec la mesure
-   que PANO-33 a faite pour le FR — c'est le seul filtre qui **crée** un tag nommé. Un golden le
-   verrouille en l'état (`detect.test.ts`) : **il devra être inversé** le jour du lot 2.
-2. **Marqueurs EN des 6 lexiques D1** — toujours **non écrits**. Le lot 1 rend le terrain sûr
-   (les garde-fous existent enfin en EN) mais ne présume pas de la décision d'enrichir : c'est un
-   travail de vocabulaire sensible, à sa propre session, avec son sondage FP.
+1. ~~**Lot 2 — auto-déclaration EN**~~ — **DÉNOUÉE, et pas par la mesure réclamée.** La prémisse
+   (« la copule ancre, il faut mesurer comme PANO-33 ») s'est révélée fausse : la copule n'ancre
+   rien en anglais, et la sûreté est passée à l'ÉTAGE — le tier `selfDeclaredEn` livré atterrit en
+   large et ne nomme jamais (`SELF_DECLARATION_HEADS_EN`). Le verrou de `detect.test.ts` n'a pas
+   été inversé : son zéro a changé de cause (la porte de langue), pas de valeur.
+2. ~~**Marqueurs EN des 6 lexiques D1**~~ — **ÉCRITS**, un lot par label, chacun avec sa propre
+   ligne d'admission (`docs/methode-portabilite-en.md`).
 3. **Écart relevé, NON corrigé** : `THIRD_PERSON` (FR) ne porte ni « ma mere » ni « mon pere ». La
    liste EN les porte (« my mother », « my dad »…). Non touché ici — non-régression FR stricte.
    À arbitrer séparément : c'est un trou de **sûreté FR**, pas un détail de symétrie.

@@ -75,7 +75,8 @@ astronomie/espace
 
 ## Discipline d'écriture des lexiques (PANO-70 §3, reprise D2)
 
-- **À l'aveugle** : chaque marqueur vient de l'usage courant du français, jamais d'un export réel.
+- **À l'aveugle** : chaque marqueur vient de l'usage courant de la langue (du français à l'origine ;
+  les variantes anglaises, annotées `(EN)` en ligne, suivent la même règle), jamais d'un export réel.
   Aucun terme reverse-engineeré depuis une donnée ; aucune donnée ajustée à un terme.
 - **Généricité** : chaque terme est défendable pour un inconnu, aurait été écrit à l'identique sans
   avoir jamais vu aucun export.
@@ -88,12 +89,12 @@ astronomie/espace
   garde-fou de test (`interests-battery.test.ts`) passe **tous** les marqueurs d'intérêt dans D1 et
   exige zéro détection ; un échec est un signal de frontière à remonter, pas seulement un test rouge.
 
-## Plan de lots
+## Plan de lots — ACHEVÉ
 
-- **Lot 1 (PANO-76, ce commit)** — les ~12 thèmes les plus démonstratifs :
-  muscu · running · football · jeux vidéo · IA · crypto · cuisine · maquillage · skincare · sneakers ·
-  K-pop · manga & anime.
-- **Lots 2–3** — le reste du catalogue, mêmes disciplines, sans re-ratification du sens.
+Le plan (lot 1 : ~12 thèmes démonstratifs ; lots 2–3 : le reste) a été exécuté : **les ~52 thèmes
+du catalogue sont écrits et câblés**, et les premiers lots ont été rétrofités au standard des
+suivants. Ce document reste l'oracle de sens : toute extension passe toujours par lui, et par yuya
+si elle sort du catalogue.
 
 Le socle (`InterestLexicon`, règle par classement, câblage `Theme[]`) est en place (PANO-75) et
 **n'est pas rouvert** par les lots de contenu.
