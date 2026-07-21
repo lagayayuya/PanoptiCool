@@ -27,15 +27,57 @@ function makeItems(spec: ('comment' | 'search')[]): AiItem[] {
 
 describe('buildSystemPrompt', () => {
   it('annonce les recherches seulement si elles partent réellement', () => {
-    expect(buildSystemPrompt('default', false)).toContain("des commentaires d'une personne");
-    expect(buildSystemPrompt('default', true)).toContain('des commentaires et recherches');
+    expect(buildSystemPrompt('fr', 'default', false)).toContain("des commentaires d'une personne");
+    expect(buildSystemPrompt('fr', 'default', true)).toContain('des commentaires et recherches');
   });
 
   it('le filet de sécurité ajoute la clause au prompt par défaut, sans le réécrire', () => {
-    const base = buildSystemPrompt('default', true);
-    const safety = buildSystemPrompt('safety', true);
+    const base = buildSystemPrompt('fr', 'default', true);
+    const safety = buildSystemPrompt('fr', 'safety', true);
     expect(safety.startsWith(base)).toBe(true);
     expect(safety).toContain("n'infère pas de sujets sensibles");
+  });
+
+  // ─── LE VERSANT ANGLAIS ───────────────────────────────────────────────────────────────────────
+  // CE QUE CES ASSERTIONS NE PROUVENT PAS, et il faut le lire avant de les citer : elles vérifient
+  // que la LANGUE ARRIVE, pas que le prompt anglais MARCHE. Aucun banc n'a mesuré la qualité de
+  // sortie ni le taux de refus en anglais (cf. l'en-tête de `buildSystemPrompt`) — un prompt qui
+  // ferait refuser le modèle passerait ces tests au vert, aujourd'hui et tous les jours suivants.
+  //
+  // DEUX MUTATIONS PASSÉES, et la seconde est la raison d'être de la dernière assertion de chaque
+  // bloc : (1) branche `locale === 'en'` rendue inatteignable → les QUATRE tests rougissent ;
+  // (2) branche anglaise conservée mais recollée sur `SAFETY_CLAUSE` (la française) → SEUL le test
+  // du filet rougit, par son `not.toContain('sujets sensibles')`. Sans ce garde-fou négatif, un
+  // prompt anglais terminé par une clause française serait passé au vert : les deux clauses
+  // commencent par « Et »/« And » et `startsWith(base)` ne regarde pas la fin.
+  it('rend le prompt anglais, et aucun mot français ne fuit dedans', () => {
+    const en = buildSystemPrompt('en', 'default', true);
+    expect(en).toContain('comments and searches');
+    expect(en).toContain('What can you infer about their personality');
+    // La fuite qu'on veut rendre impossible : une moitié traduite, l'autre restée française.
+    expect(en).not.toContain('Voici');
+    expect(en).not.toContain("d'une personne");
+  });
+
+  it('annonce les recherches seulement si elles partent réellement, en anglais aussi', () => {
+    expect(buildSystemPrompt('en', 'default', false)).toContain('comments of a person');
+    expect(buildSystemPrompt('en', 'default', false)).not.toContain('searches');
+  });
+
+  it('le filet de sécurité anglais ajoute sa clause sans réécrire la base', () => {
+    const base = buildSystemPrompt('en', 'default', true);
+    const safety = buildSystemPrompt('en', 'safety', true);
+    expect(safety.startsWith(base)).toBe(true);
+    expect(safety).toContain('do not infer sensitive subjects');
+    // La clause anglaise est bien l'ANGLAISE : le repli sur le français serait invisible autrement,
+    // les deux commençant par « Et/And ».
+    expect(safety).not.toContain('sujets sensibles');
+  });
+
+  it('les deux langues rendent des prompts DIFFÉRENTS — sinon la langue ne traverse pas', () => {
+    for (const mode of ['default', 'safety'] as const) {
+      expect(buildSystemPrompt('en', mode, true)).not.toBe(buildSystemPrompt('fr', mode, true));
+    }
   });
 });
 
@@ -105,7 +147,7 @@ describe('calibrateCharsPerToken', () => {
 
 describe('itemsBudget', () => {
   it('réserve de quoi générer la réponse — un prompt ne remplit jamais toute la fenêtre', () => {
-    const prompt = buildSystemPrompt('default', true);
+    const prompt = buildSystemPrompt('fr', 'default', true);
     expect(itemsBudget(8192, prompt, 2)).toBeLessThan(8192 - 1024);
     expect(itemsBudget(512, prompt, 2)).toBe(0); // fenêtre plus petite que la réserve : aucun item
   });
@@ -133,7 +175,8 @@ describe('selectItemsForBudgetExact', () => {
     if (n === null) throw new Error('fakeCounter ne renvoie jamais null dans ces tests');
     return n;
   }
-  const sysPrompt = (includesSearches: boolean) => buildSystemPrompt('default', includesSearches);
+  const sysPrompt = (includesSearches: boolean) =>
+    buildSystemPrompt('fr', 'default', includesSearches);
   const select = (items: AiItem[], contextWindow: number) =>
     selectItemsForBudgetExact(items, contextWindow, sysPrompt, fakeCounter, 0);
 

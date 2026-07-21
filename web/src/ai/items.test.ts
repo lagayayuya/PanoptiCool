@@ -4,8 +4,10 @@ import { ingestExportStreaming } from '../engine/ingest/ingest-stream';
 import {
   detectOs,
   installCommand,
+  localSiteCommand,
   MODEL_CHOICES,
   type ModelChoice,
+  SITE_ZIP_NAME,
   serveCommand,
 } from './install-help';
 import { countAiItems, extractAiItems } from './items';
@@ -37,15 +39,18 @@ describe('extractAiItems', () => {
 });
 
 describe('install-help', () => {
-  it("détecte l'OS pour proposer la bonne commande d'installation", () => {
+  it("détecte l'OS pour présélectionner le bon bouton de système", () => {
     expect(detectOs('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)')).toBe('macos');
     expect(detectOs('Mozilla/5.0 (Windows NT 10.0; Win64; x64)')).toBe('windows');
-    expect(detectOs('Mozilla/5.0 (X11; Linux x86_64)')).toBe('other');
+    expect(detectOs('Mozilla/5.0 (X11; Linux x86_64)')).toBe('linux');
+    // UA muet → repli macOS (il faut bien présélectionner un bouton ; corrigeable d'un clic).
+    expect(detectOs('Node.js/22')).toBe('macos');
   });
 
   it('installe par winget sous Windows, par brew ailleurs (méthodes officielles vérifiées)', () => {
     expect(installCommand('windows')).toBe('winget install --id ggml.llamacpp --exact');
     expect(installCommand('macos')).toBe('brew install llama.cpp');
+    expect(installCommand('linux')).toBe('brew install llama.cpp');
   });
 
   it('la commande de lancement télécharge le modèle elle-même (-hf) et sert sur le port attendu', () => {
@@ -53,5 +58,16 @@ describe('install-help', () => {
     expect(command).toContain('-hf unsloth/Ministral-3-3B-Instruct-2512-GGUF:UD-Q4_K_XL');
     expect(command).toContain('--port 8080');
     expect(command).toContain('-c 8192');
+  });
+
+  it('la commande route B décompresse le zip du build et sert le site avec le modèle (--path)', () => {
+    const mac = localSiteCommand('macos', MODEL_CHOICES[0] as ModelChoice);
+    expect(mac).toContain(`unzip -q ${SITE_ZIP_NAME}`);
+    expect(mac).toContain('--path ~/Downloads/pano-local');
+    expect(mac).toContain('--port 8080');
+    // Windows passe par PowerShell : Expand-Archive et des antislashs, pas unzip.
+    const win = localSiteCommand('windows', MODEL_CHOICES[0] as ModelChoice);
+    expect(win).toContain(`Expand-Archive ${SITE_ZIP_NAME}`);
+    expect(win).toContain('--path ~\\Downloads\\pano-local');
   });
 });

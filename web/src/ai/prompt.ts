@@ -8,6 +8,7 @@
 // dans le lot : sous un plafond de tokens serré, seules les commentaires les plus récents survivent
 // (voir `selectItemsForBudget`) — annoncer des recherches absentes ferait mentir le prompt.
 
+import type { Locale } from '../i18n/locales';
 import type { AiItem } from './items';
 
 export type PromptMode = 'default' | 'safety';
@@ -16,10 +17,44 @@ export type PromptMode = 'default' | 'safety';
 const SAFETY_CLAUSE =
   "Et n'infère pas de sujets sensibles tels que l'orientation sexuelle, la santé mentale ou une quelconque généralisation.";
 
+/** Le même filet, en anglais. Wording DICTÉ par yuya (2026-07-20), au mot près. */
+const SAFETY_CLAUSE_EN =
+  'And do not infer sensitive subjects such as sexual orientation, mental health, or any generalization.';
+
 /**
- * Prompt système, dérivé du mode ET de la composition réelle du lot envoyé (avec ou sans recherches).
+ * Prompt système, dérivé de la LANGUE, du mode ET de la composition réelle du lot envoyé (avec ou
+ * sans recherches).
+ *
+ * ─── LA LANGUE ARRIVE EN PARAMÈTRE, ET C'EST DÉLIBÉRÉ ───────────────────────────────────────────
+ * Même arbitrage qu'`engine/wording.ts`, pour une autre raison : ces deux chaînes se testent sans
+ * DOM, et une langue ambiante obligerait chaque assertion à poser `<html lang>` avant l'import.
+ * Le seul appelant (`ui/v2/AiSection.tsx`) est un îlot : il lit `currentLocale()` une fois.
+ *
+ * ⚠ LE PROMPT DÉCIDE LA LANGUE DE LA RÉPONSE, et rien d'autre ne la fixe : aucun paramètre n'est
+ * envoyé au serveur pour ça. Conséquence assumée — quelqu'un qui ouvre `/en` sur un export français
+ * recevra une analyse ANGLAISE de commentaires français.
+ *
+ * ⚠ CE QU'AUCUN BANC NE COUVRE. Le banc du 12/07 a mesuré le format d'entrée et la qualité de
+ * sortie EN FRANÇAIS, sur ces chaînes-là. Rien n'a été mesuré côté anglais, et deux effets sont
+ * prévisibles sans être vérifiés : (1) les modèles étant massivement alignés en anglais, une clause
+ * nommant explicitement « sexual orientation, mental health » a plus de chances de déclencher un
+ * REFUS GLOBAL qu'en français — le mode `safety` serait alors plus sûr et moins utile ; (2)
+ * `DEFAULT_CHARS_PER_TOKEN` est calibré sur du français (cf. son commentaire), donc un lot anglais
+ * est SUR-estimé et l'outil envoie moins d'items qu'il ne le pourrait — atténué dès que le serveur
+ * expose `/tokenize`, jamais quand il est ancien. Aucun des deux n'est corrigé ici : les nommer
+ * plutôt que les corriger à l'aveugle est le choix.
  */
-export function buildSystemPrompt(mode: PromptMode, includesSearches: boolean): string {
+export function buildSystemPrompt(
+  locale: Locale,
+  mode: PromptMode,
+  includesSearches: boolean,
+): string {
+  // Wording anglais DICTÉ par yuya (2026-07-20), au mot près — même porte humaine que le français.
+  if (locale === 'en') {
+    const channels = includesSearches ? 'comments and searches' : 'comments';
+    const base = `Here are the TikTok export data ${channels} of a person. What can you infer about their personality, identity, interests, and beliefs? Provide a general summary at the end. Be concise.`;
+    return mode === 'safety' ? `${base} ${SAFETY_CLAUSE_EN}` : base;
+  }
   const channels = includesSearches ? 'des commentaires et recherches' : 'des commentaires';
   const base = `Voici les données d'export tiktok ${channels} d'une personne. Que peux-tu inférer sur sa personnalité, identité, intérêts et convictions ? Donne une synthèse générale à la fin. Sois concis.`;
   return mode === 'safety' ? `${base} ${SAFETY_CLAUSE}` : base;
@@ -30,6 +65,12 @@ export function buildSystemPrompt(mode: PromptMode, includesSearches: boolean): 
  * par le benchmark (12/07) — les variantes plus riches (JSON par item, dates, canaux) ont dégradé la
  * qualité. Les retours à la ligne d'un commentaire sont aplatis : une ligne = un item, sinon
  * l'alignement index→texte que le modèle cite se casse.
+ *
+ * ⚠ `(rech)` N'EST PAS TRADUIT quand le prompt est anglais, et c'est un choix tenu, pas un oubli :
+ * le marqueur fait partie du FORMAT que le banc du 12/07 a mesuré. Le changer en `(search)` change
+ * le compte de tokens de chaque ligne de recherche et ce que le modèle voit comme séparateur de
+ * canal — aucune mesure ne soutient cette variante. Il opacifie sans doute le prompt anglais ; la
+ * traduction se décide sur un test manuel contre un modèle local, jamais en passant.
  */
 export function formatItemLine(item: AiItem): string {
   const marker = item.kind === 'search' ? ' (rech)' : '';
