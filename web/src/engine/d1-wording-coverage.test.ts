@@ -17,7 +17,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { WIRED_LEXICONS } from './lexicon';
-import { hasReading } from './wording';
+import { hasReading, readingKeys } from './wording';
 
 describe('couverture wording D1 (labels câblés)', () => {
   it('chaque lecture §5 des lexiques câblés a son texte', () => {
@@ -29,6 +29,20 @@ describe('couverture wording D1 (labels câblés)', () => {
         expect(hasReading(key), `texte de lecture manquant : ${key}`).toBe(true);
       }
     }
+  });
+
+  it("AUCUN texte de lecture n'est orphelin — l'autre sens de la couverture", () => {
+    // Le test au-dessus vérifie que tout câblage a son texte. Celui-ci vérifie l'inverse : que tout
+    // texte est câblé. Trois lectures `politics` ont vécu ratifiées et lues par personne — du texte
+    // approuvé, rendu nulle part, que rien ne signalait. C'est l'entrée-de-catalogue-morte en
+    // miniature, et elle ne se voit dans AUCUN des deux sens de la couverture prise seule.
+    const cablees = new Set(
+      WIRED_LEXICONS.flatMap((l) => (l.kind === 'topical' ? [...l.readingTemplateIds] : [])),
+    );
+    const orphelines = readingKeys().filter((k) => !cablees.has(k));
+    expect(orphelines, `texte(s) de lecture câblé(s) à rien : ${orphelines.join(', ')}`).toEqual(
+      [],
+    );
   });
 
   it('le registre câblé porte au moins un lexique topical (le filtre ne rate pas la couverture)', () => {

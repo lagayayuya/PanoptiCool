@@ -12,9 +12,10 @@
 // test-only est le plafond réel. NE PAS ALLÉGER — il n'y a rien derrière.
 
 import { describe, expect, it } from 'vitest';
+import { LOCALES } from '../i18n/locales';
 import { INTEREST_LEXICONS } from './lexicon/interests';
 import {
-  actorLabel,
+  hasActorLabel,
   hasThemeLabel,
   hasUsage,
   MISSING_WORDING_PREFIX,
@@ -33,15 +34,22 @@ describe('couverture wording D2 (thèmes d’intérêt)', () => {
       );
       for (const u of lexicon.usage) {
         expect(hasUsage(u.usage.templateId), `usage manquant : ${u.usage.templateId}`).toBe(true);
-        // `actorLabel` retombe sur la clé brute si non routée — on exige un vrai libellé (pas la clé).
-        expect(actorLabel(u.actor), `acteur non routé : ${u.actor}`).not.toBe(u.actor);
+        // ⚠ ON TESTE LE ROUTAGE, PAS LA DIFFÉRENCE AU MOT-CLÉ. L'ancienne forme exigeait
+        // `actorLabel(k) !== k` : vraie en français par accident, fausse dès qu'un mot se traduit
+        // par lui-même (`advertiser` → `advertiser`). `hasActorLabel` dit la propriété voulue.
+        expect(hasActorLabel(u.actor), `acteur non routé : ${u.actor}`).toBe(true);
       }
     }
   });
 
   it('aucun libellé de thème ne rend le marqueur « manquant »', () => {
     for (const lexicon of INTEREST_LEXICONS) {
-      expect(themeLabelText(lexicon.themeLabel).startsWith(MISSING_WORDING_PREFIX)).toBe(false);
+      for (const locale of LOCALES) {
+        expect(
+          themeLabelText(locale, lexicon.themeLabel).startsWith(MISSING_WORDING_PREFIX),
+          `libellé manquant en ${locale} : ${lexicon.themeLabel}`,
+        ).toBe(false);
+      }
     }
   });
 });

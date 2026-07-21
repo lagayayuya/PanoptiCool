@@ -6,9 +6,17 @@
 // jamais le graphe parsé (ADR-0002). Worker jetable : un par analyse en v1.
 
 import type { EngineResult } from '../engine/pipeline';
+import type { Locale } from '../i18n/locales';
+
+/** Ce qui traverse la frontière vers le worker moteur. La langue accompagne les octets : le moteur
+ *  émet de la prose et n'a pas de DOM où lire `<html lang>`. */
+export interface EngineRequest {
+  zipBytes: Uint8Array;
+  locale: Locale;
+}
 
 /** Analyse un export `.zip` dans un Web Worker dédié et résout avec son `EngineResult`. */
-export function analyzeExport(zipBytes: Uint8Array): Promise<EngineResult> {
+export function analyzeExport(zipBytes: Uint8Array, locale: Locale): Promise<EngineResult> {
   const worker = new Worker(new URL('../engine/worker.ts', import.meta.url), { type: 'module' });
 
   return new Promise<EngineResult>((resolve, reject) => {
@@ -29,6 +37,7 @@ export function analyzeExport(zipBytes: Uint8Array): Promise<EngineResult> {
       buffer instanceof ArrayBuffer &&
       zipBytes.byteOffset === 0 &&
       zipBytes.byteLength === buffer.byteLength;
-    worker.postMessage(zipBytes, ownsFullBuffer ? [buffer] : []);
+    const request: EngineRequest = { zipBytes, locale };
+    worker.postMessage(request, ownsFullBuffer ? [buffer] : []);
   });
 }
