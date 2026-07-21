@@ -63,8 +63,135 @@ export interface TopicalLexicon {
    * copule les ancre à la 1ʳᵉ personne. Un match d'auto-déclaration est toujours explicite (jamais
    * dégradé en 3ᵉ personne). Le même terme peut vivre AUSSI dans `indirectCore` (nu → tag large,
    * B1 : « cette actrice est lesbienne » reste indirect, jamais nommé). Optionnel.
+   *
+   * ── LE SUFFIXE `Fr` EST UNE PORTE, PAS UN ÉTIQUETAGE (PANO-35) ────────────────────────────────
+   * **N'écrire ici que des termes admis pour le FRANÇAIS.** Ce tier ne se matche QUE via les têtes
+   * de copule, et `detect.ts` l'apparie explicitement à `SELF_DECLARATION_HEADS_FR`. Une langue de
+   * plus = une liste de termes de plus (`selfDeclaredEn`) appariée à ses propres têtes, jamais un
+   * terme anglais glissé dans cette liste-ci.
+   *
+   * *Pourquoi la porte existe, et c'est une mesure, pas une précaution.* Avant ce lot, il n'y avait
+   * qu'UNE liste et qu'UN jeu de têtes. Les têtes étant FR-only, elles formaient une **porte de
+   * langue non déclarée** : les entrées de graphie anglaise présentes ici — `muslim`, `gay`, `ace`,
+   * `trans`, `militant`, `liberal`… — étaient inatteignables en anglais **par accident**, et non
+   * par décision. Mesuré : ajouter une seule tête anglaise les activait TOUTES d'un coup, en constat
+   * NOMMÉ, sans qu'aucune n'ait jamais été examinée pour l'anglais — « im ace at darts » désignait
+   * quelqu'un comme asexuel. Ajouter des têtes EN n'ajoute donc pas une fonctionnalité : ça RETIRE
+   * une protection que personne n'avait écrite.
+   *
+   * Le témoin `selfdeclared-language-gate.test.ts` tient cette porte et porte le registre des
+   * graphies anglaises **non admises pour l'anglais** — explicitement, plutôt qu'inatteignables.
    */
-  selfDeclared?: readonly string[];
+  selfDeclaredFr?: readonly string[];
+  /**
+   * Termes d'identité ANGLAIS matchés via le pattern d'auto-déclaration (« i am X »), appariés à
+   * `SELF_DECLARATION_HEADS_EN`. Optionnel.
+   *
+   * ── CE TIER N'AFFIRME JAMAIS, ET C'EST SA RAISON D'ÊTRE ───────────────────────────────────────
+   * **Un hit atterrit en INDIRECT, jamais en `explicit`** — contrairement à `selfDeclaredFr`, qui
+   * NOMME. Ce n'est pas une prudence de plus : c'est la forme même de ce tier, et elle est nommée
+   * par ADR-0003 (*La rétrogradation*) — « un tier qui dispense du seuil sans permettre de nommer »,
+   * ici sans la dispense (voir plus bas).
+   *
+   * *Pourquoi un calque de `selfDeclaredFr` était le mauvais geste.* Le calque aurait fait NOMMER
+   * « i am gay » en anglais, c'est-à-dire ouvert en grand le coût d'erreur que la porte de langue
+   * existe pour tenir fermé. Et il aurait INVERSÉ la règle de symétrie au lieu de la réparer : la
+   * réparation demande que « i am straight » déclenche AUTANT que « i am gay », pas que les deux
+   * montent d'un étage que personne n'a mesuré pour l'anglais. En atterrissant en large, les deux
+   * versants se déclenchent à égalité, et aucun ne se fait nommer. La symétrie est satisfaite **par
+   * construction**, pas par un décompte de termes qu'il faudrait re-vérifier à chaque ajout.
+   *
+   * ── LA COPULE NE DÉSAMBIGUÏSE PAS EN ANGLAIS — mesure, et elle décide de tout ─────────────────
+   * **Ne jamais faire porter de charge de sûreté au cadre.** La doctrine de la copule (« la copule
+   * ancre la 1ʳᵉ personne », `selfDeclaredFr`) est FRANÇAISE et ne traverse pas : l'idiome anglais
+   * s'écrit massivement à la première personne. Mesuré, et ce ne sont pas des cas limites —
+   * « im so ocd about my desk drawers », « im autistic about train timetables », « im arthritic
+   * after that hike », « im depressed that the bakery closed early » portent tous le cadre.
+   *
+   * D'où la conséquence sur ce qui protège : ici la sûreté ne vient PAS du cadre, elle vient de
+   * l'ÉTAGE — et de la porte d'admission des termes, comme partout ailleurs. Le cadre n'achète que
+   * du RAPPEL (il rend `straight` admissible, là où le terme nu en `indirectCore` a été mesuré à
+   * 1 → 4 torts). Justification longue et surface de mesure : `filters-en.ts`.
+   *
+   * ── PAS DE FRANCHISSEMENT SOLO, et c'est une décision chiffrée ────────────────────────────────
+   * Un hit de ce tier compte au seuil **comme n'importe quel indirect**. La variante qui lui donnait
+   * la dispense de seuil a été mesurée et REFUSÉE : elle faisait passer l'idiome de 8 à 16
+   * déclenchements (jeu de 43 phrases) et ajoutait un tort sur `en_idiomatic` — « i am so ocd about
+   * the label alignment on the jars ». Le terme `ocd` était DÉJÀ au lexique ; seule la dispense le
+   * faisait passer. **Le coût n'était pas le vocabulaire, c'était le franchissement.**
+   *
+   * *Ce que ça coûte, et c'est accepté explicitement :* sur les deux labels à seuil 2
+   * (`mental_health`, `health_physical`), « i am diabetic » écrit UNE fois ne rend RIEN. C'est ce
+   * que le seuil fait déjà partout ailleurs. Sur les labels à seuil 1 (`religion`, `sexuality`),
+   * l'absence de dispense ne coûte rien du tout.
+   */
+  selfDeclaredEn?: readonly string[];
+  /**
+   * Marqueurs qui posent le tag LARGE **à eux seuls** — un hit suffit, le seuil ne s'applique pas —
+   * et qui ne le NOMMENT jamais, quel qu'en soit le nombre. Optionnel.
+   *
+   * Le tier des NOMS NUS de trouble (« depression », « anxiety », « ptsd »). Ils tombent entre les
+   * deux tiers existants, et c'est pour ça qu'aucun ne leur allait :
+   *   - `explicit` affirme une condition. Sur « this heat is giving me depression », c'est faux —
+   *     l'anglais courant emploie ces noms comme intensificateurs (mesuré, banc de borne haute).
+   *   - le seuil indirect exige la répétition. Or une personne qui écrit UNE fois, littéralement,
+   *     qu'elle fait une dépression ne disparaît pas du champ : elle disparaîtrait du détecteur
+   *     (mesuré aussi — c'est ce qui a fait échouer la première tentative de rétrogradation).
+   *
+   * Le nom reprend celui de `InterestLexicon.markers` (« marqueurs SOLO : ils rentrent SEULS ») :
+   * même propriété, même mot. Le seuil de `indirectThreshold` n'est PAS touché — ce tier passe à
+   * côté, il ne le redéfinit pas.
+   *
+   * La règle qu'il applique n'est pas neuve : ce lexique tient déjà « le syntagme complet nomme, le
+   * nom nu ne le fait pas » (`bipolar disorder` vs `bipolar`, `panic attack` vs `panic`). Ce tier
+   * est l'endroit où atterrissent les noms nus qui y avaient échappé.
+   */
+  indirectSolo?: readonly string[];
+  /**
+   * Ce label décrit-il un SUJET qu'on fréquente, plutôt qu'un ÉTAT qu'on est ? (ADR-0003, *L'état et
+   * le sujet*.) Défaut : `false` — l'état est le cas des quatre labels de condition.
+   *
+   * Ce que le drapeau change, et il ne change que ça : une négation devant un marqueur **dégrade**
+   * le hit en indirect au lieu de le **supprimer**.
+   *
+   * *Pourquoi il faut un drapeau plutôt qu'une règle unique.* Sur un label d'ÉTAT, « je ne suis pas
+   * déprimé » ne décrit aucune dépression : la négation retire le signal, et le filtre a raison.
+   * Sur un label de SUJET, « je supporte pas les fachos » ne retire pas la politique — la négation
+   * porte la POLARITÉ, pas l'absence de sujet. Appliquer le comportement d'état à un label de sujet
+   * rend le produit sourd à l'OPPOSITION, qui est le registre dominant du discours politique et
+   * religieux : mesuré, le lexique n'entendait que celui qui adhère.
+   *
+   * *Et pourquoi une dégradation, pas une exemption.* Laisser la négation intacte ferait poser un
+   * constat NOMMÉ sur « je ne suis pas socialiste » — affirmer précisément ce que la phrase nie. La
+   * dégradation garde le sujet et retire l'affirmation : même forme que la règle du registre
+   * informationnel, et même sens d'échec — au pire elle sous-affirme, ce qui se rattrape.
+   *
+   * Un hit ainsi dégradé ne confère JAMAIS le franchissement solo : il compte au seuil comme
+   * n'importe quel indirect, et rien de plus.
+   */
+  subjectNotState?: boolean;
+  /**
+   * Termes d'ADHÉSION dont la NÉGATION contredit une auto-déclaration — labels de SUJET seulement,
+   * et sans effet si le label n'en déclare pas. Optionnel.
+   *
+   * *Ce que ça fait, et rien d'autre.* Quand un item porte À LA FOIS une auto-déclaration
+   * (« je suis catholique ») et l'un de ces termes SOUS NÉGATION (« je ne crois pas »), le hit
+   * d'auto-déclaration est **plafonné en indirect** au lieu de nommer. Le tag survit, l'affirmation
+   * tombe.
+   *
+   * *Pourquoi plafonner et non filtrer.* Effacer serait faux : quelqu'un qui écrit « catholique
+   * mais je ne crois pas » A une relation à cette tradition — c'est le SUJET de sa phrase. Et
+   * filtrer n'aurait pas de fin, chaque tournure d'éloignement (« sans vraiment y croire », « plus
+   * depuis longtemps ») demandant sa propre exception. Le plafonnement échoue en sous-affirmant,
+   * ce qui se rattrape ; le filtre échoue en effaçant, ce qui ne se rattrape pas.
+   *
+   * *Pourquoi la négation ne suffisait pas.* La fenêtre de négation regarde AVANT le marqueur, dans
+   * la même proposition. « je suis catholique mais je ne crois pas » nie la CROYANCE dans une
+   * proposition SUIVANTE, hors de portée — mesuré : la phrase posait un constat nommé. Cette liste
+   * donne à la contradiction un marqueur qu'elle puisse nier, sans élargir la fenêtre pour tout le
+   * monde.
+   */
+  adherence?: readonly string[];
   /** Marqueurs topicaux peu ambigus → étage indirect. */
   indirectCore: readonly string[];
   /** Marqueurs colloquiaux/polysémiques — le foyer du couple recall/FP (calibrage identifiable). */

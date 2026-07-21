@@ -27,7 +27,7 @@
 // ÉQUIVALENCE : chaque chemin ci-dessous rend le MÊME `{start,end}` (leftmost) que l'ancienne regex
 // `(?<![a-z0-9])${markerBody}s?(?![a-z0-9])` — donc mêmes filtres et mêmes formes de surface.
 
-import { SELF_DECLARATION_HEADS, SELF_DECLARATION_MODIFIERS } from './filters';
+import { SELF_DECLARATION_MODIFIERS } from './filters';
 import { type NormalizedText, normalizeFr } from './normalize-fr';
 
 /** Position d'un match dans le normalisé : `[start, end)`, comme `m.index` / `m.index + m[0].length`. */
@@ -241,9 +241,31 @@ function escapeRegex(s: string): string {
  * positionnelle — ce qu'on en CONCLUT (discours rapporté → attribué à autrui) est de la doctrine et
  * vit dans `detect.ts`. Seul chemin du matcher où une regex reste compilée : elle porte sur le
  * TEXTE (une par appel), pas sur le catalogue de marqueurs — ce n'était jamais le coût de PANO-87.
+ *
+ * ── CE QUE CE CHEMIN COUVRE, ET CE QU'IL NE COUVRE TOUJOURS PAS ─────────────────────────────────
+ * `findMarker` porte DEUX tolérances de variation ; cette regex n'en portait AUCUNE, et la
+ * divergence fait échouer le filtre de citation OUVERT — le seul sens dangereux. Mesuré :
+ *
+ *     il a dit "le gauchiste au pouvoir"   → filtré        (singulier : les deux chemins d'accord)
+ *     il a dit "les gauchistes au pouvoir" → TAGUÉ         (pluriel : `findMarker` matche, pas la regex)
+ *
+ * Le `s?` ci-dessous referme la tolérance de PLURIEL, pour les six labels d'un coup. Il a été
+ * trouvé sur `politics` parce que l'épithète politique s'écrit au pluriel (« les fachos », « les
+ * gauchistes »), mais rien dans le défaut n'était propre à ce label.
+ *
+ * **L'AUTRE tolérance reste divergente, et il faut le dire plutôt que laisser croire au comblement :**
+ * l'AUTO-CENSURE symbolique (`c*nne` matche `conne`, cf. `specFind`) n'est pas répliquée ici. Une
+ * insulte masquée ENTRE GUILLEMETS échappe donc encore au filtre de citation. Le comblement propre
+ * n'est pas un troisième motif à écrire — c'est de rendre ce test POSITIONNEL (repérer les segments
+ * cités, puis demander si le span rendu par `findMarker` tombe dedans), ce qui hériterait de toutes
+ * les tolérances présentes et futures au lieu de les recopier. Ce n'est pas fait ici : ça change la
+ * sémantique sur les textes à occurrences MULTIPLES (aujourd'hui « une occurrence citée quelque part
+ * suffit », demain « CETTE occurrence-ci est-elle citée »), et ce n'est pas une question de pluriel.
  */
 export function occursInsideQuotes(text: NormalizedText, marker: string): boolean {
-  const quoted = new RegExp(`["«][^"»]*(?<![a-z0-9])${escapeRegex(marker)}(?![a-z0-9])[^"»]*["»]`);
+  const quoted = new RegExp(
+    `["«][^"»]*(?<![a-z0-9])${escapeRegex(marker)}s?(?![a-z0-9])[^"»]*["»]`,
+  );
   return quoted.test(text.norm);
 }
 
@@ -311,11 +333,11 @@ function matchModsThenTerm(norm: string, r: number, budget: number, term: string
  * amont de la boucle sur les termes : la plupart des textes n'ont pas de copule → gros gain à froid.
  * Sur texte masqué (rare), on ne court-circuite pas (seul le scan complet est fidèle).
  */
-export function canSelfDeclare(text: NormalizedText): boolean {
+export function canSelfDeclare(text: NormalizedText, heads: readonly string[]): boolean {
   if (tokenIndex(text).hasIntraMask) {
     return true;
   }
-  return SELF_DECLARATION_HEADS.some((head) => text.norm.includes(head));
+  return heads.some((head) => text.norm.includes(head));
 }
 
 /**
@@ -323,13 +345,17 @@ export function canSelfDeclare(text: NormalizedText): boolean {
  * leftmost, chaque brique mask-tolérante. Même `{start,end}` que l'ancienne regex. La copule ancre la
  * 1ʳᵉ personne. Sans regex → aucune compilation.
  */
-export function findSelfDeclaration(text: NormalizedText, term: string): Span | null {
+export function findSelfDeclaration(
+  text: NormalizedText,
+  term: string,
+  heads: readonly string[],
+): Span | null {
   const norm = text.norm;
   for (let pos = 0; pos < norm.length; pos++) {
     if (pos > 0 && isAlnum(norm.charCodeAt(pos - 1))) {
       continue; // frontière gauche
     }
-    for (const head of SELF_DECLARATION_HEADS) {
+    for (const head of heads) {
       const q = bodyMatchAt(norm, pos, head);
       if (q < 0 || norm[q] !== ' ') {
         continue; // tête absente, ou pas d'espace après la copule

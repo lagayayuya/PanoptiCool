@@ -123,8 +123,34 @@ export const THIRD_PERSON: readonly string[] = [
 // 3ᵉ personne. Bénéfice éthique en prime : le registre auto-dépréciatif (« un pauvre dépressif »)
 // est capté sans être listé.
 
+/**
+ * Verbes qui RAPPORTENT une question — la copule qui les suit, subordonnée par « si », n'affirme
+ * rien (« on me demande si je suis X »). Transverses aux six labels : c'est de la grammaire, pas du
+ * vocabulaire de sujet, et la même phrase se construit sur n'importe quelle identité.
+ *
+ * *Pourquoi une liste de VERBES et non de frames complètes.* « on me demande si », « on me demande
+ * souvent si », « il m'a demandé hier si » sont la même construction avec un adverbe glissé au
+ * milieu. Lister les frames aurait fait dépendre la règle d'un accident d'insertion ; c'est le
+ * couple (verbe de question, subordonnant « si ») qui porte le sens, et le vérifier laisse passer
+ * l'adverbe sans l'énumérer.
+ *
+ * *Ce que la liste ne contient pas, et c'est délibéré.* Aucun verbe de parole générique
+ * (« dire », « raconter ») : ceux-là vivent déjà dans `CITATION_MARKERS`, où ils FILTRENT. Ici on
+ * dégrade, et confondre les deux ferait basculer du discours rapporté vers l'effacement.
+ */
+export const REPORTED_QUESTION_VERBS: readonly string[] = [
+  'demande',
+  'demandes',
+  'demandent',
+  'demandait',
+  'demandaient',
+  'demander',
+  'demandee',
+  'savoir',
+];
+
 /** Têtes de copule d'auto-déclaration (« je suis X »). Formes contractées d'internet incluses. */
-export const SELF_DECLARATION_HEADS: readonly string[] = [
+export const SELF_DECLARATION_HEADS_FR: readonly string[] = [
   'je suis',
   'jsuis',
   "j'suis",
@@ -157,6 +183,22 @@ export const SELF_DECLARATION_MODIFIERS: readonly string[] = [
   'plutot',
   'vraiment',
   'tres',
+  // NOMS DE PERSONNE — « je suis une femme trans », « je suis un mec bi », « je suis une personne
+  // non binaire ». Ce sont des modificateurs au même titre que « un vrai » : la tête sémantique
+  // reste le terme d'identité qui suit, et le nom de personne ne fait que le porter.
+  //
+  // Ils sont ici, dans la GRAMMAIRE, plutôt qu'en syntagmes dans chaque lexique, et c'est le point :
+  // « femme trans », « homme trans », « personne trans », « mec trans » sont la même construction
+  // répétée. Les lister par label aurait multiplié les entrées sans jamais couvrir la suivante, et
+  // le trou mesuré n'était pas lexical — le terme nu était déjà admis, c'est le nom de personne
+  // intercalé qui cassait le pattern.
+  'homme',
+  'femme',
+  'personne',
+  'mec',
+  'meuf',
+  'garcon',
+  'fille',
   'trop',
   'juste',
   'carrement',
@@ -164,4 +206,68 @@ export const SELF_DECLARATION_MODIFIERS: readonly string[] = [
   'devenue',
   'assez',
   'un peu',
+];
+
+/**
+ * REGISTRE INFORMATIONNEL (FR) — marqueurs de cadrage documentaire.
+ *
+ * Ce n'est PAS un filtre : ces marqueurs ne suppriment jamais un constat, ils en **abaissent
+ * l'étage** (nommé → large). Chercher un symptôme EST un signal — une plateforme le lit, et le
+ * produit doit le montrer — mais ce n'est pas la preuve d'une condition vécue, et le produit ne doit
+ * donc pas en affirmer une. Doctrine : ADR-0003, *Le registre informationnel*.
+ *
+ * Critère d'admission, et il vaut la peine d'être tenu : un marqueur entre s'il signale que l'item
+ * **interroge, définit ou quantifie** une condition, au lieu de la décrire chez quelqu'un. Aucune
+ * entrée n'a été tirée d'un item de banc — sans quoi la règle ne serait qu'un miroir de ce qu'on
+ * voulait lui voir rattraper.
+ *
+ * Ce qui n'y entre PAS : les tournures qui distinguent « X est Y » de « j'ai X ». Les couvrir
+ * reviendrait à exiger un ancrage 1ʳᵉ personne, ce qui dégraderait aussi la personne qui vit la
+ * condition — mesuré, et écarté pour cette raison.
+ */
+export const INFORMATIONAL: readonly string[] = [
+  // Interroger — la forme la plus courante de la recherche d'un proche inquiet.
+  'signes de',
+  'signe de',
+  'symptomes',
+  'symptome de',
+  'causes de',
+  'cause de',
+  'que faire',
+  'est ce normal',
+  "qu'est ce que",
+  'quest ce que',
+  "c'est quoi",
+  'cest quoi',
+  'comment aider',
+  'comment soutenir',
+  'comment reconnaitre',
+  'comment savoir',
+  'comment detecter',
+  // Solliciter l'expérience d'AUTRUI — quatrième mode du registre informationnel, ajouté après le
+  // premier lot. Interroger, définir et quantifier posaient l'item en question SUR une condition ;
+  // celui-ci le pose en demande de RÉCITS. Un témoignage est par définition l'expérience de
+  // quelqu'un d'autre : le demander situe l'auteur en lecteur, pas en porteur.
+  //
+  // Il couvre aussi, et légitimement, le porteur qui interroge — « quelqu'un a déjà eu ça ? » écrit
+  // par quelqu'un de concerné. La phrase contient le terme mais n'affirme rien sur son auteur, donc
+  // l'étage nommé n'y est pas justifié : la dégradation est correcte au sens de la doctrine (le fin
+  // n'existe que s'il est ÉCRIT), pas un dommage collatéral qu'on tolère.
+  'temoignage',
+  'avis sur',
+  "retour d'experience",
+  'retour d experience',
+  "quelqu'un a deja",
+  'quelquun a deja',
+  // Définir.
+  'difference entre',
+  'definition',
+  'signification',
+  'types de',
+  'explication',
+  // Quantifier — le registre de la documentation et de l'étude.
+  'prevalence',
+  'statistiques',
+  'meta analyse',
+  'revue systematique',
 ];

@@ -180,6 +180,123 @@ describe('detectLabels — 3ᵉ personne EN (B3 : dégradé, jamais supprimé)',
     const out = detectLabels(['my sister has anxiete'], [topical({ indirectThreshold: 1 })]);
     expect(out[0]?.stage).not.toBe('explicit');
   });
+
+  // ── PARENTÉ ÉLARGIE — comblement mesuré, et la raison de sa cécité vaut plus que la liste ──────
+  // Le lot 1 avait couvert la famille nucléaire américaine. Manquaient « my mum » (la forme
+  // britannique, donc la plus courante hors Amérique du Nord) et TOUTE la parenté élargie.
+  //
+  // POURQUOI PERSONNE NE L'A VU, et c'est le point à retenir : sur `mental_health`, seul label
+  // mesuré jusqu'ici, les noms de trouble fréquents (« depression », « anxiety », « ptsd ») vivent
+  // au tier `indirectSolo` et ne peuvent STRUCTURELLEMENT plus nommer. « my nan has depression »
+  // dégradait donc déjà — mais grâce au tier, pas grâce à la liste de 3ᵉ personne. Un tier créé
+  // contre l'HYPERBOLE masquait un défaut de PARENTÉ, et le masque n'a sauté qu'en ouvrant un label
+  // dont les noms de condition sont restés en `explicit`.
+  //
+  // Ce test emploie donc un lexique dont le terme est `explicit` — SANS quoi il passerait au vert
+  // pour la raison d'à côté, et vérifierait le tier au lieu de la liste (CLAUDE.md : une assertion
+  // vérifie ce qu'elle ATTEINT).
+  it('la parenté élargie dégrade — grands-parents, « my mum », oncles, cousins', () => {
+    for (const proche of [
+      'my mum',
+      'my nan',
+      'my gran',
+      'my granny',
+      'my grandma',
+      'my grandmother',
+      'my grandad',
+      'my grandpa',
+      'my grandfather',
+      'my grandparents',
+      'my parents',
+      'my uncle',
+      'my aunt',
+      'my cousin',
+      'my niece',
+      'my in-laws',
+    ]) {
+      const out = detectLabels([`${proche} has anxiete`], [topical({ indirectThreshold: 1 })]);
+      expect(out[0]?.stage, `« ${proche} » devrait dégrader`).toBe('indirect');
+    }
+  });
+
+  it("CONTRÔLE — sans marqueur de parenté, le même énoncé NOMME : c'est bien la liste qui agit", () => {
+    // Sans ce contrôle, le test du dessus passerait au vert même si la dégradation venait
+    // d'ailleurs (le seuil, un tier, un filtre voisin). Il fixe le point de comparaison.
+    const out = detectLabels(['my neighbour has anxiete'], [topical({ indirectThreshold: 1 })]);
+    expect(out[0]?.stage).toBe('explicit');
+  });
+});
+
+// ── REGISTRE INFORMATIONNEL EN COMPOSÉ (« diabetes symptoms ») ───────────────────────────────────
+// CE QUE CES TESTS NE COUVRENT PAS, et il faut le lire avant de les citer :
+//   · ce sont des sondes de MÉCANISME, pas une mesure de taux. Aucune vérité-terrain, aucun
+//     dénominateur — les bancs de registres restent les seuls instruments de taux, et aucun d'eux
+//     n'exerce la santé physique à ce jour ;
+//   · ils portent sur l'ANGLAIS seul. Le français n'a pas ce défaut (il porte « symptomes » nu), et
+//     le dernier cas ci-dessous le fige plutôt que de le supposer ;
+//   · ils ne disent rien des têtes NON admises (« treatment », « diet ») au-delà du fait qu'elles ne
+//     dégradent pas — ce qui est le comportement voulu, pas une lacune.
+describe('detectLabels — registre informationnel EN en COMPOSÉ', () => {
+  // Lexique factice au tier `explicit` — c'est ce tier que la règle plafonne. « diabete » sert
+  // aussi de témoin de la tolérance de pluriel : il matche « diabetes », et le composé doit se
+  // reconnaître APRÈS le « s » que le span du marqueur n'inclut pas.
+  const HP = (terms: string[]) =>
+    detectLabels(terms, [topical({ explicit: ['diabete', 'psoriasis'] })]);
+
+  it('LE DÉFAUT REFERMÉ — « X symptoms » ne NOMME plus, alors que « symptoms of X » dégradait déjà', () => {
+    // L'anglais compose sa requête de santé la plus fréquente en antéposé, et la liste par
+    // préposition la manquait entièrement. Les deux ordres de mots doivent produire le même étage.
+    expect(HP(['diabetes symptoms'])[0]?.stage).toBe('indirect');
+    expect(HP(['symptoms of diabetes'])[0]?.stage).toBe('indirect');
+  });
+
+  it('le composé franchit SEUL, comme la forme par préposition — sinon les deux règles se composent en DISPARITION', () => {
+    // Le seuil est à 2 et il n'y a qu'un item : sans le franchissement solo, le cadrage retirerait
+    // l'étage nommé puis le seuil retirerait le constat, alors qu'aucune des deux règles ne demande
+    // qu'il ne reste rien à montrer. Même raisonnement que la voie par préposition.
+    const out = HP(['diabetes symptoms']);
+    expect(out).toHaveLength(1);
+    expect(out[0]?.items[0]?.solo).toBe(true);
+  });
+
+  it('LE COÛT, mesuré et assumé — « my diabetes symptoms » dégrade AUSSI', () => {
+    // Il faut l'écrire, parce que c'est le seul endroit où cette règle se trompe : un possessif
+    // devant le composé ne la retient pas. Quelqu'un qui décrit SES symptômes par cette tournure
+    // perd son étage nommé.
+    //
+    // Pourquoi c'est accepté plutôt que rattrapé : (1) une règle d'étage se trompe en
+    // SOUS-affirmant, ce qui se rattrape, là où un filtre fabriquerait un faux négatif aveugle
+    // (ADR-0003) ; (2) le rattrapage évident — exiger l'absence de possessif — est l'ancrage
+    // 1ʳᵉ personne, mesuré et écarté ; (3) la borne est un fait de langue déjà invoqué par la voie
+    // par préposition : qui vit une condition la nomme AUSSI au possessif nu ailleurs, et cet
+    // item-là suffit à tenir l'étage. La ligne suivante le fige.
+    expect(HP(['my diabetes symptoms have been worse'])[0]?.stage).toBe('indirect');
+    expect(
+      HP(['my diabetes symptoms have been worse', 'my diabetes is hard to manage'])[0]?.stage,
+    ).toBe('explicit');
+  });
+
+  it('la tête doit être ACCOLÉE au terme — sinon ce serait « symptoms » nu par la bande', () => {
+    expect(HP(['my diabetes and her symptoms are unrelated'])[0]?.stage).toBe('explicit');
+    // Et la frontière de mot tient : « symptomatic » n'est pas « symptoms ».
+    expect(HP(['psoriasis symptomatic relief'])[0]?.stage).toBe('explicit');
+  });
+
+  it('« treatment » et « diet » NE dégradent pas — chercher un soin est un signal de vécu', () => {
+    // Exclusion assumée, pas oubli : le critère d'admission demande d'interroger, définir ou
+    // quantifier. « diabetes treatment » cherche un SOIN, et chercher un soin pour soi est un
+    // signal de vécu (ADR-0003, « Pour qui », pas « quel mot »). Le FR traite « traitement du
+    // diabete » de la même façon, dans les deux ordres de mots.
+    expect(HP(['diabetes treatment options'])[0]?.stage).toBe('explicit');
+    expect(HP(['diabetes diet plan'])[0]?.stage).toBe('explicit');
+  });
+
+  it('LE FRANÇAIS NE BOUGE PAS — il porte « symptomes » nu et n’a jamais eu ce défaut', () => {
+    // Figé plutôt que supposé : c'est la vérification qui a montré que ce défaut était EN-only, et
+    // sans elle un lecteur pourrait croire que la liste de composés lui manque aussi.
+    expect(HP(['symptomes du diabete'])[0]?.stage).toBe('indirect');
+    expect(HP(['mon diabete me fatigue'])[0]?.stage).toBe('explicit');
+  });
 });
 
 describe('detectLabels — conflictual EN (B5) : insulte REÇUE exclue', () => {
@@ -190,11 +307,16 @@ describe('detectLabels — conflictual EN (B5) : insulte REÇUE exclue', () => {
   });
 });
 
-describe('detectLabels — DETTE assumée : auto-déclaration EN non couverte (PANO-35 lot 2)', () => {
-  it('« i am X » ne tague PAS (la copule EN n’est pas livrée) — défaut de RAPPEL, échoue CLOSED', () => {
-    // Verrou de la dette : ce test DOIT être inversé le jour où le lot 2 livre les copules EN.
-    // Il échoue dans la direction sûre (rien n’est nommé), contrairement aux 3 filtres protecteurs.
-    const out = detectLabels(['i am depressif'], [topical({ selfDeclared: ['depressif'] })]);
+describe('detectLabels — PORTE DE LANGUE : une copule EN ne lit jamais `selfDeclaredFr`', () => {
+  it('« i am X » sur un terme `selfDeclaredFr` ne tague PAS — le zéro vient de la porte, plus de l’absence de têtes', () => {
+    // Ce test a été le verrou de la dette « copule EN non livrée » (PANO-35 lot 2), à inverser le
+    // jour de la livraison. La copule EN EST livrée depuis (`SELF_DECLARATION_HEADS_EN`, tier
+    // `selfDeclaredEn` qui atterrit en LARGE) — et le test n’a PAS été inversé, parce que son zéro a
+    // CHANGÉ DE CAUSE sans changer de valeur : les têtes anglaises ne lisent que `selfDeclaredEn`,
+    // et `selfDeclaredFr` reste inatteignable depuis une copule anglaise (la porte de langue,
+    // vérifiée par mutations dans `selfdeclared-language-gate.test.ts`). Un zéro a plusieurs causes
+    // possibles ; celui-ci tient désormais la porte, pas la dette.
+    const out = detectLabels(['i am depressif'], [topical({ selfDeclaredFr: ['depressif'] })]);
     expect(out).toEqual([]);
   });
 });
@@ -295,7 +417,7 @@ describe('detectLabels — tolérances de variation (PANO-36 phase 0)', () => {
 describe('detectLabels — pattern d’auto-déclaration (PANO-72)', () => {
   const lex = topical({
     explicit: [],
-    selfDeclared: ['depressif', 'depressive'],
+    selfDeclaredFr: ['depressif', 'depressive'],
     indirectCore: ['psy'],
     indirectThreshold: 1,
   });
