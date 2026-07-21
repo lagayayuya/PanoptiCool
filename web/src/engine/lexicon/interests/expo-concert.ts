@@ -12,6 +12,21 @@
 //     « artiste » (générique) : co-occurrence.
 //   · EXCLU — rien de désespéré.
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// Deux registres DISJOINTS sous un même thème — le concert et la galerie ne partagent presque aucun
+// mot. Les deux sont couverts ; leurs pièges ne sont pas les mêmes.
+//   · SOLO (concert) — « headliner », « soundcheck », « crowd surfing », « general admission »,
+//     « guest list », « merch table », « front of house », « circle pit », « support act »,
+//     « meet and greet », « tour dates », « standing room ».
+//   · SOLO (expo) — « private view », « gallerist », « solo show », « group show », « artist statement »,
+//     « wall text », « permanent collection », « art fair », « open studios », « white cube », « docent ».
+//   · ANCRÉ — « gig » (= l'ÉCONOMIE DES PETITS BOULOTS aujourd'hui, et le gigaoctet), « lineup »
+//     (alignement policier), « venue » (lieu de mariage), « installation » (installation LOGICIELLE),
+//     « curated » (devenu argot marketing), « floor » : compagnon requis.
+//   · ÉCARTÉ — « encore », « stage », « retrospective » : ce sont des MOTS FRANÇAIS COURANTS
+//     (« encore » = de nouveau, « stage » = période en entreprise) ou des homographes exacts du FR.
+//     Les faire entrer en solo ferait tirer le thème sur du texte français quelconque.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible.
 
@@ -44,6 +59,31 @@ export const EXPO_CONCERT_LEXICON: InterestLexicon = {
     'galerie d art',
     'open air',
     'tournee',
+    // Variantes EN (PANO-88) : SOLO univoques — registre CONCERT.
+    'headliner',
+    'soundcheck',
+    'crowd surfing',
+    'general admission',
+    'guest list',
+    'merch table',
+    'front of house',
+    'circle pit',
+    'support act',
+    'meet and greet',
+    'tour dates',
+    'standing room',
+    // Variantes EN (PANO-88) : SOLO univoques — registre EXPO / galerie.
+    'private view',
+    'gallerist',
+    'solo show',
+    'group show',
+    'artist statement',
+    'wall text',
+    'permanent collection',
+    'art fair',
+    'open studios',
+    'white cube',
+    'docent',
   ],
   anchored: [
     'live', // en direct / streaming
@@ -56,6 +96,13 @@ export const EXPO_CONCERT_LEXICON: InterestLexicon = {
     'festival', // festival générique
     'artiste', // générique
     'oeuvre', // travail générique
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'gig', // = économie des petits boulots / gigaoctet (EN)
+    'lineup', // alignement policier / gamme de produits (EN)
+    'venue', // lieu de mariage / de conférence (EN)
+    'installation', // installation logicielle (EN)
+    'curated', // devenu argot marketing (EN)
+    'floor', // étage vs dancefloor (EN)
   ],
   selfDeclared: ['festivalier', 'amateur d art'],
 };

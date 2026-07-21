@@ -12,6 +12,19 @@
 //     « custom », « cruiser » (navire), « guidon » : co-occurrence.
 //   · EXCLU — rien de désespéré.
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// La moto anglophone a des COINAGES qui n'existent nulle part ailleurs — c'est son point fort.
+//   · SOLO — « motovlog » (le mot le plus sûr du domaine), « atgatt », « chicken strips »,
+//     « countersteering », « knee dragger », « highside », « lowside », « stoppie », « bobber »,
+//     « supermoto », « dual sport », « naked bike », « lane splitting », « lane filtering »,
+//     « quickshifter », « slipper clutch », « swingarm », « clip ons », « rearsets », « twisties »,
+//     « pillion », « motorcycle », « bikersoftiktok ».
+//   · ANCRÉ — « squid » (le CALAMAR, malgré un argot motard de premier ordre), « wheelie » (le vélo et
+//     le BMX en font autant), « throttle » (la limitation de débit réseau), « rider » (un cavalier ; la
+//     clause d'un contrat), « clutch » (le sac à main ; le clutch du jeu), « chain » (la chaîne de
+//     magasins, la blockchain, le bijou du `rap`), « bikelife » (culture VÉLO/BMX, communauté
+//     distincte), « rev » : compagnon requis.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. « voitures » est un thème séparé ; ici les deux-roues motorisés.
 
@@ -60,6 +73,30 @@ export const MOTOS_LEXICON: InterestLexicon = {
     'carenage moto',
     'gomme moto',
     'permis moto',
+    // Variantes EN (PANO-88) : SOLO univoques (jargon motard / châssis — beaucoup de coinages).
+    'motovlog',
+    'atgatt',
+    'chicken strips',
+    'countersteering',
+    'knee dragger',
+    'highside',
+    'lowside',
+    'stoppie',
+    'bobber',
+    'supermoto',
+    'dual sport',
+    'naked bike',
+    'lane splitting',
+    'lane filtering',
+    'quickshifter',
+    'slipper clutch',
+    'swingarm',
+    'clip ons',
+    'rearsets',
+    'twisties',
+    'pillion',
+    'motorcycle',
+    'bikersoftiktok',
   ],
   anchored: [
     'honda', // partagé voitures
@@ -76,6 +113,15 @@ export const MOTOS_LEXICON: InterestLexicon = {
     'angle', // angle générique vs prise d'angle
     'fourche', // fourche (outil) vs fourche (moto)
     'gomme', // gomme (crayon) vs pneu
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'squid', // = le calamar, malgré un argot motard de premier ordre (EN)
+    'wheelie', // le vélo et le BMX en font autant (EN)
+    'throttle', // limitation de débit réseau (EN)
+    'rider', // un cavalier / la clause d'un contrat (EN)
+    'clutch', // le sac à main / le clutch du jeu (EN)
+    'chain', // chaîne de magasins / blockchain / le bijou du rap (EN)
+    'bikelife', // culture vélo/BMX — communauté distincte (EN)
+    'rev', // « rev up » au figuré (EN)
   ],
   selfDeclared: ['motard', 'motarde'],
 };

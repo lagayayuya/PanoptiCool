@@ -11,6 +11,21 @@
 //     « marteau », « clou », « scie », « chantier » : co-occurrence.
 //   · EXCLU — « outil » nu (trop générique).
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// Leçon nette du sondage : en bricolage anglais, LA SÛRETÉ EST DANS LE COMPOSÉ, jamais dans le nom
+// simple. Aucun de « drill / sand / level / stain / finish / router / plane / square / nail / screw »
+// n'est utilisable nu — chacun a un sens dominant ailleurs.
+//   · SOLO — les matériaux et assemblages, qui n'existent qu'ici : « drywall », « spackle », « joist »,
+//     « plywood », « shiplap », « subfloor », « caulk », « grout », « chamfer », « kerf »,
+//     « countersink », « mortise », « tenon », « dovetail », « sandpaper », « miter saw »,
+//     « orbital sander », « pocket hole », « brad nailer », « impact driver », « woodworking ».
+//   · ANCRÉ — « drill » (la PERCEUSE, mais « UK drill » = sous-genre de `rap`, et l'exercice
+//     militaire/sportif), « router » (le ROUTEUR réseau, sens écrasant), « plane » (l'AVION), « sand »
+//     (le sable), « level » (« level up » du jeu), « stain » (une tache sur un vêtement), « nail »
+//     (l'ONGLE — toute la vertical beauté), « screw » (juron), « square » (la place, « square up ») :
+//     compagnon requis.
+//   · TAG — « tiktokdiy », et non « diytok » : le second n'existe pas (vérifié).
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible.
 
@@ -42,6 +57,36 @@ export const DIY_LEXICON: InterestLexicon = {
     'tournevis electrique',
     'do it yourself',
     'perceuse visseuse',
+    // Variantes EN (PANO-88) : SOLO univoques — matériaux et assemblages (la sûreté est dans le composé).
+    'woodworking',
+    'drywall',
+    'spackle',
+    'joist',
+    'plywood',
+    'shiplap',
+    'subfloor',
+    'caulk',
+    'grout',
+    'chamfer',
+    'kerf',
+    'countersink',
+    'mortise',
+    'tenon',
+    'dovetail',
+    'sandpaper',
+    'miter saw',
+    'table saw',
+    'orbital sander',
+    'pocket hole',
+    'pilot hole',
+    'brad nailer',
+    'impact driver',
+    'wood glue',
+    'wood filler',
+    'wood stain',
+    'speed square',
+    'tiktokdiy',
+    'upcycle',
   ],
   anchored: [
     'bricolage', // système D / « c'est du bricolage »
@@ -53,6 +98,18 @@ export const DIY_LEXICON: InterestLexicon = {
     'scie', // « scie » / « si »
     'chantier', // chantier générique
     'bosch', // électroménager / Hieronymus Bosch
+    // Variantes EN (PANO-88) : ANCRÉS — les noms simples du domaine, tous pris ailleurs.
+    'drill', // perceuse vs « uk drill » (rap) / exercice militaire (EN)
+    'router', // = routeur réseau, sens écrasant (EN)
+    'plane', // = avion (EN)
+    'sand', // sable (EN)
+    'level', // « level up » du jeu / niveau générique (EN)
+    'stain', // tache sur un vêtement vs teinture bois (EN)
+    'nail', // = ongle (vertical beauté) / « nailed it » (EN)
+    'screw', // juron (EN)
+    'square', // la place / « square up » (EN)
+    'stud', // montant d'ossature vs « a stud » (EN)
+    'primer', // « a primer on X » = intro vs sous-couche (EN)
   ],
   selfDeclared: ['bricoleur', 'bricoleuse'],
 };

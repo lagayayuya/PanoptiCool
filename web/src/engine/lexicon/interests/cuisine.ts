@@ -12,6 +12,17 @@
 //     (pièce / « cuisine interne »), « sauce », « pate » : co-occurrence requise.
 //   · EXCLU — « bon » / « miam » (trop génériques), « gateau » nu gardé SOLO (le sens gâteau domine).
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// Usage EN vérifié par recherche. Le tag communautaire est « foodtok » (et non « cooktok »).
+//   · SOLO — « foodtok », « stir fry », « sheet pan », « dutch oven », « pan sauce », « wok hei »,
+//     « deglaze », « umami », « doneness », « skillet », « gochujang », « chimichurri », « sofrito ».
+//   · ANCRÉ — « cook » (= « LET HIM COOK » / « he's cooked », argot de jeu aujourd'hui DOMINANT en
+//     ligne : le plus gros pourvoyeur de FP du lot), « season » (saison d'anime / de sport), « stock »
+//     (bourse), « raw » (fichier RAW photo), « dice » (dés), « roast » (se moquer) : compagnon requis.
+//   · ÉCARTÉ — « mise en place », « sous vide » : ce sont des emprunts au FRANÇAIS, et « la mise en
+//     place du projet » est une phrase banale en français — un marqueur « EN » qui matche massivement
+//     du FR n'est pas une variante, c'est une régression.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. RÉGIME / perte de poids hors-champ (frôle D1) : aucun marqueur de calories/minceur.
 // « cuisine végé/vegan » et « pâtisserie » sont des thèmes séparés ; ici la cuisine salée du quotidien.
@@ -70,6 +81,22 @@ export const CUISINE_LEXICON: InterestLexicon = {
     'ramen maison',
     'poke bowl',
     'tacos maison',
+    // Variantes EN (PANO-88) : SOLO univoques (techniques / matériel / communauté).
+    'foodtok',
+    'stir fry',
+    'sheet pan',
+    'dutch oven',
+    'pan sauce',
+    'wok hei',
+    'deglaze',
+    'umami',
+    'doneness',
+    'skillet',
+    'gochujang',
+    'chimichurri',
+    'sofrito',
+    'home cooking',
+    'weeknight dinner',
   ],
   anchored: [
     'plat', // à plat / plat (adjectif)
@@ -84,6 +111,13 @@ export const CUISINE_LEXICON: InterestLexicon = {
     'ninja', // robot Ninja vs partagé (motos/gaming)
     'staub', // marque de cocotte vs patronyme
     'curry', // plat/épice vs partagé basket
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'cook', // « let him cook » / « he's cooked » — argot de jeu dominant en ligne (EN)
+    'season', // saison d'anime / de sport vs assaisonner (EN)
+    'stock', // bourse / stock générique vs bouillon (EN)
+    'raw', // fichier RAW (photo) / brut (EN)
+    'dice', // dés à jouer vs couper en dés (EN)
+    'roast', // se moquer vs rôti (EN)
   ],
   selfDeclared: ['cuisinier', 'cuisiniere', 'patissier', 'patissiere'],
 };

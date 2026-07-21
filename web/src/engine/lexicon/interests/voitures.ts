@@ -11,6 +11,25 @@
 //     « golf » (sport), « m3 » (fichier), « stance », « swap », « alpine » (montagne), « seat » : co-occurrence.
 //   · EXCLU — rien de désespéré.
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// L'auto anglophone se dit par la PRÉPA : pièces et opérations nommées, très univoques.
+//   · SOLO — « coilovers », « catback », « downpipe », « intercooler », « blow off valve »,
+//     « widebody », « ls swap », « vtec », « autocross », « daily driver », « project car », « dyno »,
+//     « naturally aspirated », « rev limiter », « drivetrain », « camber », « ceramic coating »,
+//     « limited slip », « ecu tune », « torque converter », « ricer », « cartok », « car meet ».
+//   · ANCRÉ — « donuts » (la pâtisserie), « rice » (le riz — seul
+//     « ricer » est sûr), « build » (le build du jeu ; la construction), « mods » (les mods de jeu, les
+//     modérateurs), « tune » (l'accordage d'une `guitare`, « a tune » = un morceau), « track » (le
+//     morceau de musique, la piste d'athlétisme), « headers » (les en-têtes HTTP), « cam » (la webcam),
+//     « boost », « lift », « slammed », « sleeper », « spec » : compagnon requis.
+//   · ÉCARTÉ — les modèles dont le nom est un mot courant (« focus », « golf » déjà ancré, « charger »,
+//     « civic », « soul », « note », « fit ») : ils tirent en permanence sur du texte sans rapport.
+//   · ÉCARTÉ, et la raison vaut d'être écrite — « burnout » (le burn dans un nuage de fumée). Le mot
+//     est un terme `mental_health` : le garde de frontière D1 d'`interests-battery` REFUSE qu'un
+//     marqueur d'intérêt coïncide avec un terme sensible, y compris ancré. La règle est catégorique,
+//     pas probabiliste — « il faudrait un compagnon » ne suffit pas, parce que ce qu'elle protège
+//     n'est pas le taux de FP mais l'absence de tout chemin d'un mot de détresse vers un thème.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. « motos » = thème séparé du catalogue ; ici les 4-roues.
 
@@ -71,6 +90,31 @@ export const VOITURES_LEXICON: InterestLexicon = {
     'nissan',
     'subaru',
     'amg',
+    // Variantes EN (PANO-88) : SOLO univoques (prépa / pièces / communauté).
+    'coilovers',
+    'catback',
+    'downpipe',
+    'intercooler',
+    'blow off valve',
+    'widebody',
+    'ls swap',
+    'vtec',
+    'autocross',
+    'daily driver',
+    'project car',
+    'dyno',
+    'naturally aspirated',
+    'rev limiter',
+    'drivetrain',
+    'camber',
+    'ceramic coating',
+    'limited slip',
+    'ecu tune',
+    'torque converter',
+    'ricer',
+    'cartok',
+    'carsoftiktok',
+    'car meet',
   ],
   anchored: [
     'moteur', // moteur de recherche
@@ -89,6 +133,20 @@ export const VOITURES_LEXICON: InterestLexicon = {
     'alpine', // montagne vs marque alpine
     'seat', // siège (anglais) vs marque seat
     'drift', // dérive vs drift
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'donuts', // la pâtisserie (EN)
+    'rice', // le riz — seul « ricer » est sûr (EN)
+    'build', // le build du jeu / la construction (EN)
+    'mods', // les mods de jeu / les modérateurs (EN)
+    'tune', // l'accordage d'une guitare / « a tune » = un morceau (EN)
+    'track', // le morceau de musique / la piste d'athlétisme (EN)
+    'headers', // = les en-têtes HTTP (EN)
+    'cam', // la webcam vs l'arbre à cames (EN)
+    'boost', // un coup de pouce / le boost du jeu (EN)
+    'lift', // l'ascenseur / soulever (EN)
+    'slammed', // « slammed with work » / critiqué (EN)
+    'sleeper', // « a sleeper hit » / gros dormeur (EN)
+    'spec', // spécification en général (EN)
   ],
   selfDeclared: ['passionne d auto', 'mecano'],
 };

@@ -11,6 +11,16 @@
 //     « bass », « acid », « justice » (justice / groupe), « garage » (parking / genre), « dj » : co-occurrence.
 //   · EXCLU — rien de désespéré.
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// L'électro anglophone se dit surtout par son ATELIER (production) et ses sous-genres.
+//   · SOLO — « sidechain », « mixdown », « ableton », « fl studio », « wavetable », « vst »,
+//     « four on the floor », « amen break », « berghain », « warehouse party », « white label »,
+//     sous-genres (« liquid dnb », « uk garage », « speed garage », « breakcore », « minimal techno »,
+//     « acid house », « dnb »).
+//   · ANCRÉ — « loop » (la BOUCLE de programmation, sens dominant hors musique ; et le loop pedal de
+//     `guitare`), « lfo » (sigle court), « afters » (générique), « bootleg » (copie pirate),
+//     « residency » (= INTERNAT de médecine) : compagnon requis.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. « french touch »/« daft punk » partagés avec la culture musicale large (assumé).
 
@@ -59,6 +69,25 @@ export const ELECTRO_LEXICON: InterestLexicon = {
     'controleur midi',
     'vinyle mix',
     'basse ligne',
+    // Variantes EN (PANO-88) : SOLO univoques (atelier de production / sous-genres / lieux).
+    'sidechain',
+    'mixdown',
+    'ableton',
+    'fl studio',
+    'wavetable',
+    'vst',
+    'four on the floor',
+    'amen break',
+    'berghain',
+    'warehouse party',
+    'white label',
+    'liquid dnb',
+    'uk garage',
+    'speed garage',
+    'breakcore',
+    'minimal techno',
+    'acid house',
+    'dnb',
   ],
   anchored: [
     'house', // maison / house music
@@ -81,6 +110,12 @@ export const ELECTRO_LEXICON: InterestLexicon = {
     'ambient', // ambiant générique vs genre
     'b2b', // back to back (DJ) vs sigle (EN)
     'warm up', // set d'ouverture vs échauffement générique (EN)
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'loop', // boucle de programmation / loop pedal (guitare) (EN)
+    'lfo', // sigle court (EN)
+    'afters', // générique (EN)
+    'bootleg', // copie pirate / coupe de jean (EN)
+    'residency', // = internat de médecine vs résidence de DJ (EN)
   ],
   selfDeclared: ['dj', 'producteur de musique'],
 };

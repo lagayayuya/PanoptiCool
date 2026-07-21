@@ -11,6 +11,18 @@
 //     compagnon foot. C'est l'exemple canonique de la co-occurrence (PANO-76).
 //   · EXCLU — « ballon » (baudruche, trop courant même ancré ici sans plus-value).
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// Couche EN-only : ce que tape un anglophone et qu'aucun marqueur FR n'attrape.
+//   · SOLO — « offside », « clean sheet », « nutmeg », « own goal », « stoppage time », « false nine »,
+//     « tiki taka », « parked the bus », « transfer window », « counter attack », « free kick »,
+//     « penalty shootout », « soccer », « xg » ; compétitions (« champions league », « bundesliga »,
+//     « serie a », « fa cup », « mls »).
+//   · ANCRÉ — « pitch » (l'argumentaire de vente, la hauteur d'un son : encore PLUS faible en EN qu'en
+//     FR), « boots » (chaussures en général), « kit » (trousse de secours, kit de batterie — et le kit
+//     du `cyclisme`), « derby » (la VILLE de Derby, le roller derby), « fixture » (un LUMINAIRE),
+//     « header » (l'en-tête HTTP), « striker » (un GRÉVISTE), « keeper », « var » (le département du
+//     Var, une variable), « gaffer » (le CHEF ÉLECTRICIEN d'un plateau de cinéma) : compagnon requis.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. Jeux d'ARGENT / paris EXCLUS (PANO-74) : aucun marqueur de cote ou bookmaker.
 
@@ -58,6 +70,28 @@ export const FOOTBALL_LEXICON: InterestLexicon = {
     'vinicius',
     'bellingham',
     'lamine yamal',
+    // Variantes EN (PANO-88) : SOLO univoques (règles, tactique, compétitions).
+    'soccer',
+    'offside',
+    'clean sheet',
+    'nutmeg',
+    'own goal',
+    'stoppage time',
+    'injury time',
+    'false nine',
+    'tiki taka',
+    'parked the bus',
+    'transfer window',
+    'counter attack',
+    'high press',
+    'free kick',
+    'corner kick',
+    'penalty shootout',
+    'champions league',
+    'bundesliga',
+    'serie a',
+    'fa cup',
+    'xg',
   ],
   anchored: [
     'but', // dans le but de… (finalité)
@@ -71,6 +105,17 @@ export const FOOTBALL_LEXICON: InterestLexicon = {
     'real', // Real Madrid vs « réel »
     'barca', // FC Barcelone vs générique
     'messi', // joueur vs patronyme
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'pitch', // argumentaire de vente / hauteur d'un son — plus faible encore qu'en FR (EN)
+    'boots', // chaussures en général / démarrage d'un ordinateur (EN)
+    'kit', // trousse de secours / kit de batterie — partagé cyclisme (EN)
+    'derby', // la ville de Derby / roller derby (EN)
+    'fixture', // = un luminaire (EN)
+    'header', // = en-tête HTTP (EN)
+    'striker', // = un gréviste (EN)
+    'keeper', // « a keeper » = ce qu'on garde (EN)
+    'var', // le département du Var / une variable (EN)
+    'gaffer', // = chef électricien d'un plateau de cinéma (EN)
   ],
   selfDeclared: ['footballeur', 'supporter de foot'],
 };

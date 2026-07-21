@@ -10,6 +10,14 @@
 //     « crossover » (voiture), « panier » (courses), « mvp », « draft », « curry » (épice) : co-occurrence.
 //   · EXCLU — paris sportifs (hors-champ PANO-74).
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// Le basket anglophone parle par LOCUTIONS ; ses noms simples sont tous pris ailleurs.
+//   · SOLO — « wnba », « free throw », « three pointer », « full court press », « box out »,
+//     « sixth man », « starting five », « and1 », « posterized », « ncaa » : univoques.
+//   · ANCRÉ — « court » (= COURT en français, adjectif banal — piège FR, jamais solo), « assist »
+//     (aide ; assist esport), « rebound » (rebond sentimental), « foul », « steal », « guard »
+//     (vigile ; et la garde au sol des `sports_combat`), « bench », « paint » (peinture) : compagnon requis.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. Cross-thème « dunk »/« jordan » avec `sneakers` : assumé (co-occurrence par thème).
 
@@ -57,6 +65,18 @@ export const BASKET_LEXICON: InterestLexicon = {
     'march madness',
     'match de basket',
     'pro a',
+    // Variantes EN (PANO-88) : SOLO univoques (locutions de jeu / compétitions).
+    'wnba',
+    'free throw',
+    'three pointer',
+    'full court press',
+    'box out',
+    'sixth man',
+    'starting five',
+    'and1',
+    'posterized',
+    'ncaa',
+    'hoopers',
   ],
   anchored: [
     'basket', // chaussure / panier de courses vs le sport
@@ -73,6 +93,15 @@ export const BASKET_LEXICON: InterestLexicon = {
     'zone', // zone générique vs défense de zone
     'lakers', // franchise (assez univoque mais gardé ancré)
     'celtics', // franchise
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'court', // « court » = adjectif français banal — piège FR, jamais solo (EN)
+    'assist', // aide générique / assist esport (EN)
+    'rebound', // rebond sentimental (EN)
+    'foul', // faute générique / « foul mood » (EN)
+    'steal', // vol / « what a steal » (EN)
+    'guard', // vigile ; et la garde au sol des sports de combat (EN)
+    'bench', // banc / banc de muscu (EN)
+    'paint', // peinture vs la raquette (EN)
   ],
   selfDeclared: ['basketteur', 'joueur de basket'],
 };

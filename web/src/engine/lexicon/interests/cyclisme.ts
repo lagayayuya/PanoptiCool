@@ -12,6 +12,15 @@
 //     « pedale » (partagé) : co-occurrence.
 //   · EXCLU — rien de désespéré.
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// Le vélo ne se sépare du `running` que par son MATÉRIEL : les mots d'effort sont communs aux deux.
+//   · SOLO — « groupset », « bottom bracket », « bibshorts », « chamois cream », « dropper post »,
+//     « singletrack », « tubeless », « gravel bike », « road bike », « bike fit », « zwift ».
+//   · ANCRÉ — « strava » (l'appli est AUTANT celle des coureurs — `running` la porte en solo),
+//     « bonk » (la fringale, mais aussi un argot sexuel britannique et le mème « bonk »), « hardtail »
+//     (partagé avec les choppers de `motos`), « kom », « ftp » (= le PROTOCOLE de transfert de
+//     fichiers, collision sévère hors sport), « saddle » : compagnon requis.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. « denivele » partagé avec `running`/`randonnee` (assumé).
 
@@ -45,6 +54,20 @@ export const CYCLISME_LEXICON: InterestLexicon = {
     'sortie velo',
     'shimano',
     'btwin',
+    // Variantes EN (PANO-88) : SOLO univoques — le matériel, seul discriminant face au `running`.
+    'groupset',
+    'bottom bracket',
+    'bibshorts',
+    'chamois cream',
+    'dropper post',
+    'singletrack',
+    'tubeless',
+    'gravel bike',
+    'road bike',
+    'bike fit',
+    'drop bars',
+    'zwift',
+    'granfondo',
   ],
   anchored: [
     'velo', // vélo (assez spécifique mais gardé ancré)
@@ -58,6 +81,13 @@ export const CYCLISME_LEXICON: InterestLexicon = {
     'pedale', // partagé (voitures/guitare)
     'denivele', // partagé running/randonnee
     'cadence', // rythme générique
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'strava', // partagé running (qui la porte en solo) (EN)
+    'bonk', // fringale vs argot britannique / mème (EN)
+    'hardtail', // VTT semi-rigide vs chopper (motos) (EN)
+    'kom', // sigle court (EN)
+    'ftp', // = protocole de transfert de fichiers (EN)
+    'saddle', // selle vs « saddled with » (EN)
   ],
   selfDeclared: ['cycliste', 'passionne de velo'],
 };

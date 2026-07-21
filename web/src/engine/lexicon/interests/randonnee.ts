@@ -11,6 +11,19 @@
 //     « refuge » (asile), « topo », « millet » (graine), « decathlon », « boussole » : co-occurrence.
 //   · EXCLU — rien de désespéré.
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// La rando anglophone parle par CULTURE (thru-hiking) autant que par matériel.
+//   · SOLO — « thru hike », « thruhiker », « trail angel », « trail magic », « hiker trash »,
+//     « cowboy camping », « base weight », « ultralight », « leave no trace », « trekking poles »,
+//     « switchback », « trailhead », « backcountry », « fourteener », « alpine start »,
+//     « bear canister », « gaiters », « resupply », « day hike », « backpacking », « hiketok ».
+//   · ANCRÉ — « summit » (le SOMMET politique ou d'affaires, sens dominant), « elevation » (l'élévation
+//     morale, le plan d'architecte), « scramble » (les ŒUFS BROUILLÉS), « pack » (un paquet, une meute),
+//     « peak » (« peak hours »), « blaze » (le feu ; fumer), « shelter » (un refuge pour animaux),
+//     « camp » (la colonie de vacances ; le camping du jeu), « zero day » (la FAILLE zero-day),
+//     « range » (la gamme ; la cuisinière), « cairn » (mot français à l'identique) : compagnon requis.
+//   · ÉCARTÉ — « pace » : appartient au `running`, pas à la rando.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. DISTINCT de `running`/`cyclisme` ; « bivouac »/« sac a dos » partagés avec `voyage`.
 
@@ -42,6 +55,29 @@ export const RANDONNEE_LEXICON: InterestLexicon = {
     'scarpa',
     'la sportiva',
     'sentier balise',
+    // Variantes EN (PANO-88) : SOLO univoques (culture thru-hiking / matériel).
+    'thru hike',
+    'thruhiker',
+    'trail angel',
+    'trail magic',
+    'hiker trash',
+    'cowboy camping',
+    'base weight',
+    'ultralight',
+    'leave no trace',
+    'trekking poles',
+    'switchback',
+    'trailhead',
+    'backcountry',
+    'fourteener',
+    'alpine start',
+    'bear canister',
+    'gaiters',
+    'resupply',
+    'day hike',
+    'backpacking',
+    'hiketok',
+    'hikingtok',
   ],
   anchored: [
     'rando', // abréviation (assez spécifique mais gardée ancrée)
@@ -54,6 +90,18 @@ export const RANDONNEE_LEXICON: InterestLexicon = {
     'decathlon', // enseigne multi-sport
     'boussole', // au figuré
     'denivele', // partagé cyclisme/running
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'summit', // le sommet politique ou d'affaires, sens dominant (EN)
+    'elevation', // élévation morale / plan d'architecte (EN)
+    'scramble', // = les œufs brouillés / se dépêcher (EN)
+    'pack', // un paquet / une meute (EN)
+    'peak', // « peak hours » / « peak performance » (EN)
+    'blaze', // le feu / fumer (EN)
+    'shelter', // refuge pour animaux / sans-abri (EN)
+    'camp', // colonie de vacances / le camping du jeu (EN)
+    'zero day', // = la faille zero-day (EN)
+    'range', // la gamme / la cuisinière (EN)
+    'cairn', // mot français à l'identique (EN)
   ],
   selfDeclared: ['randonneur', 'randonneuse', 'alpiniste'],
 };

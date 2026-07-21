@@ -11,6 +11,17 @@
 //     « sample », « jul » (prénom/mois), « sch », « zola » (Émile Zola), « leto », « dinos » : co-occurrence.
 //   · EXCLU — « clash » (= conflit, frôle le sens agressif) écarté par prudence.
 //
+// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// Couche EN-only du rap anglophone, par-dessus la scène FR déjà couverte.
+//   · SOLO — « cypher », « diss track », « type beat », « battle rap », « crate digging », « emcee »,
+//     « ghostwriter », « uk drill », « drill music », « trap beat », « g funk », « sixteen bars »,
+//     « ad libs », « double time flow », « lyricism », « hiphopheads ».
+//   · ANCRÉ — « bars » (les BARS où l'on boit, les barres chocolatées, les barres de réseau : mot
+//     très fréquent, gros pourvoyeur de FP), « mc » (sigle), « hook » (le crochet de porte, le crochet
+//     de BOXE), « verse » (le verset biblique), « label » (l'étiquette) : compagnon requis.
+//   · NOTE — « drill » et « trap » restent ancrés (déjà là) : ce sont la PERCEUSE et le PIÈGE. Seules
+//     leurs formes composées (« uk drill », « drill music », « trap beat ») entrent en solo.
+//
 // ── Frontière ──────────────────────────────────────────────────────────────────────────────────
 // Non sensible. Marqueurs = VOCABULAIRE de genre/culture, jamais CONTENU de paroles (violence,
 // politique) — la frontière D1 est tenue par le lexique, pas par le sujet des morceaux.
@@ -65,6 +76,23 @@ export const RAP_LEXICON: InterestLexicon = {
     'adlib',
     'sacem',
     'disque d or',
+    // Variantes EN (PANO-88) : SOLO univoques (jargon scène / studio anglophone).
+    'cypher',
+    'diss track',
+    'type beat',
+    'battle rap',
+    'crate digging',
+    'emcee',
+    'ghostwriter',
+    'uk drill',
+    'drill music',
+    'trap beat',
+    'g funk',
+    'sixteen bars',
+    'ad libs',
+    'double time flow',
+    'lyricism',
+    'hiphopheads',
   ],
   anchored: [
     'rime', // rime générique
@@ -83,6 +111,12 @@ export const RAP_LEXICON: InterestLexicon = {
     'maes', // patronyme courant vs le rappeur
     'hamza', // prénom courant vs le rappeur
     'plug', // prise (anglais) vs plug (rap)
+    // Variantes EN (PANO-88) : ANCRÉS.
+    'bars', // les bars où l'on boit / barres chocolatées / barres de réseau (EN)
+    'mc', // sigle — aussi « maître de cérémonie » générique (EN)
+    'hook', // crochet de porte / crochet de boxe (EN)
+    'verse', // le verset biblique (EN)
+    'label', // l'étiquette / étiqueter un fichier (EN)
   ],
   selfDeclared: ['rappeur', 'rappeuse'],
 };
