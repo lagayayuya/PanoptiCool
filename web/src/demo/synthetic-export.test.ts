@@ -46,18 +46,38 @@ describe('démo FR — barre d’honnêteté (pipeline réel)', () => {
   it('D1 ne sort QUE mental_health et conflictual (pas politics/health-physical/sexuality/religion)', () => {
     // Ex-`d1TemplatePrefixes` : le nom du sujet est ÉMIS, plus extrait d'un templateId à la regex.
     expect(new Set(output.signals.map((s) => s.label))).toEqual(
-      new Set([sensitiveTopicName('mental_health'), sensitiveTopicName('conflictual')]),
+      new Set([sensitiveTopicName('fr', 'mental_health'), sensitiveTopicName('fr', 'conflictual')]),
     );
   });
 
-  it('mental_health est un constat sensible avec un unique signal explicite (la recherche burn out)', () => {
-    const signal = output.signals.find((s) => s.label === sensitiveTopicName('mental_health'));
-    expect(signal?.sensitive).toBe(true); // ex-`sensitivity === 3`, toujours 3 (§2.1)
-    expect(signal?.evidence).toHaveLength(1); // ex-`value.signalCount`
+  it('mental_health est un constat LARGE — « témoignages burn out » ne nomme plus, mais franchit seul', () => {
+    // FIL-PIÈGE RETOURNÉ DEUX FOIS, et la SÉQUENCE vaut plus que l'état final — c'est pour ça
+    // qu'elle est écrite ici plutôt que remplacée :
+    //
+    //   1. AVANT — constat NOMMÉ. « témoignages burn out » écrit le terme en toutes lettres, donc
+    //      l'étage nommé, donc la carte affirmait un vécu sur la foi d'une recherche de récits.
+    //   2. PUIS — plus AUCUN constat. Le registre informationnel a dégradé l'item (demander des
+    //      témoignages n'affirme rien), et le seuil de répétition a fait le reste : un item dégradé
+    //      reste UN item, et un constat large en exige DEUX. Deux règles justes composées en une
+    //      disparition qu'aucune des deux ne demandait.
+    //   3. MAINTENANT — constat LARGE. L'item dégradé franchit SEUL, comme le fait déjà un nom nu
+    //      de trouble (`indirectSolo`) : dans les deux cas le terme précis EST écrit, et c'est le
+    //      CADRAGE qui interdit d'affirmer. La règle n'est pas neuve, elle rejoint un chemin qu'elle
+    //      avait manqué.
+    //
+    // Ce que la carte dit maintenant est ce qu'elle aurait dû dire depuis le début : il y a bien un
+    // signal de santé mentale ici, et il ne suffit pas à affirmer un vécu.
+    const signal = output.signals.find(
+      (s) => s.label === sensitiveTopicName('fr', 'mental_health'),
+    );
+    expect(signal?.sensitive).toBe(true);
+    expect(signal?.evidence).toHaveLength(1);
+    // L'étage EST le résultat : `low` est la confiance du large, `medium` celle du nommé.
+    expect(signal?.confidence).toBe('low');
   });
 
   it('conflictual porte un unique signal explicite (l’insulte ciblée)', () => {
-    const signal = output.signals.find((s) => s.label === sensitiveTopicName('conflictual'));
+    const signal = output.signals.find((s) => s.label === sensitiveTopicName('fr', 'conflictual'));
     expect(signal?.evidence).toHaveLength(1);
   });
 
@@ -109,8 +129,53 @@ describe('démo EN — la barre d’honnêteté révèle la limite réelle des l
   }
   const { output } = result;
 
-  it('D1 ne sort RIEN en anglais (mental_health/conflictual : lexiques FR-only, PANO-88 ne les couvre pas)', () => {
-    expect(output.signals).toHaveLength(0);
+  // MESURE, pas cible. La persona EN a été écrite à l'aveugle (une personne, pas une liste de
+  // déclencheurs) ; ce bloc enregistre ce que le détecteur en tire AUJOURD'HUI.
+  //
+  // LE LOT EN DE `mental_health` A ATTERRI (PANO-35) — et ces chiffres n'ont PAS bougé d'un octet.
+  // Ce n'est pas un raté : la persona, écrite sans viser les lexiques, ne rencontre AUCUN des ~50
+  // termes livrés. C'est la mesure la plus utile de ce bloc, et elle dit une limite de l'instrument
+  // plutôt qu'une limite du lexique : une persona mesure du RAPPEL sur une voix d'écriture, jamais
+  // un taux de faux positifs. Ce que le lot ajoute est exercé par la batterie adverse
+  // (`engine/detect/lexicon-battery.test.ts`), seul endroit qui le traverse ; ce qu'il faudrait pour
+  // mesurer les FP est nommé en dette au catalogue (banc de personas en registres contrastés).
+  it('D1 sort mental_health ET conflictual — deux couvertures EN ASSUMÉES, rien de plus', () => {
+    // `mental_health` franchit par « burnout », le même mot des deux côtés : il franchissait DÉJÀ
+    // avant son lot, sans qu'aucune décision ne l'ait voulu, et il est depuis annoté « (EN) ».
+    // `conflictual` a rejoint la liste au lot EN de son lexique — et lui, il a fallu le VOULOIR :
+    // sa porte exige une insulte ET une cible, et les deux listes étaient FR.
+    expect(new Set(output.signals.map((s) => s.label))).toEqual(
+      new Set([sensitiveTopicName('fr', 'mental_health'), sensitiveTopicName('fr', 'conflictual')]),
+    );
+    const mental = output.signals.find(
+      (s) => s.label === sensitiveTopicName('fr', 'mental_health'),
+    );
+    expect(mental?.sensitive).toBe(true);
+    expect(mental?.evidence).toHaveLength(1);
+    // Le terme qui franchit est ÉPINGLÉ, pas seulement le label : c'est ce qui distingue une
+    // couverture assumée d'un décompte. Si un autre terme d'un lot commençait à franchir, cette
+    // ligne le dirait au lieu de le laisser se fondre dans un total inchangé.
+    expect(mental?.evidence[0]?.triggerTerms).toEqual(['burnout']);
+  });
+
+  // Ce test AFFIRMAIT le contraire — « l'insulte ciblée EN ne déclenche PAS conflictual (aucune
+  // variante EN au lexique) ». C'était un fil-piège sur la dette EN de ce label, et il a été
+  // RETOURNÉ, jamais supprimé : un fil-piège effacé ne laisse aucune trace de ce qu'il gardait.
+  // L'assertion négative devient positive, avec son terme épinglé.
+  //
+  // C'est le SEUL mouvement de rappel du lot EN de `conflictual`, et c'est voulu : le lexique EN
+  // est délibérément petit — un ordre de grandeur sous le FR — parce que rien dans un export ne
+  // sépare la vanne entre amis de l'agression — cf. l'en-tête de `lexicon/conflictual.ts`. Tout
+  // mouvement HORS de cet item unique serait un terme qui sur-matche, et doit se lire comme tel.
+  it('l’insulte ciblée EN déclenche conflictual — via « stupid » + la cible « you’re »', () => {
+    const signal = output.signals.find((s) => s.label === sensitiveTopicName('fr', 'conflictual'));
+    expect(signal, 'la persona EN porte une insulte ciblée : elle doit être lue').toBeDefined();
+    expect(signal?.sensitive).toBe(true);
+    // Item-level (B5) : un seul item émis suffit, et un seul est attendu.
+    expect(signal?.evidence).toHaveLength(1);
+    // Le terme épinglé, pas seulement le label — même discipline que « burnout » ci-dessus : si un
+    // autre terme du lot se mettait à franchir, cette ligne le dirait.
+    expect(signal?.evidence[0]?.triggerTerms).toEqual(['stupid']);
   });
 
   it('D2 ne retient QUE cinema_series (3 items) — chats n’a aucune variante EN', () => {
@@ -120,9 +185,9 @@ describe('démo EN — la barre d’honnêteté révèle la limite réelle des l
     ).toHaveLength(3);
   });
 
-  it('mêmes volumes agrégés que la version FR (24/15/300/2700, 50000/6100/420)', () => {
+  it('mêmes volumes agrégés que la version FR (24/14/300/2700, 50000/6100/420)', () => {
     expect(output.volumes.searches).toBe(24);
-    expect(output.volumes.comments).toBe(15);
+    expect(output.volumes.comments).toBe(14);
     expect(output.volumes.follows).toBe(300);
     expect(output.volumes.endorsements).toBe(2700);
     expect(output.volumes.allTime?.videosWatchedToEnd).toBe(50_000);

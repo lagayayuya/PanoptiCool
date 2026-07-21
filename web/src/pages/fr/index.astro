@@ -1,0 +1,48 @@
+---
+// Page d'accueil (refonte design 2026-07-15, maquette « Accueil v2 ») — REMPLACE la page d'accueil
+// historique. Build statique (ADR-0001/0002) ; l'interactivité (modale de consentement, œil animé)
+// tient dans un unique îlot `client:only`, comme partout ailleurs.
+//
+// Police JetBrains Mono AUTO-HÉBERGÉE (PANO-56) : import ciblé sous-ensemble « latin », 4 graisses,
+// zéro CDN — la contrainte est le zéro-CDN, pas la liste des pages qui l'appliquent.
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '@fontsource/jetbrains-mono/latin-600.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
+import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../../i18n/locales';
+import SiteHead from '../../ui/SiteHead.astro';
+import { LandingPage } from '../../ui/v2/LandingPage';
+
+// La langue vient du DOSSIER de la page, elle n'est pas écrite ici : c'est ce qui rend
+// `<html lang>` vrai par construction dans chaque arbre de langue — et `i18n/current.ts`,
+// qui lit cet attribut pour fabriquer les liens des îlots, en dépend entièrement.
+const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+---
+
+<!doctype html>
+<html lang={HTML_LANG[locale]}>
+  <head>
+    <SiteHead
+      title="PanoptiCool — Découvre ce que tes réseaux savent de toi."
+      description="PanoptiCool lit ton export TikTok et te montre ce qu'un algorithme pourrait en déduire — 100 % local, rien n'est envoyé."
+      path="/"
+    />
+  </head>
+  <body>
+    <LandingPage client:only="preact" />
+    <style is:global>
+      :root {
+        color-scheme: dark;
+        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+      body {
+        margin: 0;
+        background: #070b18; /* NAVY.bgPage */
+        color: #e9eefb; /* NAVY.textBright */
+      }
+      a {
+        color: #2fd4f0;
+      }
+    </style>
+  </body>
+</html>

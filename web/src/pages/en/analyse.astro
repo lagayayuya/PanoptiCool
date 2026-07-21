@@ -1,0 +1,62 @@
+---
+// Parcours d'analyse (refonte design 2026-07-15, maquette « PanoptiCool v4 — parcours guidé »).
+// `?demo` → export synthétique à travers le moteur réel ; sinon dépôt de l'export réel (drag &
+// drop). Toute l'interactivité vit dans l'unique îlot `client:only` (ADR-0002), comme ailleurs.
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '@fontsource/jetbrains-mono/latin-600.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
+import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../../i18n/locales';
+import SiteHead from '../../ui/SiteHead.astro';
+import { AnalysisPage } from '../../ui/v2/AnalysisPage';
+
+// La langue vient du DOSSIER de la page, elle n'est pas écrite ici : c'est ce qui rend
+// `<html lang>` vrai par construction dans chaque arbre de langue — et `i18n/current.ts`,
+// qui lit cet attribut pour fabriquer les liens des îlots, en dépend entièrement.
+const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+
+// Les textes du <head> sont écrits ici, en anglais — même raison que sur `en/index.astro` :
+// `ui/copy.ts` lit `<html lang>`, absent au build, et rendrait donc du français dans le <head>.
+---
+
+<!doctype html>
+<html lang={HTML_LANG[locale]}>
+  <head>
+    <SiteHead
+      title="PanoptiCool — what TikTok could infer"
+      description="Analyse your TikTok export entirely in your browser: rhythms, themes, sensitive signals — nothing leaves your machine."
+      path="/analyse"
+    />
+  </head>
+  <body>
+    <AnalysisPage client:only="preact" />
+    <style is:global>
+      :root {
+        color-scheme: dark;
+        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px; /* sommaire : les ancres s'arrêtent sous la barre sticky */
+      }
+      /* Mobile (maquette « v4 Mobile ») : la barre sticky est plus haute (rangée logo + chips de
+         sommaire) — même seuil que MOBILE_QUERY (ui/v2/useIsMobile.ts, à garder alignés). */
+      @media (max-width: 720px) {
+        html {
+          scroll-padding-top: 132px;
+        }
+      }
+      body {
+        margin: 0;
+        background: #070b18; /* NAVY.bgPage */
+        color: #e9eefb; /* NAVY.textBright */
+      }
+      /* Spinner de l'écran de chargement (styles inline — le @keyframes global vit ici). */
+      @keyframes pano-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </body>
+</html>

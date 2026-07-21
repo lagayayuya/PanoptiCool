@@ -1,43 +1,38 @@
 ---
-// Page d'accueil (refonte design 2026-07-15, maquette « Accueil v2 »). L'ancienne page principale
-// vit désormais sur /temp le temps de valider la refonte ; le parcours d'analyse (démo ou export
-// réel) vit sur /analyse. Build statique (ADR-0001/0002) ; l'interactivité (modale de consentement,
-// œil animé) tient dans un unique îlot `client:only`, comme partout ailleurs.
+// LA RACINE — elle envoie vers la langue par défaut, et c'est tout ce qu'elle fait.
 //
-// Police JetBrains Mono AUTO-HÉBERGÉE (PANO-56) : import ciblé sous-ensemble « latin », 4 graisses,
-// zéro CDN — mêmes imports que la page historique (/temp).
-import '@fontsource/jetbrains-mono/latin-400.css';
-import '@fontsource/jetbrains-mono/latin-500.css';
-import '@fontsource/jetbrains-mono/latin-600.css';
-import '@fontsource/jetbrains-mono/latin-700.css';
+// POURQUOI ELLE EST ÉCRITE À LA MAIN au lieu d'une entrée dans `redirects` (astro.config.ts).
+// Les robots d'aperçu de lien (Slack, Discord, iMessage, Signal…) lisent le <head> de la PREMIÈRE
+// réponse et ne suivent PAS un `meta refresh`. Une redirection générée n'en porte aucun : l'aperçu
+// de `panopti.cool` — l'URL qu'on partage, celle qui compte — serait devenu une carte vide le jour
+// de la mise en langues. Cette page porte donc `SiteHead` en entier, et l'aperçu survit.
+//
+// Les autres URLs d'avant (`/analyse`, `/mentions-legales`) restent des redirections générées :
+// elles ne s'affichent pas en carte dans une conversation, et trois pages à maintenir pour deux
+// cas qui ne se produisent pas serait payer cher un principe (décision yuya, 2026-07-18).
+//
+// Le canonical pointe vers `/fr` (calculé par `SiteHead` à partir de la langue par défaut) : la
+// racine ne se réclame donc d'aucun contenu propre, et n'entre en concurrence avec `/fr` sur aucun
+// moteur.
+//
+// PAS D'ÎLOT, PAS DE POLICE : cette page ne s'affiche presque jamais. Charger quatre graisses de
+// JetBrains Mono pour une redirection ferait payer un aller-retour réseau à chaque visiteur de la
+// racine — c'est-à-dire à tout le monde.
+import { DEFAULT_LOCALE, HTML_LANG, localePath } from '../i18n/locales';
+import { UI_ROOT } from '../ui/copy';
 import SiteHead from '../ui/SiteHead.astro';
-import { LandingPage } from '../ui/v2/LandingPage';
+
+const target = localePath(DEFAULT_LOCALE, '/');
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={HTML_LANG[DEFAULT_LOCALE]}>
   <head>
-    <SiteHead
-      title="PanoptiCool — Découvre ce que tes réseaux savent de toi."
-      description="PanoptiCool lit ton export TikTok et te montre ce qu'un algorithme pourrait en déduire — 100 % local, rien n'est envoyé."
-      path="/"
-    />
+    <SiteHead title={UI_ROOT.title} description={UI_ROOT.description} path="/" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
   </head>
   <body>
-    <LandingPage client:only="preact" />
-    <style is:global>
-      :root {
-        color-scheme: dark;
-        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      }
-      body {
-        margin: 0;
-        background: #070b18; /* NAVY.bgPage */
-        color: #e9eefb; /* NAVY.textBright */
-      }
-      a {
-        color: #2fd4f0;
-      }
-    </style>
+    <!-- Vu seulement si la redirection ne part pas. Un lien, pas un écran. -->
+    <a href={target}>{UI_ROOT.fallbackLink}</a>
   </body>
 </html>

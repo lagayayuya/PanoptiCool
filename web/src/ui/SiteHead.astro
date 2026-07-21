@@ -1,28 +1,68 @@
 ---
-// Le <head> commun aux 3 pages : favicon, et les balises d'aperçu de partage (Open Graph +
-// Twitter Card) que lisent Slack, Discord, iMessage, Signal, Mastodon, LinkedIn…
+// Le <head> commun aux pages : favicon, canonical, alternates de langue, et les balises d'aperçu de
+// partage (Open Graph + Twitter Card) que lisent Slack, Discord, iMessage, Signal, Mastodon,
+// LinkedIn…
 //
 // UNE maison : ces balises sont identiques d'une page à l'autre à trois valeurs près. Les recopier
 // dans chaque page fabriquerait la divergence du jour où le domaine ou l'image change.
 //
+// LE DOMAINE VIENT DE `Astro.site` (astro.config.ts) et n'est plus écrit ici. Il l'était, et ça ne
+// pouvait pas survivre à deux arbres de langue : chaque URL absolue — canonical, alternates,
+// og:url, og:image — doit se dériver du MÊME domaine, et un domaine recopié finit par diverger.
+//
 // `og:image` DOIT être une URL absolue : les robots d'aperçu ne résolvent pas les chemins relatifs.
-// D'où `SITE` en dur — c'est le domaine de production, pas une préférence de dev.
+//
+// LES ALTERNATES NE LISENT QUE LES LANGUES PUBLIÉES. C'est la règle centrale de `i18n/locales.ts`,
+// et c'est ici qu'elle se joue vraiment : un `<link rel="alternate">` est une INVITATION à indexer.
+// En nommer une langue non construite ferait crawler une coquille — l'erreur exacte que la liste
+// `PUBLISHED_LOCALES` existe pour rendre impossible.
 //
 // Rendu à la compilation (Astro) : aucun JS n'atteint le navigateur. `mentions-legales` reste donc
 // la page zéro-JS qu'elle revendique.
 
+// Le CSS des survols est global au site : une classe par famille d'éléments, importée ici pour que
+// chaque page l'ait sans la recopier. CSS pur — `mentions-legales` reste zéro-JS.
+import './hover.css';
+
+import {
+  DEFAULT_LOCALE,
+  HTML_LANG,
+  type Locale,
+  localePath,
+  OG_LOCALE,
+  PUBLISHED_LOCALES,
+} from '../i18n/locales';
+
 interface Props {
   title: string;
   description: string;
-  /** Chemin de CETTE page, pour `og:url` (« / », « /analyse », …). */
+  /**
+   * Chemin de CETTE page, SANS la langue (« / », « /analyse », …). La langue est ajoutée ici, pour
+   * que l'appelant n'ait pas à connaître la forme des URLs localisées.
+   */
   path: string;
 }
 
 const { title, description, path } = Astro.props;
 
-const SITE = 'https://panopti.cool';
-const pageUrl = new URL(path, SITE).href;
-const ogImage = `${SITE}/og.jpg`;
+// `Astro.currentLocale` se déduit du dossier de la page (`pages/fr/…`). Il est indéfini pour la
+// page de racine, qui n'est dans aucun dossier de langue : elle canonise vers la langue par défaut.
+const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+
+const site = Astro.site;
+if (site === undefined) {
+  // Sans `site`, toutes les URLs absolues de ce fichier seraient fausses en silence — un aperçu
+  // cassé et un canonical relatif ne se voient pas au build. Mieux vaut refuser de construire.
+  throw new Error('SiteHead : `site` doit être défini dans astro.config.ts.');
+}
+
+const canonical = new URL(localePath(locale, path), site).href;
+const ogImage = new URL('/og.jpg', site).href;
+const alternates = PUBLISHED_LOCALES.map((l) => ({
+  hreflang: HTML_LANG[l],
+  href: new URL(localePath(l, path), site).href,
+}));
+const xDefault = new URL(localePath(DEFAULT_LOCALE, path), site).href;
 ---
 
 <meta charset="utf-8" />
@@ -30,13 +70,17 @@ const ogImage = `${SITE}/og.jpg`;
 <title>{title}</title>
 <meta name="description" content={description} />
 
+<link rel="canonical" href={canonical} />
+{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+<link rel="alternate" hreflang="x-default" href={xDefault} />
+
 <link rel="icon" type="image/png" href="/favicon.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="PanoptiCool" />
-<meta property="og:locale" content="fr_FR" />
-<meta property="og:url" content={pageUrl} />
+<meta property="og:locale" content={OG_LOCALE[locale]} />
+<meta property="og:url" content={canonical} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={ogImage} />

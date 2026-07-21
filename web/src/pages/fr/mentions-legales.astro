@@ -6,11 +6,17 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
 import '@fontsource/jetbrains-mono/latin-700.css';
-import SiteHead from '../ui/SiteHead.astro';
+import { DEFAULT_LOCALE, HTML_LANG, type Locale, localePath } from '../../i18n/locales';
+import SiteHead from '../../ui/SiteHead.astro';
+
+// La langue vient du DOSSIER de la page, elle n'est pas écrite ici : c'est ce qui rend
+// `<html lang>` vrai par construction dans chaque arbre de langue — et `i18n/current.ts`,
+// qui lit cet attribut pour fabriquer les liens des îlots, en dépend entièrement.
+const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={HTML_LANG[locale]}>
   <head>
     <SiteHead
       title="PanoptiCool — mentions légales"
@@ -20,7 +26,7 @@ import SiteHead from '../ui/SiteHead.astro';
   </head>
   <body>
     <main>
-      <a class="back" href="/">← Retour</a>
+      <a class="back" href={localePath(locale, '/')}>← Retour</a>
 
       <h1>Mentions légales</h1>
 

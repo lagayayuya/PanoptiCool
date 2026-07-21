@@ -1,0 +1,178 @@
+---
+// Page légale ANGLAISE — jumelle de `fr/mentions-legales.astro`. Page de TEXTE : Astro pur, aucun
+// îlot, zéro JS, comme sa jumelle.
+//
+// ⚠ CE TEXTE N'EST PAS LE TEXTE QUI ENGAGE, et la page le dit elle-même en dernière ligne.
+// « Mentions légales » est une obligation du droit FRANÇAIS (LCEN art. 6-III) ; *legal notice* en
+// est l'étiquette la plus proche, pas le régime. Deux pages qui se prétendraient toutes deux
+// engageantes se disputeraient l'autorité dans deux droits différents — d'où le renvoi explicite
+// vers la version française, qui n'existe pas dans le français et n'est donc pas une traduction.
+//
+// Trois qualifications ne traversent PAS et sont rendues en sens ordinaire, jamais en équivalent
+// statutaire inventé : « édité à titre non professionnel et sans but lucratif » (régime de
+// divulgation allégé, propre au droit français), « hébergeur » (obligation française, gardée comme
+// simple information), et la portée de « au sens du RGPD » — exacte, mais muette sur le CCPA ou
+// tout autre régime que ce texte, lu hors UE, ne prétend pas couvrir.
+
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '@fontsource/jetbrains-mono/latin-600.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
+import { DEFAULT_LOCALE, HTML_LANG, type Locale, localePath } from '../../i18n/locales';
+import SiteHead from '../../ui/SiteHead.astro';
+
+// La langue vient du DOSSIER de la page, elle n'est pas écrite ici : c'est ce qui rend
+// `<html lang>` vrai par construction dans chaque arbre de langue — et `i18n/current.ts`,
+// qui lit cet attribut pour fabriquer les liens des îlots, en dépend entièrement.
+const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+---
+
+<!doctype html>
+<html lang={HTML_LANG[locale]}>
+  <head>
+    <SiteHead
+      title="PanoptiCool — legal notice"
+      description="Publisher, host, and what PanoptiCool does not collect."
+      path="/mentions-legales"
+    />
+  </head>
+  <body>
+    <main>
+      <a class="back" href={localePath(locale, '/')}>← Back</a>
+
+      <h1>Legal notice</h1>
+
+      <h2>Publisher</h2>
+      <p>
+        PanoptiCool is published on a non-professional, non-profit basis by <strong>Yuya</strong>.
+      </p>
+      <p>
+        Contact: <a href="mailto:yuya@panopti.cool">yuya@panopti.cool</a>
+      </p>
+
+      <h2>Host</h2>
+      <p>
+        OVH SAS — 2 rue Kellermann, 59100 Roubaix, France<br />
+        Phone: 1007 · RCS Lille Métropole 424 761 419<br />
+        <a href="https://www.ovhcloud.com/fr/">ovhcloud.com</a>
+      </p>
+
+      <h2>Personal data</h2>
+      <p>
+        <strong>PanoptiCool collects nothing.</strong> This isn't a promise, it's a consequence of
+        how it's built.
+      </p>
+      <ul>
+        <li>
+          <strong>Your export never leaves your device.</strong> It is not sent, uploaded or stored:
+          the site is a set of static files, and the analysis runs in your browser. There is no
+          server to send it to.
+        </li>
+        <li><strong>No cookies</strong>, no trackers, no analytics.</li>
+        <li><strong>No account</strong>, no forms, no sign-up.</li>
+        <li>
+          <strong>No connection logs.</strong> The server that serves you this page keeps neither
+          your IP address nor your visit.
+        </li>
+      </ul>
+      <p>
+        There is therefore no processing of personal data within the meaning of the GDPR. There is
+        no right of access, rectification or erasure to exercise: there is nothing to consult,
+        correct or delete.
+      </p>
+
+      <h2>The AI analysis, if you use it</h2>
+      <p>
+        The results page offers to have your comments and searches read by a language model. That
+        model runs <strong>on your own machine</strong>, in a server you start yourself. Nothing is
+        sent to a third party, and this analysis only begins when you explicitly click.
+      </p>
+
+      <h2>What PanoptiCool displays</h2>
+      <p>
+        The tool shows what an algorithm <em>could</em> infer from a data export. It is not a
+        diagnosis, nor a verdict on a person: it is a demonstration of a system. The inferences
+        shown can be wrong, and when they are, that is also the point.
+      </p>
+
+      <h2>Code and licence</h2>
+      <p>
+        The code is free software, under the <a href="https://www.gnu.org/licenses/agpl-3.0.html"
+          >AGPL-3.0-only</a
+        > licence. You can read it, check it and reuse it:
+        <a href="https://github.com/lagayayuya/PanoptiCool">github.com/lagayayuya/PanoptiCool</a>.
+      </p>
+
+      <p class="dim">
+        This page is an English translation provided for convenience. The French version (<a
+          href={localePath('fr', '/mentions-legales')}>mentions légales</a
+        >) is the legally binding text.
+      </p>
+    </main>
+
+    <style is:global>
+      :root {
+        color-scheme: dark;
+        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+      body {
+        margin: 0;
+        background: #070b18; /* NAVY.bgPage */
+        color: #e9eefb; /* NAVY.textBright */
+      }
+      a {
+        color: #2fd4f0;
+      }
+      main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 48px 20px 80px;
+      }
+      .back {
+        display: inline-block;
+        font-size: 11px;
+        color: #8b98c0; /* NAVY.textMuted */
+        text-decoration: none;
+        margin-bottom: 32px;
+      }
+      .back:hover {
+        color: #2fd4f0;
+      }
+      h1 {
+        font-size: 22px;
+        line-height: 1.3;
+        margin: 0 0 32px;
+      }
+      h2 {
+        font-size: 13px;
+        line-height: 1.4;
+        color: #dde4f4; /* NAVY.textHeading */
+        margin: 36px 0 12px;
+      }
+      p,
+      li {
+        font-size: 12px;
+        line-height: 1.75;
+        color: #aab6d6; /* NAVY.textBody */
+      }
+      p {
+        margin: 0 0 12px;
+      }
+      ul {
+        margin: 0 0 12px;
+        padding-left: 18px;
+      }
+      li {
+        margin-bottom: 8px;
+      }
+      strong {
+        color: #c8d2e8; /* NAVY.textSecondary */
+      }
+      .dim {
+        font-size: 11px;
+        color: #66739a; /* NAVY.textDim */
+        margin-top: 36px;
+      }
+    </style>
+  </body>
+</html>

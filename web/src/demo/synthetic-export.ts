@@ -5,17 +5,17 @@
 // VRAIMENT sur ces items (D1/D2, `engine/detect/detect.ts`), verrouillé par `synthetic-export.test.ts`.
 //
 // Aucun contenu de vrai export : persona 100 % inventée, zéro PII (CLAUDE.md). Deux variantes,
-// MÊME persona, mêmes chiffres agrégés (vues, likes, suivis, commentaires, recherches, rythme) :
-//   - FR (`buildSyntheticExportZip`)   : mental_health, chats, cinema_series, conflictual — les 4
-//     thèmes tiennent sur cette langue (lexiques D1 + `chats` FR-only, `cinema_series` bilingue).
-//   - EN (`buildSyntheticExportZipEn`) : SEUL `cinema_series` tient en anglais — D1 (donc
-//     `mental_health`/`conflictual`) et l'intérêt `chats` n'ont AUCUNE variante EN dans les lexiques
-//     câblés (`engine/lexicon/mental-health.ts`, `conflictual.ts`, `interests/chats.ts` : zéro entrée
-//     PANO-88). Ce n'est PAS simulé ici — c'est vérifié par le test, qui fait tourner le vrai
-//     détecteur sur ces textes.
+// MÊME persona et MÊMES chiffres agrégés (vues, likes, suivis, 14 commentaires, 24 recherches,
+// rythme) : à volume égal, l'écart de sortie entre les deux mesure la LANGUE et rien d'autre.
+//
+// Les deux listes sont écrites comme des personnes, jamais comme des jeux de déclencheurs — ce que
+// le détecteur en tire est une MESURE, prise après coup, et elle vit dans `synthetic-export.test.ts`
+// (pipeline réel, D1 + D2). Aucun décompte de thèmes n'est annoncé ici : un en-tête qui prédit la
+// sortie du moteur devient faux au premier lot de lexique, sans que rien ne le signale.
 
 import { strToU8, zipSync } from 'fflate';
 import { validTikTokExport } from '../engine/valid-export.fixture';
+import type { Locale } from '../i18n/locales';
 
 interface SyntheticItem {
   kind: 'comment' | 'search';
@@ -88,59 +88,67 @@ const SYNTHETIC_ITEMS_FR: readonly SyntheticItem[] = [
   { kind: 'search', text: 'comment changer la pile d’une télécommande' },
 ];
 
-// --- Items EN (39 : 15 comments + 24 searches), même agencement ------------------------------------
-// SEUL `cinema_series` tient (Netflix/Kubrick sont des marqueurs bilingues du lexique, `markers`
-// n'étant pas localisés). Aucun item ne vise `mental_health`/`chats`/`conflictual` : ces trois
-// n'ont structurellement aucune couverture EN dans les lexiques câblés (D1 entier + `chats`, FR-only —
-// cf. l'absence de section « Variantes EN (PANO-88) » dans ces fichiers, contrairement à
-// `cinema-series.ts`). Verrouillé par `synthetic-export.test.ts` : D1 → `[]`, D2 → {cinema_series}.
+// --- Items EN (38 : 14 commentaires + 24 recherches), MÊME agencement que FR ------------------------
+// MÊME personne que la liste FR, transposée dans une vie anglophone (registre US) : le chat, le goût
+// du cinéma, la fatigue de fond, un moment d'humeur, des corvées. Ce n'est PAS une traduction — les
+// corvées d'un francophone traduites en anglais ne décrivent personne (« city hall address » n'est
+// l'errand de personne aux États-Unis).
+//
+// Trois règles d'écriture reprises de la liste FR, parce que ce sont elles qui font tenir la persona :
+//   1. un commentaire est la MOITIÉ d'une conversation — une réponse à une vidéo qu'on ne voit pas,
+//      jamais un avis autoportant. « mine does this exact thing at 4am » se lit ; une critique
+//      complète et ponctuée ne se lit pas comme un commentaire ;
+//   2. le sensible passe par une RECHERCHE et à distance (« burnout recovery stories » — le sujet
+//      des autres), tandis que la fatigue est diluée dans des commentaires qui ne diagnostiquent
+//      rien. C'est le propos du produit : la déduction naît de l'accumulation banale, pas d'un aveu ;
+//   3. plancher de bruit élevé et volontaire — l'écrasante majorité des items ne veut rien dire.
+//
+// MÊMES agrégats que FR (14/24) : à volume identique, un écart de sortie FR↔EN mesure la langue et
+// rien d'autre. Ce que ces textes déclenchent RÉELLEMENT est mesuré par `synthetic-export.test.ts`,
+// qui fait tourner le vrai détecteur — jamais annoncé ici.
 const SYNTHETIC_ITEMS_EN: readonly SyntheticItem[] = [
-  { kind: 'search', text: 'pharmacy opening hours sunday' },
-  { kind: 'search', text: 'weather forecast tomorrow morning' },
-  { kind: 'comment', text: 'finally the weekend, really need more sleep' },
-  { kind: 'search', text: 'cheap train ticket prices' },
-  { kind: 'comment', text: 'new restaurant nearby was nice, will go back' },
+  { kind: 'search', text: 'pharmacy hours sunday' },
+  { kind: 'search', text: 'weather tomorrow morning' },
+  { kind: 'comment', text: 'friday finally, sleeping in til noon and nobody can stop me' },
+  { kind: 'search', text: 'cheapest way to book train tickets' },
+  { kind: 'comment', text: 'the new place on the corner is actually good, going back friday' },
   { kind: 'search', text: 'how long to boil an egg' },
-  { kind: 'comment', text: 'raining again today, so tired of this weather' },
-  { kind: 'search', text: 'how to clean white shoes' },
-  { kind: 'comment', text: 'quick trip to the market this morning, so crowded' },
-  { kind: 'search', text: 'nearest city hall address' },
-  { kind: 'comment', text: 'picked up groceries on the way home' },
-  { kind: 'comment', text: 'long day at work, glad it is over' },
-  { kind: 'search', text: 'supermarket opening hours sunday' },
-  // --- cinema_series (D2) : critiques Netflix + recommandation Kubrick ---
-  {
-    kind: 'comment',
-    text: 'this show on netflix is honestly disappointing, the writing fell apart',
-  },
-  { kind: 'comment', text: 'netflix cancelled another series after one season, so done with this' },
-  {
-    kind: 'comment',
-    text: 'if you want real cinema watch a kubrick film, still holds up perfectly',
-  },
-  { kind: 'search', text: 'how to take a screenshot' },
-  { kind: 'comment', text: 'quiet evening at home, nothing special' },
-  { kind: 'search', text: 'difference between thyme and oregano' },
-  { kind: 'comment', text: 'can’t wait for the holidays, need a change of scenery' },
-  { kind: 'search', text: 'how to unsubscribe from a newsletter' },
-  { kind: 'comment', text: 'finally finished tidying the apartment, feels great' },
-  { kind: 'search', text: 'average rent studio apartment' },
-  { kind: 'comment', text: 'thanks for the advice, really helped' },
-  { kind: 'search', text: 'how to fold a shirt' },
-  { kind: 'comment', text: 'happy for you, great news!' },
-  { kind: 'search', text: 'average lifespan led bulb' },
-  { kind: 'comment', text: 'short walk in the park this afternoon, nice weather' },
-  { kind: 'search', text: 'how to reset a password' },
-  { kind: 'search', text: 'postal service customer support number' },
-  { kind: 'search', text: 'how to remove a grease stain' },
-  { kind: 'search', text: 'distance chicago to detroit by car' },
-  { kind: 'search', text: 'how to turn off app notifications' },
-  { kind: 'search', text: 'average price haircut' },
-  { kind: 'search', text: 'how to defog a windshield' },
+  { kind: 'comment', text: 'raining again, i give up' },
+  { kind: 'search', text: 'how to clean white sneakers' },
+  { kind: 'comment', text: 'went to the farmers market this morning, way too many people' },
+  { kind: 'search', text: 'dmv appointment near me' },
+  // --- chats ---
+  { kind: 'comment', text: 'mine does this exact thing at 4am' },
+  { kind: 'comment', text: 'he was like this as a kitten too and never grew out of it' },
+  { kind: 'search', text: 'grocery store hours sunday' },
+  // --- cinema_series ---
+  { kind: 'comment', text: 'still waiting on the spin off..' },
+  { kind: 'comment', text: 'if you want actual cinema go watch a kubrick' },
+  { kind: 'search', text: 'how to take a screenshot on windows' },
+  // --- humeur ciblée (2ᵉ personne) + « netflix » : un même item peut nourrir deux thèmes (C5) ---
+  { kind: 'comment', text: 'nah you’re just stupid, netflix shows aren’t worth the time' },
+  { kind: 'search', text: 'thyme vs oregano difference' },
+  { kind: 'comment', text: 'vacation cannot come soon enough, i need out of here' },
+  { kind: 'search', text: 'how to unsubscribe from emails' },
+  { kind: 'comment', text: 'finally cleaned the whole apartment, feels like a different place' },
+  { kind: 'search', text: 'average rent one bedroom' },
+  { kind: 'comment', text: 'thanks for this, genuinely helped' },
+  { kind: 'search', text: 'how to fold a fitted sheet' },
+  { kind: 'comment', text: 'happy for you!! big news' },
+  { kind: 'search', text: 'how long do led bulbs last' },
+  { kind: 'comment', text: 'walked around the park all afternoon, actually nice out' },
+  { kind: 'search', text: 'how to reset password' },
+  { kind: 'search', text: 'usps customer service number' },
+  // --- fatigue, à distance : le sujet est celui des autres ---
+  { kind: 'search', text: 'burnout recovery stories' },
+  { kind: 'search', text: 'how to get grease stain out' },
+  { kind: 'search', text: 'chicago to detroit drive time' },
+  { kind: 'search', text: 'turn off app notifications' },
+  { kind: 'search', text: 'average haircut price' },
+  { kind: 'search', text: 'how to defog windshield fast' },
   { kind: 'search', text: 'bus schedule route 12' },
-  { kind: 'search', text: 'how to freeze bread' },
-  { kind: 'search', text: 'how to change a remote control battery' },
-  { kind: 'search', text: 'how to descale a kettle' },
+  { kind: 'search', text: 'can you freeze bread' },
+  { kind: 'search', text: 'how to change remote battery' },
 ];
 
 const DAY_MS = 86_400_000;
@@ -325,11 +333,23 @@ export function buildSyntheticExportZip(maxItems?: number, now: number = Date.no
 }
 
 /**
- * Variante EN — mêmes chiffres agrégés, même persona, textes en anglais. PAS branchée sur l'UI (le
- * site est FR-only, aucune bascule de langue n'existe à ce jour) : exposée pour le test de cohérence
- * et pour objectiver ce qui NE PEUT PAS se déclencher en anglais avec les lexiques actuels
- * (`mental_health`, `conflictual`, `chats` — voir l'en-tête du fichier et `synthetic-export.test.ts`).
+ * Variante EN — mêmes chiffres agrégés, même persona, textes en anglais. À volume et persona
+ * identiques, ce qui manque en anglais se lit dans l'ÉCART avec la sortie FR
+ * (`synthetic-export.test.ts`) : c'est sa première raison d'être, et elle ne change pas.
  */
 export function buildSyntheticExportZipEn(maxItems?: number, now: number = Date.now()): Uint8Array {
   return buildZip(SYNTHETIC_ITEMS_EN, maxItems, now);
+}
+
+/**
+ * La persona de la DÉMO, dans la langue de la page.
+ *
+ * ⚠ CE N'EST PAS UN CONFORT DE TRADUCTION. Les preuves affichées sont des VERBATIMS : la démo
+ * dépliée montre le texte exact qui a déclenché chaque déduction, terme surligné compris. Servir la
+ * persona française sous l'interface anglaise afficherait donc des commentaires FRANÇAIS comme
+ * preuves — sur la page dont toute la fonction est de faire lire à la personne ce qui a été lu
+ * d'elle. La langue de la démo n'est pas une étiquette, c'est la donnée elle-même.
+ */
+export function buildDemoExportZip(locale: Locale, maxItems?: number): Uint8Array {
+  return locale === 'en' ? buildSyntheticExportZipEn(maxItems) : buildSyntheticExportZip(maxItems);
 }
