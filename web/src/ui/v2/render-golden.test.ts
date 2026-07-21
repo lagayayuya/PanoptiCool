@@ -18,6 +18,29 @@
 //   2. déplis FORCÉS OUVERTS — les preuves vivent derrière un `useState(false)` interne ; fermés,
 //      le golden ne verrait ni verbatim, ni terme surligné, ni C5 ;
 //   3. styles RETIRÉS — le CSS n'est pas du comportement, et son volume rendrait le diff illisible.
+//
+// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
+// Obligation de CLAUDE.md : un mécanisme de preuve déclare sa frontière, sinon il finit sur-cité.
+// Celui-ci a été cité comme s'il couvrait « le rendu » ; il couvre le sous-arbre `ResultsView`, et
+// pas davantage :
+//   - `AiSection` — montée derrière `aiSource !== undefined`, jamais passé ici ;
+//   - `LandingPage`, `AnalysisPage`, `SiteHeader`, `SiteFooter` — aucune de ces vues n'entre dans
+//     `ResultsView`. Elles sont couvertes par `ui-golden.test.ts`, ajouté pour ce trou précis ;
+//   - L'ÉVENTAIL EN MODE `equal`. La persona de démo produit un constat `mental_health` NOMMÉ, donc
+//     un éventail `ranked` : le mode `equal` (constats larges) n'est monté par aucun golden. La
+//     frontière est STRUCTURELLE et mérite d'être lue comme telle — la persona est écrite à
+//     l'aveugle, comme une personne, donc ce qu'elle n'exerce pas n'est le choix de personne, et ce
+//     que personne n'a décidé d'omettre, personne ne pense à l'écrire. Un défaut a vécu là (le mode
+//     `equal` tronquait à deux lectures) ; il est couvert par `fan-readings.test.ts`.
+//   - LE MOBILE, EN ENTIER. `useIsMobile` lit `matchMedia` ; en environnement Node, `window` est
+//     absent, donc il rend `false` — ce golden n'a JAMAIS rendu autre chose que le desktop, alors
+//     que les composants portent des variantes mobiles complètes (`M_*`) ;
+//   - l'état FERMÉ des déplis : la précaution 2 les force tous ouverts. Le rendu replié, celui que
+//     l'utilisateur voit en premier, n'est pas figé ;
+//   - le CSS (précaution 3) : aucune régression de style n'est détectable ici ;
+//   - les formes au SINGULIER. Persona et zips committés portent des volumes réalistes, donc
+//     pluriels : « 1 items » est resté invisible ici jusqu'à ce qu'un test d'appel le montre
+//     (`ui/copy.test.ts`).
 
 import { readFileSync } from 'node:fs';
 import { h } from 'preact';
