@@ -1,64 +1,64 @@
-// LA PARITÉ FR/EN DU WORDING — épinglée au COMPILATEUR, pas seulement à l'exécution.
+// THE FR/EN WORDING PARITY — pinned to the COMPILER, not only at runtime.
 //
-// POURQUOI CE FICHIER EXISTE. `wording.ts` annonce que le compilateur tient la parité dans les deux
-// sens. Cette garantie repose sur une condition qui NE SE VOIT PAS À LA LECTURE : les tables de
-// `wording.fr.ts` doivent rester des LITTÉRAUX NON ANNOTÉS. Le jour où quelqu'un écrit
-// `readings: { … } as Readonly<Record<string, string>>` — le réflexe naturel, et ce que faisait
-// l'ex-fichier monolingue — `typeof FR` cesse de porter les clés, et une table anglaise VIDE compile
-// sans une erreur. Mesuré, pas supposé.
+// WHY THIS FILE EXISTS. `wording.ts` announces that the compiler holds parity in both directions.
+// This guarantee rests on a condition that IS NOT VISIBLE ON READING: the tables of `wording.fr.ts`
+// must stay UNANNOTATED LITERALS. The day someone writes
+// `readings: { … } as Readonly<Record<string, string>>` — the natural reflex, and what the
+// ex-monolingual file did — `typeof FR` stops carrying the keys, and an EMPTY English table compiles
+// without an error. Measured, not supposed.
 //
-// La garantie tomberait donc EN SILENCE, et tout ce qui s'appuie dessus deviendrait faux du même
-// coup : `readingKeys()`/`hasReading()` ne lisent QUE le français, en s'autorisant du fait que les
-// deux jeux de clés sont identiques par construction. Ce raisonnement est correct tant que la
-// condition tient, et faux à la seconde où elle cesse — sans qu'aucun test rouge ne le dise.
+// The guarantee would therefore fall SILENTLY, and everything relying on it would become false at
+// the same stroke: `readingKeys()`/`hasReading()` read ONLY the French, availing themselves of the
+// fact that the two key sets are identical by construction. This reasoning is correct as long as the
+// condition holds, and false the second it stops — without any red test saying so.
 //
-// COMMENT IL S'Y PREND. Les `@ts-expect-error` ci-dessous sont des assertions à part entière : si la
-// parité cesse d'être tenue, l'erreur attendue n'est plus émise, la directive devient « unused » et
-// **`astro check` échoue**. Le filet est donc au TYPECHECK, pas au runtime — c'est le seul endroit
-// où la propriété existe.
+// HOW IT GOES ABOUT IT. The `@ts-expect-error` below are full-fledged assertions: if parity stops
+// being held, the expected error is no longer emitted, the directive becomes "unused" and
+// **`astro check` fails**. The net is therefore at the TYPECHECK, not at runtime — the only place
+// where the property exists.
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme de preuve déclare sa frontière.
-//   - IL NE PROUVE RIEN SUR LE CONTENU. Une entrée anglaise qui recopie mot pour mot le français
-//     passe ici, et passera partout ailleurs. La parité prouve qu'une entrée EXISTE, jamais qu'elle
-//     est TRADUITE — cette moitié-là est une relecture humaine, et elle n'a pas de filet ;
-//   - IL NE COUVRE PAS LA COUVERTURE DU LEXIQUE. Que les tables portent les clés RÉELLES des
-//     lexiques est une autre propriété, tenue par `d1/d2-wording-coverage.test.ts` ;
-//   - IL NE TESTE QU'UN ÉCHANTILLON DE FORMES. Une table témoin par catégorie (fermée, ouverte),
-//     pas les quatre tables. Ce qu'il épingle est le MÉCANISME — si l'annotation revenait, elle
-//     reviendrait par réflexe global, pas sur une table isolée.
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+// CLAUDE.md obligation: a proof mechanism declares its boundary.
+//   - IT PROVES NOTHING ABOUT THE CONTENT. An English entry that copies the French word for word
+//     passes here, and will pass everywhere else. Parity proves that an entry EXISTS, never that it
+//     is TRANSLATED — that half is a human review, and it has no net;
+//   - IT DOES NOT COVER LEXICON COVERAGE. That the tables carry the REAL keys of the lexicons is
+//     another property, held by `d1/d2-wording-coverage.test.ts`;
+//   - IT TESTS ONLY A SAMPLE OF SHAPES. One witness table per category (closed, open), not all four
+//     tables. What it pins is the MECHANISM — if the annotation came back, it would come back by a
+//     global reflex, not on an isolated table.
 
 import { describe, expect, it } from 'vitest';
 import { hasReading, hasThemeLabel, hasUsage, readingKeys } from './wording';
 import { EN } from './wording.en';
 import { FR } from './wording.fr';
 
-// ─── (1) LE FILET AU TYPECHECK ──────────────────────────────────────────────────────────────────
-// Ces déclarations ne s'exécutent jamais. Leur rôle est d'échouer À LA COMPILATION si la parité
-// n'est plus tenue. Chaque `@ts-expect-error` porte sur la LIGNE SUIVANTE — attention en éditant :
-// un littéral coupé sur plusieurs lignes déplace l'erreur et rend la directive « unused » pour une
-// raison qui n'est pas la bonne (piège rencontré en mettant ce filet au point).
+// ─── (1) THE TYPECHECK NET ──────────────────────────────────────────────────────────────────────
+// These declarations never execute. Their role is to fail AT COMPILE TIME if parity is no longer
+// held. Each `@ts-expect-error` bears on the NEXT LINE — careful when editing: a literal split over
+// several lines shifts the error and makes the directive "unused" for a reason that is not the right
+// one (a trap hit while getting this net right).
 
 type Bundle = typeof FR;
 
-// Une table OUVERTE à qui il manque une clé doit être REFUSÉE.
-// @ts-expect-error — `readings` amputé d'une lecture : le compilateur doit le voir.
+// An OPEN table missing a key must be REJECTED.
+// @ts-expect-error — `readings` stripped of a reading: the compiler must see it.
 const _MISSING_READING: Bundle['readings'] = { 'sensitive.mental-health.reading.lived': 'x' };
 
-// Une clé INCONNUE doit être REFUSÉE (l'autre sens de la parité).
-// @ts-expect-error — `usages` avec une clé fantôme : le compilateur doit le voir.
+// An UNKNOWN key must be REJECTED (the other direction of parity).
+// @ts-expect-error — `usages` with a ghost key: the compiler must see it.
 const _GHOST_USAGE: Bundle['usages'] = { ...FR.usages, 'usage.advertiser.ghost': 'x' };
 
-// Une table FERMÉE (union `SensitiveLabel`) à qui il manque un label doit être REFUSÉE.
-// @ts-expect-error — un label béni sans nom court ne compile pas.
+// A CLOSED table (union `SensitiveLabel`) missing a label must be REJECTED.
+// @ts-expect-error — a blessed label with no short name does not compile.
 const _MISSING_LABEL: Bundle['sensitiveTopicName'] = { mental_health: 'x' };
 
-// ─── (2) LE FILET AU RUNTIME ────────────────────────────────────────────────────────────────────
-// Le typecheck ci-dessus est le vrai filet, mais il ne tourne pas sous Vitest : ces assertions-ci
-// rendent la propriété VISIBLE dans la sortie de test, et attrapent le cas où quelqu'un
-// désactiverait les directives ci-dessus sans les retirer.
+// ─── (2) THE RUNTIME NET ────────────────────────────────────────────────────────────────────────
+// The typecheck above is the real net, but it does not run under Vitest: these assertions make the
+// property VISIBLE in the test output, and catch the case where someone disables the directives
+// above without removing them.
 
-describe('wording — parité FR/EN', () => {
+describe('wording — FR/EN parity', () => {
   const TABLES = [
     'readings',
     'themeLabels',
@@ -68,23 +68,23 @@ describe('wording — parité FR/EN', () => {
   ] as const;
 
   for (const table of TABLES) {
-    it(`\`${table}\` porte exactement les mêmes clés en FR et en EN`, () => {
+    it(`\`${table}\` carries exactly the same keys in FR and in EN`, () => {
       expect(Object.keys(EN[table]).sort()).toEqual(Object.keys(FR[table]).sort());
     });
   }
 
-  // Les tables ne doivent pas être VIDES : une parité entre deux tables vides est vraie et inutile.
-  // C'est le contrôle « par quel chemin le zéro arrive » exigé par CLAUDE.md — ici, la vérification
-  // que l'égalité ci-dessus porte sur quelque chose.
-  it('les tables comparées ne sont pas vides (l’égalité ci-dessus porte sur du contenu)', () => {
+  // The tables must not be EMPTY: a parity between two empty tables is true and useless. This is the
+  // "by which path does the zero arrive" check required by CLAUDE.md — here, the verification that
+  // the equality above bears on something.
+  it('the compared tables are not empty (the equality above bears on content)', () => {
     for (const table of TABLES) {
       expect(Object.keys(FR[table]).length, table).toBeGreaterThan(0);
     }
   });
 
-  // Les résolveurs `hasX`/`readingKeys` ne lisent QUE le français, en s'autorisant de la parité.
-  // Si la parité tombait, ils mentiraient sur l'anglais sans qu'aucun autre test ne le dise.
-  it('les résolveurs de clés valent pour l’anglais aussi (ce qu’ils supposent sans le dire)', () => {
+  // The `hasX`/`readingKeys` resolvers read ONLY the French, availing themselves of parity. If
+  // parity fell, they would lie about the English without any other test saying so.
+  it('the key resolvers hold for English too (what they assume without saying it)', () => {
     for (const key of Object.keys(EN.readings)) {
       expect(hasReading(key), `lecture EN absente du routage : ${key}`).toBe(true);
     }
@@ -97,10 +97,10 @@ describe('wording — parité FR/EN', () => {
     expect(readingKeys().length).toBe(Object.keys(EN.readings).length);
   });
 
-  // Les trois témoins de la section (1) n'ont AUCUN travail à l'exécution : le leur est fait quand
-  // `tsc` les lit. Ce test ne les vérifie pas — il les RÉFÉRENCE, pour qu'aucun outil ne les prenne
-  // pour du code mort et ne les retire, ce qui décrocherait le filet de typecheck sans un bruit.
-  it('les témoins de typecheck sont référencés (ils travaillent à la compilation, pas ici)', () => {
+  // The three witnesses of section (1) have NO work at runtime: theirs is done when `tsc` reads
+  // them. This test does not verify them — it REFERENCES them, so that no tool takes them for dead
+  // code and removes them, which would unhook the typecheck net without a sound.
+  it('the typecheck witnesses are referenced (they work at compile time, not here)', () => {
     expect([_MISSING_READING, _GHOST_USAGE, _MISSING_LABEL]).toHaveLength(3);
   });
 });

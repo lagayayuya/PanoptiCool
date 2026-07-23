@@ -1,20 +1,20 @@
-// Lexique d'intérêt `cinema_series` (D2, PANO-77 lot 2 · enrichi entités) — cinéma & séries.
+// Interest lexicon `cinema_series` (D2, PANO-77 batch 2 · entities enriched) — film & series.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du cinéma / des séries FR : métiers, formats, PLATEFORMES, FRANCHISES,
-// RÉALISATEURS, JARGON spectateur. À l'aveugle ; entités = signal public générique enrichi par
-// recherche (services de streaming, franchises, studios, jargon fandom).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR film / series: crafts, formats, PLATFORMS, FRANCHISES,
+// DIRECTORS, viewer JARGON. Blind; entities = generic public signal enriched by
+// research (streaming services, franchises, studios, fandom jargon).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « realisateur », « box office », « blockbuster », « spoiler », « reboot »,
-//     plateformes (« netflix », « disney plus »), franchises (« marvel », « star wars »), studios
-//     (« a24 », « pixar »), réalisateurs (« tarantino », « scorsese », « nolan »).
-//   · ANCRÉ — 50/50 : « film » (plastique), « serie » (sport), « acteur », « scene », « role »,
-//     « plan », « ecran », « sortie », « bond » (james bond / lien), « dc » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « realisateur », « box office », « blockbuster », « spoiler », « reboot »,
+//     platforms (« netflix », « disney plus »), franchises (« marvel », « star wars »), studios
+//     (« a24 », « pixar »), directors (« tarantino », « scorsese », « nolan »).
+//   · ANCHORED — 50/50: « film » (plastic), « serie » (sport), « acteur », « scene », « role »,
+//     « plan », « ecran », « sortie », « bond » (james bond / bond), « dc »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « manga_anime ».
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « manga_anime ».
 
 import type { InterestLexicon } from '../types';
 
@@ -27,7 +27,7 @@ export const CINEMA_SERIES_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Vocabulaire générique
+    // Generic vocabulary
     'cinema',
     'long metrage',
     'court metrage',
@@ -45,7 +45,7 @@ export const CINEMA_SERIES_LEXICON: InterestLexicon = {
     'binge watching',
     'biopic',
     'avant premiere',
-    // Jargon fandom
+    // Fandom jargon
     'spoiler',
     'reboot',
     'spin off',
@@ -54,7 +54,7 @@ export const CINEMA_SERIES_LEXICON: InterestLexicon = {
     'easter egg',
     'cinematic universe',
     'mcu',
-    // Plateformes de streaming
+    // Streaming platforms
     'netflix',
     'prime video',
     'disney plus',
@@ -70,7 +70,7 @@ export const CINEMA_SERIES_LEXICON: InterestLexicon = {
     'game of thrones',
     'stranger things',
     'breaking bad',
-    // Studios & réalisateurs
+    // Studios & directors
     'a24',
     'pixar',
     'dreamworks',
@@ -81,23 +81,23 @@ export const CINEMA_SERIES_LEXICON: InterestLexicon = {
     'kubrick',
   ],
   anchored: [
-    'film', // film plastique / pellicule
-    'serie', // série (sport / suite) — chevauche muscu
-    'acteur', // agissant
-    'scene', // scène (théâtre / crime)
-    'role', // rôle générique
-    'plan', // carte / projet
-    'ecran', // écran générique
-    'sortie', // exit vs sortie ciné
-    'episode', // épisode générique
-    'casting', // casting générique
-    'bond', // james bond / lien (anglais)
-    'dc', // abréviation
-    'villeneuve', // ville vs Denis Villeneuve
-    // Variantes EN (PANO-88) : ancrées (polysémiques).
-    'plot twist', // rebondissement vs générique (EN)
-    'cameo', // apparition vs générique (EN)
-    'recap', // résumé d'épisode vs générique (EN)
+    'film', // plastic film / photographic film
+    'serie', // series (sport / sequence) — overlaps muscu
+    'acteur', // acting
+    'scene', // scene (theatre / crime)
+    'role', // generic role
+    'plan', // map / plan
+    'ecran', // generic screen
+    'sortie', // exit vs film release
+    'episode', // generic episode
+    'casting', // generic casting
+    'bond', // james bond / bond (English)
+    'dc', // abbreviation
+    'villeneuve', // town vs Denis Villeneuve
+    // EN variants (PANO-88): anchored (polysemous).
+    'plot twist', // plot twist vs generic (EN)
+    'cameo', // cameo appearance vs generic (EN)
+    'recap', // episode recap vs generic (EN)
   ],
   selfDeclared: ['cinephile', 'serievore'],
 };

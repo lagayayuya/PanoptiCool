@@ -1,27 +1,27 @@
-// Lexique d'intérêt `muscu` (D2, PANO-76 lot 1, réécriture PROFONDE) — musculation / renforcement.
+// Interest lexicon `muscu` (D2, PANO-76 batch 1, DEEP rewrite) — bodybuilding / strength training.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la musculation FR : exercices, matériel, nutrition sportive, jargon salle.
-// Écrit à l'aveugle depuis l'usage commun, jamais depuis un export.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR bodybuilding: exercises, gear, sports nutrition, gym jargon.
+// Written blind from common usage, never from an export.
 //
-// ── Méthode recall (PANO-76 reprise) ───────────────────────────────────────────────────────────
-// On INCLUT riche ; le plancher + le classement du socle noient le bruit résiduel. Deux tiers :
-//   · SOLO — quasi-univoques, rentrent seuls (« musculation », « squat », « deadlift »).
-//   · ANCRÉ — 50/50 dont le sens NON-sportif est courant : ne comptent qu'avec un compagnon du
-//     domaine (« seche » près de « muscu », pas « la terre est seche »).
-//   · EXCLU — le vraiment désespéré : « masse » (foule), « serie » (TV), « pompe » (chaussure/à eau).
+// ── Recall method (PANO-76 resumed) ────────────────────────────────────────────────────────────
+// We INCLUDE richly; the floor + the base ranking drown the residual noise. Two tiers:
+//   · SOLO — near-univocal, enter on their own (« musculation », « squat », « deadlift »).
+//   · ANCHORED — 50/50 whose NON-sports sense is common: count only with a domain
+//     companion (« seche » near « muscu », not « la terre est seche »).
+//   · EXCLUDED — the truly hopeless: « masse » (crowd), « serie » (TV), « pompe » (shoe/water pump).
 //
-// ── Entités (rétrofit standard, PANO-90) ───────────────────────────────────────────────────────
-// Marques de nutrition/apparel et jargon de salle ajoutés : « myprotein », « gymshark », « drop set »,
-// « rm » (rep max, ancré). Recherche publique.
+// ── Entities (standard retrofit, PANO-90) ──────────────────────────────────────────────────────
+// Nutrition/apparel brands and gym jargon added: « myprotein », « gymshark », « drop set »,
+// « rm » (rep max, anchored). Public research.
 //
-// ── Variantes anglaises (PANO-88) ──────────────────────────────────────────────────────────────
-// EN courant en FR : SOLO univoques (« workout », « push day », « pull day », « leg day ») ; ANCRÉ
-// polysémiques (« gym » = gymnastique/prénom, « bulk » = vrac, « shredded » = déchiqueté).
+// ── English variants (PANO-88) ──────────────────────────────────────────────────────────────────
+// EN common in FR: SOLO univocal (« workout », « push day », « pull day », « leg day »); ANCHORED
+// polysemous (« gym » = gymnastics/first name, « bulk » = bulk, « shredded » = shredded).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « fitness/cross-training » (thème séparé). Le RAPPORT AU CORPS / les TCA
-// restent D1 : aucun marqueur de poids, calories ou restriction (« sèche » = coupe sportive, ancrée).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « fitness/cross-training » (separate theme). BODY IMAGE / eating disorders
+// stay D1: no weight, calorie or restriction marker (« sèche » = sports cut, anchored).
 
 import type { InterestLexicon } from '../types';
 
@@ -68,7 +68,7 @@ export const MUSCU_LEXICON: InterestLexicon = {
     'seance jambes',
     'seance pecs',
     'seance dos',
-    // Marques & jargon (rétrofit PANO-90)
+    // Brands & jargon (retrofit PANO-90)
     'myprotein',
     'gymshark',
     'optimum nutrition',
@@ -78,25 +78,25 @@ export const MUSCU_LEXICON: InterestLexicon = {
     'prise de force',
     'bcaa',
     'shaker whey',
-    // Variantes EN (PANO-88)
+    // EN variants (PANO-88)
     'workout',
     'push day',
     'pull day',
     'leg day',
   ],
   anchored: [
-    'seche', // coupe sportive vs « sec / la terre sèche »
-    'volume', // phase de volume vs « le volume sonore »
-    'serie', // série de reps vs série TV → ancré (le sens TV domine hors contexte)
-    'reps', // répétitions vs abréviation quelconque
-    'fonte', // soulever de la fonte vs « la fonte des neiges »
-    'charge', // charge de travail vs « charge mentale / à charge »
-    'bras', // jour de bras vs bras générique
-    'rm', // rep max vs sigle générique
-    'congestion', // congestion musculaire vs trafic / médical
-    'gym', // salle vs gymnastique / prénom (EN)
-    'bulk', // phase de volume vs « en vrac » (EN)
-    'shredded', // sec/dessiné vs « déchiqueté » (EN)
+    'seche', // sports cut vs « sec / la terre sèche »
+    'volume', // bulking phase vs « le volume sonore »
+    'serie', // set of reps vs TV series → anchored (the TV sense dominates out of context)
+    'reps', // reps vs any abbreviation
+    'fonte', // lifting weights vs « la fonte des neiges »
+    'charge', // workload vs « charge mentale / à charge »
+    'bras', // arm day vs generic arm
+    'rm', // rep max vs generic acronym
+    'congestion', // muscle pump vs traffic / medical
+    'gym', // gym vs gymnastics / first name (EN)
+    'bulk', // bulking phase vs « in bulk » (EN)
+    'shredded', // lean/defined vs « shredded » (EN)
   ],
   selfDeclared: ['bodybuilder', 'pratiquant de muscu', 'powerlifter'],
 };

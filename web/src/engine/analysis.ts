@@ -1,81 +1,79 @@
-// La valeur nommée que rend le moteur (Refonte A, lot A1 — forme arrêtée par ADR-0004).
+// The named value the engine returns (Refonte A, batch A1 — shape settled by ADR-0004).
 //
-// UNE fonction (`analyzeExport`, cf. `analyze.ts`), UNE valeur nommée. Remplace `EngineOutput` +
-// l'union `Insight` + le magasin de preuves + les registres `RULES`/`EVIDENCE_RULES` + `composeRules`.
+// ONE function (`analyzeExport`, cf. `analyze.ts`), ONE named value. Replaces `EngineOutput` + the
+// `Insight` union + the evidence store + the `RULES`/`EVIDENCE_RULES` registries + `composeRules`.
 //
-// LA RÈGLE DE COMPOSITION DE CE TYPE : chaque champ a un LECTEUR NOMMÉ, relevé sur l'écran
-// (mesuré fichier par fichier ; méthode ADR-0004). Aucun champ spéculatif — ce que le
-// moteur émettait sans lecteur (`framing`, `ruleId`, `sensitivity`, `Theme.sensitive`, le `claim` de
-// l'agrégat) n'est pas ici. Plain-data, structured-clone-safe : la sortie du Worker EST ce type
-// (ADR-0002, inchangé).
+// THE COMPOSITION RULE OF THIS TYPE: each field has a NAMED READER, spotted on the screen (measured
+// file by file; ADR-0004 method). No speculative field — what the engine emitted with no reader
+// (`framing`, `ruleId`, `sensitivity`, `Theme.sensitive`, the aggregate's `claim`) is not here.
+// Plain-data, structured-clone-safe: the Worker's output IS this type (ADR-0002, unchanged).
 
 /**
- * Une miette source qui étaye un constat — référence DIRECTE, plus de magasin (§5.4 à la lettre).
+ * A source crumb that backs a finding — DIRECT reference, no more store (§5.4 to the letter).
  *
- * Le verbatim vit ICI, dupliqué si plusieurs constats la citent : doublon de ~60 chaînes courtes
- * ACCEPTÉ (arbitrage yuya). `channel` + `sourceIndex` remplacent l'`EvidenceId` — l'identité est une
- * PAIRE DE DONNÉES, plus une chaîne à re-parser. Ce que ça supprime concrètement :
- * `Number(ref.evidenceId.replace('comment:', ''))` (ex-`dossier.ts:187`), l'aller-retour
- * stringly-typed qu'imposait un magasin indexé par identifiant.
+ * The verbatim lives HERE, duplicated if several findings cite it: a duplicate of ~60 short strings
+ * ACCEPTED (yuya's arbitration). `channel` + `sourceIndex` replace the `EvidenceId` — identity is a
+ * PAIR OF DATA, no longer a string to re-parse. What this removes concretely:
+ * `Number(ref.evidenceId.replace('comment:', ''))` (ex-`dossier.ts:187`), the stringly-typed round
+ * trip that a store indexed by identifier imposed.
  *
- * La borne mémoire d'ADR-0003 tient toujours, et par construction plutôt que par discipline :
- * seules les miettes RÉFÉRENCÉES par un constat existent — il n'y a plus de magasin à sur-remplir.
+ * The ADR-0003 memory bound still holds, and by construction rather than by discipline: only the
+ * crumbs REFERENCED by a finding exist — there is no more store to over-fill.
  */
 export interface Evidence {
   channel: 'comment' | 'search';
-  /** Index dans SA liste source (comments OU searches) — jamais dans un corpus concaténé. */
+  /** Index within ITS source list (comments OR searches) — never within a concatenated corpus. */
   sourceIndex: number;
-  /** Verbatim de la source, jamais de texte dérivé/interprété (→ `claim`). */
+  /** Verbatim from the source, never derived/interpreted text (→ `claim`). */
   text: string;
-  /** Date source brute (contrat §1.1), verbatim. */
+  /** Raw source date (contract §1.1), verbatim. */
   date: string;
-  /** Formes de surface à surligner, ⊂ `text` (ADR-0003). Posées sur CETTE citation : un même
-   *  commentaire souligne des mots différents selon le constat qui le cite. */
+  /** Surface forms to highlight, ⊂ `text` (ADR-0003). Attached to THIS citation: the same comment
+   *  underlines different words depending on the finding that cites it. */
   triggerTerms?: string[];
-  /** Éventail de lectures DE CETTE preuve POUR CE constat (ADR-0003). Verrou C3 conservé : une
-   *  lecture est un simple texte — structurellement aucun champ confiance/poids/score. `mode`
-   *  ORDONNE, il ne CHIFFRE pas. La confiance vit sur le constat (`Deduction.confidence`). */
+  /** Fan of readings OF THIS evidence FOR THIS finding (ADR-0003). C3 lock kept: a reading is plain
+   *  text — structurally no confidence/weight/score field. `mode` ORDERS, it does not QUANTIFY.
+   *  Confidence lives on the finding (`Deduction.confidence`). */
   readings?: ReadingFan;
 }
 
-/** Éventail de lectures : `ranked` (la 1ʳᵉ domine) ou `equal` (aucune privilégiée). */
+/** Fan of readings: `ranked` (the 1st dominates) or `equal` (none privileged). */
 export interface ReadingFan {
   mode: 'ranked' | 'equal';
-  /** Textes de lecture (A2 : le texte, plus un templateId à router). */
+  /** Reading texts (A2: the text, no longer a templateId to route). */
   readings: string[];
 }
 
 /**
- * Un constat — l'union du FORK 3 (ratifiée yuya).
+ * A finding — the FORK 3 union (ratified by yuya).
  *
- * Fusionne les TROIS axes de gradation dégénérés que le moteur portait (`Confidence.level: 'high'`
- * sans producteur, `SensitivityTier` toujours `3`, `Theme.sensitive` toujours `false`) en UN
- * discriminant qui, lui, VARIE : « produit par D1 » ou non (§2.1).
+ * Merges the THREE degenerate gradation axes the engine carried (`Confidence.level: 'high'` with no
+ * producer, `SensitivityTier` always `3`, `Theme.sensitive` always `false`) into ONE discriminant
+ * that DOES vary: "produced by D1" or not (§2.1).
  *
- * `high` est INTERDIT À LA COMPILATION sur le sensible — ce que le golden §6.1 prouvait par test, le
- * type le dit désormais. Conséquence VOULUE (yuya) : le non-sensible PEUT afficher « élevée ». Aucune
- * règle ne l'émet aujourd'hui ; le type garde la porte ouverte, et la légende de l'UI ne l'annonce
- * plus tant que rien ne l'atteint (une légende sans référent).
+ * `high` is FORBIDDEN AT COMPILE TIME on the sensitive — what the §6.1 golden proved by test, the
+ * type now states. INTENDED consequence (yuya): the non-sensitive MAY display "high". No rule emits
+ * it today; the type keeps the door open, and the UI legend no longer announces it as long as
+ * nothing reaches it (a legend with no referent).
  */
 export type Deduction = {
   /**
-   * Phrase du constat — PRÉSENTE si et seulement si le constat ne porte AUCUN éventail de lectures.
+   * The finding's sentence — PRESENT if and only if the finding carries NO fan of readings.
    *
-   * La règle n'est pas « sensible ou non », c'est **« y a-t-il un éventail pour porter le sens ? »**.
-   * Un constat à éventail n'a pas besoin de phrase : l'éventail dit les lectures possibles, le titre
-   * de carte dit le sujet, et la phrase ne faisait que répéter le titre qu'on venait de cliquer.
-   * Deux populations n'ont pas d'éventail et gardent donc leur phrase :
-   *   - `conflictual` — pas d'éventail PAR DOCTRINE (B5 : l'insulte émise EST le signal, il n'y a
-   *     pas de lecture plurielle à offrir). Sa phrase porte en plus le critère B5 lui-même (émis,
-   *     visant un autre utilisateur), que le titre « Conflictuel » ne dit pas ;
-   *   - les INTÉRÊTS (D2) — pas d'éventail non plus, et leur phrase porte un décompte.
+   * The rule is not "sensitive or not", it is **"is there a fan to carry the meaning?"**. A finding
+   * with a fan needs no sentence: the fan states the possible readings, the card title states the
+   * topic, and the sentence only repeated the title one had just clicked. Two populations have no
+   * fan and therefore keep their sentence:
+   *   - `conflictual` — no fan BY DOCTRINE (B5: the emitted insult IS the signal, there is no plural
+   *     reading to offer). Its sentence additionally carries the B5 criterion itself (emitted,
+   *     directed at another user), which the title "Conflict" does not say;
+   *   - INTERESTS (D2) — no fan either, and their sentence carries a count.
    *
-   * POURQUOI OPTIONNEL PLUTÔT QUE DISCRIMINÉ : le « si et seulement si » ne s'exprime pas dans ce
-   * type, parce que l'éventail vit sur `Evidence.readings` et non sur le constat — le type ne peut
-   * pas s'y référer. L'exprimer demanderait de remonter l'éventail au constat, ce qui est un autre
-   * chantier. En attendant, l'invariant est TESTÉ (`claim-fan-invariant.test.ts`) plutôt que laissé
-   * à la discipline : un champ optionnel dont la règle est vérifiée n'est pas un champ dont personne
-   * ne peut raisonner.
+   * WHY OPTIONAL RATHER THAN DISCRIMINATED: the "if and only if" cannot be expressed in this type,
+   * because the fan lives on `Evidence.readings` and not on the finding — the type cannot refer to
+   * it. Expressing it would require lifting the fan up to the finding, which is a different job. In
+   * the meantime the invariant is TESTED (`claim-fan-invariant.test.ts`) rather than left to
+   * discipline: an optional field whose rule is verified is not a field nobody can reason about.
    */
   claim?: string;
   evidence: Evidence[];
@@ -85,89 +83,89 @@ export type Deduction = {
 );
 
 /**
- * Un constat sensible isolé (D1) : un `Deduction` + le NOM COURT de son sujet (« Santé mentale »).
+ * An isolated sensitive finding (D1): a `Deduction` + the SHORT NAME of its topic ("Mental health").
  *
- * POURQUOI un champ EN PLUS du `Deduction` : `SignalCardNavy` titre sa carte avec ce mot court,
- * jamais avec la phrase-claim (décision yuya, refonte 2026-07-15). La forme nommée initiale (lot A1)
- * a manqué ce lecteur ; l'UI le retrouvait en INVERSANT l'allowlist `D1_TEMPLATE_IDS`
- * (`claim.templateId` → label sensible) — une inversion que A2 rend impossible, le claim devenant un
- * texte. Sans ce champ, l'en-tête des cartes de signal disparaît du rendu : le golden l'aurait
- * attrapé, on l'écrit plutôt que de l'y découvrir. C'est la méthode ADR-0004 (partir de l'écran)
- * appliquée là où l'inventaire initial a manqué un lecteur.
+ * WHY a field IN ADDITION to the `Deduction`: `SignalCardNavy` titles its card with this short word,
+ * never with the claim-sentence (yuya's decision, 2026-07-15 refonte). The initial named form
+ * (batch A1) missed this reader; the UI recovered it by INVERTING the `D1_TEMPLATE_IDS` allowlist
+ * (`claim.templateId` → sensitive label) — an inversion A2 makes impossible, the claim becoming
+ * text. Without this field, the header of the signal cards disappears from the render: the golden
+ * would have caught it, we write it rather than discover it there. This is the ADR-0004 method
+ * (start from the screen) applied where the initial inventory missed a reader.
  *
- * Symétrique d'`AnalysisTheme.label` : un signal a un nom, comme un thème — c'est la seule chose que
- * les deux populations disjointes partagent.
+ * Symmetric with `AnalysisTheme.label`: a signal has a name, like a theme — it is the only thing the
+ * two disjoint populations share.
  */
 export type Signal = Deduction & { label: string };
 
-/** Une ligne du registre d'usage d'un thème (ADR-0003) — textes résolus (A2), plus de clés. */
+/** One line of a theme's usage register (ADR-0003) — resolved texts (A2), no more keys. */
 export interface ThemeUsageLine {
   actor: string;
   usage: string;
 }
 
-/** Un thème d'intérêt et ses constats (→ `ThemeCardNavy`). */
+/** An interest theme and its findings (→ `ThemeCardNavy`). */
 export interface AnalysisTheme {
   id: string;
-  /** Le TEXTE du nom (A2), plus un templateId à router. */
+  /** The TEXT of the name (A2), no longer a templateId to route. */
   label: string;
   usage: ThemeUsageLine[];
   deductions: Deduction[];
 }
 
-/** Rythme d'activité horaire + compteurs + estimation (→ `RhythmCard`).
- *  Porteur de DONNÉES seulement : le `claim`/`framing`/`confidence` de l'ex-`aggregate` n'est plus
- *  rendu depuis la refonte v2 (l'encart nocturne a été retiré) — il n'est donc plus émis. */
+/** Hourly activity rhythm + counters + estimate (→ `RhythmCard`).
+ *  DATA carrier only: the `claim`/`framing`/`confidence` of the ex-`aggregate` is no longer rendered
+ *  since the v2 refonte (the night inset was removed) — so it is no longer emitted. */
 export interface Rhythm {
-  /** Un compteur par heure, longueur 24 (0 h…23 h). */
+  /** One counter per hour, length 24 (0h…23h). */
   hourlyActivity: number[];
-  /** `total` est ALL-TIME (Activity Summary) ; les deux autres sont des fenêtres GLISSANTES sur
-   *  Watch History (≈ 1 an). Le mélange est voulu (PANO-85). */
+  /** `total` is ALL-TIME (Activity Summary); the other two are SLIDING windows over Watch History
+   *  (≈ 1 year). The mix is intentional (PANO-85). */
   videosWatched: { total: number; last12Months: number; last30Days: number };
-  /** Minutes de visionnage ESTIMÉES par sessionisation (hypothèses : `rules/activity-rhythm.ts`). */
+  /** Watch minutes ESTIMATED by sessionization (assumptions: `rules/activity-rhythm.ts`). */
   estimatedMinutes: number;
 }
 
 /**
- * Volumes de l'export (→ `VolumesCard`) — NOMMÉS, plus de dispatch sur `ruleId`.
+ * Export volumes (→ `VolumesCard`) — NAMED, no more dispatch on `ruleId`.
  *
- * C'est §2.3 rendu concret : `ACTIVITY_PANEL_RULE_IDS = {R1, R2, R3, R5}` (le `Set` par lequel l'UI
- * re-devinait ce que le moteur savait déjà) disparaît parce que le champ EST le nom. Fenêtre ≈ 1 an
- * (couverte par l'export), sauf `allTime` — JAMAIS mélangées (PANO-84).
+ * This is §2.3 made concrete: `ACTIVITY_PANEL_RULE_IDS = {R1, R2, R3, R5}` (the `Set` by which the
+ * UI re-guessed what the engine already knew) disappears because the field IS the name. Window ≈ 1
+ * year (covered by the export), except `allTime` — NEVER mixed (PANO-84).
  */
 export interface Volumes {
   searches?: number;
   comments?: number;
   follows?: number;
   endorsements?: number;
-  /** Totaux FACTUELS ALL-TIME d'Activity Summary (depuis l'inscription au compte). */
+  /** FACTUAL ALL-TIME totals from Activity Summary (since account registration). */
   allTime?: { videosShared: number; videosWatchedToEnd: number };
 }
 
-/** Mur sémantique : l'asymétrie de lisibilité, en comptes (→ `AnalyzableShareCard`). */
+/** Semantic wall: the readability asymmetry, in counts (→ `AnalyzableShareCard`). */
 export interface Opacity {
-  /** Items comportementaux auto-décrits hors-ligne (texte). */
+  /** Behavioral items self-described offline (text). */
   readableCount: number;
-  /** Items opaques (liens muets, illisibles sans réseau). */
+  /** Opaque items (mute links, unreadable without the network). */
   opaqueCount: number;
 }
 
 /**
- * Ce que le moteur rend.
+ * What the engine returns.
  *
- * `themes[].deductions` et `signals[]` sont SÉPARÉS — séparation ACTÉE (yuya), pas une commodité :
- * les deux populations sont disjointes par construction (aucun thème n'est sensible, aucun constat
- * sensible n'a de thème). Assumé : un sujet sensible n'est pas un centre d'intérêt parmi d'autres —
- * les mélanger les aplatirait. Conséquence : regrouper un sujet sensible sous un thème demanderait
- * de re-toucher ce type. C'est un choix, pas une fatalité — écrit ici plutôt que figé en silence.
+ * `themes[].deductions` and `signals[]` are SEPARATE — a separation SETTLED (yuya), not a
+ * convenience: the two populations are disjoint by construction (no theme is sensitive, no sensitive
+ * finding has a theme). Assumed: a sensitive topic is not one interest among others — mixing them
+ * would flatten them. Consequence: grouping a sensitive topic under a theme would require touching
+ * this type again. It is a choice, not a fatality — written here rather than frozen in silence.
  */
 export interface Analysis {
-  /** Absent si l'export ne porte aucun historique de visionnage exploitable. */
+  /** Absent if the export carries no usable watch history. */
   rhythm?: Rhythm;
   volumes: Volumes;
-  /** Absent si le mur sémantique n'a rien à compter. */
+  /** Absent if the semantic wall has nothing to count. */
   opacity?: Opacity;
   themes: AnalysisTheme[];
-  /** Les constats sensibles (D1), sans thème. */
+  /** The sensitive findings (D1), without a theme. */
   signals: Signal[];
 }

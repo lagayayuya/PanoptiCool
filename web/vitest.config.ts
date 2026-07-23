@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitest/config';
 
-// Tests du moteur en environnement Node (pas de DOM), cohérent avec la frontière
-// moteur sans `lib: DOM` (ADR-0002 ; enforced en PANO-19). Si des tests de composants
-// Preact arrivent, basculer sur getViteConfig d'Astro + un environnement DOM.
+// Engine tests in a Node environment (no DOM), consistent with the engine boundary
+// without `lib: DOM` (ADR-0002; enforced in PANO-19). If Preact component tests
+// arrive, switch to Astro's getViteConfig + a DOM environment.
 export default defineConfig({
   test: {
     environment: 'node',

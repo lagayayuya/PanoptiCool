@@ -1,40 +1,40 @@
-// Helpers PARTAGÉS par les producteurs (ex-`rule.ts`, Refonte A lot A1).
+// Helpers SHARED by the producers (ex-`rule.ts`, Refonte A batch A1).
 //
-// Ce qui a disparu avec le fichier `rule.ts` : le type `Rule`/`EvidenceRule` (il n'y a plus de
-// registre à typer — `analyze.ts` appelle chaque producteur par son nom), les fabriques d'`Insight`
-// par `kind` (l'union `Insight` n'existe plus), `capVerbatim`/`SAMPLE_SIGNALS_CAP` (leur seul client
-// était `InferredValue.sampleSignals`, sans lecteur à l'écran), et les trois fabriques d'`EvidenceId`
-// (`commentEvidenceId`/`searchEvidenceId`/`channelEvidenceId`) — la preuve est désormais une
-// référence DIRECTE portant `channel` + `sourceIndex`, il n'y a plus de chaîne à fabriquer ni à
-// re-parser (§5.4).
+// What disappeared with the `rule.ts` file: the `Rule`/`EvidenceRule` type (there is no more
+// registry to type — `analyze.ts` calls each producer by its name), the `Insight` factories by
+// `kind` (the `Insight` union no longer exists), `capVerbatim`/`SAMPLE_SIGNALS_CAP` (their only
+// client was `InferredValue.sampleSignals`, with no reader on screen), and the three `EvidenceId`
+// factories (`commentEvidenceId`/`searchEvidenceId`/`channelEvidenceId`) — evidence is now a DIRECT
+// reference carrying `channel` + `sourceIndex`, there is no more string to build nor to re-parse
+// (§5.4).
 //
-// Le plafond de confiance de l'inféré n'a plus besoin d'un type dédié (`InferredLevel`) : sur le
-// sensible il est porté par l'union `Deduction` elle-même (`sensitive: true` ⇒ `low | medium`,
-// `high` interdit À LA COMPILATION).
+// The inferred confidence ceiling no longer needs a dedicated type (`InferredLevel`): on the
+// sensitive it is carried by the `Deduction` union itself (`sensitive: true` ⇒ `low | medium`,
+// `high` forbidden AT COMPILE TIME).
 
 /**
- * Item de texte candidat au matching lexical, avec son CANAL d'origine (PANO-80).
+ * A text item candidate for lexical matching, with its originating CHANNEL (PANO-80).
  *
- * Sa forme est exactement celle d'`Evidence` moins les champs de citation (`triggerTerms`,
- * `readings`) : depuis §5.4, `resolve()` rend directement de quoi construire une preuve — c'est
- * l'aller-retour stringly-typed en moins, pas seulement une `Map`.
+ * Its shape is exactly that of `Evidence` minus the citation fields (`triggerTerms`, `readings`):
+ * since §5.4, `resolve()` directly returns what is needed to build a piece of evidence — that is the
+ * stringly-typed round trip gone, not merely a `Map`.
  */
 export interface ChannelText {
   channel: 'comment' | 'search';
-  /** Index dans SA liste source (comments OU searches) — jamais dans le corpus concaténé. */
+  /** Index within ITS source list (comments OR searches) — never within the concatenated corpus. */
   sourceIndex: number;
-  /** Texte verbatim (le `comment` ou le `SearchTerm`). */
+  /** Verbatim text (the `comment` or the `SearchTerm`). */
   text: string;
-  /** Date source brute (format §1.1), verbatim. */
+  /** Raw source date (§1.1 format), verbatim. */
   date: string;
 }
 
 /**
- * Corpus COMMENTAIRES + RECHERCHES combiné pour une détection uniforme (PANO-80, adaptateur Searches
- * PANO-70 §1.6). Concatène les deux listes en UN corpus (commentaires d'abord, puis recherches) pour
- * UNE seule passe `detectLabels` : la machinerie d'agrégation par label tourne à travers les deux
- * canaux sans qu'aucun producteur n'ait à la ré-implémenter par canal. `resolve(itemIndex)` retrouve
- * le canal + l'item source d'un index du corpus concaténé.
+ * COMMENTS + SEARCHES corpus combined for uniform detection (PANO-80, Searches adapter PANO-70
+ * §1.6). Concatenates the two lists into ONE corpus (comments first, then searches) for ONE single
+ * `detectLabels` pass: the per-label aggregation machinery runs across both channels without any
+ * producer having to re-implement it per channel. `resolve(itemIndex)` recovers the channel + the
+ * source item of an index in the concatenated corpus.
  */
 export function buildChannelCorpus(
   comments: readonly { comment: string; date: string }[],
@@ -65,10 +65,10 @@ export function buildChannelCorpus(
 }
 
 /**
- * Parse une date source brute (contrat §1.1 : `YYYY-MM-DD HH:MM:SS` nu OU suffixe `… UTC`) en epoch
- * ms UTC. `null` si non parsable. Étape INTERNE du moteur (jamais à la frontière) : retire ` UTC`,
- * normalise l'espace en `T`, force le fuseau `Z` — sinon `Date.parse` appliquerait le fuseau LOCAL
- * de l'environnement d'exécution (dérive selon la machine).
+ * Parses a raw source date (contract §1.1: bare `YYYY-MM-DD HH:MM:SS` OR `… UTC` suffix) into an
+ * epoch ms UTC. `null` if unparsable. An INTERNAL step of the engine (never at the boundary):
+ * strips ` UTC`, normalizes the space to `T`, forces the `Z` timezone — otherwise `Date.parse` would
+ * apply the LOCAL timezone of the runtime environment (drift depending on the machine).
  */
 export function parseRawDateUTC(raw: string): number | null {
   const t = Date.parse(`${raw.trim().replace(/ UTC$/, '').replace(' ', 'T')}Z`);

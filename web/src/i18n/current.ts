@@ -1,65 +1,65 @@
-// LA LANGUE COURANTE, VUE D'UN ÎLOT — et pourquoi elle se lit dans le DOM.
+// THE CURRENT LANGUAGE, SEEN FROM AN ISLAND — and why it is read from the DOM.
 //
-// Les composants sont des îlots `client:only` (ADR-0002) : ils ne rendent QUE dans le navigateur,
-// et ne reçoivent donc jamais `Astro.currentLocale`, qui n'existe qu'à la compilation. Il fallait
-// leur donner la langue autrement.
+// The components are `client:only` islands (ADR-0002): they render ONLY in the browser,
+// and thus never receive `Astro.currentLocale`, which exists only at compile time. They had to
+// be given the language another way.
 //
-// DEUX VOIES POSSIBLES, ET POURQUOI CELLE-CI. L'autre était de passer la langue en PROP depuis
-// chaque page, puis de la faire descendre — `LandingPage` → `SiteHeader`, `ResultsView` → ses
-// sections, et ainsi de suite. Ça marche, et ça oblige chaque composant intermédiaire à porter une
-// donnée dont il ne fait rien : le genre de prop qu'on oublie de brancher sur le nouveau composant,
-// six mois plus tard, sans que rien ne le dise.
+// TWO POSSIBLE ROUTES, AND WHY THIS ONE. The other was to pass the language as a PROP from
+// each page, then have it descend — `LandingPage` → `SiteHeader`, `ResultsView` → its
+// sections, and so on. It works, and it forces each intermediate component to carry a
+// piece of data it does nothing with: the kind of prop one forgets to wire onto the new component,
+// six months later, with nothing to say so.
 //
-// La page PUBLIE déjà sa langue : `<html lang>`. La lire est un appel, pas une plomberie.
+// The page ALREADY PUBLISHES its language: `<html lang>`. Reading it is a call, not plumbing.
 //
-// LE CONTRAT, ET CE QUI LE TIENT. Si l'attribut `lang` du document ment, TOUS les liens des îlots
-// mentent — silencieusement, puisque hreflang, canonical et sitemap se calculent côté serveur et
-// restent, eux, corrects. Ce contrat ne tient donc pas tout seul : il tient parce que les pages
-// DÉRIVENT cet attribut de `Astro.currentLocale`, c'est-à-dire de leur dossier, au lieu de l'écrire.
-// Une page qui le réécrirait en dur casserait ce fichier à distance ; `i18n/locales.test.ts` le
-// refuse pour cette raison précise.
+// THE CONTRACT, AND WHAT HOLDS IT. If the document's `lang` attribute lies, ALL the islands' links
+// lie — silently, since hreflang, canonical and sitemap are computed server-side and
+// stay, for their part, correct. This contract therefore does not hold on its own: it holds because the pages
+// DERIVE this attribute from `Astro.currentLocale`, that is from their folder, instead of writing it.
+// A page that hard-rewrote it would break this file remotely; `i18n/locales.test.ts`
+// refuses it for this precise reason.
 //
-// EN NODE (les goldens de rendu), `document` est absent : on retombe sur la langue par défaut, de
-// façon DÉTERMINISTE. Les goldens figent donc des liens `/fr`, ce qui est exactement ce qu'ils
-// doivent figer tant que le français est la seule langue publiée.
+// IN NODE (the render goldens), `document` is absent: we fall back to the default language,
+// DETERMINISTICALLY. The goldens therefore freeze `/fr` links, which is exactly what they
+// must freeze as long as French is the only published language.
 
 import { DEFAULT_LOCALE, LOCALES, type Locale, localePath } from './locales';
 
-/** La langue de la page courante, lue sur `<html lang>`. Retombe sur la langue par défaut hors navigateur. */
+/** The current page's language, read from `<html lang>`. Falls back to the default language outside the browser. */
 export function currentLocale(): Locale {
   if (typeof document === 'undefined') return DEFAULT_LOCALE;
   const lang = document.documentElement.lang;
-  // Une langue inconnue (attribut absent, mal écrit) ne doit pas fabriquer des URLs mortes : mieux
-  // vaut des liens vers la langue par défaut que des liens vers `/undefined`.
+  // An unknown language (missing attribute, misspelled) must not fabricate dead URLs: better
+  // links to the default language than links to `/undefined`.
   return (LOCALES as readonly string[]).includes(lang) ? (lang as Locale) : DEFAULT_LOCALE;
 }
 
 /**
- * Le lien d'une page dans la langue courante : `localeHref('/analyse')` → `/fr/analyse`.
+ * The link of a page in the current language: `localeHref('/analyse')` → `/fr/analyse`.
  *
- * NE PAS l'utiliser pour une ancre (`#sec-activite`) ni pour un asset (`/logo.png`) : ces deux-là
- * n'ont pas de langue. Une ancre préfixée quitterait la page ; un asset préfixé ne se chargerait pas.
+ * DO NOT use it for an anchor (`#sec-activite`) nor for an asset (`/logo.png`): those two
+ * have no language. A prefixed anchor would leave the page; a prefixed asset would not load.
  */
 export function localeHref(path: string): string {
   return localePath(currentLocale(), path);
 }
 
 /**
- * Le chemin de la page courante SANS sa langue, query comprise : sur `/fr/analyse?demo`, rend
- * `/analyse?demo`. C'est ce qu'il faut pour proposer LA MÊME page dans une autre langue.
+ * The current page's path WITHOUT its language, query included: on `/fr/analyse?demo`, returns
+ * `/analyse?demo`. This is what is needed to offer THE SAME page in another language.
  *
- * La query est gardée, et ce n'est pas un détail : la laisser tomber ferait basculer le parcours de
- * démonstration vers le dépôt d'un vrai export — changer de langue mettrait la personne devant un
- * écran qui lui demande ses données.
+ * The query is kept, and it is not a detail: dropping it would tip the demonstration
+ * journey toward the upload of a real export — switching language would put the person in front of an
+ * screen asking for their data.
  *
- * Hors navigateur, rend `/` : les goldens rendent donc un sélecteur pointant vers l'accueil.
+ * Outside the browser, returns `/`: the goldens therefore render a selector pointing at the home page.
  */
 export function currentPath(): string {
   if (typeof window === 'undefined') return '/';
   const { pathname, search } = window.location;
   const locale = currentLocale();
   const stripped = pathname.startsWith(`/${locale}`) ? pathname.slice(locale.length + 1) : pathname;
-  // `/fr` nu laisse une chaîne vide ; `/fr/analyse/` laisse une barre finale qu'on ne réémet pas.
+  // A bare `/fr` leaves an empty string; `/fr/analyse/` leaves a trailing slash we do not re-emit.
   const path = stripped.replace(/\/$/, '');
   return (path === '' ? '/' : path) + search;
 }

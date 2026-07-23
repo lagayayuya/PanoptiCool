@@ -1,25 +1,25 @@
-// Lexique d'intérêt `basket` (D2, PANO-78 lot 3) — basketball.
+// Interest lexicon `basket` (D2, PANO-78 batch 3) — basketball.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du basket FR : NBA/Euroleague, gestes, postes, JOUEURS. Entités = signal
-// public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR basketball: NBA/Euroleague, moves, positions, PLAYERS. Entities = generic
+// public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « basketball », « nba », « euroleague », « wembanyama », « alley oop », « streetball ».
-//   · ANCRÉ — « basket » (chaussure/panier vs sport), « dunk » (shared sneakers), « jordan » (prénom),
-//     « crossover » (voiture), « panier » (courses), « mvp », « draft », « curry » (épice) : co-occurrence.
-//   · EXCLU — paris sportifs (hors-champ PANO-74).
+//   · ANCHORED — « basket » (shoe/basket vs sport), « dunk » (shared sneakers), « jordan » (first name),
+//     « crossover » (car), « panier » (groceries), « mvp », « draft », « curry » (spice): co-occurrence.
+//   · EXCLUDED — sports betting (out of scope PANO-74).
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Le basket anglophone parle par LOCUTIONS ; ses noms simples sont tous pris ailleurs.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Anglophone basketball speaks by PHRASES; its simple nouns are all taken elsewhere.
 //   · SOLO — « wnba », « free throw », « three pointer », « full court press », « box out »,
-//     « sixth man », « starting five », « and1 », « posterized », « ncaa » : univoques.
-//   · ANCRÉ — « court » (= COURT en français, adjectif banal — piège FR, jamais solo), « assist »
-//     (aide ; assist esport), « rebound » (rebond sentimental), « foul », « steal », « guard »
-//     (vigile ; et la garde au sol des `sports_combat`), « bench », « paint » (peinture) : compagnon requis.
+//     « sixth man », « starting five », « and1 », « posterized », « ncaa »: univocal.
+//   · ANCHORED — « court » (= COURT in French, a banal adjective — FR trap, never solo), « assist »
+//     (help; esport assist), « rebound » (emotional rebound), « foul », « steal », « guard »
+//     (guard; and the ground guard of `sports_combat`), « bench », « paint » (paint): companion required.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Cross-thème « dunk »/« jordan » avec `sneakers` : assumé (co-occurrence par thème).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. Cross-theme « dunk »/« jordan » with `sneakers`: assumed (per-theme co-occurrence).
 
 import type { InterestLexicon } from '../types';
 
@@ -50,7 +50,7 @@ export const BASKET_LEXICON: InterestLexicon = {
     'step back',
     'asvel',
     'salle de basket',
-    // Joueurs / franchises / jargon (enrichi)
+    // Players / franchises / jargon (enriched)
     'lebron james',
     'kevin durant',
     'giannis',
@@ -65,7 +65,7 @@ export const BASKET_LEXICON: InterestLexicon = {
     'march madness',
     'match de basket',
     'pro a',
-    // Variantes EN (PANO-88) : SOLO univoques (locutions de jeu / compétitions).
+    // EN variants (PANO-88): SOLO univocal (game phrases / competitions).
     'wnba',
     'free throw',
     'three pointer',
@@ -79,29 +79,29 @@ export const BASKET_LEXICON: InterestLexicon = {
     'hoopers',
   ],
   anchored: [
-    'basket', // chaussure / panier de courses vs le sport
-    'dunk', // partagé sneakers
-    'jordan', // prénom / air jordan
-    'crossover', // type de voiture
-    'panier', // panier de courses
-    'contre', // contre (préposition) vs contre (block)
-    'mvp', // sigle générique
-    'rebond', // rebond générique
-    'draft', // brouillon / pression
-    'curry', // épice vs Stephen Curry
-    'pivot', // pivot générique
-    'zone', // zone générique vs défense de zone
-    'lakers', // franchise (assez univoque mais gardé ancré)
+    'basket', // shoe / grocery basket vs the sport
+    'dunk', // shared with sneakers
+    'jordan', // first name / air jordan
+    'crossover', // type of car
+    'panier', // grocery basket
+    'contre', // contre (preposition) vs contre (block)
+    'mvp', // generic acronym
+    'rebond', // generic rebound
+    'draft', // draft / pressure
+    'curry', // spice vs Stephen Curry
+    'pivot', // generic pivot
+    'zone', // generic zone vs zone defense
+    'lakers', // franchise (fairly univocal but kept anchored)
     'celtics', // franchise
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'court', // « court » = adjectif français banal — piège FR, jamais solo (EN)
-    'assist', // aide générique / assist esport (EN)
-    'rebound', // rebond sentimental (EN)
-    'foul', // faute générique / « foul mood » (EN)
-    'steal', // vol / « what a steal » (EN)
-    'guard', // vigile ; et la garde au sol des sports de combat (EN)
-    'bench', // banc / banc de muscu (EN)
-    'paint', // peinture vs la raquette (EN)
+    // EN variants (PANO-88): ANCHORED.
+    'court', // « court » = banal French adjective — FR trap, never solo (EN)
+    'assist', // generic help / esport assist (EN)
+    'rebound', // emotional rebound (EN)
+    'foul', // generic foul / « foul mood » (EN)
+    'steal', // theft / « what a steal » (EN)
+    'guard', // guard; and the ground guard of combat sports (EN)
+    'bench', // bench / weight bench (EN)
+    'paint', // paint vs the key (EN)
   ],
   selfDeclared: ['basketteur', 'joueur de basket'],
 };

@@ -1,12 +1,12 @@
-"""Personas — profils d'identité cohérents pour le persona de démo.
+"""Personas — coherent identity profiles for the demo persona.
 
-Un `Persona` fixe une identité **synthétique** cohérente (pseudo, nom affiché, région,
-bio, date de naissance, compteurs) et, optionnellement, des pools de contenu thématiques
-(recherches, commentaires). `--persona default` (ou aucun) laisse l'identité aléatoire
-(mais déterministe sous graine).
+A `Persona` fixes a coherent **synthetic** identity (handle, display name, region,
+bio, birth date, counters) and, optionally, themed content pools (searches,
+comments). `--persona default` (or none) leaves the identity random (but
+deterministic under a seed).
 
-Invariant de privacy : ces personas sont **fictifs** ; aucun ne désigne une personne
-réelle (cf. CLAUDE.md).
+Privacy invariant: these personas are **fictional**; none designates a real
+person (cf. CLAUDE.md).
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ class Persona:
     name: str
     user_name: str
     display_name: str
-    region: str            # code 2 lettres
+    region: str            # 2-letter code
     bio: str
     birth_date: str        # YYYY-MM-DD
     follower_count: int
@@ -73,15 +73,15 @@ _TRAVELER = Persona(
                    "saving for later", "dreamy", "what camera"),
 )
 
-# Registre des personas nommés. `default` = identité aléatoire (clé absente ici).
+# Registry of named personas. `default` = random identity (key absent here).
 PERSONAS = {p.name: p for p in (_FOODIE, _GAMER, _TRAVELER)}
 
-# Noms acceptés par la CLI (avec l'option « aléatoire »).
+# Names accepted by the CLI (with the "random" option).
 NAMES = ("default", *sorted(PERSONAS))
 
 
 def get(name) -> Persona | None:
-    """Renvoie le `Persona` nommé, ou `None` pour `default`/`None` (aléatoire)."""
+    """Returns the named `Persona`, or `None` for `default`/`None` (random)."""
     if name in (None, "default"):
         return None
     try:

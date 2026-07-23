@@ -1,21 +1,21 @@
-// Lexique d'intérêt `mode` (D2, PANO-77 lot 2 · enrichi entités PANO-77 reprise) — mode / style.
+// Interest lexicon `mode` (D2, PANO-77 batch 2 · entities enriched PANO-77 resumed) — fashion / style.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la mode FR : pièces, coupes, ESTHÉTIQUES, MAISONS et ENSEIGNES, JARGON de
-// communauté. À l'aveugle depuis l'usage commun ; marques/jargon = signal public générique enrichi
-// par recherche (maisons de luxe, fast-fashion, argot mode).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR fashion: pieces, cuts, AESTHETICS, HOUSES and CHAINS, community
+// JARGON. Blind from common usage; brands/jargon = generic public signal enriched
+// by research (luxury houses, fast-fashion, fashion slang).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « haute couture », « streetwear », « ootd », « y2k », « gorpcore » ; maisons
-//     univoques (« balenciaga », « jacquemus », « mugler », « prada », « vinted », « shein »).
-//   · ANCRÉ — 50/50 récupérés par co-occurrence : « mode » (mode d'emploi), « look », « style »,
-//     « fit », « drip » (goutte), « dupe », marques-mots-courants (« coach », « guess », « mango »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « haute couture », « streetwear », « ootd », « y2k », « gorpcore »; univocal
+//     houses (« balenciaga », « jacquemus », « mugler », « prada », « vinted », « shein »).
+//   · ANCHORED — 50/50 recovered by co-occurrence: « mode » (instruction manual), « look », « style »,
+//     « fit », « drip » (drop), « dupe », common-word-brands (« coach », « guess », « mango »,
 //     « gap », « celine », « kenzo »).
-//   · EXCLU — « ss » / « aw » / « fw » (abréviations saisons) : trop ambigus, « ss » à connotation
-//     historique sensible → écartés (on garde « fashion week » en clair).
+//   · EXCLUDED — « ss » / « aw » / « fw » (season abbreviations): too ambiguous, « ss » with a sensitive
+//     historical connotation → discarded (we keep « fashion week » spelled out).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « sneakers » et « coiffure ».
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « sneakers » and « coiffure ».
 
 import type { InterestLexicon } from '../types';
 
@@ -28,7 +28,7 @@ export const MODE_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Vocabulaire générique
+    // Generic vocabulary
     'haute couture',
     'pret a porter',
     'garde robe',
@@ -47,7 +47,7 @@ export const MODE_LEXICON: InterestLexicon = {
     'capsule collection',
     'basique intemporel',
     'sappe',
-    // Jargon / esthétiques (argot communauté)
+    // Jargon / aesthetics (community slang)
     'ootd',
     'fit check',
     'y2k',
@@ -57,7 +57,7 @@ export const MODE_LEXICON: InterestLexicon = {
     'blokecore',
     'thrift',
     'seconde peau',
-    // Maisons de luxe (univoques)
+    // Luxury houses (univocal)
     'balenciaga',
     'jacquemus',
     'mugler',
@@ -76,40 +76,40 @@ export const MODE_LEXICON: InterestLexicon = {
     'ganni',
     'off white',
     'stone island',
-    // Enseignes fast-fashion (univoques)
+    // Fast-fashion chains (univocal)
     'zara',
     'uniqlo',
     'shein',
     'bershka',
     'vinted',
     'kiabi',
-    // Variantes EN (PANO-88) : SOLO univoques (formats communauté mode).
+    // EN variants (PANO-88): SOLO univocal (fashion community formats).
     'try on haul',
     'grwm',
   ],
   anchored: [
-    'mode', // mode d'emploi / « en mode » / mode avion
-    'look', // regard / anglais générique
-    'style', // style générique
-    'fit', // « fit » (forme) / anglais
-    'drip', // goutte à goutte
-    'dupe', // duper / copie
-    'tenue', // comportement (« tenue de route »)
-    'marque', // trace / verbe marquer
-    'collection', // collection (timbres)
-    'vintage', // ancien générique
-    'piece', // salle / monnaie
-    'coupe', // coupe du monde / cheveux
-    'runway', // piste (aéroport)
-    // Marques homographes (mots courants / prénoms)
-    'coach', // coach sportif
-    'guess', // « guess » (deviner)
+    'mode', // instruction manual / « en mode » / airplane mode
+    'look', // gaze / generic English
+    'style', // generic style
+    'fit', // « fit » (shape) / English
+    'drip', // dripping
+    'dupe', // to dupe / copy
+    'tenue', // behavior (« tenue de route »)
+    'marque', // mark / verb to mark
+    'collection', // collection (stamps)
+    'vintage', // generic old
+    'piece', // room / coin
+    'coupe', // World Cup / hair
+    'runway', // runway (airport)
+    // Homograph brands (common words / first names)
+    'coach', // sports coach
+    'guess', // « guess » (to guess)
     'mango', // fruit
-    'gap', // écart
-    'celine', // prénom
-    'kenzo', // prénom
-    'outfit', // tenue vs anglais générique (EN, ancré)
-    'haul', // achats mode vs générique (EN)
+    'gap', // gap
+    'celine', // first name
+    'kenzo', // first name
+    'outfit', // outfit vs generic English (EN, anchored)
+    'haul', // fashion haul vs generic (EN)
   ],
   selfDeclared: ['passionnee de mode', 'fashionista', 'styliste'],
 };

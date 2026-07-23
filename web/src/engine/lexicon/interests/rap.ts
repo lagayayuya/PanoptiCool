@@ -1,30 +1,30 @@
-// Lexique d'intérêt `rap` (D2, PANO-77 lot 2 · enrichi entités) — rap / hip-hop.
+// Interest lexicon `rap` (D2, PANO-77 batch 2 · entities enriched) — rap / hip-hop.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du rap FR : genre, jargon studio/scène, ARTISTES emblématiques. À l'aveugle ;
-// artistes et jargon = signal public générique enrichi par recherche (scène FR, argot).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR rap: genre, studio/scene jargon, emblematic ARTISTS. Blind;
+// artists and jargon = generic public signal enriched by research (FR scene, slang).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — genre/culture + artistes univoques : « rap », « freestyle », « punchline », « mixtape »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — genre/culture + univocal artists: « rap », « freestyle », « punchline », « mixtape »,
 //     « egotrip », « ninho », « damso », « nekfeu », « gazo », « tiakola », « soolking ».
-//   · ANCRÉ — 50/50 : « flow » (rivière), « prod », « feat », « trap » (piège), « drill » (perceuse),
-//     « sample », « jul » (prénom/mois), « sch », « zola » (Émile Zola), « leto », « dinos » : co-occurrence.
-//   · EXCLU — « clash » (= conflit, frôle le sens agressif) écarté par prudence.
+//   · ANCHORED — 50/50: « flow » (river), « prod », « feat », « trap » (trap), « drill » (drill),
+//     « sample », « jul » (first name/month), « sch », « zola » (Émile Zola), « leto », « dinos »: co-occurrence.
+//   · EXCLUDED — « clash » (= conflict, brushes the aggressive sense) discarded out of caution.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Couche EN-only du rap anglophone, par-dessus la scène FR déjà couverte.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// EN-only layer of anglophone rap, on top of the FR scene already covered.
 //   · SOLO — « cypher », « diss track », « type beat », « battle rap », « crate digging », « emcee »,
 //     « ghostwriter », « uk drill », « drill music », « trap beat », « g funk », « sixteen bars »,
 //     « ad libs », « double time flow », « lyricism », « hiphopheads ».
-//   · ANCRÉ — « bars » (les BARS où l'on boit, les barres chocolatées, les barres de réseau : mot
-//     très fréquent, gros pourvoyeur de FP), « mc » (sigle), « hook » (le crochet de porte, le crochet
-//     de BOXE), « verse » (le verset biblique), « label » (l'étiquette) : compagnon requis.
-//   · NOTE — « drill » et « trap » restent ancrés (déjà là) : ce sont la PERCEUSE et le PIÈGE. Seules
-//     leurs formes composées (« uk drill », « drill music », « trap beat ») entrent en solo.
+//   · ANCHORED — « bars » (the BARS where one drinks, chocolate bars, signal bars: a very
+//     frequent word, big FP provider), « mc » (acronym), « hook » (the door hook, the BOXING
+//     hook), « verse » (the biblical verse), « label » (the label): companion required.
+//   · NOTE — « drill » and « trap » stay anchored (already there): they are the DRILL and the TRAP. Only
+//     their compound forms (« uk drill », « drill music », « trap beat ») enter solo.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Marqueurs = VOCABULAIRE de genre/culture, jamais CONTENU de paroles (violence,
-// politique) — la frontière D1 est tenue par le lexique, pas par le sujet des morceaux.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. Markers = genre/culture VOCABULARY, never lyric CONTENT (violence,
+// politics) — the D1 boundary is held by the lexicon, not by the subject of the tracks.
 
 import type { InterestLexicon } from '../types';
 
@@ -52,7 +52,7 @@ export const RAP_LEXICON: InterestLexicon = {
     'boom bap',
     'rap game',
     'instru rap',
-    // Artistes (univoques)
+    // Artists (univocal)
     'ninho',
     'werenoi',
     'tiakola',
@@ -72,11 +72,11 @@ export const RAP_LEXICON: InterestLexicon = {
     'freeze corleone',
     'lomepal',
     'josman',
-    // Jargon / industrie
+    // Jargon / industry
     'adlib',
     'sacem',
     'disque d or',
-    // Variantes EN (PANO-88) : SOLO univoques (jargon scène / studio anglophone).
+    // EN variants (PANO-88): SOLO univocal (anglophone scene / studio jargon).
     'cypher',
     'diss track',
     'type beat',
@@ -95,28 +95,28 @@ export const RAP_LEXICON: InterestLexicon = {
     'hiphopheads',
   ],
   anchored: [
-    'rime', // rime générique
-    'flow', // rivière / anglais générique
-    'prod', // production générique
-    'feat', // featuring / anglais
-    'trap', // piège
-    'drill', // perceuse
-    'sample', // échantillon
-    'couplet', // couplet générique
-    'jul', // prénom / juillet
-    'sch', // sigle ambigu
-    'zola', // Émile Zola vs le rappeur
-    'leto', // Jared Leto / prénom
-    'dinos', // dinosaures vs le rappeur
-    'maes', // patronyme courant vs le rappeur
-    'hamza', // prénom courant vs le rappeur
-    'plug', // prise (anglais) vs plug (rap)
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'bars', // les bars où l'on boit / barres chocolatées / barres de réseau (EN)
-    'mc', // sigle — aussi « maître de cérémonie » générique (EN)
-    'hook', // crochet de porte / crochet de boxe (EN)
-    'verse', // le verset biblique (EN)
-    'label', // l'étiquette / étiqueter un fichier (EN)
+    'rime', // generic rhyme
+    'flow', // river / generic English
+    'prod', // generic production
+    'feat', // featuring / English
+    'trap', // trap
+    'drill', // drill (tool)
+    'sample', // sample
+    'couplet', // generic verse
+    'jul', // first name / July
+    'sch', // ambiguous acronym
+    'zola', // Émile Zola vs the rapper
+    'leto', // Jared Leto / first name
+    'dinos', // dinosaurs vs the rapper
+    'maes', // common surname vs the rapper
+    'hamza', // common first name vs the rapper
+    'plug', // plug (English) vs plug (rap)
+    // EN variants (PANO-88): ANCHORED.
+    'bars', // the bars where one drinks / chocolate bars / signal bars (EN)
+    'mc', // acronym — also generic « master of ceremonies » (EN)
+    'hook', // door hook / boxing hook (EN)
+    'verse', // the biblical verse (EN)
+    'label', // the label / to label a file (EN)
   ],
   selfDeclared: ['rappeur', 'rappeuse'],
 };

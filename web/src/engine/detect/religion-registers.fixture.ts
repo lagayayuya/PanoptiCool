@@ -1,170 +1,169 @@
-// Banc `religion` — QUATRE voix, et la PAIRE PRATIQUE/CULTURE est l'instrument. Vérité-terrain scellée.
+// `religion` bench — FOUR voices, and the PRACTICE/CULTURE PAIR is the instrument. Sealed ground truth.
 //
-// ── Ce fichier est scellé ────────────────────────────────────────────────────────────────────────
-// Écrit et commité AVANT tout tour du détecteur sur ces voix. « Faux positif » n'a pas de sens sans
-// un état attendu écrit d'avance, et juger après avoir vu la sortie revient à juger avec indulgence
-// — une détection plausible se rationalise toujours. Le sceau est le commit.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// ── This file is sealed ────────────────────────────────────────────────────────────────────────
+// Written and committed BEFORE any detector pass on these voices. « False positive » has no meaning without
+// an expected state written in advance, and judging after seeing the output amounts to judging leniently
+// — a plausible detection always rationalizes itself. The seal is the commit.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── L'ÉTAT EXACT DE LA MESURE RELIGIEUSE AVANT CE FICHIER ────────────────────────────────────────
-// Vérifié par balayage des six fixtures scellées, pas supposé, et la formulation compte parce que la
-// version approximative est plus flatteuse que la vraie :
+// ── THE EXACT STATE OF THE RELIGIOUS MEASUREMENT BEFORE THIS FILE ────────────────────────────────────────
+// Verified by sweeping the six sealed fixtures, not supposed, and the wording counts because the
+// approximate version is more flattering than the true one:
 //
-//   **AUCUNE persona du corpus scellé ne porte `religion` — ni `lived`, ni `signalWithoutLived`,
-//   dans AUCUNE des deux langues.** Le rappel religieux du produit n'a JAMAIS été mesuré, pas une
-//   fois, y compris dans le français livré et ratifié de longue date.
+//   **NO persona of the sealed corpus carries `religion` — neither `lived`, nor `signalWithoutLived`,
+//   in EITHER language.** The product's religious recall has NEVER been measured, not
+//   once, including in the French shipped and ratified long ago.
 //
-// Il subsiste exactement DEUX effleurements, et ni l'un ni l'autre n'est une voix :
+// There remain exactly TWO grazings, and neither is a voice:
 //
-//   · `slang` #1 — une recherche de RESTAURATION. Elle déclenche (`religion[indirect]`), et elle est
-//     portée comme tort déclaré `slang/religion` avec une correction d'annotateur. Autrement dit :
-//     tout le dossier des faux positifs de `religion` tient dans UN MOT de nourriture, dans UN item.
-//   · `en_body` #19 — un LIEU de répétition à bonne acoustique, scellé HORS `religion` par
-//     l'annotateur, précisément parce que ce n'est pas une pratique.
+//   · `slang` #1 — a RESTORATION search. It fires (`religion[indirect]`), and it is
+//     carried as declared wrong `slang/religion` with an annotator correction. In other words:
+//     the entire false-positive dossier of `religion` fits in ONE food WORD, in ONE item.
+//   · `en_body` #19 — a rehearsal VENUE with good acoustics, sealed OUTSIDE `religion` by
+//     the annotator, precisely because it is not a practice.
 //
-// Et le corpus FRANÇAIS ne contient aucun vocabulaire religieux, d'aucune sorte. Le pendant
-// francophone de la voix argotique avait d'ailleurs été ÉCARTÉ parce que son unique résultat portait
-// sur `religion`, hors sujet du lot d'alors. Le lexique le plus ratifié du produit n'a donc jamais
-// eu de voix religieuse devant lui.
+// And the FRENCH corpus contains no religious vocabulary, of any kind. The francophone
+// counterpart of the slang voice had moreover been SET ASIDE because its only result bore
+// on `religion`, off the subject of the batch at the time. The product's most ratified lexicon has therefore never
+// had a religious voice in front of it.
 //
-// C'est le motif nommé par CLAUDE.md (*Ce qu'un filet prouve*) : aucun banc existant ne pouvait
-// rendre autre chose que zéro sur `religion`, parce qu'aucun n'a jamais mis le détecteur devant le
-// sujet. Un rapport « aucun faux positif religieux » appuyé sur eux n'aurait rien dit du tout.
+// It is the pattern named by CLAUDE.md (*Ce qu'un filet prouve*): no existing bench could
+// return anything but zero on `religion`, because none ever put the detector in front of the
+// subject. A report « no religious false positive » leaning on them would have said nothing at all.
 //
-// ── POURQUOI UNE PAIRE, ET CE QU'ELLE MESURE QUI N'EST PAS L'ÉCART POLITIQUE ─────────────────────
-// La paire politique mesurait un écart de RAPPEL entre deux camps : un camp silencieux n'affiche
-// rien, et une absence ressemble à un banc propre. La paire d'ici mesure autre chose, et la
-// différence est portante — les deux voix ATTENDENT toutes deux un tag. Ce qui les sépare est
-// l'ÉTAGE :
+// ── WHY A PAIR, AND WHAT IT MEASURES THAT IS NOT THE POLITICAL GAP ─────────────────────
+// The political pair measured a RECALL gap between two camps: a silent camp displays
+// nothing, and an absence looks like a clean bench. The pair here measures something else, and the
+// difference is load-bearing — both voices EXPECT a tag. What separates them is
+// the STOREY:
 //
-//   · `fr_practising` — `lived`. Un constat NOMMÉ est légitime et attendu.
-//   · `fr_cultural_lapsed` — `signalWithoutLived`. Le tag est légitime AUSSI ; c'est le constat
-//     NOMMÉ qui est le tort (sur-classification, compteur `escalated`).
+//   · `fr_practising` — `lived`. A NAMED finding is legitimate and expected.
+//   · `fr_cultural_lapsed` — `signalWithoutLived`. The tag is legitimate TOO; it is the NAMED
+//     finding that is the wrong (over-classification, `escalated` counter).
 //
-// Les deux voix partagent la quasi-totalité du vocabulaire — un enterrement, un repas de famille,
-// un lieu de culte, un calendrier. Si le détecteur les place au MÊME étage, alors le produit ne
-// distingue pas la pratique de la culture, et il le fera sur des personnes réelles. C'est la
-// question que ce banc existe pour poser, et elle n'est lisible que parce que les deux chiffres se
-// lisent l'un contre l'autre. Ils ne s'additionnent jamais et ne se moyennent jamais.
+// The two voices share almost the entire vocabulary — a funeral, a family meal,
+// a place of worship, a calendar. If the detector places them at the SAME storey, then the product does not
+// distinguish practice from culture, and it will do so on real people. It is the
+// question this bench exists to ask, and it is only legible because the two figures
+// read one against the other. They never add up and never average.
 //
-// ── LA LANGUE : TROIS FR, UNE EN, ET C'EST UN ARBITRAGE DU MAINTENEUR ────────────────────────────
-// La paire partage OBLIGATOIREMENT une langue — séparée, l'écart d'étage confondrait l'état avec la
-// couverture linguistique, et plus aucune lecture ne serait possible. Le français, pour la raison
-// qui a valu à la paire politique : c'est le lexique livré et ratifié, un défaut y est un défaut
-// produit vivant, et un lot de vocabulaire anglais en cours ferait de toute mesure EN un tir sur
-// cible mobile.
+// ── THE LANGUAGE: THREE FR, ONE EN, AND IT IS A MAINTAINER ARBITRATION ────────────────────────────
+// The pair MANDATORILY shares a language — separated, the storey gap would confuse the state with
+// linguistic coverage, and no reading would be possible anymore. French, for the reason
+// that held for the political pair: it is the shipped and ratified lexicon, a defect there is a live
+// production defect, and an English vocabulary batch in progress would make any EN measurement a shot at a
+// moving target.
 //
-// La voix CRITIQUE (`fr_critic`) est française par DÉCISION EXPLICITE du mainteneur, contre la
-// proposition initiale qui la plaçait en anglais. Le motif est celui du banc politique : en anglais,
-// son zéro aurait mesuré SON CONTENU et non le tri du détecteur. Le français est la langue où le
-// versant critique existe, donc la seule où ses chiffres veulent dire quelque chose. Le prix est
-// assumé et déclaré : il ne reste qu'UNE garde anglaise, et le plancher de faux positifs EN est
-// d'autant plus mince.
+// The CRITICAL voice (`fr_critic`) is French by EXPLICIT DECISION of the maintainer, against the
+// initial proposal that placed it in English. The reason is that of the political bench: in English,
+// its zero would have measured ITS CONTENT and not the detector's sorting. French is the language where the
+// critical side exists, hence the only one where its figures mean something. The price is
+// assumed and declared: there remains only ONE English guard, and the EN false-positive floor is
+// all the thinner.
 //
-// ── LES TRADITIONS, ET LE CONFONDANT QUE J'ACCEPTE ───────────────────────────────────────────────
-// `fr_practising` est musulmane, `fr_cultural_lapsed` est de famille catholique. Les deux voix
-// diffèrent donc sur DEUX axes à la fois : l'état (pratique / culture) et la tradition. La paire
-// SEULE ne peut pas dire si un écart d'étage vient de l'un ou de l'autre. C'est un choix, pas un
-// oubli, et voici le raisonnement complet :
+// ── THE TRADITIONS, AND THE CONFOUNDER I ACCEPT ───────────────────────────────────────────────
+// `fr_practising` is Muslim, `fr_cultural_lapsed` is of Catholic family. The two voices
+// therefore differ on TWO axes at once: the state (practice / culture) and the tradition. The pair
+// ALONE cannot say whether a storey gap comes from one or the other. It is a choice, not an
+// oversight, and here is the full reasoning:
 //
-//   · Même tradition des deux côtés aurait donné un écart pur — mais aucune tradition non
-//     chrétienne n'aurait jamais été éprouvée en RAPPEL, dans aucune langue, et « le lexique
-//     porte-t-il une foi mieux qu'une autre » serait resté entier du côté du rappel.
-//   · Musulmane des deux côtés aurait donné les deux — au risque d'un échec SILENCIEUX de
-//     l'instrument : si le lexique FR ne porte aucun vocabulaire islamique, les deux voix rendent
-//     zéro, l'écart vaut zéro, et la paire a l'air propre en ne mesurant rien.
+//   · Same tradition on both sides would have given a pure gap — but no non-Christian
+//     tradition would ever have been tested in RECALL, in any language, and « does the lexicon
+//     carry one faith better than another » would have stayed whole on the recall side.
+//   · Muslim on both sides would have given both — at the risk of a SILENT failure of
+//     the instrument: if the FR lexicon carries no Islamic vocabulary, the two voices return
+//     zero, the gap is zero, and the pair looks clean by measuring nothing.
 //
-// Le confondant est donc neutralisé AILLEURS : le fichier de test porte des sondes à CADRE CALQUÉ —
-// même frame syntaxique, les deux traditions, les deux états — qui séparent l'état de la tradition.
-// C'est la technique de la fixture politique (« là où on mesure, on isole »), déplacée du corps des
-// voix vers des sondes, parce qu'ici deux personnes vraisemblables ne pouvaient pas porter le
-// calque intégral sans devenir deux dosages.
+// The confounder is therefore neutralized ELSEWHERE: the test file carries PATTERNED-FRAME probes —
+// same syntactic frame, the two traditions, the two states — that separate the state from the tradition.
+// It is the technique of the political fixture (« where one measures, one isolates »), moved from the body of the
+// voices to probes, because here two plausible people could not carry the
+// full pattern without becoming two dosages.
 //
-// ── CE QUE LE SCEAU DE `fr_cultural_lapsed` PEUT ET NE PEUT PAS SAVOIR ───────────────────────────
-// C'est la voix la plus difficile du lot, et son sceau doit énoncer sa propre limite, sans quoi il
-// prétendrait à une connaissance que personne n'a.
+// ── WHAT THE SEAL OF `fr_cultural_lapsed` CAN AND CANNOT KNOW ───────────────────────────
+// It is the hardest voice of the batch, and its seal must state its own limit, without which it
+// would claim a knowledge no one has.
 //
-// CE QUE LE SCEAU SAIT : ce que le TEXTE énonce. Elle écrit qu'elle ne croit pas — explicitement,
-// plusieurs fois — et elle écrit les pratiques auxquelles elle continue d'assister. Les deux sont
-// dans les items, vérifiables par un tiers.
+// WHAT THE SEAL KNOWS: what the TEXT states. She writes that she does not believe — explicitly,
+// several times — and she writes the practices she continues to attend. Both are
+// in the items, verifiable by a third party.
 //
-// CE QUE LE SCEAU NE PEUT PAS SAVOIR — et c'est le fond, pas une réserve de forme : si l'assistance
-// SANS la croyance est distinguable de la pratique, à partir d'un texte. Elle ne l'est probablement
-// pas, et la doctrine du produit le dit déjà : culture et pratique ne se séparent pas depuis
-// l'écrit. Un enterrement, un repas de fête, un vocabulaire su par cœur sont EXACTEMENT ce qu'écrit
-// aussi quelqu'un qui pratique.
+// WHAT THE SEAL CANNOT KNOW — and it is the substance, not a reservation of form: whether attendance
+// WITHOUT belief is distinguishable from practice, from a text. It probably is
+// not, and the product's doctrine already says so: culture and practice do not separate from
+// the written. A funeral, a feast meal, a vocabulary known by heart are EXACTLY what
+// someone who practices also writes.
 //
-// D'où la conséquence, qui est le vrai contenu de ce sceau : `signalWithoutLived` est une assertion
-// sur LE TEXTE, jamais sur sa vie intérieure. Si le détecteur la NOMME, ce n'est pas évidemment une
-// erreur — c'est le produit en train de faire exactement la chose qu'il existe pour montrer, et le
-// montrer sur cette voix vaut mieux que de le découvrir sur quelqu'un. **Le tort que je compte sur
-// elle est l'ÉTAGE, pas le TAG.** Un constat large est attendu ; un constat nommé est le résultat.
+// Hence the consequence, which is the true content of this seal: `signalWithoutLived` is an assertion
+// about THE TEXT, never about her inner life. If the detector NAMES her, it is not obviously an
+// error — it is the product doing exactly the thing it exists to show, and
+// showing it on this voice is better than discovering it on someone. **The wrong I count on
+// her is the STOREY, not the TAG.** A broad finding is expected; a named finding is the result.
 //
-// ── CE QUE CE BANC NE COUVRE PAS ─────────────────────────────────────────────────────────────────
-// - **Le RAPPEL n'est mesuré que pour l'islam** (`fr_practising`, seule voix `lived` du lot) et,
-//   d'un cran plus bas, pour un héritage catholique en `signalWithoutLived`. Judaïsme, bouddhisme,
-//   hindouisme n'apparaissent QUE du côté non-porteur, dans `en_curious` : leur rappel est **non
-//   mesuré**, et un vert ici n'en dit rien.
-// - **Aucune organisation, aucun courant nommé, aucune personnalité, aucun texte cité.** Les voix
-//   se déclarent par des termes ordinaires, jamais par un nom propre ni un fragment de texte
-//   religieux. Le rappel sur les noms de courants ou d'obédiences n'est pas mesuré.
-// - **La bande civile, et elle seule.** Aucune hostilité envers un groupe religieux ou envers les
-//   croyants comme classe n'est écrite ici, dans AUCUNE des quatre voix. `fr_critic` argumente
-//   contre des IDÉES — l'origine des textes, le financement, l'école — jamais contre des personnes.
-//   Le discours réel comporte des registres plus durs des deux côtés : CE BANC NE LES MESURE PAS,
-//   ni leur rappel ni leurs faux positifs, et la frontière `religion` / `conflictual` sur ces
-//   registres-là reste entière.
-// - **Une seule garde anglaise.** Le plancher de faux positifs EN repose sur `en_curious` seule.
-//   Il n'existe PAS de paire opposée anglaise, ni de voix pratiquante anglaise : ni le rappel
-//   anglais, ni un éventuel biais EN entre traditions ne sont mesurés ici.
-// - **Les cinq autres labels ne sont pas éprouvés.** Scellés non-porteurs partout. Les items de vie
-//   ont été tenus à l'écart du corps et du soin exprès — une marche vue sous l'angle des chevreuils
-//   plutôt que des ampoules, un col enneigé plutôt qu'un genou — parce qu'un signal
-//   `health_physical` aurait brouillé la seule chose que ce banc mesure. Ce banc ne valide pas ces
-//   labels pour autant.
+// ── WHAT THIS BENCH DOES NOT COVER ─────────────────────────────────────────────────────────────
+// - **RECALL is measured only for Islam** (`fr_practising`, the only `lived` voice of the batch) and,
+//   one notch lower, for a Catholic heritage in `signalWithoutLived`. Judaism, Buddhism,
+//   Hinduism appear ONLY on the non-carrier side, in `en_curious`: their recall is **not
+//   measured**, and a green here says nothing about it.
+// - **No organization, no named current, no public figure, no cited text.** The voices
+//   declare themselves by ordinary terms, never by a proper name nor a fragment of religious
+//   text. Recall on the names of currents or denominations is not measured.
+// - **The civil band, and it alone.** No hostility toward a religious group or toward
+//   believers as a class is written here, in NONE of the four voices. `fr_critic` argues
+//   against IDEAS — the origin of the texts, the funding, the school — never against people.
+//   Real discourse comprises harsher registers on both sides: THIS BENCH DOES NOT MEASURE THEM,
+//   neither their recall nor their false positives, and the `religion` / `conflictual` boundary on those
+//   registers stays whole.
+// - **A single English guard.** The EN false-positive floor rests on `en_curious` alone.
+//   There is NO opposed English pair, nor an English practicing voice: neither English
+//   recall, nor a possible EN bias between traditions is measured here.
+// - **The five other labels are not tested.** Sealed non-carrier everywhere. The life items
+//   were kept away from the body and care on purpose — a hike seen through the angle of the roe deer
+//   rather than the blisters, a snowy pass rather than a knee — because a
+//   `health_physical` signal would have blurred the only thing this bench measures. This bench does not validate those
+//   labels for all that.
 //
-// ── CE QUI A ÉTÉ LU, ET LA FUITE QUE JE DÉCLARE ──────────────────────────────────────────────────
-// LU : `CLAUDE.md` ; `register-bench.ts` et `register-bench.harness.ts` (types, comptage, sans
-// données de persona) ; `politics-registers.fixture.ts` en entier et `politics-bench.test.ts` pour
-// la LEÇON des compteurs verts ; `fr-registers.fixture.ts`, `en-registers.fixture.ts`,
-// `conflictual-registers.fixture.ts`, `en-body-registers.fixture.ts` et `en-upper-bound.fixture.ts`
-// POUR LE FORMAT et pour établir l'état de la mesure ci-dessus. Recherche web sur la FORME du
-// registre religieux et séculier ordinaire dans les deux langues (pratique insérée dans une vie de
-// travail, formule française « croyant non pratiquant » et son histoire, vocabulaire de
-// l'identification culturelle sans croyance, registre de la libre pensée) — aucune valeur rapportée.
+// ── WHAT WAS READ, AND THE LEAK I DECLARE ──────────────────────────────────────────────────
+// READ: `CLAUDE.md`; `register-bench.ts` and `register-bench.harness.ts` (types, counting, without
+// persona data); `politics-registers.fixture.ts` in full and `politics-bench.test.ts` for
+// the LESSON of the green counters; `fr-registers.fixture.ts`, `en-registers.fixture.ts`,
+// `conflictual-registers.fixture.ts`, `en-body-registers.fixture.ts` and `en-upper-bound.fixture.ts`
+// FOR THE FORMAT and to establish the state of the measurement above. Web search on the FORM of the
+// ordinary religious and secular register in both languages (practice inserted into a working
+// life, French formula « croyant non pratiquant » and its history, vocabulary of
+// cultural identification without belief, register of free thought) — no value reported.
 //
-// NON LU, délibérément : `lexicon/` en entier, `filters-*.ts`, les documents de portabilité EN.
+// NOT READ, deliberately: `lexicon/` in full, `filters-*.ts`, the EN portability documents.
 //
-// FUITE DÉCLARÉE, et la déclarer est la discipline qui fonctionne, pas son échec. En vérifiant par
-// `grep` si `religion` était asserté quelque part — vérification nécessaire, puisque toute la
-// prémisse de ce lot en dépendait — j'ai vu passer huit lignes de `lexicon-battery.test.ts`, dont
-// j'ai involontairement appris quatre choses : deux chaînes de sonde FR portant sur l'assistance à
-// un office, qu'un versant CRITIQUE de l'axe ratifié a cessé d'être muet récemment, qu'une
-// interjection lexicalisée est exclue comme sociolecte, et qu'une insulte visant des croyants est
-// routée vers `conflictual` et jamais vers `religion`.
+// DECLARED LEAK, and declaring it is the discipline that works, not its failure. While checking by
+// `grep` whether `religion` was asserted anywhere — a necessary check, since the whole
+// premise of this batch depended on it — I saw pass eight lines of `lexicon-battery.test.ts`, from which
+// I involuntarily learned four things: two FR probe strings bearing on attendance at
+// a service, that a CRITICAL side of the ratified axis stopped being silent recently, that a
+// lexicalized interjection is excluded as sociolect, and that an insult aiming at believers is
+// routed to `conflictual` and never to `religion`.
 //
-// Ce que la fuite change, et ce qu'elle ne change pas. Les deux chaînes vues sont volontairement
-// ABSENTES de ce fichier : les réutiliser aurait fabriqué un rappel garanti et vidé la paire de son
-// pouvoir de mesure. La quatrième information ne modifie rien — la bande civile était décidée
-// avant. La DEUXIÈME, en revanche, a une conséquence qu'il faut écrire ici plutôt que de la
-// découvrir après la mesure : **je m'attends à ce que `fr_critic` déclenche**, alors que je la
-// scelle non-porteuse. Ce désaccord est délibéré et il est le résultat le plus intéressant du lot —
-// il est détaillé dans son `truthNotes`, et je le scelle selon ce que je crois vrai DE LA PERSONNE,
-// pas selon ce que je crois savoir du lexique. C'est la seule définition utilisable d'une
-// vérité-terrain.
+// What the leak changes, and what it does not change. The two strings seen are deliberately
+// ABSENT from this file: reusing them would have manufactured a guaranteed recall and drained the pair of its
+// measuring power. The fourth piece of information modifies nothing — the civil band was decided
+// before. The SECOND, on the other hand, has a consequence that must be written here rather than
+// discovered after the measurement: **I expect `fr_critic` to fire**, whereas I
+// seal her non-carrier. This disagreement is deliberate and it is the most interesting result of the batch —
+// it is detailed in its `truthNotes`, and I seal it according to what I believe true OF THE PERSON,
+// not according to what I believe I know of the lexicon. It is the only usable definition of a
+// ground truth.
 //
-// ── Aucune valeur réelle ─────────────────────────────────────────────────────────────────────────
-// Chaque chaîne est inventée (CLAUDE.md) : aucun message, pseudo, prière, sermon, verset, date ou
-// identifiant réel, et aucune formulation traçable à une communauté, une personne ou un texte
-// existants.
+// ── No real value ─────────────────────────────────────────────────────────────────────────
+// Each string is invented (CLAUDE.md): no real message, handle, prayer, sermon, verse, date or
+// identifier, and no wording traceable to an existing community, person or text.
 
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. LA PRATIQUE ORDINAIRE — première moitié de la paire
+// 1. ORDINARY PRACTICE — first half of the pair
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_PRACTISING: RegisterPersona = {
@@ -176,7 +175,7 @@ const FR_PRACTISING: RegisterPersona = {
   truthNotes:
     "`religion` VÉCU, et l'état est `lived` parce que la pratique est LA SIENNE : elle se déclare, elle observe, elle organise sa semaine autour. Un constat NOMMÉ est ici un rappel légitime et ATTENDU — c'est la PREMIÈRE voix de tout le corpus scellé dont on puisse dire ça sur ce label, et son absence serait un défaut de rappel à publier, pas à absorber. Elle n'a été dirigée vers AUCUN terme : si elle écrit ce qu'elle écrit, c'est parce que quelqu'un dans sa situation l'écrit, pas parce que je visais un lexème. Les cinq autres labels sont non-porteurs, et les items de vie ont été tenus hors du soin exprès — un fils qui dort enfin, un placard rangé, des crampons — parce qu'un signal `health_physical` aurait brouillé la seule chose que ce banc mesure. SON CHIFFRE NE SE LIT QUE CONTRE CELUI DE `fr_cultural_lapsed`, jamais seul : ce n'est pas le tag qui compte ici mais l'ÉTAGE, et un constat nommé sur elle n'est une bonne nouvelle que si l'autre voix n'en obtient PAS. Seule, cette persona ne peut pas distinguer « le détecteur reconnaît une pratique » de « le détecteur reconnaît du vocabulaire ».",
   items: [
-    // — Déclarations et pratique (8) : cadres pensés en regard de la voix de culture.
+    // — Declarations and practice (8): frames designed against the culture voice.
     { kind: 'comment', text: "je suis musulmane et je pratique, je ne m'en cache pas" },
     { kind: 'comment', text: "on est une famille pratiquante, ma mere l'etait avant moi" },
     { kind: 'comment', text: 'je vais a la mosquee le vendredi quand le planning me le permet' },
@@ -188,7 +187,7 @@ const FR_PRACTISING: RegisterPersona = {
       text: 'je ne bois pas, ca surprend encore des collegues au bout de six ans',
     },
     { kind: 'search', text: 'horaires de priere de la semaine pour ma ville' },
-    // — Communauté et calendrier (6) : écriture libre, non calquée.
+    // — Community and calendar (6): free writing, not patterned.
     { kind: 'search', text: 'salle de priere en entreprise ce que dit la loi' },
     { kind: 'comment', text: "la nouvelle salle est plus grande mais l'acoustique est terrible" },
     { kind: 'search', text: 'soupe rapide a preparer la veille pour rompre le jeune' },
@@ -198,7 +197,7 @@ const FR_PRACTISING: RegisterPersona = {
     },
     { kind: 'search', text: 'cadeau de mariage pour une cousine budget cinquante euros' },
     { kind: 'comment', text: "ma mere veut qu'on soit tous la pour la fete, discussion close" },
-    // — La vie (10) : rien de religieux, rien de clinique.
+    // — Life (10): nothing religious, nothing clinical.
     { kind: 'search', text: 'crampons terrain synthetique femme pointure 39' },
     { kind: 'comment', text: "on a perdu quatre a un et j'ai quand meme adore la soiree" },
     { kind: 'search', text: 'machine a laver qui vibre en essorage' },
@@ -213,7 +212,7 @@ const FR_PRACTISING: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. LA CULTURE SANS LA CROYANCE — seconde moitié de la paire, même densité
+// 2. CULTURE WITHOUT BELIEF — second half of the pair, same density
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_CULTURAL_LAPSED: RegisterPersona = {
@@ -225,7 +224,7 @@ const FR_CULTURAL_LAPSED: RegisterPersona = {
   truthNotes:
     "`religion` SIGNAL SANS VÉCU, et c'est l'appel le plus difficile du corpus — il faut donc dire exactement ce qu'il prétend. LE SIGNAL EST RÉEL : elle écrit un lieu de culte, un rite funéraire, une fête, un sacrement, un catéchisme. Il ne porte simplement pas la croyance, qu'elle nie explicitement et plusieurs fois. Le tag est donc ATTENDU et légitime — l'absence de tag serait un défaut de rappel du signal, pas une victoire. LE TORT QUE JE COMPTE EST L'ÉTAGE : un constat NOMMÉ sur elle est une sur-classification (compteur `escalated`), parce qu'un constat nommé porte la confiance haute et le quasi-factuel là où le texte ne permet qu'une lecture large. CE QUE CE SCEAU NE PEUT PAS SAVOIR, et le savoir change la lecture : si l'assistance sans la croyance est distinguable de la pratique, depuis un texte. Elle ne l'est probablement pas — un enterrement, un repas de fête et un vocabulaire su par coeur sont exactement ce qu'écrit aussi quelqu'un qui pratique. `signalWithoutLived` est donc une assertion sur LE TEXTE, jamais sur sa vie intérieure. Si le détecteur la nomme, ce n'est pas évidemment une erreur : c'est le produit en train de faire la chose qu'il existe pour montrer, et le voir ici vaut mieux que de le découvrir sur quelqu'un. ELLE SE LIT CONTRE `fr_practising` ET JAMAIS SEULE : si les deux voix atteignent le même étage, le produit ne distingue pas la culture de la pratique, et c'est le résultat que ce banc existe pour rendre visible. Cinq autres labels non-porteurs ; les items de vie sont tenus hors du soin exprès — la marche est vue par les chevreuils et non par les ampoules, faute de quoi `health_physical` brouillerait la mesure.",
   items: [
-    // — Déclarations et héritage (8) : cadres pensés en regard de la voix pratiquante.
+    // — Declarations and heritage (8): frames designed against the practicing voice.
     {
       kind: 'comment',
       text: 'je suis catholique de famille mais je ne crois pas, je le dis comme ca',
@@ -246,7 +245,7 @@ const FR_CULTURAL_LAPSED: RegisterPersona = {
       text: "je fais le repas de noel tous les ans, c'est la famille, pas la foi",
     },
     { kind: 'search', text: 'que repondre a quelqu un qui insiste pour un bapteme' },
-    // — Rites et transmission (6) : écriture libre, non calquée.
+    // — Rites and transmission (6): free writing, not patterned.
     { kind: 'search', text: 'ordre des lectures a un enterrement qui lit quoi' },
     {
       kind: 'comment',
@@ -256,7 +255,7 @@ const FR_CULTURAL_LAPSED: RegisterPersona = {
     { kind: 'comment', text: 'on met encore la creche chez ma mere, moi je regarde faire' },
     { kind: 'search', text: 'renouvellement d une concession au cimetiere demarches' },
     { kind: 'comment', text: 'quinze ans de catechisme et il me reste surtout les gouters' },
-    // — La vie (10) : rien de religieux, rien de clinique.
+    // — Life (10): nothing religious, nothing clinical.
     { kind: 'search', text: 'reparer une fuite sous un evier sans plombier' },
     { kind: 'comment', text: 'la benne est arrivee, le garage sera vide avant dimanche' },
     { kind: 'search', text: "livre d'occasion sur l'histoire de la vallee" },
@@ -274,7 +273,7 @@ const FR_CULTURAL_LAPSED: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. LA CRITIQUE — saturée du vocabulaire, et rien n'est vrai d'elle
+// 3. THE CRITIC — saturated with the vocabulary, and nothing is true of her
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_CRITIC: RegisterPersona = {
@@ -286,7 +285,7 @@ const FR_CRITIC: RegisterPersona = {
   truthNotes:
     "Non-porteuse sur les six, et c'est l'appel LE PLUS CONTESTABLE du lot — le taire aurait été le vrai défaut. CE QUE JE DÉFENDS : un constat `religion` énonce quelque chose de la religion DE LA PERSONNE, et l'énoncé vrai la concernant est qu'elle n'en a aucune. La tager, c'est confondre le SUJET traité avec l'APPARTENANCE, exactement le mécanisme que `en_exposed_apolitical` isole sur `politics` — et c'est très précisément ce que le produit existe pour montrer. LA LECTURE INVERSE EXISTE ET SE DÉFEND : la conviction séculière est un axe du même domaine, et on pourrait sceller `signalWithoutLived` en disant que le signal est réel mais mal nommé. Je tranche pour `nonCarrier` parce que l'étiquette rendue à l'utilisatrice dirait « religion » d'une femme qui n'en a pas, et qu'aucun étage n'atténue ce contresens. PRÉDICTION SCELLÉE D'AVANCE, appuyée sur la fuite déclarée en tête de fichier : je m'attends à ce qu'elle DÉCLENCHE, un versant critique de l'axe ayant récemment cessé d'être muet. Le désaccord entre ce sceau et ce câblage est donc PRÉVU, et il est le résultat le plus intéressant du lot : deux lectures défendables de ce que `religion` nomme, rendues visibles par une voix qu'aucun banc n'avait jamais écrite. La note de mesure devra dire laquelle des deux le produit assume, et non enregistrer un tort en silence. Cinq autres labels non-porteurs, et `conflictual` mérite sa ligne : elle est ferme, parfois sèche, mais elle ne vise personne — la porte de `conflictual` est l'insulte émise visant un interlocuteur, et il n'y en a aucune. Un tag `conflictual` ici serait un tort à part entière, et sa présence dirait qu'un désaccord d'idées se lit comme une agression.",
   items: [
-    // — La critique (15) : des idées, du financement, de l'école. Aucune personne visée.
+    // — The critique (15): ideas, funding, school. No person targeted.
     {
       kind: 'comment',
       text: 'on peut respecter quelqu un et trouver que sa croyance ne tient pas',
@@ -329,7 +328,7 @@ const FR_CRITIC: RegisterPersona = {
       text: "j'ai lu les textes en entier, c'est justement pour ca que je ne suis pas convaincue",
     },
     { kind: 'search', text: 'histoire de la libre pensee en france ouvrage de reference' },
-    // — La vie (9) : rien de religieux, rien de clinique.
+    // — Life (9): nothing religious, nothing clinical.
     { kind: 'search', text: 'carburateur qui deborde a froid diagnostic' },
     { kind: 'comment', text: 'la moto a demarre au troisieme coup de kick, je suis insupportable' },
     { kind: 'search', text: 'ouverture italienne piege classique cote noir' },
@@ -346,7 +345,7 @@ const FR_CRITIC: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 4. LA CURIEUSE — plusieurs traditions, aucune appartenance : la garde anglaise
+// 4. THE CURIOUS — several traditions, no belonging: the English guard
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_CURIOUS: RegisterPersona = {
@@ -401,22 +400,22 @@ const EN_CURIOUS: RegisterPersona = {
 };
 
 /**
- * Les quatre voix, et leurs deux rôles distincts — qu'un rapport ne doit jamais confondre.
+ * The four voices, and their two distinct roles — that a report must never confuse.
  *
- * `fr_practising` et `fr_cultural_lapsed` forment la PAIRE, et seul l'écart d'ÉTAGE entre elles a un
- * sens. Elles ne se somment ni ne se moyennent jamais. Attention au piège propre à CETTE paire, qui
- * n'est pas celui de la paire politique : les deux voix ATTENDENT un tag, donc deux cellules vertes
- * au compteur de rappel sont le résultat NORMAL et ne prouvent rien du tout. Ce qui se lit est la
- * distance entre `explicit` et `indirect` — et si elle est nulle, le produit ne distingue pas la
- * culture de la pratique.
+ * `fr_practising` and `fr_cultural_lapsed` form the PAIR, and only the STOREY gap between them has a
+ * meaning. They never sum nor average. Beware the trap specific to THIS pair, which
+ * is not that of the political pair: both voices EXPECT a tag, so two green cells
+ * on the recall counter are the NORMAL result and prove nothing at all. What reads is the
+ * distance between `explicit` and `indirect` — and if it is zero, the product does not distinguish
+ * culture from practice.
  *
- * `fr_critic` et `en_curious` sont des GARDES et non une paire : elles ne s'opposent pas l'une à
- * l'autre, elles mesurent chacune un plancher de faux positifs contre un mécanisme différent — la
- * critique argumentée du sujet pour la première, l'intérêt savant sans appartenance pour la seconde.
- * Elles ne sont PAS interchangeables et leurs chiffres ne se somment pas : `fr_critic` est en
- * français, là où le vocabulaire existe, donc son chiffre mesure le tri du détecteur ; `en_curious`
- * est en anglais, et son zéro éventuel mesurera d'abord son propre contenu tant que la couverture
- * anglaise n'est pas établie par un autre chemin que ce banc.
+ * `fr_critic` and `en_curious` are GUARDS and not a pair: they do not oppose one
+ * another, they each measure a false-positive floor against a different mechanism — the
+ * argued critique of the subject for the first, learned interest without belonging for the second.
+ * They are NOT interchangeable and their figures do not sum: `fr_critic` is in
+ * French, where the vocabulary exists, so its figure measures the detector's sorting; `en_curious`
+ * is in English, and its possible zero will first measure its own content as long as English
+ * coverage is not established by a path other than this bench.
  */
 export const RELIGION_REGISTER_PERSONAS: readonly RegisterPersona[] = [
   FR_PRACTISING,

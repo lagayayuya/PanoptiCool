@@ -1,18 +1,18 @@
-// Lexique d'intérêt `lecture` (D2, PANO-78 lot 3) — lecture / livres.
+// Interest lexicon `lecture` (D2, PANO-78 batch 3) — reading / books.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la lecture FR : genres, PLATEFORMES, auteurs, jargon communauté BookTok.
-// Entités = signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR reading: genres, PLATFORMS, authors, BookTok community jargon.
+// Entities = generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « booktok », « romantasy », « dark romance », « colleen hoover », « goodreads »,
 //     « babelio », « wattpad », « liseuse », « pile a lire », « bouquin », « roman ».
-//   · ANCRÉ — « lecture » (action / interprétation), « tome », « chapitre » (partagé cinéma), « saga »,
-//     « spicy », « slow burn », « one shot » (jeu/photo), « polar » (ours / laine) : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « lecture » (reading action / interpretation), « tome », « chapitre » (shared cinema), « saga »,
+//     « spicy », « slow burn », « one shot » (game/photo), « polar » (polar bear / fleece): co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de `manga_anime` (thème séparé).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from `manga_anime` (separate theme).
 
 import type { InterestLexicon } from '../types';
 
@@ -44,7 +44,7 @@ export const LECTURE_LEXICON: InterestLexicon = {
     'fourth wing',
     'kindle',
     'club de lecture',
-    // Genres / auteurs / plateformes (enrichi)
+    // Genres / authors / platforms (enriched)
     'young adult',
     'dystopie',
     'cosy mystery',
@@ -61,24 +61,24 @@ export const LECTURE_LEXICON: InterestLexicon = {
     'roman graphique',
     'livre audio',
     'best seller',
-    // Variantes EN (PANO-88) : SOLO univoque (jargon BookTok).
+    // EN variants (PANO-88): SOLO univocal (BookTok jargon).
     'buddy read',
   ],
   anchored: [
-    'lecture', // action de lire / interprétation
-    'tome', // tome générique
-    'chapitre', // partagé cinéma
-    'saga', // saga générique
-    'spicy', // épicé (anglais)
+    'lecture', // reading action / interpretation
+    'tome', // generic tome
+    'chapitre', // shared cinema
+    'saga', // generic saga
+    'spicy', // spicy (English)
     'slow burn', // jargon
-    'one shot', // jeu / photo
-    'polar', // ours polaire / polaire (laine)
+    'one shot', // game / photo
+    'polar', // polar bear / fleece (wool)
     'page turner',
-    'poche', // poche générique vs livre de poche
-    'broche', // broche (bijou) vs livre broché
-    'fantasy', // fantasy générique vs genre
-    'plot twist', // rebondissement vs générique (EN, ancré)
-    'tbr', // « to be read » (pile à lire) vs sigle (EN)
+    'poche', // generic pocket vs paperback
+    'broche', // brooch (jewelry) vs bound book
+    'fantasy', // generic fantasy vs genre
+    'plot twist', // plot twist vs generic (EN, anchored)
+    'tbr', // « to be read » (to-be-read pile) vs acronym (EN)
   ],
   selfDeclared: ['lecteur', 'lectrice', 'grande lectrice'],
 };

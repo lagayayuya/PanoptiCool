@@ -1,18 +1,17 @@
-// VÉRIFICATION — la règle de registre informationnel sur `health_physical` (PANO-35).
+// VERIFICATION — the informational-register rule on `health_physical` (PANO-35).
 //
-// La règle d'étage a été conçue et mesurée sur `mental_health`, mais elle vit dans la MACHINERIE :
-// elle s'applique donc à tout lexique topical câblé, `health_physical` compris, et donc en
-// production. « symptômes du diabète » y dégrade depuis le lot précédent sans que personne ne l'ait
-// vérifié. La direction est sûre — une règle d'étage ne peut qu'abaisser, jamais créer ni
-// supprimer — donc le risque n'est pas la sûreté, c'est le RAPPEL : quelqu'un qui vit réellement
-// une condition perdrait-il son constat nommé parce qu'il se documente dessus ?
+// The storey rule was designed and measured on `mental_health`, but it lives in the MACHINERY:
+// it therefore applies to any wired topical lexicon, `health_physical` included, and thus in
+// production. « symptômes du diabète » degrades there since the previous batch without anyone having
+// verified it. The direction is safe — a storey rule can only lower, never create nor suppress —
+// so the risk is not safety, it is RECALL: would someone who really lives with a condition lose
+// their named finding because they document themselves about it?
 //
-// ── Ce que ce fichier est, et n'est pas ──────────────────────────────────────────────────────────
-// Des SONDES de mécanisme, pas une mesure de taux. Il n'y a pas de persona ici, pas de
-// vérité-terrain scellée, pas de dénominateur : on vérifie qu'un mécanisme se comporte comme sa
-// doctrine l'annonce sur un label où il n'avait jamais été exercé. Un taux de faux positifs sur
-// `health_physical` demanderait le même dispositif complet que pour `mental_health` — il n'existe
-// pas, et ce fichier ne prétend pas le remplacer.
+// ── What this file is, and is not ─────────────────────────────────────────────────────────────────
+// Mechanism PROBES, not a rate measurement. There is no persona here, no sealed ground truth, no
+// denominator: we verify that a mechanism behaves as its doctrine announces on a label where it had
+// never been exercised. A false-positive rate on `health_physical` would demand the same full
+// apparatus as for `mental_health` — it does not exist, and this file does not claim to replace it.
 
 import { describe, expect, it } from 'vitest';
 import { HEALTH_PHYSICAL_LEXICON } from '../lexicon/health-physical';
@@ -26,66 +25,65 @@ function constat(textes: string[]): { stage: string; etages: string[] } | null {
   return { stage: d.stage, etages: d.items.map((i) => i.stage) };
 }
 
-describe("règle d'étage — vérification sur `health_physical`", () => {
-  it('le cadrage documentaire dégrade un terme de condition, comme sur `mental_health`', () => {
-    // Quelqu'un qui se renseigne : le terme précis est là, mais rien n'indique qu'il le VIT.
+describe('storey rule — verification on `health_physical`', () => {
+  it('the documentary framing degrades a condition term, as on `mental_health`', () => {
+    // Someone who is looking things up: the precise term is there, but nothing indicates they LIVE it.
     const r = constat(['symptomes du diabete', "signes de l'endometriose"]);
     expect(r?.stage).toBe('indirect');
     expect(r?.etages).toEqual(['indirect', 'indirect']);
   });
 
-  it('LE RÉSULTAT QUI COMPTE — celui qui vit la condition garde son constat NOMMÉ', () => {
-    // Le risque réel de la règle est là, et il est borné par un fait de langue : une personne qui
-    // vit une condition la NOMME quelque part au possessif, et « mon diabète me fatigue » n'a aucun
-    // cadrage documentaire. L'item qui la décrit survit donc, et il suffit à tenir l'étage nommé —
-    // même quand la même personne se documente par ailleurs.
+  it('THE RESULT THAT COUNTS — whoever lives with the condition keeps their NAMED finding', () => {
+    // The real risk of the rule is there, and it is bounded by a fact of language: a person who
+    // lives with a condition NAMES it somewhere in the possessive, and « mon diabète me fatigue » has
+    // no documentary framing. The item that describes her therefore survives, and it is enough to
+    // hold the named storey — even when the same person documents herself elsewhere.
     const r = constat(['mon diabete me fatigue en ce moment', 'symptomes du diabete']);
     expect(r?.stage).toBe('explicit');
     expect(r?.etages).toEqual(['explicit', 'indirect']);
   });
 
-  it("le vécu sans aucun cadrage documentaire est intact — la règle ne l'a pas touché", () => {
+  it('the lived without any documentary framing is intact — the rule did not touch it', () => {
     const r = constat(['mon diabete me fatigue', 'ma maladie chronique']);
     expect(r?.stage).toBe('explicit');
     expect(r?.etages).toEqual(['explicit', 'explicit']);
   });
 
-  it("le proche reste en large, et la règle ne l'a pas fait disparaître", () => {
-    // Deux raisons de plafonner se cumulent ici (3ᵉ personne ET cadrage documentaire) sans jamais
-    // s'additionner en suppression : le constat demeure, à l'étage large. C'est la propriété qui
-    // sépare une règle d'étage d'un filtre.
+  it('the relative stays at broad, and the rule did not make it disappear', () => {
+    // Two reasons to cap accumulate here (3rd person AND documentary framing) without ever adding up
+    // into suppression: the finding remains, at the broad storey. It is the property that separates a
+    // storey rule from a filter.
     const r = constat(['le diabete de ma mere', 'signes de diabete chez ma mere']);
     expect(r?.stage).toBe('indirect');
     expect(r?.etages).toEqual(['indirect', 'indirect']);
   });
 
-  it("CORRECTION MESURÉE — `health_physical` a bien une homographie EN, et j'avais écrit l'inverse", () => {
-    // CE TEST AFFIRMAIT LE CONTRAIRE, et l'affirmation était FAUSSE. Il disait « aucune couverture
-    // anglaise, ni terme ni homographie utile (diabetes ≠ diabete) ». Le rapprochement se fait par
-    // la tolérance de PLURIEL de la machinerie : `diabete` + s matche « diabetes ».
+  it('MEASURED CORRECTION — `health_physical` does have an EN homography, and I had written the opposite', () => {
+    // THIS TEST AFFIRMED THE CONTRARY, and the affirmation was FALSE. It said « no English coverage,
+    // neither term nor useful homography (diabetes ≠ diabete) ». The match happens through the PLURAL
+    // tolerance of the machinery: `diabete` + s matches « diabetes ».
     //
-    // Pourquoi il passait quand même : « signs of diabetes » est de registre informationnel, donc
-    // dégradé en large, et un item large SEUL restait sous le seuil de 2. L'assertion mesurait donc
-    // le seuil, pas la couverture — elle serait tombée à la première seconde occurrence. Le
-    // franchissement SOLO l'a rendue visible en supprimant l'écran.
+    // Why it passed anyway: « signs of diabetes » is of informational register, therefore degraded to
+    // broad, and a broad item ALONE stayed below the threshold of 2. The assertion therefore measured
+    // the threshold, not the coverage — it would have fallen at the first second occurrence. The SOLO
+    // crossing made it visible by removing the screen.
     //
-    // La leçon est celle du dépôt sur les filets : une assertion négative vérifie ce qu'elle
-    // atteint, pas ce qu'elle affirme. Celle-ci prouvait « pas de constat », et je lui avais fait
-    // dire « pas de couverture ».
+    // The lesson is the repo's one on nets: a negative assertion verifies what it reaches, not what
+    // it affirms. This one proved « no finding », and I had made it say « no coverage ».
     const enPluriel = constat(['signs of diabetes']);
     expect(enPluriel?.stage).toBe('indirect');
   });
 
-  it("LA COUVERTURE N'EST PLUS ACCIDENTELLE — « endometriosis » est entré, et le test qui le niait a servi", () => {
-    // CE TEST DISAIT L'INVERSE, et il avait raison de le dire : « endometriosis » n'est pas le
-    // pluriel de « endometriose » (-ose / -osis), donc rien ne l'attrapait, à aucun étage. C'était
-    // la démonstration que la couverture EN était PARTIELLE en plus d'être accidentelle.
+  it('THE COVERAGE IS NO LONGER ACCIDENTAL — « endometriosis » entered, and the test that denied it served', () => {
+    // THIS TEST SAID THE OPPOSITE, and it was right to say it: « endometriosis » is not the plural of
+    // « endometriose » (-ose / -osis), so nothing caught it, at any storey. It was the demonstration
+    // that the EN coverage was PARTIAL in addition to being accidental.
     //
-    // Le lot de vocabulaire EN l'a comblée. La ligne est retournée plutôt que supprimée : une
-    // assertion négative qui a documenté un trou réel mérite de dire ce qui l'a bouché, sinon la
-    // raison du trou se perd avec elle.
+    // The EN vocabulary batch filled it. The line is turned rather than removed: a negative assertion
+    // that documented a real hole deserves to say what plugged it, otherwise the reason for the hole
+    // is lost with it.
     expect(constat(['my endometriosis has been bad this month'])?.stage).toBe('explicit');
-    // Et la règle d'étage s'applique au terme neuf comme aux anciens — les deux ordres de mots.
+    // And the storey rule applies to the new term as to the old — both word orders.
     expect(constat(['symptoms of endometriosis'])?.stage).toBe('indirect');
     expect(constat(['endometriosis symptoms'])?.stage).toBe('indirect');
   });

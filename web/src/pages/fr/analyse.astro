@@ -1,7 +1,7 @@
 ---
-// Parcours d'analyse (refonte design 2026-07-15, maquette « PanoptiCool v4 — parcours guidé »).
-// `?demo` → export synthétique à travers le moteur réel ; sinon dépôt de l'export réel (drag &
-// drop). Toute l'interactivité vit dans l'unique îlot `client:only` (ADR-0002), comme ailleurs.
+// Analysis journey (2026-07-15 design rework, « PanoptiCool v4 — parcours guidé » mockup).
+// `?demo` → synthetic export through the real engine; otherwise drop of the real export (drag &
+// drop). All interactivity lives in the single `client:only` island (ADR-0002), as elsewhere.
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
@@ -10,9 +10,9 @@ import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../../i18n/locales';
 import SiteHead from '../../ui/SiteHead.astro';
 import { AnalysisPage } from '../../ui/v2/AnalysisPage';
 
-// La langue vient du DOSSIER de la page, elle n'est pas écrite ici : c'est ce qui rend
-// `<html lang>` vrai par construction dans chaque arbre de langue — et `i18n/current.ts`,
-// qui lit cet attribut pour fabriquer les liens des îlots, en dépend entièrement.
+// The language comes from the page's FOLDER, it is not written here: it is what makes
+// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
+// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 ---
 

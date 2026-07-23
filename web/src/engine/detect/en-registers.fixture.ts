@@ -1,50 +1,50 @@
-// Banc de faux positifs EN — les personas et leur VÉRITÉ-TERRAIN (PANO-35, instrument de la dette
-// ouverte par le lot pilote `mental_health` EN).
+// EN false-positive bench — the personas and their GROUND TRUTH (PANO-35, instrument of the debt
+// opened by the EN `mental_health` pilot batch).
 //
-// ── Ce fichier est scellé ────────────────────────────────────────────────────────────────────────
-// Il a été écrit et commité AVANT toute lecture du lexique et AVANT le premier tour du détecteur.
-// C'est sa seule propriété qui compte : « faux positif » n'a pas de sens sans un état attendu écrit
-// d'avance, et juger après avoir vu la sortie revient à juger avec indulgence — une détection
-// plausible se rationalise toujours. Le sceau est le commit ; le relire dans l'historique est la
-// seule façon de vérifier que la vérité-terrain n'a pas été ajustée à la mesure.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// ── This file is sealed ────────────────────────────────────────────────────────────────────────
+// It was written and committed BEFORE any reading of the lexicon and BEFORE the first pass of the detector.
+// It is its only property that counts: « false positive » has no meaning without an expected state written
+// in advance, and judging after seeing the output amounts to judging leniently — a plausible
+// detection always rationalizes itself. The seal is the commit; rereading it in the history is the
+// only way to check that the ground truth was not adjusted to the measurement.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// Corollaire : ce module ne dépend d'AUCUN module de lexique, pas même pour le type des labels.
-// L'union `SensitiveLabel` ci-dessous est réécrite localement à dessein — une dépendance vers
-// `lexicon/` ferait du fichier scellé un fichier qui a regardé.
+// Corollary: this module depends on NO lexicon module, not even for the label type.
+// The `SensitiveLabel` union below is rewritten locally by design — a dependency toward
+// `lexicon/` would make the sealed file a file that has looked.
 //
-// ── La variable est le REGISTRE, pas le sujet ────────────────────────────────────────────────────
-// L'hyperbole est une propriété de la FAÇON dont quelqu'un écrit, pas de ce dont il parle. Un banc
-// qui ferait varier les thèmes ne mesurerait donc rien du risque que porte ce lot. Les six voix
-// ci-dessous parlent de choses différentes parce que des gens différents parlent de choses
-// différentes — mais ce qui les sépare, et ce qui est mesuré, c'est leur façon d'écrire.
+// ── The variable is the REGISTER, not the subject ────────────────────────────────────────────────
+// Hyperbole is a property of the WAY someone writes, not of what they talk about. A bench
+// that varied the themes would therefore measure nothing of the risk this batch carries. The six voices
+// below talk about different things because different people talk about different
+// things — but what separates them, and what is measured, is their way of writing.
 //
-// ── Aucune valeur réelle ─────────────────────────────────────────────────────────────────────────
-// Chaque chaîne est inventée (CLAUDE.md). La recherche externe a porté sur la FORME du registre
-// anglophone en ligne — longueur, casse, le commentaire comme moitié de conversation — jamais sur
-// des contenus repris. Aucun message, pseudo, date ou identifiant réel n'entre ici.
+// ── No real value ─────────────────────────────────────────────────────────────────────────
+// Each string is invented (CLAUDE.md). The external research bore on the FORM of the online
+// anglophone register — length, case, the comment as half a conversation — never on
+// reused content. No real message, handle, date or identifier enters here.
 //
-// ── Limite déclarée, et elle n'est pas mince ─────────────────────────────────────────────────────
-// L'écriture n'a PAS été aveugle au sens strict : la note de méthode du lot pilote, dont la lecture
-// était demandée, énumère en §3 et §4 les termes admis ET les exclusions. La discipline tenue est
-// donc plus faible que « à l'aveugle » et il faut la nommer telle quelle : écriture À LA VOIX —
-// chaque persona écrite selon sa propre logique interne, sans reconsulter les listes, et en évitant
-// délibérément de viser les exclusions déjà figées par la batterie adverse (les rejouer produirait
-// un feu vert sans information). Les limites complètes vivent dans la note de mesure.
+// ── Declared limit, and it is not slight ─────────────────────────────────────────────────────
+// The writing was NOT blind in the strict sense: the pilot batch's method note, whose reading
+// was requested, enumerates in §3 and §4 the admitted terms AND the exclusions. The discipline held is
+// therefore weaker than « blind » and it must be named as such: writing TO THE VOICE —
+// each persona written according to its own internal logic, without re-consulting the lists, and deliberately
+// avoiding aiming at the exclusions already frozen by the adversarial battery (replaying them would produce
+// a green light without information). The complete limits live in the measurement note.
 
-// Le vocabulaire de vérité-terrain (types, états, helper) a été EXTRAIT vers `register-bench.ts`
-// à l'ouverture du banc FR, qui le partage. Aucun état ci-dessous n'a bougé à cette occasion : ce
-// que le sceau fige, ce sont des vérités-terrain, pas des déclarations de types.
+// The ground-truth vocabulary (types, states, helper) was EXTRACTED to `register-bench.ts`
+// at the opening of the FR bench, which shares it. No state below moved on that occasion: what
+// the seal freezes are ground truths, not type declarations.
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
 export type { BenchItem, GroundTruth, RegisterPersona, SensitiveLabel } from './register-bench';
 export { SENSITIVE_LABELS } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. LA VOIX PLATE — le témoin
+// 1. THE FLAT VOICE — the witness
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const PLAIN: RegisterPersona = {
@@ -89,7 +89,7 @@ const PLAIN: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. LA VOIX HYPERBOLIQUE — la persona qui porte le risque de ce lot
+// 2. THE HYPERBOLIC VOICE — the persona that carries this batch's risk
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const HYPERBOLIC: RegisterPersona = {
@@ -134,7 +134,7 @@ const HYPERBOLIC: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. LA VOIX ARGOTIQUE
+// 3. THE SLANG VOICE
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const SLANG: RegisterPersona = {
@@ -180,7 +180,7 @@ const SLANG: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 4. LA DÉTRESSE VÉCUE — le vrai positif
+// 4. LIVED DISTRESS — the true positive
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const DISTRESS: RegisterPersona = {
@@ -228,7 +228,7 @@ const DISTRESS: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 5. LE PROCHE AIDANT — signal réel, vécu par quelqu'un d'autre
+// 5. THE CARING RELATIVE — real signal, lived by someone else
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const CAREGIVER: RegisterPersona = {
@@ -276,7 +276,7 @@ const CAREGIVER: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 6. LA VOIX PROFESSIONNELLE — le vocabulaire clinique, littéral, sans sujet
+// 6. THE PROFESSIONAL VOICE — the clinical vocabulary, literal, without a subject
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const ADVOCATE: RegisterPersona = {
@@ -342,8 +342,8 @@ const ADVOCATE: RegisterPersona = {
 };
 
 /**
- * Les six voix du banc. L'ordre est celui de l'exposition au risque : le témoin, puis les deux
- * registres qui portent le tort attendu, puis le vrai positif, puis les deux signaux sans vécu.
+ * The six voices of the bench. The order is that of risk exposure: the witness, then the two
+ * registers that carry the expected wrong, then the true positive, then the two signals without lived experience.
  */
 export const EN_REGISTER_PERSONAS: readonly RegisterPersona[] = [
   PLAIN,

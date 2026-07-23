@@ -1,21 +1,21 @@
-// Ingestion en FLUX (PANO-91) — la voie B assemblée : décompresse → tokenise en repliant Watch
-// History → valide → normalise, SANS jamais matérialiser le graphe des 10⁴–10⁵ items de visionnage.
+// STREAMING ingestion (PANO-91) — approach B assembled: decompress → tokenize while folding Watch
+// History → validate → normalize, WITHOUT ever materializing the graph of the 10⁴–10⁵ watch items.
 //
-// C'est le fix RÉEL qui supersede le correctif partiel de `normalize.ts` (projection post-`JSON.parse`,
-// −36 % mais insuffisant : le pic du `JSON.parse` restait). Ici le graphe géant n'est jamais érigé.
+// This is the REAL fix that supersedes `normalize.ts`'s partial patch (post-`JSON.parse` projection,
+// −36% but insufficient: the `JSON.parse` peak remained). Here the giant graph is never erected.
 //
-// APPROCHE A (intégration commitable) : on replie `Watch History → VideoList` en liste DATES-ONLY
-// (`{Date}[]`) — exactement ce que `normalizeExport` projetait, et la seule lecture aval (`.Date`
-// rythme, `.length` opacité/absence ; jamais `Link`/`Title`). Zéro refactor des règles
-// golden-testées. Les FEATURES du dossier se dérivent ensuite de cette liste via `activity-rhythm`,
-// inchangé. La variante « features-only, O(1) »
-// (approche B pleine) reste un follow-up : elle ripperait dans 3 règles + le type `NormalizedExport`
-// sans changer le verdict crash (dates-only ≈ 9 Mo à 10⁵, une seule copie, loin du pic fatal).
+// APPROACH A (committable integration): we fold `Watch History → VideoList` into a DATES-ONLY list
+// (`{Date}[]`) — exactly what `normalizeExport` projected, and the only downstream read (`.Date`
+// rhythm, `.length` opacity/absence; never `Link`/`Title`). Zero refactor of the golden-tested
+// rules. The dossier's FEATURES are then derived from this list via `activity-rhythm`, unchanged.
+// The "features-only, O(1)" variant (full approach B) remains a follow-up: it would ripple through
+// 3 rules + the `NormalizedExport` type without changing the crash verdict (dates-only ≈ 9 MB at
+// 10⁵, a single copy, far from the fatal peak).
 //
-// TRUST BOUNDARY PRÉSERVÉE. Seul le TABLEAU de visionnage échappe au `JSON.parse` ; sa validation reste
-// faite par valibot via `StreamedExportSchema` (item dates-only `{Date: string}`). Toutes les petites
-// sections sont validées par le MÊME contrat que la voie A (schéma réutilisé, DRY). La malformation
-// (Date non-string, section absente…) est donc toujours un échec `validate` gracieux, pas un crash.
+// TRUST BOUNDARY PRESERVED. Only the watch ARRAY escapes `JSON.parse`; its validation is still done
+// by valibot via `StreamedExportSchema` (dates-only item `{Date: string}`). All the small sections
+// are validated by the SAME contract as approach A (reused schema, DRY). Malformation (a non-string
+// Date, an absent section…) is therefore still a graceful `validate` failure, not a crash.
 
 import * as v from 'valibot';
 import { type NormalizableExport, type NormalizedExport, normalizeExport } from '../normalize';
@@ -24,52 +24,52 @@ import { TikTokExportSchema, type ValidationIssue, yourActivityCategory } from '
 import { type ArrayFold, type FoldResolver, JsonStreamError, parseJsonStream } from './json-stream';
 
 /**
- * Garde anti-zip-bomb pour le FLUX — bien au-dessus de tout export réel (10⁵ items ≈ 26 Mo décompressés)
- * mais borne la chaîne décompressée qu'`unzipSync` alloue. Distinct du plafond 25 Mo d'approche A (qui,
- * lui, rejetait de vrais gros exports) : le flux garde l'empreinte bornée quel que soit le volume utile,
- * donc son seul rôle de cap est de refuser une archive pathologique.
+ * Anti-zip-bomb guard for the STREAM — well above any real export (10⁵ items ≈ 26 MB decompressed)
+ * but bounds the decompressed string that `unzipSync` allocates. Distinct from approach A's 25 MB
+ * ceiling (which rejected genuinely large exports): the stream keeps the footprint bounded whatever
+ * the useful volume, so its only cap role is to refuse a pathological archive.
  */
 export const STREAM_SIZE_LIMIT_BYTES = 512 * 1024 * 1024;
 
-/** Chemin de clés EXACT du tableau replié (les index de tableau n'entrent pas dans le chemin). */
+/** EXACT key path of the folded array (array indices do not enter the path). */
 const WATCH_HISTORY_VIDEOLIST_PATH: readonly string[] = [
   'Your Activity',
   'Watch History',
   'VideoList',
 ];
 
-// --- Schéma « streamed » : le contrat, mais Watch History relâché en dates-only -----------------
+// --- "streamed" schema: the contract, but Watch History loosened to dates-only ------------------
 
-/** Item de visionnage vu par le flux : réduit à sa `Date` (le replieur a déjà retiré `Link`/`Title`). */
+/** Watch item seen by the stream: reduced to its `Date` (the folder already removed `Link`/`Title`). */
 const streamedWatchHistoryItem = v.object({ Date: v.string() });
 
-/** `Your Activity` avec Watch History dates-only ; tout le reste = le contrat d'origine (`.entries`). */
+/** `Your Activity` with dates-only Watch History; everything else = the original contract (`.entries`). */
 const streamedYourActivity = v.object({
   ...yourActivityCategory.entries,
   'Watch History': v.object({ VideoList: v.nullable(v.array(streamedWatchHistoryItem)) }),
 });
 
 /**
- * Miroir runtime du contrat pour la voie flux : identique à `TikTokExportSchema` SAUF le tableau de
- * visionnage (dates-only). Bâti par spread des `.entries` → aucune duplication du schéma massif ; un
- * ajout de section au contrat se propage ici automatiquement.
+ * Runtime mirror of the contract for the streaming path: identical to `TikTokExportSchema` EXCEPT
+ * the watch array (dates-only). Built by spreading `.entries` → no duplication of the massive
+ * schema; adding a section to the contract propagates here automatically.
  */
 export const StreamedExportSchema = v.object({
   ...TikTokExportSchema.entries,
   'Your Activity': streamedYourActivity,
 });
 
-// --- Repli de Watch History ---------------------------------------------------------------------
+// --- Watch History folding ----------------------------------------------------------------------
 
-/** Extrait `Date` d'un item de visionnage transitoire, sans le retenir. Non-objet/null → `undefined`
- * (valibot tranchera : `Date: v.string()` échoue → `validate` gracieux, jamais de crash). */
+/** Extracts `Date` from a transient watch item, without retaining it. Non-object/null → `undefined`
+ * (valibot will settle it: `Date: v.string()` fails → graceful `validate`, never a crash). */
 function readDate(value: unknown): unknown {
   return typeof value === 'object' && value !== null
     ? (value as { Date?: unknown }).Date
     : undefined;
 }
 
-/** Replieur : accumule `{Date}` par item (transitoire oublié aussitôt), rend la liste dates-only. */
+/** Folder: accumulates `{Date}` per item (the transient forgotten at once), returns the dates-only list. */
 function watchDatesFold(): ArrayFold {
   const dates: { Date: unknown }[] = [];
   return {
@@ -82,7 +82,7 @@ function watchDatesFold(): ArrayFold {
   };
 }
 
-/** Replie UNIQUEMENT `Your Activity → Watch History → VideoList` ; tout le reste est matérialisé. */
+/** Folds ONLY `Your Activity → Watch History → VideoList`; everything else is materialized. */
 const resolveWatchHistoryFold: FoldResolver = (path) => {
   if (
     path.length === WATCH_HISTORY_VIDEOLIST_PATH.length &&
@@ -93,11 +93,11 @@ const resolveWatchHistoryFold: FoldResolver = (path) => {
   return null;
 };
 
-// --- Résultat & fonction d'ingestion ------------------------------------------------------------
+// --- Result & ingestion function ----------------------------------------------------------------
 
 /**
- * Résultat de l'ingestion en flux — union discriminée, plain-data. `parse` couvre décompression ET
- * tokenisation (une malformation JSON y devient `invalid_json`). `too_large` = zip-bomb au-delà du cap.
+ * Result of streaming ingestion — discriminated union, plain-data. `parse` covers decompression AND
+ * tokenization (a JSON malformation becomes `invalid_json` there). `too_large` = zip-bomb beyond the cap.
  */
 export type StreamIngestResult =
   | { ok: true; normalized: NormalizedExport; originalSize: number }
@@ -106,9 +106,9 @@ export type StreamIngestResult =
   | { ok: false; stage: 'validate'; issues: ValidationIssue[] };
 
 /**
- * Ingère les octets du `.zip` en flux → `NormalizedExport` prêt pour les règles. Ne lève jamais :
- * tout échec attendu est une variante de `StreamIngestResult`. Empreinte : la chaîne décompressée +
- * le graphe des petites sections + la liste dates-only ; JAMAIS le graphe des items de visionnage.
+ * Ingests the `.zip` bytes as a stream → `NormalizedExport` ready for the rules. Never throws: every
+ * expected failure is a variant of `StreamIngestResult`. Footprint: the decompressed string + the
+ * graph of the small sections + the dates-only list; NEVER the graph of the watch items.
  */
 export function ingestExportStreaming(
   zipBytes: Uint8Array,
@@ -129,8 +129,8 @@ export function ingestExportStreaming(
     return { ok: false, stage: 'parse', error: decompressed.error };
   }
 
-  // Tokenisation en flux : `data` est le graphe COMPLET des petites sections, mais `Watch History →
-  // VideoList` y est déjà la liste dates-only (repliée à la volée, jamais tenue en entier).
+  // Streaming tokenization: `data` is the COMPLETE graph of the small sections, but `Watch History →
+  // VideoList` is already the dates-only list there (folded on the fly, never held in full).
   let data: unknown;
   try {
     data = parseJsonStream(decompressed.text, resolveWatchHistoryFold);
@@ -138,10 +138,10 @@ export function ingestExportStreaming(
     if (error instanceof JsonStreamError) {
       return { ok: false, stage: 'parse', error: 'invalid_json' };
     }
-    throw error; // inattendu : ne pas l'avaler
+    throw error; // unexpected: do not swallow it
   }
 
-  // Validation valibot du graphe streamé (petites sections au contrat, visionnage dates-only).
+  // valibot validation of the streamed graph (small sections per contract, watch dates-only).
   const validated = v.safeParse(StreamedExportSchema, data);
   if (!validated.success) {
     const issues: ValidationIssue[] = validated.issues.map((issue) => ({
@@ -151,7 +151,7 @@ export function ingestExportStreaming(
     return { ok: false, stage: 'validate', issues };
   }
 
-  // `validated.output` : contrat complet, Watch History dates-only → assignable à `NormalizableExport`.
+  // `validated.output`: full contract, Watch History dates-only → assignable to `NormalizableExport`.
   const normalized = normalizeExport(validated.output satisfies NormalizableExport);
   return { ok: true, normalized, originalSize: decompressed.originalSize };
 }

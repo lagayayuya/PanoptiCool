@@ -1,17 +1,17 @@
-// Section 01 « Ton activité en chiffres » (maquette « parcours guidé », retouches 2026-07-20) —
-// trois cartes :
-//   - Rythme d'activité : barres horaires (aggregate `activity-rhythm`), légende dans l'EN-TÊTE
-//     (retouche maquette) avec « nuit · créneau à risque » — le qualificatif revient DANS la
-//     légende par décision de la maquette (ex-PANO-85 : il en avait été retiré ; la maquette
-//     retouchée le réintroduit et fait foi), compteurs 12 mois / 30 jours en pied + estimation
-//     « jours de ta vie » en encart orange à côté ;
-//   - Volumes dans ton export : tuile « vidéos visionnées » (le total, ex-compteur du rythme) puis
-//     les tuiles R1/R2/R3/R5 dans l'ordre d'affichage existant. Les 2 totaux all-time Activity
-//     Summary ne sont PLUS rendus (retouche maquette : le texte du bas part) ;
-//   - Ce qu'on peut vraiment analyser : donut du mur sémantique (insight `opacity` — lisible vs
-//     opaque). La maquette illustrait « visible dans l'export vs gardé par TikTok » avec un 26 %
-//     factice ; ici le donut porte les comptes RÉELS du moteur, avec le claim + l'explication du
-//     gabarit — la sémantique du moteur prime sur le texte d'illustration de la maquette.
+// Section 01 « Ton activité en chiffres » (« parcours guidé » mockup, 2026-07-20 retouches) —
+// three cards:
+//   - Activity rhythm: hourly bars (aggregate `activity-rhythm`), legend in the HEADER
+//     (mockup retouch) with « nuit · créneau à risque » — the qualifier returns INTO the
+//     legend by decision of the mockup (ex-PANO-85: it had been removed from it; the
+//     retouched mockup reintroduces it and prevails), 12-month / 30-day counters at the foot + the
+//     « jours de ta vie » estimate in an orange callout beside;
+//   - Volumes in your export: « vidéos visionnées » tile (the total, ex-counter of the rhythm) then
+//     the R1/R2/R3/R5 tiles in the existing display order. The 2 all-time Activity
+//     Summary totals are NO LONGER rendered (mockup retouch: the bottom text goes);
+//   - What can really be analyzed: semantic-wall donut (insight `opacity` — readable vs
+//     opaque). The mockup illustrated "visible in the export vs kept by TikTok" with a fake
+//     26%; here the donut carries the engine's REAL counts, with the claim + the template's
+//     explanation — the engine's semantics prevail over the mockup's illustration text.
 
 import type { Opacity, Rhythm, Volumes } from '../../engine/analysis';
 import { opacitySemanticWallClaim, opacitySemanticWallExplainer } from '../../engine/wording';
@@ -21,22 +21,22 @@ import { formatInt, formatPercent } from '../format';
 import { NAVY } from './palette';
 import { timeEstimateSentence } from './time-estimate';
 
-/** Heures « nuit » — MÊME convention que la règle `engine/rules/activity-rhythm.ts` : les deux
- * doivent rester alignées, sinon le graphe colore une plage que le moteur ne compte pas. */
+/** « nuit » hours — SAME convention as the rule `engine/rules/activity-rhythm.ts`: the two
+ * must stay aligned, otherwise the graph colors a range the engine does not count. */
 const NIGHT_HOURS = new Set([23, 0, 1, 2, 3, 4]);
 
-// Le callout nocturne du moteur (qualificatif gradué `claim`) n'est PAS rendu (décision yuya, refonte
-// 2026-07-15) : juxtaposé à l'estimation « jours de ta vie » ci-dessous, le second encart orange
-// créait un doublon visuel parasite. Seule l'estimation reste ; le graphe garde sa coloration
-// nuit/journée + légende. Plus aucune vue n'affiche ce verdict — s'il revient, il reviendra conçu
-// et rendu, pas réactivé en douce.
+// The engine's nocturnal callout (graduated qualifier `claim`) is NOT rendered (yuya's decision, 2026-07-15
+// rework): juxtaposed with the « jours de ta vie » estimate below, the second orange callout
+// created a parasitic visual duplicate. Only the estimate stays; the graph keeps its
+// night/day coloring + legend. No view displays this verdict anymore — if it returns, it will return designed
+// and rendered, not quietly reactivated.
 
 export function RhythmCard({ rhythm }: { rhythm: Rhythm }) {
   const { hourlyActivity, videosWatched, estimatedMinutes } = rhythm;
   const max = Math.max(1, ...hourlyActivity);
   return (
     <div style={CARD}>
-      {/* En-tête (retouche maquette) : titre + note à gauche, LÉGENDE à droite. */}
+      {/* Header (mockup retouch): title + note on the left, LEGEND on the right. */}
       <div style={CARD_HEAD}>
         <div style={HEAD_TITLES}>
           <span style={CARD_TITLE}>{UI_ACTIVITY.rhythmTitle}</span>
@@ -71,8 +71,8 @@ export function RhythmCard({ rhythm }: { rhythm: Rhythm }) {
           <span key={h}>{h}</span>
         ))}
       </div>
-      {/* Pied (retouche maquette) : compteurs 12 mois / 30 jours à gauche, estimation à droite.
-          Le TOTAL n'est plus compté ici — il devient la tuile « vidéos visionnées » des volumes. */}
+      {/* Foot (mockup retouch): 12-month / 30-day counters on the left, estimate on the right.
+          The TOTAL is no longer counted here — it becomes the « vidéos visionnées » tile of the volumes. */}
       <div style={RHYTHM_FOOT}>
         <div style={COUNTER_COL}>
           <div style={COUNTER_ROW}>
@@ -97,15 +97,15 @@ export function RhythmCard({ rhythm }: { rhythm: Rhythm }) {
   );
 }
 
-// --- Volumes dans ton export ----------------------------------------------------------------------
+// --- Volumes in your export -----------------------------------------------------------------------
 
-/** Les 4 tuiles, dans l'ORDRE D'AFFICHAGE de la maquette (jamais l'ordre du moteur).
+/** The 4 tiles, in the mockup's DISPLAY ORDER (never the engine's order).
  *
- * Lot A1 : la carte lisait `insight.ruleId` et re-devinait, via un `Set` partagé avec `grouping.ts`,
- * lesquelles des 8 règles la concernaient — pour n'en tirer QUE `value.signalCount`. Les champs sont
- * nommés (`volumes.searches`…) : la table est désormais champ → libellé, et l'ordre est une liste de
- * champs. Plus de `ruleId`, plus de `Set`, plus de repli `?? ruleId` sur une clé non routée — le
- * compilateur tient l'exhaustivité (`keyof` sur une union fermée). */
+ * Batch A1: the card read `insight.ruleId` and re-guessed, via a `Set` shared with `grouping.ts`,
+ * which of the 8 rules concerned it — to draw ONLY `value.signalCount` from it. The fields are
+ * named (`volumes.searches`…): the table is now field → label, and the order is a list of
+ * fields. No more `ruleId`, no more `Set`, no more `?? ruleId` fallback on an unrouted key — the
+ * compiler holds the exhaustiveness (`keyof` over a closed union). */
 const TILES_IN_DISPLAY_ORDER: readonly (keyof Omit<Volumes, 'allTime'>)[] = [
   'endorsements',
   'comments',
@@ -118,8 +118,8 @@ export function VolumesCard({
   videosWatchedTotal,
 }: {
   volumes: Volumes;
-  /** Total des vidéos visionnées (ex-compteur « au total » du rythme, retouche maquette) — vient
-   * de `rhythm.videosWatched.total`, donc absent quand le rythme l'est. */
+  /** Total of watched videos (ex-counter « au total » of the rhythm, mockup retouch) — comes
+   * from `rhythm.videosWatched.total`, thus absent when the rhythm is. */
   videosWatchedTotal?: number | undefined;
 }) {
   const tiles = [
@@ -158,16 +158,16 @@ export function VolumesCard({
   );
 }
 
-// --- Ce qu'on peut vraiment analyser (mur sémantique, donut) ---------------------------------------
+// --- What can really be analyzed (semantic wall, donut) --------------------------------------------
 
 export function AnalyzableShareCard({ opacity }: { opacity: Opacity }) {
   const { readableCount, opaqueCount } = opacity;
   const total = readableCount + opaqueCount;
   const ratio = total > 0 ? readableCount / total : 0;
-  // Un arrondi à l'entier rendrait « 0 % » pour un ratio non nul (ex. 0,44 %), affichant l'INVERSE
-  // du constat (« rien de lisible » au lieu de « presque rien ») — jamais pour une valeur > 0.
-  // Le repli « < 1 % » est CONSTRUIT avec le même formateur : son séparateur ne peut pas diverger
-  // de celui des autres pourcentages, ce qui était le cas quand il était écrit en dur.
+  // Rounding to the integer would render « 0 % » for a non-null ratio (e.g. 0.44 %), displaying the INVERSE
+  // of the finding (« rien de lisible » instead of « presque rien ») — never for a value > 0.
+  // The « < 1 % » fallback is BUILT with the same formatter: its separator cannot diverge
+  // from that of the other percentages, which was the case when it was hard-coded.
   const pctLabel =
     ratio > 0 && ratio < 0.01
       ? UI_ACTIVITY.opacityUnderOnePercent(formatPercent(0.01))
@@ -204,8 +204,8 @@ export function AnalyzableShareCard({ opacity }: { opacity: Opacity }) {
           </div>
         </div>
       </div>
-      {/* Le claim n'est plus porté par le constat : son texte est CONSTANT, la carte appelle la
-          fonction — comme elle appelait déjà l'explainer en dur (lot A2). */}
+      {/* The claim is no longer carried by the finding: its text is CONSTANT, the card calls the
+          function — as it already called the explainer directly (batch A2). */}
       <div style={CARD_FOOT2}>
         {opacitySemanticWallClaim(currentLocale())} {opacitySemanticWallExplainer(currentLocale())}
       </div>
@@ -213,7 +213,7 @@ export function AnalyzableShareCard({ opacity }: { opacity: Opacity }) {
   );
 }
 
-// --- Styles (maquette « parcours guidé », section 01) ----------------------------------------------
+// --- Styles (« parcours guidé » mockup, section 01) ------------------------------------------------
 const CARD = {
   display: 'flex',
   flexDirection: 'column',

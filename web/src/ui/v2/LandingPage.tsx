@@ -1,14 +1,14 @@
-// Page d'accueil (maquette « Accueil v2 », refonte 2026-07-15). Écarts VOULUS vs la maquette
-// (décisions yuya) : pas de section newsletter ; une seule plateforme sélectionnable (TikTok), la
-// chip pointillée devient « Instagram, YouTube… bientôt ».
+// Home page (« Accueil v2 » mockup, 2026-07-15 rework). DELIBERATE gaps vs the mockup
+// (yuya's decisions): no newsletter section; a single selectable platform (TikTok), the
+// dotted chip becomes « Instagram, YouTube… bientôt ».
 //
-// Le sélecteur de langue ne mène quelque part que pour une locale PUBLIÉE — c'est `localeHref` qui
-// porte cette règle, pas cette page. Écrire ici l'inventaire de ce qui a ou non une cible derrière
-// périmerait à la première locale ajoutée, sans que rien ne le signale.
+// The language selector only leads somewhere for a PUBLISHED locale — it is `localeHref` that
+// carries this rule, not this page. Writing here the inventory of what does or does not have a target behind
+// would go stale at the first locale added, with nothing to signal it.
 //
-// La modale de consentement reprend la maquette telle quelle : le clic « Continuer vers l'export »
-// (case cochée obligatoire) mène au parcours réel (/analyse) ; le lien « données fictives » mène à
-// la même page en mode démo (/analyse?demo) — même rendu, source synthétique.
+// The consent modal takes the mockup as is: the « Continuer vers l'export » click
+// (mandatory checked box) leads to the real journey (/analyse); the « données fictives » link leads to
+// the same page in demo mode (/analyse?demo) — same render, synthetic source.
 
 import { useState } from 'preact/hooks';
 import { localeHref } from '../../i18n/current';
@@ -19,15 +19,15 @@ import { SiteFooter } from './SiteFooter';
 import { SiteHeader } from './SiteHeader';
 import { useIsMobile } from './useIsMobile';
 
-// Chemins SANS langue : `localeHref` la pose au moment du rendu. Les garder ici en constantes de
-// module aurait figé la langue au CHARGEMENT du module, avant que la page ne soit forcément lue.
+// Paths WITHOUT language: `localeHref` sets it at render time. Keeping them here as module
+// constants would have frozen the language at module LOAD, before the page is necessarily read.
 const DEMO_PATH = '/analyse?demo';
 const ANALYSE_PATH = '/analyse';
 
 const STEPS = UI_LANDING.steps;
 
-/** Habillage des 3 cartes — couleurs SEULES, dans l'ordre du catalogue (`UI_LANDING.feats`).
- * La prose vit dans le catalogue ; ce tableau ne porte que ce qui n'est pas du texte. */
+/** Styling of the 3 cards — colors ONLY, in the catalog's order (`UI_LANDING.feats`).
+ * The prose lives in the catalog; this array only carries what is not text. */
 const FEAT_COLORS: readonly { tagColor: string; border: string }[] = [
   { tagColor: NAVY.accent, border: NAVY.borderCard },
   { tagColor: NAVY.accent, border: NAVY.borderCard },
@@ -37,10 +37,10 @@ const FEAT_COLORS: readonly { tagColor: string; border: string }[] = [
 function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: boolean }) {
   const [checked, setChecked] = useState(false);
   return (
-    // biome-ignore lint/a11y/useKeyWithClickEvents: fermeture au clic hors modale — Échap serait un plus, pas un prérequis.
-    // biome-ignore lint/a11y/noStaticElementInteractions: voile de fermeture, pas un contrôle — le bouton ✕ reste le chemin accessible.
+    // biome-ignore lint/a11y/useKeyWithClickEvents: close on click outside the modal — Esc would be a plus, not a prerequisite.
+    // biome-ignore lint/a11y/noStaticElementInteractions: closing veil, not a control — the ✕ button stays the accessible path.
     <div style={isMobile ? M_OVERLAY : OVERLAY} onClick={onClose}>
-      {/* biome-ignore lint/a11y/useKeyWithClickEvents: stoppe seulement la propagation du clic overlay. */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: only stops the propagation of the overlay click. */}
       <div
         role="dialog"
         aria-modal="true"
@@ -97,8 +97,8 @@ function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: bo
           />
           <span style={CONSENT_TEXT}>{UI_CONSENT.consentCheckbox}</span>
         </label>
-        {/* Mobile (bottom sheet) : boutons EMPILÉS pleine largeur, « Continuer » en premier
-            (maquette « Accueil v2 Mobile ») ; desktop : rangée avec « Pas maintenant » à gauche. */}
+        {/* Mobile (bottom sheet): STACKED full-width buttons, « Continuer » first
+            (« Accueil v2 Mobile » mockup); desktop: row with « Pas maintenant » on the left. */}
         <div style={isMobile ? M_MODAL_ACTIONS : MODAL_ACTIONS}>
           {!isMobile && (
             <button type="button" style={LATER_BTN} onClick={onClose}>
@@ -138,7 +138,7 @@ export function LandingPage() {
     <div style={isMobile ? M_PAGE : PAGE}>
       <SiteHeader />
       <div style={isMobile ? M_SHELL : SHELL}>
-        {/* --- Héros (mobile : colonne unique, logo statique centré — maquette Mobile) --------- */}
+        {/* --- Hero (mobile: single column, static centered logo — Mobile mockup) -------------- */}
         <div style={isMobile ? undefined : HERO}>
           <div style={HERO_COL}>
             <span style={isMobile ? M_KICKER : KICKER}>{UI_LANDING.heroKicker}</span>
@@ -189,7 +189,7 @@ export function LandingPage() {
           )}
         </div>
 
-        {/* --- Comment ça marche -------------------------------------------------------------- */}
+        {/* --- How it works ------------------------------------------------------------------- */}
         <div style={isMobile ? M_SECTION : SECTION}>
           {isMobile ? (
             <div style={M_SECTION_HEAD}>
@@ -214,7 +214,7 @@ export function LandingPage() {
           </div>
         </div>
 
-        {/* --- Ce que tu vas découvrir ---------------------------------------------------------- */}
+        {/* --- What you will discover ----------------------------------------------------------- */}
         <div style={isMobile ? M_SECTION : SECTION}>
           {isMobile ? (
             <span style={M_SECTION_TITLE}>{UI_LANDING.discoverTitle}</span>
@@ -252,7 +252,7 @@ export function LandingPage() {
           </div>
         </div>
 
-        {/* --- Pourquoi « panopticool » ? ------------------------------------------------------- */}
+        {/* --- Why « panopticool »? ------------------------------------------------------------- */}
         <div style={isMobile ? M_WHY_CARD : WHY_CARD}>
           <span style={isMobile ? M_KICKER : KICKER}>{UI_LANDING.whyKicker}</span>
           <p style={isMobile ? M_WHY_TEXT : WHY_TEXT}>
@@ -273,7 +273,7 @@ export function LandingPage() {
   );
 }
 
-// --- Styles (valeurs des maquettes, palette NAVY) -------------------------------------------------
+// --- Styles (mockup values, NAVY palette) ---------------------------------------------------------
 const PAGE = {
   minHeight: '100vh',
   background: `linear-gradient(180deg, ${NAVY.bgPageTop} 0%, ${NAVY.bgPage} 480px)`,
@@ -483,7 +483,7 @@ const WHY_LINK = {
   textDecoration: 'none',
 } as const;
 
-// --- Modale de consentement ---------------------------------------------------------------------
+// --- Consent modal ------------------------------------------------------------------------------
 const OVERLAY = {
   position: 'fixed',
   inset: 0,
@@ -590,16 +590,16 @@ const GO_BTN_OFF = {
   background: '#1c2749',
 } as const;
 
-// --- Styles MOBILE (maquette « Accueil v2 Mobile » : colonne unique, cibles tactiles ≥ 44 px) ------
+// --- MOBILE styles (« Accueil v2 Mobile » mockup: single column, touch targets ≥ 44 px) ------------
 const FEAT_TAG_ROW = {
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
   flexWrap: 'wrap',
 } as const;
-// Le fond (dégradé) couvre TOUTE la largeur — pas de plafond ici, sinon le body noir apparaît en
-// bandes de part et d'autre du conteneur 480 px sur les écrans intermédiaires (720 px et moins,
-// mais plus larges que 480). Seul le CONTENU est centré à 480 px (M_SHELL).
+// The background (gradient) covers the FULL width — no ceiling here, otherwise the black body appears as
+// bands on either side of the 480 px container on intermediate screens (720 px and less,
+// but wider than 480). Only the CONTENT is centered at 480 px (M_SHELL).
 const M_PAGE = { ...PAGE } as const;
 const M_SHELL = {
   maxWidth: '480px',
@@ -760,7 +760,7 @@ const M_WHY_LINK = {
   textDecoration: 'none',
 } as const;
 
-// --- Modale mobile : bottom sheet (maquette « Accueil v2 Mobile ») ---------------------------------
+// --- Mobile modal: bottom sheet (« Accueil v2 Mobile » mockup) -------------------------------------
 const M_OVERLAY = {
   position: 'fixed',
   inset: 0,

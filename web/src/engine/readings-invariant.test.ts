@@ -1,23 +1,23 @@
-// Golden de PROPRIÉTÉ (S1b / PANO-50) — verrou « pas de confiance par lecture » (ADR-0003,
-// reconduit par ADR-0004), sur l'éventail porté par la PREUVE (`Evidence`).
+// PROPERTY golden (S1b / PANO-50) — the "no confidence per reading" lock (ADR-0003, carried over by
+// ADR-0004), on the fan carried by the EVIDENCE (`Evidence`).
 //
-// On PROUVE l'invariant, on ne le présume pas du refactor (exigence de l'issue).
+// We PROVE the invariant, we do not presume it from the refactor (the issue's requirement).
 //
-// CE QUE LA REFONTE A CHANGE POUR CE VERROU — il se resserre, il ne se relâche pas. Une lecture était
-// un `Interpretation` (= `TemplateRef` : `{templateId, params}`) : un OBJET, dont il fallait vérifier
-// — au runtime ET par `@ts-expect-error` — qu'il ne portait ni `confidence`, ni poids, ni score. Le
-// `params: Record<string, string|number>` laissait d'ailleurs « la petite porte » ouverte (limite
-// connue, ADR-0004) : rien n'interdisait `params: { weight: 0.9 }`.
-// Une lecture est désormais une CHAÎNE (A2). Un `string` ne peut pas porter de champ : la propriété
-// n'est plus vérifiée, elle est INEXPRIMABLE. La petite porte de `params` se ferme avec elle.
-// Ce qui reste à tenir est l'éventail lui-même : `mode` ORDONNE (position dans le tableau), il ne
-// CHIFFRE pas — la confiance vit sur le constat (`Deduction.confidence`), jamais ici.
+// WHAT REFONTE A CHANGED FOR THIS LOCK — it tightens, it does not loosen. A reading was an
+// `Interpretation` (= `TemplateRef`: `{templateId, params}`): an OBJECT, which had to be checked —
+// at runtime AND by `@ts-expect-error` — to carry neither `confidence`, nor weight, nor score. The
+// `params: Record<string, string|number>` moreover left "the little door" open (known limitation,
+// ADR-0004): nothing forbade `params: { weight: 0.9 }`.
+// A reading is now a STRING (A2). A `string` cannot carry a field: the property is no longer checked,
+// it is INEXPRESSIBLE. The `params` little door closes with it. What remains to hold is the fan
+// itself: `mode` ORDERS (position in the array), it does not QUANTIFY — confidence lives on the
+// finding (`Deduction.confidence`), never here.
 
 import { describe, expect, it } from 'vitest';
 import type { Evidence, ReadingFan } from './analysis';
 
-// Exemple autonome (ne dépend pas de la persona) : un éventail classé, un à égalité, une preuve sans
-// éventail — les deux `mode` exercés, plus le cas « pas de lecture ».
+// Standalone example (does not depend on the persona): one ranked fan, one equal, one piece of
+// evidence with no fan — both `mode`s exercised, plus the "no reading" case.
 const SAMPLE: Evidence[] = [
   {
     channel: 'comment',
@@ -42,8 +42,8 @@ const SAMPLE: Evidence[] = [
 const fans = (evidence: readonly Evidence[]): ReadingFan[] =>
   evidence.flatMap((e) => (e.readings === undefined ? [] : [e.readings]));
 
-describe('verrou C3 — pas de confiance par lecture', () => {
-  it('l’exemple exerce bien les deux modes (le test ne passe pas à vide)', () => {
+describe('C3 lock — no confidence per reading', () => {
+  it('the example does exercise both modes (the test does not pass vacuously)', () => {
     expect(
       fans(SAMPLE)
         .map((f) => f.mode)
@@ -51,14 +51,14 @@ describe('verrou C3 — pas de confiance par lecture', () => {
     ).toEqual(['equal', 'ranked']);
   });
 
-  it('un éventail ne porte QUE { mode, readings } — aucune clé de score, au runtime', () => {
+  it('a fan carries ONLY { mode, readings } — no score key, at runtime', () => {
     for (const fan of fans(SAMPLE)) {
       expect(Object.keys(fan).sort()).toEqual(['mode', 'readings']);
       expect(['ranked', 'equal']).toContain(fan.mode);
     }
   });
 
-  it('une lecture est une CHAÎNE : porter un score est structurellement impossible', () => {
+  it('a reading is a STRING: carrying a score is structurally impossible', () => {
     for (const fan of fans(SAMPLE)) {
       for (const reading of fan.readings) {
         expect(typeof reading).toBe('string');
@@ -66,16 +66,16 @@ describe('verrou C3 — pas de confiance par lecture', () => {
     }
   });
 
-  it('`ranked` ORDONNE par la position, il ne CHIFFRE pas : la primauté = index 0', () => {
+  it('`ranked` ORDERS by position, it does not QUANTIFY: primacy = index 0', () => {
     const ranked = fans(SAMPLE).find((f) => f.mode === 'ranked');
-    // La lecture principale se lit à l'index 0 (ordre du tableau) — pas via un poids sur la lecture.
+    // The primary reading is read at index 0 (array order) — not via a weight on the reading.
     expect(ranked?.readings[0]).toBe('vécu personnel');
   });
 
-  it('preuve au niveau TYPE (vérifiée par tsc) : un poids sur l’éventail = erreur de compilation', () => {
-    // @ts-expect-error — un `ReadingFan` n'accepte que { mode, readings } (aucun poids global).
+  it('proof at the TYPE level (checked by tsc): a weight on the fan = a compile error', () => {
+    // @ts-expect-error — a `ReadingFan` only accepts { mode, readings } (no global weight).
     const fan: ReadingFan = { mode: 'ranked', readings: [], weight: 1 };
-    // @ts-expect-error — une lecture est un `string` : un objet porteur de score ne compile pas.
+    // @ts-expect-error — a reading is a `string`: a score-carrying object does not compile.
     const scored: ReadingFan = { mode: 'ranked', readings: [{ text: 'r', confidence: 0.9 }] };
     expect(fan).toBeDefined();
     expect(scored).toBeDefined();

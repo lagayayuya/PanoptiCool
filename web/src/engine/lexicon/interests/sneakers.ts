@@ -1,19 +1,19 @@
-// Lexique d'intérêt `sneakers` (D2, PANO-76 lot 1, réécriture PROFONDE) — baskets / culture sneakers.
+// Interest lexicon `sneakers` (D2, PANO-76 batch 1, DEEP rewrite) — sneakers / sneaker culture.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la culture sneakers FR : modèles emblématiques, marques, jargon collection.
-// Entités enrichies par recherche PUBLIQUE (modèles marquants). À l'aveugle.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR sneaker culture: emblematic models, brands, collection jargon.
+// Entities enriched by PUBLIC research (notable models). Blind.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — modèles/marques univoques : « air max », « air jordan », « air force », « yeezy »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal models/brands: « air max », « air jordan », « air force », « yeezy »,
 //     « new balance », « stan smith », « sneakers », « sneakerhead ».
-//   · ANCRÉ — homographes RÉCUPÉRÉS par co-occurrence : « jordan » (prénom), « dunk » (basket),
-//     « samba » (danse), « gazelle » (animal), « colorway », « drop » : comptent près d'un compagnon.
-//   · EXCLU — « basket » singulier (le SPORT) ; « baskets » pluriel gardé SOLO (la machinerie n'ajoute
-//     qu'un `s?` final, « baskets » ne matche pas « basket »).
+//   · ANCHORED — homographs RECOVERED by co-occurrence: « jordan » (first name), « dunk » (basketball),
+//     « samba » (dance), « gazelle » (animal), « colorway », « drop »: count near a companion.
+//   · EXCLUDED — « basket » singular (the SPORT); « baskets » plural kept SOLO (the machinery only adds
+//     a trailing `s?`, « baskets » does not match « basket »).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « mode » (thème plus large, séparé).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « mode » (broader, separate theme).
 
 import type { InterestLexicon } from '../types';
 
@@ -43,7 +43,7 @@ export const SNEAKERS_LEXICON: InterestLexicon = {
     'paire de sneakers',
     'jordan 1',
     'jordan 4',
-    // Resell & modèles (rétrofit PANO-90)
+    // Resell & models (retrofit PANO-90)
     'stockx',
     'deadstock',
     'new balance 550',
@@ -51,23 +51,23 @@ export const SNEAKERS_LEXICON: InterestLexicon = {
     'edition limitee basket',
     'revente sneakers',
     'drop sneakers',
-    // Variantes EN (PANO-88) : SOLO univoques (jargon sneakers).
+    // EN variants (PANO-88): SOLO univocal (sneaker jargon).
     'on feet',
     'resell',
     'unboxing sneakers',
   ],
   anchored: [
-    'jordan', // prénom
-    'dunk', // geste de basket
-    'samba', // danse
+    'jordan', // first name
+    'dunk', // basketball move
+    'samba', // dance
     'gazelle', // animal
-    'colorway', // anglais niche
-    'drop', // sortie vs « drop » générique
-    'collector', // objet de collection générique
-    'paire', // « une paire » générique
-    'goat', // « greatest of all time » / chèvre / plateforme resell
-    'restock', // réassort vs générique
-    'cop', // acheter (jargon) vs « cop » (flic) (EN, ancré)
+    'colorway', // niche English
+    'drop', // release vs generic « drop »
+    'collector', // generic collectible
+    'paire', // generic « une paire »
+    'goat', // « greatest of all time » / goat / resell platform
+    'restock', // restock vs generic
+    'cop', // to buy (jargon) vs « cop » (police) (EN, anchored)
   ],
   selfDeclared: ['sneakerhead', 'collectionneur de sneakers'],
 };

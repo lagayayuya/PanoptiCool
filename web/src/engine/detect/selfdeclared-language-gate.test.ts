@@ -1,63 +1,63 @@
-// LA PORTE DE LANGUE de `selfDeclaredFr` — le témoin (PANO-35).
+// THE LANGUAGE GATE of `selfDeclaredFr` — the witness (PANO-35).
 //
-// ── Ce qu'il tient, et pourquoi il existe ────────────────────────────────────────────────────────
-// `selfDeclaredFr` ne se matche QUE via les têtes de copule. Tant que les seules têtes câblées sont
-// françaises, une entrée de graphie ANGLAISE présente dans ce tier est inatteignable en anglais.
-// C'était vrai AVANT ce lot, et c'était vrai PAR ACCIDENT : personne ne l'avait décidé, rien ne
-// l'écrivait, et rien n'aurait rougi si on l'avait défait.
+// ── What it holds, and why it exists ──────────────────────────────────────────────────────────────
+// `selfDeclaredFr` matches ONLY via the copula heads. As long as the only wired heads are French, an
+// entry of ENGLISH spelling present in this tier is unreachable in English. It was true BEFORE this
+// batch, and it was true BY ACCIDENT: no one had decided it, nothing wrote it, and nothing would
+// have gone red if it had been undone.
 //
-// Mesuré (PANO-35, lot de la porte) : ajouter UNE seule tête anglaise activait d'un coup les quinze
-// graphies anglaises ci-dessous, toutes en constat NOMMÉ, sans qu'aucune n'ait jamais été examinée
-// pour l'anglais. Trois exemples relevés à la mesure, et ils ne sont pas des cas limites :
+// Measured (PANO-35, the gate batch): adding ONE single English head suddenly activated the fifteen
+// English spellings below, all at a NAMED finding, without any ever having been examined for
+// English. Three examples recorded at measurement, and they are not edge cases:
 //
-//   « im ace at darts »              → sexuality[explicit]   (« ace » = doué, en anglais courant)
+//   « im ace at darts »              → sexuality[explicit]   (« ace » = skilled, in everyday English)
 //   « im bi weekly on the newsletter » → sexuality[explicit]
 //   « im pretty liberal with the garlic » → politics[explicit]
 //
-// Sur `sexuality`, un constat nommé faux OUTE quelqu'un. C'est le coût d'erreur le plus élevé du
-// produit, et il était à une ligne de distance.
+// On `sexuality`, a false named finding OUTS someone. It is the highest error cost of the product,
+// and it was one line away.
 //
-// ── COMMENT IL ROUGIT : une assertion de COMPORTEMENT, pas une convention ────────────────────────
-// Ce témoin n'inspecte pas des listes, il fait tourner le détecteur : pour chaque graphie anglaise
-// du registre, et sous TROIS formes de copule, « <copule> <terme> » ne doit produire AUCUN constat
-// nommé. Les trois formes sont un résultat de mutation, pas un confort. La propriété tient donc quelle
-// que soit la façon dont quelqu'un casserait la porte — ajouter une tête EN à la liste FR, câbler
-// des têtes EN sur `selfDeclaredFr`, ou déplacer un terme de tier. Une convention documentée aurait
-// couvert le premier cas seulement.
+// ── HOW IT GOES RED: a BEHAVIOR assertion, not a convention ──────────────────────────────────────
+// This witness does not inspect lists, it runs the detector: for each English spelling of the
+// registry, and under THREE copula forms, « <copula> <term> » must produce NO named finding. The
+// three forms are a mutation result, not a comfort. The property therefore holds whatever the way
+// someone would break the gate — adding an EN head to the FR list, wiring EN heads onto
+// `selfDeclaredFr`, or moving a term from tier. A documented convention would have covered the first
+// case only.
 //
-// MUTATIONS PASSÉES, et leur résultat RELEVÉ — pas « il rougirait », mais ce qu'il a fait :
-//   1. `'im'` ajouté à `SELF_DECLARATION_HEADS_FR`             → 15 rouges (une par graphie)
-//   2. `'i am'` ajouté à `SELF_DECLARATION_HEADS_FR`           → 15 rouges
-//   2b. `"i'm"` ajouté à `SELF_DECLARATION_HEADS_FR`           → 15 rouges
-//   3. `'gay'` retiré de `selfDeclaredFr` (sexuality)          → 1 rouge (registre non tenu)
-//   4. graphie inventée ajoutée au registre, absente du tier   → 1 rouge (registre non tenu)
-//   5. tête EN câblée sur `selfDeclaredFr` DANS `detect.ts`    → 15 rouges
-// La 5 est celle qui compte : elle défait la porte à l'endroit exact où elle est tenue — le site
-// d'appel — sans toucher à aucune liste. Un témoin qui n'aurait inspecté que des listes l'aurait
-// laissée passer. Les 3 et 4 tiennent le REGISTRE lui-même : sans elles, il pourrirait en silence
-// et le vert du haut deviendrait vacueux.
+// MUTATIONS RUN, and their result RECORDED — not « it would go red », but what it did:
+//   1. `'im'` added to `SELF_DECLARATION_HEADS_FR`             → 15 reds (one per spelling)
+//   2. `'i am'` added to `SELF_DECLARATION_HEADS_FR`           → 15 reds
+//   2b. `"i'm"` added to `SELF_DECLARATION_HEADS_FR`           → 15 reds
+//   3. `'gay'` removed from `selfDeclaredFr` (sexuality)       → 1 red (registry not held)
+//   4. invented spelling added to the registry, absent from the tier → 1 red (registry not held)
+//   5. EN head wired onto `selfDeclaredFr` IN `detect.ts`      → 15 reds
+// N°5 is the one that matters: it undoes the gate at the exact place where it is held — the call
+// site — without touching any list. A witness that had only inspected lists would have let it
+// through. N°3 and 4 hold the REGISTRY itself: without them, it would rot in silence and the green
+// above would become vacuous.
 //
-// LA 2 EST UN AVEU, et elle vaut d'être lue. La première version de ce fichier n'éprouvait qu'une
-// forme de copule (« im ») : la mutation 2 passait alors au VERT tout en activant les quinze
-// graphies. Le trou était invisible, parce que la forme testée, elle, rougissait correctement.
-// C'est le motif de CLAUDE.md (*Ce qu'un filet prouve*) commis à l'intérieur du filet censé le
-// prévenir — et il n'a été trouvé que parce que la mutation a été réellement passée.
+// N°2 IS A CONFESSION, and it is worth reading. The first version of this file tested only one
+// copula form (« im »): mutation 2 then went GREEN while activating the fifteen spellings. The hole
+// was invisible, because the tested form, itself, went red correctly. It is the CLAUDE.md motive
+// (*What a net proves*) committed inside the net meant to prevent it — and it was found only because
+// the mutation was actually run.
 //
-// ── CE QUE CE TÉMOIN NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// - **Il ne détecte pas l'anglais.** Le registre est écrit à la main. Une graphie anglaise ajoutée
-//   demain à un tier `selfDeclaredFr` SANS être inscrite ici ne fera rougir personne. C'est la
-//   limite de fond de ce fichier, et elle est irréductible : aucune heuristique fiable ne sépare
-//   « muslim » de « musulman » sans dictionnaire. Ce qui la borne en pratique est la revue — et,
-//   pour `religion`, l'exhaustivité déjà tenue par `religion-symmetry.test.ts`.
-// - **`InterestLexicon.selfDeclared` est HORS PÉRIMÈTRE**, et ce n'est pas un oubli. Il porte lui
-//   aussi des graphies anglaises (« cat mom », « cake designer »), il est lu par les mêmes têtes, et
-//   il s'activerait pareil. Mais un thème d'intérêt faussement nommé n'oute personne et ne
-//   pathologise personne : le coût d'erreur ne justifie pas d'étendre la porte à quarante fichiers,
-//   ce qui aurait noyé la porte elle-même. Décision déclarée, à rouvrir si D2 devient sensible.
-// - **Il ne dit rien du RAPPEL anglais.** Il vérifie qu'on ne nomme pas à tort ; il ne vérifie pas
-//   qu'on détecte quoi que ce soit en anglais. Les deux tiers de la question restent ouverts.
-// - **Il ne valide aucun terme pour le français.** Ce que fait le registre est l'inverse : il
-//   enregistre que ces termes sont admis en FR **et non admis en EN**.
+// ── WHAT THIS WITNESS DOES NOT COVER ─────────────────────────────────────────────────────────────
+// - **It does not detect English.** The registry is written by hand. An English spelling added
+//   tomorrow to a `selfDeclaredFr` tier WITHOUT being inscribed here will make no one go red. It is
+//   the substantive limit of this file, and it is irreducible: no reliable heuristic separates
+//   « muslim » from « musulman » without a dictionary. What bounds it in practice is the review —
+//   and, for `religion`, the exhaustiveness already held by `religion-symmetry.test.ts`.
+// - **`InterestLexicon.selfDeclared` is OUT OF PERIMETER**, and it is not an omission. It too
+//   carries English spellings (« cat mom », « cake designer »), it is read by the same heads, and it
+//   would activate the same. But a falsely named interest theme outs no one and pathologizes no one:
+//   the error cost does not justify extending the gate to forty files, which would have drowned the
+//   gate itself. Declared decision, to reopen if D2 becomes sensitive.
+// - **It says nothing of the English RECALL.** It verifies that one does not name wrongly; it does
+//   not verify that one detects anything in English. Two thirds of the question stay open.
+// - **It validates no term for French.** What the registry does is the reverse: it records that
+//   these terms are admitted in FR **and not admitted in EN**.
 
 import { describe, expect, it } from 'vitest';
 import { WIRED_LEXICONS } from '../lexicon/index';
@@ -65,14 +65,14 @@ import type { TopicalLexicon } from '../lexicon/types';
 import { detectLabels } from './detect';
 
 /**
- * LE REGISTRE — les graphies anglaises admises pour le FRANÇAIS, et **non admises pour l'anglais**.
+ * THE REGISTRY — the English spellings admitted for FRENCH, and **not admitted for English**.
  *
- * Explicitement non admises, et c'est tout l'objet : elles étaient jusqu'ici *implicitement
- * inatteignables*, ce qui a exactement la même apparence et aucune des garanties. Chaque entrée dit
- * pourquoi elle est légitime en français, et ce qui la rend hasardeuse en anglais.
+ * Explicitly not admitted, and it is the whole point: until now they were *implicitly unreachable*,
+ * which has exactly the same appearance and none of the guarantees. Each entry says why it is
+ * legitimate in French, and what makes it hazardous in English.
  *
- * Une entrée ici n'est PAS une proposition d'admission EN. Le jour où l'anglais sera livré, ces
- * termes se réexaminent un par un, dans `selfDeclaredEn`, contre la règle d'admission d'ADR-0003.
+ * An entry here is NOT a proposal for EN admission. The day English is delivered, these terms are
+ * re-examined one by one, in `selfDeclaredEn`, against the ADR-0003 admission rule.
  */
 const GRAPHIES_ANGLAISES_NON_ADMISES_EN: Readonly<Record<string, string>> = {
   // ── religion ──────────────────────────────────────────────────────────────────────────────────
@@ -102,28 +102,27 @@ const GRAPHIES_ANGLAISES_NON_ADMISES_EN: Readonly<Record<string, string>> = {
     "DANGER PARTICULIER, et il ne se règle pas dans ce lot — il se consigne. Le terme est entré au tier de l'identité comme identité de DROITE au sens français (libéralisme économique). En anglais, « liberal » désigne la GAUCHE. La même chaîne désigne donc des camps OPPOSÉS selon la langue. La réparation de symétrie livrée par le lot `politics` — qui tient que les identités de droite et de gauche entrent au même tier — se retournerait silencieusement en anglais : le terme y compterait du mauvais côté. À trancher au moment d'écrire `selfDeclaredEn`, jamais par héritage. (« im pretty liberal with the garlic » est par ailleurs un usage anglais banal, mesuré comme constat nommé.)",
 };
 
-/** Les lexiques topicaux câblés — les seuls porteurs de `selfDeclaredFr`. */
+/** The wired topical lexicons — the only carriers of `selfDeclaredFr`. */
 const TOPICAUX = WIRED_LEXICONS.filter((l): l is TopicalLexicon => l.kind === 'topical');
 
 /**
- * Les formes de copule anglaise éprouvées — TROIS, et le nombre est un résultat de mutation, pas un
- * choix de confort. Une première version n'essayait que « im » : la mutation qui ajoute `'i am'` aux
- * têtes françaises passait alors au VERT, tout en activant les quinze graphies. Un témoin qui
- * n'éprouve qu'une forme d'une construction n'en couvre qu'une, et l'écart est invisible parce que
- * la forme testée, elle, rougit bien.
+ * The English copula forms tested — THREE, and the number is a mutation result, not a comfort
+ * choice. A first version tried only « im »: the mutation that adds `'i am'` to the French heads
+ * then went GREEN, while activating the fifteen spellings. A witness that tests only one form of a
+ * construction covers only one, and the gap is invisible because the tested form, itself, goes red.
  *
- * Ce n'est PAS une liste de têtes candidates pour le lot 2 : c'est la surface d'attaque que ce
- * témoin balaie. Une tête EN d'une autre forme (« ive been », « i feel ») lui échapperait encore —
- * limite déclarée en tête de fichier.
+ * It is NOT a list of candidate heads for batch 2: it is the attack surface this witness sweeps. An
+ * EN head of another form (« ive been », « i feel ») would still escape it — limit declared at the
+ * head of the file.
  */
 const COPULES_EN = ['im', 'i am', "i'm"] as const;
 
-describe('porte de langue — aucune graphie anglaise ne NOMME via la copule', () => {
+describe('language gate — no English spelling NAMES via the copula', () => {
   for (const [terme, pourquoi] of Object.entries(GRAPHIES_ANGLAISES_NON_ADMISES_EN)) {
-    it(`« <copule> ${terme} » ne pose AUCUN constat nommé, sous les trois formes`, () => {
-      // L'assertion porte sur l'ÉTAGE et non sur l'absence de tag : plusieurs de ces termes vivent
-      // AUSSI dans un tier indirect, où ils posent légitimement un constat large. Ce que la porte
-      // interdit, c'est de NOMMER.
+    it(`« <copule> ${terme} » poses NO named finding, under the three forms`, () => {
+      // The assertion bears on the STOREY and not on the absence of a tag: several of these terms
+      // ALSO live in an indirect tier, where they legitimately pose a broad finding. What the gate
+      // forbids is NAMING.
       const nommes = COPULES_EN.flatMap((copule) =>
         detectLabels([`${copule} ${terme}`], WIRED_LEXICONS)
           .filter((d) => d.stage === 'explicit')
@@ -135,24 +134,23 @@ describe('porte de langue — aucune graphie anglaise ne NOMME via la copule', (
 });
 
 /**
- * LES CADRES D'AUTO-DÉCLARATION ANGLAISE — la surface d'attaque du bloc ci-dessous.
+ * THE ENGLISH SELF-DECLARATION FRAMES — the attack surface of the block below.
  *
- * Ce ne sont pas des termes, ce sont des PHRASES entières, telles qu'un anglophone les écrit. C'est
- * ce qui rend le bloc indifférent au TIER : peu importe par où le constat nommé arriverait, il
- * arriverait sur l'une de ces phrases.
+ * These are not terms, they are whole SENTENCES, as an anglophone writes them. It is what makes the
+ * block indifferent to the TIER: no matter where the named finding would come from, it would come on
+ * one of these sentences.
  *
- * LES TROIS FORMES DE COPULE Y SONT, et le nombre est un résultat de mutation, pas un confort — la
- * MÊME leçon que celle avouée plus haut pour `COPULES_EN`, et je l'ai d'abord recommise. La première
- * version de cette liste n'écrivait que « i am … ». La mutation qui ajoute `'im'` aux têtes
- * françaises la laissait alors intégralement VERTE, tout en activant les quinze graphies — seul le
- * bloc du haut rougissait. Le trou était invisible pour la raison habituelle : la forme que j'avais
- * écrite, elle, rougissait bien sous `'i am'`.
+ * THE THREE COPULA FORMS ARE IN IT, and the number is a mutation result, not a comfort — the SAME
+ * lesson as the one confessed above for `COPULES_EN`, and I first re-committed it. The first version
+ * of this list wrote only « i am … ». The mutation that adds `'im'` to the French heads then left it
+ * entirely GREEN, while activating the fifteen spellings — only the block above went red. The hole
+ * was invisible for the usual reason: the form I had written, itself, went red under `'i am'`.
  *
- * Qu'elle ait été recommise DANS le fichier qui la documente vaut d'être écrit. Une leçon lue n'est
- * pas une leçon appliquée ; seule la mutation réellement passée fait la différence.
+ * That it was re-committed IN the file that documents it is worth writing. A lesson read is not a
+ * lesson applied; only the mutation actually run makes the difference.
  */
 const CADRES_EN = [
-  // — forme pleine
+  // — full form
   'i am gay',
   'i am a lesbian',
   'i am bisexual',
@@ -163,16 +161,16 @@ const CADRES_EN = [
   'i am queer',
   'i am asexual',
   'i am straight',
-  // — formes CONTRACTÉES, les deux graphies (`normalize-fr` conserve l'apostrophe, et l'usage
-  //   d'internet écrit tout autant sans). Leur absence est le trou avoué ci-dessus.
+  // — CONTRACTED forms, both spellings (`normalize-fr` keeps the apostrophe, and internet usage
+  //   writes it just as much without). Their absence is the hole confessed above.
   'im gay',
   "i'm a lesbian",
   'im bi',
   "i'm trans",
   'im enby',
   "i'm asexual",
-  // — routes NON copulaires : celles que le tier `explicit` emprunterait, et que le bloc du haut
-  //   ne regarde pas du tout.
+  // — NON-copular routes: the ones the `explicit` tier would take, and that the block above does not
+  //   look at at all.
   'i came out as gay',
   'i came out to my dad last year',
   'my coming out was a non event',
@@ -181,67 +179,68 @@ const CADRES_EN = [
   'i identify as queer',
 ] as const;
 
-describe('porte de langue — AUCUNE route ne NOMME en anglais, quel que soit le TIER', () => {
-  // ── POURQUOI CE BLOC EXISTE : la porte déclarait quatre frontières et en manquait une ────────────
-  // Le bloc du haut garde `selfDeclaredFr`, et il le garde bien. Mais `selfDeclaredFr` n'est PAS la
-  // seule route vers le constat nommé : le tier `explicit` NOMME lui aussi, et il n'a besoin
-  // d'AUCUNE tête de copule pour le faire — c'est ainsi que « mon coming out » produit un constat
-  // nommé aujourd'hui. Une locution anglaise déposée dans `explicit` nommerait donc immédiatement,
-  // et le bloc du haut serait resté VERT.
+describe('language gate — NO route NAMES in English, whatever the TIER', () => {
+  // ── WHY THIS BLOCK EXISTS: the gate declared four boundaries and was missing one ──────────────────
+  // The block above guards `selfDeclaredFr`, and it guards it well. But `selfDeclaredFr` is NOT the
+  // only route to the named finding: the `explicit` tier NAMES too, and it needs NO copula head to
+  // do it — that is how « mon coming out » produces a named finding today. An English locution
+  // dropped into `explicit` would therefore name immediately, and the block above would have stayed
+  // GREEN.
   //
-  // Au moment où ce bloc est écrit, la route est LATENTE et non vivante (ADR-0003, *annoter*) :
-  // aucune chaîne anglaise ne vit dans un tier `explicit` de `sexuality`. C'est une DETTE, pas un
-  // état — et elle échoirait au premier lot tenté de contourner le blocage de la copule par ce
-  // côté-là, c'est-à-dire au moment précis où plus personne ne relit la porte.
+  // At the time this block is written, the route is LATENT and not alive (ADR-0003, *annotate*): no
+  // English string lives in an `explicit` tier of `sexuality`. It is a DEBT, not a state — and it
+  // would fall due at the first batch tempted to bypass the copula block by that side, that is at
+  // the precise moment when no one re-reads the gate anymore.
   //
-  // ── CE QUI LE REND DIFFÉRENT DU BLOC DU HAUT, et c'est le point ──────────────────────────────────
-  // Le bloc du haut itère sur un REGISTRE de termes : il ne voit que ce que le registre contient,
-  // sa limite de fond déclarée en tête de fichier. Celui-ci itère sur des PHRASES et n'interroge que
-  // l'ÉTAGE produit — indifférent au tier, au terme et au mécanisme. Une locution neuve déposée
-  // demain dans `explicit`, un terme déplacé, une tête câblée au site d'appel : les trois le font
-  // rougir sans qu'il ait à connaître aucun des trois.
+  // ── WHAT MAKES IT DIFFERENT FROM THE BLOCK ABOVE, and it is the point ─────────────────────────────
+  // The block above iterates on a REGISTRY of terms: it sees only what the registry contains, its
+  // substantive limit declared at the head of the file. This one iterates on SENTENCES and
+  // interrogates only the STOREY produced — indifferent to the tier, the term and the mechanism. A
+  // new locution dropped tomorrow into `explicit`, a moved term, a head wired at the call site: the
+  // three make it go red without it having to know any of the three.
   //
-  // ── MUTATIONS RÉELLEMENT PASSÉES, et leur résultat RELEVÉ ────────────────────────────────────────
-  // Pas « il rougirait » — ce que chacune a FAIT, décompte du fichier entier (15 tests au bloc du
-  // haut, 3 ici), sur ce bloc dans son état final. Baseline : 0 rouge.
-  //   1. `'my coming out'` ajouté à `SEXUALITY_LEXICON.explicit`    → 1 rouge, ICI (1ᵉʳ test)
-  //   2. `'i came out as'` ajouté à `SEXUALITY_LEXICON.explicit`    → 1 rouge, ICI (1ᵉʳ test)
-  //   3. `'im'` ajouté à `SELF_DECLARATION_HEADS_FR`                → 16 (15 + le 1ᵉʳ d'ici)
-  //   3b. `'i am'` ajouté à `SELF_DECLARATION_HEADS_FR`             → 16 (idem)
-  //   4. `'lesbian'` déplacé d'`indirectCore` vers `selfDeclaredFr` → **0 rouge. NON ATTRAPÉE.**
-  //   5. l'anti-vacuité vidée de ses cadres                         → 0 rouge : le bloc passerait au
-  //      vert en ne mesurant plus rien, et c'est pourquoi elle boucle sur une liste littérale
+  // ── MUTATIONS ACTUALLY RUN, and their result RECORDED ─────────────────────────────────────────────
+  // Not « it would go red » — what each one DID, count of the whole file (15 tests at the block
+  // above, 3 here), on this block in its final state. Baseline: 0 red.
+  //   1. `'my coming out'` added to `SEXUALITY_LEXICON.explicit`    → 1 red, HERE (1st test)
+  //   2. `'i came out as'` added to `SEXUALITY_LEXICON.explicit`    → 1 red, HERE (1st test)
+  //   3. `'im'` added to `SELF_DECLARATION_HEADS_FR`                → 16 (15 + the 1st here)
+  //   3b. `'i am'` added to `SELF_DECLARATION_HEADS_FR`             → 16 (idem)
+  //   4. `'lesbian'` moved from `indirectCore` to `selfDeclaredFr`  → **0 red. NOT CAUGHT.**
+  //   5. the anti-vacuity emptied of its frames                     → 0 red: the block would go
+  //      green while measuring nothing anymore, and it is why it loops on a literal list
   //
-  // LES 1 ET 2 SONT LA RAISON D'ÊTRE DU BLOC : elles ouvrent la route `explicit` sans toucher à
-  // aucune tête, et le bloc du haut reste VERT sous les deux. C'est exactement le trou qu'il fallait
-  // fermer, et il est fermé.
+  // N°1 AND 2 ARE THE RAISON D'ÊTRE OF THE BLOCK: they open the `explicit` route without touching any
+  // head, and the block above stays GREEN under both. It is exactly the hole that had to be closed,
+  // and it is closed.
   //
-  // LA 3 EST UN AVEU, ET C'EST LE DEUXIÈME DE CE FICHIER. Tant que mes cadres n'écrivaient que
-  // « i am … », la mutation 3 laissait ce bloc intégralement vert tout en activant les quinze
-  // graphies — seul le bloc du haut rougissait. J'avais lu, dix lignes plus haut, l'aveu identique du
-  // lot précédent, et je l'ai recommis. Les formes contractées ont été ajoutées ensuite, et la
-  // mutation repassée : 16.
+  // N°3 IS A CONFESSION, AND IT IS THE SECOND OF THIS FILE. As long as my frames wrote only
+  // « i am … », mutation 3 left this block entirely green while activating the fifteen spellings —
+  // only the block above went red. I had read, ten lines higher, the identical confession of the
+  // previous batch, and I re-committed it. The contracted forms were added afterward, and the
+  // mutation re-run: 16.
   //
-  // LA 4 EST NON ATTRAPÉE, ET C'EST UNE VRAIE LIMITE — ne pas la lire comme un succès. Déplacer
-  // `lesbian` vers `selfDeclaredFr` ne fait rougir PERSONNE : ni ici (sans tête anglaise le terme
-  // devient inatteignable, donc rien ne nomme — le vert est correct sur le fond) ni au bloc du haut
-  // (son contrôle d'anti-pourrissement ne couvre que les graphies du REGISTRE, et `lesbian` n'y est
-  // pas). Le déplacement est pourtant une régression réelle : il retire un constat LARGE anglais sans
-  // rien poser à la place. Aucun témoin de ce fichier ne la voit. Ce qui la verrait est le banc de
-  // registres, qui compte les preuves de `en_lived_plain` — et c'est là qu'elle est tenue, pas ici.
+  // N°4 IS NOT CAUGHT, AND IT IS A REAL LIMIT — do not read it as a success. Moving `lesbian` to
+  // `selfDeclaredFr` makes NO ONE go red: neither here (without an English head the term becomes
+  // unreachable, so nothing names — the green is correct on the substance) nor at the block above
+  // (its anti-rot control covers only the spellings of the REGISTRY, and `lesbian` is not in it). The
+  // move is nonetheless a real regression: it removes an English BROAD finding without posing
+  // anything in its place. No witness of this file sees it. What would see it is the register bench,
+  // which counts the evidence of `en_lived_plain` — and it is there that it is held, not here.
   //
-  // ── CE QUE CE BLOC NE COUVRE PAS ────────────────────────────────────────────────────────────────
-  // - **Il n'interroge que le label `sexuality`.** Délibéré : d'autres labels ont de bonnes raisons
-  //   de nommer en anglais depuis `explicit` — une condition médicale nommée n'est pas une
-  //   auto-déclaration d'identité. L'étendre aux six exigerait de trancher label par label qui a le
-  //   droit de nommer : décision, pas témoin.
-  // - **Les cadres sont écrits à la main**, avec la limite irréductible du registre du haut : une
-  //   construction que je n'ai pas pensé à écrire n'est pas couverte. « ive always been », « turns
-  //   out im » lui échappent.
-  // - **Il ne dit rien du RAPPEL nommé.** Il vérifie qu'on ne nomme pas ; que l'anglais DOIVE un jour
-  //   nommer est la question du lot de la copule, et ce bloc devra alors être rouvert, pas contourné.
+  // ── WHAT THIS BLOCK DOES NOT COVER ────────────────────────────────────────────────────────────────
+  // - **It interrogates only the `sexuality` label.** Deliberate: other labels have good reasons to
+  //   name in English from `explicit` — a named medical condition is not an identity
+  //   self-declaration. Extending it to the six would require settling label by label who has the
+  //   right to name: a decision, not a witness.
+  // - **The frames are written by hand**, with the irreducible limit of the registry above: a
+  //   construction I did not think to write is not covered. « ive always been », « turns out im »
+  //   escape it.
+  // - **It says nothing of the named RECALL.** It verifies that one does not name; that English MUST
+  //   one day name is the question of the copula batch, and this block will then have to be reopened,
+  //   not bypassed.
 
-  it('aucun cadre anglais ne produit un constat `sexuality` NOMMÉ', () => {
+  it('no English frame produces a NAMED `sexuality` finding', () => {
     const nommés = CADRES_EN.filter((cadre) =>
       detectLabels([cadre], WIRED_LEXICONS).some(
         (d) => d.label === 'sexuality' && d.stage === 'explicit',
@@ -250,10 +249,11 @@ describe('porte de langue — AUCUNE route ne NOMME en anglais, quel que soit le
     expect(nommés).toEqual([]);
   });
 
-  it('ANTI-VACUITÉ — les mêmes cadres en FRANÇAIS nomment, eux', () => {
-    // Sans elle, le vert ci-dessus serait indistinguable d'un détecteur cassé, d'un lexique vidé ou
-    // d'un label débranché. C'est la leçon C0 des critères de mesure de la copule : un instrument qui
-    // ne peut pas atteindre ce qu'il mesure rend un zéro, et ce zéro ressemble exactement à un succès.
+  it('ANTI-VACUITY — the same frames in FRENCH do name', () => {
+    // Without it, the green above would be indistinguishable from a broken detector, an emptied
+    // lexicon or an unplugged label. It is the C0 lesson of the copula measurement criteria: an
+    // instrument that cannot reach what it measures returns a zero, and that zero looks exactly like
+    // a success.
     for (const cadre of ['je suis lesbienne', 'je suis une femme trans', 'mon coming out']) {
       const nommé = detectLabels([cadre], WIRED_LEXICONS).some(
         (d) => d.label === 'sexuality' && d.stage === 'explicit',
@@ -262,10 +262,10 @@ describe('porte de langue — AUCUNE route ne NOMME en anglais, quel que soit le
     }
   });
 
-  it('et le constat LARGE anglais, lui, EXISTE — la porte ne referme pas le rappel', () => {
-    // La porte interdit de NOMMER ; elle n'interdit pas de détecter. Si ce compte tombait à zéro, la
-    // porte aurait cessé d'être une porte pour devenir un mur, et le vert du premier test mesurerait
-    // ce mur au lieu de mesurer la porte.
+  it('and the English BROAD finding, itself, EXISTS — the gate does not close the recall', () => {
+    // The gate forbids NAMING; it does not forbid detecting. If this count fell to zero, the gate
+    // would have stopped being a gate to become a wall, and the green of the first test would measure
+    // that wall instead of measuring the gate.
     const larges = CADRES_EN.filter((cadre) =>
       detectLabels([cadre], WIRED_LEXICONS).some(
         (d) => d.label === 'sexuality' && d.stage === 'indirect',
@@ -275,12 +275,12 @@ describe('porte de langue — AUCUNE route ne NOMME en anglais, quel que soit le
   });
 });
 
-describe('porte de langue — le registre ne pourrit pas', () => {
-  it('chaque graphie du registre est bien PRÉSENTE dans un tier `selfDeclaredFr`', () => {
-    // Sans cette assertion, un terme retiré d'un lexique laisserait une entrée orpheline au
-    // registre, et le vert du bloc précédent deviendrait vacueux — il testerait l'absence de ce qui
-    // n'existe plus. C'est le motif « une assertion négative vérifie ce qu'elle ATTEINT »
-    // (CLAUDE.md) : ici, ce qu'elle atteint est vérifié séparément.
+describe('language gate — the registry does not rot', () => {
+  it('each registry spelling is indeed PRESENT in a `selfDeclaredFr` tier', () => {
+    // Without this assertion, a term removed from a lexicon would leave an orphan entry in the
+    // registry, and the green of the previous block would become vacuous — it would test the absence
+    // of what no longer exists. It is the motive « a negative assertion verifies what it REACHES »
+    // (CLAUDE.md): here, what it reaches is verified separately.
     const admisFr = new Set(TOPICAUX.flatMap((l) => l.selfDeclaredFr ?? []));
     const orphelines = Object.keys(GRAPHIES_ANGLAISES_NON_ADMISES_EN).filter(
       (t) => !admisFr.has(t),
@@ -288,9 +288,9 @@ describe('porte de langue — le registre ne pourrit pas', () => {
     expect(orphelines).toEqual([]);
   });
 
-  it('chaque graphie du registre porte une RAISON non vide', () => {
-    // Une porte dont les motifs se vident est une liste d'interdits sans mémoire : le prochain
-    // lecteur ne saurait plus si le terme est dangereux ou seulement ancien.
+  it('each registry spelling carries a non-empty REASON', () => {
+    // A gate whose motives empty is a list of prohibitions without memory: the next reader would no
+    // longer know whether the term is dangerous or only old.
     const sansRaison = Object.entries(GRAPHIES_ANGLAISES_NON_ADMISES_EN)
       .filter(([, why]) => why.trim().length < 40)
       .map(([t]) => t);

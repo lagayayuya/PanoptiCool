@@ -1,19 +1,18 @@
-// Le moteur : UNE fonction, UNE valeur nommée (Refonte A, lot A1).
+// The engine: ONE function, ONE named value (Refonte A, batch A1).
 //
-// REMPLACE `rules/index.ts` (registres `RULES`/`EVIDENCE_RULES` + `composeRules` + la fusion du
-// magasin de preuves). Ce qui a disparu, et pourquoi ce n'est pas un appauvrissement :
-//   - les DEUX REGISTRES existaient pour typer une liste hétérogène de producteurs derrière une
-//     signature commune (`(input) => Insight[]`). Chaque producteur ayant désormais un nom et un
-//     type de retour PROPRE, il n'y a plus de liste à parcourir : cette fonction les appelle. Le
-//     registre était l'indirection qui permettait à l'UI de re-router (`ruleId`) ce que le moteur
-//     savait déjà ;
-//   - la FUSION DU MAGASIN (dédup par `EvidenceId`) part avec le magasin : les preuves sont des
-//     références directes, un doublon de verbatim est ACCEPTÉ (arbitrage yuya), et la réutilisation
-//     (C5) est RECALCULÉE au rendu sur la paire `channel:sourceIndex` — plus stockée.
+// REPLACES `rules/index.ts` (the `RULES`/`EVIDENCE_RULES` registries + `composeRules` + the merge of
+// the evidence store). What disappeared, and why it is not an impoverishment:
+//   - the TWO REGISTRIES existed to type a heterogeneous list of producers behind a common
+//     signature (`(input) => Insight[]`). Each producer now having its OWN name and return type,
+//     there is no more list to iterate over: this function calls them. The registry was the
+//     indirection that let the UI re-route (`ruleId`) what the engine already knew;
+//   - the STORE MERGE (dedup by `EvidenceId`) leaves with the store: evidence is now direct
+//     references, a verbatim duplicate is ACCEPTED (yuya's arbitration), and reuse (C5) is
+//     RECOMPUTED at render on the `channel:sourceIndex` pair — no longer stored.
 //
-// L'ORDRE DES CHAMPS N'EST PAS L'ORDRE DE LA PAGE. `Analysis` est une valeur nommée : c'est l'UI qui
-// décide de rendre `signals` avant `themes` (elle reproduit l'ordre que produisait l'ancien
-// `insights[]` : D1 émis avant D2). Le moteur ne met plus en scène.
+// THE FIELD ORDER IS NOT THE PAGE ORDER. `Analysis` is a named value: it is the UI that decides to
+// render `signals` before `themes` (it reproduces the order the old `insights[]` produced: D1
+// emitted before D2). The engine no longer stages anything.
 
 import { DEFAULT_LOCALE, type Locale } from '../i18n/locales';
 import type { Analysis } from './analysis';
@@ -25,14 +24,14 @@ import { readOpacity } from './rules/opacity-semantic-wall';
 import { readVolumes } from './rules/volumes';
 
 /**
- * Analyse l'export **validé et normalisé** (`NormalizedExport` : sections-listes coalescées en `[]`
- * au seam, PANO-28/30). Fonction PURE : pas d'effet de bord, pas d'I/O, pas de DOM.
+ * Analyzes the **validated and normalized** export (`NormalizedExport`: list-sections coalesced to
+ * `[]` at the seam, PANO-28/30). PURE function: no side effect, no I/O, no DOM.
  *
- * Chaque producteur rend `undefined`/`[]` si sa source est vide ; une analyse globalement vide reste
- * une sortie VALIDE (PANO-28) — un compte neuf n'est pas une erreur.
+ * Each producer returns `undefined`/`[]` if its source is empty; a globally empty analysis is still
+ * a VALID output (PANO-28) — a fresh account is not an error.
  *
- * `rhythm` et `opacity` sont OMIS (pas mis à `undefined`) quand leur producteur n'a rien : sous
- * `exactOptionalPropertyTypes`, la distinction compte, et « absent » est la sémantique voulue.
+ * `rhythm` and `opacity` are OMITTED (not set to `undefined`) when their producer has nothing: under
+ * `exactOptionalPropertyTypes`, the distinction matters, and "absent" is the intended semantics.
  */
 export function analyze(
   input: NormalizedExport,
@@ -45,8 +44,8 @@ export function analyze(
     ...(rhythm !== undefined ? { rhythm } : {}),
     volumes: readVolumes(input),
     ...(opacity !== undefined ? { opacity } : {}),
-    // `undefined` = lexiques par défaut : `analyze` n'a pas à connaître `INTEREST_LEXICONS`, et
-    // l'importer ici défairait l'encapsulation que la signature de `d2Interests` installe.
+    // `undefined` = default lexicons: `analyze` need not know `INTEREST_LEXICONS`, and importing it
+    // here would undo the encapsulation that `d2Interests`'s signature installs.
     themes: d2Interests(input, undefined, locale),
     signals: d1SensitiveTopics(input, locale),
   };

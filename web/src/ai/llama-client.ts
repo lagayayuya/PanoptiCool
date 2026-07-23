@@ -1,19 +1,19 @@
-// Client du serveur `llama.cpp` local (PANO-45) — le SEUL backend d'inférence du produit (décision
-// yuya, benchmark 12/07 : l'inférence dans le navigateur, mesurée, était trop instable pour le
-// parcours réel).
+// Client of the local `llama.cpp` server (PANO-45) — the ONLY inference backend of the product
+// (yuya's decision, benchmark 12/07: in-browser inference, measured, was too unstable for the
+// real journey).
 //
-// Le serveur expose une API OpenAI-compatible. On n'y touche que cinq endpoints :
-//   - `/v1/models`   → le serveur répond-il, et avec quel modèle chargé (bouton « Lancer » actif ou non) ;
-//   - `/props`       → fenêtre de contexte RÉELLE (`n_ctx`, celle passée à `-c` au lancement) — jamais
-//     une supposition côté client (l'estimation chars/token est trop peu fiable pour fonder une
-//     décision de sécurité dessus) ;
-//   - `/apply-template` + `/tokenize` → comptage EXACT de tokens (voir `countRealPromptTokens`) ;
-//   - `/v1/chat/completions` (SSE) → l'inférence, en streaming, interruptible.
+// The server exposes an OpenAI-compatible API. We only touch five endpoints:
+//   - `/v1/models`   → does the server respond, and with which model loaded ("Launch" button active or not);
+//   - `/props`       → the REAL context window (`n_ctx`, the one passed to `-c` at launch) — never
+//     a client-side guess (the chars/token estimate is too unreliable to ground a
+//     safety decision on it);
+//   - `/apply-template` + `/tokenize` → EXACT token count (see `countRealPromptTokens`);
+//   - `/v1/chat/completions` (SSE) → the inference, streamed, interruptible.
 //
-// Confidentialité : ce client ne parle qu'à l'URL saisie par l'utilisateur (localhost par défaut).
-// Aucun autre appel réseau n'existe dans cette fonctionnalité.
+// Privacy: this client only talks to the URL entered by the user (localhost by default).
+// No other network call exists in this feature.
 
-/** Forme minimale d'un chunk SSE OpenAI-compatible. */
+/** Minimal shape of an OpenAI-compatible SSE chunk. */
 interface StreamChunk {
   choices?: { delta?: { content?: string } }[];
   usage?: { prompt_tokens?: number; completion_tokens?: number };
@@ -21,17 +21,17 @@ interface StreamChunk {
 
 export interface StreamResult {
   text: string;
-  /** Compteurs RÉELS renvoyés par le serveur (`usage`) — la source de vérité pour le compteur de
-   * tokens affiché ET pour recalibrer l'estimation pré-envoi (voir `calibrateCharsPerToken`). */
+  /** REAL counters returned by the server (`usage`) — the source of truth for the displayed token
+   * counter AND for recalibrating the pre-send estimate (see `calibrateCharsPerToken`). */
   promptTokens: number;
   completionTokens: number;
   elapsedMs: number;
-  /** Arrêt demandé par l'utilisateur (bouton STOP) — pas un échec : le texte partiel est conservé. */
+  /** Stop requested by the user (STOP button) — not a failure: the partial text is kept. */
   interrupted: boolean;
 }
 
-/** Poignée partagée entre le bouton STOP et la boucle de streaming : posée à `true` AVANT
- * `controller.abort()`, relue à la fin pour distinguer un arrêt voulu d'une vraie erreur réseau. */
+/** Handle shared between the STOP button and the streaming loop: set to `true` BEFORE
+ * `controller.abort()`, reread at the end to distinguish an intended stop from a real network error. */
 export interface InterruptFlag {
   interrupted: boolean;
 }
@@ -47,7 +47,7 @@ interface PropsResponse {
 export interface ProbeOk {
   ok: true;
   modelId: string | null;
-  /** `n_ctx` du serveur, ou null s'il ne l'expose pas — l'appelant retombe alors sur un défaut. */
+  /** The server's `n_ctx`, or null if it does not expose it — the caller then falls back to a default. */
   contextWindow: number | null;
 }
 export type ProbeResult = ProbeOk | { ok: false; error: string };
@@ -57,8 +57,8 @@ function trimUrl(baseUrl: string): string {
 }
 
 /**
- * Le serveur répond-il ? Renvoie le modèle chargé et la fenêtre de contexte réelle. `/props` est
- * best-effort : un serveur qui ne l'expose pas reste parfaitement utilisable (contexte = défaut).
+ * Does the server respond? Returns the loaded model and the real context window. `/props` is
+ * best-effort: a server that does not expose it stays perfectly usable (context = default).
  */
 export async function probeLlamaCpp(baseUrl: string): Promise<ProbeResult> {
   const base = trimUrl(baseUrl);
@@ -74,7 +74,7 @@ export async function probeLlamaCpp(baseUrl: string): Promise<ProbeResult> {
         contextWindow = props.default_generation_settings?.n_ctx ?? null;
       }
     } catch {
-      // `/props` absent ou refusé : sans conséquence, on garde `null`.
+      // `/props` missing or refused: harmless, we keep `null`.
     }
     return { ok: true, modelId: json.data?.[0]?.id ?? null, contextWindow };
   } catch (err) {
@@ -87,25 +87,25 @@ interface ApplyTemplateResponse {
 }
 
 interface TokenizeResponse {
-  /** Selon `with_pieces`, chaque élément est soit un id (number), soit `{id, piece}` — on n'utilise
-   * que la LONGUEUR du tableau, jamais le contenu, donc peu importe la forme exacte des éléments. */
+  /** Depending on `with_pieces`, each element is either an id (number) or `{id, piece}` — we only use
+   * the LENGTH of the array, never the content, so the exact shape of the elements does not matter. */
   tokens?: unknown[];
 }
 
 /**
- * Comptage EXACT de tokens pour un couple (prompt système, message utilisateur), via le serveur —
- * PAS l'heuristique chars/token (sur du texte réel, l'écart mesuré est de ~1,75×, dans le sens
- * DANGEREUX — sous-estimation qui fait déborder la fenêtre).
+ * EXACT token count for a (system prompt, user message) pair, via the server — NOT the chars/token
+ * heuristic (on real text, the measured gap is ~1.75×, in the DANGEROUS direction — an
+ * under-estimation that overflows the window).
  *
- * Deux appels : `/apply-template` rend le prompt tel que `llama-server` le formatera RÉELLEMENT (rôles,
- * balises spéciales du modèle) ; `/tokenize` (`add_special: true`, pour compter aussi le token BOS que
- * le serveur ajoute) le tokenise avec le tokenizer RÉEL du modèle chargé. La longueur du tableau rendu
- * est alors identique au `usage.prompt_tokens` qu'un envoi réel renverrait (vérifié en session sur ce
- * modèle : 7 tokens comptés ici == 7 `prompt_tokens` réels).
+ * Two calls: `/apply-template` renders the prompt as `llama-server` will ACTUALLY format it (roles,
+ * model-specific special tags); `/tokenize` (`add_special: true`, to also count the BOS token the
+ * server adds) tokenizes it with the REAL tokenizer of the loaded model. The length of the returned
+ * array is then identical to the `usage.prompt_tokens` a real send would return (verified in session
+ * on this model: 7 tokens counted here == 7 real `prompt_tokens`).
  *
- * Renvoie `null` si l'un des deux endpoints est absent ou en erreur (build de `llama-server` trop
- * ancien, serveur injoignable) — l'appelant retombe alors sur l'heuristique chars/token comme borne
- * grossière (voir `estimateTokens`/`DEFAULT_CHARS_PER_TOKEN`, `prompt.ts`).
+ * Returns `null` if either of the two endpoints is missing or errors (a `llama-server` build too
+ * old, an unreachable server) — the caller then falls back to the chars/token heuristic as a coarse
+ * bound (see `estimateTokens`/`DEFAULT_CHARS_PER_TOKEN`, `prompt.ts`).
  */
 export async function countRealPromptTokens(
   baseUrl: string,
@@ -142,12 +142,13 @@ export async function countRealPromptTokens(
 }
 
 /**
- * Inférence en streaming SSE. `stream_options: { include_usage: true }` est ce qui fait renvoyer le
- * bloc `usage` dans le dernier chunk : sans lui, `prompt_tokens`/`completion_tokens` restent à zéro —
- * donc ni compteur réel de tokens, ni tok/s.
+ * SSE streaming inference. `stream_options: { include_usage: true }` is what makes the `usage`
+ * block come back in the last chunk: without it, `prompt_tokens`/`completion_tokens` stay at zero —
+ * so neither a real token counter, nor tok/s.
  *
- * `controller.abort()` (bouton STOP) fait lever une `AbortError`, au fetch ou à la lecture du flux.
- * Si `flag.interrupted` est déjà vrai, c'est un arrêt VOULU : on rend le texte déjà reçu, pas une erreur.
+ * `controller.abort()` (STOP button) raises an `AbortError`, at the fetch or the stream read.
+ * If `flag.interrupted` is already true, it is an INTENDED stop: we return the text already received,
+ * not an error.
  */
 export async function runLlamaCppStream(
   baseUrl: string,
@@ -170,7 +171,7 @@ export async function runLlamaCppStream(
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal,
       body: JSON.stringify({
-        model: 'local', // ignoré par `llama-server` (un seul modèle chargé), requis par le schéma OpenAI.
+        model: 'local', // ignored by `llama-server` (a single model loaded), required by the OpenAI schema.
         stream: true,
         stream_options: { include_usage: true },
         messages: [
@@ -203,8 +204,8 @@ export async function runLlamaCppStream(
       }
       if (step.done) break;
       buffer += decoder.decode(step.value, { stream: true });
-      // Le tampon peut couper une ligne SSE en plein milieu : on ne traite que les lignes complètes et
-      // on garde le reste (`buffer`) pour le prochain chunk.
+      // The buffer may cut an SSE line mid-way: we only process complete lines and
+      // keep the rest (`buffer`) for the next chunk.
       for (;;) {
         const newlineIdx = buffer.indexOf('\n');
         if (newlineIdx < 0) break;

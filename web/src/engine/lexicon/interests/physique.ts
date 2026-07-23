@@ -1,27 +1,27 @@
-// Lexique d'intérêt `physique` (D2, PANO-89 lot 4) — physique (champ savoir).
+// Interest lexicon `physique` (D2, PANO-89 batch 4) — physics (knowledge field).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la physique FR : concepts, figures, sous-champs. Usage SOBRE (édition/edtech).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR physics: concepts, figures, sub-fields. SOBER usage (publishing/edtech).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « physique quantique », « relativite », « einstein », « thermodynamique », « boson »,
 //     « electromagnetisme », « fission nucleaire », « entropie », « mecanique quantique », « photon ».
-//   · ANCRÉ — « physique » (corps / EPS), « force », « energie », « masse » (foule / partagé muscu),
-//     « champ », « onde », « atome », « particule » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « physique » (body / PE), « force », « energie », « masse » (crowd / shared muscu),
+//     « champ », « onde », « atome », « particule »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Asymétrie NOTABLE : « physique » est ancré en FR parce qu'il désigne le CORPS ; « physics » (EN)
-// ne porte pas ce sens et redevient SOLO. La raison de l'ancrage FR ne se transporte pas.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// NOTABLE asymmetry: « physique » is anchored in FR because it designates the BODY; « physics » (EN)
+// does not carry that sense and becomes SOLO again. The reason for the FR anchoring does not transport.
 //   · SOLO — « physics », « quantum physics », « relativity », « general relativity »,
 //     « thermodynamics », « quantum mechanics », « electromagnetism », « nuclear fission »,
-//     « higgs boson ». (« game physics » reste de la physique : chevauchement D2×D2 toléré.)
-//   · ANCRÉ — « energy » (« good energy », energy drink), « force », « mass » (= la MESSE en EN),
+//     « higgs boson ». (« game physics » is still physics: D2×D2 overlap tolerated.)
+//   · ANCHORED — « energy » (« good energy », energy drink), « force », « mass » (= the MASS/service in EN),
 //     « field », « wave » (« wave at someone », « new wave »), « atom », « particle », « quantum »
-//     (« quantum leap », Quantum of Solace) : compagnon requis.
+//     (« quantum leap », Quantum of Solace): companion required.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. « physique » nu jamais solo (corps / cours d'EPS).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. Bare « physique » never solo (body / PE class).
 
 import type { InterestLexicon } from '../types';
 
@@ -49,7 +49,7 @@ export const PHYSIQUE_LEXICON: InterestLexicon = {
     'newton',
     'relativite generale',
     'loi de newton',
-    // Variantes EN (PANO-88) : SOLO — « physics » ne désigne PAS le corps (contrairement au FR).
+    // EN variants (PANO-88): SOLO — « physics » does NOT designate the body (unlike FR).
     'physics',
     'quantum physics',
     'relativity',
@@ -61,23 +61,23 @@ export const PHYSIQUE_LEXICON: InterestLexicon = {
     'higgs boson',
   ],
   anchored: [
-    'physique', // corps / cours d'EPS
-    'force', // force générique
-    'energie', // énergie générique
-    'masse', // foule / partagé muscu
-    'champ', // champ (agricole) / champ (physique)
-    'onde', // onde générique
-    'atome', // atome (au figuré) / atome
-    'particule', // particule générique
-    'quantique', // fairly physique mais gardé ancré
-    // Variantes EN (PANO-88) : ANCRÉS.
+    'physique', // body / PE class
+    'force', // generic force
+    'energie', // generic energy
+    'masse', // crowd / shared muscu
+    'champ', // field (agricultural) / field (physics)
+    'onde', // generic wave
+    'atome', // atom (figurative) / atom
+    'particule', // generic particle
+    'quantique', // fairly physics but kept anchored
+    // EN variants (PANO-88): ANCHORED.
     'energy', // « good energy » / energy drink (EN)
-    'force', // force générique (EN, même graphie que le FR)
-    'mass', // = la messe (EN)
-    'field', // champ / domaine / terrain (EN)
+    'force', // generic force (EN, same spelling as FR)
+    'mass', // = the mass/service (EN)
+    'field', // field / domain / terrain (EN)
     'wave', // « wave at someone » / « new wave » (EN)
-    'atom', // atome (EN)
-    'particle', // particule (EN)
+    'atom', // atom (EN)
+    'particle', // particle (EN)
     'quantum', // « quantum leap » / Quantum of Solace (EN)
   ],
   selfDeclared: ['etudiant en physique'],

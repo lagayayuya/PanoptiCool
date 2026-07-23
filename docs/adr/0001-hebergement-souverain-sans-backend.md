@@ -1,54 +1,56 @@
-# ADR-0001 : Hébergement souverain, sans backend
+# ADR-0001: Sovereign hosting, no backend
 
-**Statut :** Accepté
-**Date :** 2026-06-19
-**Décideur :** yuya
+**Status:** Accepted
+**Date:** 2026-06-19
+**Decider:** yuya
 
-## Contexte
+## Context
 
-PanoptiCool sert une app statique dont **tout le traitement vit dans le navigateur** (ADR-0002) :
-aucune donnée d'export ne touche un serveur, par construction, **quel que soit l'hébergeur**.
+PanoptiCool serves a static app whose **entire processing lives in the browser** (ADR-0002): no
+export data touches a server, by construction, **whatever the host**.
 
-C'est le fait structurant de cette décision, et il est contre-intuitif : **l'invariant privacy ne
-départage pas les options.** Il est satisfait des trois côtés. Choisir un VPS souverain « pour la
-privacy de l'export » ferait payer l'ops d'une machine pour une raison qui ne s'y applique pas.
+This is the structuring fact of this decision, and it is counterintuitive: **the privacy invariant
+does not decide between the options.** It is satisfied on all three sides. Choosing a sovereign VPS
+"for the export's privacy" would make us pay the ops of a machine for a reason that does not apply to
+it.
 
-Ce qui départage réellement :
+What actually decides:
 
-1. **Éthos.** Outil se sensibilisation sensibilisation aux enjeux de protection des données et de vie privée : le médium fait partie du message. Héberger sur une PaaS US contredit la thèse.
-2. **Résidence de la seule PII éventuelle.** Pas l'export : l'e-mail d'un éventuel rappel « ton
-   export est prêt » — une plateforme met des jours à le produire (TikTok, jusqu'à ~4). UE et US ne
-   sont pas équivalents.
-3. **Coût et ops pour un dev solo.** Faible maintenance, magie minimale.
+1. **Ethos.** A tool for raising awareness of data-protection and privacy issues: the medium is part
+   of the message. Hosting on a US PaaS contradicts the thesis.
+2. **Residence of the only possible PII.** Not the export: the email of a possible "your export is
+   ready" reminder — a platform takes days to produce it (TikTok, up to ~4). The EU and the US are
+   not equivalent.
+3. **Cost and ops for a solo dev.** Low maintenance, minimal magic.
 
-## Décision
+## Decision
 
-1. **Hébergement souverain** sur un petit VPS UE. Pas de PaaS US.
-2. **Stack lean : Caddy** (statique + TLS automatique + reverse-proxy), sans orchestrateur.
-3. **Tout conteneurisé** (images Docker standard) : la bascule vers une PaaS reste sans douleur —
-   assurance-réversibilité.
-4. **Aucun backend.** L'écran d'attente propose un rappel **sans serveur** (export `.ics`, rappel
-   local). On ne collecte rien — **pas même un e-mail**. C'est une revendication du produit, pas une
-   étape vers un backend.
+1. **Sovereign hosting** on a small EU VPS. No US PaaS.
+2. **Lean stack: Caddy** (static + automatic TLS + reverse-proxy), no orchestrator.
+3. **Everything containerized** (standard Docker images): the switch to a PaaS stays painless —
+   reversibility insurance.
+4. **No backend.** The waiting screen offers a reminder **without a server** (`.ics` export, local
+   reminder). We collect nothing — **not even an email**. This is a product claim, not a step toward
+   a backend.
 
-## Options écartées
+## Options discarded
 
-**Vercel, ou toute PaaS US équivalente.** La plus rapide à shipper, zéro-ops, gratuite à cette
-échelle. Écartée pour la contradiction narrative et la résidence US de la PII — et parce que la
-sortie serait douloureuse (serverless → stateful, Cron et KV propriétaires) là où le chemin inverse
-est cheap. **Cette asymétrie de réversibilité est ce qui justifie de démarrer souverain *et* lean :**
-lean → PaaS se fait sur les mêmes primitives ; PaaS US → souverain, non.
+**Vercel, or any equivalent US PaaS.** The fastest to ship, zero-ops, free at this scale. Discarded
+for the narrative contradiction and the US residence of the PII — and because the exit would be
+painful (serverless → stateful, proprietary Cron and KV) where the reverse path is cheap. **This
+reversibility asymmetry is what justifies starting sovereign *and* lean:** lean → PaaS is done on the
+same primitives; US PaaS → sovereign, not.
 
-**Une PaaS auto-hébergée (Coolify) dès maintenant.** Git-push, rollbacks, dashboard — précieux **à
-plusieurs services**. Écartée comme sur-outillée pour la charge réelle : un statique et pas de
-backend. Elle ajoute une base à patcher et un control-plane à faire tourner **avant** de rendre
-service. Le pas reste cheap le jour où il se justifie (plusieurs services longue-durée, ou un
-app-server stateful) : tout est déjà conteneurisé.
+**A self-hosted PaaS (Coolify) right now.** Git-push, rollbacks, dashboard — valuable **with several
+services**. Discarded as over-tooled for the real load: one static site and no backend. It adds a
+database to patch and a control-plane to run **before** it renders any service. The step stays cheap
+the day it is justified (several long-lived services, or a stateful app-server): everything is
+already containerized.
 
-## Conséquences
+## Consequences
 
-**Ferme :** les conforts managés (preview-deploys, scaling et rollback zéro-ops) ; on prend uptime,
-patchs OS et sauvegardes ; un peu de friction contributeur — pas de one-click deploy.
+**Closes:** the managed comforts (preview-deploys, zero-ops scaling and rollback); we take on uptime,
+OS patches and backups; a bit of contributor friction — no one-click deploy.
 
-**Ouvre :** résidence UE de la seule PII éventuelle ; cohérence narrative totale ; zéro lock-in ; et,
-faute de backend, la revendication *« on ne collecte rien, pas même ton e-mail »*.
+**Opens:** EU residence of the only possible PII; total narrative coherence; zero lock-in; and,
+lacking a backend, the claim *"we collect nothing, not even your email"*.

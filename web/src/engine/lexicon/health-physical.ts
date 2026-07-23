@@ -1,71 +1,71 @@
-// Lexique `health_physical` (PANO-72, passe 2) — condition médicale / état de santé physique.
+// `health_physical` lexicon (PANO-72, pass 2) — medical condition / physical health state.
 //
-// ── Justification de généricité (discipline PANO-70 §3, §2.5) ─────────────────────────────────
-// Vocabulaire médical et du soin du FR courant, écrit à l'aveugle depuis l'usage commun, jamais
-// depuis un export :
-//   · soutenu / clinique : conditions nommées (diabète, endométriose, sclérose en plaques) ;
-//   · courant : parcours de soin (ordonnance, analyses de sang, spécialistes, arrêt maladie) ;
-//   · familier : périphrases d'état (« cloué au lit », « mal partout », « la crève »).
-// PIÈGE PROPRE À CE LABEL (traité) : les hyperboles de fatigue (« crevé », « claqué », « mort »,
-// « HS », « je crève de faim ») NE sont PAS des constats de santé — elles sont EXCLUES du lexique.
-// Seule « la crève » (locution figée = vraie maladie) entre, distincte de « crevé » (fatigue).
-// Chaque terme aurait été écrit à l'identique sans avoir vu aucun export.
+// ── Genericity justification (PANO-70 §3, §2.5 discipline) ────────────────────────────────────
+// Medical and care vocabulary of everyday FR, written blind from common usage, never
+// from an export:
+//   · formal / clinical: named conditions (diabète, endométriose, sclérose en plaques);
+//   · everyday: care pathway (ordonnance, analyses de sang, specialists, arrêt maladie);
+//   · colloquial: state periphrases (« cloué au lit », « mal partout », « la crève »).
+// PITFALL SPECIFIC TO THIS LABEL (handled): fatigue hyperboles (« crevé », « claqué », « mort »,
+// « HS », « je crève de faim ») are NOT health findings — they are EXCLUDED from the lexicon.
+// Only « la crève » (fixed phrase = real illness) enters, distinct from « crevé » (fatigue).
+// Each term would have been written identically without having seen any export.
 // ───────────────────────────────────────────────────────────────────────────────────────────────
 //
-// Entrées NORMALISÉES (minuscules, sans accents ; tiret = espace). Variantes mécaniques (pluriel,
-// auto-censure, allongement) couvertes par la machinerie. Seuil 2 (calibrage PANO-33), colloquial inclus.
+// NORMALIZED entries (lowercase, no accents; hyphen = space). Mechanical variants (plural,
+// self-censoring, lengthening) covered by the machinery. Threshold 2 (PANO-33 calibration), colloquial included.
 //
-// ── Variantes EN (2ᵉ lot D1) — la ligne d'admission n'est PAS celle du pilote ───────────────────
-// Le lot pilote `mental_health` s'est défendu contre l'HYPERBOLE : « i'm dying » n'est pas une
-// détresse. Cette porte-là ne travaille presque pas ici — personne n'écrit « i'm diabetic » pour
-// rire, et trois termes seulement s'y écartent (`cancer` nu, `migraine` nu, « i'm dying »).
+// ── EN variants (2nd D1 batch) — the admission line is NOT the pilot's ──────────────────────────
+// The pilot batch `mental_health` defended against HYPERBOLE: « i'm dying » is not a
+// distress. That gate barely works here — no one writes « i'm diabetic » for
+// a laugh, and only three terms are discarded on that basis (bare `cancer`, bare `migraine`, « i'm dying »).
 //
-// La ligne qui décide ce label est ailleurs, et elle a été MESURÉE sur les voix scellées du corps :
+// The line that decides this label is elsewhere, and it was MEASURED on the sealed voices of the body:
 //
-//     LE SYMPTÔME N'EST PAS LA CONDITION.
+//     THE SYMPTOM IS NOT THE CONDITION.
 //
-// Les deux voix se distinguent exactement là. Celle qui VIT une polyarthrite nomme sa condition,
-// son traitement et sa spécialité ; celle qui n'a RIEN écrit un vocabulaire de symptômes dense et
-// parfaitement LITTÉRAL — une bosse, un fourmillement, un pouls à 48, une paupière qui tressaute.
-// Tout existe chez elle sauf la maladie. Aucun mécanisme fondé sur la présence d'un terme ne les
-// sépare, et le seuil ne protège pas : quelqu'un qui s'inquiète pour rien cherche BEAUCOUP, donc le
-// seuil accumule au lieu d'écarter — le raisonnement d'ADR-0003 sur l'hyperbole, transposé.
+// The two voices differ exactly there. The one who LIVES rheumatoid arthritis names her condition,
+// her treatment and her specialty; the one who has NOTHING wrote a dense and
+// perfectly LITERAL symptom vocabulary — a lump, a tingling, a pulse at 48, a twitching eyelid.
+// Everything exists in her writing except the illness. No mechanism based on the presence of a term
+// separates them, and the threshold does not protect: someone who worries over nothing searches A LOT, so the
+// threshold accumulates instead of discarding — ADR-0003's hyperbole reasoning, transposed.
 //
-// D'où la règle de ce lexique : les NOMS DE SYMPTÔME n'entrent pas. Ni `lump`, ni `bump`, ni
-// `headache`, ni `tingling`, ni `dizzy`, ni `bruise`, ni `twinge`, ni `cough`, ni `rash`, ni
-// `stomach ache`. Ce qui entre, c'est ce qu'écrit quelqu'un qui SAIT ce qu'il a : le nom de la
-// condition, le nom du traitement, le nom de la spécialité, le parcours de soin.
+// Hence this lexicon's rule: SYMPTOM NAMES do not enter. Neither `lump`, nor `bump`, nor
+// `headache`, nor `tingling`, nor `dizzy`, nor `bruise`, nor `twinge`, nor `cough`, nor `rash`, nor
+// `stomach ache`. What enters is what someone who KNOWS what they have writes: the name of the
+// condition, the name of the treatment, the name of the specialty, the care pathway.
 //
-// ── HORS PÉRIMÈTRE, par décision — grossesse et handicap ───────────────────────────────────────
-// Les entrées FR `ma grossesse`, `pma`, `fiv`, `mon handicap` restent, et n'ont AUCUN pendant EN.
-// L'asymétrie est délibérée : ranger ces territoires sous « santé physique » est un cadrage que
-// rien n'a ratifié — une grossesse n'est pas une maladie, et classer le handicap ici le cadre comme
-// une pathologie, ce que les personnes concernées contestent. Ils ne seront pas doublés dans une
-// seconde langue avant d'être décidés. Écartés au même titre, et pour la même raison : `blue badge`,
-// `attendance allowance`, `carers allowance` — des droits liés au handicap, pas des soins.
+// ── OUT OF SCOPE, by decision — pregnancy and disability ───────────────────────────────────────
+// The FR entries `ma grossesse`, `pma`, `fiv`, `mon handicap` stay, and have NO EN counterpart.
+// The asymmetry is deliberate: filing these territories under "physical health" is a framing that
+// nothing has ratified — a pregnancy is not an illness, and classing disability here frames it as
+// a pathology, which the people concerned contest. They will not be doubled in a
+// second language before being decided. Discarded on the same grounds, and for the same reason: `blue badge`,
+// `attendance allowance`, `carers allowance` — disability-related entitlements, not care.
 //
-// Les exclusions qui PORTENT la doctrine sont figées dans la batterie adverse
-// (`detect/lexicon-battery.test.ts`) ; les quasi-manqués locaux sont annotés sur l'entrée qui les a
-// écartés. Deux n'ont ni entrée voisine ni test, et se tiennent donc ici (ex-note de lot, condensée
-// dans `docs/methode-portabilite-en.md`) :
-//   · `seizure` nu — « seizure of assets », registre juridique ; `epilepsy` porte le signal ;
-//   · `miscarriage` — « miscarriage of justice » MATCHE (mesuré), et aucune machinerie ne l'écarte
-//     (ni négation, ni citation, ni registre informationnel). Le cas est en outre absorbé par le
-//     hors-périmètre grossesse ci-dessus : il ne se rouvre pas sans lui.
+// The exclusions that CARRY the doctrine are frozen in the adversarial battery
+// (`detect/lexicon-battery.test.ts`); the local near-misses are annotated on the entry that
+// discarded them. Two have neither a neighboring entry nor a test, and so stand here (ex-batch note, condensed
+// in `docs/methode-portabilite-en.md`):
+//   · bare `seizure` — « seizure of assets », legal register; `epilepsy` carries the signal;
+//   · `miscarriage` — « miscarriage of justice » MATCHES (measured), and no machinery discards it
+//     (neither negation, nor quotation, nor informational register). The case is also absorbed by the
+//     pregnancy out-of-scope above: it does not reopen without it.
 
 import type { TopicalLexicon } from './types';
 
 export const HEALTH_PHYSICAL_LEXICON: TopicalLexicon = {
   kind: 'topical',
   label: 'health_physical',
-  // Lectures du registre §5 (amendé PANO-72 : 3e lecture « proche », alignée sur mental_health).
+  // Readings from registry §5 (amended PANO-72: 3rd reading « proche », aligned with mental_health).
   readingTemplateIds: [
     'sensitive.health-physical.reading.lived',
     'sensitive.health-physical.reading.relative',
     'sensitive.health-physical.reading.curiosity',
   ],
-  // Condition NOMMÉE à soi → tag nommé. Conditions non ambiguës nues + locutions possessives (le
-  // mot nu piégé : « cancer » = argot « c'est le cancer » ; « grossesse » d'autrui…).
+  // Condition NAMED of oneself → named tag. Unambiguous bare conditions + possessive phrases (the
+  // trapped bare word: « cancer » = slang « c'est le cancer »; someone else's « grossesse »…).
   explicit: [
     'diabete',
     'asthme',
@@ -106,65 +106,65 @@ export const HEALTH_PHYSICAL_LEXICON: TopicalLexicon = {
     'mon diabete',
     'pma',
     'fiv',
-    // ── Variantes EN : conditions NOMMÉES, sans emploi figuré ─────────────────────────────────
+    // ── EN variants: NAMED conditions, without figurative use ─────────────────────────────────
     'asthma',
     'epilepsy',
-    'endometriosis', // le FR `endometriose` ne l'attrapait pas (-ose / -osis)
+    'endometriosis', // the FR `endometriose` did not catch it (-ose / -osis)
     'fibromyalgia',
-    'multiple sclerosis', // « ms » écarté : matche « 200 ms latency » (mesuré)
+    'multiple sclerosis', // « ms » discarded: matches « 200 ms latency » (measured)
     'crohns',
-    "crohn's", // double graphie : mesuré, l'une ne matche pas l'autre
+    "crohn's", // dual spelling: measured, one does not match the other
     'ulcerative colitis',
     'ibd',
     'ibs',
     'celiac',
-    'coeliac', // « gluten free » écarté : régime d'élection bien plus souvent que condition
-    'long covid', // « covid » nu écarté : événement collectif, pas une condition portée
-    'chronic illness', // « chronic » nu écarté : intensificateur (« chronically online »)
+    'coeliac', // « gluten free » discarded: elective diet far more often than condition
+    'long covid', // bare « covid » discarded: collective event, not a borne condition
+    'chronic illness', // bare « chronic » discarded: intensifier (« chronically online »)
     'chronic pain',
     'chronic fatigue',
     'anemia',
     'anaemia',
     'hypothyroidism',
-    'hyperthyroidism', // « thyroid » nu écarté : c'est un organe, pas une condition
-    // Arthrites — CATÉGORIE RÉVÉLÉE PAR LA MESURE, absente de la proposition d'origine. Le FR
-    // portait `arthrose` seul ; l'anglais du quotidien nomme la maladie inflammatoire, son
-    // traitement et sa spécialité. C'est l'une des conditions chroniques les plus répandues.
+    'hyperthyroidism', // bare « thyroid » discarded: it is an organ, not a condition
+    // Arthritides — CATEGORY REVEALED BY MEASUREMENT, absent from the original proposal. FR
+    // carried `arthrose` alone; everyday English names the inflammatory disease, its
+    // treatment and its specialty. It is one of the most widespread chronic conditions.
     'rheumatoid arthritis',
     'osteoarthritis',
     'arthritis',
     'lupus',
-    // Formes PORTÉES — le nom nu de ces trois-là ne nomme personne (cf. les exclusions en tête).
-    // Ce qui les tient est DANS la chaîne matchée : le possessif ou la 1ʳᵉ personne y est écrit, donc
-    // « la condition est portée » est littéralement ce que le matcher vérifie. Une entrée sans l'un
-    // ni l'autre n'appartient pas à ce bloc, si voisin que soit son sens — `in remission` y avait été
-    // rangée et en est sortie (« her lymphoma is in remission » NOMMAIT le rédacteur). Elle vit au
-    // seul tier `selfDeclaredEn`, où « i am in remission » la retrouve.
+    // BORNE forms — the bare name of these three names no one (cf. the exclusions at the head).
+    // What holds them is IN the matched string: the possessive or the 1st person is written there, so
+    // "the condition is borne" is literally what the matcher verifies. An entry with neither
+    // does not belong to this block, however close its sense — `in remission` had been
+    // filed here and left it (« her lymphoma is in remission » NAMED the writer). It lives in the
+    // sole tier `selfDeclaredEn`, where « i am in remission » finds it again.
     'my cancer',
     'my chemo',
     'on chemo',
     'my diagnosis',
     'my condition',
-    'my illness', // « illness » nu écarté : « it is an illness » est un emploi figuré courant
+    'my illness', // bare « illness » discarded: « it is an illness » is a common figurative use
     'my surgery',
-    'my operation', // « operation » nu écarté : militaire, commercial, mathématique
+    'my operation', // bare « operation » discarded: military, commercial, mathematical
     'i had surgery',
     'my transplant',
-    // AVC — le possessif seul NOMME. Les formes générales sont en `indirectCore`, et ce choix est
-    // MESURÉ, pas théorique : la voix aidante du banc écrit huit items sur l'AVC de sa mère dont
-    // la plupart SANS possessif (« stroke recovery timeline », « adapting a kitchen after
-    // stroke »). En `explicit`, ils lui posaient un constat NOMMÉ — la sur-classification exacte
-    // que sa vérité-terrain désigne comme le tort à surveiller.
+    // Stroke — the possessive alone NAMES. The general forms are in `indirectCore`, and this choice is
+    // MEASURED, not theoretical: the bench's caregiver voice writes eight items about her mother's stroke,
+    // most of them WITHOUT a possessive (« stroke recovery timeline », « adapting a kitchen after
+    // stroke »). In `explicit`, they set a NAMED finding on her — the exact over-classification
+    // that her ground truth designates as the wrong to watch.
     //
-    // `had a stroke` A ÉTÉ ADMIS ICI CONTRE CETTE RÈGLE, et l'a payé : il ne porte ni possessif ni
-    // 1ʳᵉ personne, donc « he had a stroke last winter » NOMMAIT le rédacteur. Ce qui a caché le
-    // défaut est le filtre de 3ᵉ personne — une liste FERMÉE de termes de parenté : « my nan had a
-    // stroke » est muet, « the driver had a stroke » ne l'est pas. La voix scellée `relative` écrit
-    // « my nan », donc AUCUNE persona ne pouvait exhiber le défaut. Descendu en `indirectCore`,
-    // auprès des autres formes générales, où la règle ci-dessus le mettait.
+    // `had a stroke` WAS ADMITTED HERE AGAINST THIS RULE, and paid for it: it carries neither possessive nor
+    // 1st person, so « he had a stroke last winter » NAMED the writer. What hid the
+    // defect is the 3rd-person filter — a CLOSED list of kinship terms: « my nan had a
+    // stroke » is silent, « the driver had a stroke » is not. The sealed voice `relative` writes
+    // « my nan », so NO persona could exhibit the defect. Moved down to `indirectCore`,
+    // alongside the other general forms, where the rule above placed it.
     'my stroke',
   ],
-  // Condition-adjectif revendiquée via copule (« je suis diabétique ») — trop de FP nue.
+  // Condition-adjective claimed via copula (« je suis diabétique ») — too many FP bare.
   selfDeclaredFr: [
     'diabetique',
     'asthmatique',
@@ -176,43 +176,43 @@ export const HEALTH_PHYSICAL_LEXICON: TopicalLexicon = {
     'malade chronique',
     'hypocondriaque',
   ],
-  // ── LES CONDITIONS-ADJECTIFS ANGLAISES — pendant EN de `selfDeclaredFr` ci-dessus ─────────────
-  // Même raison qu'en français (« trop de FP nue »), étage DIFFÉRENT : ce tier atterrit en LARGE et
-  // ne NOMME jamais (`TopicalLexicon.selfDeclaredEn`).
+  // ── THE ENGLISH CONDITION-ADJECTIVES — EN counterpart of `selfDeclaredFr` above ───────────────
+  // Same reason as in French (« too many FP bare »), DIFFERENT tier: this tier lands as BROAD and
+  // NEVER NAMES (`TopicalLexicon.selfDeclaredEn`).
   //
-  // CE QU'IL RÉPARE : le nom de condition était câblé, l'adjectif ne l'était pas — `diabetes` ✓ /
-  // `diabetic` ✗, `asthma` ✓ / `asthmatic` ✗, `arthritis` ✓ / `arthritic` ✗. L'étage livré était en
-  // outre INCOHÉRENT et personne ne l'avait vu : `epileptic`, `celiac`, `anemic` NOMMENT dès un item
-  // (ils sont en `explicit`), quand `diabetic` et `asthmatic` étaient muets. Deux conditions du même
-  // registre, deux comportements.
+  // WHAT IT REPAIRS: the condition noun was wired, the adjective was not — `diabetes` ✓ /
+  // `diabetic` ✗, `asthma` ✓ / `asthmatic` ✗, `arthritis` ✓ / `arthritic` ✗. The delivered tier was
+  // moreover INCOHERENT and no one had seen it: `epileptic`, `celiac`, `anemic` NAME from one item
+  // (they are in `explicit`), while `diabetic` and `asthmatic` were silent. Two conditions of the same
+  // register, two behaviors.
   //
-  // CETTE NOTE DIAGNOSTIQUAIT L'ASYMÉTRIE ET N'EN RÉPARAIT QU'UNE MOITIÉ : elle a ajouté les
-  // adjectifs manquants ICI, sans jamais redescendre ceux qui étaient restés en `explicit`. Un
-  // terme présent aux DEUX tiers court-circuite celui-ci — l'étage nommé gagne, et l'adjectif NOMME
-  // dès un item, dans n'importe quel cadre, y compris ceux que la barre d'admission de ce tier
-  // écarte. Mesuré : « the sound mix on this album is anemic » et « the editing in that trailer is
-  // epileptic » posaient un constat NOMMÉ. `epileptic` et `anemic` sont donc sortis de `explicit` ;
-  // leurs NOMS (`epilepsy`, `anemia`, `anaemia`) y restent, et c'est eux qui portent le rappel du
-  // porteur. `celiac` / `coeliac` restent aux deux tiers À DESSEIN : aucun idiome anglais ne les
-  // applique à un objet, et « celiac friendly » est du vocabulaire du domaine — un signal-sans-vécu,
-  // qui est la démonstration et pas un tort (ADR-0003, *L'incertitude*).
-  // L'intersection est tenue par `detect/storey-intersection.test.ts`.
+  // THIS NOTE DIAGNOSED THE ASYMMETRY AND REPAIRED ONLY HALF OF IT: it added the
+  // missing adjectives HERE, without ever moving back down those that had stayed in `explicit`. A
+  // term present in BOTH tiers short-circuits this one — the named tier wins, and the adjective NAMES
+  // from one item, in any frame, including those that this tier's admission bar
+  // discards. Measured: « the sound mix on this album is anemic » and « the editing in that trailer is
+  // epileptic » set a NAMED finding. `epileptic` and `anemic` therefore left `explicit`;
+  // their NOUNS (`epilepsy`, `anemia`, `anaemia`) stay there, and it is they that carry the recall of the
+  // bearer. `celiac` / `coeliac` stay in both tiers BY DESIGN: no English idiom applies them
+  // to an object, and « celiac friendly » is domain vocabulary — a signal-without-lived-experience,
+  // which is the demonstration and not a wrong (ADR-0003, *The uncertainty*).
+  // The intersection is held by `detect/storey-intersection.test.ts`.
   //
-  // SEUIL 2, ET LE PRIX EST EXPLICITE : sans franchissement solo, « i am diabetic » écrit UNE fois
-  // ne rend RIEN. C'est ce que le seuil fait déjà partout ailleurs sur ce label, et la variante qui
-  // l'aurait évité doublait le bruit idiomatique (mesuré : `selfDeclaredEn`).
+  // THRESHOLD 2, AND THE PRICE IS EXPLICIT: without solo crossing, « i am diabetic » written ONCE
+  // yields NOTHING. That is what the threshold already does everywhere else on this label, and the variant that
+  // would have avoided it doubled the idiomatic noise (measured: `selfDeclaredEn`).
   //
-  // N'ENTRENT PAS :
-  //   · `disabled`, `deaf`, `blind`, `hard of hearing`, `a wheelchair user` — TERRITOIRE HORS
-  //     PÉRIMÈTRE par décision (en-tête de ce module : classer le handicap ici le cadre comme une
-  //     pathologie, ce que les personnes concernées contestent). L'anglais ne rouvre pas une
-  //     décision française.
-  //   · `terminal`, `obese`, `overweight` — coût d'erreur maximal ou jugement de corps :
-  //     ÉTAGEMENT PAR COÛT D'ERREUR (ADR-0003), lot séparé, dette nommée plutôt qu'omission.
-  //   · `a spoonie` — sociolecte communautaire, troisième porte d'ADR-0003.
-  //   · AUCUN NOM DE SYMPTÔME. La règle de ce module (« le symptôme n'est pas la condition ») tient
-  //     sans amendement, et le cadre ne la desserre pas — « im dizzy », « im nauseous » resteraient
-  //     le vocabulaire de la voix qui n'a rien.
+  // DO NOT ENTER:
+  //   · `disabled`, `deaf`, `blind`, `hard of hearing`, `a wheelchair user` — TERRITORY OUT OF
+  //     SCOPE by decision (this module's header: classing disability here frames it as a
+  //     pathology, which the people concerned contest). English does not reopen a
+  //     French decision.
+  //   · `terminal`, `obese`, `overweight` — maximal error cost or body judgment:
+  //     TIERING BY ERROR COST (ADR-0003), separate batch, named debt rather than omission.
+  //   · `a spoonie` — community sociolect, ADR-0003's third gate.
+  //   · NO SYMPTOM NAME. This module's rule (« the symptom is not the condition ») holds
+  //     without amendment, and the frame does not loosen it — « im dizzy », « im nauseous » would stay
+  //     the vocabulary of the voice that has nothing.
   selfDeclaredEn: [
     'diabetic',
     'asthmatic',
@@ -230,7 +230,7 @@ export const HEALTH_PHYSICAL_LEXICON: TopicalLexicon = {
     'lactose intolerant',
     'gluten intolerant',
   ],
-  // Soin, symptômes, maladies courantes — non ambigus → tag large.
+  // Care, symptoms, common illnesses — unambiguous → broad tag.
   indirectCore: [
     'symptomes',
     'ordonnance',
@@ -272,13 +272,13 @@ export const HEALTH_PHYSICAL_LEXICON: TopicalLexicon = {
     'otite',
     'bronchite',
     'mutuelle',
-    // ── Variantes EN : parcours de soin, examens, traitements ─────────────────────────────────
-    // Ce tier ne porte presque pas d'exclusions d'hyperbole (elle s'attaque aux états, pas aux
-    // institutions). Il en porte d'un autre genre : les noms de SYMPTÔME, écartés en tête de
-    // fichier — c'est ici qu'ils auraient atterri.
+    // ── EN variants: care pathway, examinations, treatments ───────────────────────────────────
+    // This tier carries almost no hyperbole exclusions (hyperbole attacks states, not
+    // institutions). It carries exclusions of another kind: SYMPTOM names, discarded at the head of the
+    // file — this is where they would have landed.
     'prescription',
     'repeat prescription',
-    'my gp', // « a gp » ne matche pas : « when should you see a gp » est une question générale
+    'my gp', // « a gp » does not match: « when should you see a gp » is a general question
     'family doctor',
     'a&e',
     'emergency room',
@@ -312,14 +312,14 @@ export const HEALTH_PHYSICAL_LEXICON: TopicalLexicon = {
     'inhaler',
     'epipen',
     'insulin',
-    // Médicaments et classes nommés — même justification qu'en FR (produits du domaine, pas des
-    // personnes). `methotrexate` et `biologics` viennent de la MESURE : la voix qui vit sa
-    // condition les écrit quatre fois, et la proposition d'origine ne portait aucun traitement de
-    // fond — elle avait construit le soin autour des consultations, pas des traitements.
+    // Named medications and classes — same justification as in FR (domain products, not
+    // people). `methotrexate` and `biologics` come from MEASUREMENT: the voice that lives her
+    // condition writes them four times, and the original proposal carried no maintenance
+    // treatment — it had built care around consultations, not treatments.
     'methotrexate',
     'biologics',
     'folic acid',
-    // Spécialités.
+    // Specialties.
     'rheumatology',
     'rheumatologist',
     'dermatologist',
@@ -328,45 +328,45 @@ export const HEALTH_PHYSICAL_LEXICON: TopicalLexicon = {
     'cardiologist',
     'oncologist',
     'endocrinologist',
-    // RÉÉDUCATION PHYSIQUE — ces syntagmes appartiennent au corps, et leur absence d'ici est ce qui
-    // les faisait lire comme de la santé MENTALE (le terme `therapy` du lexique voisin matche à
-    // l'intérieur). Mesuré sur la voix aidante ; voir la note de machinerie qui les fait gagner.
+    // PHYSICAL REHABILITATION — these phrases belong to the body, and their absence from here is what
+    // made them read as MENTAL health (the neighboring lexicon's `therapy` term matches
+    // inside). Measured on the caregiver voice; see the machinery note that makes them win.
     'physiotherapy',
     'physio',
     'occupational therapy',
     'speech therapy',
-    'rehabilitation', // « rehab » nu écarté : addiction, et titre de chanson
-    // ── RETIRÉS À LA MESURE — le SOIN NEUTRE n'appartient à aucun des deux labels de santé ──────
-    // `side effects`, `sick note`, `fit note`, `medical certificate` ont été proposés ici, puis
-    // écartés : ils ont tagué la voix EN en détresse MENTALE, sur « sertraline side effects » et
-    // « sick note for mental health from work ». Les deux items disent leur domaine en toutes
-    // lettres, et ce n'est pas celui-ci.
+    'rehabilitation', // bare « rehab » discarded: addiction, and song title
+    // ── REMOVED AT MEASUREMENT — NEUTRAL CARE belongs to neither of the two health labels ───────
+    // `side effects`, `sick note`, `fit note`, `medical certificate` were proposed here, then
+    // discarded: they tagged the EN voice in MENTAL distress, on « sertraline side effects » and
+    // « sick note for mental health from work ». Both items state their domain in
+    // full, and it is not this one.
     //
-    // Le diagnostic est le SYMÉTRIQUE de celui de `therapy` (cf. les locutions couvrantes), et il
-    // vaut au-delà de ces quatre termes : les deux labels de santé partagent un MILIEU — l'arrêt
-    // de travail, l'effet secondaire, l'ordonnance, le rendez-vous — qui n'appartient en propre à
-    // aucun des deux. Ce vocabulaire ne porte aucune information de domaine : c'est le texte
-    // autour qui la porte. L'admettre revient à faire réclamer par un label tout texte de soin.
-    // Les DROITS liés au handicap (« blue badge », « attendance allowance ») restent écartés eux
-    // aussi, pour une autre raison — territoire hors périmètre, cf. l'en-tête.
-    // Infections nommées. « flu » et « cold » nus sont écartés : épisodes banals universels, taguer
-    // ici reviendrait à taguer tout le monde en hiver.
+    // The diagnosis is the MIRROR of `therapy`'s (cf. the covering phrases), and it
+    // holds beyond these four terms: the two health labels share a MILIEU — the sick
+    // leave, the side effect, the prescription, the appointment — which belongs properly to
+    // neither. This vocabulary carries no domain information: it is the surrounding
+    // text that carries it. Admitting it amounts to making one label claim all care text.
+    // The disability-related ENTITLEMENTS (« blue badge », « attendance allowance ») stay discarded
+    // too, for another reason — out-of-scope territory, cf. the header.
+    // Named infections. Bare « flu » and « cold » are discarded: universal banal episodes, tagging
+    // here would amount to tagging everyone in winter.
     'bronchitis',
     'pneumonia',
     'tonsillitis',
     'ear infection',
     'sinus infection',
     'food poisoning',
-    // AVC, formes générales (le possessif est en `explicit` — voir la note là-haut).
+    // Stroke, general forms (the possessive is in `explicit` — see the note above).
     'had a stroke',
     'stroke recovery',
     'stroke rehab',
     'stroke ward',
     'after stroke',
-    'second stroke', // « stroke » nu écarté : nage, golf, pinceau, « a stroke of luck »
-    'flare up', // « flare » nu écarté : solaire, pantalon, « flare up an argument »
+    'second stroke', // bare « stroke » discarded: swimming, golf, brush, « a stroke of luck »
+    'flare up', // bare « flare » discarded: solar, trousers, « flare up an argument »
   ],
-  // Familier — polysémique (« malade » = compliment argot ; « la crève » = vraie maladie).
+  // Colloquial — polysemous (« malade » = slang compliment; « la crève » = real illness).
   indirectColloquial: [
     'malade',
     'patraque',
@@ -377,24 +377,24 @@ export const HEALTH_PHYSICAL_LEXICON: TopicalLexicon = {
     'mal de crane',
     'mal au bide',
     'en vrac',
-    // ── Variantes EN : registre bas LITTÉRAL et polysémique ────────────────────────────────────
+    // ── EN variants: LITERAL low register and polysemous ───────────────────────────────────────
     'under the weather',
     'off sick',
     'bedridden',
     'laid up',
-    'run down', // polysémique (« run down a list ») — exactement le profil de ce tier
+    'run down', // polysemous (« run down a list ») — exactly this tier's profile
     'bad back',
     'dodgy knee',
     'aching all over',
-    // `allergic to` et `allergy` : ICI et pas en core. L'emploi figuré (« allergic to mornings »)
-    // est attesté en dictionnaire, mais l'emploi littéral reste massif — c'est donc un profil
-    // POLYSÉMIQUE, que le seuil départage vraiment, et non une hyperbole à exclure à la porte.
-    // « allergic » nu est écarté : sans complément, la lecture figurée domine.
+    // `allergic to` and `allergy`: HERE and not in core. The figurative use (« allergic to mornings »)
+    // is dictionary-attested, but the literal use stays massive — so it is a
+    // POLYSEMOUS profile, which the threshold genuinely arbitrates, not a hyperbole to exclude at the gate.
+    // Bare « allergic » is discarded: without a complement, the figurative reading dominates.
     'allergic to',
     'allergy',
-    // « poorly » (BrE, « he's poorly ») est ÉCARTÉ malgré son usage réel : l'adverbe
-    // (« poorly written », « poorly designed ») est bien plus fréquent que l'adjectif.
-    // « sick » et « ill » nus le sont aussi — « that's sick » (excellent), « sick of it »,
+    // « poorly » (BrE, « he's poorly ») is DISCARDED despite its real usage: the adverb
+    // (« poorly written », « poorly designed ») is far more frequent than the adjective.
+    // Bare « sick » and « ill » are too — « that's sick » (excellent), « sick of it »,
     // « ill-advised », « that beat is ill ».
   ],
   includeColloquial: true,

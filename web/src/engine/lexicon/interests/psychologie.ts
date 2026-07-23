@@ -1,45 +1,45 @@
-// Lexique d'intérêt `psychologie` (D2, PANO-89 lot 4) — psychologie ACADÉMIQUE.
+// Interest lexicon `psychologie` (D2, PANO-89 batch 4) — ACADEMIC psychology.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire ACADÉMIQUE de la psychologie FR : penseurs, expériences célèbres, concepts. Usage
-// SOBRE (édition/edtech).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// ACADEMIC vocabulary of FR psychology: thinkers, famous experiments, concepts. SOBER
+// usage (publishing/edtech).
 //
-// ── FRONTIÈRE — RENFORCÉE (le point le plus sensible du lot 4) ──────────────────────────────────
-// STRICTEMENT le champ académique. La séparation d'avec le CLINIQUE/VÉCU (qui appartient à
-// `mental_health`, D1) est tenue par CONSTRUCTION : ce lexique ne contient QUE des noms de penseurs,
-// des expériences/effets nommés, et des concepts théoriques. Il ne contient AUCUN terme de soin, de
-// professionnel, de trouble ou de vécu.
-//   · EXCLUS SANS EXCEPTION (appartiennent à D1) : « psy », « psychologue », « psychiatre »,
+// ── BOUNDARY — REINFORCED (the most sensitive point of batch 4) ─────────────────────────────────
+// STRICTLY the academic field. The separation from the CLINICAL/LIVED (which belongs to
+// `mental_health`, D1) is held by CONSTRUCTION: this lexicon contains ONLY thinker names,
+// named experiments/effects, and theoretical concepts. It contains NO term of care, of
+// professional, of disorder or of lived experience.
+//   · EXCLUDED WITHOUT EXCEPTION (belong to D1): « psy », « psychologue », « psychiatre »,
 //     « therapie », « therapeute », « phobie »/« phobie sociale », « depression », « anxiete »,
 //     « tdah », « burn out », « toc », « bipolaire », « nevrose », « trauma », « libido », « stress ».
-//   · La machinerie protège les entités : « psychanalyse »/« psychologie » ne matchent PAS le
-//     marqueur D1 « psy » (frontière de mot). Le guard de frontière (`interests-battery.test.ts`)
-//     passe CHAQUE marqueur des 3 tiers dans D1 et exige zéro détection — la preuve mécanique de la
-//     séparation. Toute collision = STOP et remontée à yuya (aucune constatée à l'écriture).
+//   · The machinery protects the entities: « psychanalyse »/« psychologie » do NOT match the
+//     D1 marker « psy » (word boundary). The boundary guard (`interests-battery.test.ts`)
+//     passes EACH marker of the 3 tiers through D1 and requires zero detection — the mechanical proof of the
+//     separation. Any collision = STOP and escalation to yuya (none observed at writing).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — penseurs/expériences/concepts univoques : « freud », « pavlov », « milgram »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal thinkers/experiments/concepts: « freud », « pavlov », « milgram »,
 //     « psychanalyse », « biais cognitif », « dissonance cognitive », « psychologie sociale »,
 //     « behaviorisme », « effet dunning kruger ».
-//   · ANCRÉ — « jung » (« jeune » ?), « gestalt », « conditionnement » (emballage), « inconscient »
-//     (imprudent), « heuristique », « ego » : co-occurrence.
+//   · ANCHORED — « jung » (« jeune »?), « gestalt », « conditionnement » (packaging), « inconscient »
+//     (reckless), « heuristique », « ego »: co-occurrence.
 //
-// ── Variantes EN (PANO-88) — sondage FP, FRONTIÈRE TENUE À L'IDENTIQUE ─────────────────────────
-// La règle de construction ci-dessus vaut mot pour mot en EN : QUE des penseurs, des expériences/
-// effets nommés, et des concepts théoriques.
+// ── EN variants (PANO-88) — FP survey, BOUNDARY HELD IDENTICALLY ───────────────────────────────
+// The construction rule above holds word for word in EN: ONLY thinkers, named experiments/
+// effects, and theoretical concepts.
 //   · SOLO — « psychoanalysis », « social psychology », « cognitive psychology », « cognitive bias »,
 //     « cognitive dissonance », « behaviorism », « dunning kruger », « maslow », « classical
-//     conditioning », « operant conditioning », « milgram experiment » : univoques ET académiques.
-//   · ANCRÉ — « psychology » nu : ancré, PAS solo. Deux raisons — (1) symétrie stricte avec le FR, où
-//     « psychologie » nu est ABSENT des marqueurs (seules les locutions « psychologie sociale/
-//     cognitive » sont solo) ; (2) « REVERSE psychology » et « the psychology of… » sont des usages
-//     courants non-académiques. Aussi « unconscious » (= INCONSCIENT au sens ASSOMMÉ en EN — le sens
-//     médical domine, cf. « knocked unconscious »), « heuristic », « archetype ».
-//   · EXCLUS EN — SANS EXCEPTION, miroir exact de la liste FR ci-dessus (appartiennent à D1) :
+//     conditioning », « operant conditioning », « milgram experiment »: univocal AND academic.
+//   · ANCHORED — bare « psychology »: anchored, NOT solo. Two reasons — (1) strict symmetry with FR, where
+//     bare « psychologie » is ABSENT from the markers (only the phrases « psychologie sociale/
+//     cognitive » are solo); (2) « REVERSE psychology » and « the psychology of… » are common
+//     non-academic uses. Also « unconscious » (= UNCONSCIOUS in the KNOCKED-OUT sense in EN — the
+//     medical sense dominates, cf. « knocked unconscious »), « heuristic », « archetype ».
+//   · EN EXCLUDED — WITHOUT EXCEPTION, exact mirror of the FR list above (belong to D1):
 //     « therapy », « therapist », « psychologist », « psychiatrist », « depression », « anxiety »,
 //     « adhd », « ocd », « bipolar », « ptsd », « trauma », « burnout », « phobia », « neurosis »,
-//     « libido », « stress », « mental health ». Aucun n'entre ici, à aucun tier. « placebo effect »
-//     écarté aussi (frôle `health_physical`, D1).
+//     « libido », « stress », « mental health ». None enters here, at any tier. « placebo effect »
+//     discarded too (brushes `health_physical`, D1).
 
 import type { InterestLexicon } from '../types';
 
@@ -69,7 +69,7 @@ export const PSYCHOLOGIE_LEXICON: InterestLexicon = {
     'experience de milgram',
     'psychologie cognitive',
     'conditionnement pavlovien',
-    // Variantes EN (PANO-88) : SOLO — univoques ET académiques (aucun terme de soin/trouble/vécu).
+    // EN variants (PANO-88): SOLO — univocal AND academic (no term of care/disorder/lived experience).
     'psychoanalysis',
     'social psychology',
     'cognitive psychology',
@@ -83,17 +83,17 @@ export const PSYCHOLOGIE_LEXICON: InterestLexicon = {
     'milgram experiment',
   ],
   anchored: [
-    'jung', // « jeune » (homophone approché) / Carl Jung
-    'gestalt', // fairly académique mais gardé ancré
-    'conditionnement', // emballage / mise en condition
-    'inconscient', // imprudent (adjectif) / l'inconscient
-    'heuristique', // heuristique (informatique) / concept
-    'ego', // ego générique / le Moi
-    'archetype', // archétype générique
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'psychology', // « reverse psychology » / « the psychology of… » — jamais solo (symétrie FR)
-    'unconscious', // = assommé (« knocked unconscious ») — le sens médical domine (EN)
-    'heuristic', // heuristique (informatique) (EN)
+    'jung', // « jeune » (approximate homophone) / Carl Jung
+    'gestalt', // fairly academic but kept anchored
+    'conditionnement', // packaging / conditioning
+    'inconscient', // reckless (adjective) / the unconscious
+    'heuristique', // heuristic (computing) / concept
+    'ego', // generic ego / the Self
+    'archetype', // generic archetype
+    // EN variants (PANO-88): ANCHORED.
+    'psychology', // « reverse psychology » / « the psychology of… » — never solo (FR symmetry)
+    'unconscious', // = knocked out (« knocked unconscious ») — the medical sense dominates (EN)
+    'heuristic', // heuristic (computing) (EN)
   ],
   selfDeclared: ['etudiant en psychologie'],
 };

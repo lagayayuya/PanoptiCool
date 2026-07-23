@@ -1,37 +1,37 @@
-// Quel navigateur regarde la page — pour choisir QUELLES instructions montrer d'abord.
+// Which browser is looking at the page — to choose WHICH instructions to show first.
 //
-// ADR-0006 : l'accès d'un site HTTPS au serveur local dépend du MOTEUR du navigateur, et les trois
-// moteurs ne sont pas trois degrés d'un même problème — Firefox demande la permission tout seul,
-// Chromium l'exige sans jamais la proposer, WebKit ne peut pas marcher. L'interface a donc trois
-// discours possibles, et ce module dit lequel tenir.
+// ADR-0006: an HTTPS site's access to the local server depends on the browser's ENGINE, and the
+// three engines are not three degrees of the same problem — Firefox asks for the permission on its
+// own, Chromium requires it without ever offering it, WebKit cannot work. The interface thus has
+// three possible discourses, and this module says which one to hold.
 //
-// ─── CE QUE CE MODULE NE COUVRE PAS ─────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme déclare sa frontière.
-//   - L'USER-AGENT EST DÉCLARATIF. Un navigateur peut se travestir (réglages anti-empreinte,
-//     forks exotiques) : ce module choisit des INSTRUCTIONS à afficher, jamais un comportement de
-//     sécurité. La vérité sur la permission reste `local-network.ts`, lue au moment de l'échec ;
-//   - `unknown` N'EST PAS UN VERDICT. Un moteur non reconnu n'est ni compatible ni bloqué — c'est
-//     le cas où l'interface ne nomme aucune cause (ADR-0006, décision 4) ;
-//   - IL NE DÉTECTE PAS LES VERSIONS. La permission « réseau local » de Chromium date de
-//     Chrome 142 : un Chromium plus ancien joint localhost sans rien demander, et tombe ici dans
-//     le même discours que les récents — l'instruction du cadenas y est simplement sans objet.
+// ─── WHAT THIS MODULE DOES NOT COVER ────────────────────────────────────────────────────────────
+// CLAUDE.md obligation: a mechanism declares its boundary.
+//   - THE USER-AGENT IS DECLARATIVE. A browser can disguise itself (anti-fingerprinting settings,
+//     exotic forks): this module chooses INSTRUCTIONS to display, never a security behavior. The
+//     truth about the permission stays `local-network.ts`, read at the moment of failure;
+//   - `unknown` IS NOT A VERDICT. An unrecognized engine is neither compatible nor blocked — it is
+//     the case where the interface names no cause (ADR-0006, decision 4);
+//   - IT DOES NOT DETECT VERSIONS. Chromium's "local network" permission dates from
+//     Chrome 142: an older Chromium reaches localhost without asking anything, and falls here into
+//     the same discourse as the recent ones — the padlock instruction is simply moot there.
 
-/** Le MOTEUR, seule dimension qui décide du discours (ADR-0006). */
+/** The ENGINE, the only dimension that decides the discourse (ADR-0006). */
 export type BrowserEngine = 'chromium' | 'firefox' | 'webkit' | 'unknown';
 
 export interface BrowserInfo {
-  /** Nom à afficher (« Brave », « Safari »…) — `null` quand l'UA ne dit rien d'exploitable ;
-   * l'interface retombe alors sur « ton navigateur » (catalogue). */
+  /** Display name (« Brave », « Safari »…) — `null` when the UA says nothing usable;
+   * the interface then falls back to « ton navigateur » (catalog). */
   name: string | null;
   engine: BrowserEngine;
 }
 
 /**
- * Détection best-effort depuis l'user-agent. `hasBraveApi` vient de `'brave' in navigator` :
- * Brave se déclare Chrome dans son UA, seule son API le nomme.
+ * Best-effort detection from the user-agent. `hasBraveApi` comes from `'brave' in navigator`:
+ * Brave declares itself as Chrome in its UA, only its API names it.
  *
- * L'ordre des tests suit la spécificité des marqueurs : les navigateurs Chromium embarquent tous
- * `Chrome/`, et Safari est le seul à porter `Safari/` SANS `Chrome/`.
+ * The order of the tests follows the specificity of the markers: Chromium browsers all embed
+ * `Chrome/`, and Safari is the only one to carry `Safari/` WITHOUT `Chrome/`.
  */
 export function detectBrowser(userAgent: string, hasBraveApi: boolean): BrowserInfo {
   if (hasBraveApi) return { name: 'Brave', engine: 'chromium' };

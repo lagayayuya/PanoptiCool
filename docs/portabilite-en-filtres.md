@@ -1,103 +1,103 @@
-# Portabilité EN — filtres contextuels (PANO-35, lot 1 LIVRÉ · lot 2 en dette)
+# EN portability — contextual filters (PANO-35, batch 1 DELIVERED · batch 2 in debt)
 
-> Sortie durable de la session « variantes EN ». Le **lot 1** (négation / citation / 3ᵉ personne EN)
-> est **livré et verrouillé par goldens**. Le **lot 2** (auto-déclaration EN) est une **dette
-> assumée et nommée**. Réf. dette **PANO-35** (`docs/constats-sensibles.md`).
+> Durable output of the "EN variants" session. **Batch 1** (negation / citation / 3rd person EN) is
+> **delivered and locked by goldens**. **Batch 2** (EN self-declaration) is an **assumed and named
+> debt**. Debt ref. **PANO-35** (`docs/constats-sensibles.md`).
 
 ---
 
-## 1. Ce que la mesure a établi (avant le lot 1)
+## 1. What the measurement established (before batch 1)
 
-Les 4 filtres de `detect.ts` ont été sondés sur des phrases EN, **lexiques D1 inchangés** :
+The 4 filters of `detect.ts` were probed on EN phrases, **D1 lexicons unchanged**:
 
-| filtre (doctrine) | phrase FR | phrase EN | verdict EN (avant) |
+| filter (doctrine) | FR phrase | EN phrase | EN verdict (before) |
 |---|---|---|---|
-| négation | « je fais **pas** de depression » → aucun tag | « i am **not** in depression » | **tag `explicit`** ❌ |
-| négation | — | « i **never** had depression » | **tag `explicit`** ❌ |
-| citation | « il **m'a dit** que… » → aucun tag | « she **told me** her depression is hard » | **tag `explicit`** ❌ |
-| 3ᵉ personne (B3) | « **ma soeur** a une depression » → aucun tag | « **my sister** has depression » | **tag `explicit`** ❌ |
-| auto-déclaration | « **je suis** depressif » → tag explicite ✅ | « **i am** depressive » | **aucun tag** ❌ |
+| negation | « je fais **pas** de depression » → no tag | « i am **not** in depression » | **`explicit` tag** ❌ |
+| negation | — | « i **never** had depression » | **`explicit` tag** ❌ |
+| citation | « il **m'a dit** que… » → no tag | « she **told me** her depression is hard » | **`explicit` tag** ❌ |
+| 3rd person (B3) | « **ma soeur** a une depression » → no tag | « **my sister** has depression » | **`explicit` tag** ❌ |
+| self-declaration | « **je suis** depressif » → explicit tag ✅ | « **i am** depressive » | **no tag** ❌ |
 
-**L'asymétrie était le cœur du problème.** Les trois filtres **protecteurs** échouaient **OUVERT** ;
-le seul filtre qui **légitime** un tag nommé (la copule) échouait **FERMÉ**. Le comportement EN était
-l'exact inverse de la doctrine : **nommage à tort maximisé**, **nommage à bon droit interdit**.
+**The asymmetry was the heart of the problem.** The three **protective** filters failed **OPEN**; the
+only filter that **legitimizes** a named tag (the copula) failed **CLOSED**. The EN behavior was the
+exact inverse of the doctrine: **wrongful naming maximized**, **rightful naming forbidden**.
 
-### Ce que cela violait, nommément
-- **SENS-B3 / ADR-0003** — « my sister has depression » produisait un tag **NOMMÉ** sur le
-  locuteur : le chemin signal-sans-vécu (dégradation en indirect) n'existait pas en EN.
-- **SENS-C1 / C2 / §4.4(a)** — « i am **not** in depression » est un **non-porteur réel** : le texte
-  a la forme du signal et le **nie**. C'est le **vrai faux positif** au sens de C2 — celui qui se
-  compte. Une négation n'est pas une « lecture alternative » à respecter : c'est un démenti.
+### What this violated, by name
+- **SENS-B3 / ADR-0003** — « my sister has depression » produced a **NAMED** tag on the speaker: the
+  signal-without-lived-experience path (degradation to indirect) did not exist in EN.
+- **SENS-C1 / C2 / §4.4(a)** — « i am **not** in depression » is a **real non-carrier**: the text has
+  the form of the signal and **negates** it. It is the **true false positive** in the C2 sense — the
+  one that counts. A negation is not an "alternative reading" to respect: it is a denial.
 
-### Le vecteur : l'HOMOGRAPHIE, sans aucun marqueur EN
-Le trou était **déjà ouvert** — et il ne demandait aucun ajout EN pour tirer :
-- `mental_health` : **« depression »**, **« burnout »** (graphies identiques FR/EN) ; même cas pour
-  `ptsd`, `toc`, `borderline`, `blues`, `xanax`, `prozac` ;
-- `health_physical` : **« diabetes »** matchait « diabete » **via la tolérance de pluriel `s?`** —
-  un chemin d'homographie auquel on ne pense pas ;
-- `religion` / `politics` : **aucune fuite** (« religious » ≠ « religieux ») — porte fermée par
-  accident de graphie, pas par conception.
+### The vector: HOMOGRAPHY, with no EN marker at all
+The hole was **already open** — and it required no EN addition to fire:
+- `mental_health`: **« depression »**, **« burnout »** (identical FR/EN spellings); same case for
+  `ptsd`, `toc`, `borderline`, `blues`, `xanax`, `prozac`;
+- `health_physical`: **« diabetes »** matched « diabete » **via the plural tolerance `s?`** — a
+  homography path one does not think of;
+- `religion` / `politics`: **no leak** (« religious » ≠ « religieux ») — a door closed by accident of
+  spelling, not by design.
 
 ---
 
-## 2. L'erreur d'analyse à ne pas refaire (arbitrage yuya)
+## 2. The analysis error not to repeat (yuya arbitration)
 
-La première lecture de cette session concluait à un **blocage architectural** : « D1-EN est de la
-machinerie, pas du lexique ». **C'est faux, et l'arbitrage l'a corrigé.**
+The first reading of this session concluded there was an **architectural blocker**: "D1-EN is
+machinery, not lexicon". **That is false, and the arbitration corrected it.**
 
-`filters-fr.ts` porte en tête sa propre nature : *« **données transverses** de la machinerie, PAS du
-lexique de label »*. Les listes sont du **vocabulaire** ; seule la logique de matching est de la
-machinerie. **Il manquait donc un lot de LEXIQUE** — celui des filtres transverses — et non un
-chantier d'architecture. La conséquence est directe : c'était livrable **immédiatement**, et
-**prioritaire**, puisque ce sont ces listes-là qui portaient tout le risque.
+`filters-fr.ts` carries its own nature at its head: *« **données transverses** de la machinerie, PAS
+du lexique de label »*. The lists are **vocabulary**; only the matching logic is machinery. **A
+LEXICON batch was therefore missing** — that of the transverse filters — and not an architecture
+project. The consequence is direct: it was deliverable **immediately**, and **a priority**, since it
+is those lists that carried all the risk.
 
-**Le critère qui structure le découpage est le SENS DE L'ÉCHEC**, et il tranche la priorité seul :
+**The criterion that structures the split is the DIRECTION OF FAILURE**, and it decides the priority
+on its own:
 
-| liste | direction de l'échec | effet si appliquée à tort | verdict |
+| list | direction of failure | effect if wrongly applied | verdict |
 |---|---|---|---|
-| négation, citation | supprime un hit | perte de **rappel** | **CLOSED → lot 1** |
-| 3ᵉ personne | dégrade explicite → indirect | **moins** de nommage | **CLOSED → lot 1** |
-| verbes d'omission | **annule** une négation | ré-affirme un hit | OPEN, mais surface inerte → lot 1, liste courte |
-| **auto-déclaration** | **crée** un tag nommé | **nomme à tort** | **OPEN → lot 2, mesure requise** |
+| negation, citation | suppresses a hit | loss of **recall** | **CLOSED → batch 1** |
+| 3rd person | degrades explicit → indirect | **less** naming | **CLOSED → batch 1** |
+| omission verbs | **cancels** a negation | re-asserts a hit | OPEN, but inert surface → batch 1, short list |
+| **self-declaration** | **creates** a named tag | **names wrongly** | **OPEN → batch 2, measurement required** |
 
 ---
 
-## 3. Ce que le lot 1 livre
+## 3. What batch 1 delivers
 
-- `engine/detect/filters-en.ts` — pendant exact de `filters-fr.ts` : `NEGATIONS_EN` (contractions
-  incluses, **deux graphies** : « don't » et « dont »), `OMISSION_VERBS_EN`, `CITATION_MARKERS_EN`,
-  `THIRD_PERSON_EN`. Chaque liste porte sa justification de généricité.
-- `engine/detect/filters.ts` — composition FR + EN. `detect.ts` consomme ce module (changement d'UNE
-  ligne d'import) et ne sait pas combien de langues existent : une langue de plus = un module de
-  données + une ligne.
-- **Goldens miroir** (`detect.test.ts`) : chaque golden FR a son pendant EN, sur les **mêmes lexiques
-  factices**, plus un **test de régression** nommé qui verrouille « my sister has X » en non-nommé.
+- `engine/detect/filters-en.ts` — exact counterpart of `filters-fr.ts`: `NEGATIONS_EN` (contractions
+  included, **two spellings**: « don't » and « dont »), `OMISSION_VERBS_EN`, `CITATION_MARKERS_EN`,
+  `THIRD_PERSON_EN`. Each list carries its genericity justification.
+- `engine/detect/filters.ts` — FR + EN composition. `detect.ts` consumes this module (a ONE-line
+  import change) and does not know how many languages exist: one more language = one data module +
+  one line.
+- **Mirror goldens** (`detect.test.ts`): each FR golden has its EN counterpart, on the **same dummy
+  lexicons**, plus a named **regression test** that locks « my sister has X » as non-named.
 
-**Vérifié après livraison** (mêmes sondes qu'au §1) : les 5 lignes du tableau sont refermées, et le
-contrôle de rappel tient — « i have depression » reste un tag `explicit`. La porte est fermée **sans
-casser la détection**.
+**Verified after delivery** (same probes as in §1): the 5 rows of the table are closed, and the recall
+control holds — « i have depression » stays an `explicit` tag. The door is closed **without breaking
+detection**.
 
-### Pas de détection de langue — un choix, pas un raccourci
-Les deux langues sont appliquées à **tous** les items. Parce que les filtres protecteurs échouent
-CLOSED, le sur-filtrage coûte au pire du **rappel**, jamais de la précision sur le sensible. Un
-détecteur de langue introduirait **ses propres faux positifs** (les items sont courts — une recherche
-de trois mots n'a pas de langue fiable) pour un gain nul dans la direction sûre. **Non-régression FR
-stricte** : les goldens FR sont inchangés et verts.
+### No language detection — a choice, not a shortcut
+Both languages are applied to **all** items. Because the protective filters fail CLOSED, over-filtering
+costs at worst some **recall**, never precision on the sensitive. A language detector would introduce
+**its own false positives** (items are short — a three-word search has no reliable language) for zero
+gain in the safe direction. **Strict FR non-regression**: the FR goldens are unchanged and green.
 
 ---
 
-## 4. Dettes ouvertes — état revu après la campagne EN (2026-07-21)
+## 4. Open debts — state revised after the EN campaign (2026-07-21)
 
-1. ~~**Lot 2 — auto-déclaration EN**~~ — **DÉNOUÉE, et pas par la mesure réclamée.** La prémisse
-   (« la copule ancre, il faut mesurer comme PANO-33 ») s'est révélée fausse : la copule n'ancre
-   rien en anglais, et la sûreté est passée à l'ÉTAGE — le tier `selfDeclaredEn` livré atterrit en
-   large et ne nomme jamais (`SELF_DECLARATION_HEADS_EN`). Le verrou de `detect.test.ts` n'a pas
-   été inversé : son zéro a changé de cause (la porte de langue), pas de valeur.
-2. ~~**Marqueurs EN des 6 lexiques D1**~~ — **ÉCRITS**, un lot par label, chacun avec sa propre
-   ligne d'admission (`docs/methode-portabilite-en.md`).
-3. **Écart relevé, NON corrigé** : `THIRD_PERSON` (FR) ne porte ni « ma mere » ni « mon pere ». La
-   liste EN les porte (« my mother », « my dad »…). Non touché ici — non-régression FR stricte.
-   À arbitrer séparément : c'est un trou de **sûreté FR**, pas un détail de symétrie.
-4. **`NEGATION_WINDOW` (3 tokens)** est mesurée sur le FR et **réutilisée** en EN sur l'argument que
-   la négation EN précède le marqueur comme en FR. Transport raisonné, **non mesuré** : à re-mesurer
-   si un corpus EN le contredit.
+1. ~~**Batch 2 — EN self-declaration**~~ — **UNTIED, and not by the measurement demanded.** The
+   premise ("the copula anchors, we must measure as in PANO-33") turned out false: the copula anchors
+   nothing in English, and safety moved to the TIER — the delivered `selfDeclaredEn` tier lands broad
+   and never names (`SELF_DECLARATION_HEADS_EN`). The `detect.test.ts` lock was not inverted: its zero
+   changed cause (the language door), not value.
+2. ~~**EN markers of the 6 D1 lexicons**~~ — **WRITTEN**, one batch per label, each with its own
+   admission line (`docs/methode-portabilite-en.md`).
+3. **Gap noted, NOT corrected**: `THIRD_PERSON` (FR) carries neither « ma mere » nor « mon pere ». The
+   EN list carries them (« my mother », « my dad »…). Not touched here — strict FR non-regression. To
+   be arbitrated separately: it is an **FR safety** hole, not a symmetry detail.
+4. **`NEGATION_WINDOW` (3 tokens)** is measured on FR and **reused** in EN on the argument that EN
+   negation precedes the marker as in FR. Reasoned transport, **not measured**: to be re-measured if an
+   EN corpus contradicts it.

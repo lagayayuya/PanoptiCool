@@ -1,23 +1,24 @@
-// D1 — détecteur de sujets sensibles sur les Comments + Searches (PANO-71/72, cadrage PANO-70).
+// D1 — sensitive-topics detector on Comments + Searches (PANO-71/72, framing PANO-70).
 //
-// Lot A1 : rend `Deduction[]` — les `signals[]` d'`Analysis`, directement. Ce qui change :
-//   - `sensitivity: 3` (toujours 3, §2.1) et le plafond `low|medium` fusionnent dans l'union
-//     `Deduction` : `sensitive: true` ⇒ `confidence: 'low' | 'medium'`, `high` INTERDIT à la
-//     compilation. Le plafond n'est plus tenu par un type de param (`InferredLevel`) ni par un
-//     golden : il est tenu par le type de retour de cette fonction ;
-//   - les preuves sont des références DIRECTES (`channel` + `sourceIndex` + verbatim), plus des
-//     `EvidenceRef` vers un magasin — `corpus.resolve()` rend déjà la paire, il n'y a plus d'id à
-//     fabriquer. La borne mémoire d'ADR-0003 tient par CONSTRUCTION : seules les miettes citées existent ;
-//   - un constat sensible ne porte PLUS de phrase, sauf `conflictual` : l'éventail de lectures porte
-//     le sens, et la phrase ne faisait que répéter le titre de la carte. Détail sur `CLAIM_BY_LABEL`.
+// Batch A1: returns `Deduction[]` — the `signals[]` of `Analysis`, directly. What changes:
+//   - `sensitivity: 3` (always 3, §2.1) and the `low|medium` ceiling merge into the `Deduction`
+//     union: `sensitive: true` ⇒ `confidence: 'low' | 'medium'`, `high` FORBIDDEN at compile time.
+//     The ceiling is no longer held by a param type (`InferredLevel`) nor by a golden: it is held by
+//     this function's return type;
+//   - evidence is now DIRECT references (`channel` + `sourceIndex` + verbatim), no more `EvidenceRef`
+//     into a store — `corpus.resolve()` already returns the pair, there is no more id to build. The
+//     ADR-0003 memory bound holds by CONSTRUCTION: only the cited crumbs exist;
+//   - a sensitive finding NO LONGER carries a sentence, except `conflictual`: the fan of readings
+//     carries the meaning, and the sentence only repeated the card title. Detail on `CLAIM_BY_LABEL`.
 //
-// INTOUCHÉ (le noyau mérité) : la détection vit dans `engine/detect/`, les données dans
-// `engine/lexicon/`. Les garde-fous de doctrine ne bougent pas :
-//   - 1 constat PAR LABEL détecté (jamais par commentaire, jamais global) ;
-//   - tag nommé SEULEMENT si le terme est écrit (B2 — l'étage vient de la machinerie) ;
-//   - conflictual : un seul étage, jamais d'éventail (B5, décision yuya PANO-70 §1.4) ;
-//   - explicite → medium, indirect → low ;
-//   - le signal-sans-vécu (3ᵉ personne) est tagué — c'est la démonstration (C2), pas un bug.
+// UNTOUCHED (the earned core): detection lives in `engine/detect/`, the data in `engine/lexicon/`.
+// The doctrine guardrails do not move:
+//   - 1 finding PER detected LABEL (never per comment, never global);
+//   - a named tag ONLY if the term is written (B2 — the stage comes from the machinery);
+//   - conflictual: a single stage, never a fan (B5, yuya's decision PANO-70 §1.4);
+//   - explicit → medium, indirect → low;
+//   - the signal-without-lived-experience (3rd person) is tagged — that is the demonstration (C2),
+//     not a bug.
 
 import { DEFAULT_LOCALE, type Locale } from '../../i18n/locales';
 import type { Evidence, ReadingFan, Signal } from '../analysis';
@@ -28,65 +29,65 @@ import type { NormalizedExport } from '../normalize';
 import { d1ConflictualNamedClaim, readingText, sensitiveTopicName } from '../wording';
 import { buildChannelCorpus } from './shared';
 
-/** Chemin de section source réel (contrat §4) — même section que les volumes, producteurs distincts. */
+/** Real source section path (contract §4) — same section as the volumes, distinct producers. */
 export const D1_SECTION_PATH = 'Comment/Comments' as const;
-/** Recherches (contrat §4) — adaptateur PANO-80 : D1 lit Comments ET Searches, mêmes filtres. */
+/** Searches (contract §4) — PANO-80 adapter: D1 reads Comments AND Searches, same filters. */
 export const D1_SEARCH_SECTION_PATH = 'Your Activity/Searches' as const;
 
 /**
- * Les constats sensibles n'ont plus de PHRASE — sauf `conflictual`, et la raison est structurelle.
+ * Sensitive findings no longer have a SENTENCE — except `conflictual`, and the reason is structural.
  *
- * La phrase disait ce que le titre de carte disait déjà : cliquer « Santé mentale » pour lire
- * « Terme de santé mentale écrit en toutes lettres » n'apprenait rien. Ce qui porte le sens est
- * l'ÉVENTAIL DE LECTURES — les chemins par lesquels ce signal a pu arriver là.
+ * The sentence said what the card title already said: clicking "Mental health" to read "Mental
+ * health term written out in full" taught nothing. What carries the meaning is the FAN OF READINGS —
+ * the paths by which this signal could have landed there.
  *
- * `conflictual` n'a PAS d'éventail, par doctrine (B5 : l'insulte émise EST le signal explicite, il
- * n'y a pas de lecture plurielle à proposer). Sans phrase, sa carte n'aurait plus AUCUN texte. Et sa
- * phrase ne redit pas son titre : elle porte le critère B5 lui-même — propos ÉMIS, VISANT un autre
- * utilisateur — que « Conflictuel » ne dit pas. C'est le seul label où la phrase informe encore.
+ * `conflictual` has NO fan, by doctrine (B5: the emitted insult IS the explicit signal, there is no
+ * plural reading to offer). Without a sentence, its card would have NO text at all. And its sentence
+ * does not restate its title: it carries the B5 criterion itself — a remark EMITTED, DIRECTED AT
+ * another user — which "Conflict" does not say. It is the only label where the sentence still
+ * informs.
  *
- * La règle est donc « une phrase quand il n'y a pas d'éventail », et non « une phrase quand ce n'est
- * pas sensible » : les intérêts (D2) gardent la leur pour la même raison.
+ * The rule is therefore "a sentence when there is no fan", not "a sentence when it is not sensitive":
+ * the interests (D2) keep theirs for the same reason.
  */
 const CLAIM_BY_LABEL: Partial<Record<SensitiveLabel, (locale: Locale) => string>> = {
   conflictual: d1ConflictualNamedClaim,
 };
 
-/** Explicite → `medium`, indirect → `low`. Jamais `high` : le type de `Deduction` l'interdit. */
+/** Explicit → `medium`, indirect → `low`. Never `high`: the `Deduction` type forbids it. */
 function d1Level(stage: LabelDetection['stage']): 'low' | 'medium' {
   return stage === 'explicit' ? 'medium' : 'low';
 }
 
 /**
- * L'éventail de lectures — sur les DEUX étages, `conflictual` excepté (il n'a pas de lectures : un
- * propos agressif émis n'a pas d'éventail, cf. B5). Les lectures sont des TEXTES (A2), résolus
- * depuis les clés que le lexique co-porte (`readingTemplateIds`).
+ * The fan of readings — on BOTH stages, `conflictual` excepted (it has no readings: an emitted
+ * aggressive remark has no fan, cf. B5). The readings are TEXTS (A2), resolved from the keys the
+ * lexicon co-carries (`readingTemplateIds`).
  *
- * ── Pourquoi le nommé a maintenant un éventail ──────────────────────────────────────────────────
- * Il n'en avait aucun, sur une hypothèse implicite qui ne tient pas : que l'étage nommé RÉSOUDRAIT
- * l'ambiguïté. Il n'en résout qu'une, la LEXICALE — quel sujet est en jeu. Il ne dit rien du POURQUOI.
- * « témoignages burn out » écrit le terme en toutes lettres et reste une recherche de témoignages :
- * vécu, proche, curiosité restent tous les trois ouverts. Chercher n'est pas déclarer, et écrire le
- * mot ne réduit pas les raisons de l'avoir écrit. Une carte nommée sans éventail présentait donc
- * comme tranché ce qui ne l'était pas — et n'apprenait rien, l'éventail étant la pédagogie.
+ * ── Why the named stage now has a fan ───────────────────────────────────────────────────────────
+ * It had none, on an implicit assumption that does not hold: that the named stage would RESOLVE the
+ * ambiguity. It resolves only one, the LEXICAL one — which topic is at play. It says nothing of the
+ * WHY. "burn out testimonies" writes the term out in full and remains a search for testimonies:
+ * lived, relative, curiosity all three stay open. Searching is not declaring, and writing the word
+ * does not narrow the reasons for having written it. A named card without a fan therefore presented
+ * as settled what was not — and taught nothing, the fan being the pedagogy.
  *
- * ── `ranked`, jamais `equal` ────────────────────────────────────────────────────────────────────
- * `equal` dirait que « je fais une dépression » et « témoignages burn out » se lisent pareil : faux.
- * Écrire le terme à son propre sujet DÉPLACE la vraisemblance vers le vécu sans fermer le reste,
- * et c'est exactement ce que `ranked` exprime — il ORDONNE sans CHIFFRER (ADR-0003 : aucune
- * pondération par lecture, la confiance vit sur le constat).
+ * ── `ranked`, never `equal` ─────────────────────────────────────────────────────────────────────
+ * `equal` would say that "I have depression" and "burn out testimonies" read the same: false.
+ * Writing the term about oneself SHIFTS the likelihood toward the lived without closing the rest,
+ * and that is exactly what `ranked` expresses — it ORDERS without QUANTIFYING (ADR-0003: no
+ * per-reading weighting, confidence lives on the finding).
  *
- * ── L'ORDRE, désormais RATIFIÉ ──────────────────────────────────────────────────────────────────
- * L'ordre rendu est celui de `readingTemplateIds`. Il n'avait jamais été CHOISI comme un classement ;
- * il l'est depuis, sous la règle « trois mécanismes, pas trois degrés » — le mécanisme « c'est moi »
- * domine quand le terme précis est écrit. Le même ordre sert aux deux étages : `equal` ne classant
- * pas par définition, il n'y a qu'un ordre par label, et la séquence identique rend les deux cartes
- * comparables.
+ * ── THE ORDER, now RATIFIED ─────────────────────────────────────────────────────────────────────
+ * The rendered order is that of `readingTemplateIds`. It had never been CHOSEN as a ranking; it is
+ * now, under the rule "three mechanisms, not three degrees" — the "it's me" mechanism dominates when
+ * the precise term is written. The same order serves both stages: `equal` not ranking by definition,
+ * there is only one order per label, and the identical sequence makes the two cards comparable.
  *
- * Un classement par CANAL a été proposé puis REJETÉ : une recherche TikTok peut être une frappe
- * comme un tap sur un terme suggéré, et un commentaire porte des questions. Le canal corrèle
- * faiblement avec l'intention dans les deux sens. Ce qui faisait lire « témoignages burn out » comme
- * une enquête était LEXICAL, pas structurel — et c'est le registre informationnel qui le traite.
+ * A ranking by CHANNEL was proposed then REJECTED: a TikTok search can be a keystroke as much as a
+ * tap on a suggested term, and a comment carries questions. The channel correlates weakly with
+ * intent in both directions. What made "burn out testimonies" read like an inquiry was LEXICAL, not
+ * structural — and it is the informational register that handles it.
  */
 function readingFan(
   lexicon: LabelLexicon,
@@ -98,20 +99,20 @@ function readingFan(
   }
   return {
     mode: stage === 'explicit' ? 'ranked' : 'equal',
-    // `.map((k) => …)` et NON `.map(readingText)` : `map` passe (valeur, index, tableau), donc la
-    // forme courte enverrait l'INDEX comme second argument. Le compilateur l'attrape depuis que le
-    // premier paramètre est une `Locale` — il ne l'aurait pas fait quand les deux étaient `string`.
+    // `.map((k) => …)` and NOT `.map(readingText)`: `map` passes (value, index, array), so the short
+    // form would send the INDEX as the second argument. The compiler catches it now that the first
+    // parameter is a `Locale` — it would not have when both were `string`.
     readings: lexicon.readingTemplateIds.map((key) => readingText(locale, key)),
   };
 }
 
 /**
- * D1 — détecte les sujets sensibles dans les textes tapés (commentaires + recherches).
+ * D1 — detects sensitive topics in typed texts (comments + searches).
  *
- * `[]` si les deux sources sont vides. Sinon, PAR LABEL détecté, un constat `sensitive: true` portant
- * ses preuves. Un même commentaire prouvant deux labels est cité par les DEUX constats : le verbatim
- * y est dupliqué (doublon de chaînes courtes ACCEPTÉ, arbitrage yuya) — la réutilisation reste
- * visible, recalculée au rendu sur la paire `channel:sourceIndex` (C5), plus stockée.
+ * `[]` if both sources are empty. Otherwise, PER detected LABEL, a `sensitive: true` finding carrying
+ * its evidence. A single comment proving two labels is cited by BOTH findings: the verbatim is
+ * duplicated there (short-string duplicate ACCEPTED, yuya's arbitration) — reuse stays visible,
+ * recomputed at render on the `channel:sourceIndex` pair (C5), no longer stored.
  */
 export function d1SensitiveTopics(
   input: NormalizedExport,
@@ -133,14 +134,14 @@ export function d1SensitiveTopics(
   for (const detection of detections) {
     const lexicon = WIRED_LEXICONS.find((l) => l.label === detection.label);
     if (lexicon === undefined) {
-      continue; // impossible par construction (detectLabels ne détecte que les câblés)
+      continue; // impossible by construction (detectLabels only detects the wired ones)
     }
     const claim = CLAIM_BY_LABEL[detection.label];
     const fan = readingFan(lexicon, detection.stage, locale);
 
     const evidence: Evidence[] = detection.items.map((item): Evidence => {
-      // `resolve` rend déjà { channel, sourceIndex, text, date } : la preuve EST cette paire + la
-      // citation. Plus d'`EvidenceId` à fabriquer ici, ni à re-parser chez le consommateur (§5.4).
+      // `resolve` already returns { channel, sourceIndex, text, date }: the evidence IS this pair +
+      // the citation. No more `EvidenceId` to build here, nor to re-parse at the consumer (§5.4).
       const ch = corpus.resolve(item.itemIndex);
       return {
         ...ch,

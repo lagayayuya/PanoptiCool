@@ -1,31 +1,31 @@
-// SITEMAP — la liste des URLs qu'on assume voir indexées.
+// SITEMAP — the list of URLs we own seeing indexed.
 //
-// ÉCRIT À LA MAIN PLUTÔT QUE `@astrojs/sitemap` (décision yuya, 2026-07-18). L'intégration
-// officielle déclare ce qu'elle TROUVE dans le build : elle n'a aucune notion de langue construite
-// mais non assumée. Le jour où `src/pages/en/` existera pendant que l'anglais n'est pas encore
-// prêt, elle le publierait — c'est-à-dire exactement l'accident que `PUBLISHED_LOCALES` existe pour
-// empêcher. Trente lignes lues ici valent mieux qu'une dépendance qui décide à notre place.
+// WRITTEN BY HAND RATHER THAN `@astrojs/sitemap` (yuya's decision, 2026-07-18). The official
+// integration declares what it FINDS in the build: it has no notion of a language built
+// but not owned. The day `src/pages/en/` exists while English is not yet
+// ready, it would publish it — that is, exactly the accident `PUBLISHED_LOCALES` exists to
+// prevent. Thirty lines read here are worth more than a dependency that decides in our place.
 //
-// Les alternates `xhtml:link` répètent, pour chaque URL, l'ensemble des langues publiées : c'est la
-// forme que Google attend, et elle doit dire la MÊME chose que les `<link rel="alternate">` du
-// <head> — d'où la source unique.
+// The `xhtml:link` alternates repeat, for each URL, the whole set of published languages: it is the
+// form Google expects, and it must say the SAME thing as the `<link rel="alternate">` of the
+// <head> — hence the single source.
 //
-// ─── CE QUE CE MÉCANISME NE COUVRE PAS ──────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md.
-//   - IL NE DÉCOUVRE RIEN. Il rend le produit de `PAGE_PATHS` par `PUBLISHED_LOCALES`. Une page
-//     ajoutée dans `src/pages/` sans être inscrite dans `PAGE_PATHS` n'apparaîtra pas ici — le
-//     filet de cohérence (`i18n/locales.test.ts`) est ce qui rattrape cet oubli, pas ce fichier ;
-//   - PAS DE `lastmod`, PAS DE `priority`. Une date de dernière modification qu'on ne sait pas
-//     tenir à jour est une information fausse ; `priority` est ignoré par Google depuis des années ;
-//   - IL NE PROUVE PAS QUE L'URL RÉPOND. Il déclare des URLs ; que le build les produise
-//     réellement relève de la vérification du `dist/`.
+// ─── WHAT THIS MECHANISM DOES NOT COVER ─────────────────────────────────────────────────────────
+// CLAUDE.md obligation.
+//   - IT DISCOVERS NOTHING. It renders the product of `PAGE_PATHS` by `PUBLISHED_LOCALES`. A page
+//     added in `src/pages/` without being registered in `PAGE_PATHS` will not appear here — the
+//     consistency net (`i18n/locales.test.ts`) is what catches this oversight, not this file;
+//   - NO `lastmod`, NO `priority`. A last-modification date we cannot
+//     keep up to date is false information; `priority` has been ignored by Google for years;
+//   - IT DOES NOT PROVE THE URL RESPONDS. It declares URLs; that the build actually produces
+//     them is a matter of the `dist/` verification.
 
 import type { APIRoute } from 'astro';
 import { HTML_LANG, localePath, PAGE_PATHS, PUBLISHED_LOCALES } from '../i18n/locales';
 
 export const GET: APIRoute = ({ site }) => {
   if (site === undefined) {
-    // Un sitemap en URLs relatives n'est pas un sitemap dégradé : il est invalide.
+    // A sitemap in relative URLs is not a degraded sitemap: it is invalid.
     throw new Error('sitemap : `site` doit être défini dans astro.config.ts.');
   }
 

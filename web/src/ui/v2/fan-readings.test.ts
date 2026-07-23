@@ -1,25 +1,25 @@
-// L'ÉVENTAIL REND TOUTES SES LECTURES — dans les DEUX modes.
+// THE FAN RENDERS ALL ITS READINGS — in BOTH modes.
 //
-// ── Pourquoi ce fichier existe, et pourquoi personne n'avait vu le défaut ────────────────────────
-// Le mode `equal` rendait exactement DEUX lectures (`readings[0]`, un séparateur, `readings[1]`) et
-// perdait la suite en silence. Les cinq lexiques topicaux en portent trois : la troisième
-// n'apparaissait jamais sur un constat large.
+// ── Why this file exists, and why no one had seen the defect ─────────────────────────────────────
+// The `equal` mode rendered exactly TWO readings (`readings[0]`, a separator, `readings[1]`) and
+// lost the rest silently. The five topical lexicons carry three: the third
+// never appeared on a broad finding.
 //
-// Le défaut a survécu parce qu'AUCUN golden ne rend d'éventail `equal`. La persona de démo produit
-// un constat `mental_health` NOMMÉ ; `render-golden` et `ui-golden` montent donc des cartes qui
-// n'exercent que le mode `ranked` (et, avant le lot A, aucun éventail du tout).
+// The defect survived because NO golden renders an `equal` fan. The demo persona produces
+// a NAMED `mental_health` finding; `render-golden` and `ui-golden` therefore mount cards that
+// exercise only the `ranked` mode (and, before batch A, no fan at all).
 //
-// C'est une frontière que NI `render-golden` NI `ui-golden` ne déclarait, et elle est STRUCTURELLE :
-// la persona a été écrite à l'aveugle, comme une personne et non comme un jeu de déclencheurs. Ce
-// qu'elle n'exerce pas n'est donc le choix de personne — et ce que personne n'a décidé d'omettre,
-// personne ne pense à l'écrire. Les deux goldens déclarent bien ce qu'ils ne MONTENT pas (AiSection,
-// mobile, LandingPage…) ; ils ne pouvaient pas déclarer ce qu'ils montent sans l'atteindre.
+// It is a border that NEITHER `render-golden` NOR `ui-golden` declared, and it is STRUCTURAL:
+// the persona was written blind, like a person and not like a set of triggers. What
+// it does not exercise is therefore no one's choice — and what no one decided to omit,
+// no one thinks to write down. The two goldens do declare what they do NOT MOUNT (AiSection,
+// mobile, LandingPage…); they could not declare what they mount without reaching it.
 //
-// ── Ce que ce fichier NE couvre PAS ──────────────────────────────────────────────────────────────
-// Il monte une carte porteuse d'un éventail, et regarde une seule chose : aucune lecture perdue. Il
-// ne dit rien de la mise en page, ni de l'ORDRE des lectures (non ratifié — catalogue §4), ni du
-// NOMBRE qu'un label doit porter (décision de catalogue). Rendre moins de lectures qu'on n'en reçoit
-// n'est pas une décision de produit : c'est une perte de données, et c'est tout ce qui est testé ici.
+// ── What this file does NOT cover ────────────────────────────────────────────────────────────────
+// It mounts a card carrying a fan, and looks at a single thing: no reading lost. It
+// says nothing of the layout, nor of the ORDER of the readings (not ratified — catalog §4), nor of
+// the NUMBER a label must carry (catalog decision). Rendering fewer readings than one receives
+// is not a product decision: it is a data loss, and that is all that is tested here.
 
 import { h } from 'preact';
 import { render } from 'preact-render-to-string';
@@ -27,8 +27,8 @@ import { describe, expect, it, vi } from 'vitest';
 import type { Evidence, ReadingFan, Signal } from '../../engine/analysis';
 import { SignalCardNavy } from './ThemeCardNavy';
 
-// Déplis forcés ouverts — même idiome que `render-golden` : l'éventail vit derrière un
-// `useState(false)` interne, et fermé il ne serait tout simplement pas rendu.
+// Disclosures forced open — same idiom as `render-golden`: the fan lives behind an
+// internal `useState(false)`, and closed it would simply not be rendered.
 vi.mock('preact/hooks', async (importOriginal) => {
   const actual = await importOriginal<typeof import('preact/hooks')>();
   return {
@@ -38,7 +38,7 @@ vi.mock('preact/hooks', async (importOriginal) => {
   };
 });
 
-/** Trois lectures inventées — le test porte sur le COMPTE rendu, jamais sur des textes ratifiés. */
+/** Three invented readings — the test bears on the rendered COUNT, never on ratified texts. */
 const TROIS_LECTURES = ['lecture alpha', 'lecture beta', 'lecture gamma'] as const;
 
 function carte(mode: ReadingFan['mode']): string {
@@ -60,9 +60,9 @@ function carte(mode: ReadingFan['mode']): string {
   return render(h(SignalCardNavy, { signal, reuseMap: new Map() }));
 }
 
-describe('éventail de lectures — aucune lecture perdue au rendu', () => {
+describe('reading fan — no reading lost at render', () => {
   for (const mode of ['equal', 'ranked'] as const) {
-    it(`mode \`${mode}\` : les TROIS lectures sont rendues`, () => {
+    it(`mode \`${mode}\`: the THREE readings are rendered`, () => {
       const html = carte(mode);
       for (const lecture of TROIS_LECTURES) {
         expect(html).toContain(lecture);
@@ -70,9 +70,9 @@ describe('éventail de lectures — aucune lecture perdue au rendu', () => {
     });
   }
 
-  it('mode `equal` : le séparateur est INTERCALÉ, donc il y en a un de moins que de lectures', () => {
-    // La garde qui distingue « rend trois lectures » de « les rend correctement » : un séparateur
-    // écrit une fois en dur produirait un compte faux dès qu'on quitte la paire.
+  it('mode `equal`: the separator is INTERLEAVED, so there is one fewer than readings', () => {
+    // The guard that distinguishes « renders three readings » from « renders them correctly »: a
+    // separator hardcoded once would produce a false count as soon as we leave the pair.
     const separateurs = (carte('equal').match(/≡/g) ?? []).length;
     expect(separateurs).toBe(TROIS_LECTURES.length - 1);
   });

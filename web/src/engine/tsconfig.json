@@ -1,10 +1,10 @@
 {
-  // Frontière moteur (PANO-19, ADR-0002) : TS pur, sans DOM.
-  // Étend directement le preset Astro `strict` (et NON ../../tsconfig.json) : sinon le moteur
-  // hérite du `jsxImportSource: preact` de la coquille, TS charge preact/jsx-runtime dont les
-  // types font `/// <reference lib="dom" />`, ce qui réinjecte tout le DOM et défait la frontière.
-  // Conséquence : les flags strict++ sont redéclarés ici (le moteur a son propre contrat de
-  // typecheck). Enforced par une 2ᵉ passe `tsc -p` dans le script `typecheck`.
+  // Engine boundary (PANO-19, ADR-0002): pure TS, no DOM.
+  // Extends the Astro `strict` preset directly (and NOT ../../tsconfig.json): otherwise the engine
+  // inherits the shell's `jsxImportSource: preact`, TS loads preact/jsx-runtime whose types do
+  // `/// <reference lib="dom" />`, which re-injects the whole DOM and undoes the boundary.
+  // Consequence: the strict++ flags are redeclared here (the engine has its own typecheck contract).
+  // Enforced by a 2nd `tsc -p` pass in the `typecheck` script.
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "lib": ["ES2022", "WebWorker"],
@@ -14,7 +14,7 @@
     "noEmit": true
   },
   "include": ["**/*.ts"],
-  // Les `*.test.ts` sont hors de la passe no-DOM : c'est du tooling (Vitest, env node), pas du
-  // code moteur shippé. Ils restent typés par `astro check` (racine) et exécutés par Vitest.
+  // The `*.test.ts` are outside the no-DOM pass: they are tooling (Vitest, node env), not shipped
+  // engine code. They stay typed by `astro check` (root) and executed by Vitest.
   "exclude": ["**/*.test.ts", "dist"]
 }

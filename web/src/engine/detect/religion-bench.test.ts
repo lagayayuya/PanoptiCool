@@ -1,61 +1,62 @@
-// Banc `religion` — la mesure des quatre voix scellées en `religion-registers.fixture.ts`.
+// `religion` bench — the measurement of the four voices sealed in `religion-registers.fixture.ts`.
 //
-// ── CE QUE CE FICHIER NE COUVRE PAS, et il faut le lire AVANT les chiffres ───────────────────────
-// - **Un tort subsiste et il est figé comme attendu.** Un attendu n'est pas un pardon : c'est
-//   l'enregistrement d'un état, écrit pour rougir le jour où il change.
-// - **La couverture des traditions n'est PAS tenue ici.** Ce banc a TROUVÉ le trou ; c'est
-//   `religion-symmetry.test.ts` qui le tient. Citer ce banc-ci sur la couverture serait la
-//   sur-citation exacte que CLAUDE.md décrit.
-// - **Le rappel n'est mesuré que pour l'islam et un héritage catholique.** Les frontières
-//   d'écriture sont déclarées dans l'en-tête de la fixture et ne sont pas recopiées ici.
-// - **Rien de ce banc ne mesure l'anglais.** La quatrième assertion établit pourquoi plutôt que de
-//   le supposer, et la conclusion est que `en_curious` ne prouve rien sur les faux positifs EN.
-// - **Deux sondes hors-corpus font le gros du travail.** Les quatre voix seules n'auraient montré
-//   NI le trou de couverture des traditions, NI la frontière du filtre de négation : les deux
-//   vivent dans des sondes à cadre calqué, pas dans les personas. Un banc de quatre voix ne suffit
-//   pas à ce label, et le dire est plus utile que de le prouver deux fois.
+// ── WHAT THIS FILE DOES NOT COVER, and it must be read BEFORE the numbers ─────────────────────────
+// - **One wrong remains and it is frozen as expected.** An expected is not a pardon: it is the
+//   record of a state, written to blush the day it changes.
+// - **Tradition coverage is NOT held here.** This bench FOUND the hole; it is
+//   `religion-symmetry.test.ts` that holds it. Citing this bench on coverage would be the exact
+//   over-citation CLAUDE.md describes.
+// - **Recall is measured only for Islam and a Catholic heritage.** The writing boundaries are
+//   declared in the fixture's header and are not recopied here.
+// - **Nothing of this bench measures English.** The fourth assertion establishes why rather than
+//   supposing it, and the conclusion is that `en_curious` proves nothing about EN false positives.
+// - **Two out-of-corpus probes do the bulk of the work.** The four voices alone would have shown
+//   NEITHER the tradition-coverage hole NOR the boundary of the negation filter: the two live in
+//   traced-frame probes, not in the personas. A bench of four voices is not enough for this label,
+//   and saying so is more useful than proving it twice.
 //
-// ── CE QUE CE BANC A TROUVÉ, puis CE QUE LA RÉPARATION A DÉPLACÉ ────────────────────────────────
-// Les cinq résultats d'origine sont conservés avec leurs valeurs d'AVANT : sans elles, la mise à
-// jour effacerait le constat au lieu de l'enregistrer.
+// ── WHAT THIS BENCH FOUND, then WHAT THE REPAIR MOVED ────────────────────────────────────────────
+// The five original results are kept with their BEFORE values: without them, the update would erase
+// the finding instead of recording it.
 //
-// 1. LA PAIRE S'EFFONDRAIT. `fr_practising` (pratique) et `fr_cultural_lapsed` (culture sans
-//    croyance) atteignaient le MÊME étage, `explicit`.
-//      · pratique `explicit` / culture `explicit`  →  `explicit` / `indirect`   — RÉPARÉ
-// 2. ELLES NE TENAIENT PAS PAR LES MÊMES MOYENS, et c'est ce qui a rendu la réparation possible :
-//    l'ablation montrait que la sur-classification de la voix de culture tenait à UNE phrase, pas à
-//    tout ce qu'elle écrit. Densité de preuves 6 / 4 — INCHANGÉE par la réparation, et il faut le
-//    dire dans ce sens : les étages ont divergé, les densités non.
-// 3. LA NÉGATION AVAIT UNE FRONTIÈRE tombant sur la phrase la plus ordinaire du sujet.
-//      · « catholique mais je ne crois pas » : `explicit`  →  `indirect`        — RÉPARÉ
-// 4. LA COUVERTURE FR DES TRADITIONS EST TROUÉE — non traité ici. Le témoin de symétrie par
-//    tradition (`religion-symmetry.test.ts`) est le filet qui le tient, et c'est LUI qu'il faut
-//    citer sur cette question, pas ce banc.
-// 5. L'ANGLAIS N'A AUCUNE COUVERTURE RELIGIEUSE ÉTABLIE — inchangé.
+// 1. THE PAIR COLLAPSED. `fr_practising` (practice) and `fr_cultural_lapsed` (culture without
+//    belief) reached the SAME storey, `explicit`.
+//      · practice `explicit` / culture `explicit`  →  `explicit` / `indirect`   — REPAIRED
+// 2. THEY DID NOT HOLD BY THE SAME MEANS, and it is what made the repair possible:
+//    the ablation showed that the over-classification of the culture voice hung on ONE sentence, not
+//    on everything she writes. Evidence density 6 / 4 — UNCHANGED by the repair, and it must be said
+//    that way: the storeys diverged, the densities did not.
+// 3. THE NEGATION HAD A BOUNDARY falling on the most ordinary sentence of the subject.
+//      · « catholique mais je ne crois pas »: `explicit`  →  `indirect`        — REPAIRED
+// 4. THE FR COVERAGE OF TRADITIONS IS HOLED — not handled here. The by-tradition symmetry witness
+//    (`religion-symmetry.test.ts`) is the net that holds it, and it is IT that must be cited on this
+//    question, not this bench.
+// 5. ENGLISH HAS NO ESTABLISHED RELIGIOUS COVERAGE — unchanged.
 //
-// ── LA RÉPARATION RATIFIÉE : DÉMOTION, PAS FILTRAGE ─────────────────────────────────────────────
-// Deux cas devaient cesser d'AFFIRMER sans cesser d'être VUS : l'auto-déclaration contredite et le
-// vocabulaire dense d'une critique. Les deux produisent désormais un constat LARGE.
+// ── THE RATIFIED REPAIR: DEMOTION, NOT FILTERING ─────────────────────────────────────────────────
+// Two cases had to stop AFFIRMING without ceasing to be SEEN: the contradicted self-declaration and
+// the dense vocabulary of a criticism. Both now produce a BROAD finding.
 //
-// Le raisonnement ratifié porte sur l'ÉTAGE et non sur le sujet : `religion` porte trois lectures
-// (pratique/appartenance · avis personnel · curiosité), et « avis personnel » couvre exactement
-// l'athée qui argumente. Au tier nommé l'éventail est CLASSÉ et met pratique/appartenance en
-// premier — une athée recevait donc une carte privilégiant « elle pratique » quand la lecture juste
-// existait déjà, au second rang. Au tier large l'éventail est à PLAT : la carte devient vraie sans
-// rien inventer. Une carte `religion` sur une athée militante est LÉGITIME — elle écrit sur la
-// religion en permanence, une plateforme le lirait — elle ne doit simplement pas affirmer.
+// The ratified reasoning bears on the STOREY and not on the subject: `religion` carries three
+// readings (practice/membership · personal opinion · curiosity), and « personal opinion » covers
+// exactly the atheist who argues. At the named tier the fan is CLASSIFIED and puts
+// practice/membership first — an atheist therefore received a card privileging « she practices »
+// when the correct reading already existed, in second rank. At the broad tier the fan is FLAT: the
+// card becomes true without inventing anything. A `religion` card on a militant atheist is
+// LEGITIMATE — she writes about religion constantly, a platform would read it — it simply must not
+// affirm.
 //
-// L'élargissement du filtre de négation a été REJETÉ, et la raison se garde : effacer serait faux.
-// Quelqu'un qui écrit « catholique mais je ne crois pas » A une relation à cette tradition, c'est
-// le sujet de sa phrase.
+// Widening the negation filter was REJECTED, and the reason is kept: erasing would be false.
+// Someone who writes « catholique mais je ne crois pas » HAS a relation to that tradition, it is the
+// subject of their sentence.
 //
-// ── LA FRONTIÈRE DE LA RÉPARATION, mesurée et non supposée ──────────────────────────────────────
-// La démotion s'appuie sur une négation ATTACHÉE au verbe d'adhésion (« ne crois PAS »). Les
-// tournures d'éloignement qui n'en portent pas continuent de NOMMER — mesuré, pas déduit :
-// « je suis musulmane et je ne crois plus vraiment » rend toujours un constat nommé, `plus` n'étant
-// pas un marqueur de négation. C'est exactement le « ça n'aurait pas de fin » qui a fait rejeter le
-// filtrage, et la démotion en hérite : elle traite la forme la plus fréquente, pas la classe.
-// L'assertion qui le fige est plus bas ; un vert sur ce banc ne dit RIEN des autres tournures.
+// ── THE BOUNDARY OF THE REPAIR, measured and not supposed ─────────────────────────────────────────
+// The demotion rests on a negation ATTACHED to the adhesion verb (« ne crois PAS »). The
+// distancing turns that carry none keep NAMING — measured, not deduced:
+// « je suis musulmane et je ne crois plus vraiment » still returns a named finding, `plus` not being
+// a negation marker. It is exactly the « it would have no end » that made filtering rejected, and
+// the demotion inherits it: it treats the most frequent form, not the class.
+// The assertion that freezes it is below; a green on this bench says NOTHING of the other turns.
 
 import { describe, expect, it } from 'vitest';
 import { WIRED_LEXICONS } from '../lexicon/index';
@@ -69,17 +70,17 @@ const byId = (id: string) => {
   return persona;
 };
 
-/** Nombre de preuves `religion` citées pour une persona — le grain où vit l'asymétrie. */
+/** Number of `religion` evidence pieces cited for a persona — the grain where the asymmetry lives. */
 const religionEvidence = (id: string) =>
   detectFor(byId(id)).find((d) => d.label === 'religion')?.items.length ?? 0;
 
-/** Le résumé d'une détection sur un texte isolé, ou `RIEN`. */
+/** The summary of a detection on an isolated text, or `RIEN`. */
 const runOn = (texts: readonly string[]) => {
   const out = detectLabels([...texts], WIRED_LEXICONS);
   return out.map((d) => `${d.label}[${d.stage}]`).join(', ') || 'RIEN';
 };
 
-/** La voix privée d'un seul de ses items — l'ablation qui dit ce qui PORTE réellement l'étage. */
+/** The voice stripped of a single one of its items — the ablation that tells what really CARRIES the storey. */
 const without = (id: string, drop: number) =>
   runOn(
     byId(id)
@@ -87,20 +88,20 @@ const without = (id: string, drop: number) =>
       .map((i) => i.text),
   );
 
-describe('banc religion — comptage commun', () => {
+describe('religion bench — common counting', () => {
   expectBenchCounts(RELIGION_REGISTER_PERSONAS, {
-    // DEUX torts BRUTS, et ils ne se lisent pas pareil — c'est pour ça qu'ils ne se somment pas.
-    // `fr_critic` est le désaccord scellé d'avance, désormais tranché et donc CORRIGÉ plus bas.
-    // `en_curious` est un tort à UN item, et la dernière assertion établit qu'il ne mesure pas le
-    // tri du détecteur.
+    // TWO RAW wrongs, and they do not read the same — that is why they do not sum.
+    // `fr_critic` is the disagreement sealed in advance, now settled and therefore CORRECTED below.
+    // `en_curious` is a wrong on ONE item, and the last assertion establishes that it does not
+    // measure the detector's sorting.
     torts: ['fr_critic/religion', 'en_curious/religion'],
-    // AVANT RÉPARATION : `['fr_cultural_lapsed/religion']` — la voix de culture était promue en
-    // constat NOMMÉ, le tort propre à son état. La démotion l'a ramenée au constat large, l'étage
-    // que son sceau attendait. C'est la ligne dont le retournement se lit comme une réparation.
+    // BEFORE REPAIR: `['fr_cultural_lapsed/religion']` — the culture voice was promoted to a NAMED
+    // finding, the wrong proper to its state. The demotion brought it back to the broad finding, the
+    // storey its seal expected. It is the line whose reversal reads as a repair.
     escalated: [],
-    // La correction d'annotateur, et elle ne relâche RIEN : le harnais vérifie que le sceau
-    // d'origine est intact, puis publie un second chiffre à côté du premier. Le tort de `fr_critic`
-    // reste visible au compteur brut ci-dessus ; ce qu'il cesse d'être, c'est un tort NON EXPLIQUÉ.
+    // The annotator correction, and it relaxes NOTHING: the harness verifies that the original seal
+    // is intact, then publishes a second number alongside the first. The wrong of `fr_critic` stays
+    // visible at the raw counter above; what it stops being is an UNEXPLAINED wrong.
     corrections: [
       {
         personaId: 'fr_critic',
@@ -113,181 +114,182 @@ describe('banc religion — comptage commun', () => {
     tortsAfterCorrection: ['en_curious/religion'],
     missedRecall: [],
     missedSignal: [],
-    // Le vécu atteint bien un constat nommé — c'est le PREMIER rappel `religion` jamais mesuré dans
-    // ce dépôt, et la réparation ne l'a PAS coûté : c'était la condition posée à la démotion, et
-    // elle est vérifiée par ablation plus bas plutôt que raisonnée.
+    // The lived voice does reach a named finding — it is the FIRST `religion` recall ever measured
+    // in this repo, and the repair did NOT cost it: it was the condition set on the demotion, and it
+    // is verified by ablation below rather than reasoned.
     livedStages: {
       fr_practising: 'explicit',
     },
   });
 });
 
-describe("banc religion — la PAIRE, et l'écart que le comptage générique ne voit pas", () => {
-  // Piège propre à CETTE paire, et il diffère de celui de la paire politique : les deux voix
-  // ATTENDENT un tag. Deux cellules vertes au compteur de rappel sont donc le résultat NORMAL et ne
-  // prouvent rien. Ce qui se lit est la distance entre les deux étages — et elle est nulle.
+describe('religion bench — the PAIR, and the gap the generic counting does not see', () => {
+  // Trap proper to THIS pair, and it differs from that of the political pair: both voices EXPECT a
+  // tag. Two green cells at the recall counter are therefore the NORMAL result and prove nothing.
+  // What reads is the distance between the two storeys — and it is nil.
 
-  it('LES ÉTAGES DIVERGENT — la pratique nomme, la culture ne nomme plus', () => {
-    // LE RÉSULTAT CENTRAL DU BANC, et la ligne dont le retournement EST la réparation.
+  it('THE STOREYS DIVERGE — practice names, culture no longer names', () => {
+    // THE BENCH'S CENTRAL RESULT, and the line whose reversal IS the repair.
     //
-    // AVANT : les deux voix rendaient `explicit`. Une femme qui pratique et une femme qui a quitté
-    // la croyance en gardant les repas et les enterrements recevaient le même constat NOMMÉ, de
-    // même confiance. La doctrine annonçait cette indécidabilité depuis l'écrit ; ce banc l'avait
-    // déplacée d'une prévision vers une mesure.
+    // BEFORE: both voices returned `explicit`. A woman who practices and a woman who left belief
+    // while keeping the meals and the funerals received the same NAMED finding, of the same
+    // confidence. Doctrine announced this undecidability from writing; this bench had moved it from a
+    // forecast to a measurement.
     //
-    // APRÈS : la voix de culture est en constat LARGE. Ce qu'il faut se garder de conclure — et
-    // c'est la conclusion tentante — c'est que le produit sait DÉSORMAIS distinguer culture et
-    // pratique. Il ne sait toujours pas : il sait reconnaître UNE FORME, celle qui écrit sa
-    // non-croyance avec une négation attachée au verbe. Celle qui garde les rites sans jamais rien
-    // nier de sa croyance reste indistinguable de celle qui pratique, et ce banc ne la porte pas.
+    // AFTER: the culture voice is at a BROAD finding. What must be guarded against concluding — and
+    // it is the tempting conclusion — is that the product NOW knows how to distinguish culture and
+    // practice. It still does not: it knows how to recognize ONE FORM, the one that writes its
+    // non-belief with a negation attached to the verb. She who keeps the rites without ever denying
+    // anything of her belief stays indistinguishable from she who practices, and this bench does not
+    // carry her.
     const stage = (id: string) => detectFor(byId(id)).find((d) => d.label === 'religion')?.stage;
     expect(stage('fr_practising')).toBe('explicit');
     expect(stage('fr_cultural_lapsed')).toBe('indirect');
   });
 
-  it('DENSITÉ DE PREUVES — 6 pour la pratique, 4 pour la culture', () => {
-    // Les deux étages sont identiques, les preuves ne le sont pas. C'est le grain où l'écart
-    // subsiste, et c'est très exactement l'endroit que le banc politique avait désigné : le
-    // comptage générique compte des CELLULES, l'asymétrie vit dans les PREUVES.
+  it('EVIDENCE DENSITY — 6 for practice, 4 for culture', () => {
+    // The two storeys are identical, the evidence is not. It is the grain where the gap remains, and
+    // it is very exactly the place the political bench had pointed to: the generic counting counts
+    // CELLS, the asymmetry lives in the EVIDENCE.
     //
-    // Ce chiffre seul ne conclut pas — deux voix ne sont pas une distribution, et les deux voix ne
-    // sont pas calquées item par item. C'est l'ablation suivante qui donne au 6 contre 4 son sens.
+    // This number alone does not conclude — two voices are not a distribution, and the two voices
+    // are not traced item by item. It is the following ablation that gives the 6 against 4 its
+    // meaning.
     expect(religionEvidence('fr_practising')).toBe(6);
     expect(religionEvidence('fr_cultural_lapsed')).toBe(4);
   });
 
-  it('ABLATION DE LA COPULE — seule la pratique survit au retrait de sa déclaration', () => {
-    // CE QUI DONNE SON SENS À TOUT LE RESTE. On retire à chaque voix son unique item d'identité
-    // (« je suis musulmane… », « je suis catholique de famille mais je ne crois pas… ») :
+  it('ABLATION OF THE COPULA — only practice survives the removal of its declaration', () => {
+    // WHAT GIVES ITS MEANING TO ALL THE REST. We remove from each voice its only identity item
+    // (« je suis musulmane… », « je suis catholique de famille mais je ne crois pas… »):
     //
-    //   · la pratiquante reste en constat NOMMÉ — elle est SUR-DÉTERMINÉE, d'autres items
-    //     explicites la portent (le jeûne, la prière) ;
-    //   · la voix de culture RETOMBE en constat large — l'étage juste, celui que son sceau
-    //     attendait.
+    //   · the practising woman stays at a NAMED finding — she is OVER-DETERMINED, other explicit
+    //     items carry her (the fast, the prayer);
+    //   · the culture voice FALLS BACK to a broad finding — the correct storey, the one its seal
+    //     expected.
     //
-    // Autrement dit : sa sur-classification ne vient pas de tout ce qu'elle écrit sur sa famille,
-    // ses enterrements et son catéchisme — tout cela produit correctement un constat LARGE. Elle
-    // vient d'UNE phrase, et cette phrase dit qu'elle ne croit pas. C'est un point de réparation
-    // précis, pas un défaut diffus, et c'est la différence entre un banc et une impression.
+    // In other words: her over-classification does not come from everything she writes about her
+    // family, her funerals and her catechism — all that produces correctly a BROAD finding. It comes
+    // from ONE sentence, and that sentence says she does not believe. It is a precise repair point,
+    // not a diffuse defect, and it is the difference between a bench and an impression.
     expect(without('fr_practising', 0)).toBe('religion[explicit]');
     expect(without('fr_cultural_lapsed', 0)).toBe('religion[indirect]');
 
-    // LA CONDITION POSÉE À LA DÉMOTION, vérifiée par ablation plutôt que raisonnée : une voix qui
-    // pratique RÉELLEMENT ne devait rien perdre. Elle ne perd rien, et sa marge est large — le
-    // retrait de sa déclaration d'appartenance, celui du jeûne ou celui de la prière la laissent
-    // chaque fois en constat nommé. C'est la sur-détermination mesurée un cran plus loin
-    // qu'avant : trois items porteurs indépendants, pas deux.
-    expect(without('fr_practising', 3)).toBe('religion[explicit]'); // sans le jeûne
-    expect(without('fr_practising', 4)).toBe('religion[explicit]'); // sans la prière
+    // THE CONDITION SET ON THE DEMOTION, verified by ablation rather than reasoned: a voice that
+    // practices REALLY had to lose nothing. It loses nothing, and its margin is broad — removing its
+    // membership declaration, that of the fast or that of the prayer leaves it each time at a named
+    // finding. It is the over-determination measured one notch further than before: three
+    // independent bearing items, not two.
+    expect(without('fr_practising', 3)).toBe('religion[explicit]'); // without the fast
+    expect(without('fr_practising', 4)).toBe('religion[explicit]'); // without the prayer
 
-    // Même forme chez la critique, et elle mérite d'être assertée à côté : son constat nommé
-    // repose lui aussi ENTIÈREMENT sur son mot d'identité. Retiré, il ne reste qu'un constat large.
+    // Same shape in the critic, and it deserves to be asserted alongside: her named finding too
+    // rests ENTIRELY on her identity word. Removed, only a broad finding remains.
     expect(without('fr_critic', 1)).toBe('religion[indirect]');
   });
 });
 
-describe("banc religion — LA DÉMOTION, et la frontière qu'elle ne franchit pas", () => {
-  it("l'auto-déclaration CONTREDITE ne nomme plus, et le tag survit", () => {
-    // Obligation de doctrine n°1 (CLAUDE.md) : ne pas qualifier quelqu'un sur une phrase qui dit le
-    // contraire. Les trois premières sondes disent où la négation tenait DÉJÀ — sur la copule — et
-    // la quatrième est celle qui a été réparée.
-    expect(runOn(['je ne suis pas catholique'])).toBe('RIEN'); // nié sur la copule → tenu
+describe('religion bench — THE DEMOTION, and the boundary it does not cross', () => {
+  it('the CONTRADICTED self-declaration no longer names, and the tag survives', () => {
+    // Doctrinal obligation n°1 (CLAUDE.md): not to qualify someone on a sentence that says the
+    // opposite. The first three probes say where the negation ALREADY held — on the copula — and
+    // the fourth is the one that was repaired.
+    expect(runOn(['je ne suis pas catholique'])).toBe('RIEN'); // negated on the copula → held
     expect(runOn(['je ne suis pas croyante'])).toBe('RIEN'); // idem
-    expect(runOn(['je ne crois pas en dieu'])).toBe('RIEN'); // ← par quel chemin, voir plus bas
+    expect(runOn(['je ne crois pas en dieu'])).toBe('RIEN'); // ← by which path, see below
 
-    // AVANT RÉPARATION : `religion[explicit]`. Le produit ne savait pas représenter « j'appartiens
-    // à cette tradition et je n'y crois pas » et en faisait un constat nommé, de haute confiance.
-    // Désormais : constat LARGE. Le tag reste — elle A une relation à cette tradition, c'est le
-    // sujet de sa phrase — et l'affirmation tombe. Démotion, pas filtrage.
+    // BEFORE REPAIR: `religion[explicit]`. The product did not know how to represent « I belong to
+    // this tradition and I do not believe in it » and made it a named finding, of high confidence.
+    // Now: BROAD finding. The tag stays — she HAS a relation to this tradition, it is the subject of
+    // her sentence — and the affirmation falls. Demotion, not filtering.
     expect(runOn(['je suis catholique mais je ne crois pas'])).toBe('religion[indirect]');
     expect(runOn(['je suis catholique et je ne pratique pas'])).toBe('religion[indirect]');
   });
 
-  it("PAR QUEL CHEMIN le zéro de « je ne crois pas en dieu » arrive — et ce n'est PAS la négation", () => {
-    // CLAUDE.md, *Ce qu'un filet prouve* : une assertion négative vérifie ce qu'elle ATTEINT, pas ce
-    // qu'elle affirme. Ce `RIEN` ressemble à un filtre de négation qui fonctionne. Il n'en est pas
-    // un : le lexique porte la LOCUTION ENTIÈRE « je crois en dieu », et « je ne crois pas en dieu »
-    // ne la contient tout simplement pas. Rien n'a matché, donc rien n'a été filtré.
+  it('BY WHICH PATH the zero of « je ne crois pas en dieu » arrives — and it is NOT the negation', () => {
+    // CLAUDE.md, *What a net proves*: a negative assertion verifies what it REACHES, not what it
+    // affirms. This `RIEN` looks like a negation filter that works. It is not one: the lexicon
+    // carries the ENTIRE locution « je crois en dieu », and « je ne crois pas en dieu » simply does
+    // not contain it. Nothing matched, so nothing was filtered.
     //
-    // Le contrôle qui le démontre : la même phrase amputée de la locution ne rend rien non plus,
-    // alors que la forme affirmative, elle, nomme. Deux causes possibles, une seule vérifiée.
+    // The control that demonstrates it: the same sentence stripped of the locution returns nothing
+    // either, whereas the affirmative form, it, names. Two possible causes, only one verified.
     expect(runOn(['je crois en dieu'])).toBe('religion[explicit]');
     expect(runOn(['je ne crois pas'])).toBe('RIEN');
   });
 
-  it('LA FRONTIÈRE — une non-croyance sans négation attachée NOMME toujours', () => {
-    // LE RÉSULTAT À NE PAS OUBLIER en citant la réparation, et il est mesuré, pas déduit. La
-    // démotion s'accroche à une négation ATTACHÉE au verbe d'adhésion. Les autres tournures
-    // d'éloignement — « plus vraiment », « sans vraiment y croire », « plus depuis longtemps » —
-    // n'en portent pas, et continuent de produire un constat NOMMÉ sur quelqu'un qui vient d'écrire
-    // qu'il ne croit pas.
+  it('THE BOUNDARY — a non-belief without an attached negation still NAMES', () => {
+    // THE RESULT NOT TO FORGET when citing the repair, and it is measured, not deduced. The demotion
+    // hooks onto a negation ATTACHED to the adhesion verb. The other distancing turns — « plus
+    // vraiment », « sans vraiment y croire », « plus depuis longtemps » — carry none, and keep
+    // producing a NAMED finding on someone who has just written that they do not believe.
     //
-    // C'est très exactement le « ça n'aurait pas de fin » qui a fait rejeter l'élargissement du
-    // filtre, et la démotion en hérite : elle traite la forme la plus fréquente, pas la classe.
-    // L'écrire ici plutôt que de la laisser deviner est ce qui empêche ce banc d'être sur-cité.
+    // It is very exactly the « it would have no end » that made the widening of the filter rejected,
+    // and the demotion inherits it: it treats the most frequent form, not the class.
+    // Writing it here rather than leaving it to be guessed is what prevents this bench from being
+    // over-cited.
     expect(runOn(['je suis musulmane et je ne crois plus vraiment'])).toBe('religion[explicit]');
   });
 });
 
-describe('banc religion — LA COUVERTURE DES TRADITIONS, que les quatre voix ne pouvaient pas montrer', () => {
-  it('CADRE CALQUÉ — les sept traditions déclenchent désormais (avant : cinq sur sept)', () => {
-    // Même frame syntaxique, seul le mot de tradition change : là où on mesure, on isole (technique
-    // de la fixture politique). Ces sondes existent d'abord pour NEUTRALISER le confondant assumé
-    // par la paire — `fr_practising` est musulmane, `fr_cultural_lapsed` de famille catholique, et
-    // sans ces sondes on ne saurait pas si l'écart d'étage venait de l'état ou de la tradition.
+describe('religion bench — THE COVERAGE OF TRADITIONS, which the four voices could not show', () => {
+  it('TRACED FRAME — the seven traditions now trigger (before: five of seven)', () => {
+    // Same syntactic frame, only the tradition word changes: where we measure, we isolate (technique
+    // of the political fixture). These probes exist first to NEUTRALIZE the confounder assumed by
+    // the pair — `fr_practising` is Muslim, `fr_cultural_lapsed` of a Catholic family, and without
+    // these probes we would not know whether the storey gap came from the state or from the
+    // tradition.
     //
-    // Elles le neutralisent : les traditions portées le sont TOUTES au même étage, dans le même
-    // cadre. L'effondrement de la paire est donc bien un fait sur l'axe pratique/culture, et pas un
-    // artefact de mes deux choix de tradition.
+    // They neutralize it: the carried traditions are ALL at the same storey, in the same frame. The
+    // collapse of the pair is therefore indeed a fact on the practice/culture axis, and not an
+    // artifact of my two tradition choices.
     for (const t of ['catholique', 'musulmane', 'juive', 'bouddhiste', 'protestante']) {
       expect(runOn([`je suis ${t}`])).toBe('religion[explicit]');
     }
 
-    // ET ELLES TROUVENT AUTRE CHOSE, que ce banc n'était pas conçu pour chercher. Deux traditions
-    // ne déclenchent pas du tout, dans le cadre exact où cinq autres produisent un constat nommé.
+    // AND THEY FIND SOMETHING ELSE, which this bench was not designed to seek. Two traditions do not
+    // trigger at all, in the exact frame where five others produce a named finding.
     //
-    // C'est la forme EXACTE du défaut que la paire politique avait rendue lisible, transposée d'un
-    // clivage à des traditions : une non-détection n'affiche RIEN. Quelqu'un qui écrit cette phrase
-    // ne produit aucune trace, aucun compteur rouge — une absence, et une absence ressemble à un
-    // banc propre. Aucune de mes quatre voix ne pouvait le voir, parce qu'aucune n'appartient à ces
-    // traditions ; il a fallu une sonde hors-corpus.
+    // It is the EXACT shape of the defect the political pair had made legible, transposed from a
+    // cleavage to traditions: a non-detection displays NOTHING. Someone who writes this sentence
+    // produces no trace, no red counter — an absence, and an absence looks like a clean bench. None
+    // of my four voices could see it, because none belongs to these traditions; it took an
+    // out-of-corpus probe.
     //
-    // CE QUE CETTE ASSERTION NE DIT PAS, et la retenue est nécessaire : elle ne mesure PAS
-    // l'étendue du trou. Deux termes manquants trouvés par deux sondes ne disent rien du nombre de
-    // traditions non couvertes, ni des variantes orthographiques et masculines de celles qui le
-    // sont. Une revue de couverture est un autre travail que ce banc ne fait pas.
-    // APRÈS LA REVUE DE COUVERTURE : les deux rendent désormais un constat nommé, comme les cinq
-    // autres. AVANT, elles rendaient `RIEN` — et c'était LE constat de cette assertion.
+    // WHAT THIS ASSERTION DOES NOT SAY, and the restraint is necessary: it does NOT measure the
+    // extent of the hole. Two missing terms found by two probes say nothing of the number of
+    // uncovered traditions, nor of the spelling and masculine variants of the covered ones. A
+    // coverage review is another work this bench does not do.
+    // AFTER THE COVERAGE REVIEW: the two now return a named finding, like the five others. BEFORE,
+    // they returned `RIEN` — and it was THE finding of this assertion.
     //
-    // CE QUE CE RETOURNEMENT NE PROUVE PAS, et c'est l'essentiel : il ne prouve pas que la
-    // couverture est complète. Il prouve que DEUX trous mesurés sont bouchés. La question « quelles
-    // traditions manquent encore » ne se règle pas par des sondes, qui ne trouvent que ce qu'on a
-    // pensé à leur donner — elle se règle par la règle d'admission écrite en tête de
-    // `lexicon/religion.ts` et par le témoin qui la tient, `religion-symmetry.test.ts`. C'est LUI
-    // qu'il faut citer sur la couverture, jamais ce banc.
+    // WHAT THIS REVERSAL DOES NOT PROVE, and it is the essential: it does not prove that the coverage
+    // is complete. It proves that TWO measured holes are plugged. The question « which traditions
+    // are still missing » is not settled by probes, which find only what one thought to give them —
+    // it is settled by the admission rule written at the head of `lexicon/religion.ts` and by the
+    // witness that holds it, `religion-symmetry.test.ts`. It is IT that must be cited on coverage,
+    // never this bench.
     expect(runOn(['je suis hindoue'])).toBe('religion[explicit]');
     expect(runOn(['je suis sikh'])).toBe('religion[explicit]');
   });
 });
 
-describe('banc religion — la garde EN, et par quel chemin son chiffre arrive', () => {
-  it("PAR QUEL CHEMIN — aucune couverture anglaise n'est établie par ce banc", () => {
-    // CLAUDE.md, *Ce qu'un filet prouve* : une assertion négative vérifie ce qu'elle ATTEINT, pas
-    // ce qu'elle affirme. `en_curious` porte quatre traditions et ne rend qu'UN tort — on pourrait
-    // en conclure que la garde discrimine bien. Elle ne discrimine rien : il n'y a presque rien à
-    // déclencher. Aucune auto-déclaration anglaise ne rend quoi que ce soit, et les lieux de culte
-    // anglais non plus.
-    // APRÈS LE LOT DE VOCABULAIRE ANGLAIS, et ces six lignes valaient toutes `RIEN` avant lui.
-    // Elles sont relues plutôt que remises au vert : leur zéro d'alors ÉTAIT le constat, et
-    // l'effacer retirerait la seule trace de ce que le lot a réparé.
+describe('religion bench — the EN guard, and by which path its number arrives', () => {
+  it('BY WHICH PATH — no English coverage is established by this bench', () => {
+    // CLAUDE.md, *What a net proves*: a negative assertion verifies what it REACHES, not what it
+    // affirms. `en_curious` carries four traditions and returns only ONE wrong — one could conclude
+    // that the guard discriminates well. It discriminates nothing: there is almost nothing to
+    // trigger. No English self-declaration returns anything, and English places of worship neither.
+    // AFTER THE ENGLISH VOCABULARY BATCH, and these six lines all held `RIEN` before it. They are
+    // re-read rather than reset to green: their zero of the time WAS the finding, and erasing it
+    // would remove the only trace of what the batch repaired.
     //
-    // Ce qui a changé n'est PAS l'étage : aucune ne NOMME, et aucune ne le fera tant que la porte
-    // de langue reste fermée (assertion dédiée dans `religion-symmetry.test.ts`). Ce qui a changé
-    // est qu'elles cessent d'être MUETTES — et c'est le motif du lot, parce que l'asymétrie
-    // d'avant ne se lisait pas dans ces six lignes mais entre elles : « i go to the mosque on
-    // fridays » et « i go to church on sundays » rendaient toutes deux `RIEN`, alors qu'un simple
-    // « halal » rendait un constat. Le musulman était détectable par sa nourriture et le chrétien
-    // ne l'était pas du tout.
+    // What changed is NOT the storey: none NAMES, and none will as long as the language gate stays
+    // closed (dedicated assertion in `religion-symmetry.test.ts`). What changed is that they stop
+    // being MUTE — and it is the motive of the batch, because the prior asymmetry did not read in
+    // these six lines but between them: « i go to the mosque on fridays » and « i go to church on
+    // sundays » both returned `RIEN`, whereas a simple « halal » returned a finding. The Muslim was
+    // detectable by his food and the Christian was not at all.
     for (const probe of [
       'i am a muslim and i pray every day',
       'i am a catholic and i go to church every sunday',
@@ -299,58 +301,58 @@ describe('banc religion — la garde EN, et par quel chemin son chiffre arrive',
       expect(runOn([probe])).toBe('religion[indirect]');
     }
 
-    // LES DEUX SEULS DÉCLENCHEMENTS ANGLAIS, et l'explication qu'il faut préférer. `synagogue` et
-    // `ramadan` rendent un constat large — et ce sont deux mots dont l'orthographe est IDENTIQUE en
-    // français. Aucun mot anglais spécifique ne déclenche : ni `mosque`, ni `church`, ni
-    // `cathedral`. L'hypothèse économe est donc que ces deux-là sont des entrées FRANÇAISES
-    // rencontrant un texte anglais, et non l'amorce d'une couverture EN.
+    // THE ONLY TWO ENGLISH TRIGGERS, and the explanation to prefer. `synagogue` and `ramadan` return
+    // a broad finding — and they are two words whose spelling is IDENTICAL in French. No specific
+    // English word triggers: neither `mosque`, nor `church`, nor `cathedral`. The economical
+    // hypothesis is therefore that these two are FRENCH entries meeting an English text, and not the
+    // onset of EN coverage.
     //
-    // Formulée honnêtement : ces résultats sont COMPATIBLES avec l'absence totale de couverture
-    // anglaise, et ce banc ne peut pas trancher davantage — il a été écrit à l'aveugle du lexique,
-    // et le rester valait mieux que de lever ce doute-ci. Il serait faux d'en tirer que « l'anglais
-    // porte le judaïsme mieux que l'islam » : ce serait lire une coïncidence orthographique comme
-    // un biais.
+    // Stated honestly: these results are COMPATIBLE with the total absence of English coverage, and
+    // this bench cannot settle it further — it was written blind to the lexicon, and staying so was
+    // better than lifting this doubt. It would be false to conclude that « English carries Judaism
+    // better than Islam »: that would be reading a spelling coincidence as a bias.
     expect(runOn(['synagogue'])).toBe('religion[indirect]');
     expect(runOn(['ramadan'])).toBe('religion[indirect]');
-    // AVANT LE LOT : `mosque` et `church` rendaient `RIEN`. C'était LA démonstration de cette
-    // assertion — aucun mot anglais SPÉCIFIQUE ne déclenchait, seuls déclenchaient les mots dont
-    // l'orthographe est commune aux deux langues. La phrase reste vraie de l'état d'AVANT ; elle
-    // ne l'est plus de l'état courant, et c'est ce que le lot a fait.
+    // BEFORE THE BATCH: `mosque` and `church` returned `RIEN`. It was THE demonstration of this
+    // assertion — no SPECIFIC English word triggered, only the words whose spelling is common to
+    // both languages triggered. The sentence stays true of the BEFORE state; it is no longer so of
+    // the current state, and it is what the batch did.
     expect(runOn(['mosque'])).toBe('religion[indirect]');
     expect(runOn(['church'])).toBe('religion[indirect]');
-    // `cathedral` reste dehors, et c'est une DÉCISION et non un reste : registre du MONUMENT et non
-    // du culte, écrit surtout par qui visite. Il tient donc le contrôle négatif de ce bloc — sans
-    // lui, les deux lignes du dessus passeraient au vert si le lot avait tout admis sans trier.
+    // `cathedral` stays outside, and it is a DECISION and not a leftover: register of the MONUMENT
+    // and not of worship, written mostly by whoever visits. It therefore holds the negative control
+    // of this block — without it, the two lines above would go green if the batch had admitted
+    // everything without sorting.
     expect(runOn(['cathedral'])).toBe('RIEN');
 
-    // CONCLUSION À CITER À LA PLACE DU CHIFFRE : le tort unique de `en_curious` mesure SON CONTENU
-    // — le fait qu'elle ait écrit un mot à orthographe commune — jamais le tri du détecteur. Les
-    // faux positifs religieux anglais sont **non mesurés**, et cette voix ne les mesurera pas tant
-    // que cette assertion tiendra. Le jour où du vocabulaire religieux anglais atterrira, ce test
-    // rougira : c'est son office.
+    // CONCLUSION TO CITE INSTEAD OF THE NUMBER: the unique wrong of `en_curious` measures ITS
+    // CONTENT — the fact that she wrote a common-spelling word — never the detector's sorting.
+    // English religious false positives are **not measured**, and this voice will not measure them
+    // as long as this assertion holds. The day English religious vocabulary lands, this test will go
+    // red: it is its office.
   });
 
-  it('le tort unique de `en_curious` est bien celui-là, et pas un autre', () => {
-    // Nommer l'item évite qu'un tort DIFFÉRENT se glisse un jour sous le même compteur à 1.
+  it('the unique wrong of `en_curious` is indeed that one, and not another', () => {
+    // Naming the item prevents a DIFFERENT wrong from slipping one day under the same counter at 1.
     const detections = detectFor(byId('en_curious'));
     expect(detections.map((d) => `${d.label}[${d.stage}]`)).toEqual(['religion[indirect]']);
-    // AVANT LE LOT : `[8]`, un item unique, et c'était `synagogue` — un mot à orthographe commune.
-    // APRÈS : quatre items, et le tort de cette voix cesse d'être une coïncidence pour devenir ce que
-    // le produit fait vraiment. Elle visite des monuments de plusieurs traditions sans croire à
-    // rien, et le détecteur lit la présence du SUJET.
+    // BEFORE THE BATCH: `[8]`, a single item, and it was `synagogue` — a common-spelling word.
+    // AFTER: four items, and this voice's wrong stops being a coincidence to become what the product
+    // really does. She visits monuments of several traditions without believing in anything, and the
+    // detector reads the presence of the SUBJECT.
     //
-    // CE QU'IL FAUT EN FAIRE, et ce n'est pas un motif de retrait. Par le principe de démonstration
-    // (ADR-0003), `church`, `mosque` et `the temple` se déclenchent AUSSI sur des pratiquants : ils
-    // discriminent mal, ils ne discriminent pas zéro, et leur erreur est le sujet du produit. Le
-    // lexique français a déjà ratifié exactement ce cas en admettant `eglise` avec la lecture
-    // « curiosité / intérêt », qui décrit cette voix mot pour mot. Le constat est LARGE et
-    // l'éventail est à plat : la carte ne l'affirme pas croyante.
+    // WHAT TO DO WITH IT, and it is not a motive for removal. By the demonstration principle
+    // (ADR-0003), `church`, `mosque` and `the temple` trigger ALSO on practitioners: they
+    // discriminate badly, they do not discriminate zero, and their error is the subject of the
+    // product. The French lexicon has already ratified exactly this case by admitting `eglise` with
+    // the « curiosity / interest » reading, which describes this voice word for word. The finding is
+    // BROAD and the fan is flat: the card does not affirm her a believer.
     //
-    // CE QU'IL NE FAUT PAS EN FAIRE, et c'est le vrai résultat de ce compteur : le lire comme un
-    // plancher de faux positifs anglais. `en_curious` est la SEULE voix anglaise du lot, elle a été
-    // écrite saturée du vocabulaire que ce lot admet, et son rouge était prévisible avant d'être
-    // mesuré. Une voix adverse connue rouge d'avance est un TÉMOIN, pas un plancher. La sûreté
-    // anglaise de ce label reste non mesurée, et aucun chiffre d'ici ne la mesure.
+    // WHAT NOT TO DO WITH IT, and it is the true result of this counter: reading it as a floor of
+    // English false positives. `en_curious` is the ONLY English voice of the batch, she was written
+    // saturated with the vocabulary this batch admits, and her red was predictable before being
+    // measured. A known adverse voice red in advance is a WITNESS, not a floor. The English safety of
+    // this label stays not measured, and no number from here measures it.
     expect(detections[0]?.items.map((i) => i.itemIndex)).toEqual([4, 8, 10, 12]);
   });
 });

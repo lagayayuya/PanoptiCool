@@ -1,27 +1,27 @@
-// L'INVARIANT DU `claim` — une phrase si et seulement si aucun éventail de lectures.
+// THE `claim` INVARIANT — a sentence if and only if no fan of readings.
 //
-// ── Pourquoi ce fichier existe ───────────────────────────────────────────────────────────────────
-// `Deduction.claim` est OPTIONNEL, et un champ optionnel dont personne ne connaît la règle est
-// exactement ce qu'il ne faut pas laisser derrière soi. Le type ne peut pas exprimer le « si et
-// seulement si » : l'éventail vit sur `Evidence.readings`, donc sur les PREUVES, pas sur le constat
-// — un type de constat ne peut pas s'y référer. L'exprimer voudrait dire remonter l'éventail au
-// constat, ce qui est un autre chantier que celui-ci.
+// ── Why this file exists ─────────────────────────────────────────────────────────────────────────
+// `Deduction.claim` is OPTIONAL, and an optional field whose rule no one knows is exactly what must
+// not be left behind. The type cannot express the "if and only if": the fan lives on
+// `Evidence.readings`, hence on the EVIDENCE, not on the finding — a finding type cannot refer to
+// it. Expressing it would mean lifting the fan up to the finding, which is a different job than this
+// one.
 //
-// La règle est donc tenue ICI plutôt que par le compilateur, et elle est écrite pour être lue :
+// The rule is therefore held HERE rather than by the compiler, and it is written to be read:
 //
-//   un constat porte une PHRASE ⟺ il ne porte AUCUN éventail
+//   a finding carries a SENTENCE ⟺ it carries NO fan
 //
-// Ce n'est PAS « sensible ou non ». Deux populations sans éventail gardent leur phrase :
-//   · `conflictual` — pas d'éventail par doctrine (B5 : l'insulte émise EST le signal explicite, il
-//     n'y a pas de lecture plurielle à proposer). Sa phrase porte en plus le CRITÈRE B5 — propos
-//     ÉMIS, VISANT un autre utilisateur — que le titre « Conflictuel » ne dit pas ;
-//   · les INTÉRÊTS (D2) — pas d'éventail non plus, et leur phrase porte un décompte.
+// This is NOT "sensitive or not". Two populations with no fan keep their sentence:
+//   · `conflictual` — no fan by doctrine (B5: the emitted insult IS the explicit signal, there is
+//     no plural reading to offer). Its sentence additionally carries the B5 CRITERION — a remark
+//     EMITTED, DIRECTED AT another user — which the title "Conflict" does not say;
+//   · the INTERESTS (D2) — no fan either, and their sentence carries a count.
 //
-// ── Ce que ce fichier NE couvre PAS ──────────────────────────────────────────────────────────────
-// Il vérifie la COHÉRENCE de la sortie du moteur sur un corpus synthétique, pas que le rendu honore
-// la règle : c'est `render-golden` qui montre la carte, et `fan-readings.test.ts` qui garantit
-// qu'aucune lecture n'est perdue à l'affichage. Il ne dit rien non plus des labels qu'aucun corpus
-// de test ne déclenche — il vérifie ce qu'il atteint, et pas davantage.
+// ── What this file does NOT cover ────────────────────────────────────────────────────────────────
+// It verifies the CONSISTENCY of the engine's output on a synthetic corpus, not that the render
+// honors the rule: it is `render-golden` that shows the card, and `fan-readings.test.ts` that
+// guarantees no reading is lost at display. It also says nothing about the labels no test corpus
+// triggers — it verifies what it reaches, and no more.
 
 import { describe, expect, it } from 'vitest';
 import type { Deduction } from './analysis';
@@ -30,7 +30,7 @@ import { normalizeExport } from './normalize';
 import type { CommentItem, SearchItem, TikTokExport } from './tiktok-export';
 import { validTikTokExport } from './valid-export.fixture';
 
-/** Corpus déclenchant les deux populations : des labels à éventail, `conflictual`, et un intérêt. */
+/** Corpus triggering both populations: fan labels, `conflictual`, and an interest. */
 const CORPUS = [
   'ma dépression me suit depuis des années',
   'je cherche un bon psy dans le coin',
@@ -58,7 +58,7 @@ function analyse() {
   return analyze(normalizeExport(base), Date.UTC(2026, 6, 16, 12, 0, 0));
 }
 
-/** Tous les constats de l'analyse — signaux D1 et déductions de thème D2 confondus. */
+/** All findings of the analysis — D1 signals and D2 theme deductions together. */
 function tousLesConstats(): { nom: string; deduction: Deduction }[] {
   const out = analyse();
   return [
@@ -69,24 +69,24 @@ function tousLesConstats(): { nom: string; deduction: Deduction }[] {
 
 const porteUnEventail = (d: Deduction) => d.evidence.some((e) => e.readings !== undefined);
 
-describe('`claim` ⟺ pas d’éventail', () => {
-  it('le corpus déclenche bien les DEUX populations (le test ne passe pas à vide)', () => {
+describe('`claim` ⟺ no fan', () => {
+  it('the corpus does trigger BOTH populations (the test does not pass vacuously)', () => {
     const constats = tousLesConstats();
     expect(constats.some((c) => porteUnEventail(c.deduction))).toBe(true);
     expect(constats.some((c) => !porteUnEventail(c.deduction))).toBe(true);
   });
 
-  it('un constat à ÉVENTAIL ne porte JAMAIS de phrase', () => {
+  it('a finding WITH a fan NEVER carries a sentence', () => {
     const fautifs = tousLesConstats()
       .filter((c) => porteUnEventail(c.deduction) && c.deduction.claim !== undefined)
       .map((c) => `${c.nom} : « ${c.deduction.claim} »`);
     expect(fautifs).toEqual([]);
   });
 
-  it('un constat SANS éventail porte TOUJOURS une phrase — sans quoi sa carte serait muette', () => {
-    // C'est la moitié qui protège : un constat sans éventail ET sans phrase n'aurait plus aucun
-    // texte du tout. C'est précisément le risque qu'aurait couru `conflictual` si la règle avait été
-    // « pas de phrase sur le sensible » au lieu de « pas de phrase quand il y a un éventail ».
+  it('a finding WITHOUT a fan ALWAYS carries a sentence — otherwise its card would be mute', () => {
+    // This is the half that protects: a finding with no fan AND no sentence would have no text at
+    // all. That is precisely the risk `conflictual` would have run if the rule had been "no sentence
+    // on the sensitive" instead of "no sentence when there is a fan".
     const muets = tousLesConstats()
       .filter((c) => !porteUnEventail(c.deduction) && c.deduction.claim === undefined)
       .map((c) => c.nom);

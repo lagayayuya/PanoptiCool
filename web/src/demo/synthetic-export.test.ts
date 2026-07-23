@@ -1,105 +1,105 @@
-// Verrou de cohérence de la démo (session « démo honnête ») — la BARRE D'HONNÊTETÉ : la démo doit
-// montrer ce que le moteur produirait VRAIMENT sur ces items. Ce fichier fait tourner le pipeline
-// RÉEL (`processExport`, D1 + D2 inclus) sur les deux variantes (`buildSyntheticExportZip` FR,
-// `buildSyntheticExportZipEn` EN) et verrouille : les thèmes qui sortent, ceux qui n'en sortent PAS,
-// et les chiffres agrégés (volumes, rythme). Si quelqu'un change le texte des items sans faire tourner
-// ce test, une dérive de thème (un item qui ne matche plus, ou qui matche un thème imprévu) casse ici —
-// jamais un mismatch silencieux entre la fixture et le vrai détecteur.
+// Demo consistency lock ("honest demo" session) — the HONESTY BAR: the demo must
+// show what the engine would ACTUALLY produce on these items. This file runs the REAL
+// pipeline (`processExport`, D1 + D2 included) on the two variants (`buildSyntheticExportZip` FR,
+// `buildSyntheticExportZipEn` EN) and locks: the themes that come out, those that do NOT,
+// and the aggregated numbers (volumes, rhythm). If someone changes the items' text without running
+// this test, a theme drift (an item that no longer matches, or that matches an unforeseen theme) breaks here —
+// never a silent mismatch between the fixture and the real detector.
 //
-// PORTÉ À LA REFONTE A. Le gros du fichier est du DISPATCH qui disparaît, pas des verrous qui
-// changent : `insightsByRuleId(output.insights, R1_RULE_ID)[0].value.signalCount` devient
-// `output.volumes.searches`. Le champ EST le nom (§2.3) — il n'y a plus de liste hétérogène à
-// filtrer, ni de `kind` à narrower, ni de `ruleId` à comparer.
+// PORTED AT REWORK A. The bulk of the file is DISPATCH that disappears, not locks that
+// change: `insightsByRuleId(output.insights, R1_RULE_ID)[0].value.signalCount` becomes
+// `output.volumes.searches`. The field IS the name (§2.3) — there is no longer a heterogeneous list to
+// filter, nor a `kind` to narrow, nor a `ruleId` to compare.
 //
-// Ce que la refonte fait disparaître ici, et qui vaut d'être nommé :
-//   - `d1TemplatePrefixes()` part ENTIÈREMENT. Elle re-parsait un identifiant de gabarit à la regex
-//     (`/^d1\.([a-z-]+)\./`) pour retrouver le label sensible — l'inversion stringly-typed que l'UI
-//     faisait aussi. D1 émet désormais le nom directement (`Signal.label`), keyé sur une union
-//     FERMÉE : plus de regex, plus d'inversion, exhaustivité au compilateur ;
-//   - `sensitivity === 3` (toujours 3) devient `sensitive === true` (§2.1) ;
-//   - `value.signalCount` devient `evidence.length` : le compte n'est plus recopié à côté des
-//     preuves, il EST leur nombre — une source unique, plus deux qui peuvent diverger ;
-//   - l'assertion « rythme nocturne importante » est SUPPRIMÉE : le cadrage nocturne gradué n'a plus
-//     de producteur (ADR-0004). Le graphe, les compteurs et l'estimation restent vérifiés.
+// What the rework makes disappear here, and what is worth naming:
+//   - `d1TemplatePrefixes()` goes ENTIRELY. It re-parsed a template identifier with the regex
+//     (`/^d1\.([a-z-]+)\./`) to recover the sensitive label — the stringly-typed inversion the UI
+//     also did. D1 now emits the name directly (`Signal.label`), keyed on a CLOSED
+//     union: no more regex, no more inversion, exhaustiveness at the compiler;
+//   - `sensitivity === 3` (always 3) becomes `sensitive === true` (§2.1);
+//   - `value.signalCount` becomes `evidence.length`: the count is no longer recopied next to the
+//     evidence, it IS their number — a single source, no longer two that can diverge;
+//   - the "significant nocturnal rhythm" assertion is REMOVED: the graduated nocturnal framing no longer
+//     has a producer (ADR-0004). The graph, the counters and the estimate stay verified.
 //
-// FRAGILITÉ TEMPORELLE CORRIGÉE : `ProcessOptions.now` existe désormais (lot « démo qui ne rouille
-// pas ») et ce test injecte LA MÊME horloge `NOW` au builder ET à `processExport` — les fenêtres
-// glissantes du rythme retombent sur les chiffres attendus quel que soit le jour où la suite tourne,
-// pas seulement le jour où `NOW` coïncidait avec `Date.now()` réel.
+// TEMPORAL FRAGILITY FIXED: `ProcessOptions.now` now exists ("demo that does not rust"
+// batch) and this test injects THE SAME `NOW` clock into the builder AND `processExport` — the
+// rhythm's sliding windows fall back on the expected numbers whatever the day the suite runs,
+// not only the day `NOW` coincided with the real `Date.now()`.
 
 import { describe, expect, it } from 'vitest';
 import { processExport } from '../engine/pipeline';
 import { sensitiveTopicName } from '../engine/wording';
 import { buildSyntheticExportZip, buildSyntheticExportZipEn } from './synthetic-export';
 
-/** Horloge fixe injectée AU BUILDER ET à `processExport` (ses dates sont RELATIVES à `now`, jamais de
- *  2026 en dur) : les deux tournent sur la même horloge, comme en production. */
+/** Fixed clock injected INTO THE BUILDER AND `processExport` (its dates are RELATIVE to `now`, never
+ *  hard-coded 2026): the two run on the same clock, as in production. */
 const NOW = Date.UTC(2026, 6, 16, 12, 0, 0);
 
-describe('démo FR — barre d’honnêteté (pipeline réel)', () => {
+describe('FR demo — honesty bar (real pipeline)', () => {
   const result = processExport(buildSyntheticExportZip(undefined, NOW), { now: NOW });
   if (!result.ok) {
     throw new Error(`export synthétique FR invalide : ${JSON.stringify(result)}`);
   }
   const { output } = result;
 
-  it('D1 ne sort QUE mental_health et conflictual (pas politics/health-physical/sexuality/religion)', () => {
-    // Ex-`d1TemplatePrefixes` : le nom du sujet est ÉMIS, plus extrait d'un templateId à la regex.
+  it('D1 outputs ONLY mental_health and conflictual (not politics/health-physical/sexuality/religion)', () => {
+    // Ex-`d1TemplatePrefixes`: the subject's name is EMITTED, no longer extracted from a templateId with a regex.
     expect(new Set(output.signals.map((s) => s.label))).toEqual(
       new Set([sensitiveTopicName('fr', 'mental_health'), sensitiveTopicName('fr', 'conflictual')]),
     );
   });
 
-  it('mental_health est un constat LARGE — « témoignages burn out » ne nomme plus, mais franchit seul', () => {
-    // FIL-PIÈGE RETOURNÉ DEUX FOIS, et la SÉQUENCE vaut plus que l'état final — c'est pour ça
-    // qu'elle est écrite ici plutôt que remplacée :
+  it('mental_health is a BROAD finding — « témoignages burn out » no longer names, but crosses alone', () => {
+    // TRIP-WIRE FLIPPED TWICE, and the SEQUENCE matters more than the final state — that is why
+    // it is written here rather than replaced:
     //
-    //   1. AVANT — constat NOMMÉ. « témoignages burn out » écrit le terme en toutes lettres, donc
-    //      l'étage nommé, donc la carte affirmait un vécu sur la foi d'une recherche de récits.
-    //   2. PUIS — plus AUCUN constat. Le registre informationnel a dégradé l'item (demander des
-    //      témoignages n'affirme rien), et le seuil de répétition a fait le reste : un item dégradé
-    //      reste UN item, et un constat large en exige DEUX. Deux règles justes composées en une
-    //      disparition qu'aucune des deux ne demandait.
-    //   3. MAINTENANT — constat LARGE. L'item dégradé franchit SEUL, comme le fait déjà un nom nu
-    //      de trouble (`indirectSolo`) : dans les deux cas le terme précis EST écrit, et c'est le
-    //      CADRAGE qui interdit d'affirmer. La règle n'est pas neuve, elle rejoint un chemin qu'elle
-    //      avait manqué.
+    //   1. BEFORE — a NAMED finding. « témoignages burn out » writes the term in full, thus
+    //      the named tier, thus the card asserted a lived experience on the faith of a search for accounts.
+    //   2. THEN — no finding AT ALL. The informational register degraded the item (asking for
+    //      testimonials asserts nothing), and the repetition threshold did the rest: a degraded item
+    //      stays ONE item, and a broad finding requires TWO. Two correct rules composed into a
+    //      disappearance neither of the two asked for.
+    //   3. NOW — a BROAD finding. The degraded item crosses ALONE, as a bare disorder name already
+    //      does (`indirectSolo`): in both cases the precise term IS written, and it is the
+    //      FRAMING that forbids asserting. The rule is not new, it joins a path it
+    //      had missed.
     //
-    // Ce que la carte dit maintenant est ce qu'elle aurait dû dire depuis le début : il y a bien un
-    // signal de santé mentale ici, et il ne suffit pas à affirmer un vécu.
+    // What the card says now is what it should have said from the start: there is indeed a
+    // mental health signal here, and it does not suffice to assert a lived experience.
     const signal = output.signals.find(
       (s) => s.label === sensitiveTopicName('fr', 'mental_health'),
     );
     expect(signal?.sensitive).toBe(true);
     expect(signal?.evidence).toHaveLength(1);
-    // L'étage EST le résultat : `low` est la confiance du large, `medium` celle du nommé.
+    // The tier IS the result: `low` is the broad's confidence, `medium` the named's.
     expect(signal?.confidence).toBe('low');
   });
 
-  it('conflictual porte un unique signal explicite (l’insulte ciblée)', () => {
+  it('conflictual carries a single explicit signal (the targeted insult)', () => {
     const signal = output.signals.find((s) => s.label === sensitiveTopicName('fr', 'conflictual'));
     expect(signal?.evidence).toHaveLength(1);
   });
 
-  it('D2 ne retient QUE chats (2 items) et cinema_series (3 items) — plancher PANO-75 respecté', () => {
+  it('D2 retains ONLY chats (2 items) and cinema_series (3 items) — PANO-75 floor respected', () => {
     expect(new Set(output.themes.map((t) => t.id))).toEqual(new Set(['chats', 'cinema_series']));
     const evidenceOf = (id: string) =>
       output.themes.find((t) => t.id === id)?.deductions[0]?.evidence;
     expect(evidenceOf('chats')).toHaveLength(2);
-    // 3 = « spin off » + « kubrick »/« cinéma » + le « netflix » du commentaire conflictual (item
-    // partagé entre les deux thèmes, C5).
+    // 3 = « spin off » + « kubrick »/« cinéma » + the « netflix » of the conflictual comment (item
+    // shared between the two themes, C5).
     expect(evidenceOf('cinema_series')).toHaveLength(3);
   });
 
-  it('volumes = 24 recherches / 14 commentaires / 300 suivis / 2700 likes', () => {
-    // Ex-R1/R2/R3/R5 + `ACTIVITY_PANEL_RULE_IDS` : le champ EST le nom (§2.3), plus de dispatch.
+  it('volumes = 24 searches / 14 comments / 300 follows / 2700 likes', () => {
+    // Ex-R1/R2/R3/R5 + `ACTIVITY_PANEL_RULE_IDS`: the field IS the name (§2.3), no more dispatch.
     expect(output.volumes.searches).toBe(24);
     expect(output.volumes.comments).toBe(14);
     expect(output.volumes.follows).toBe(300);
     expect(output.volumes.endorsements).toBe(2700);
   });
 
-  it('vues : 50 000 au total (Activity Summary), 6 100 sur 12 mois, 420 sur 30 jours', () => {
+  it('views: 50,000 total (Activity Summary), 6,100 over 12 months, 420 over 30 days', () => {
     expect(output.volumes.allTime?.videosWatchedToEnd).toBe(50_000);
     expect(output.rhythm?.videosWatched).toEqual({
       total: 50_000,
@@ -108,42 +108,42 @@ describe('démo FR — barre d’honnêteté (pipeline réel)', () => {
     });
   });
 
-  it('graphe de rythme : 24 compteurs horaires + estimation par sessionisation plausible', () => {
+  it('rhythm graph: 24 hourly counters + estimate by plausible sessionization', () => {
     expect(output.rhythm?.hourlyActivity).toHaveLength(24);
-    // Pas de valeur cible figée sur l'estimation (calcul RÉEL par sessionisation, pas recopié) :
-    // on verrouille juste un ordre de grandeur plausible (« environ 29 h »).
+    // No target value frozen on the estimate (a REAL computation by sessionization, not recopied):
+    // we only lock a plausible order of magnitude ("about 29 h").
     expect(output.rhythm?.estimatedMinutes).toBeGreaterThan(1000);
     expect(output.rhythm?.estimatedMinutes).toBeLessThan(2200);
   });
 
-  it('mur sémantique / opacité : présent, lisible << opaque (ordre de grandeur, pas de valeur figée)', () => {
+  it('semantic wall / opacity: present, readable << opaque (order of magnitude, no frozen value)', () => {
     expect(output.opacity?.readableCount).toBe(24 + 14);
     expect(output.opacity?.opaqueCount).toBeGreaterThan((output.opacity?.readableCount ?? 0) * 10);
   });
 });
 
-describe('démo EN — la barre d’honnêteté révèle la limite réelle des lexiques', () => {
+describe('EN demo — the honesty bar reveals the real limit of the lexicons', () => {
   const result = processExport(buildSyntheticExportZipEn(undefined, NOW), { now: NOW });
   if (!result.ok) {
     throw new Error(`export synthétique EN invalide : ${JSON.stringify(result)}`);
   }
   const { output } = result;
 
-  // MESURE, pas cible. La persona EN a été écrite à l'aveugle (une personne, pas une liste de
-  // déclencheurs) ; ce bloc enregistre ce que le détecteur en tire AUJOURD'HUI.
+  // A MEASUREMENT, not a target. The EN persona was written blind (a person, not a list of
+  // triggers); this block records what the detector draws from it TODAY.
   //
-  // LE LOT EN DE `mental_health` A ATTERRI (PANO-35) — et ces chiffres n'ont PAS bougé d'un octet.
-  // Ce n'est pas un raté : la persona, écrite sans viser les lexiques, ne rencontre AUCUN des ~50
-  // termes livrés. C'est la mesure la plus utile de ce bloc, et elle dit une limite de l'instrument
-  // plutôt qu'une limite du lexique : une persona mesure du RAPPEL sur une voix d'écriture, jamais
-  // un taux de faux positifs. Ce que le lot ajoute est exercé par la batterie adverse
-  // (`engine/detect/lexicon-battery.test.ts`), seul endroit qui le traverse ; ce qu'il faudrait pour
-  // mesurer les FP est nommé en dette au catalogue (banc de personas en registres contrastés).
-  it('D1 sort mental_health ET conflictual — deux couvertures EN ASSUMÉES, rien de plus', () => {
-    // `mental_health` franchit par « burnout », le même mot des deux côtés : il franchissait DÉJÀ
-    // avant son lot, sans qu'aucune décision ne l'ait voulu, et il est depuis annoté « (EN) ».
-    // `conflictual` a rejoint la liste au lot EN de son lexique — et lui, il a fallu le VOULOIR :
-    // sa porte exige une insulte ET une cible, et les deux listes étaient FR.
+  // THE EN BATCH OF `mental_health` LANDED (PANO-35) — and these numbers did NOT move a byte.
+  // This is not a miss: the persona, written without aiming at the lexicons, meets NONE of the ~50
+  // delivered terms. It is the most useful measurement of this block, and it says a limit of the instrument
+  // rather than a limit of the lexicon: a persona measures RECALL on a writing voice, never
+  // a false-positive rate. What the batch adds is exercised by the adversarial battery
+  // (`engine/detect/lexicon-battery.test.ts`), the only place that crosses it; what would be needed to
+  // measure FPs is named as debt in the catalog (bench of personas in contrasted registers).
+  it('D1 outputs mental_health AND conflictual — two OWNED EN coverages, nothing more', () => {
+    // `mental_health` crosses via « burnout », the same word on both sides: it crossed ALREADY
+    // before its batch, without any decision willing it, and it is since annotated « (EN) ».
+    // `conflictual` joined the list at the EN batch of its lexicon — and it, it had to be WILLED:
+    // its gate requires an insult AND a target, and both lists were FR.
     expect(new Set(output.signals.map((s) => s.label))).toEqual(
       new Set([sensitiveTopicName('fr', 'mental_health'), sensitiveTopicName('fr', 'conflictual')]),
     );
@@ -152,40 +152,40 @@ describe('démo EN — la barre d’honnêteté révèle la limite réelle des l
     );
     expect(mental?.sensitive).toBe(true);
     expect(mental?.evidence).toHaveLength(1);
-    // Le terme qui franchit est ÉPINGLÉ, pas seulement le label : c'est ce qui distingue une
-    // couverture assumée d'un décompte. Si un autre terme d'un lot commençait à franchir, cette
-    // ligne le dirait au lieu de le laisser se fondre dans un total inchangé.
+    // The term that crosses is PINNED, not only the label: this is what distinguishes an
+    // owned coverage from a count. If another term of a batch started crossing, this
+    // line would say so instead of letting it blend into an unchanged total.
     expect(mental?.evidence[0]?.triggerTerms).toEqual(['burnout']);
   });
 
-  // Ce test AFFIRMAIT le contraire — « l'insulte ciblée EN ne déclenche PAS conflictual (aucune
-  // variante EN au lexique) ». C'était un fil-piège sur la dette EN de ce label, et il a été
-  // RETOURNÉ, jamais supprimé : un fil-piège effacé ne laisse aucune trace de ce qu'il gardait.
-  // L'assertion négative devient positive, avec son terme épinglé.
+  // This test ASSERTED the opposite — "the EN targeted insult does NOT trigger conflictual (no
+  // EN variant in the lexicon)". It was a trip-wire on this label's EN debt, and it was
+  // FLIPPED, never removed: a deleted trip-wire leaves no trace of what it guarded.
+  // The negative assertion becomes positive, with its pinned term.
   //
-  // C'est le SEUL mouvement de rappel du lot EN de `conflictual`, et c'est voulu : le lexique EN
-  // est délibérément petit — un ordre de grandeur sous le FR — parce que rien dans un export ne
-  // sépare la vanne entre amis de l'agression — cf. l'en-tête de `lexicon/conflictual.ts`. Tout
-  // mouvement HORS de cet item unique serait un terme qui sur-matche, et doit se lire comme tel.
-  it('l’insulte ciblée EN déclenche conflictual — via « stupid » + la cible « you’re »', () => {
+  // This is the ONLY recall movement of `conflictual`'s EN batch, and it is intended: the EN lexicon
+  // is deliberately small — an order of magnitude below the FR — because nothing in an export
+  // separates the joke between friends from aggression — cf. the header of `lexicon/conflictual.ts`. Any
+  // movement OUTSIDE this single item would be an over-matching term, and must be read as such.
+  it('the EN targeted insult triggers conflictual — via « stupid » + the target « you’re »', () => {
     const signal = output.signals.find((s) => s.label === sensitiveTopicName('fr', 'conflictual'));
     expect(signal, 'la persona EN porte une insulte ciblée : elle doit être lue').toBeDefined();
     expect(signal?.sensitive).toBe(true);
-    // Item-level (B5) : un seul item émis suffit, et un seul est attendu.
+    // Item-level (B5): a single emitted item suffices, and a single one is expected.
     expect(signal?.evidence).toHaveLength(1);
-    // Le terme épinglé, pas seulement le label — même discipline que « burnout » ci-dessus : si un
-    // autre terme du lot se mettait à franchir, cette ligne le dirait.
+    // The pinned term, not only the label — same discipline as « burnout » above: if
+    // another term of the batch started crossing, this line would say so.
     expect(signal?.evidence[0]?.triggerTerms).toEqual(['stupid']);
   });
 
-  it('D2 ne retient QUE cinema_series (3 items) — chats n’a aucune variante EN', () => {
+  it('D2 retains ONLY cinema_series (3 items) — chats has no EN variant', () => {
     expect(new Set(output.themes.map((t) => t.id))).toEqual(new Set(['cinema_series']));
     expect(
       output.themes.find((t) => t.id === 'cinema_series')?.deductions[0]?.evidence,
     ).toHaveLength(3);
   });
 
-  it('mêmes volumes agrégés que la version FR (24/14/300/2700, 50000/6100/420)', () => {
+  it('same aggregated volumes as the FR version (24/14/300/2700, 50000/6100/420)', () => {
     expect(output.volumes.searches).toBe(24);
     expect(output.volumes.comments).toBe(14);
     expect(output.volumes.follows).toBe(300);

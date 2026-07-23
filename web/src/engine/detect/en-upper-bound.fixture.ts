@@ -1,54 +1,54 @@
-// Banc EN — la PAIRE de borne haute : deux voix bruyantes, et l'écart entre leurs briefs EST la
-// mesure. Vérité-terrain scellée par un commit ANTÉRIEUR à toute exécution du détecteur.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// EN bench — the upper-bound PAIR: two loud voices, and the gap between their briefs IS the
+// measure. Ground truth sealed by a commit PRIOR to any run of the detector.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── Pourquoi une paire, et pourquoi on n'additionne jamais leurs chiffres ────────────────────────
-// Les deux voix répondent à des questions DIFFÉRENTES, et une moyenne les détruirait toutes les deux.
+// ── Why a pair, and why we never add up their figures ────────────────────────
+// The two voices answer DIFFERENT questions, and an average would destroy both.
 //
-//   `loud`           — briefée sur le REGISTRE SEUL. Personne ne l'a visée sur un vocabulaire : ce
-//                      qu'elle va naturellement chercher est le RÉSULTAT. Elle répond à « qu'est-ce
-//                      qu'une anglophone très expressive déclenche quand personne ne l'a orientée ? »
-//   `clinical_slang` — briefé comme PIRE CAS DÉLIBÉRÉ. Même amplitude, mais le vocabulaire clinique
-//                      y sert d'intensificateur ordinaire — la météo, un client, un tableur. Il
-//                      répond à « jusqu'où monte le tort si quelqu'un fait exprès ? », et il a le
-//                      droit d'être extrême : c'est une BORNE, pas un échantillon représentatif.
+//   `loud`           — briefed on the REGISTER ALONE. No one aimed it at a vocabulary: what
+//                      it will naturally look for is the RESULT. It answers « what
+//                      does a very expressive anglophone fire when no one has steered her? »
+//   `clinical_slang` — briefed as a DELIBERATE WORST CASE. Same amplitude, but clinical vocabulary
+//                      serves there as an ordinary intensifier — the weather, a client, a spreadsheet. It
+//                      answers « how high does the wrong climb if someone does it on purpose? », and it has the
+//                      right to be extreme: it is a BOUND, not a representative sample.
 //
-// Lire le second comme une estimation du risque réel serait un contresens ; lire la première comme
-// une borne haute en serait un autre. D'où deux voix plutôt qu'une moyennée.
+// Reading the second as an estimate of real risk would be a misreading; reading the first as
+// an upper bound would be another. Hence two voices rather than one averaged.
 //
-// ── Ce que l'auteur de ces voix avait lu, et ça n'est pas rien ───────────────────────────────────
-// La règle du dépôt veut qu'un filet déclare sa frontière. La frontière ici est la CONTAMINATION de
-// qui écrit, et elle se nomme précisément — l'écriture n'a PAS été aveugle :
+// ── What the author of these voices had read, and it is not nothing ───────────────────────────────────
+// The repo's rule wants a net to declare its boundary. The boundary here is the CONTAMINATION of
+// the writer, and it is named precisely — the writing was NOT blind:
 //
-//   • LU, sur consigne, pour le format : `en-fp-bench.test.ts`. Ce fichier NOMME les cinq termes
-//     hyperboliques retirés du lexique, et il énumère une trentaine de surfaces qui déclenchent
-//     aujourd'hui (les attendus figés de `distress`, `caregiver`, `advocate`). Une part substantielle
-//     du lexique `mental_health` EN était donc lisible au moment d'écrire.
-//   • LU, pour la qualité de voix : `en-registers.fixture.ts` — les six personas existantes.
-//   • LU, pour la mécanique : `register-bench.harness.ts`, `register-bench.ts`.
-//   • NON LU, à dessein : tout module de `lexicon/`, la note de portabilité EN, les rapports de banc
-//     (`docs/banc-*.md`), et l'historique git des lots lexique.
+//   • READ, on instruction, for the format: `en-fp-bench.test.ts`. This file NAMES the five
+//     hyperbolic terms removed from the lexicon, and it enumerates some thirty surfaces that fire
+//     today (the frozen expectations of `distress`, `caregiver`, `advocate`). A substantial part
+//     of the EN `mental_health` lexicon was therefore readable at the time of writing.
+//   • READ, for voice quality: `en-registers.fixture.ts` — the six existing personas.
+//   • READ, for the mechanics: `register-bench.harness.ts`, `register-bench.ts`.
+//   • NOT READ, by design: any module of `lexicon/`, the EN portability note, the bench reports
+//     (`docs/banc-*.md`), and the git history of the lexicon batches.
 //
-// Arbitrage tranché par le mainteneur avant écriture, et il est réel : le brief de `loud` disait
-// « ne la vise sur rien », pendant que la discipline du dépôt dit que rejouer une exclusion déjà
-// figée produit un feu vert sans information. Décision retenue — ÉCRIRE AU PERSONNAGE, ni injecter
-// ni éviter délibérément les cinq termes connus, et déclarer ici. Fait constaté après écriture, sans
-// retouche : aucun des cinq n'est venu sous la plume de `loud`. Ce n'est pas une garantie, c'est
-// une observation, et elle vaut ce que vaut une seule voix.
+// Arbitration settled by the maintainer before writing, and it is real: `loud`'s brief said
+// « aim her at nothing », while the repo's discipline says replaying an already-frozen
+// exclusion produces a green light without information. Decision retained — WRITE TO THE CHARACTER, neither injecting
+// nor deliberately avoiding the five known terms, and declare it here. Fact noted after writing, without
+// retouching: none of the five came under `loud`'s pen. This is not a guarantee, it is
+// an observation, and it is worth what a single voice is worth.
 //
-// ── Aucune valeur réelle ─────────────────────────────────────────────────────────────────────────
-// Chaque chaîne est inventée (CLAUDE.md). La recherche externe a porté sur la FORME du registre —
-// le mécanisme de la misapplication clinique (un bureau en désordre appelé « OCD », un désaccord
-// appelé « gaslighting »), les marqueurs d'hyperbole en ligne, l'absence de ponctuation. Jamais sur
-// un contenu repris : aucun message, pseudo, date ni identifiant réel n'entre ici.
+// ── No real value ─────────────────────────────────────────────────────────────────────────
+// Each string is invented (CLAUDE.md). The external research bore on the FORM of the register —
+// the mechanism of clinical misapplication (a messy desk called « OCD », a disagreement
+// called « gaslighting »), the online hyperbole markers, the absence of punctuation. Never on
+// reused content: no real message, handle, date or identifier enters here.
 
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. LA VOIX BRUYANTE — briefée sur le registre, visée sur rien
+// 1. THE LOUD VOICE — briefed on the register, aimed at nothing
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const LOUD: RegisterPersona = {
@@ -111,7 +111,7 @@ const LOUD: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. LE PIRE CAS DÉLIBÉRÉ — le vocabulaire clinique comme intensificateur ordinaire
+// 2. THE DELIBERATE WORST CASE — clinical vocabulary as an ordinary intensifier
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const CLINICAL_SLANG: RegisterPersona = {
@@ -187,7 +187,7 @@ const CLINICAL_SLANG: RegisterPersona = {
 };
 
 /**
- * La paire. L'ordre est celui des briefs : d'abord la voix qu'on n'a visée sur rien, puis le pire
- * cas assumé. Elles ne se moyennent pas — voir l'en-tête.
+ * The pair. The order is that of the briefs: first the voice aimed at nothing, then the assumed
+ * worst case. They do not average — see the header.
  */
 export const EN_UPPER_BOUND_PERSONAS: readonly RegisterPersona[] = [LOUD, CLINICAL_SLANG];

@@ -1,35 +1,35 @@
-// Lexique d'intérêt `skate` (D2, PANO-78 lot 3) — skateboard.
+// Interest lexicon `skate` (D2, PANO-78 batch 3) — skateboard.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du skate FR : tricks, matériel, MARQUES, spots. Entités = signal public
-// générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR skate: tricks, gear, BRANDS, spots. Entities = generic public
+// signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « skateboard », « ollie », « kickflip », « heelflip », « griptape », « skatepark »,
 //     « half pipe », « thrasher ».
-//   · ANCRÉ — « skate » (patin), « board » (planche générique), « deck » (jeu de cartes / pont),
-//     « grind » (travail / jeu vidéo), « spot » (lieu / projecteur), « trucks » (camions), « element »
-//     (chimie), « vans » (fourgons / marque) : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « skate » (ice skate), « board » (generic board), « deck » (card deck / bridge),
+//     « grind » (work / video game), « spot » (place / spotlight), « trucks » (trucks), « element »
+//     (chemistry), « vans » (vans / brand): co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Sondage net : les NOMS du skate sont tous pris ailleurs (« deck », « trucks », « grind », « bail »,
-// « session », « park », « board », « rail », « ledge », « flip »). Ce qui porte le domaine, ce sont
-// les NOMS DE TRICKS — inventés ici, donc univoques.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Clear survey: the skate NOUNS are all taken elsewhere (« deck », « trucks », « grind », « bail »,
+// « session », « park », « board », « rail », « ledge », « flip »). What carries the domain is the
+// TRICK NAMES — invented here, hence univocal.
 //   · SOLO — « boardslide », « noseslide », « tailslide », « bluntslide », « smith grind »,
 //     « crooked grind », « feeble grind », « hardflip », « darkslide », « slappy », « fakie »,
 //     « shuvit », « treflip », « wheel bite », « bushings », « quarterpipe », « skatetok », « sk8 ».
-//     Les composés sont sûrs LÀ OÙ leur tête ne l'est pas : « boardslide » vs « board », « wheel bite »
+//     The compounds are safe WHERE their head is not: « boardslide » vs « board », « wheel bite »
 //     vs « wheel ».
-//   · ANCRÉ — « coping » (le rebord du bowl — mais « coping mechanism » appartient au registre de la
-//     SANTÉ MENTALE : ancré sans hésiter, c'est la collision la plus coûteuse du lot), « bowl » (le
-//     saladier), « switch » (la Nintendo Switch), « gap » (la marque de vêtements ; un trou dans un
-//     agenda), « session » (de studio, de thérapie), « ledge », « rail », « flip », « primo » : compagnon requis.
-//   · ÉCARTÉ — « mongo » (terme de skate réel, mais insulte validiste en anglais britannique) et
-//     « kingpin » (le parrain, le personnage Marvel) : gain nul, coût réel.
+//   · ANCHORED — « coping » (the bowl coping — but « coping mechanism » belongs to the MENTAL
+//     HEALTH register: anchored without hesitation, it is the costliest collision of the batch), « bowl » (the
+//     salad bowl), « switch » (the Nintendo Switch), « gap » (the clothing brand; a gap in a
+//     schedule), « session » (studio, therapy), « ledge », « rail », « flip », « primo »: companion required.
+//   · DISCARDED — « mongo » (a real skate term, but an ableist slur in British English) and
+//     « kingpin » (the godfather, the Marvel character): no gain, real cost.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive.
 
 import type { InterestLexicon } from '../types';
 
@@ -56,7 +56,7 @@ export const SKATE_LEXICON: InterestLexicon = {
     'thrasher',
     'longboard',
     'shove it',
-    // Variantes EN (PANO-88) : SOLO univoques — les noms de tricks, seul vocabulaire propre au domaine.
+    // EN variants (PANO-88): SOLO univocal — the trick names, the only vocabulary proper to the domain.
     'boardslide',
     'noseslide',
     'tailslide',
@@ -78,26 +78,26 @@ export const SKATE_LEXICON: InterestLexicon = {
     'sk8',
   ],
   anchored: [
-    'skate', // patin (à glace) / roller
-    'board', // planche générique
-    'deck', // jeu de cartes / pont
-    'grind', // travail / grind (jeu)
-    'spot', // lieu / projecteur
-    'trucks', // camions
-    'element', // chimie / marque
-    'vans', // fourgons / marque
-    'wax', // cire générique
-    'rampe', // rampe d'escalier
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'coping', // rebord du bowl — mais « coping mechanism » = santé mentale : collision la plus coûteuse (EN)
-    'bowl', // le saladier / le Super Bowl (EN)
-    'switch', // la Nintendo Switch / un interrupteur (EN)
-    'gap', // la marque de vêtements / un trou dans un agenda (EN)
-    'session', // session de studio / de thérapie (EN)
-    'ledge', // rebord de fenêtre / de falaise (EN)
-    'rail', // rail de train / rampe d'escalier (EN)
-    'flip', // « flip a coin » / retourner un bien immobilier (EN)
-    'primo', // un prénom / « premier » en italien (EN)
+    'skate', // ice skate / roller skate
+    'board', // generic board
+    'deck', // card deck / bridge
+    'grind', // work / grind (game)
+    'spot', // place / spotlight
+    'trucks', // trucks
+    'element', // chemistry / brand
+    'vans', // vans / brand
+    'wax', // generic wax
+    'rampe', // staircase railing
+    // EN variants (PANO-88): ANCHORED.
+    'coping', // bowl coping — but « coping mechanism » = mental health: costliest collision (EN)
+    'bowl', // the salad bowl / the Super Bowl (EN)
+    'switch', // the Nintendo Switch / a switch (EN)
+    'gap', // the clothing brand / a gap in a schedule (EN)
+    'session', // studio / therapy session (EN)
+    'ledge', // window / cliff ledge (EN)
+    'rail', // train rail / staircase railing (EN)
+    'flip', // « flip a coin » / to flip a property (EN)
+    'primo', // a first name / « first » in Italian (EN)
   ],
   selfDeclared: ['skateur', 'skateuse'],
 };

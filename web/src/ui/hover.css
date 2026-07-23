@@ -1,70 +1,70 @@
-/* Effets de survol de la maquette « parcours guidé » — les classes portent les NOMS de la maquette
- * (helmet du fichier design), pour que le prochain aller-retour design ↔ code se fasse à
- * correspondance directe. Les composants gardent leurs styles INLINE (état, couleurs) ; seul le
- * survol vit ici, parce qu'un style inline ne peut pas dire `:hover`.
+/* Hover effects of the « parcours guidé » mockup — the classes carry the mockup's NAMES
+ * (helmet of the design file), so that the next design ↔ code round-trip is a direct
+ * correspondence. The components keep their INLINE styles (state, colors); only the
+ * hover lives here, because an inline style cannot say `:hover`.
  *
- * Les `!important` ne sont pas un contournement : ils sont la SEULE façon pour une feuille de
- * style de l'emporter sur un style inline, et c'est exactement le contrat voulu — l'inline dit
- * l'état de repos, la classe dit le survol. */
+ * The `!important` are not a workaround: they are the ONLY way for a style sheet to
+ * win over an inline style, and that is exactly the intended contract — the inline states
+ * the rest state, the class states the hover. */
 
-/* Cartes de déduction (ThemeCardNavy / SignalCardNavy). */
+/* Deduction cards (ThemeCardNavy / SignalCardNavy). */
 .hl-card {
   transition: border-color 0.15s;
 }
 .hl-card:hover {
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   border-color: #5872c4 !important;
 }
 
-/* Panneaux pédagogiques « pour comprendre ». */
+/* Educational « pour comprendre » panels. */
 .hl-learn {
   transition:
     border-color 0.15s,
     background 0.15s;
 }
 .hl-learn:hover {
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   border-color: #8fa3ff !important;
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   background: rgba(124, 150, 255, 0.09) !important;
 }
 
-/* Boutons pointillés (« comprendre · … », déplis). */
+/* Dotted buttons (« comprendre · … », disclosures). */
 .hl-btn {
   transition:
     border-color 0.15s,
     background 0.15s;
 }
 .hl-btn:hover {
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   border-color: #8fa3ff !important;
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   background: rgba(143, 163, 255, 0.08) !important;
 }
 
-/* Bordure qui s'allume (commandes, modèles, routes, champs). */
+/* Border that lights up (commands, models, routes, fields). */
 .hv-bd {
   transition: border-color 0.15s;
 }
 .hv-bd:hover {
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   border-color: #8fa3ff !important;
 }
 
-/* Bordure ET texte qui s'allument (liens-boutons : GitHub, vérifier la connexion…). */
+/* Border AND text that light up (link-buttons: GitHub, check the connection…). */
 .hv-cy {
   transition:
     color 0.15s,
     border-color 0.15s;
 }
 .hv-cy:hover {
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   color: #8fa3ff !important;
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   border-color: #8fa3ff !important;
 }
 
-/* Boutons pleins (langue, lancer, télécharger) : un simple regain de luminosité. */
+/* Solid buttons (language, launch, download): a simple boost in brightness. */
 .hv-br {
   transition: filter 0.15s;
 }
@@ -72,7 +72,7 @@
   filter: brightness(1.25);
 }
 
-/* Liens du sommaire (sidebar desktop, chips mobiles). */
+/* Table-of-contents links (desktop sidebar, mobile chips). */
 .hv-toc {
   transition:
     background 0.15s,
@@ -80,14 +80,14 @@
 }
 .hv-toc:hover {
   background: rgba(47, 212, 240, 0.07);
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   border-color: #26325a !important;
 }
 
-/* Liens dans la prose (brew.sh, localhost:8080, section 04 →) : l'éclaircissement cyan de la
- * maquette (`a:hover`), ciblé par classe parce que la règle globale perdrait contre l'inline. */
+/* Links in the prose (brew.sh, localhost:8080, section 04 →): the cyan lightening of the
+ * mockup (`a:hover`), targeted by class because the global rule would lose against the inline. */
 .hv-a:hover {
-  /* biome-ignore lint/complexity/noImportantStyles: seul moyen de primer sur le style inline (contrat de ce fichier, cf. en-tête) */
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
   color: #7ce6f8 !important;
   text-decoration: underline;
 }

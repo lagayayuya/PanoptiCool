@@ -1,28 +1,27 @@
-// Parseur JSON en FLUX, path-aware (PANO-91 — approche B, le chantier « SAX » annoncé par
-// `parse.ts`). Il existe pour UNE raison mémoire : le
-// `JSON.parse` natif (approche A) matérialise d'un coup TOUT le graphe (pic rss ≈ 11× le poids du
-// JSON — cf. `scale.test.ts`), et la validation valibot en clone une 2ᵉ copie. Sur un export à 10⁴–10⁵
-// items de visionnage, ce pic transitoire tue le Worker mobile.
+// STREAMING JSON parser, path-aware (PANO-91 — approach B, the "SAX" job announced by `parse.ts`).
+// It exists for ONE memory reason: native `JSON.parse` (approach A) materializes the WHOLE graph at
+// once (rss peak ≈ 11× the weight of the JSON — cf. `scale.test.ts`), and valibot validation clones
+// a 2nd copy. On an export with 10⁴–10⁵ watch items, this transient peak kills the mobile Worker.
 //
-// PRINCIPE. Descente récursive sur la chaîne décompressée, avec un HOOK DE REPLI (`fold`) : quand le
-// parseur s'apprête à lire un TABLEAU dont le chemin de clés correspond à un replieur, il n'accumule
-// PAS les éléments dans un `[]` — il parse chaque élément, le passe à `fold.onItem`, puis le laisse
-// devenir collectable AVANT le suivant. Le transitoire retenu pour ce tableau tombe alors de N items
-// à UN seul. Tout le reste (petites sections) est matérialisé normalement en JS plain-data.
+// PRINCIPLE. Recursive descent over the decompressed string, with a FOLD HOOK (`fold`): when the
+// parser is about to read an ARRAY whose key path matches a folder, it does NOT accumulate the
+// elements into a `[]` — it parses each element, passes it to `fold.onItem`, then lets it become
+// collectable BEFORE the next one. The transient retained for that array then drops from N items to
+// ONE. Everything else (small sections) is materialized normally as plain-data JS.
 //
-// POURQUOI une chaîne, pas les octets. On décode la totalité en `string` une fois (`strFromU8`) —
-// borné (~le poids du JSON), et de toute façon `JSON.parse` tient la même chaîne en interne : aucune
-// régression. Le gain n'a JAMAIS été la chaîne, c'est le GRAPHE d'objets que ce parseur n'érige pas
-// pour le tableau replié. Parcours par index + `charCodeAt` (pas de `slice` par caractère).
+// WHY a string, not the bytes. We decode the whole thing into a `string` once (`strFromU8`) —
+// bounded (~the weight of the JSON), and anyway `JSON.parse` holds the same string internally: no
+// regression. The gain was NEVER the string, it is the object GRAPH that this parser does not erect
+// for the folded array. Traversal by index + `charCodeAt` (no per-character `slice`).
 //
-// FIDÉLITÉ. Sémantique alignée sur `JSON.parse` pour ce dont l'export a besoin : objets, tableaux,
-// chaînes (avec échappements `\" \\ \/ \b \f \n \r \t \uXXXX` + paires de substitution), nombres
-// (signe, décimales, exposant), `true`/`false`/`null`, blancs standards. Toute entrée malformée LÈVE
-// `JsonStreamError` — le parseur ne devine jamais (l'appelant mappe vers un échec `invalid_json`).
-// Limite assumée (héritée d'approche A, cf. `parse.ts`) : les clés dupliquées dans un même objet sont
-// écrasées « dernière gagne », comme `JSON.parse`.
+// FIDELITY. Semantics aligned with `JSON.parse` for what the export needs: objects, arrays, strings
+// (with escapes `\" \\ \/ \b \f \n \r \t \uXXXX` + surrogate pairs), numbers (sign, decimals,
+// exponent), `true`/`false`/`null`, standard whitespace. Any malformed input THROWS `JsonStreamError`
+// — the parser never guesses (the caller maps it to an `invalid_json` failure). Assumed limitation
+// (inherited from approach A, cf. `parse.ts`): duplicate keys within one object are overwritten
+// "last wins", like `JSON.parse`.
 
-/** Erreur de parsing — position (offset caractère) incluse pour le diagnostic, jamais la valeur. */
+/** Parsing error — position (character offset) included for diagnosis, never the value. */
 export class JsonStreamError extends Error {
   constructor(
     message: string,
@@ -34,9 +33,9 @@ export class JsonStreamError extends Error {
 }
 
 /**
- * Replieur d'un tableau à un chemin donné. `onItem` reçoit chaque élément parsé (puis oublié) ;
- * `finalize` rend la valeur qui REMPLACE le tableau dans le graphe (agrégat compact, ou liste
- * projetée — au choix du consommateur). Un tableau replié ne retient jamais ses N éléments.
+ * Folder for an array at a given path. `onItem` receives each parsed element (then forgotten);
+ * `finalize` returns the value that REPLACES the array in the graph (a compact aggregate, or a
+ * projected list — the consumer's choice). A folded array never retains its N elements.
  */
 export interface ArrayFold {
   onItem(value: unknown): void;
@@ -44,13 +43,13 @@ export interface ArrayFold {
 }
 
 /**
- * Fournit un replieur pour le chemin de clés courant, ou `null` pour matérialiser normalement.
- * `path` est la pile des clés d'objet traversées (les index de tableau n'y figurent pas — le repli
- * est décidé sur la STRUCTURE, pas sur une position). Appelé à l'entrée de chaque tableau.
+ * Provides a folder for the current key path, or `null` to materialize normally. `path` is the stack
+ * of object keys traversed (array indices do not appear in it — folding is decided on the STRUCTURE,
+ * not on a position). Called on entry to each array.
  */
 export type FoldResolver = (path: readonly string[]) => ArrayFold | null;
 
-// Codes de caractères chauds (évite les comparaisons de littéraux dans la boucle).
+// Hot character codes (avoids literal comparisons in the loop).
 enum C {
   Tab = 9,
   LF = 10,
@@ -72,9 +71,9 @@ enum C {
 }
 
 /**
- * Parse `text` (JSON complet) en une valeur plain-data, en REPLIANT les tableaux désignés par
- * `resolveFold`. Lève `JsonStreamError` sur toute malformation. Empreinte : le graphe des sections
- * NON repliées + un seul élément transitoire par tableau replié.
+ * Parses `text` (complete JSON) into a plain-data value, FOLDING the arrays designated by
+ * `resolveFold`. Throws `JsonStreamError` on any malformation. Footprint: the graph of the
+ * NON-folded sections + a single transient element per folded array.
  */
 export function parseJsonStream(text: string, resolveFold: FoldResolver): unknown {
   let i = 0;
@@ -97,10 +96,10 @@ export function parseJsonStream(text: string, resolveFold: FoldResolver): unknow
   }
 
   function parseString(): string {
-    // Pré-condition : text[i] === '"'. Sortie : i juste après la quote fermante.
-    i += 1; // consomme l'ouvrante
+    // Precondition: text[i] === '"'. Exit: i just after the closing quote.
+    i += 1; // consume the opening one
     let out = '';
-    let runStart = i; // début du segment sans échappement (copié en bloc)
+    let runStart = i; // start of the escape-free segment (copied in bulk)
     while (i < n) {
       const c = text.charCodeAt(i);
       if (c === C.Quote) {
@@ -124,7 +123,7 @@ export function parseJsonStream(text: string, resolveFold: FoldResolver): unknow
   }
 
   function parseEscape(): string {
-    // Pré-condition : i pointe le caractère APRÈS le backslash.
+    // Precondition: i points at the character AFTER the backslash.
     const c = text.charCodeAt(i);
     i += 1;
     switch (c) {
@@ -152,7 +151,7 @@ export function parseJsonStream(text: string, resolveFold: FoldResolver): unknow
   }
 
   function parseUnicodeEscape(): string {
-    // Pré-condition : i pointe le 1er des 4 hex après `\u`.
+    // Precondition: i points at the 1st of the 4 hex digits after `\u`.
     if (i + 4 > n) {
       fail('échappement unicode tronqué');
     }
@@ -202,9 +201,9 @@ export function parseJsonStream(text: string, resolveFold: FoldResolver): unknow
   }
 
   function parseArray(): unknown {
-    // Pré-condition : text[i] === '['. Le repli est décidé ICI, sur `path` courant.
+    // Precondition: text[i] === '['. Folding is decided HERE, on the current `path`.
     const fold = resolveFold(path);
-    i += 1; // consomme '['
+    i += 1; // consume '['
     skipWs();
     if (fold === null) {
       const arr: unknown[] = [];
@@ -228,7 +227,7 @@ export function parseJsonStream(text: string, resolveFold: FoldResolver): unknow
         return fail('virgule ou ] attendu dans un tableau');
       }
     }
-    // Chemin REPLIÉ : chaque élément est parsé, poussé au replieur, puis oublié.
+    // FOLDED path: each element is parsed, pushed to the folder, then forgotten.
     if (text.charCodeAt(i) === C.RBracket) {
       i += 1;
       return fold.finalize();
@@ -251,8 +250,8 @@ export function parseJsonStream(text: string, resolveFold: FoldResolver): unknow
   }
 
   function parseObject(): Record<string, unknown> {
-    // Pré-condition : text[i] === '{'.
-    i += 1; // consomme '{'
+    // Precondition: text[i] === '{'.
+    i += 1; // consume '{'
     const obj: Record<string, unknown> = {};
     skipWs();
     if (text.charCodeAt(i) === C.RBrace) {

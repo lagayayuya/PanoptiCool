@@ -1,4 +1,4 @@
-// Pied de page (maquettes « Accueil v2 » / « parcours guidé »).
+// Footer (« Accueil v2 » / « parcours guidé » mockups).
 
 import { localeHref } from '../../i18n/current';
 import { UI_BRAND, UI_FOOTER } from '../copy';

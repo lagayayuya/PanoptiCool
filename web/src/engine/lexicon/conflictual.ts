@@ -1,77 +1,77 @@
-// Lexique `conflictual` (PANO-71 graine → PANO-36 enrichi) — item-level (B5) : l'insulte ÉMISE
-// visant un autre utilisateur EST le signal ; pas d'étage indirect, pas d'éventail (PANO-70 §1.4).
-// Critique d'idée JAMAIS taguée conflictual (décision D) ; opinion politique → politics, pas ici.
-// La frontière est portée par la MACHINERIE (cible 2ᵉ personne exigée + filtre citation), pas par
-// les mots : c'est pourquoi un terme d'agression n'entre QUE s'il vise une personne.
+// `conflictual` lexicon (PANO-71 seed → PANO-36 enriched) — item-level (B5): the EMITTED insult
+// aimed at another user IS the signal; no indirect tier, no fan (PANO-70 §1.4).
+// Criticism of an idea NEVER tagged conflictual (decision D); political opinion → politics, not here.
+// The boundary is held by the MACHINERY (2nd-person target required + quotation filter), not by
+// the words: that is why an aggression term enters ONLY if it targets a person.
 //
-// ── Justification de généricité (discipline PANO-70 §3, §2.5) ─────────────────────────────────
-// Insultes interpersonnelles du FR courant EN LIGNE, tous registres, écrites à l'aveugle depuis
-// l'usage commun, jamais depuis un export :
-//   · familier : abruti, crétin, imbécile, blaireau, guignol ;
-//   · vulgaire : ordure, enfoiré, raclure, salopard ;
-//   · slurs genrés et validistes (salope, enculé, attardé, mongol…) : RÉELS et massifs en ligne —
-//     les détecter, c'est montrer ce qu'une plateforme lit ; la sécurité vit dans le GRILLAGE
-//     d'affichage — le constat démarre replié, derrière un badge « sensible » (ADR-0003) — pas dans
-//     un lexique amputé ;
-//   · insultes homophobes et anti-croyant INTERPERSONNELLES (PANO-72) : elles visent une PERSONNE
-//     dans l'échange (frontière sexuality/religion → conflictual). Le slur de GROUPE dans l'absolu
-//     n'entre nulle part (futur label dédié, signalé, jamais tranché seul) ;
-//   · abréviations SMS d'agression (tg, ftg, ntm, fdp).
-// Toutes visent une PERSONNE (jamais une idée, jamais un groupe) et n'entrent que couplées à une
-// cible 2ᵉ personne.
-// Chaque terme aurait été écrit à l'identique sans avoir vu aucun export.
+// ── Genericity justification (PANO-70 §3, §2.5 discipline) ────────────────────────────────────
+// Interpersonal insults of everyday FR ONLINE, all registers, written blind from
+// common usage, never from an export:
+//   · colloquial: abruti, crétin, imbécile, blaireau, guignol;
+//   · vulgar: ordure, enfoiré, raclure, salopard;
+//   · gendered and ableist slurs (salope, enculé, attardé, mongol…): REAL and massive online —
+//     detecting them means showing what a platform reads; the safety lives in the display
+//     SCREEN — the finding starts folded, behind a "sensitive" badge (ADR-0003) — not in
+//     an amputated lexicon;
+//   · INTERPERSONAL homophobic and anti-believer insults (PANO-72): they target a PERSON
+//     in the exchange (sexuality/religion → conflictual boundary). The GROUP slur in the absolute
+//     enters nowhere (future dedicated label, flagged, never decided alone);
+//   · aggression SMS abbreviations (tg, ftg, ntm, fdp).
+// All target a PERSON (never an idea, never a group) and enter only paired with a
+// 2nd-person target.
+// Each term would have been written identically without having seen any export.
 // ───────────────────────────────────────────────────────────────────────────────────────────────
 //
-// Entrées NORMALISÉES (minuscules, sans accents). Auto-censure (« c*nne »), allongements
-// (« abruuuti ») et pluriels sont couverts par la machinerie — jamais listés ici.
+// NORMALIZED entries (lowercase, no accents). Self-censoring (« c*nne »), lengthenings
+// (« abruuuti ») and plurals are covered by the machinery — never listed here.
 //
-// ── `targets` porte des CONSTRUCTIONS d'adresse, jamais un pronom nu ───────────────────────────
-// Règle d'écriture de ce tableau, valable pour toute langue admise ici. En français elle est sans
-// objet — `toi` n'adresse que quelqu'un. En anglais le pronom de 2ᵉ personne est AUSSI
-// l'impersonnel : « you should get your gland checked » ne s'adresse à personne, c'est un conseil
-// au monde. Mesuré à l'ouverture de l'EN, à termes identiques : avec `you` nu, 14 items anglais
-// innocents sur 14 taguent ; avec les seules constructions ancrées (copule, présentatif,
-// impératif), 0 sur 14. Le même jeu de mots passe de « tague tout » à « ne tague rien d'innocent »
-// sans qu'une ligne de code change — c'est pourquoi ce lot n'a introduit AUCUN mécanisme.
+// ── `targets` carries address CONSTRUCTIONS, never a bare pronoun ──────────────────────────────
+// Writing rule for this array, valid for any language admitted here. In French it is moot
+// — `toi` addresses only someone. In English the 2nd-person pronoun is ALSO
+// the impersonal: « you should get your gland checked » addresses no one, it is advice
+// to the world. Measured at EN opening, at identical terms: with bare `you`, 14 innocent English
+// items out of 14 tag; with the anchored constructions alone (copula, presentative,
+// imperative), 0 out of 14. The same word set goes from "tags everything" to "tags nothing innocent"
+// without a line of code changing — that is why this batch introduced NO mechanism.
 //
-// ── SIX ENTRÉES FR RETIRÉES à l'ouverture de l'EN — et pourquoi elles ne reviennent pas seules ──
-// `con`, `clown`, `loser`, `gland`, `tache`, `bigot` matchaient de l'anglais ORDINAIRE : « the pros
-// and cons » (le pluriel du matcher fait le reste), « your thyroid gland », « growing a tache »
-// (BrE), « being a bigot about this policy ». Quatre d'entre elles sont des collisions PURES — le
-// mot anglais n'a aucun rapport avec le sens français, et aucune agression n'est en jeu.
+// ── SIX FR ENTRIES REMOVED at EN opening — and why they do not return alone ─────────────────────
+// `con`, `clown`, `loser`, `gland`, `tache`, `bigot` matched ORDINARY English: « the pros
+// and cons » (the matcher's plural does the rest), « your thyroid gland », « growing a tache »
+// (BrE), « being a bigot about this policy ». Four of them are PURE collisions — the
+// English word has no relation to the French sense, and no aggression is at stake.
 //
-// Elles étaient INERTES tant que `targets` était FR : le ET ne trouvait jamais son second membre.
-// Ce sont les cibles EN ci-dessous qui les auraient ACTIVÉES — le lot a d'abord été livré ainsi, et
-// six faux positifs ont vécu quelques commits sur le seul label sans éventail de lectures. C'est la
-// leçon à ne pas reperdre : sous une conjonction, ouvrir la SECONDE liste active tout ce que la
-// première portait en dormance (ADR-0003, *L'admission d'un terme*).
+// They were INERT as long as `targets` was FR: the AND never found its second member.
+// It is the EN targets below that would have ACTIVATED them — the batch was first delivered thus, and
+// six false positives lived a few commits on the sole label with no fan of readings. This is the
+// lesson not to lose again: under a conjunction, opening the SECOND list activates everything the
+// first carried dormant (ADR-0003, *The admission of a term*).
 //
-// L'ablation a été rendue plutôt qu'assumée (arbitrage yuya) : accepter un tort connu sur un label
-// sans filet vaut moins que perdre un rappel qu'on peut re-mesurer. Ce qu'elle coûte, dit
-// franchement — le rappel n'est PAS nul : « t'es vraiment con », « t'es qu'un clown » et
-// « t'es qu'un bigot » ne sont plus lus. `connard`/`conne`/`connasse`/`sale con`, `guignol`,
-// `bouffon`, `looser`, `bigote` et `grenouille de benitier` couvrent le registre, jamais ces
-// surfaces-là. Et le label étant item-level, le constat SURVIT dès qu'un second item de la même
-// voix porte un autre terme : le coût se concentre entièrement sur la voix qui insulte UNE SEULE
-// FOIS, avec ce mot-là.
+// The ablation was rendered rather than assumed (yuya arbitration): accepting a known wrong on a label
+// without a net is worth less than losing a recall one can re-measure. What it costs, said
+// frankly — the recall is NOT null: « t'es vraiment con », « t'es qu'un clown » and
+// « t'es qu'un bigot » are no longer read. `connard`/`conne`/`connasse`/`sale con`, `guignol`,
+// `bouffon`, `looser`, `bigote` and `grenouille de benitier` cover the register, never those
+// surfaces. And the label being item-level, the finding SURVIVES as soon as a second item of the same
+// voice carries another term: the cost concentrates entirely on the voice that insults ONLY
+// ONCE, with that word.
 //
-// Le retrait est RÉVERSIBLE et se re-mesure : quatre voix scellées d'agression et de vanne (deux
-// FR, deux EN) sont en cours d'écriture en aveugle, parce que ce label n'a jamais eu de contrôle
-// positif dans aucune des deux langues — 17 voix scellées, 476 items, zéro constat `conflictual`.
-// Le jour où elles atterrissent, la question qui décide est celle d'ADR-0003 : *ces termes
-// portent-ils un rappel que rien d'autre ne porte ?*
+// The removal is REVERSIBLE and gets re-measured: four sealed voices of aggression and banter (two
+// FR, two EN) are being written blind, because this label never had a positive
+// control in either language — 17 sealed voices, 476 items, zero `conflictual` finding.
+// The day they land, the question that decides is ADR-0003's: *do these terms
+// carry a recall that nothing else carries?*
 //
-// ── Ce que l'export ne porte pas, et qui décide ici ────────────────────────────────────────────
-// « you're such an idiot » entre amis et les mêmes mots visant un inconnu sont le MÊME texte : ce
-// qui les sépare est la relation, qu'un commentaire d'export ne montre pas (il répond à une vidéo
-// que personne ne peut voir). Aucun filtre ne peut donc les départager — ni négation, ni citation,
-// ni 3ᵉ personne. La réponse n'est pas un mécanisme, c'est un VOLUME : le lot EN est délibérément
-// petit, et n'admet pas le registre familier dont l'amitié fait un usage massif (`idiot`, `dumb`,
-// `silly` ne sont PAS admis en EN — ce sont les mots de la vanne autant que ceux de l'attaque).
-// Ce pari n'a PAS suffi, et le banc de ce label l'a montré : la vanne écrit le vocabulaire hostile,
-// et c'est la GARDE de cible qui la sélectionne (dette au catalogue §4). Le volume réduit limite le
-// nombre de torts, il n'en change pas la nature.
-// Doctrine : ADR-0003, *La limite que la donnée ne lève pas*.
+// ── What the export does not carry, and what decides here ───────────────────────────────────────
+// « you're such an idiot » between friends and the same words aimed at a stranger are the SAME text:
+// what separates them is the relationship, which an export comment does not show (it replies to a video
+// no one can see). No filter can therefore tell them apart — neither negation, nor quotation,
+// nor 3rd person. The answer is not a mechanism, it is a VOLUME: the EN batch is deliberately
+// small, and does not admit the colloquial register that friendship uses massively (`idiot`, `dumb`,
+// `silly` are NOT admitted in EN — they are the words of banter as much as of attack).
+// This bet did NOT suffice, and this label's bench showed it: banter writes the hostile vocabulary,
+// and it is the target GUARD that selects it (debt to catalogue §4). The reduced volume limits the
+// number of wrongs, it does not change their nature.
+// Doctrine: ADR-0003, *The limit the data does not lift*.
 
 import type { ItemLevelLexicon } from './types';
 
@@ -79,7 +79,7 @@ export const CONFLICTUAL_LEXICON: ItemLevelLexicon = {
   kind: 'item-level',
   label: 'conflictual',
   insults: [
-    // Familier / courant.
+    // Colloquial / everyday.
     'abruti',
     'debile',
     'connard',
@@ -111,7 +111,7 @@ export const CONFLICTUAL_LEXICON: ItemLevelLexicon = {
     'boloss',
     'stupide',
     'teube',
-    // Vulgaire.
+    // Vulgar.
     'grosse merde',
     'sale merde',
     'pauvre merde',
@@ -123,83 +123,83 @@ export const CONFLICTUAL_LEXICON: ItemLevelLexicon = {
     'salopard',
     'enfoire',
     'batard',
-    // Impératifs injurieux (adressent par construction — aussi listés dans `targets`).
+    // Insulting imperatives (they address by construction — also listed in `targets`).
     'ta gueule',
     'ferme la',
     'va crever',
     'mange tes morts',
-    // Slurs genrés (décision yuya : gardés).
+    // Gendered slurs (yuya decision: kept).
     'salope',
     'petasse',
     'pouffiasse',
     'encule',
     'fils de pute',
     'nique ta mere',
-    // Slurs validistes (décision yuya : gardés).
+    // Ableist slurs (yuya decision: kept).
     'attarde',
     'attardee',
     'gogol',
     'mongol',
-    // Insultes homophobes INTERPERSONNELLES (PANO-72, arbitrage yuya : visant une PERSONNE dans
-    // l'échange, gated par la cible 2ᵉ pers.). Le slur de GROUPE dans l'absolu n'entre nulle part
-    // (futur label dédié, signalé) — ces termes ne comptent QUE couplés à une adresse.
+    // INTERPERSONAL homophobic insults (PANO-72, yuya arbitration: targeting a PERSON in
+    // the exchange, gated by the 2nd-person target). The GROUP slur in the absolute enters nowhere
+    // (future dedicated label, flagged) — these terms count ONLY paired with an address.
     'pede',
     'tapette',
     'tarlouze',
     'gouine',
     'fiotte',
-    // Insultes anti-croyant INTERPERSONNELLES (même règle : personne, pas groupe ni idée).
-    // `bigot` (masculin) est RETIRÉ — homographe du mot anglais courant, cf. l'en-tête. La frontière
-    // religion → conflictual reste portée par les deux entrées ci-dessous ; c'est la surface
-    // masculine qui est perdue, et c'est le retrait le plus cher des six.
+    // INTERPERSONAL anti-believer insults (same rule: person, not group nor idea).
+    // `bigot` (masculine) is REMOVED — homograph of the common English word, cf. the header. The
+    // religion → conflictual boundary remains held by the two entries below; it is the masculine
+    // surface that is lost, and it is the costliest removal of the six.
     'bigote',
     'grenouille de benitier',
-    // Abréviations SMS d'agression.
+    // Aggression SMS abbreviations.
     'tg',
     'ftg',
     'vtff',
     'fdp',
     'ntm',
-    // ── (EN) — le registre dont l'AGRESSION est l'usage dominant, et lui seul ──────────────────
-    // Onze formes — huit d'insulte et trois impératifs — contre soixante-huit en FR, à dessein
-    // (cf. l'en-tête : la vanne et l'agression sont
-    // le même énoncé). Écartés au même endroit, et l'exclusion porte la doctrine : `dumb` nu
-    // (« dumb luck », l'auto-dépréciation), `ass`/`arse` nus (`badass` est un compliment), `sad`
+    // ── (EN) — the register whose DOMINANT use is AGGRESSION, and it alone ─────────────────────
+    // Eleven forms — eight insults and three imperatives — against sixty-eight in FR, by design
+    // (cf. the header: banter and aggression are
+    // the same utterance). Discarded in the same place, and the exclusion carries the doctrine: bare `dumb`
+    // (« dumb luck », self-deprecation), bare `ass`/`arse` (`badass` is a compliment), `sad`
     // (« that is a sad story »), `weirdo`/`creep`/`jerk` (« the creep of the deadline », « you jerk
-    // the handle upwards »), `trash`/`garbage`/`mid`/`washed`/`cooked` (ils qualifient une
-    // performance, pas une personne), `cope`/`seethe`/`ratio`/`touch grass` (joute ludique, et la
-    // surface par laquelle l'invective POLITIQUE entrerait — dette nommée), `crazy`/`insane`/
-    // `psycho` (intensificateurs, et argot validiste). `narcissist` et `schizo` n'entrent pas :
-    // nom de trouble devenu insulte générique (ADR-0003, *L'admission d'un terme*). `gaslighting`
-    // décrit un COMPORTEMENT, pas une personne — hors de la porte de ce label. `triggered`
-    // FRANCHIRAIT la porte, et c'est exactement pourquoi il reste dehors : il ne distingue pas la
-    // moquerie politique de l'agression, et la moquerie a été retirée de `politics` pour ne pas
-    // atterrir ici.
-    // Les slurs homophobes et validistes EN sont HORS de ce lot : coût d'erreur maximal, décision
-    // explicite due (le FR les porte sur arbitrage nommé), taux de FP EN inconnu. Dette nommée.
+    // the handle upwards »), `trash`/`garbage`/`mid`/`washed`/`cooked` (they qualify a
+    // performance, not a person), `cope`/`seethe`/`ratio`/`touch grass` (playful jousting, and the
+    // surface through which POLITICAL invective would enter — named debt), `crazy`/`insane`/
+    // `psycho` (intensifiers, and ableist slang). `narcissist` and `schizo` do not enter:
+    // disorder name turned generic insult (ADR-0003, *The admission of a term*). `gaslighting`
+    // describes a BEHAVIOR, not a person — outside this label's gate. `triggered`
+    // WOULD CROSS the gate, and that is exactly why it stays out: it does not distinguish
+    // political mockery from aggression, and the mockery was removed from `politics` so as not to
+    // land here.
+    // The EN homophobic and ableist slurs are OUT of this batch: maximal error cost, an explicit
+    // decision due (FR carries them on a named arbitration), unknown EN FP rate. Named debt.
     'stupid',
-    // `moron` RETIRÉ après sa première mesure en aveugle : sur le banc de ce label, il ne se
-    // déclenche sur AUCUN des 26 items de la voix hostile, et une fois sur la voix affectueuse, à
-    // l'étage NOMMÉ. Rappel mesuré nul, tort mesuré à un — l'inverse de ce qu'un terme doit rendre.
-    // `moronic` reste : il qualifie une idée bien plus qu'une personne, la vanne ne l'emploie pas de
-    // la même façon, et la garde de cible l'empêche de tagger « this take is moronic ». Il n'est
-    // pour autant PAS mesuré — aucune voix scellée ne l'écrit, et c'est dit plutôt que présumé.
+    // `moron` REMOVED after its first blind measurement: on this label's bench, it fires
+    // on NONE of the 26 items of the hostile voice, and once on the affectionate voice, at
+    // the NAMED tier. Measured recall null, measured wrong at one — the opposite of what a term should return.
+    // `moronic` stays: it qualifies an idea far more than a person, banter does not use it in
+    // the same way, and the target guard prevents it from tagging « this take is moronic ». It is
+    // however NOT measured — no sealed voice writes it, and this is said rather than presumed.
     'moronic',
     'dumbass',
     'jackass',
     'asshole',
-    'arsehole', // double graphie US/BrE : le matcher ne les relie pas
+    'arsehole', // dual US/BrE spelling: the matcher does not link them
     'pathetic',
     'braindead',
-    // Impératifs injurieux EN (adressent par construction — aussi listés dans `targets`, même
-    // précédent que « ta gueule »). Écartés : `stop it`, `leave me alone` — défensifs, écrits par
-    // qui SUBIT ; les taguer inverserait la victime et l'auteur.
+    // EN insulting imperatives (they address by construction — also listed in `targets`, same
+    // precedent as « ta gueule »). Discarded: `stop it`, `leave me alone` — defensive, written by
+    // whoever SUFFERS; tagging them would invert the victim and the author.
     'shut up',
     'nobody asked',
     'get lost',
   ],
-  // Cible 2ᵉ personne. Les impératifs injurieux y figurent AUSSI (l'impératif adresse par
-  // construction, décision yuya) — sans quoi « ta gueule » nu ne serait jamais tagué.
+  // 2nd-person target. The insulting imperatives appear here TOO (the imperative addresses by
+  // construction, yuya decision) — without which bare « ta gueule » would never be tagged.
   targets: [
     "t'es",
     'tu es',
@@ -221,12 +221,12 @@ export const CONFLICTUAL_LEXICON: ItemLevelLexicon = {
     'ftg',
     'vtff',
     'ntm',
-    // ── (EN) — constructions ANCRÉES, jamais le pronom nu (cf. la règle en en-tête) ────────────
-    // Écartés au même endroit : `you` / `u` / `ur` nus (l'impersonnel anglais — 14/14 items
-    // innocents taguent) ; `bro`, `mate`, `bruv`, `y'all` (vocatifs d'AFFILIATION : ils marquent le
-    // lien, et la vanne les emploie infiniment plus que l'agression) ; `people like you`,
-    // `everyone who` (ils adressent une CLASSE, pas un interlocuteur — le slur de groupe dans
-    // l'absolu n'entre nulle part, cf. plus haut).
+    // ── (EN) — ANCHORED constructions, never the bare pronoun (cf. the rule in the header) ─────
+    // Discarded in the same place: bare `you` / `u` / `ur` (the English impersonal — 14/14 innocent
+    // items tag); `bro`, `mate`, `bruv`, `y'all` (AFFILIATION vocatives: they mark the
+    // bond, and banter uses them infinitely more than aggression); `people like you`,
+    // `everyone who` (they address a CLASS, not an interlocutor — the group slur in
+    // the absolute enters nowhere, cf. above).
     "you're",
     'youre',
     'you are',

@@ -1,38 +1,38 @@
-// Normalisation FR INDEXÉE pour le matching lexical (PANO-71, machinerie PANO-70 §2.3).
+// INDEXED FR normalization for lexical matching (PANO-71, PANO-70 §2.3 machinery).
 //
-// Minuscules + accents retirés + apostrophes typographiques unifiées + tirets→espaces (PANO-36 :
-// « burn-out » / « burn out » = une seule entrée de lexique).
-// Point clé : la normalisation est INDEXÉE. Chaque caractère du texte normalisé
-// garde l'offset de son caractère d'origine, pour qu'un match dans le normalisé se re-projette
-// EXACTEMENT sur le texte original. C'est ce qui permet à `triggerTerms` de porter la FORME DE
-// SURFACE (« Dépréssion » tel que tapé, pas « depression » normalisé) : l'invariant
-// `triggerTerms ⊂ texte` (PANO-70 §2.4) est vrai au caractère près, surlignable sans re-matching.
+// Lowercase + accents stripped + typographic apostrophes unified + hyphens→spaces (PANO-36:
+// « burn-out » / « burn out » = a single lexicon entry).
+// Key point: the normalization is INDEXED. Each character of the normalized text
+// keeps the offset of its original character, so that a match in the normalized text re-projects
+// EXACTLY onto the original text. This is what lets `triggerTerms` carry the SURFACE
+// FORM (« Dépréssion » as typed, not normalized « depression »): the invariant
+// `triggerTerms ⊂ text` (PANO-70 §2.4) is true down to the character, highlightable without re-matching.
 //
-// PANO-36 ajoute la SQUELETTISATION indexée (répétitions d'un même caractère réduites à une
-// occurrence) : le second espace de matching pour les allongements expressifs (« ftgggg »,
-// « connnnard ») — voir detect.ts, fallback CONDITIONNÉ à un allongement visible dans la surface.
+// PANO-36 adds INDEXED SKELETONIZATION (repetitions of the same character reduced to a single
+// occurrence): the second matching space for expressive elongations (« ftgggg »,
+// « connnnard ») — see detect.ts, fallback CONDITIONED on an elongation visible in the surface.
 //
-// TS pur, sans DOM, zéro dépendance (ADR-0002).
+// Pure TS, no DOM, zero dependency (ADR-0002).
 
-/** Marques combinantes Unicode (accents décomposés par NFD) — retirées du normalisé. */
+/** Unicode combining marks (accents decomposed by NFD) — stripped from the normalized text. */
 const COMBINING_MARK = /\p{M}/gu;
 
-/** Texte normalisé + carte de re-projection vers l'original. */
+/** Normalized text + re-projection map to the original. */
 export interface NormalizedText {
-  /** Texte original, intact (source des formes de surface). */
+  /** Original text, intact (source of the surface forms). */
   readonly original: string;
-  /** Texte normalisé : minuscules, sans accents, apostrophes `'`. */
+  /** Normalized text: lowercase, no accents, `'` apostrophes. */
   readonly norm: string;
-  /** `starts[i]` = offset (code units) du caractère original dont provient `norm[i]`. */
+  /** `starts[i]` = offset (code units) of the original character `norm[i]` comes from. */
   readonly starts: readonly number[];
-  /** `ends[i]` = offset APRÈS ce caractère original (borne exclusive). */
+  /** `ends[i]` = offset AFTER that original character (exclusive bound). */
   readonly ends: readonly number[];
 }
 
 /**
- * Normalise en conservant la carte d'offsets. Itération par POINT DE CODE (pas par code unit) :
- * un caractère original peut produire 0 (marque seule), 1 ou plusieurs caractères normalisés —
- * tous pointent vers le même caractère d'origine.
+ * Normalizes while keeping the offset map. Iteration by CODE POINT (not by code unit):
+ * an original character can produce 0 (mark alone), 1 or several normalized characters —
+ * all pointing to the same original character.
  */
 export function normalizeFr(text: string): NormalizedText {
   let norm = '';
@@ -41,8 +41,8 @@ export function normalizeFr(text: string): NormalizedText {
   let offset = 0;
   for (const char of text) {
     const next = offset + char.length;
-    // Apostrophe typographique → droite ; tiret → espace (PANO-36 : « burn-out » ≡ « burn out »,
-    // une seule entrée de lexique couvre les deux graphies).
+    // Typographic apostrophe → straight; hyphen → space (PANO-36: « burn-out » ≡ « burn out »,
+    // a single lexicon entry covers both spellings).
     const replaced = char === '’' ? "'" : char === '-' ? ' ' : char;
     const stripped = replaced.normalize('NFD').replace(COMBINING_MARK, '').toLowerCase();
     for (const out of stripped) {
@@ -56,12 +56,12 @@ export function normalizeFr(text: string): NormalizedText {
 }
 
 /**
- * SQUELETTISATION indexée (PANO-36) : toute répétition d'un même caractère est réduite à UNE
- * occurrence, la carte d'offsets absorbant le run entier (la forme de surface d'un match
- * squelettisé reste le segment original complet, allongement inclus — `triggerTerms ⊂ texte`
- * tient). Second espace de matching pour les allongements expressifs ; le déclenchement est
- * gardé côté detect.ts (allongement ≥ 3 visible dans la surface), pour que « cône » (→ « cone »)
- * ne puisse jamais matcher « conne » (→ « cone ») sur du texte non allongé.
+ * INDEXED SKELETONIZATION (PANO-36): any repetition of the same character is reduced to ONE
+ * occurrence, the offset map absorbing the entire run (the surface form of a
+ * skeletonized match stays the complete original segment, elongation included — `triggerTerms ⊂ text`
+ * holds). Second matching space for expressive elongations; the triggering is
+ * guarded on the detect.ts side (elongation ≥ 3 visible in the surface), so that « cône » (→ « cone »)
+ * can never match « conne » (→ « cone ») on non-elongated text.
  */
 export function skeletonize(text: NormalizedText): NormalizedText {
   let norm = '';
@@ -70,7 +70,7 @@ export function skeletonize(text: NormalizedText): NormalizedText {
   for (let i = 0; i < text.norm.length; i++) {
     const char = text.norm.charAt(i);
     if (norm.length > 0 && norm.charAt(norm.length - 1) === char) {
-      ends[ends.length - 1] = text.ends[i] ?? 0; // étend le run : la surface couvre l'allongement
+      ends[ends.length - 1] = text.ends[i] ?? 0; // extends the run: the surface covers the elongation
       continue;
     }
     norm += char;
@@ -80,20 +80,20 @@ export function skeletonize(text: NormalizedText): NormalizedText {
   return { original: text.original, norm, starts, ends };
 }
 
-/** Squelette d'une chaîne déjà normalisée (pour les MARQUEURS : « connard » → « conard »). */
+/** Skeleton of an already-normalized string (for MARKERS: « connard » → « conard »). */
 export function collapseRuns(normalized: string): string {
   return normalized.replace(/(.)\1+/g, '$1');
 }
 
 /**
- * Forme de surface du segment `[start, end)` DU NORMALISÉ, découpée dans l'ORIGINAL via la carte.
- * Contrat : `start < end`, bornes dans le normalisé (garanties par le matching, pas revérifiées).
+ * Surface form of the segment `[start, end)` OF THE NORMALIZED TEXT, sliced from the ORIGINAL via the map.
+ * Contract: `start < end`, bounds within the normalized text (guaranteed by the matching, not rechecked).
  */
 export function surfaceForm(text: NormalizedText, start: number, end: number): string {
   const from = text.starts[start];
   const to = text.ends[end - 1];
   if (from === undefined || to === undefined) {
-    return ''; // bornes hors carte : segment vide plutôt qu'une exception (défensif, jamais attendu)
+    return ''; // bounds off-map: empty segment rather than an exception (defensive, never expected)
   }
   return text.original.slice(from, to);
 }

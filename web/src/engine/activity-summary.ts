@@ -1,26 +1,26 @@
-// Lecteur factuel — Activity Summary (PANO-84). Distinct des règles `Rule` (`rules/*.ts`) : pas un
-// producteur d'`Insight` (aucune inférence, aucun `claim`/`framing`), juste une projection-source de
-// deux compteurs ALL-TIME (contrat §« Your Activity »/Activity Summary) vers `EngineOutput`.
+// Factual reader — Activity Summary (PANO-84). Distinct from the `Rule` rules (`rules/*.ts`): not an
+// `Insight` producer (no inference, no `claim`/`framing`), just a source-projection of two ALL-TIME
+// counters (contract §"Your Activity"/Activity Summary) into `EngineOutput`.
 //
-// Fenêtre distincte de R1/R2/R3/R5 (≈ 1 an, bornée par l'export) : ces deux compteurs sont
-// « depuis l'inscription au compte », jamais mélangés au wording des règles `inferred`. La
-// distinction se voit à l'affichage — `ui/v2/ActivitySection.tsx` (`VolumesCard`) étiquette chaque
-// fenêtre séparément (PANO-84), et c'est là que le mélange se verrait s'il revenait.
+// Window distinct from R1/R2/R3/R5 (≈ 1 year, bounded by the export): these two counters are "since
+// account registration", never mixed with the wording of the `inferred` rules. The distinction is
+// visible at display — `ui/v2/ActivitySection.tsx` (`VolumesCard`) labels each window separately
+// (PANO-84), and that is where the mix would show if it came back.
 //
-// `videosCommentedOnSinceAccountRegistration` n'est PAS repris ici : R2 (comment-topics) couvre déjà
-// les commentaires, sur sa propre fenêtre (~1 an) — un doublon all-time entretiendrait la confusion
-// de fenêtre que ce lecteur existe justement pour éviter.
+// `videosCommentedOnSinceAccountRegistration` is NOT picked up here: R2 (comment-topics) already
+// covers comments, on its own window (~1 year) — an all-time duplicate would sustain the very window
+// confusion this reader exists to avoid.
 
 import type { NormalizedExport } from './normalize';
 
 export interface ActivitySummaryTotals {
-  /** `videosSharedSinceAccountRegistration` — vidéos partagées, ALL-TIME. */
+  /** `videosSharedSinceAccountRegistration` — videos shared, ALL-TIME. */
   videosShared: number;
-  /** `videosWatchedToTheEndSinceAccountRegistration` — vidéos vues jusqu'au bout, ALL-TIME. */
+  /** `videosWatchedToTheEndSinceAccountRegistration` — videos watched to the end, ALL-TIME. */
   videosWatchedToEnd: number;
 }
 
-/** Projection-source pure des deux compteurs all-time d'Activity Summary. */
+/** Pure source-projection of the two all-time counters of Activity Summary. */
 export function readActivitySummary(input: NormalizedExport): ActivitySummaryTotals {
   const map = input['Your Activity']['Activity Summary'].ActivitySummaryMap;
   return {

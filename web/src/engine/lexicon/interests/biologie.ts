@@ -1,27 +1,27 @@
-// Lexique d'intérêt `biologie` (D2, PANO-89 lot 4) — biologie (champ savoir).
+// Interest lexicon `biologie` (D2, PANO-89 batch 4) — biology (knowledge field).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la biologie FR : concepts, figures, sous-champs. Usage SOBRE (édition/edtech).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR biology: concepts, figures, sub-fields. SOBER usage (publishing/edtech).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « adn », « mitose », « meiose », « darwin », « genetique », « photosynthese »,
 //     « chromosome », « microbiologie », « biodiversite », « membrane cellulaire ».
-//   · ANCRÉ — « cellule » (prison / téléphone), « evolution », « espece » (espèces / cash),
-//     « gene » (« gêne »), « culture » (culture bactérienne / générale), « milieu », « noyau » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « cellule » (prison / phone), « evolution », « espece » (espèces / cash),
+//     « gene » (« gêne »), « culture » (bacterial / general culture), « milieu », « noyau »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
 //   · SOLO — « biology », « dna », « mitosis », « meiosis », « genetics », « photosynthesis »,
 //     « microbiology », « biodiversity », « ecosystem », « natural selection », « molecular
-//     biology », « organism » : univoques.
-//   · ANCRÉ — « cell » (cellule de PRISON / de TABLEUR / téléphone — le 50/50 majeur), « species »,
-//     « bacteria » : compagnon requis.
-//   · EXCLU — « bio » : en EN, c'est la BIO DE PROFIL (« link in bio », « check my bio ») et la
-//     biographie, bien avant la biologie. ÉCARTÉ, même en ancré — un marqueur de plateforme n'a
-//     rien à faire dans un lexique de savoir.
+//     biology », « organism »: univocal.
+//   · ANCHORED — « cell » (PRISON / SPREADSHEET cell / phone — the major 50/50), « species »,
+//     « bacteria »: companion required.
+//   · EXCLUDED — « bio »: in EN, it is the PROFILE BIO (« link in bio », « check my bio ») and the
+//     biography, well before biology. DISCARDED, even as anchored — a platform marker has
+//     no place in a knowledge lexicon.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Champ SAVOIR. Aucun marqueur de pathologie/vécu médical (reste `health_physical`, D1).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. KNOWLEDGE field. No pathology/medical-experience marker (stays `health_physical`, D1).
 
 import type { InterestLexicon } from '../types';
 
@@ -49,7 +49,7 @@ export const BIOLOGIE_LEXICON: InterestLexicon = {
     'enzyme',
     'selection naturelle',
     'biologie moleculaire',
-    // Variantes EN (PANO-88) : SOLO univoques.
+    // EN variants (PANO-88): SOLO univocal.
     'biology',
     'dna',
     'mitosis',
@@ -64,18 +64,18 @@ export const BIOLOGIE_LEXICON: InterestLexicon = {
     'organism',
   ],
   anchored: [
-    'cellule', // prison / téléphone
-    'evolution', // évolution générique
-    'espece', // espèces (cash) / espèce
-    'gene', // « gêne » (homophone) / gène
-    'culture', // culture bactérienne / culture générale
-    'milieu', // milieu (environnement) / au milieu
-    'noyau', // noyau (fruit) / noyau cellulaire
-    'bacterie', // fairly bio mais gardé ancré
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'cell', // cellule de prison / de tableur / téléphone — le 50/50 majeur (EN)
-    'species', // espèce générique (EN)
-    'bacteria', // graphie EN de « bacterie »
+    'cellule', // prison / phone
+    'evolution', // generic evolution
+    'espece', // espèces (cash) / species
+    'gene', // « gêne » (homophone) / gene
+    'culture', // bacterial culture / general culture
+    'milieu', // milieu (environment) / in the middle
+    'noyau', // noyau (fruit pit) / cell nucleus
+    'bacterie', // fairly bio but kept anchored
+    // EN variants (PANO-88): ANCHORED.
+    'cell', // prison cell / spreadsheet cell / phone — the major 50/50 (EN)
+    'species', // generic species (EN)
+    'bacteria', // EN spelling of « bacterie »
   ],
   selfDeclared: ['etudiant en biologie'],
 };

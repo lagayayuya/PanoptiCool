@@ -1,42 +1,41 @@
-// Archive du site pour la voie « Tout sur ta machine » (route B de la section IA, ADR-0006 :
-// servir le site depuis `localhost` supprime l'écart origine/cible dans les trois moteurs).
+// Site archive for the "Everything on your machine" path (route B of the AI section, ADR-0006:
+// serving the site from `localhost` removes the origin/target gap in all three engines).
 //
-// POURQUOI UNE INTÉGRATION ASTRO, ET PAS UN SCRIPT `postbuild`. Ce zip a d'abord été produit par
-// `astro build && node scripts/build-site-zip.mjs` dans `npm run build`. Le défaut est structurel :
-// **rien ne garantit que le build passe par le script npm**. Un hébergeur qui détecte Astro lance
-// `astro build` directement, tout comme un `npx astro build` en local — et dans ces cas le zip
-// n'était JAMAIS écrit. Le lien de téléchargement de la route B tombait alors en 404 sur le site
-// hébergé, sans que rien ne le signale : le build réussissait, la page se construisait, seul le
-// fichier manquait. Une intégration se branche sur le build LUI-MÊME (`astro:build:done`) : elle
-// tourne quelle que soit la commande qui l'a déclenché.
+// WHY AN ASTRO INTEGRATION, AND NOT A `postbuild` SCRIPT. This zip was first produced by
+// `astro build && node scripts/build-site-zip.mjs` in `npm run build`. The flaw is structural:
+// **nothing guarantees the build goes through the npm script**. A host that detects Astro runs
+// `astro build` directly, just like an `npx astro build` locally — and in those cases the zip
+// was NEVER written. Route B's download link then fell to a 404 on the hosted site, with nothing
+// to signal it: the build succeeded, the page was built, only the file was missing. An integration
+// hooks into the build ITSELF (`astro:build:done`): it runs whatever command triggered it.
 //
-// L'archive reste un ARTEFACT DE BUILD, régénéré depuis la sortie du build : elle ne peut pas se
-// périmer face au site en ligne, puisque c'est le même build. C'est ce qui lève l'objection
-// historique contre une archive téléchargeable (un canal de distribution à versionner, qui
-// divergerait en silence — cf. `src/ai/install-help.ts`).
+// The archive stays a BUILD ARTIFACT, regenerated from the build output: it cannot go stale
+// against the online site, since it is the same build. This is what defeats the historical
+// objection against a downloadable archive (a distribution channel to version, which would drift
+// silently — cf. `src/ai/install-help.ts`).
 //
-// ─── CE QUE CE MÉCANISME NE COUVRE PAS ──────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme déclare sa frontière.
-//   - IL NE TOURNE PAS EN `astro dev`. `astro:build:done` est un hook de BUILD : en développement,
-//     `/panopticool-site.zip` n'existe pas et le lien de la route B y est mort. C'est sans
-//     conséquence (en dev la page est servie depuis localhost, donc la route B n'a plus d'objet —
-//     c'est le mode « Tout est prêt »), mais ça se sait ;
-//   - IL NE VERSIONNE RIEN. Le zip n'entre pas dans git (`dist/` est ignoré) : c'est une sortie de
-//     build, régénérée à l'identique à chaque build. « Disponible sur le dépôt » veut donc dire
-//     « produit par n'importe quel build depuis un clone », pas « committé » ;
-//   - IL NE VÉRIFIE PAS LE CONTENU du zip. Il empaquette ce que le build a écrit ; que cette sortie
-//     soit correcte relève du build, pas d'ici. La CI vérifie seulement que le fichier EXISTE.
+// ─── WHAT THIS MECHANISM DOES NOT COVER ─────────────────────────────────────────────────────────
+// CLAUDE.md obligation: a mechanism declares its boundary.
+//   - IT DOES NOT RUN IN `astro dev`. `astro:build:done` is a BUILD hook: in development,
+//     `/panopticool-site.zip` does not exist and route B's link is dead there. This is harmless
+//     (in dev the page is served from localhost, so route B has no purpose anymore — that is the
+//     "Everything is ready" mode), but it should be known;
+//   - IT VERSIONS NOTHING. The zip does not enter git (`dist/` is ignored): it is a build output,
+//     regenerated identically at each build. "Available on the repo" therefore means "produced by
+//     any build from a clone", not "committed";
+//   - IT DOES NOT VERIFY THE CONTENT of the zip. It packages what the build wrote; whether that
+//     output is correct is the build's concern, not this file's. CI only verifies that the file EXISTS.
 
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { AstroIntegration } from 'astro';
 import { zipSync } from 'fflate';
-// Le nom vit dans `install-help.ts`, qui le compose aussi dans la commande copiable de la route B.
-// L'importer ici plutôt que le recopier : deux noms qui divergent, c'est un lien mort.
+// The name lives in `install-help.ts`, which also composes it into route B's copyable command.
+// Importing it here rather than recopying it: two names that drift apart are a dead link.
 import { SITE_ZIP_NAME } from '../src/ai/install-help';
 
-/** Tous les fichiers sous `dir`, en chemins ABSOLUS (parcours récursif). */
+/** All files under `dir`, as ABSOLUTE paths (recursive walk). */
 function walk(dir: string): string[] {
   return readdirSync(dir).flatMap((name) => {
     const full = join(dir, name);
@@ -52,9 +51,9 @@ export function siteZip(): AstroIntegration {
         const outDir = fileURLToPath(dir);
         const files: Record<string, Uint8Array> = {};
         for (const full of walk(outDir)) {
-          // Les séparateurs d'une entrée zip sont des `/` sur toutes les plateformes.
+          // A zip entry's separators are `/` on every platform.
           const entry = relative(outDir, full).split(sep).join('/');
-          // Un build par-dessus un build ne s'auto-embarque pas.
+          // A build on top of a build does not embed itself.
           if (entry === SITE_ZIP_NAME) continue;
           files[entry] = new Uint8Array(readFileSync(full));
         }

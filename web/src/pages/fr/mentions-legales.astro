@@ -1,7 +1,7 @@
 ---
-// Mentions légales (LCEN art. 6-III). Page de TEXTE : Astro pur, aucun îlot, zéro JS — la seule du
-// site dans ce cas, et la seule à exercer la raison SSG d'ADR-0002. Ne pas y ajouter d'interactivité
-// sans raison : sa valeur est d'être lisible sans exécuter une ligne de script.
+// « Mentions légales » (LCEN art. 6-III). TEXT page: pure Astro, no island, zero JS — the only one
+// on the site in that case, and the only one exercising ADR-0002's SSG rationale. Do not add
+// interactivity here without reason: its value is being readable without running a line of script.
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
@@ -9,9 +9,9 @@ import '@fontsource/jetbrains-mono/latin-700.css';
 import { DEFAULT_LOCALE, HTML_LANG, type Locale, localePath } from '../../i18n/locales';
 import SiteHead from '../../ui/SiteHead.astro';
 
-// La langue vient du DOSSIER de la page, elle n'est pas écrite ici : c'est ce qui rend
-// `<html lang>` vrai par construction dans chaque arbre de langue — et `i18n/current.ts`,
-// qui lit cet attribut pour fabriquer les liens des îlots, en dépend entièrement.
+// The language comes from the page's FOLDER, it is not written here: it is what makes
+// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
+// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 ---
 

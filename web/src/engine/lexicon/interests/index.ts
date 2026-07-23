@@ -1,11 +1,11 @@
-// Registre des lexiques d'intérêt (D2, PANO-76) — même mécanique que `WIRED_LEXICONS` (D1) : câbler
-// un intérêt = ajouter un module + une ligne dans `INTEREST_LEXICONS`. Le socle (PANO-75) ne change
-// pas ; les lots de contenu n'ajoutent que des données.
+// Registry of interest lexicons (D2, PANO-76) — same mechanics as `WIRED_LEXICONS` (D1): wiring
+// an interest = adding a module + one line in `INTEREST_LEXICONS`. The base (PANO-75) does not change;
+// the content batches only add data.
 //
-// `CANONICAL_THEME_IDS` est le catalogue COMPLET ratifié (~52 thèmes, `docs/detecteur-interets-
-// taxonomie.md`) ; `INTEREST_LEXICONS` est le sous-ensemble CÂBLÉ (lot 1 = 12 thèmes). Un test de
-// garde (`interests-battery.test.ts`) vérifie que tout thème câblé est déclaré au catalogue — un
-// slug câblé hors catalogue est une extension non ratifiée à remonter, pas un thème valide.
+// `CANONICAL_THEME_IDS` is the COMPLETE ratified catalogue (~52 themes, `docs/detecteur-interets-
+// taxonomie.md`); `INTEREST_LEXICONS` is the WIRED subset (batch 1 = 12 themes). A guard test
+// (`interests-battery.test.ts`) verifies that every wired theme is declared in the catalogue — a
+// wired slug outside the catalogue is an unratified extension to escalate, not a valid theme.
 
 import type { InterestLexicon } from '../types';
 import { ASTRONOMIE_LEXICON } from './astronomie';
@@ -62,12 +62,12 @@ import { VOITURES_LEXICON } from './voitures';
 import { VOYAGE_LEXICON } from './voyage';
 
 /**
- * Catalogue COMPLET ratifié (~52 thèmes, PANO-74). Source de vérité des identités de thème : les
- * lots 2–3 y piochent sans re-ratifier. Slugs stables (identité `Theme.id`), la prose des noms vit
- * en présentation (`theme.<slug>.label`). Voir `docs/detecteur-interets-taxonomie.md`.
+ * COMPLETE ratified catalogue (~52 themes, PANO-74). Source of truth for theme identities: the
+ * batches 2–3 draw from it without re-ratifying. Stable slugs (identity `Theme.id`), the prose of the names lives
+ * in presentation (`theme.<slug>.label`). See `docs/detecteur-interets-taxonomie.md`.
  */
 export const CANONICAL_THEME_IDS: ReadonlySet<string> = new Set([
-  // Sport & activité
+  // Sport & activity
   'muscu',
   'running',
   'football',
@@ -78,7 +78,7 @@ export const CANONICAL_THEME_IDS: ReadonlySet<string> = new Set([
   'skate',
   'sports_combat',
   'danse',
-  // Jeux & tech
+  // Games & tech
   'gaming',
   'esport',
   'tech',
@@ -89,7 +89,7 @@ export const CANONICAL_THEME_IDS: ReadonlySet<string> = new Set([
   'patisserie',
   'cuisine_vege',
   'cafe',
-  // Beauté & mode
+  // Beauty & fashion
   'maquillage',
   'skincare',
   'mode',
@@ -100,26 +100,26 @@ export const CANONICAL_THEME_IDS: ReadonlySet<string> = new Set([
   'rap',
   'electro',
   'guitare',
-  // Culture & médias
+  // Culture & media
   'manga_anime',
   'cinema_series',
   'lecture',
   'expo_concert',
-  // Animaux
+  // Animals
   'chiens',
   'chats',
   'lapins',
-  // Créatif & maison
+  // Creative & home
   'dessin',
   'photographie',
   'jardinage',
   'diy',
   'tricot',
-  // Auto/moto & voyage
+  // Auto/moto & travel
   'voitures',
   'motos',
   'voyage',
-  // Savoirs & disciplines
+  // Knowledge & disciplines
   'philosophie',
   'sociologie',
   'psychologie',
@@ -132,12 +132,12 @@ export const CANONICAL_THEME_IDS: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * Lexiques d'intérêt CÂBLÉS — LOTS 1 à 4 (PANO-76/77/78/89) : 52 thèmes = CATALOGUE COMPLET (le
- * lot 4 achève la couverture des ~52 thèmes ratifiés). L'ordre est un simple tie-break de classement
- * (à volume de preuves égal, le premier passe devant) ; le vrai tri est par volume, dans la règle D2.
+ * WIRED interest lexicons — BATCHES 1 to 4 (PANO-76/77/78/89): 52 themes = COMPLETE CATALOGUE (
+ * batch 4 completes the coverage of the ~52 ratified themes). The order is a simple ranking tie-break
+ * (at equal evidence volume, the first goes ahead); the real sort is by volume, in the D2 rule.
  */
 export const INTEREST_LEXICONS: readonly InterestLexicon[] = [
-  // Lot 1 (PANO-76)
+  // Batch 1 (PANO-76)
   MUSCU_LEXICON,
   RUNNING_LEXICON,
   FOOTBALL_LEXICON,
@@ -150,7 +150,7 @@ export const INTEREST_LEXICONS: readonly InterestLexicon[] = [
   SNEAKERS_LEXICON,
   KPOP_LEXICON,
   MANGA_ANIME_LEXICON,
-  // Lot 2 (PANO-77)
+  // Batch 2 (PANO-77)
   MODE_LEXICON,
   CINEMA_SERIES_LEXICON,
   CHIENS_LEXICON,
@@ -163,7 +163,7 @@ export const INTEREST_LEXICONS: readonly InterestLexicon[] = [
   FITNESS_LEXICON,
   COIFFURE_LEXICON,
   TECH_LEXICON,
-  // Lot 3 (PANO-78)
+  // Batch 3 (PANO-78)
   BASKET_LEXICON,
   CYCLISME_LEXICON,
   RANDONNEE_LEXICON,
@@ -178,7 +178,7 @@ export const INTEREST_LEXICONS: readonly InterestLexicon[] = [
   LECTURE_LEXICON,
   EXPO_CONCERT_LEXICON,
   MOTOS_LEXICON,
-  // Lot 4 (PANO-89) — achève le catalogue
+  // Batch 4 (PANO-89) — completes the catalogue
   LAPINS_LEXICON,
   DESSIN_LEXICON,
   JARDINAGE_LEXICON,

@@ -1,387 +1,383 @@
-# Constats sensibles — catalogue & garde-fous
+# Sensitive findings — catalog & safeguards
 
-> Document **durable et vivant**. Il tient le **catalogue produit** (les labels, les lectures
-> reconnues) et les **garde-fous en exigences testables**. Le *pourquoi* vit dans
-> [ADR-0003](adr/0003-doctrine-constats-sensibles.md) — un ADR fige la règle et sa raison, ce
-> document tient le journal et se met à jour au fil des cas.
+> **Durable and living** document. It keeps the **product catalog** (the labels, the recognized
+> readings) and the **safeguards as testable requirements**. The *why* lives in
+> [ADR-0003](adr/0003-doctrine-constats-sensibles.md) — an ADR freezes the rule and its reason, this
+> document keeps the journal and updates itself as cases arise.
 >
-> Périmètre de la mesure d'origine : **premier connecteur (TikTok), en français**. Le banc était
-> jetable ; la note de findings chiffrée vit en commentaire de PANO-33.
+> Scope of the original measurement: **first connector (TikTok), in French**. The benchmark was
+> throwaway; the quantified findings note lives in a PANO-33 comment.
 
 ---
 
-## 1. Catalogue — les six labels sensibles
+## 1. Catalog — the six sensitive labels
 
-Colonnes : **dit** (ce que le constat affirme) · **percussion** · **preuves** (provenance lisible
-hors-ligne) · **coût d'erreur** (= coût d'un faux positif) · **cadrage**.
+Columns: **says** (what the finding asserts) · **impact** · **evidence** (provenance readable
+offline) · **cost of error** (= cost of a false positive) · **framing**.
 
-Les six labels sont **traités à plat** : même porte, même grillage, `mental_health` compris. Pas de
-graduation — un cran réservé à un label serait arbitraire. La question se rouvrira avec le cadrage
-abus / VSS (différé, R&D).
+The six labels are **treated flat**: same door, same grille, `mental_health` included. No gradation —
+a notch reserved for one label would be arbitrary. The question will reopen with the abuse / sexual-violence
+framing (deferred, R&D).
 
-| id | dit (« une plateforme pourrait… ») | percussion | preuves | coût d'erreur (FP) | cadrage |
+| id | says (« a platform could… ») | impact | evidence | cost of error (FP) | framing |
 |----|-----------------------------------|-----------|---------|--------------------|---------|
-| `health_physical` | …inférer une **condition médicale / un état de santé physique** | élevée (donnée santé, discriminante) | condition nommée à soi *(explicite)* / recherches santé répétées *(indirect)* — `Searches`, `Comments` | élevé : imputer une maladie à tort | constat nommé si écrit, large sinon ; jamais « tu es malade » |
-| `mental_health` | …inférer une **vulnérabilité psychique / un état affectif** | **maximale** (fenêtre de vulnérabilité) | terme clinique à soi / soin pour soi *(explicite)* · affect répété *(indirect)*. **Mesuré : l'oblique pur échappe au lexique** (le mur) | **maximal** : pathologiser à tort | preuves requises ; éventail de lectures sur les DEUX étages (`ranked` sur le nommé) |
-| `sexuality` | …inférer une **orientation / identité** | élevée (**outing**) | auto-désignation / bio revendiquée *(explicite, signal fort)* · intérêt communautaire répété *(indirect)* | élevé : outing | **jamais nommer depuis l'indirect** → constat large + éventail `vécu · allié · curiosité` |
-| `politics` | …inférer une **orientation politique** | moyenne-élevée | affiliation nommée *(explicite)* · engagement répété *(indirect)* | élevé | plateforme-sujet |
-| `religion` | …inférer une **appartenance / pratique religieuse** | élevée (croyance imputée) | auto-déclaration / pratique *(explicite)* · contenu religieux répété *(indirect)* | élevé | plateforme-sujet. **Dette : axe à rendre bidirectionnel** (voir §4) |
-| `conflictual` | …te classer **« compte conflictuel »** depuis tes messages | élevée (jugement de caractère) | **insultes ÉMISES visant un autre utilisateur** — *item-level* | élevé | voir §1bis |
+| `health_physical` | …infer a **medical condition / physical health state** | high (health data, discriminating) | condition named about oneself *(explicit)* / repeated health searches *(indirect)* — `Searches`, `Comments` | high: wrongly imputing an illness | named finding if written, broad otherwise; never "you are ill" |
+| `mental_health` | …infer a **psychic vulnerability / affective state** | **maximal** (vulnerability window) | clinical term about oneself / care for oneself *(explicit)* · repeated affect *(indirect)*. **Measured: the pure oblique escapes the lexicon** (the wall) | **maximal**: wrongly pathologizing | evidence required; fan of readings on BOTH tiers (`ranked` on the named) |
+| `sexuality` | …infer an **orientation / identity** | high (**outing**) | self-designation / claimed bio *(explicit, strong signal)* · repeated community interest *(indirect)* | high: outing | **never name from the indirect** → broad finding + `vécu · allié · curiosité` fan |
+| `politics` | …infer a **political orientation** | medium-high | named affiliation *(explicit)* · repeated engagement *(indirect)* | high | platform-subject |
+| `religion` | …infer a **religious belonging / practice** | high (imputed belief) | self-declaration / practice *(explicit)* · repeated religious content *(indirect)* | high | platform-subject. **Debt: axis to be made bidirectional** (see §4) |
+| `conflictual` | …classify you as a **"conflictual account"** from your messages | high (character judgment) | **insults EMITTED targeting another user** — *item-level* | high | see §1bis |
 
-### 1bis. Sous-classe dédiée — « jugement de caractère » (`conflictual`)
+### 1bis. Dedicated subclass — "character judgment" (`conflictual`)
 
-Porte **« reçus + plateforme-sujet »**, non négociable :
+Door **"receipts + platform-subject"**, non-negotiable:
 
-- **in** seulement si l'insulte est **émise** par la personne (pas **citée** : « il m'a traité de… »
-  = reçu, hors-champ) ;
-- **et** vise **un autre utilisateur** (un juron de frustration sans cible — « putain ce bug » — ne
-  compte pas) ;
-- **pas d'étage indirect** : les insultes émises *sont* le signal explicite. On ne fabrique jamais un
-  constat vague « tu es agressif ».
+- **in** only if the insult is **emitted** by the person (not **quoted**: « il m'a traité de… » =
+  received, out of scope);
+- **and** targets **another user** (a frustration curse with no target — « putain ce bug » — does not
+  count);
+- **no indirect tier**: emitted insults *are* the explicit signal. We never fabricate a vague finding
+  "you are aggressive".
 
-### 1ter. Constats factuels / hors mesure-texte (rappel)
+### 1ter. Factual / out-of-text-measurement findings (reminder)
 
-- **`age`** : une date de naissance est une **donnée fournie**, pas une inférence — « ils ont ta date
-  de naissance exacte », hors classifieur texte. Tranche **inférée** = basse priorité, marquée
-  fragile, hors périmètre.
-- **anorexie / troubles alimentaires** : label de **soin maximal** (comme `mental_health`), hors
-  benchmark texte.
-- **horaires / temps d'usage** : viennent des **timestamps**, pas du texte ; signal très faible,
-  jamais affirmé.
+- **`age`**: a birth date is a **supplied datum**, not an inference — "they have your exact birth
+  date", outside the text classifier. **Inferred** age bracket = low priority, marked fragile, out of
+  scope.
+- **anorexia / eating disorders**: label of **maximal care** (like `mental_health`), outside the text
+  benchmark.
+- **schedules / usage time**: come from the **timestamps**, not the text; very weak signal, never
+  asserted.
 
 ---
 
-## 2. Garde-fous → exigences testables
+## 2. Safeguards → testable requirements
 
-Chaque décision de fond d'[ADR-0003](adr/0003-doctrine-constats-sensibles.md) devient ici une
-**propriété vérifiable** — le *quoi tester*, pas le *pourquoi* (qui reste dans l'ADR).
+Each substantive decision of [ADR-0003](adr/0003-doctrine-constats-sensibles.md) becomes here a
+**verifiable property** — the *what to test*, not the *why* (which stays in the ADR).
 
-Cible : `golden` (propriété moteur) · `classifieur` (règle lexique) · `mesure` (vérité-terrain) ·
-`UX` (affichage) · `preuves` (modèle de données).
+Target: `golden` (engine property) · `classifieur` (lexicon rule) · `mesure` (ground truth) · `UX`
+(display) · `preuves` (data model).
 
-> **Les identifiants `SENS-*` sont des points d'ancrage stables** — le code les cite (voir
-> `detect/filters-en.ts`, `detect/detect.test.ts`). On ne les renumérote pas ; une exigence retirée
-> laisse son id vacant plutôt que de décaler les autres.
+> **The `SENS-*` identifiers are stable anchor points** — the code cites them (see
+> `detect/filters-en.ts`, `detect/detect.test.ts`). We do not renumber them; a removed requirement
+> leaves its id vacant rather than shifting the others.
 
-| id | exigence (assertion testable) | cible |
+| id | requirement (testable assertion) | target |
 |----|-------------------------------|-------|
-| **SENS-A1** | Aucun constat sensible ne s'affiche en « tu es X », à aucun niveau de confiance ; il se lit « une plateforme tenterait d'inférer X ». | `golden` |
-| **SENS-A2** | Le constat sensible se rend en **syntagme sans sujet** (« Signal indirect associable à la santé mentale ») : pas de 2ᵉ personne, pas de verdict sur la personne, pas de label sensible nu sans marqueur d'inférence. | `golden` |
-| **SENS-A3** | Le discours « avec si peu » (fait + limite) est présenté **une fois**, dans un moment pédagogique dédié, **pas** répété sur chaque carte ; ses deux faces apparaissent ensemble. | `UX` |
-| **SENS-A3-bis** | L'avertissement « suppositions, pas certitudes » est présent et **visible dans la zone de résultats** — pas seulement au seuil du site. Il est *load-bearing* : sans lui, la posture déclarée n'est plus valide. | `UX` |
-| **SENS-B1** | Deux étages : terme explicite à soi → constat **nommé** (confiance plus haute) ; topical répété sans terme → constat **large** (confiance basse, zone d'hésitation). | `classifieur` |
-| **SENS-B2** | Un constat **précis** n'apparaît **que si** le terme précis est présent ; aucune condition nommée devinée par recoupement. Le terme déclencheur est **montré** en surbrillance, pas deviné. | `golden` |
-| **SENS-B3** | Axe **pour-qui** (vécu / signal-sans-vécu) distinct de l'axe nommé/large : soin **pour soi** = signal fort de vécu même sans terme clinique ; **pour autrui** = signal-sans-vécu, dégradé en indirect, jamais nommé sur le locuteur. | `classifieur` |
-| **SENS-B4** | Auto-étiquette **revendiquée en bio** (drapeau/badge) = signal **fort/explicite**, jamais indirect. | `classifieur` |
-| **SENS-B5** | `conflictual` : **pas** d'étage indirect ; constat seulement sur insulte **émise** (≠ citée) **visant un autre utilisateur** (juron de frustration sans cible exclu). | `classifieur` |
-| **SENS-B6** | **Registre informationnel** : un item qui *interroge*, *définit* ou *quantifie* une condition (« signes de X », « prevalence of X ») plafonne à l'étage **large**, jamais nommé — **dégradé** comme la 3ᵉ personne, **jamais supprimé**. Règle d'ÉTAGE et non filtre : elle échoue en sous-affirmant, pas en retirant du signal. Vaut pour les six labels. | `classifieur` |
-| **SENS-C1** | Vérité-terrain à **trois** états par (personne × label) : vécu / signal-sans-vécu / non-porteur réel. | `mesure` |
-| **SENS-C2** | « signal-sans-vécu tagué » et « non-porteur réel tagué » comptés **séparément**, jamais additionnés ; **seul le second** est un FP. | `golden` |
-| **SENS-C3** | Éventail de lectures porté par la **preuve**, en mode `ranked` (ordonné) ou `equal` (à égalité) ; la confiance vit sur le **constat**, **jamais** par lecture — aucun poids, score ou pourcentage. `ranked` **ordonne, il ne chiffre pas**. Le constat **nommé** porte un éventail `ranked` : l'étage nommé ne résout que l'ambiguïté LEXICALE (quel sujet), jamais le POURQUOI. La réserve « pas d'éventail » ne vise que la **haute confiance**, que D1 n'émet jamais (nommé → `medium`). | `golden` |
-| **SENS-C4** | Tout constat sensible **démarre replié**, derrière un en-tête portant le badge **« sensible »** : le repli est la porte du consentement, le badge dit ce qu'il y a derrière. **Traitement plat sur les six labels**, `mental_health` compris. | `UX` |
-| **SENS-C5** | Chaque constat porte ses **items-source dépliables** (verbatim + canal + index source, référence **directe**) ; la page montre la **réutilisation** d'un même item par plusieurs constats (« aussi exploité par… »), **recalculée au rendu**. Seuls les items **cités** franchissent la frontière moteur→UI. | `preuves` + `UX` |
+| **SENS-A1** | No sensitive finding is displayed as "you are X", at any confidence level; it reads "a platform would attempt to infer X". | `golden` |
+| **SENS-A2** | The sensitive finding is rendered as a **subject-less phrase** (« Indirect signal associable with mental health »): no 2nd person, no verdict on the person, no bare sensitive label without an inference marker. | `golden` |
+| **SENS-A3** | The "with so little" discourse (fact + limit) is presented **once**, in a dedicated pedagogical moment, **not** repeated on each card; its two faces appear together. | `UX` |
+| **SENS-A3-bis** | The warning "suppositions, not certainties" is present and **visible in the results area** — not only at the site's threshold. It is *load-bearing*: without it, the declared stance is no longer valid. | `UX` |
+| **SENS-B1** | Two tiers: explicit term about oneself → **named** finding (higher confidence); repeated topical without a term → **broad** finding (low confidence, hesitation zone). | `classifieur` |
+| **SENS-B2** | A **precise** finding appears **only if** the precise term is present; no named condition guessed by cross-referencing. The triggering term is **shown** highlighted, not guessed. | `golden` |
+| **SENS-B3** | **For-whom** axis (lived / signal-without-lived-experience) distinct from the named/broad axis: care **for oneself** = strong signal of lived experience even without a clinical term; **for someone else** = signal-without-lived-experience, degraded to indirect, never named on the speaker. | `classifieur` |
+| **SENS-B4** | Self-label **claimed in the bio** (flag/badge) = **strong/explicit** signal, never indirect. | `classifieur` |
+| **SENS-B5** | `conflictual`: **no** indirect tier; finding only on an **emitted** (≠ quoted) insult **targeting another user** (frustration curse with no target excluded). | `classifieur` |
+| **SENS-B6** | **Informational register**: an item that *inquires about*, *defines* or *quantifies* a condition (« signes de X », « prevalence of X ») caps at the **broad** tier, never named — **degraded** like the 3rd person, **never suppressed**. A TIER rule and not a filter: it fails by under-asserting, not by removing signal. Holds for the six labels. | `classifieur` |
+| **SENS-C1** | Ground truth with **three** states per (person × label): lived / signal-without-lived-experience / real non-carrier. | `mesure` |
+| **SENS-C2** | "tagged signal-without-lived-experience" and "tagged real non-carrier" counted **separately**, never added together; **only the second** is a FP. | `golden` |
+| **SENS-C3** | Fan of readings carried by the **evidence**, in `ranked` (ordered) or `equal` (tied) mode; confidence lives on the **finding**, **never** per reading — no weight, score or percentage. `ranked` **orders, it does not quantify**. The **named** finding carries a `ranked` fan: the named tier resolves only the LEXICAL ambiguity (which subject), never the WHY. The "no fan" reservation targets only **high confidence**, which D1 never emits (named → `medium`). | `golden` |
+| **SENS-C4** | Every sensitive finding **starts folded**, behind a header carrying the **"sensitive"** badge: the fold is the door of consent, the badge says what is behind it. **Flat treatment on the six labels**, `mental_health` included. | `UX` |
+| **SENS-C5** | Each finding carries its **expandable source items** (verbatim + channel + source index, **direct** reference); the page shows the **reuse** of the same item by several findings ("also exploited by…"), **recomputed at render time**. Only the **cited** items cross the engine→UI boundary. | `preuves` + `UX` |
 
-**Conservé, hors tableau :**
+**Kept, outside the table:**
 
-- **SENS-MUR** *(instanciation concrète de SENS-A3)* — montrer **une phrase captée vs une non
-  captée** mais qu'une plateforme lirait ; matière actuelle = les **obliques purs** mesurés
-  (`mental_health`, `sexuality`). À **re-cibler à chaque palier** de détection, **jamais retirée** :
-  la preuve du mur est pérenne, il restera toujours un cran au-dessus à montrer (demain, le contenu
-  réel des vidéos, que l'export ne porte jamais).
-
----
-
-## 2bis. La doctrine que RIEN ne tient — l'envers du §2
-
-Le §2 dit quelles décisions d'ADR-0003 sont devenues des exigences vérifiables. Celui-ci dit **ce qui
-ne l'est pas devenu**, et c'est la moitié qui manquait : une liste de garde-fous se lit comme une
-couverture, alors qu'elle n'énumère que ses propres mailles. **Une couverture se vérifie dans les deux
-sens** — et la compression d'ADR-0003 a relevé le second. Ces règles-là ne sont ni caduques ni
-faibles ; elles sont simplement **tenues à la main**, et rien ne le dit au lecteur qui les cite.
-
-> **Le décompte est daté ; la liste ne l'est pas.** Au **2026-07-19**, sur les 108 énoncés normatifs
-> d'ADR-0003, une quarantaine n'avait aucun capteur. Ce chiffre **vieillit à chaque témoin posé** —
-> c'est même le but — et il n'est pas tenu à jour : ne pas le citer comme s'il valait aujourd'hui.
-> Les entrées ci-dessous se vérifient à tout moment en ouvrant le fichier nommé, et **une entrée dont
-> le capteur a été posé se RETIRE d'ici** plutôt que de se corriger.
-
-> **Ce que cette section NE fait pas :** elle ne propose aucun instrument, et l'absence d'un capteur
-> **n'est pas** un motif de retrait d'une règle — la doctrine du faux positif s'applique à ses
-> propres règles. Elle ne classe pas non plus par importance doctrinale, mais par **exposition** :
-> combien coûterait la chute, × quelle est la probabilité qu'elle passe inaperçue.
-
-Par ordre d'exposition décroissante :
-
-1. **La ligne rouge** — l'unique interdiction dure du document (améliorer la détection en cachant la
-   pauvreté des moyens). Aucun mécanisme ne pourrait la tenir seule, mais rien ne la rappelle non
-   plus au moment où elle se joue : l'ajout d'une source de données.
-2. **Tout le versant ÉVICTION de la règle du faux positif** — « seul s'en va le terme qui ne
-   discrimine pas du tout », « le jugement porte sur la sémantique, jamais sur le décompte d'un
-   banc », « la tolérance ne varie pas d'un label à l'autre ». Le versant *garder* est mesuré
-   (`fr-colloquial-ablation.test.ts`) ; le versant *retirer* ne l'a jamais été. C'est l'asymétrie la
-   plus coûteuse de la liste, parce que c'est le geste **irréversible** des deux.
-3. **Couverture accidentelle latente vs vivante.** Règle écrite *après* qu'elle a coûté quelque
-   chose, et toujours sans témoin. Le mot « latent » n'apparaît dans aucun test.
-4. **La neutralité (§axe bidirectionnel).** `religion` porte bien `practice` / `opinion` dans son
-   lexique, mais **aucun test n'affirme que le pôle critique est détecté**. Un silence sélectif s'y
-   installerait sans rien faire rougir — et c'est précisément la défaillance qu'ADR-0003 qualifie de
-   *jugement déguisé*. Recoupe la dette PANO-38.
-5. **Le non-transfert d'une langue à l'autre** — « un résultat de lexique repart à zéro dans une
-   autre langue ». Ce dépôt a déjà payé l'inverse : des défauts de machinerie EN masqués par des
-   mesures FR. La règle existe ; rien n'empêche de citer une mesure FR comme preuve sur l'EN.
-6. **« Acceptation mesurée » vs « assumée ».** ADR-0003 fait du passage de l'une à l'autre un
-   **événement daté**, et le mot « mesurée » est un mot qui referme une discussion. Rien ne vérifie
-   qu'un instrument existe derrière chaque emploi du mot.
-7. **Le seuil n'est pas un levier de sûreté** (et son corollaire : monter le seuil coûte de la
-   démonstration). Rappelé en commentaire à plusieurs endroits, affirmé nulle part.
-8. **Le discours « avec si peu » présenté une seule fois**, ses deux faces ensemble. Sa répétition
-   sur chaque carte ne déplacerait les goldens que de façon incidente.
-9. **La bio comme signal fort** — aucun détecteur ne lit aujourd'hui le profil : la règle n'a pas de
-   capteur parce qu'elle n'a pas encore de monteur. À rouvrir avec le roster d'orientation.
-
-Le reste — portées (« les six labels », « toute langue »), housing (« un artefact a une maison »),
-obligations positives sur le lecteur — se tient par relecture, et c'est assumé.
+- **SENS-MUR** *(concrete instantiation of SENS-A3)* — show **a captured phrase vs a non-captured
+  one** that a platform would nonetheless read; current material = the measured **pure obliques**
+  (`mental_health`, `sexuality`). To be **re-aimed at each detection level**, **never removed**: the
+  proof of the wall is perennial, there will always be a notch above to show (tomorrow, the real video
+  content, which the export never carries).
 
 ---
 
-## 3. Ce que la mesure a établi
+## 2bis. The doctrine that NOTHING holds — the reverse of §2
 
-- **Lexique FR deux étages = socle.** Solide sur l'explicite et le canonique ; FP cantonnés au
-  **polysémique ordinaire** (« église », « déprimé », « malade ») — pas sur le sensible grave.
-- **Finding fondamental, MESURÉ** : des **constats obliques purs** (`mental_health`, `sexuality`)
-  qu'aucun lexique ne rattrape — *le sens sans vocabulaire mobilisable*. **Cette cécité EST la
-  démonstration de l'asymétrie** : la plateforme monte cette marche ; un outil honnête et local, non.
-- **Un bras modèle reste une exploration**, rien n'est adopté ni mesuré.
+§2 says which ADR-0003 decisions became verifiable requirements. This one says **what did not become
+one**, and it is the half that was missing: a list of safeguards reads as a coverage, whereas it only
+enumerates its own mesh. **A coverage is verified in both directions** — and the compression of
+ADR-0003 revealed the second. These rules are neither obsolete nor weak; they are simply **held by
+hand**, and nothing tells the reader who cites them.
+
+> **The count is dated; the list is not.** On **2026-07-19**, of ADR-0003's 108 normative statements,
+> about forty had no sensor. This figure **ages with each witness laid** — that is even the point —
+> and it is not kept up to date: do not cite it as if it held today. The entries below are verified at
+> any moment by opening the named file, and **an entry whose sensor has been laid is REMOVED from
+> here** rather than corrected.
+
+> **What this section does NOT do:** it proposes no instrument, and the absence of a sensor is **not**
+> a ground for removing a rule — the false-positive doctrine applies to its own rules. Nor does it
+> rank by doctrinal importance, but by **exposure**: how much the fall would cost, × how probable it
+> is that it goes unnoticed.
+
+In decreasing order of exposure:
+
+1. **The red line** — the document's only hard prohibition (improving detection by hiding the poverty
+   of the means). No mechanism could hold it alone, but nothing recalls it either at the moment when
+   it is at play: the addition of a data source.
+2. **The whole EVICTION side of the false-positive rule** — "only the term that does not discriminate
+   at all goes away", "the judgment bears on the semantics, never on a benchmark's count", "tolerance
+   does not vary from one label to another". The *keep* side is measured
+   (`fr-colloquial-ablation.test.ts`); the *remove* side never was. It is the list's most costly
+   asymmetry, because it is the **irreversible** gesture of the two.
+3. **Latent vs live accidental coverage.** Rule written *after* it cost something, and still without a
+   witness. The word "latent" appears in no test.
+4. **Neutrality (§bidirectional axis).** `religion` does carry `practice` / `opinion` in its lexicon,
+   but **no test asserts that the critical pole is detected**. A selective silence could settle in
+   without turning anything red — and it is precisely the failure ADR-0003 qualifies as *disguised
+   judgment*. Overlaps debt PANO-38.
+5. **Non-transfer from one language to another** — "a lexicon result starts over from scratch in
+   another language". This repository has already paid the reverse: EN machinery defects masked by FR
+   measurements. The rule exists; nothing prevents citing an FR measurement as proof about EN.
+6. **"Measured acceptance" vs "assumed".** ADR-0003 makes the passage from one to the other a **dated
+   event**, and the word "measured" is a word that closes a discussion. Nothing verifies that an
+   instrument exists behind each use of the word.
+7. **The threshold is not a safety lever** (and its corollary: raising the threshold costs
+   demonstration). Recalled in comments in several places, asserted nowhere.
+8. **The "with so little" discourse presented only once**, its two faces together. Its repetition on
+   each card would only shift the goldens incidentally.
+9. **The bio as a strong signal** — no detector reads the profile today: the rule has no sensor
+   because it has no mount yet. To reopen with the orientation roster.
+
+The rest — scopes ("the six labels", "any language"), housing ("an artifact has a home"), positive
+obligations on the reader — holds by re-reading, and that is assumed.
 
 ---
 
-## 4. Dettes & questions ouvertes
+## 3. What the measurement established
 
-- **NOMMÉE — un tort à UN item est invisible aux bancs de registres.** Trouvée en crevant
-  délibérément un vert (lot `politics` EN, `extremely`). `en_ironic` écrit « i have decided to become
-  a **centrist** », et `centrist` est admis au lexique : mesuré, ajouter une tête de copule
-  d'acquisition (`i have decided to become`, `i became`, `ive become` — chacune un ajout de **rappel
-  légitime**) fait taguer cet item sur une voix scellée **non-porteuse**. **Et la suite entière reste
-  VERTE** : la voix ne porte qu'un item déclencheur, `politics` est à seuil 2, la voix entière rend
-  `RIEN`, et un banc qui mesure la **voix** ne voit pas un tort qui vit dans l'**item**. Il en
-  faudrait deux. *Portée : les six labels et tous les bancs de registres* — l'instrument qui le
-  verrait est une assertion **item par item** sur les gardes, et elle n'existe nulle part. D'ici là,
-  le plancher de faux positifs des voix anglaises est une **acceptation assumée**, jamais mesurée.
+- **Two-tier FR lexicon = base.** Solid on the explicit and the canonical; FPs confined to the
+  **ordinary polysemous** (« église », « déprimé », « malade ») — not on the grave sensitive.
+- **Fundamental finding, MEASURED**: **pure oblique findings** (`mental_health`, `sexuality`) that no
+  lexicon catches — *meaning without mobilizable vocabulary*. **This blindness IS the demonstration of
+  the asymmetry**: the platform climbs this step; an honest, local tool does not.
+- **A model arm remains an exploration**, nothing adopted or measured.
 
-- **OUVERTES — ce que le lot des adjectifs d'appartenance EN laisse derrière lui** (ex-fiche
-  `dette-appartenance-en.md`, condensée ici à sa suppression). Le lot a livré `selfDeclaredEn` sur
-  quatre lexiques et la symétrie majoritaire/minoritaire des deux axes ; la battue qui l'a suivi a
-  redescendu quatre adjectifs qui nommaient sur un objet (`anemic`, `anorexic`, `epileptic`,
-  `had a stroke` — intersection `explicit ∩ selfDeclaredEn` tenue par
-  `detect/storey-intersection.test.ts`). Restent ouverts, chacun un jugement distinct :
-  - **trois justifications qui affirment une propriété qu'aucun code n'évalue**, reproduites et non
-    réparées — leurs correctifs divergent, les trancher en bloc serait la couverture générale que la
-    doctrine interdit : `i voted` (le passé n'exclut pas l'idiome — « i voted hufflepuff obviously »
-    → NOMMÉ) ; `moronic` (la garde de cible ne l'empêche pas de taguer — « youre right, that take is
-    moronic » → NOMMÉ) ; `catholic` (le cadre copulaire ne désambiguïse pas — « im pretty catholic
-    in my reading » → LARGE, peut-être dans la tolérance déclarée du tier, à trancher) ;
-  - **machinerie — les locutions couvrantes ignorent le chemin d'auto-déclaration.**
-    `COVERING_PHRASES` protège `hitSurfaces` et pas `hitSelfDeclared` : mesuré, ajouter
-    `straight up` à la liste ne change rien, « im straight up done with this » pose toujours un
-    constat large. Le FR a le même trou, simplement inexercé. Dette des deux langues ;
-  - **frontière déclarée, pas comblée — la 3ᵉ personne et le syntagme nu restent muets sur les
-    adjectifs** (« my neighbour is diabetic », « diabetic recipes » → RIEN). Tenue par
-    `identity-frame-probe.test.ts` ; l'admission des adjectifs nus en `indirectCore` est la porte où
-    `straight` a été mesuré à 1 → 4 torts — elle se rouvre sur mesure, label par label ;
-  - **l'attribution par un tiers n'est filtrée sur aucun label** (« my friend thinks i am gay »,
-    « people assume i am straight » déclenchent) : c'est le chemin du tort le plus coûteux du banc
-    d'identité, arbitré **non bloquant** pour la symétrie mais entier — il mérite son propre lot.
+---
 
-- **RÉPARÉ — le dernier trou de couverture connu : `politics` était entièrement muet en anglais.**
-  Seul des quatre labels anglophones sans tier d'auto-déclaration. Mesuré et **élargi** (la sonde en
-  place en tenait neuf, ce qui était la liste d'une sonde et non une frontière) : **40 termes × 9
-  cadres × 3 volumes = 1080 sondages, zéro**, quand le miroir français rendait 24 × `explicit`. Une
-  seule cause, vérifiée contre les deux autres candidates : `selfDeclaredEn` valait `undefined` — ni
-  seuil, ni filtre. Livré : 25 identités (10 gauche · 10 droite · 4 sans camp · 1 ambiguë), le témoin
-  étendu, et les trois assertions qui enregistraient le trou **tournées, jamais supprimées**.
+## 4. Debts & open questions
 
-  **Ce que le lot a établi et qui vaut plus que la liste :** la règle d'admission « propre » — le
-  **nom doctrinal** entre, l'**adjectif d'usage général** reste dehors — **est biaisée**.
-  `conservative` est le mot ordinaire de la droite anglophone et c'est un adjectif ; `socialist` est
-  celui de la gauche et c'est un nom. Appliquée mécaniquement, elle admet le mot ordinaire d'un camp
-  et exclut celui de l'autre : **le défaut français reconstitué sous un habit neuf, par un
-  raisonnement irréprochable à chaque étape, et que rien n'aurait fait rougir.** La forme générale du
-  danger est écrite en tête de `lexicon/politics.ts` : *une règle d'admission qui discrimine sur la
-  FORME d'un terme découpe le champ politique de travers, les deux camps ne nommant pas leur position
-  dans la même forme grammaticale.* D'où `conservative` **et** `liberal` admis comme **acceptations
-  assumées** — les exclure tous les deux serait défendable, n'en exclure qu'un ne l'est pas.
+- **NAMED — a harm to ONE item is invisible to the register benchmarks.** Found by deliberately
+  breaking a green (`politics` EN batch, `extremely`). `en_ironic` writes « i have decided to become a
+  **centrist** », and `centrist` is admitted to the lexicon: measured, adding an acquisition-copula
+  head (`i have decided to become`, `i became`, `ive become` — each an addition of **legitimate
+  recall**) makes this item tag on a sealed **non-carrier** voice. **And the whole suite stays GREEN**:
+  the voice carries only one triggering item, `politics` is at threshold 2, the whole voice returns
+  `NOTHING`, and a benchmark that measures the **voice** does not see a harm living in the **item**. It
+  would take two. *Scope: the six labels and all register benchmarks* — the instrument that would see
+  it is an **item-by-item** assertion on the guards, and it exists nowhere. Until then, the false-positive
+  floor of the English voices is an **assumed acceptance**, never measured.
 
-  **Ce que le lot ne referme pas, et il ne faut pas le lire comme réparé :** l'anglais demande
-  **deux** items là où le français en demande un, et il ne **nomme jamais** (« i am a socialist » ×1
-  → `RIEN`). Ce sont deux décisions prises ailleurs — l'étage et le seuil —, pas un reste de trou.
-  La 3ᵉ personne et le syntagme nu anglais restent muets. Les faux positifs des 25 termes sont
-  **non mesurés** : le banc écrit pour ce lot s'est **disqualifié** (32/32, y compris les termes
-  qu'il devait innocenter) parce qu'il mesurait la **constructibilité** d'une collision là où
-  ADR-0003 porte sur l'usage **dominant**. Il a en revanche confirmé, sur un **sixième** label, que
-  « i am X about Y » transforme n'importe quel nom d'identité en intensificateur — **la copule
-  n'ancre rien en anglais**, et c'est devenu le résultat le plus reproduit du dépôt.
+- **OPEN — what the EN belonging-adjectives batch leaves behind** (ex-ticket
+  `dette-appartenance-en.md`, condensed here to its deletion). The batch delivered `selfDeclaredEn` on
+  four lexicons and the majority/minority symmetry of both axes; the sweep that followed it demoted
+  four adjectives that named on an object (`anemic`, `anorexic`, `epileptic`, `had a stroke` —
+  intersection `explicit ∩ selfDeclaredEn` held by `detect/storey-intersection.test.ts`). Still open,
+  each a distinct judgment:
+  - **three justifications that assert a property no code evaluates**, reproduced and not repaired —
+    their fixes diverge, deciding them as a block would be the general coverage the doctrine forbids:
+    `i voted` (the past does not exclude the idiom — « i voted hufflepuff obviously » → NAMED);
+    `moronic` (the target guard does not prevent it from tagging — « youre right, that take is
+    moronic » → NAMED); `catholic` (the copula frame does not disambiguate — « im pretty catholic in
+    my reading » → BROAD, perhaps within the tier's declared tolerance, to be decided);
+  - **machinery — the covering phrases ignore the self-declaration path.** `COVERING_PHRASES` protects
+    `hitSurfaces` and not `hitSelfDeclared`: measured, adding `straight up` to the list changes
+    nothing, « im straight up done with this » still lays a broad finding. FR has the same hole, simply
+    unexercised. Debt of both languages;
+  - **boundary declared, not filled — the 3rd person and the bare phrase stay mute on the adjectives**
+    (« my neighbour is diabetic », « diabetic recipes » → NOTHING). Held by
+    `identity-frame-probe.test.ts`; the admission of bare adjectives into `indirectCore` is the door
+    where `straight` was measured at 1 → 4 harms — it reopens by measurement, label by label;
+  - **third-party attribution is filtered on no label** (« my friend thinks i am gay », « people
+    assume i am straight » trigger): it is the path of the identity benchmark's most costly harm,
+    arbitrated **non-blocking** for the symmetry but entire — it deserves its own batch.
 
-- **RÉPARÉ — l'asymétrie politique du lexique FR, et le mécanisme qui l'a produite.** Le lexique
-  livrait, en français, un encodage **asymétrique des deux camps** : les identités de gauche au tier
-  de l'IDENTITÉ (`selfDeclared` → constat **nommé**), celles de droite au tier des **accusations**
-  (`indirectCore` → sous le seuil quand elles sont isolées). Mesuré, un item chacune : « je suis
-  anarchiste » posait un constat nommé, « je suis nationaliste » n'en posait **aucun** — alors que
-  `nationaliste` était bien **dans** le lexique.
+- **REPAIRED — the last known coverage hole: `politics` was entirely mute in English.** The only one
+  of the four English-speaking labels without a self-declaration tier. Measured and **broadened** (the
+  probe in place held nine, which was a probe's list and not a boundary): **40 terms × 9 frames × 3
+  volumes = 1080 probes, zero**, when the French mirror returned 24 × `explicit`. A single cause,
+  verified against the two other candidates: `selfDeclaredEn` was `undefined` — neither threshold nor
+  filter. Delivered: 25 identities (10 left · 10 right · 4 without a camp · 1 ambiguous), the extended
+  witness, and the three assertions that recorded the hole **turned, never removed**.
 
-  **Personne ne l'avait écrit.** Chaque terme était entré pour une raison localement défendable, et
-  le défaut ne vivait dans **aucun** d'eux : il vivait dans la **composition** de deux registres.
-  C'est ce qui le rendait introuvable — une relecture terme à terme vérifie que chaque terme
-  **présent** est légitime, jamais que les **absents** le sont symétriquement. Et aucun filet ne le
-  tenait : avant ce lot, le mot « symétrie » n'apparaissait dans **aucun** test du moteur.
+  **What the batch established and that is worth more than the list:** the "clean" admission rule — the
+  **doctrinal noun** enters, the **general-use adjective** stays out — **is biased**. `conservative` is
+  the ordinary word of the English-speaking right and it is an adjective; `socialist` is that of the
+  left and it is a noun. Applied mechanically, it admits one camp's ordinary word and excludes the
+  other's: **the French defect reconstituted under new clothes, by reasoning irreproachable at each
+  step, and that nothing would have turned red.** The general form of the danger is written at the head
+  of `lexicon/politics.ts`: *an admission rule that discriminates on the FORM of a term cuts the
+  political field crookedly, the two camps not naming their position in the same grammatical form.*
+  Hence `conservative` **and** `liberal` admitted as **assumed acceptances** — excluding both would be
+  defensible, excluding only one is not.
 
-  Livré : les identités de droite au tier de l'identité, le répertoire thématique apparié (il ne
-  portait que celui de la mobilisation), et un **témoin** (`detect/politics-symmetry.test.ts`)
-  vérifié par mutation dans les deux sens. **Sa frontière est déclarée et elle compte** : il mesure
-  l'axe choisi, pas l'équilibre politique du produit — et il est **aveugle à un camp entièrement
-  absent** du lexique, ce qui est la moitié du défaut d'origine qu'il ne rattraperait pas.
+  **What the batch does not close, and it must not be read as repaired:** English requires **two** items
+  where French requires one, and it **never names** (« i am a socialist » ×1 → `NOTHING`). These are
+  two decisions taken elsewhere — the tier and the threshold — not a remaining hole. The 3rd person and
+  the bare English phrase stay mute. The false positives of the 25 terms are **not measured**: the
+  benchmark written for this batch **disqualified** itself (32/32, including the terms it was to clear)
+  because it measured the **constructibility** of a collision where ADR-0003 bears on **dominant**
+  usage. It did, however, confirm, on a **sixth** label, that « i am X about Y » turns any identity
+  name into an intensifier — **the copula anchors nothing in English**, and it has become the
+  repository's most reproduced result.
 
-- **MESURÉ, et l'écart SUBSISTE — la densité de preuves de la paire opposée.** Après réparation, le
-  banc `politics` rend 5 preuves à gauche et 4 à droite (avant : 3 et 2). Les deux propriétés que la
-  paire isolait sont **réparées** — la sur-détermination du constat (l'ablation de l'axe grossier ne
-  laissait **rien** à droite, elle laisse maintenant un constat nommé) et le lexème de courant
-  (`socialiste` / `libéral`). **La densité, elle, garde son écart de 1.** Deux voix ne sont pas une
-  distribution : ce chiffre ne dit pas s'il s'agit d'un résidu du lexique ou du hasard de l'écriture,
-  et il ne doit pas être cité comme un résultat.
+- **REPAIRED — the political asymmetry of the FR lexicon, and the mechanism that produced it.** The
+  lexicon delivered, in French, an **asymmetric encoding of the two camps**: left identities at the
+  IDENTITY tier (`selfDeclared` → **named** finding), right ones at the **accusations** tier
+  (`indirectCore` → below threshold when isolated). Measured, one item each: « je suis anarchiste »
+  laid a named finding, « je suis nationaliste » laid **none** — whereas `nationaliste` was indeed **in**
+  the lexicon.
 
-- **CONTAMINATION DÉCLARÉE — trois entrées que le banc `politics` ne valide pas.** `liberal`,
-  `liberale` et `redistribution` ont été écrites **après** lecture de la fixture scellée, les deux
-  premières sur la demande explicite d'une de ses assertions (`libéral` avait été **proposé à
-  l'exclusion**, sur une collision réelle avec la profession libérale ; le banc a retourné la
-  décision). Le banc reste indépendant pour tout le reste du lexique. **Le prochain instrument qui
-  mesurera ces trois-là devra être écrit sans elles en tête.**
+  **No one had written it.** Each term had entered for a locally defensible reason, and the defect
+  lived in **none** of them: it lived in the **composition** of two registers. That is what made it
+  undiscoverable — a term-by-term re-reading verifies that each **present** term is legitimate, never
+  that the **absent** ones are symmetrically so. And no net held it: before this batch, the word
+  "symmetry" appeared in **no** engine test.
 
-- **LIVRÉ — le vocabulaire politique ANGLAIS, 23 entrées, et ses faux positifs sont NON MESURÉS.**
-  Deux actes de vote, neuf institutions et procédures, quatre **paires thématiques appariées**, deux
-  locutions transversales. Aucune identité, aucune épithète, aucun nom de parti ni de mouvement —
-  ces deux derniers exclus par **règle écrite** (durabilité *et* symétrie). `selfDeclared` reste
-  **vide**, faute de copule EN.
+  Delivered: the right identities at the identity tier, the matched thematic repertoire (it carried
+  only that of mobilization), and a **witness** (`detect/politics-symmetry.test.ts`) verified by
+  mutation in both directions. **Its boundary is declared and it counts**: it measures the chosen axis,
+  not the product's political balance — and it is **blind to a camp entirely absent** from the lexicon,
+  which is the half of the original defect it would not catch.
 
-  **Le zéro des deux voix-gardes anglaises est une CÉCITÉ, et il faut le citer comme telle.** Elles
-  ne déclenchent rien, avant comme après — mais vérifié terme à terme, **aucune des 23 entrées
-  n'apparaît dans leur texte**. Le zéro mesure leur contenu, pas le tri du lexique. Le seul garde-fou
-  réel est un choix d'écriture : n'admettre que des **syntagmes**, jamais les noms nus `election`,
-  `vote`, `taxes`, `political`, `council`, qui eux sont dans le texte des gardes. C'est un
-  raisonnement, pas une mesure.
+- **MEASURED, and the gap PERSISTS — the evidence density of the opposite pair.** After repair, the
+  `politics` benchmark returns 5 pieces of evidence on the left and 4 on the right (before: 3 and 2).
+  The two properties the pair isolated are **repaired** — the over-determination of the finding (the
+  ablation of the coarse axis left **nothing** on the right, it now leaves a named finding) and the
+  current lexeme (`socialiste` / `libéral`). **The density, itself, keeps its gap of 1.** Two voices
+  are not a distribution: this figure does not say whether it is a residue of the lexicon or the
+  chance of the writing, and it must not be cited as a result.
 
-- **NOMMÉ — l'instrument qui manque : une PAIRE OPPOSÉE ANGLAISE scellée.** La fixture le déclare
-  déjà (ses deux voix EN sont des **gardes**, pas une paire). Sans elle, la symétrie du versant
-  anglais est une **acceptation assumée**, jamais mesurée. Preuve directe qu'une paire de voix
-  écrites par l'auteur du lexique ne peut pas y suppléer : en cours de lot, l'ajout de deux termes
-  choisis **sans regarder ces voix** a fait basculer le compte de chemins de 1–0 en faveur d'un bord
-  à 2–0 en faveur de l'autre. **Une sonde qui oscille sur un terme ne tranche pas une symétrie.**
+- **DECLARED CONTAMINATION — three entries the `politics` benchmark does not validate.** `liberal`,
+  `liberale` and `redistribution` were written **after** reading the sealed fixture, the first two on
+  the explicit request of one of its assertions (`libéral` had been **proposed for exclusion**, on a
+  real collision with the liberal profession; the benchmark reversed the decision). The benchmark stays
+  independent for all the rest of the lexicon. **The next instrument that measures those three will
+  have to be written without them at its head.**
 
-- **MESURÉ — la marge de redondance anglaise est NULLE des deux côtés.** Sur deux voix engagées
-  écrites en miroir, le lot ouvre 2 chemins d'un bord et 0 de l'autre, et retirer un seul item
-  porteur suffit à faire disparaître le constat restant. Ce n'est pas « le lexique anglais penche » :
-  les deux voix parlent des mêmes registres, mais l'une a écrit ses locutions sous forme
-  **canonique** et l'autre sous forme libre (« taxed to death » plutôt que `tax burden`). C'est une
-  **symétrie de pauvreté**. Le reste est le mur d'ADR-0003 : le discours politique ordinaire est fait
-  de **positions**, pas de vocabulaire d'institution, et aucun enrichissement de lexique ne le
-  franchit.
+- **DELIVERED — the ENGLISH political vocabulary, 23 entries, and its false positives are NOT
+  MEASURED.** Two voting acts, nine institutions and procedures, four **matched thematic pairs**, two
+  transverse phrases. No identity, no epithet, no party or movement name — the last two excluded by
+  **written rule** (durability *and* symmetry). `selfDeclared` stays **empty**, for lack of an EN
+  copula.
 
-- **DETTE — `selfDeclared` EN, et elle est plus lourde qu'au pilote.** C'est **le tier où vivait
-  l'asymétrie française**. Le lot de la copule EN héritera donc de la question de symétrie **en même
-  temps** que de la copule, et devra la trancher à ce moment-là, pas après.
+  **The zero of the two English guard voices is a BLINDNESS, and it must be cited as such.** They
+  trigger nothing, before as after — but verified term by term, **none of the 23 entries appears in
+  their text**. The zero measures their content, not the lexicon's sorting. The only real safeguard is
+  a writing choice: admit only **phrases**, never the bare nouns `election`, `vote`, `taxes`,
+  `political`, `council`, which are in the guards' text. It is reasoning, not a measurement.
 
-- **NOMMÉE — la divergence restante du filtre de citation.** Le pluriel cité est refermé pour les six
-  labels ; l'**auto-censure** entre guillemets, elle, échappe encore (`findMarker` la tolère,
-  `occursInsideQuotes` non). Le comblement propre n'est pas un troisième motif à écrire mais un
-  passage au test **positionnel**, qui change la sémantique sur les occurrences multiples. Figé par
-  un test qui se retournera le jour où quelqu'un le fera.
+- **NAMED — the missing instrument: a sealed ENGLISH OPPOSITE PAIR.** The fixture already declares it
+  (its two EN voices are **guards**, not a pair). Without it, the symmetry of the English side is an
+  **assumed acceptance**, never measured. Direct proof that a pair of voices written by the lexicon's
+  author cannot substitute for it: mid-batch, adding two terms chosen **without looking at those
+  voices** tipped the path count from 1–0 in favor of one side to 2–0 in favor of the other. **A probe
+  that oscillates on one term does not decide a symmetry.**
 
-- **ROUVERT par la règle du faux positif (ADR-0003, *L'admission d'un terme*) — le milieu partagé
-  des deux labels de santé.** `side effects`, `sick note`, `fit note`, `medical certificate`,
-  `prescription`, `appointment` ont été retirés pour un problème d'**appartenance entre labels**,
-  avec un coût de rappel reconnu **des deux côtés** — jamais par ablation. Ce motif ne tient plus.
-  Mesuré sur les voix scellées, et le lot se scinde en deux :
-  - **`fit note`, `prescription`, `appointment` — le retrait NE TIENT PAS.** Ils se déclenchent sur
-    `living`, la voix qui vit réellement une condition physique chronique (« rheumatology
-    appointment rescheduled again », « repeat prescription pharmacy app not updating », « do i need
-    a fit note for a hospital appointment »). Porteurs **et** non-porteurs : ils restent, et leur
-    ré-admission est à instruire ;
-  - **`side effects` et `sick note` — À MESURER, PAS À TRANCHER.** Sur ce banc ils ne tirent que sur
-    `distress`, non-porteuse de `health_physical`. Mais le corollaire de la règle s'applique ici de
-    plein fouet : le jugement porte sur la **sémantique**, et « side effects » est du vocabulaire
-    **sans domaine** qu'une voix physique écrit tout aussi bien (« methotrexate side effects »).
-    Le banc n'a qu'**une** voix physique, et elle ne l'a pas écrit. **Ce qu'il faut : une seconde
-    voix physique scellée**, sous traitement lourd. Sans elle, retirer ces deux termes serait lire
-    le tableau au lieu du terme.
+- **MEASURED — the English redundancy margin is NULL on both sides.** On two engaged voices written as
+  mirrors, the batch opens 2 paths on one side and 0 on the other, and removing a single carrying item
+  suffices to make the remaining finding disappear. This is not "the English lexicon leans": the two
+  voices speak of the same registers, but one wrote its phrases in **canonical** form and the other in
+  free form (« taxed to death » rather than `tax burden`). It is a **symmetry of poverty**. The rest is
+  ADR-0003's wall: ordinary political discourse is made of **positions**, not institution vocabulary,
+  and no lexicon enrichment crosses it.
 
-- **DETTE — la garde de `conflictual` est ANTI-CORRÉLÉE à l'agression.** Le mépris s'exprime *à
-  propos* d'une catégorie (« i have no patience for morons who lecture ») — sans adresse, donc
-  invisible ; la tendresse *adresse* (« you are the official moron of this house ») — donc vue. Le
-  diagnostic est établi : ce n'est ni le pluriel ni une règle d'étage, c'est la **cible de 2ᵉ
-  personne** exigée par B5. Ce n'est **pas** un motif de retrait du label (règle ci-dessus) : c'est
-  un défaut de machinerie, à instruire avec les quatre voix comme instrument.
+- **DEBT — `selfDeclared` EN, and it is heavier than at the pilot.** It is **the tier where the French
+  asymmetry lived**. The EN copula batch will therefore inherit the symmetry question **at the same
+  time** as the copula, and will have to decide it then, not after.
 
-- **LE VRAI DÉFAUT DE `conflictual`, et il change la priorité : un trou de rappel de 92 %.** Mesuré
-  sur les voix scellées : **le lexique atteint 2 items sur 26 de mépris soutenu**, dans les deux
-  langues. Le reste est soit du vocabulaire absent (`nul`, `pitoyable`, `incompetent`, `betise` ;
-  `useless`, `rubbish`, `clueless`, `nonsense`), soit le mur (« tu comprends rien a ce que tu fais »,
-  « each one is worse than the last »). À côté de ça, le faux positif du label est **anecdotique**.
-  **Le prochain lot `conflictual` ÉLARGIT, il ne resserre pas** — et les quatre voix mesurent les
-  deux sens.
+- **NAMED — the remaining divergence of the citation filter.** The quoted plural is closed for the six
+  labels; self-censorship in quotation marks, itself, still escapes (`findMarker` tolerates it,
+  `occursInsideQuotes` does not). The clean filling is not a third motive to write but a passage to the
+  **positional** test, which changes the semantics on multiple occurrences. Frozen by a test that will
+  turn around the day someone does it.
 
-  *Prédiction à ne pas perdre, parce qu'elle sera contre-intuitive au moment d'élargir :* à la borne
-  haute mesurée (vocabulaire comblé, garde retirée), le rappel monte à 7 items par voix hostile —
-  mais le tort monte à **9 et 11** chez les non-porteuses. **Élargir montera les deux ensemble, et
-  la précision ne s'améliorera pas.** Ce n'est pas une raison de ne pas élargir (le faux positif
-  n'est pas un motif de retrait, et l'erreur du détecteur est le sujet) ; c'est une raison de ne pas
-  vendre l'élargissement comme un gain de justesse, et de s'assurer que la pédagogie du produit
-  porte l'erreur (proposition de carte ci-dessous).
+- **REOPENED by the false-positive rule (ADR-0003, *The admission of a term*) — the shared
+  middle-ground of the two health labels.** `side effects`, `sick note`, `fit note`,
+  `medical certificate`, `prescription`, `appointment` were removed for a **belonging-between-labels**
+  problem, with a recognized recall cost **on both sides** — never by ablation. This motive no longer
+  holds. Measured on the sealed voices, and the batch splits in two:
+  - **`fit note`, `prescription`, `appointment` — the removal DOES NOT HOLD.** They trigger on
+    `living`, the voice that really lives with a chronic physical condition (« rheumatology appointment
+    rescheduled again », « repeat prescription pharmacy app not updating », « do i need a fit note for
+    a hospital appointment »). Carriers **and** non-carriers: they stay, and their re-admission is to be
+    instructed;
+  - **`side effects` and `sick note` — TO MEASURE, NOT TO DECIDE.** On this benchmark they only fire on
+    `distress`, non-carrier of `health_physical`. But the rule's corollary applies here full force: the
+    judgment bears on the **semantics**, and « side effects » is **domainless** vocabulary that a
+    physical voice writes just as well (« methotrexate side effects »). The benchmark has only **one**
+    physical voice, and it did not write it. **What is needed: a second sealed physical voice**, under
+    heavy treatment. Without it, removing these two terms would be reading the table instead of the
+    term.
 
-- **CAS D'ÉCOLE de la règle du faux positif — lire le TERME, pas le tableau.** Sur le banc
-  `conflictual`, `nulle` et `incompetente` ne se déclenchent que chez les non-porteuses. Ce ne sont
-  pas des termes cassés : cette voix-là est un groupe de femmes. Les retirer sur ce décompte serait
-  la faute que la règle nomme. **Le relevé des précédents d'éviction**, tous passés par ablation :
-  les cinq termes hyperboliques EN (0 % sur la voix en détresse), les six homographes FR/EN (rappel
-  EN nul, banc FR identique), `moron` (rappel nul sur 26 items hostiles).
+- **DEBT — the `conflictual` guard is ANTI-CORRELATED with aggression.** Contempt is expressed *about*
+  a category (« i have no patience for morons who lecture ») — without address, hence invisible;
+  tenderness *addresses* (« you are the official moron of this house ») — hence seen. The diagnosis is
+  established: it is neither the plural nor a tier rule, it is the **2nd-person target** required by B5.
+  It is **not** a ground for removing the label (rule above): it is a machinery defect, to be
+  instructed with the four voices as the instrument.
 
-- **CANDIDAT AU RETRAIT sous la règle — `rate` / `ratee`.** Il matche « j'ai **raté** trois tirs » :
-  un verbe, aucune insulte, aucune inférence à montrer. C'est le profil « ne discrimine pas du
-  tout », même famille que « the pros and **cons** ». À instruire avec le reste du lot d'élargissement
-  plutôt qu'isolément.
+- **THE REAL DEFECT OF `conflictual`, and it changes the priority: a recall hole of 92%.** Measured on
+  the sealed voices: **the lexicon reaches 2 items out of 26 of sustained contempt**, in both
+  languages. The rest is either absent vocabulary (`nul`, `pitoyable`, `incompetent`, `betise`;
+  `useless`, `rubbish`, `clueless`, `nonsense`), or the wall (« tu comprends rien a ce que tu fais »,
+  « each one is worse than the last »). Next to that, the label's false positive is **anecdotal**. **The
+  next `conflictual` batch BROADENS, it does not tighten** — and the four voices measure both
+  directions.
 
-- **PORTÉE — la doctrine du faux positif couvre les CONSTATS du produit, pas le texte libre du
-  modèle local.** Vérifié : `web/src/ai/` n'a aucune taxonomie de labels — c'est un prompt libre.
-  Ce qu'un modèle local écrit en prose n'est gouverné ni par cette règle ni par les étages.
+  *Prediction not to lose, because it will be counterintuitive at the moment of broadening:* at the
+  measured upper bound (vocabulary filled, guard removed), recall rises to 7 items per hostile voice —
+  but the harm rises to **9 and 11** on the non-carriers. **Broadening will raise both together, and
+  precision will not improve.** This is not a reason not to broaden (the false positive is not a ground
+  for removal, and the detector's error is the subject); it is a reason not to sell the broadening as a
+  gain in accuracy, and to make sure the product's pedagogy carries the error (card proposal below).
 
-- **NON MESURÉ — les injures identitaires, dans les deux langues.** Les quatre voix scellées de
-  `conflictual` insultent la compétence, l'intelligence et le goût, par décision. Le lexique FR porte
-  des slurs genrés, validistes et homophobes ratifiés : **ni leur rappel ni leurs faux positifs
-  n'ont jamais été mesurés**. Trou distinct de celui du rappel ci-dessus.
+- **TEXTBOOK CASE of the false-positive rule — read the TERM, not the table.** On the `conflictual`
+  benchmark, `nulle` and `incompetente` only fire on the non-carriers. These are not broken terms: that
+  voice is a group of women. Removing them on this count would be the fault the rule names. **The record
+  of eviction precedents**, all passed through ablation: the five EN hyperbolic terms (0% on the distress
+  voice), the six FR/EN homographs (null EN recall, identical FR benchmark), `moron` (null recall over
+  26 hostile items).
 
-- **LOT À OUVRIR — la garde de `conflictual` est ANTI-CORRÉLÉE à l'agression.** C'est la découverte
-  du premier banc de ce label (`engine/detect/conflictual-fp-bench.test.ts`), et elle porte sur sa
-  **porte**, pas sur son vocabulaire. La doctrine exige une **cible de 2ᵉ personne** pour taguer
-  (ADR-0003, exception `conflictual`), au motif qu'elle empêche de taguer une critique d'idée. Mesuré
-  sur deux voix scellées écrites en aveugle, elle fait l'inverse de ce qu'on attend d'elle :
-  - le **mépris** s'exprime *à propos* d'une catégorie — « i have no patience for morons who
-    lecture », « les gens comme ça » — donc **sans adresse, donc invisible** ;
-  - la **tendresse** *adresse* — « you are the official moron of this house » — donc **visible**.
+- **REMOVAL CANDIDATE under the rule — `rate` / `ratee`.** It matches « j'ai **raté** trois tirs »: a
+  verb, no insult, no inference to show. It is the "does not discriminate at all" profile, same family
+  as « the pros and **cons** ». To be instructed with the rest of the broadening batch rather than in
+  isolation.
 
-  Le diagnostic est établi et vérifié (le pluriel n'y est pour rien : la même phrase, adressée,
-  tague). Ce n'est pas une imprécision qu'un meilleur lexique corrige — un lexique plus petit réduit
-  seulement le volume d'un tri qui trie à l'envers.
+- **SCOPE — the false-positive doctrine covers the product's FINDINGS, not the local model's free
+  text.** Verified: `web/src/ai/` has no label taxonomy — it is a free prompt. What a local model
+  writes in prose is governed neither by this rule nor by the tiers.
 
-  **Ce que le lot devra trancher**, et il n'est pas tranché ici : la garde reste-t-elle (elle protège
-  réellement la critique d'idée, décision D), se double-t-elle d'un second chemin pour le mépris
-  non adressé, ou l'exception `conflictual` elle-même doit-elle être rouverte ? Instrument
-  disponible : les quatre voix scellées. **Rien ne bouge d'ici là.**
+- **NOT MEASURED — identity slurs, in both languages.** The four sealed voices of `conflictual` insult
+  competence, intelligence and taste, by decision. The FR lexicon carries ratified gendered, ableist and
+  homophobic slurs: **neither their recall nor their false positives have ever been measured**. Hole
+  distinct from the recall one above.
 
-  **La pédagogie qui doit voyager AVEC ce lot, pas après lui** — c'est la « proposition de carte »
-  annoncée plus haut. Le retrait du label ayant été refusé (l'erreur du détecteur EST le sujet), la
-  carte s'est retournée : non pas « ce que nous refusons d'inférer », mais **« comment une déduction
-  se trompe »**, une déduction maintenue dont l'erreur est exhibée, avec son chiffre. Elle vit dans
-  le moment pédagogique dédié (SENS-A3), jamais sur les cartes. Brouillon **à ratifier comme tout
-  wording** :
+- **BATCH TO OPEN — the `conflictual` guard is ANTI-CORRELATED with aggression.** It is the discovery of
+  this label's first benchmark (`engine/detect/conflictual-fp-bench.test.ts`), and it bears on its
+  **door**, not on its vocabulary. The doctrine requires a **2nd-person target** to tag (ADR-0003,
+  `conflictual` exception), on the grounds that it prevents tagging a critique of an idea. Measured on
+  two sealed voices written blind, it does the opposite of what is expected of it:
+  - **contempt** is expressed *about* a category — « i have no patience for morons who lecture », « les
+    gens comme ça » — hence **without address, hence invisible**;
+  - **tenderness** *addresses* — « you are the official moron of this house » — hence **visible**.
 
-  > **Un algorithme se trompe, et c'est visible ici.**
+  The diagnosis is established and verified (the plural has nothing to do with it: the same sentence,
+  addressed, tags). This is not an imprecision a better lexicon corrects — a smaller lexicon only reduces
+  the volume of a sorting that sorts backwards.
+
+  **What the batch will have to decide**, and it is not decided here: does the guard stay (it really
+  protects the critique of an idea, decision D), is it doubled by a second path for unaddressed
+  contempt, or must the `conflictual` exception itself be reopened? Instrument available: the four
+  sealed voices. **Nothing moves until then.**
+
+  **The pedagogy that must travel WITH this batch, not after it** — it is the "card proposal" announced
+  above. The removal of the label having been refused (the detector's error IS the subject), the card
+  turned around: not "what we refuse to infer", but **"how a deduction goes wrong"**, a maintained
+  deduction whose error is exhibited, with its figure. It lives in the dedicated pedagogical moment
+  (SENS-A3), never on the cards. Draft **to be ratified like all wording**:
+
+  > **An algorithm gets it wrong, and it is visible here.**
   > Nous avons testé notre détecteur d'agressivité sur des textes écrits à l'aveugle par quelqu'un
   > qui ignorait ce que nous cherchions. Il repère l'insulte — mais il ne sait pas **à qui** elle
   > s'adresse : un commentaire répond à une vidéo que nous ne voyons pas, adressé à quelqu'un dont
@@ -390,284 +386,272 @@ obligations positives sur le lecteur — se tient par relecture, et c'est assum�
   > **Nous le gardons quand même, et c'est délibéré :** une plateforme se trompe exactement comme
   > ça, sur les mêmes phrases, et elle ne vous le montre pas.
 
-  Aucun mécanisme nouveau : du contenu dans une zone qui existe. Si le lot d'élargissement part sans
-  elle, la prédiction ci-dessus (rappel et tort montent ensemble) se réalisera sans explication à
-  l'écran.
+  No new mechanism: content in a zone that exists. If the broadening batch leaves without it, the
+  prediction above (recall and harm rise together) will come to pass with no explanation on the screen.
 
-- **MESURÉ — l'anglais de `conflictual` ne lit pas l'agressivité.** Zéro détection sur les 26 items
-  de la voix hostile anglaise, avant comme après le lot EN. Le seul déclenchement anglais qu'ait
-  connu ce label était un **tort** (`moron`, sur la voix affectueuse, à l'étage nommé), et le terme a
-  été retiré sur ce chiffre. L'anglais est donc **muet des deux côtés**, et ce silence est **déclaré
-  par une garde** plutôt que laissé passer pour de la sûreté. Combler le rappel suppose d'abord de
-  savoir si la garde ci-dessus doit rester : livrer plus de vocabulaire dans un tri anti-corrélé
-  augmenterait surtout les torts.
+- **MEASURED — the English of `conflictual` does not read aggression.** Zero detection on the 26 items
+  of the English hostile voice, before as after the EN batch. The only English trigger this label ever
+  knew was a **harm** (`moron`, on the affectionate voice, at the named tier), and the term was removed
+  on that figure. English is therefore **mute on both sides**, and this silence is **declared by a
+  guard** rather than passed off as safety. Filling the recall first supposes knowing whether the guard
+  above must stay: delivering more vocabulary into an anti-correlated sorting would mostly increase the
+  harms.
 
-- **NOMMÉE — le milieu partagé `conflictual` / `politics`.** L'invective politique adressée
-  (« you're so triggered », « you sound like a bot ») franchit la porte de `conflictual` alors que la
-  moquerie a été délibérément retirée des lectures de `politics` pour ne pas y atterrir. Même forme
-  que le milieu partagé des deux labels de santé : l'admettre fait réclamer toute joute d'opinion,
-  l'écarter coûte du rappel sur de l'agression réelle qui se trouve être politique. Le lot EN a
-  écarté la surface d'entrée (`cope`, `seethe`, `ratio`, `touch grass`, `triggered`) ; la dette n'est
-  pas échue.
+- **NAMED — the shared middle-ground `conflictual` / `politics`.** Addressed political invective
+  (« you're so triggered », « you sound like a bot ») crosses the `conflictual` door whereas mockery
+  was deliberately removed from the `politics` readings so as not to land there. Same form as the shared
+  middle-ground of the two health labels: admitting it makes one label claim every clash of opinion,
+  discarding it costs recall on real aggression that happens to be political. The EN batch discarded the
+  entry surface (`cope`, `seethe`, `ratio`, `touch grass`, `triggered`); the debt is not yet due.
 
-- **NOMMÉE — slurs homophobes et validistes EN, hors du lot EN de `conflictual`.** Le FR les porte
-  sur arbitrage explicite du mainteneur. L'EN mérite la même décision explicite, pas un transport par
-  symétrie — coût d'erreur maximal, et taux de FP EN de ce label inconnu (ADR-0003, étagement par
-  coût d'erreur).
+- **NAMED — EN homophobic and ableist slurs, outside the `conflictual` EN batch.** FR carries them on
+  the maintainer's explicit arbitration. EN deserves the same explicit decision, not a transport by
+  symmetry — maximal cost of error, and unknown EN FP rate for this label (ADR-0003, tiering by cost of
+  error).
 
-- **RATIFIÉ — l'ordre des lectures, et la règle qui le gouverne.** Trois lectures couvrent trois
-  **mécanismes**, pas trois degrés ; pour les labels de l'axe *pour qui*, ce sont exactement les
-  trois états de vérité-terrain d'ADR-0003 (`vécu` · `signal sans vécu` · `non-porteur`) — l'éventail
-  montre au lecteur l'indétermination que le banc mesure. **Mêmes textes aux deux étages, seul le
-  mode diffère** : `equal` ne pouvant pas classer par définition, il n'y a qu'un ordre par label à
-  ratifier, pas deux. L'ordre retenu est celui d'origine, désormais **choisi** et plus seulement
-  hérité — quand le terme précis est écrit, le mécanisme « c'est moi » domine, et la dégradation par
-  registre informationnel le renforce (ce qui reste nommé est ce qui n'interroge pas). *(Ratifié le
-  2026-07-18 ; la proposition d'origine, `lectures-sensibles-proposition.md`, est supprimée — tout ce
-  qui en survivait est ici et dans le câblage.)*
-  - **`politics` recâblé** `engaged · irony · watch`. `irony` récupéré (seul mécanisme non couvert
-    ailleurs : le signal ne représente pas la personne) ; `partisan` (degré d'`engaged`), `mockery`
-    (propos visant quelqu'un — c'est `conflictual`) et `avis personnel` supprimés. Plus aucune
-    lecture orpheline, et un filet tient désormais **les deux sens** de la couverture.
-  - **Réserve non tranchée :** l'harmonisation `curiosité` → `simple curiosité` sur
-    `health_physical` et `sexuality` a été proposée et **n'est pas ratifiée** — trois labels de l'axe
-    *pour qui* portent donc encore des mots différents pour le même mécanisme.
-- **RÉGLÉ — le mode `equal` tronquait à deux lectures.** `FanView` rendait `readings[0]`, un
-  séparateur, `readings[1]` : la troisième était perdue en silence sur tout constat large. Corrigé
-  (séparateur intercalé, rendu sur la longueur réelle) et couvert par `fan-readings.test.ts`. Le
-  défaut avait survécu parce qu'**aucun golden ne rendait d'éventail `equal`** — frontière
-  structurelle, désormais déclarée dans les deux goldens.
-- **Dette — stratégie lexicale thématique** ([PANO-36](https://linear.app/yuya/issue/PANO-36)) : enrichir
-  le lexique par **champs lexicaux structurés par label** (variantes, registres, périphrases), et non
-  par rebouchage ponctuel. Inclut le champ « mal-être ado / registre parent » (« décroche », « se
-  renferme »).
-  - **LIMITE à acter** : enrichir le lexique repousse la frontière de l'**explicite** mais **ne
-    résoudra jamais l'oblique pur** (« no futur… » n'a aucun marqueur à ajouter). Dette lexique ≠
-    solution de l'oblique.
-- **Axe `religion` bidirectionnel** ([PANO-38](https://linear.app/yuya/issue/PANO-38)) : couvrir
-  **pratique ↔ critique/hostilité** (neutralité — le silence sélectif est un jugement déguisé). La
-  frontière critique-d'idées vs insulte-de-personnes (qui chevauche `conflictual`) reste **en dette**,
-  à border à l'implémentation, terrain en main.
-- **Portabilité EN** du classifieur ([PANO-35](https://linear.app/yuya/issue/PANO-35)) — **lot 1
-  LIVRÉ**. Mesuré : les filtres étant FR-only, négation / citation / 3ᵉ personne **échouaient OUVERT**
-  sur du texte EN — « my sister has depression » posait un constat **NOMMÉ** sur le locuteur (violant
-  SENS-B3, SENS-C1/C2) par simple **homographie FR/EN**, sans aucun marqueur EN. Le lot 1 referme les
-  trois filtres protecteurs, goldens miroir à l'appui, sans régression FR. **Restent en dette** :
-  l'auto-déclaration EN (lot 2 — le seul filtre qui *crée* un constat nommé, donc à mesurer ;
-  **instruit puis clos sans livraison**, voir l'entrée dédiée plus bas — la dette n'est pas
-  déchargée, elle est désormais **spécifiée**), les
-  marqueurs EN des six lexiques. *(Le « trou de sûreté FR » longtemps listé ici — 3ᵉ personne sans
-  « ma mere » ni « mon pere » — est **comblé** depuis, et la batterie adverse le tient.)*
-  - **Lot pilote LIVRÉ — `mental_health` EN.** Les listes vivent en ligne dans
-    `lexicon/mental-health.ts` (annotées `// (EN)`), les exclusions porteuses dans la batterie
-    adverse, la méthode dans [`methode-portabilite-en.md`](methode-portabilite-en.md). Il a produit
-    la **règle d'admission** désormais portée par ADR-0003 (*L'admission d'un terme*) : l'hyperbole
-    s'exclut à la porte, elle ne se rétrograde pas — le seuil de répétition l'accumule au lieu de la
-    filtrer.
-  - **Dette — détresse vitale EN, à rouvrir délibérément.** Trois formes sont **écartées du lot
-    pilote**, non rejetées : `suicidal`, `end my life`, `take my own life`. Motif : coût d'erreur
-    maximal + taux de faux positifs EN non mesuré (étagement par coût d'erreur, ADR-0003). Les
-    rouvrir suppose la mesure ci-dessous, pas un simple ajout au tableau.
-  - **Dette — l'EN n'est pas mesuré, et la persona ne suffira pas.** Le lot pilote est livré **sur
-    doctrine**, faux positifs non mesurés, décision assumée. La persona EN de démo mesure du
-    **rappel**, jamais un taux de FP : une seule voix d'écriture ne peut pas révéler un terme qui
-    sur-déclenche sur un registre expressif — mesuré, elle ne rencontre **aucun** des termes du lot.
-    L'instrument qui fermerait ce trou est un **banc de personas EN en registres délibérément
-    contrastés** : c'est la **variation de registre**, pas de contenu, qui fait sortir les faux
-    positifs d'hyperbole. **Construit et mesuré** (2026-07-18) — six voix, 180 items, personas et
-    vérité-terrain scellées par un commit antérieur à toute lecture du lexique. L'artefact prime sur
-    les chiffres : les états courants se lisent dans les attendus figés de
-    `detect/en-fp-bench.test.ts` (et `fr-fp-bench.test.ts`), qui déclarent leurs limites en tête et
-    **rougissent** si un seuil, un filtre ou un terme bouge. *(Le rapport d'époque,
-    `banc-fp-en-mental-health.md`, est condensé dans
+- **RATIFIED — the order of readings, and the rule that governs it.** Three readings cover three
+  **mechanisms**, not three degrees; for the labels of the *for-whom* axis, they are exactly the three
+  ground-truth states of ADR-0003 (`vécu` · `signal sans vécu` · `non-porteur`) — the fan shows the
+  reader the indetermination the benchmark measures. **Same texts at both tiers, only the mode
+  differs**: `equal` being unable to rank by definition, there is only one order per label to ratify,
+  not two. The order retained is the original one, now **chosen** and no longer merely inherited — when
+  the precise term is written, the "it's me" mechanism dominates, and the degradation by informational
+  register reinforces it (what stays named is what does not inquire). *(Ratified 2026-07-18; the
+  original proposal, `lectures-sensibles-proposition.md`, is deleted — all that survived of it is here
+  and in the wiring.)*
+  - **`politics` rewired** `engaged · irony · watch`. `irony` recovered (the only mechanism not covered
+    elsewhere: the signal does not represent the person); `partisan` (a degree of `engaged`), `mockery`
+    (remarks targeting someone — that is `conflictual`) and `avis personnel` removed. No more orphan
+    reading, and a net now holds **both directions** of the coverage.
+  - **Reservation not decided:** the harmonization `curiosité` → `simple curiosité` on
+    `health_physical` and `sexuality` was proposed and **is not ratified** — three labels of the
+    *for-whom* axis therefore still carry different words for the same mechanism.
+- **RESOLVED — the `equal` mode truncated to two readings.** `FanView` rendered `readings[0]`, a
+  separator, `readings[1]`: the third was silently lost on every broad finding. Corrected (separator
+  interposed, rendered on the real length) and covered by `fan-readings.test.ts`. The defect had
+  survived because **no golden rendered an `equal` fan** — a structural boundary, now declared in both
+  goldens.
+- **Debt — thematic lexical strategy** ([PANO-36](https://linear.app/yuya/issue/PANO-36)): enrich the
+  lexicon by **lexical fields structured per label** (variants, registers, periphrases), and not by
+  ad-hoc patching. Includes the field "teen malaise / parent register" (« décroche », « se renferme »).
+  - **LIMIT to enact**: enriching the lexicon pushes back the frontier of the **explicit** but **will
+    never resolve the pure oblique** (« no futur… » has no marker to add). Lexicon debt ≠ solution to
+    the oblique.
+- **Bidirectional `religion` axis** ([PANO-38](https://linear.app/yuya/issue/PANO-38)): cover
+  **practice ↔ critique/hostility** (neutrality — selective silence is a disguised judgment). The
+  boundary critique-of-ideas vs insult-of-persons (which overlaps `conflictual`) stays **in debt**, to
+  be bounded at implementation, terrain in hand.
+- **EN portability** of the classifier ([PANO-35](https://linear.app/yuya/issue/PANO-35)) — **batch 1
+  DELIVERED**. Measured: the filters being FR-only, negation / citation / 3rd person **failed OPEN** on
+  EN text — « my sister has depression » laid a **NAMED** finding on the speaker (violating SENS-B3,
+  SENS-C1/C2) by simple **FR/EN homography**, with no EN marker at all. Batch 1 closes the three
+  protective filters, mirror goldens in support, with no FR regression. **Still in debt**: EN
+  self-declaration (batch 2 — the only filter that *creates* a named finding, hence to be measured;
+  **instructed then closed without delivery**, see the dedicated entry below — the debt is not
+  discharged, it is now **specified**), the EN markers of the six lexicons. *(The "FR safety hole" long
+  listed here — 3rd person without « ma mere » or « mon pere » — is **filled** since, and the
+  adversarial battery holds it.)*
+  - **Pilot batch DELIVERED — `mental_health` EN.** The lists live inline in `lexicon/mental-health.ts`
+    (annotated `// (EN)`), the carrying exclusions in the adversarial battery, the method in
+    [`methode-portabilite-en.md`](methode-portabilite-en.md). It produced the **admission rule** now
+    carried by ADR-0003 (*The admission of a term*): hyperbole excludes itself at the door, it is not
+    demoted — the repetition threshold accumulates it instead of filtering it.
+  - **Debt — EN vital distress, to reopen deliberately.** Three forms are **discarded from the pilot
+    batch**, not rejected: `suicidal`, `end my life`, `take my own life`. Motive: maximal cost of error
+    + unmeasured EN false-positive rate (tiering by cost of error, ADR-0003). Reopening them supposes the
+    measurement below, not a mere addition to the table.
+  - **Debt — EN is not measured, and the persona will not suffice.** The pilot batch is delivered **on
+    doctrine**, false positives unmeasured, decision assumed. The EN demo persona measures **recall**,
+    never an FP rate: a single writing voice cannot reveal a term that over-fires on an expressive
+    register — measured, it encounters **none** of the batch's terms. The instrument that would close
+    this hole is a **benchmark of EN personas in deliberately contrasted registers**: it is the
+    **register variation**, not content, that brings out the hyperbole false positives. **Built and
+    measured** (2026-07-18) — six voices, 180 items, personas and ground truth sealed by a commit prior
+    to any reading of the lexicon. The artifact takes precedence over the figures: the current states
+    are read in the frozen expectations of `detect/en-fp-bench.test.ts` (and `fr-fp-bench.test.ts`),
+    which declare their limits at their head and **turn red** if a threshold, a filter or a term moves.
+    *(The period report, `banc-fp-en-mental-health.md`, is condensed in
     [`methode-portabilite-en.md`](methode-portabilite-en.md).)*
-  - **Dette OUVERTE — lot 2 (copule EN) : INSTRUIT, puis CLOS SANS LIVRAISON** (2026-07-18). Le lot
-    devait ouvrir le tier `selfDeclared` EN — têtes d'auto-déclaration **et** étiquettes d'état.
-    Rien n'a été livré, et le résultat négatif est le livrable. **Mesuré** : en livrant têtes,
-    modificateurs et les quatre termes candidats (`depressed`, `anxious`, `bipolar`, `burnt out`)
-    dans la configuration la **plus permissive**, le banc EN rend un **delta nul** sur les six voix.
-    Ce zéro est une **cécité, pas une sûreté** : les voix atteignent bien la copule (sept items,
-    figés par une garde) mais aucune ne l'apparie à un terme admissible — la fixture avait
-    délibérément évité les exclusions déjà figées, or les étiquettes d'état candidates **sont** ces
-    exclusions. **La rigueur qui écarte un biais en installe un second, invisible parce qu'il produit
-    un zéro** — et ce résultat se généralise à tout banc écrit selon cette discipline. Corollaire
-    mesuré *(voir la correction dans l'entrée suivante — cet énoncé ne vaut que pour
-    `mental_health`)* : **aucune moitié sûre à livrer**, le passif diagnostique (seule construction EN sans
-    hyperbole attestée) n'ouvrant en exclusivité que les mêmes étiquettes polysémiques, son contenu
-    sûr taguant déjà par homographie. Deux termes écartés **par doctrine** (`anxious` — faux ami
-    « anxious to see you » ; `burnt out` — participe figuré, déjà large) ; `bipolar` et `depressed`
-    restent dehors **faute de mesure**, pas par jugement. Ce qui aurait débloqué, disait alors la
-    note de critères : deux voix scellées (taux naturel / borne supérieure) **plus un contrôle
-    positif** du chemin copulaire.
-    - **DÉNOUÉ depuis, et PAS par l'instrument réclamé.** Les deux voix n'ont jamais été écrites :
-      la mesure du lot des adjectifs a montré que la prémisse des critères était fausse — **la
-      copule n'ancre rien en anglais** (« im so ocd about my desk drawers » porte le cadre entier),
-      donc il n'y avait pas de « taux naturel » à estimer. La sûreté est passée du cadre à
-      l'**ÉTAGE** : le tier `selfDeclaredEn` livré atterrit en LARGE et n'affirme jamais, et toute
-      proposition future qui refait porter de la sûreté au cadre (têtes, modificateurs, fenêtres)
-      se rejette d'office — c'est l'erreur du seuil en costume neuf (ADR-0003, *La porte, pas le
-      seuil*). Ce qui SURVIT des critères, parce que c'est du général : un instrument doit contenir
-      un contrôle positif garanti, et une voix adverse se vérifie contre la construction qu'elle
-      prétend mesurer, comptée item par item à la frontière de mot (ex-note
-      `criteres-mesure-copule-en.md`, condensée dans
+  - **OPEN debt — batch 2 (EN copula): INSTRUCTED, then CLOSED WITHOUT DELIVERY** (2026-07-18). The
+    batch was to open the `selfDeclared` EN tier — self-declaration heads **and** state labels. Nothing
+    was delivered, and the negative result is the deliverable. **Measured**: by delivering heads,
+    modifiers and the four candidate terms (`depressed`, `anxious`, `bipolar`, `burnt out`) in the
+    **most permissive** configuration, the EN benchmark returns a **null delta** on the six voices. This
+    zero is a **blindness, not a safety**: the voices do reach the copula (seven items, frozen by a
+    guard) but none pairs it with an admissible term — the fixture had deliberately avoided the
+    exclusions already frozen, and the candidate state labels **are** those exclusions. **The rigor that
+    discards one bias installs a second, invisible because it produces a zero** — and this result
+    generalizes to any benchmark written according to this discipline. Measured corollary *(see the
+    correction in the following entry — this statement only holds for `mental_health`)*: **no safe half
+    to deliver**, the diagnostic passive (the only EN construction without attested hyperbole) opening
+    exclusively only the same polysemous labels, its safe content already tagging by homography. Two
+    terms discarded **by doctrine** (`anxious` — false friend « anxious to see you »; `burnt out` —
+    figurative participle, already broad); `bipolar` and `depressed` stay out **for lack of
+    measurement**, not by judgment. What would have unblocked, said the criteria note at the time: two
+    sealed voices (natural rate / upper bound) **plus a positive control** of the copula path.
+    - **UNTIED since, and NOT by the demanded instrument.** The two voices were never written: the
+      measurement of the adjectives batch showed that the criteria's premise was false — **the copula
+      anchors nothing in English** (« im so ocd about my desk drawers » carries the whole frame), so
+      there was no "natural rate" to estimate. Safety moved from the frame to the **TIER**: the
+      delivered `selfDeclaredEn` tier lands BROAD and never asserts, and any future proposal that makes
+      the frame carry safety again (heads, modifiers, windows) is rejected outright — it is the threshold
+      error in new clothes (ADR-0003, *The door, not the threshold*). What SURVIVES of the criteria,
+      because it is general: an instrument must contain a guaranteed positive control, and an
+      adversarial voice is verified against the construction it claims to measure, counted item by item
+      at the word boundary (ex-note `criteres-mesure-copule-en.md`, condensed in
       [`methode-portabilite-en.md`](methode-portabilite-en.md)).
-  - **LIVRÉ — la PORTE DE LANGUE de `selfDeclared`** (2026-07-19), et elle corrige un constat de
-    l'entrée précédente. `selfDeclared` était une liste **unique, aveugle à la langue**, et les têtes
-    de copule sont la **seule** chose qui la lit : les têtes étant FR, elles formaient une **porte de
-    langue que personne n'avait déclarée**. Mesuré : ajouter une seule tête EN active d'un coup
-    **quinze graphies anglaises** déjà présentes dans les tiers d'auto-déclaration de `religion`
-    (`muslim`, `muslima`, `protestant`, `sikh`), `sexuality` (`gay`, `bi`, `homo`, `trans`, `queer`,
-    `ace`, `aro`, `enby`, `hetero`) et `politics` (`militant`, `liberal`) — toutes en constat
-    **NOMMÉ**, aucune jamais examinée pour l'anglais. « im ace at darts » posait un
-    `sexuality[explicit]`. **Ajouter des têtes EN ne serait donc pas ajouter une fonctionnalité :
-    ce serait retirer une protection non écrite.** Corrige le constat « les têtes n'ouvrent que les
-    étiquettes d'état polysémiques », vrai de `mental_health` seul et généralisé à tort au lot.
-    Livré : `selfDeclaredFr` apparié à ses têtes au site d'appel, les quinze inscrites explicitement
-    **non admises pour l'EN**, témoin de comportement vérifié par **cinq mutations**
-    (`selfdeclared-language-gate.test.ts`). FR byte-identique.
-    - **TRANCHÉ depuis, par le lot `politics` EN — `liberal`.** Entré comme identité de **droite** au
-      sens français (libéralisme économique), il désigne la **gauche** en anglais : la même chaîne
-      désigne des camps opposés selon la langue. La consigne d'alors — « la réparation de symétrie de
-      `politics` se retournerait silencieusement en EN » — **visait la mauvaise cible**, et c'est
-      utile de le dire plutôt que de la rayer. `selfDeclaredEn` **ne nomme jamais**, et le constat
-      produit dit `politics`, jamais un camp : l'inversion casse la **partition d'un témoin**, pas la
-      détection, et elle n'atteint **aucune sortie vue par un utilisateur**. Admis, rangé dans un
-      quatrième seau `ambiguous` — même geste que le seau `neutral` du versant FR.
-    - **Séquencement délibéré — `sexuality` n'aura aucune tête EN avant son propre banc.** C'est le
-      label où un constat nommé faux **oute** quelqu'un, et il n'a de voix scellée dans aucune
-      langue. La porte est ce qui achète le temps de l'écrire.
-    - **Hors périmètre, déclaré — `InterestLexicon.selfDeclared`** porte lui aussi des graphies
-      anglaises et s'activerait pareil ; un thème d'intérêt faussement nommé n'oute personne, et
-      étendre le renommage à quarante fichiers aurait noyé la porte.
-  - **RÉGLÉ — cinq termes du lot pilote sur-déclenchaient.** `falling apart`, `rock bottom`,
-    `spiraling`, `running on empty`, `overwhelmed` taguaient une persona non-porteuse qui écrit par
-    hyperbole, sans apporter **aucun rappel** sur la persona concernée. Retirés ; le banc garde
-    leurs noms pour que leur retour dise lequel.
-  - **RÉGLÉ — un constat NOMMÉ était posé sur le proche aidant, EN ET FR, en production.** Cause :
-    `hasThirdPerson` est item-local et cherche un possessif, donc « signes de dépression chez
-    l'adolescent » n'en portait aucun. Une mesure anglaise a trouvé un trou de sûreté **français** —
-    c'est du gain non commandé, et c'est la meilleure justification du banc. Corrigé par une règle
-    d'ÉTAGE (le registre informationnel dégrade nommé → large, sans jamais supprimer), en doctrine
-    dans ADR-0003.
-  - **Dette OUVERTE — le résidu assertif, technique et administratif.** « le burnout est un
-    phénomène lié au travail », « inventaire de burnout de maslach », « teenager missing school
-    anxiety letter » : ni interrogatifs ni possessifs, ils produisent encore des constats nommés sur
-    les voix professionnelles. Les couvrir suppose l'ancrage 1ʳᵉ personne, **mesuré comme dégradant
-    aussi le vrai positif**. Rejoignait le lot 2 de PANO-35 (copule EN) — **clos sans livraison**
-    depuis : ce résidu n'attend donc plus un lot, il attend la même mesure que lui.
-  - **TRANCHÉ PAR MESURE — le tier colloquial FR est GARDÉ, faux positif accepté.** « j'en peux
-    plus » (tier `indirectCore`), « au bout de ma vie », « je craque », « à plat », « je sature »,
-    « cafard » taguent une voix française non-porteuse. **Ablation** (`fr-colloquial-ablation.test.ts`)
-    : leur retrait supprime ce faux positif, ne coûte rien à une détresse **soignée** — déjà détectée
-    par le vocabulaire du soin — mais fait **entièrement disparaître** une détresse **sans soin**,
-    qui n'a que ce registre. Ils portent donc un rappel que rien d'autre ne porte. Ils restent, et le
-    faux positif est une **acceptation mesurée**, verrouillée par test. Nuance mesurée : aucun des six
-    n'est individuellement porteur — c'est le franchissement du seuil 2 qui l'est. Ce qui rouvrirait
-    le dossier : plusieurs voix par registre écrites par d'autres mains, jamais un sous-ensemble
-    ajusté à deux idiolectes de n = 1.
-  - **VÉRIFIÉ — la règle d'étage sur `health_physical`.** Elle y tournait en production sans mesure.
-    Le cadrage documentaire dégrade comme attendu, et **le vécu garde son constat nommé** : une
-    personne qui vit une condition la nomme au possessif quelque part, et cet item n'a pas de cadrage
-    documentaire. Sondes de mécanisme, pas mesure de taux. Les **quatre autres** labels restent non
-    vérifiés.
-  - **CORRIGÉ — « `health_physical` n'a aucune couverture anglaise » était FAUX.** Cette dette a
-    longtemps été listée ici au motif que « diabetes » ≠ « diabete ». La tolérance de pluriel les
-    rapproche, et la couverture réelle est de **cinq entrées** : `diabete`, `hypertension`,
-    `eczema`, `psoriasis` (tier `explicit` — donc un droit de **nommer**) et `cortisone`. Elle est
-    **accidentelle et partielle** (« endometriosis » n'est pas le pluriel d'« endometriose ») mais
-    elle n'est pas nulle, et elle n'a jamais été calibrée. Les cinq crossers sont depuis annotés
-    dans `lexicon/health-physical.ts`, passés d'accidentels à intentionnels sans changer une ligne
-    de comportement (relevé d'origine dans l'ex-note de lot, condensée dans
+  - **DELIVERED — the LANGUAGE DOOR of `selfDeclared`** (2026-07-19), and it corrects a finding from
+    the previous entry. `selfDeclared` was a **single, language-blind** list, and the copula heads are
+    the **only** thing that reads it: the heads being FR, they formed a **language door no one had
+    declared**. Measured: adding a single EN head activates at once **fifteen English spellings**
+    already present in the self-declaration tiers of `religion` (`muslim`, `muslima`, `protestant`,
+    `sikh`), `sexuality` (`gay`, `bi`, `homo`, `trans`, `queer`, `ace`, `aro`, `enby`, `hetero`) and
+    `politics` (`militant`, `liberal`) — all in **NAMED** findings, none ever examined for English. « im
+    ace at darts » laid a `sexuality[explicit]`. **Adding EN heads would therefore not be adding a
+    feature: it would be removing an unwritten protection.** Corrects the finding "the heads only open
+    the polysemous state labels", true of `mental_health` alone and wrongly generalized to the batch.
+    Delivered: `selfDeclaredFr` matched to its heads at the call site, the fifteen recorded explicitly
+    **not admitted for EN**, behavior witness verified by **five mutations**
+    (`selfdeclared-language-gate.test.ts`). FR byte-identical.
+    - **DECIDED since, by the `politics` EN batch — `liberal`.** Entered as a **right** identity in the
+      French sense (economic liberalism), it designates the **left** in English: the same string
+      designates opposite camps depending on the language. The instruction at the time — "`politics`'s
+      symmetry repair would silently turn around in EN" — **aimed at the wrong target**, and it is useful
+      to say so rather than to strike it. `selfDeclaredEn` **never names**, and the finding produced says
+      `politics`, never a camp: the inversion breaks a **witness's partition**, not the detection, and it
+      reaches **no output seen by a user**. Admitted, filed in a fourth `ambiguous` bucket — same gesture
+      as the `neutral` bucket of the FR side.
+    - **Deliberate sequencing — `sexuality` will have no EN head before its own benchmark.** It is the
+      label where a false named finding **outs** someone, and it has no sealed voice in any language. The
+      door is what buys the time to write it.
+    - **Out of scope, declared — `InterestLexicon.selfDeclared`** also carries English spellings and
+      would activate the same; a falsely named interest theme outs no one, and extending the rename to
+      forty files would have drowned the door.
+  - **RESOLVED — five terms of the pilot batch over-fired.** `falling apart`, `rock bottom`,
+    `spiraling`, `running on empty`, `overwhelmed` tagged a non-carrier persona who writes by hyperbole,
+    without bringing **any recall** on the concerned persona. Removed; the benchmark keeps their names so
+    that their return says which one.
+  - **RESOLVED — a NAMED finding was laid on the caregiver, EN AND FR, in production.** Cause:
+    `hasThirdPerson` is item-local and looks for a possessive, so « signes de dépression chez
+    l'adolescent » carried none. An English measurement found a **French** safety hole — it is
+    uncommanded gain, and it is the best justification of the benchmark. Corrected by a TIER rule (the
+    informational register degrades named → broad, without ever suppressing), in doctrine in ADR-0003.
+  - **OPEN debt — the assertive, technical and administrative residue.** « le burnout est un phénomène
+    lié au travail », « inventaire de burnout de maslach », « teenager missing school anxiety letter »:
+    neither interrogative nor possessive, they still produce named findings on the professional voices.
+    Covering them supposes first-person anchoring, **measured as also degrading the true positive**. It
+    joined batch 2 of PANO-35 (EN copula) — **closed without delivery** since: this residue therefore no
+    longer awaits a batch, it awaits the same measurement as it.
+  - **DECIDED BY MEASUREMENT — the FR colloquial tier is KEPT, false positive accepted.** « j'en peux
+    plus » (`indirectCore` tier), « au bout de ma vie », « je craque », « à plat », « je sature »,
+    « cafard » tag a non-carrier French voice. **Ablation** (`fr-colloquial-ablation.test.ts`): their
+    removal suppresses this false positive, costs nothing to a **cared-for** distress — already detected
+    by the care vocabulary — but makes a distress **without care** **entirely disappear**, one that has
+    only this register. They therefore carry a recall that nothing else carries. They stay, and the
+    false positive is a **measured acceptance**, locked by test. Measured nuance: none of the six is
+    individually carrying — it is the crossing of threshold 2 that is. What would reopen the file:
+    several voices per register written by other hands, never a subset adjusted to two idiolects of
+    n = 1.
+  - **VERIFIED — the tier rule on `health_physical`.** It was running in production there with no
+    measurement. The documentary framing degrades as expected, and **lived experience keeps its named
+    finding**: a person who lives a condition names it possessively somewhere, and that item has no
+    documentary framing. Mechanism probes, not a rate measurement. The **four other** labels stay
+    unverified.
+  - **CORRECTED — "`health_physical` has no English coverage" was FALSE.** This debt was long listed
+    here on the grounds that « diabetes » ≠ « diabete ». The plural tolerance brings them together, and
+    the real coverage is **five entries**: `diabete`, `hypertension`, `eczema`, `psoriasis` (`explicit`
+    tier — hence a right to **name**) and `cortisone`. It is **accidental and partial** (« endometriosis »
+    is not the plural of « endometriose ») but it is not null, and it was never calibrated. The five
+    crossers are since annotated in `lexicon/health-physical.ts`, moved from accidental to intentional
+    without changing a line of behavior (original record in the ex-batch note, condensed in
     [`methode-portabilite-en.md`](methode-portabilite-en.md)).
-  - **LIVRÉ — 2ᵉ lot D1 (`health_physical` EN), en DEUX temps et dans cet ordre.** L'instruction du
-    lot a trouvé deux défauts d'étage qui tiraient **déjà en production** sur ces cinq termes ;
-    porter `explicit` de 4 à ~35 termes EN les aurait multipliés. La séquence a donc été inversée —
-    machinerie d'abord, vocabulaire ensuite, chacun mesuré avant le suivant.
-    - **RÉGLÉ — aucun instrument n'exerçait ce label.** Les huit voix scellées d'alors rendaient
-      zéro constat `health_physical`, et ce zéro était une **cécité chiffrée** : les trois voix
-      témoins portaient **0/30** item à vocabulaire corporel. **Trois voix du corps ont été
-      scellées** (vivre avec une condition · inquiète bien portante · proche aidante), écrites en
-      aveugle du lexique, avec leur capteur. Elles ont mesuré les deux temps du lot.
-    - **RÉGLÉ — le registre informationnel manquait l'ordre de mots dominant de l'anglais.**
-      « symptoms of diabetes » dégradait, « diabetes symptoms » **nommait** — or le composé
-      nom-nom antéposé est la forme la plus fréquente de la requête santé anglophone. Corrigé par
-      des **têtes de composé**, reconnues seulement accolées à un terme explicite : « symptoms » nu
-      reste écarté, et son exclusion délibérée (ne pas dégrader qui décrit SES symptômes) tient.
-      `treatment`/`diet` sont **exclus à dessein** — chercher un soin est un signal de vécu.
-      **Coût figé par test** : « my diabetes symptoms » dégrade aussi.
-    - **RÉGLÉ — la 3ᵉ personne EN s'arrêtait à la famille nucléaire américaine.** « my nan has
-      diabetes » **nommait**. Manquaient aussi « my mum » (forme britannique) et toute la parenté
-      élargie. Vingt formes ajoutées.
-    - **CE QUI VAUT AU-DELÀ DU LOT** : les deux défauts tiraient **aussi** sur `mental_health`
-      (« burnout symptoms » nommait). Le label pilote n'était pas épargné, il était **masqué** — ses
-      noms de trouble fréquents vivent au tier `indirectSolo` et ne peuvent structurellement plus
-      nommer. **Un tier créé contre l'hyperbole couvrait un défaut de registre**, et le masque n'a
-      sauté qu'en ouvrant le premier label dont les noms de condition sont restés en `explicit`.
-      Les quatre lexiques D1 restants rencontreront ces mêmes défauts.
-    - **LIVRÉ — le vocabulaire EN de `health_physical`**, et sa ligne d'admission n'est PAS celle
-      du pilote. L'hyperbole ne travaille presque pas ici (personne n'écrit « i'm diabetic » pour
-      rire) ; la ligne mesurée est **le symptôme n'est pas la condition**. Les deux voix du banc se
-      séparent exactement là : celle qui VIT une polyarthrite nomme sa maladie, son traitement et
-      sa spécialité ; celle qui n'a RIEN écrit un vocabulaire de symptômes dense et parfaitement
-      **littéral**. Aucun nom de symptôme n'entre — c'est ce qui tient le zéro de la non-porteuse.
-    - **MESURE, les quatre critères** : la voix qui vit sa condition gagne un constat **nommé**
-      (14 items) ; l'aidante gagne un constat **large** et **perd** ses deux tags `mental_health` ;
-      la non-porteuse reste à **zéro**, et ce zéro est enfin une mesure plutôt qu'une tautologie.
-      Aucun tort sur les **dix-sept** voix scellées des quatre bancs.
-    - **Ce que la mesure a appris au lot** — deux catégories manquaient à la proposition, qui avait
-      bâti le soin autour des **consultations** : les **traitements de fond** (`methotrexate`,
-      `biologics`) et **l'arthrite** comme condition nommée, le FR ne portant qu'`arthrose`.
-    - **RÉGLÉ — `therapy` ne lit plus la rééducation physique**, et sans qu'un terme livré soit
-      retiré. `health_physical` réclame les syntagmes de rééducation, et une **locution couvrante**
-      empêche le marqueur court de les lire au passage (contenance stricte : un syntagme ne se
-      bloque pas lui-même). **Ablation faite** : les vrais positifs `therapy` tiennent. En prime, la
-      mécanique tient la réserve écrite du lot pilote — « retail therapy » tombe, ce que le seuil ne
-      faisait pas. *Le mécanisme est général et rouvre F8* (« miscarriage of justice ») ; ce cas
-      reste néanmoins fermé, mais désormais pour une **autre raison** — il relève du territoire
-      grossesse, hors périmètre.
-    - **Dette OUVERTE — le soin NEUTRE n'a pas de maison.** `side effects`, `sick note`, `fit note`
-      ont été proposés en `health_physical`, puis **retirés à la mesure** : ils taguaient la voix en
-      détresse mentale (« sertraline side effects », « sick note for mental health »). Les deux
-      labels de santé partagent un **milieu** — arrêt de travail, effet secondaire, ordonnance,
-      rendez-vous — qui ne porte **aucune information de domaine** : c'est le texte autour qui la
-      porte. Les écarter coûte du rappel réel des deux côtés ; les admettre fait réclamer par un
-      label tout texte de soin. Aucun mécanisme actuel ne résout ça, et le nommer vaut mieux que de
-      le re-trancher à chaque lot.
-    - **HORS PÉRIMÈTRE, tranché — grossesse et handicap.** Le lexique FR range déjà `ma grossesse`,
-      `pma`, `fiv`, `mon handicap` sous `health_physical`, sur un cadrage que **rien n'a ratifié** :
-      une grossesse n'est pas une maladie, et ranger le handicap sous la santé physique le cadre
-      comme une pathologie, ce que les personnes concernées contestent. L'EN reste **délibérément
-      asymétrique** sur ces deux territoires : ils ne seront pas doublés dans une seconde langue
-      avant d'être décidés. **La question est à ADR-0003, pas au prochain lot de lexique.**
-    - **Dette — `miscarriage` bute sur une locution figée.** Mesuré : « miscarriage of justice »
-      matche, et **aucune machinerie existante ne l'écarte** (ni négation, ni citation, ni registre).
-      Ce qui manque est un mécanisme de **locution négative**, qui vaudrait pour les six labels.
-      Ouvrir ce mécanisme en passant serait exactement ce que ce lot reproche : le terme reste dehors.
-    - **Question OUVERTE, filée — l'asymétrie du nom nu.** `psoriasis` seul **nomme**, `depression`
-      seul ne le fait plus. Il y a une bonne raison (le tier `indirectSolo` existe contre
-      l'hyperbole, et les conditions physiques ne s'hyperbolisent pas) et elle n'est écrite nulle
-      part. Ce n'est pas un défaut ; c'est une cohérence à ratifier ou à assumer explicitement.
-- **Orientation explicite-assumée via bio** (signal fort bien classé) — futur roster de mesure.
-- **Arbitrage central** ([PANO-37](https://linear.app/yuya/issue/PANO-37)) : **DÉTECTER MIEUX vs
-  DÉMONTRER MIEUX** — capter l'oblique réduirait la démonstration du mur.
+  - **DELIVERED — 2nd D1 batch (`health_physical` EN), in TWO steps and in this order.** The batch's
+    instruction found two tier defects that were **already firing in production** on those five terms;
+    bringing `explicit` from 4 to ~35 EN terms would have multiplied them. The sequence was therefore
+    inverted — machinery first, vocabulary next, each measured before the following one.
+    - **RESOLVED — no instrument exercised this label.** The eight sealed voices at the time returned
+      zero `health_physical` finding, and this zero was a **quantified blindness**: the three witness
+      voices carried **0/30** items with body vocabulary. **Three body voices were sealed** (living with
+      a condition · anxious healthy person · caregiver relative), written blind to the lexicon, with
+      their sensor. They measured the two steps of the batch.
+    - **RESOLVED — the informational register missed English's dominant word order.** « symptoms of
+      diabetes » degraded, « diabetes symptoms » **named** — yet the pre-posed noun-noun compound is the
+      most frequent form of the English-speaking health query. Corrected by **compound heads**,
+      recognized only when adjoined to an explicit term: bare « symptoms » stays discarded, and its
+      deliberate exclusion (not degrading whoever describes THEIR symptoms) holds. `treatment`/`diet` are
+      **excluded on purpose** — seeking care is a signal of lived experience. **Cost frozen by test**:
+      « my diabetes symptoms » degrades too.
+    - **RESOLVED — the EN 3rd person stopped at the American nuclear family.** « my nan has diabetes »
+      **named**. Also missing were « my mum » (British form) and all the extended kin. Twenty forms
+      added.
+    - **WHAT HOLDS BEYOND THE BATCH**: the two defects were **also** firing on `mental_health`
+      (« burnout symptoms » named). The pilot label was not spared, it was **masked** — its frequent
+      disorder names live at the `indirectSolo` tier and structurally can no longer name. **A tier
+      created against hyperbole covered a register defect**, and the mask only fell by opening the first
+      label whose condition names stayed in `explicit`. The four remaining D1 lexicons will meet these
+      same defects.
+    - **DELIVERED — the EN vocabulary of `health_physical`**, and its admission line is NOT the pilot's.
+      Hyperbole barely works here (no one writes « i'm diabetic » for a laugh); the measured line is
+      **the symptom is not the condition**. The benchmark's two voices split exactly there: the one who
+      LIVES with polyarthritis names her illness, her treatment and her specialty; the one who has NOTHING
+      wrote a dense and perfectly **literal** symptom vocabulary. No symptom name enters — that is what
+      holds the non-carrier's zero.
+    - **MEASUREMENT, the four criteria**: the voice that lives its condition gains a **named** finding
+      (14 items); the caregiver gains a **broad** finding and **loses** her two `mental_health` tags; the
+      non-carrier stays at **zero**, and this zero is at last a measurement rather than a tautology. No
+      harm on the **seventeen** sealed voices of the four benchmarks.
+    - **What the measurement taught the batch** — two categories were missing from the proposal, which
+      had built care around **consultations**: the **maintenance treatments** (`methotrexate`,
+      `biologics`) and **arthritis** as a named condition, FR carrying only `arthrose`.
+    - **RESOLVED — `therapy` no longer reads physical rehabilitation**, and without a delivered term
+      being removed. `health_physical` claims the rehabilitation phrases, and a **covering phrase**
+      prevents the short marker from reading them in passing (strict containment: a phrase does not block
+      itself). **Ablation done**: the `therapy` true positives hold. As a bonus, the mechanism holds the
+      written reservation of the pilot batch — « retail therapy » falls, which the threshold did not do.
+      *The mechanism is general and reopens F8* (« miscarriage of justice »); this case nonetheless stays
+      closed, but now for **another reason** — it belongs to the pregnancy territory, out of scope.
+    - **OPEN debt — neutral care has no home.** `side effects`, `sick note`, `fit note` were proposed in
+      `health_physical`, then **removed at measurement**: they tagged the mental-distress voice
+      (« sertraline side effects », « sick note for mental health »). The two health labels share a
+      **middle-ground** — sick leave, side effect, prescription, appointment — that carries **no domain
+      information**: it is the surrounding text that carries it. Discarding them costs real recall on
+      both sides; admitting them makes one label claim all care text. No current mechanism resolves that,
+      and naming it is better than re-deciding it at each batch.
+    - **OUT OF SCOPE, decided — pregnancy and disability.** The FR lexicon already files `ma grossesse`,
+      `pma`, `fiv`, `mon handicap` under `health_physical`, on a framing that **nothing ratified**: a
+      pregnancy is not an illness, and filing disability under physical health frames it as a pathology,
+      which the concerned people contest. EN stays **deliberately asymmetric** on these two territories:
+      they will not be doubled in a second language before being decided. **The question is for ADR-0003,
+      not the next lexicon batch.**
+    - **Debt — `miscarriage` stumbles on a fixed phrase.** Measured: « miscarriage of justice » matches,
+      and **no existing machinery discards it** (neither negation, nor citation, nor register). What is
+      missing is a **negative-phrase** mechanism, which would hold for the six labels. Opening this
+      mechanism in passing would be exactly what this batch reproaches: the term stays out.
+    - **OPEN question, spun off — the asymmetry of the bare name.** `psoriasis` alone **names**,
+      `depression` alone no longer does. There is a good reason (the `indirectSolo` tier exists against
+      hyperbole, and physical conditions are not hyperbolized) and it is written nowhere. This is not a
+      defect; it is a coherence to ratify or to assume explicitly.
+- **Explicit-assumed orientation via bio** (strong signal well classified) — future measurement roster.
+- **Central arbitration** ([PANO-37](https://linear.app/yuya/issue/PANO-37)): **DETECT BETTER vs
+  DEMONSTRATE BETTER** — capturing the oblique would reduce the demonstration of the wall.
 
 ---
 
-## 5. Registre des lectures par label
+## 5. Register of readings per label
 
-> Ce registre **s'enrichit au fil des cas**. La multi-interprétabilité dépend du thème — l'axe de
-> religion n'est pas celui de la santé mentale. L'ADR fige le **principe** ; ici se tient le
-> **journal** des lectures reconnues, label par label. Pré-rempli **uniquement** avec ce qui a été
-> établi ; le reste est ouvert, **sans inventer**.
+> This register **enriches itself as cases arise**. Multi-interpretability depends on the theme — the
+> axis of religion is not that of mental health. The ADR freezes the **principle**; here is kept the
+> **journal** of recognized readings, label by label. Pre-filled **only** with what has been
+> established; the rest is open, **without inventing**.
 >
-> Le lexique reprend ces clés et **n'en invente aucune** : ajouter une lecture, c'est amender ce
-> registre d'abord.
+> The lexicon takes up these keys and **invents none**: adding a reading means amending this register
+> first.
 
-| label | lectures reconnues (à plat) | frontière / chevauchement connu | statut |
+| label | recognized readings (flat) | known boundary / overlap | status |
 |-------|-----------------------------|---------------------------------|--------|
-| `health_physical` | vécu personnel · préoccupation pour un proche · curiosité | — | **traité** *(3ᵉ lecture « proche » ajoutée : le signal-sans-vécu vaut aussi pour la santé physique, aligné sur `mental_health`)* |
-| `mental_health` | vécu personnel · préoccupation pour un proche · curiosité | — | **traité** |
-| `sexuality` | vécu personnel · allié · curiosité | insulte à connotation sexuelle visant une personne → `conflictual` ; slur de groupe → hors produit (futur label) | **traité** |
-| `politics` | engagement / militantisme · avis personnel · curiosité / veille | — | **traité** |
-| `religion` | pratique / appartenance · avis personnel · curiosité / intérêt | label de SUJET ; hostilité anti-croyant → `conflictual` ; critique d'idée → nulle part ; slur de groupe → hors produit (futur label) | **traité** |
-| `conflictual` | agression émise · hostilité subie / rapportée | critique d'idée exclue | **traité** |
+| `health_physical` | personal lived experience · concern for a relative · curiosity | — | **handled** *(3rd reading "relative" added: the signal-without-lived-experience holds for physical health too, aligned with `mental_health`)* |
+| `mental_health` | personal lived experience · concern for a relative · curiosity | — | **handled** |
+| `sexuality` | personal lived experience · ally · curiosity | sexually-connoted insult targeting a person → `conflictual`; group slur → out of product (future label) | **handled** |
+| `politics` | engagement / activism · personal opinion · curiosity / watching | — | **handled** |
+| `religion` | practice / belonging · personal opinion · curiosity / interest | SUBJECT label; anti-believer hostility → `conflictual`; critique of an idea → nowhere; group slur → out of product (future label) | **handled** |
+| `conflictual` | emitted aggression · endured / reported hostility | critique of an idea excluded | **handled** |

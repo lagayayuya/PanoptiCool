@@ -1,18 +1,18 @@
-// Lexique d'intérêt `voyage` (D2, PANO-77 lot 2 · enrichi entités) — voyage / tourisme.
+// Interest lexicon `voyage` (D2, PANO-77 batch 2 · entities enriched) — travel / tourism.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du voyage FR : formats, logistique, MODES DE VIE, PLATEFORMES, jargon routard.
-// À l'aveugle ; plateformes et jargon = signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR travel: formats, logistics, LIFESTYLES, PLATFORMS, backpacker jargon.
+// Blind; platforms and jargon = generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « roadtrip », « backpacker », « routard », « vanlife », « slow travel »,
-//     « digital nomad », « couchsurfing » ; plateformes (« airbnb », « ryanair », « skyscanner »).
-//   · ANCRÉ — 50/50 : « voyage » (figuré), « vol » (larcin), « visa » (carte), « van » (camionnette),
-//     « guide », « circuit », « booking », « escale », « sejour », « destination » : co-occurrence.
-//   · EXCLU — noms de pays nus (trop génériques).
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « roadtrip », « backpacker », « routard », « vanlife », « slow travel »,
+//     « digital nomad », « couchsurfing »; platforms (« airbnb », « ryanair », « skyscanner »).
+//   · ANCHORED — 50/50: « voyage » (figurative), « vol » (theft), « visa » (card), « van » (van),
+//     « guide », « circuit », « booking », « escale », « sejour », « destination »: co-occurrence.
+//   · EXCLUDED — bare country names (too generic).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive.
 
 import type { InterestLexicon } from '../types';
 
@@ -25,7 +25,7 @@ export const VOYAGE_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Vocabulaire générique
+    // Generic vocabulary
     'roadtrip',
     'backpacker',
     'routard',
@@ -42,7 +42,7 @@ export const VOYAGE_LEXICON: InterestLexicon = {
     'baroudeur',
     'escapade weekend',
     'bons plans voyage',
-    // Modes de vie / jargon
+    // Lifestyles / jargon
     'vanlife',
     'slow travel',
     'digital nomad',
@@ -50,7 +50,7 @@ export const VOYAGE_LEXICON: InterestLexicon = {
     'trekking',
     'workaway',
     'pvt',
-    // Plateformes
+    // Platforms
     'airbnb',
     'ryanair',
     'skyscanner',
@@ -60,7 +60,7 @@ export const VOYAGE_LEXICON: InterestLexicon = {
     'hostelworld',
     'flixbus',
     'lonely planet',
-    // Formats / expériences
+    // Formats / experiences
     'croisiere',
     'all inclusive',
     'bivouac',
@@ -68,24 +68,24 @@ export const VOYAGE_LEXICON: InterestLexicon = {
     'sac de couchage',
     'safari photo',
     'expatriation',
-    // Variantes EN (PANO-88) : SOLO univoques.
+    // EN variants (PANO-88): univocal SOLO.
     'bucket list',
     'staycation',
   ],
   anchored: [
-    'voyage', // figuré / « voyage de données »
-    'vol', // larcin vs vol aérien
-    'visa', // carte bancaire vs visa
-    'van', // camionnette générique
-    'sejour', // générique
-    'destination', // générique
-    'depart', // générique
-    'guide', // personne / livre
-    'circuit', // électrique / circuit touristique
-    'valise', // générique
-    'hebergement', // générique
-    'escale', // escale générique
-    'booking', // réservation générique / plateforme
+    'voyage', // figurative / « voyage de données »
+    'vol', // theft vs air flight
+    'visa', // bank card vs visa
+    'van', // generic van
+    'sejour', // generic
+    'destination', // generic
+    'depart', // generic
+    'guide', // person / book
+    'circuit', // electrical / tourist circuit
+    'valise', // generic
+    'hebergement', // generic
+    'escale', // generic stopover
+    'booking', // generic booking / platform
   ],
   selfDeclared: ['voyageur', 'grand voyageur', 'routard'],
 };

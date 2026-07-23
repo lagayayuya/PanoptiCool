@@ -1,13 +1,13 @@
-// Œil PanoptiCool animé (maquettes « Accueil v2 » / « parcours guidé ») : le logo PNG + un faisceau
-// lumineux découpé à la forme du logo par un masque CSS, orienté vers le curseur. L'angle est écrit
-// DIRECTEMENT dans une variable CSS (`--ang`) via le DOM — jamais dans l'état Preact : un re-render
-// par mousemove serait un gâchis pur pour un effet purement décoratif.
+// Animated PanoptiCool eye (« Accueil v2 » / « parcours guidé » mockups): the PNG logo + a light
+// beam cut to the logo's shape by a CSS mask, oriented toward the cursor. The angle is written
+// DIRECTLY into a CSS variable (`--ang`) via the DOM — never into the Preact state: a re-render
+// per mousemove would be pure waste for a purely decorative effect.
 
 import { useEffect, useRef } from 'preact/hooks';
 
 const LOGO_SRC = '/logo.png';
 
-/** Faisceau + point lumineux, sous masque du logo — enfants du conteneur positionné. */
+/** Beam + light dot, under the logo mask — children of the positioned container. */
 function Glow({ blur, withPupil }: { blur: number; withPupil?: boolean }) {
   return (
     <div style={MASK}>
@@ -18,9 +18,9 @@ function Glow({ blur, withPupil }: { blur: number; withPupil?: boolean }) {
 }
 
 /**
- * `variant` :
- *   - `header` — vignette 58×34 (l'œil recadré dans la barre), faisceau net ;
- *   - `hero`   — pleine largeur, ratio natif du PNG (1080×607), faisceau diffus + pupille.
+ * `variant`:
+ *   - `header` — 58×34 thumbnail (the eye cropped in the bar), sharp beam;
+ *   - `hero`   — full width, the PNG's native ratio (1080×607), diffuse beam + pupil.
  */
 export function EyeLogo({ variant }: { variant: 'header' | 'hero' }) {
   const eyeRef = useRef<HTMLDivElement>(null);

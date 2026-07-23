@@ -1,31 +1,31 @@
-// Lexique d'intérêt `cuisine` (D2, PANO-76 lot 1, réécriture PROFONDE) — cuisine du quotidien.
+// Interest lexicon `cuisine` (D2, PANO-76 batch 1, DEEP rewrite) — everyday cooking.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la cuisine FR : techniques, ustensiles, familles de plats, sites/robots.
-// À l'aveugle depuis l'usage commun.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR cooking: techniques, utensils, dish families, sites/machines.
+// Blind from common usage.
 //
-// ── Méthode recall — tiers (thème LARGE) ───────────────────────────────────────────────────────
-//   · SOLO à haute couverture : « recette » attrape « recette de cinnamon roll » SANS lister chaque
-//     plat (décision PANO-76) ; « cuisiner », « patisserie », « fait maison », techniques et
-//     ustensiles univoques. On ne liste PAS l'infini des plats — la tête de série suffit.
-//   · ANCRÉ — 50/50 : « plat » (à plat/adjectif), « four » (échec), « chef » (patron), « cuisine »
-//     (pièce / « cuisine interne »), « sauce », « pate » : co-occurrence requise.
-//   · EXCLU — « bon » / « miam » (trop génériques), « gateau » nu gardé SOLO (le sens gâteau domine).
+// ── Recall method — tiers (BROAD theme) ────────────────────────────────────────────────────────
+//   · High-coverage SOLO: « recette » catches « recette de cinnamon roll » WITHOUT listing each
+//     dish (PANO-76 decision); « cuisiner », « patisserie », « fait maison », univocal techniques and
+//     utensils. We do NOT list the infinity of dishes — the head of the series suffices.
+//   · ANCHORED — 50/50: « plat » (flat/adjective), « four » (flop), « chef » (boss), « cuisine »
+//     (room / « cuisine interne »), « sauce », « pate »: co-occurrence required.
+//   · EXCLUDED — « bon » / « miam » (too generic), bare « gateau » kept SOLO (the cake sense dominates).
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN vérifié par recherche. Le tag communautaire est « foodtok » (et non « cooktok »).
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// EN usage verified by research. The community tag is « foodtok » (not « cooktok »).
 //   · SOLO — « foodtok », « stir fry », « sheet pan », « dutch oven », « pan sauce », « wok hei »,
 //     « deglaze », « umami », « doneness », « skillet », « gochujang », « chimichurri », « sofrito ».
-//   · ANCRÉ — « cook » (= « LET HIM COOK » / « he's cooked », argot de jeu aujourd'hui DOMINANT en
-//     ligne : le plus gros pourvoyeur de FP du lot), « season » (saison d'anime / de sport), « stock »
-//     (bourse), « raw » (fichier RAW photo), « dice » (dés), « roast » (se moquer) : compagnon requis.
-//   · ÉCARTÉ — « mise en place », « sous vide » : ce sont des emprunts au FRANÇAIS, et « la mise en
-//     place du projet » est une phrase banale en français — un marqueur « EN » qui matche massivement
-//     du FR n'est pas une variante, c'est une régression.
+//   · ANCHORED — « cook » (= « LET HIM COOK » / « he's cooked », game slang now DOMINANT
+//     online: the biggest FP provider of the batch), « season » (anime / sport season), « stock »
+//     (stock market), « raw » (photo RAW file), « dice » (dice), « roast » (to mock): companion required.
+//   · DISCARDED — « mise en place », « sous vide »: these are borrowings from FRENCH, and « la mise en
+//     place du projet » is a banal sentence in French — an « EN » marker that massively matches
+//     FR is not a variant, it is a regression.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. RÉGIME / perte de poids hors-champ (frôle D1) : aucun marqueur de calories/minceur.
-// « cuisine végé/vegan » et « pâtisserie » sont des thèmes séparés ; ici la cuisine salée du quotidien.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DIET / weight loss out of scope (brushes D1): no calorie/slimming marker.
+// « veg/vegan cooking » and « patisserie » are separate themes; here everyday savory cooking.
 
 import type { InterestLexicon } from '../types';
 
@@ -72,7 +72,7 @@ export const CUISINE_LEXICON: InterestLexicon = {
     'street food',
     'brunch maison',
     'assiette gourmande',
-    // Appareils, chefs & plats (rétrofit PANO-90)
+    // Appliances, chefs & dishes (retrofit PANO-90)
     'air fryer',
     'airfryer',
     'kitchenaid',
@@ -81,7 +81,7 @@ export const CUISINE_LEXICON: InterestLexicon = {
     'ramen maison',
     'poke bowl',
     'tacos maison',
-    // Variantes EN (PANO-88) : SOLO univoques (techniques / matériel / communauté).
+    // EN variants (PANO-88): SOLO univocal (techniques / equipment / community).
     'foodtok',
     'stir fry',
     'sheet pan',
@@ -99,25 +99,25 @@ export const CUISINE_LEXICON: InterestLexicon = {
     'weeknight dinner',
   ],
   anchored: [
-    'plat', // à plat / plat (adjectif)
-    'four', // « un four » (échec)
-    'chef', // patron / boss
-    'cuisine', // pièce / « cuisine interne » (politique)
+    'plat', // flat / plat (adjective)
+    'four', // « un four » (flop)
+    'chef', // boss / chief
+    'cuisine', // room / « cuisine interne » (politics)
     'sauce', // sauce vs « ça envoie la sauce »
-    'pate', // pâte vs « les pattes » (homographe normalisé proche)
-    'poele', // poêle vs poêle à bois
-    'dressage', // dressage assiette vs dressage animal
-    'mijoter', // mijoter un plat vs « mijoter un plan »
-    'ninja', // robot Ninja vs partagé (motos/gaming)
-    'staub', // marque de cocotte vs patronyme
-    'curry', // plat/épice vs partagé basket
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'cook', // « let him cook » / « he's cooked » — argot de jeu dominant en ligne (EN)
-    'season', // saison d'anime / de sport vs assaisonner (EN)
-    'stock', // bourse / stock générique vs bouillon (EN)
-    'raw', // fichier RAW (photo) / brut (EN)
-    'dice', // dés à jouer vs couper en dés (EN)
-    'roast', // se moquer vs rôti (EN)
+    'pate', // dough vs « les pattes » (close normalized homograph)
+    'poele', // pan vs wood stove
+    'dressage', // plate plating vs animal training
+    'mijoter', // simmering a dish vs « mijoter un plan »
+    'ninja', // Ninja machine vs shared (motos/gaming)
+    'staub', // cocotte brand vs surname
+    'curry', // dish/spice vs shared basket
+    // EN variants (PANO-88): ANCHORED.
+    'cook', // « let him cook » / « he's cooked » — game slang dominant online (EN)
+    'season', // anime / sport season vs to season (EN)
+    'stock', // stock market / generic stock vs broth (EN)
+    'raw', // RAW file (photo) / raw (EN)
+    'dice', // playing dice vs to dice (EN)
+    'roast', // to mock vs roast (EN)
   ],
   selfDeclared: ['cuisinier', 'cuisiniere', 'patissier', 'patissiere'],
 };

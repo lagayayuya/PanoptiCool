@@ -1,144 +1,143 @@
-# AI_USAGE — Journal de collaboration avec l'IA
+# AI_USAGE — Journal of collaboration with AI
 
-> Transparence sur l'usage de l'IA dans le développement de PanoptiCool.
-> Une chronologie de **décisions et d'arbitrages**, la plus récente en haut. Réutilisable (AGPL v3).
+> Transparency on the use of AI in the development of PanoptiCool.
+> A chronology of **decisions and arbitrations**, most recent at the top. Reusable (AGPL v3).
 
-Ce projet est développé avec l'assistance d'IA, de façon supervisée et déclarée.
-Ce journal incarne le cadre **AI Fluency (4D)** sans le transformer en formulaire :
-la section **Fait** recouvre la délégation et la description (ce qui a été confié, décidé, produit) ;
-la section **Jugement humain** recouvre le discernement et la diligence (ce qui a été arbitré, et ce
-dont je réponds).
+This project is developed with AI assistance, in a supervised and declared way.
+This journal embodies the **AI Fluency (4D)** framework without turning it into a form:
+the **Done** section covers delegation and description (what was entrusted, decided, produced);
+the **Human judgment** section covers discernment and diligence (what was arbitrated, and what I
+answer for).
 
-**Ce projet s'est construit en explorant.** La structure réelle des exports, la ligne éthique de ce
-qu'un outil ose affirmer, la faisabilité technique, l'accessibilité au plus grand nombre, la vision
-d'ensemble — chacun de ces axes s'est précisé en avançant, pas avant de commencer. C'est pourquoi
-certaines entrées de ce journal en contredisent d'autres plus anciennes : ce ne sont pas des erreurs
-corrigées en douce, ce sont les étapes d'une exploration qui a convergé. À l'approche de la première
-version publique, j'ai fait le choix de **repartir sur une base plus saine** — les décisions ramenées
-à ce qui tient, le moteur ramené à ce qu'il rend vraiment — pour que cette v1 soit la plus accessible
-possible. Le journal garde la trace du chemin ; les ADR, eux, ne présentent que la destination.
+**This project was built by exploring.** The real structure of the exports, the ethical line of what
+a tool dares to assert, the technical feasibility, accessibility to as many people as possible, the
+overall vision — each of these axes sharpened as I went, not before starting. That's why some
+entries in this journal contradict older ones: these aren't errors quietly corrected, they're the
+stages of an exploration that converged. As the first public version approached, I made the choice to
+**start again on a cleaner base** — the decisions brought back to what holds, the engine brought back
+to what it really returns — so this v1 would be as accessible as possible. The journal keeps the
+trace of the path; the ADRs, for their part, present only the destination.
 
-**Ce journal n'est pas le registre des décisions.** Le *pourquoi* d'une décision structurante vit
-dans son ADR (`docs/adr/`), et l'entrée y renvoie sans le recopier. Ce que le journal garde pour lui,
-c'est **l'arbitrage** : ce que l'IA a proposé, ce que j'ai validé, contesté ou tranché, ce que l'agent
-a tenu ou rattrapé de lui-même. Chaque entrée renvoie aux ADR **actuels** ; quand elle décrit une
-machinerie depuis remplacée, elle le dit — non pour exhiber un revirement, mais parce que le chemin
-fait partie de ce que ce journal transmet.
+**This journal is not the decision registry.** The *why* of a structuring decision lives in its ADR
+(`docs/adr/`), and the entry refers to it without copying it. What the journal keeps for itself is
+the **arbitration**: what the AI proposed, what I validated, contested or settled, what the agent
+held or caught by itself. Each entry refers to the **current** ADRs; when it describes machinery
+since replaced, it says so — not to flaunt a reversal, but because the path is part of what this
+journal passes on.
 
-Chaque entrée est **ratifiée manuellement** : le factuel peut être rédigé par l'IA, la ligne de
-jugement est relue de façon critique et reste sous ma responsabilité. Les transcripts bruts ne sont
-pas publiés.
+Each entry is **ratified manually**: the factual part may be drafted by the AI, the judgment line is
+reread critically and remains my responsibility. The raw transcripts are not published.
 
 ---
 
-## Chronologie
+## Chronology
 
-### 2026-07-21 — Préparer la publication : le triage, l'invariant, la recomposition
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Trois opérations pour rendre le dépôt publiable. D'abord le tri de la documentation : quatorze notes de travail (5 600 lignes de propositions déjà arbitrées et implémentées) supprimées, leurs enseignements condensés dans une seule note de méthode (docs/methode-portabilite-en.md) et leurs décisions déplacées dans les fichiers qu'elles concernent. Ensuite un balayage complet du dépôt pour vérifier qu'aucune donnée d'un vrai export (pseudo, identifiant, date, texte) ne s'y trouve. Enfin la réécriture de l'historique git : ~210 commits de travail regroupés en 11 commits thématiques lisibles, avec vérification que le contenu final est identique à l'octet près. Au passage, une branche corrective validée mais jamais fusionnée a été retrouvée et intégrée — le bug qu'elle corrigeait tournait encore en production.
-- **Jugement humain :** Le critère de tri : un document qui sert encore (contrat, catalogue, ADR) reste ; un document qui ne fait que raconter un travail terminé est jugé sur ce qu'il apprend à un nouveau lecteur, et part s'il n'apprend rien. 
+### 2026-07-21 — Preparing for publication: the triage, the invariant, the recomposition
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** Three operations to make the repo publishable. First the documentation triage: fourteen working notes (5,600 lines of proposals already arbitrated and implemented) deleted, their lessons condensed into a single method note (docs/methode-portabilite-en.md) and their decisions moved into the files they concern. Then a full sweep of the repo to check that no data from a real export (pseudonym, identifier, date, text) was present. Finally the rewriting of the git history: ~210 working commits regrouped into 11 readable thematic commits, with a check that the final content is identical to the byte. Along the way, a corrective branch validated but never merged was recovered and integrated — the bug it fixed was still running in production.
+- **Human judgment:** The triage criterion: a document that still serves (contract, catalog, ADR) stays; a document that only recounts finished work is judged on what it teaches a new reader, and goes if it teaches nothing. 
 
-### 2026-07-18 → 07-20 — Le détecteur de sujets sensibles apprend l'anglais, et se fait mesurer
-- **Surface :** Claude Code (sessions concurrentes)
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Les six lexiques sensibles (santé mentale, santé physique, sexualité, politique, religion, agressivité) couvrent désormais l'anglais, un lot par thème, chaque liste de termes proposée puis arbitrée avant d'être écrite. Les filtres qui empêchent le détecteur de sur-affirmer (négation, citation, tierce personne) ont été adaptés à l'anglais, et une mesure faite au passage a révélé puis corrigé un bug français déjà en production : l'outil posait un constat de santé mentale sur un parent qui cherchait des informations pour son enfant. Pour mesurer tout ça, un dispositif nouveau : des textes de personnages fictifs écrits à l'aveugle par d'autres sessions (sans connaître les listes de termes), avec leur verdict attendu figé avant de lancer le détecteur — ce qui a permis de retirer, chiffres à l'appui, plusieurs termes qui taguaient des gens à tort.
-- **Jugement humain :** Trois arbitrages structurants. Un : l'anglais ne se traduit pas terme à terme — chaque thème a exigé sa propre règle d'admission, et « je veux mourir » est dans le lexique français quand « i want to die » est exclu de l'anglais, où c'est une expression banale d'embarras. Deux : une règle d'admission apparemment neutre s'est révélée favoriser un camp politique (les mots ordinaires de la gauche et de la droite n'ont pas la même forme grammaticale) — corrigée en admettant les deux mots ordinaires, avec leurs faux positifs assumés. Trois : l'agent a proposé, mesures à l'appui, de retirer le détecteur d'agressivité qui confond moquerie amicale et vraie agression ; refusé — montrer qu'un algorithme se trompe fait partie de la démonstration du produit.
+### 2026-07-18 → 07-20 — The sensitive-topic detector learns English, and gets measured
+- **Surface:** Claude Code (concurrent sessions)
+- **Default mode:** augmentation → automation
+- **Done:** The six sensitive lexicons (mental health, physical health, sexuality, politics, religion, aggressiveness) now cover English, one batch per theme, each list of terms proposed then arbitrated before being written. The filters that keep the detector from over-asserting (negation, quotation, third person) were adapted to English, and a measurement done along the way revealed then corrected a French bug already in production: the tool was laying down a mental-health finding on a parent searching for information for their child. To measure all this, a new device: texts of fictional characters written blind by other sessions (without knowing the term lists), with their expected verdict frozen before running the detector — which made it possible to remove, figures in hand, several terms that were tagging people wrongly.
+- **Human judgment:** Three structuring arbitrations. One: English doesn't translate term for term — each theme required its own admission rule, and « je veux mourir » is in the French lexicon while "i want to die" is excluded from English, where it's a mundane expression of embarrassment. Two: an apparently neutral admission rule turned out to favor one political camp (the ordinary words of the left and of the right don't have the same grammatical form) — corrected by admitting both ordinary words, with their assumed false positives. Three: the agent proposed, measurements in hand, to remove the aggressiveness detector that confuses friendly teasing with real aggression; refused — showing that an algorithm gets it wrong is part of the product's demonstration.
 
-### 2026-07-18 → 07-19 — Tous les textes du produit rassemblés, traduits et vérifiés
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Les ~930 phrases que le produit affiche, jusque-là dispersées dans les composants, sont rassemblées en deux catalogues relisibles d'un bloc : ce que le moteur ose déduire, et ce que l'interface dit. Chaque catalogue existe en français et en anglais, et le build casse si une phrase manque dans une langue. Les nombres, dates et pluriels s'adaptent aussi à la langue. Les cartes sensibles affichent désormais un éventail de lectures possibles (« c'est moi · c'est un proche · simple curiosité ») au lieu d'une phrase qui affirme. Et les tests visuels de référence couvrent enfin le mobile, l'anglais et les pages hors résultats.
-- **Jugement humain :** La structure des catalogues a été ratifiée avant de traduire quoi que ce soit — le seul moment où changer de forme ne coûte rien. Règle posée pour les éventails : trois lectures parce qu'il y a trois mécanismes possibles, jamais des degrés d'intensité d'une même lecture — deux textes existants ont été supprimés à ce titre. La traduction anglaise a ses garde-fous automatiques (rien ne part non traduit), mais distinguer une vraie traduction d'un copier-collé reste une relecture humaine, et c'est écrit. 
+### 2026-07-18 → 07-19 — All the product's text gathered, translated and verified
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** The ~930 sentences the product displays, until then scattered across the components, are gathered into two catalogs each readable in one block: what the engine dares to deduce, and what the interface says. Each catalog exists in French and English, and the build breaks if a sentence is missing in one language. Numbers, dates and plurals also adapt to the language. The sensitive cards now display a spread of possible readings (« c'est moi · c'est un proche · simple curiosité ») instead of a sentence that asserts. And the reference visual tests finally cover mobile, English, and the non-results pages.
+- **Human judgment:** The structure of the catalogs was ratified before translating anything — the only moment when changing the form costs nothing. Rule set for the spreads: three readings because there are three possible mechanisms, never degrees of intensity of a single reading — two existing texts were deleted on this basis. The English translation has its automatic guardrails (nothing ships untranslated), but distinguishing a real translation from a copy-paste remains a human reread, and it's written down. 
 
-### 2026-07-18 → 07-20 — Version anglais, l'IA locale s'adapte au navigateur, nouveau design
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Le site existe en deux langues (/fr et /en), avec un garde-fou : impossible de publier une langue incomplète, le build refuse. L'arbre anglais a été posé éteint, puis allumé — traduction des pages, de la persona de démo et du prompt IA comprise. La section IA locale a été refaite pour s'adapter aux différents navigateurs, qui n'autorisent pas tous un site à parler à un serveur sur la machine de l'utilisateur : elle détecte la situation réelle (serveur absent, accès bloqué, permission à donner) et propose plusieurs parcours, dont un pour lancer facilement le serveur en local. Le pourquoi est documenté dans ADR-0006. Enfin, l'interface a été alignée sur la maquette v4 (survols, espacements, cartes cliquables en entier, cadrage des déductions déplacé en introduction de section).
-- **Jugement humain :** L'intégralité du contenu traduit a été vérifié et corrigé manuellement. Le fonctionnement de la détection des différents moteurs de recherches et le fonctionnement des commandes affichées afin de lancer le serveur et le modèle d'ia depuis le zip ont été vérifiés manuellement. L'enjeu autour de la section IA n'était pas uniquement de corriger le fait qu'elle ne fonctionnait pas sur certains moteurs de recherche mais d'établir un parcours accessible ET compréhensible pour un utilisateur n'ayant jamais utilisé de terminal. Toujours dans un soucis d'accéssibilité, le design des cartes de la section "02 Déductions par thème" a été largement simplifié.
+### 2026-07-18 → 07-20 — English version, the local AI adapts to the browser, new design
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** The site exists in two languages (/fr and /en), with a guardrail: it's impossible to publish an incomplete language, the build refuses. The English tree was laid down unlit, then lit up — including translation of the pages, of the demo persona and of the AI prompt. The local-AI section was redone to adapt to the different browsers, which don't all allow a site to talk to a server on the user's machine: it detects the real situation (server absent, access blocked, permission to grant) and offers several paths, including one to easily launch the server locally. The why is documented in ADR-0006. Finally, the interface was aligned with the v4 mockup (hovers, spacings, cards clickable in full, the framing of the deductions moved to the section's introduction).
+- **Human judgment:** The entirety of the translated content was verified and corrected manually. The workings of the detection of the different search engines and of the displayed commands to launch the server and the AI model from the zip were verified manually. The stake around the AI section wasn't only to fix the fact that it didn't work on certain search engines but to establish a path that is accessible AND understandable for a user who has never used a terminal. Still with accessibility in mind, the design of the cards in the "02 Déductions par thème" section was largely simplified.
 
-### 2026-07-17 — Repartir sur une base saine pour la v1 publique
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Mise au propre de tout ce qu'un lecteur découvrira en premier : les décisions d'architecture ramenées à ce qui tient et se comprend seul ([`docs/adr/`](docs/adr/)), CLAUDE.md réécrit pour décrire le dépôt tel qu'il est — l'analyse par IA locale y entrant enfin —, notes de R&D sorties du chemin principal, code mort retiré, renvois morts fermés.
-- **Jugement humain :** Choix de Yuya, motivé par l'accessibilité : la première version publique doit se lire sans son histoire derrière elle. Cela suppose d'assumer la réécriture plutôt que d'empiler les correctifs — abandon de la règle « ne pas réécrire une décision figée », qui avait fini par faire réviser un texte par un autre point par point. Deux affirmations devenues fausses corrigées au fond plutôt que recopiées ; une raison de choix constatée non exercée écrite comme note rouvrable plutôt que tue. Le geste n'efface pas les contradictions du parcours : il les range là où elles éclairent, ce journal, pas là où elles embrouillent, la doctrine.
+### 2026-07-17 — Starting again on a clean base for the public v1
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** Cleaning up everything a reader will discover first: the architecture decisions brought back to what holds and stands on its own ([`docs/adr/`](docs/adr/)), CLAUDE.md rewritten to describe the repo as it is — with local AI analysis finally entering it —, R&D notes taken off the main path, dead code removed, dead references closed.
+- **Human judgment:** Yuya's choice, motivated by accessibility: the first public version must read without its history behind it. This means embracing the rewrite rather than stacking up patches — abandoning the rule "don't rewrite a frozen decision," which had ended up making one text revise another point by point. Two assertions that had become false were corrected at the root rather than copied over; a reason for a choice observed but not exercised was written as a re-openable note rather than kept silent. The gesture doesn't erase the path's contradictions: it files them where they illuminate, this journal, not where they muddle, the doctrine.
 
-### 2026-07-16 — Refonte A : le moteur rend UNE valeur nommée
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Une architecture générique — union de constats discriminée par nature, identité de règle portée comme donnée, magasin de preuves partagé, catalogue de gabarits, axe de sensibilité gradué — posée en juin, éprouvée, puis ramenée à `analyze() => Analysis` : chaque champ a un lecteur nommé, relevé sur l'écran. −2 344 lignes. Le raisonnement complet, avec les deux états, vit dans [ADR-0004](docs/adr/0004-moteur-une-valeur-nommee.md).
-- **Jugement humain :** Le mouvement est l'information, pas l'état final (Yuya) : la généricité n'était pas une faute, c'était un pari sur une variété de constats qui n'est pas venue. Inventaire re-dérivé de l'écran fichier par fichier, pas supposé : pour chaque chose émise, qui la lit — plusieurs champs, personne. Garde-fou tenu avant le retrait : le cadrage supprimé portait une propriété testée (« le sujet est la plateforme ») ; cette preuve a d'abord été **élargie** sur le texte affiché, car la retirer sans contrepartie aurait retiré une preuve, pas du texte mort. Aucun libellé réécrit pour verdir le test. Golden de bout en bout à diff nul, seule exception la légende « solide » retirée, isolée dans son propre commit.
+### 2026-07-16 — Refactor A: the engine returns ONE named value
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** A generic architecture — a union of findings discriminated by nature, rule identity carried as data, a shared evidence store, a template catalog, a graded sensitivity axis — laid down in June, tried out, then brought back to `analyze() => Analysis`: each field has a named reader, spotted on screen. −2,344 lines. The full reasoning, with both states, lives in [ADR-0004](docs/adr/0004-moteur-une-valeur-nommee.md).
+- **Human judgment:** The movement is the information, not the final state (Yuya): the genericity wasn't a fault, it was a bet on a variety of findings that didn't come. Inventory re-derived from the screen file by file, not assumed: for each thing emitted, who reads it — several fields, no one. Guardrail held before the removal: the deleted framing carried a tested property (« le sujet est la plateforme »); that evidence was first **broadened** onto the displayed text, because removing it without a counterpart would have removed evidence, not dead text. No label rewritten to green the test. Zero-diff end-to-end golden, the only exception being the « solide » legend removed, isolated in its own commit.
 
-### 2026-07-16 — Licence : renversement MIT → AGPL v3
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Le dépôt passe de MIT à AGPL-3.0-only. Raisonnement dans [ADR-0005](docs/adr/0005-licence-agpl-v3.md) : « réutilisable » ne visait pas la libre récupération mais la **vérifiabilité** ; le copyleft la préserve et ferme l'appropriation silencieuse du moteur en service serveur non distribué — le cas que la GPL simple n'atteint pas.
-- **Jugement humain :** Renversement délibéré de Yuya, présenté comme le signal politique qu'il est : le choix de licence *est* un énoncé. L'ADR se refuse à survendre — la portée réelle de l'AGPL ici est étroite et spécifique (l'app statique est déjà couverte par simple distribution), et il le dit plutôt que de le masquer. Relicenciement de son propre code (l'historique ne porte qu'une personne sous deux pseudonymes), sans consentement tiers requis.
+### 2026-07-16 — License: reversal MIT → AGPL v3
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** The repo moves from MIT to AGPL-3.0-only. Reasoning in [ADR-0005](docs/adr/0005-licence-agpl-v3.md): "reusable" didn't aim at free retrieval but at **verifiability**; copyleft preserves it and closes the silent appropriation of the engine as a non-distributed server service — the case plain GPL doesn't reach.
+- **Human judgment:** Deliberate reversal by Yuya, presented as the political signal that it is: the license choice *is* a statement. The ADR refuses to oversell — the real scope of AGPL here is narrow and specific (the static app is already covered by mere distribution), and it says so rather than masking it. Relicensing of his own code (the history carries only one person under two pseudonyms), with no third-party consent required.
 
-### 2026-07-16 — Portabilité anglaise & durcissement du moteur
-- **Surface :** Claude Code
-- **Mode par défaut :** automatisation
-- **Fait :** Variantes anglaises des lexiques (sensibles et intérêts) et des filtres contextuels — négation, citation, troisième personne. Matcher réécrit en une seule passe. Ingestion en flux : l'export est tokenisé en repliant le tableau de visionnage à la volée, sans ériger le graphe géant — désormais le chemin de production, pas une réserve ([ADR-0002](docs/adr/0002-traitement-dans-le-navigateur.md)).
-- **Jugement humain :** Surtout de l'exécution : la portabilité anglaise était une dette actée bien plus tôt comme travail post-v1, pas un arbitrage rouvert ici. Le flux confirme par la mesure ce que l'ADR posait : le facteur limitant est la mémoire, pas la vitesse de lecture.
+### 2026-07-16 — English portability & engine hardening
+- **Surface:** Claude Code
+- **Default mode:** automation
+- **Done:** English variants of the lexicons (sensitive and interests) and of the contextual filters — negation, quotation, third person. Matcher rewritten in a single pass. Streaming ingestion: the export is tokenized by folding the watch-history array on the fly, without erecting the giant graph — now the production path, not a reserve ([ADR-0002](docs/adr/0002-traitement-dans-le-navigateur.md)).
+- **Human judgment:** Mostly execution: English portability was a debt acknowledged much earlier as post-v1 work, not an arbitration reopened here. The streaming confirms by measurement what the ADR posited: the limiting factor is memory, not reading speed.
 
-### 2026-07-11 → 07-15 — Analyse par IA locale (llama.cpp)
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Sous les constats déterministes, une voie optionnelle où un modèle de langage **local** lit les commentaires et recherches bruts et infère ce qui n'y est pas écrit. Voie **séparée du moteur à dessein** : le résultat du moteur ne porte que les preuves citées, jamais les textes bruts — la brancher dessus casserait la borne mémoire d'[ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md). Elle repart donc du zip dans son propre worker. Budget de tokens calculé contre le contexte réel du serveur, opt-in par clic, tout en local.
-- **Jugement humain :** Backend llama.cpp tranché par Yuya sur benchmark (le playground WebLLM reste l'outil de développement). Wording des prompts laissé en brouillon, porte humaine réservée. L'invariant privacy n'est pas affaibli mais **reformulé** : le seul destinataire réseau possible est le serveur de l'utilisateur sur sa propre machine — localhost ne quitte pas l'appareil. Vérification faite en local contre un vrai export, jamais logué ni écrit dans le dépôt.
+### 2026-07-11 → 07-15 — Local AI analysis (llama.cpp)
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** Beneath the deterministic findings, an optional path where a **local** language model reads the raw comments and searches and infers what isn't written there. A path **deliberately separate from the engine**: the engine's result carries only the cited evidence, never the raw texts — wiring it onto the engine would break the memory bound of [ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md). So it starts again from the zip in its own worker. Token budget computed against the server's real context, opt-in by click, all local.
+- **Human judgment:** The llama.cpp backend settled by Yuya on a benchmark (the WebLLM playground remains the development tool). Prompt wording left in draft, human gate reserved. The privacy invariant isn't weakened but **reformulated**: the only possible network recipient is the user's server on their own machine — localhost doesn't leave the device. Verification done locally against a real export, never logged nor written into the repo.
 
-### 2026-07-06 → 07-08 — Détecteur de centres d'intérêt D2
-- **Surface :** Claude Code
-- **Mode par défaut :** automatisation
-- **Fait :** Second détecteur à côté du sensible, lexique volontairement plus simple (ni étage de sensibilité, ni éventail, ni atténuation à la troisième personne). Règle par classement retenant les thèmes les plus représentés ; mécanique de co-occurrence. Cinquante-deux thèmes livrés en quatre lots, puis les premiers rétrofités au standard des suivants.
-- **Jugement humain :** Deux reprises de méthode tranchées à l'usage. Première livraison trop prudente → règle inversée par Yuya : un mot ambigu n'est plus exclu mais gardé et vérifié par un second mot du même thème dans la phrase, le tri par volume étant fait pour absorber le bruit. Deuxième lot trop générique → recherche web rendue **obligatoire** plutôt que permise, sur un exemple précis du manque. Psychologie tenue au champ strictement académique, hors soin et vécu. L'agent a signalé de lui-même six thèmes restés sous l'objectif, et vérifié qu'aucun mot nouveau ne déclenche le détecteur sensible.
+### 2026-07-06 → 07-08 — Interests detector D2
+- **Surface:** Claude Code
+- **Default mode:** automation
+- **Done:** A second detector alongside the sensitive one, a deliberately simpler lexicon (no sensitivity tier, no spread, no third-person attenuation). A ranking rule keeping the most-represented themes; co-occurrence mechanics. Fifty-two themes delivered in four batches, then the first ones retrofitted to the standard of the later ones.
+- **Human judgment:** Two method revisions settled through use. First delivery too cautious → rule inverted by Yuya: an ambiguous word is no longer excluded but kept and verified by a second word of the same theme in the sentence, the sorting by volume being made to absorb the noise. Second batch too generic → web search made **mandatory** rather than allowed, on a precise example of the shortfall. Psychology held to the strictly academic field, outside care and lived experience. The agent flagged of its own accord six themes that had stayed under the lens, and checked that no new word triggers the sensitive detector.
 
-### 2026-07-03 → 07-05 — Brancher le réel sans instrumenter le moteur
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Premier chantier où un vrai export utilisateur entre dans le moteur : second bouton, lecture directe dans le mécanisme existant sans le modifier. Panneau de debug en développement seulement, panneau « Activité » factuel, graphe de rythme calculé depuis les horodatages réels. Plusieurs règles de cette période (compteurs bruts, confirmation publicitaire, identifiants exposés) seront retirées à la refonte A, faute de lecteur.
-- **Jugement humain :** Limite posée par Yuya : brancher sans modifier le moteur, corriger seulement si un vrai fichier révèle un problème. Le panneau de debug ré-estime de son côté ce que le moteur a exploité plutôt que d'instrumenter le moteur — prématuré pour un outil temporaire — à condition d'afficher que c'est une approximation, pour qu'elle ne passe pas pour un fait. Trafic réseau inspecté pendant les essais : rien ne sort de l'appareil. L'agent explicite ce qu'il ne peut pas vérifier lui-même — le passage avec un vrai fichier reste au mainteneur, sans qu'aucun contenu n'entre dans la conversation.
+### 2026-07-03 → 07-05 — Wiring in the real without instrumenting the engine
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** First worksite where a real user export enters the engine: a second button, direct reading in the existing mechanism without modifying it. Debug panel in development only, factual "Activité" panel, rhythm graph computed from the real timestamps. Several rules from this period (raw counters, ad confirmation, exposed identifiers) will be removed at refactor A, for lack of a reader.
+- **Human judgment:** Limit set by Yuya: wire in without modifying the engine, correct only if a real file reveals a problem. The debug panel re-estimates on its own what the engine exploited rather than instrumenting the engine — premature for a temporary tool — provided it displays that it's an approximation, so it doesn't pass for a fact. Network traffic inspected during the trials: nothing leaves the device. The agent makes explicit what it can't verify itself — the pass with a real file remains the maintainer's, with no content entering the conversation.
 
-### 2026-07-03 → 07-04 — Détecteur de sujets sensibles D1
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Détecteur lexical sur les commentaires, mettant en œuvre la doctrine d'[ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md) : machinerie de correspondance française (négation avec exception de double négation, filtrage des citations, dégradation de la troisième personne), lexique des six labels enrichi tous registres, reconnaissance transverse des auto-désignations. Le test décisif est un vrai export, jamais partagé dans la session.
-- **Jugement humain :** Ordre de travail fixé par Yuya : construire le mécanisme d'abord, lexique volontairement réduit, plutôt qu'attendre un lexique complet. Les termes ajoutés à la main par le mainteneur ont été vérifiés empiriquement par l'agent avant d'être committés : deux se sont révélés classer une critique d'idée en agression de personne — montrés en exemples concrets, question posée, retirés sur accord. Insultes les plus dures assumées plutôt qu'omises. Test final sur un vrai export mené par le mainteneur, seul juge de la réussite.
+### 2026-07-03 → 07-04 — Sensitive-topic detector D1
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** Lexical detector on the comments, implementing the doctrine of [ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md): French matching machinery (negation with a double-negation exception, quotation filtering, third-person degradation), lexicon of the six labels enriched across all registers, cross-cutting recognition of self-designations. The decisive test is a real export, never shared in the session.
+- **Human judgment:** Work order set by Yuya: build the mechanism first, lexicon deliberately reduced, rather than waiting for a complete lexicon. The terms added by hand by the maintainer were verified empirically by the agent before being committed: two turned out to classify a critique of an idea as aggression against a person — shown as concrete examples, question asked, removed on agreement. The harshest insults assumed rather than omitted. Final test on a real export carried out by the maintainer, sole judge of success.
 
-### 2026-07-01 → 07-03 — Refonte de l'affichage par thème
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** L'affichage se réorganise autour du **thème** comme concept de premier ordre — un objet référencé porteur de ses usages, plutôt qu'une étiquette dupliquée sur chaque constat. Page de résultats reconstruite (cartes repliables, résumé de confiance en tête), fixture persona synthétique au nouveau modèle, golden tests de propriété, header d'avertissement persistant.
-- **Jugement humain :** Mur sémantique, absences et identifiants exposés gardent une zone séparée, pas dilués dans les thèmes (Yuya) : ils portent un poids propre. Un changement de schéma non-additif limité au seul moteur, l'affichage laissé cassé jusqu'aux sessions prévues pour le remplacer, avec règle explicite de s'arrêter et remonter plutôt que déborder. L'avertissement est un prérequis non négociable, pas un confort. Après une vérification faite contre la *description* du problème et non contre la maquette, exigence que tout contrôle visuel se fasse désormais contre l'image de référence.
+### 2026-07-01 → 07-03 — Reworking the per-theme display
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** The display reorganizes around the **theme** as a first-class concept — a referenced object carrying its uses, rather than a label duplicated on each finding. Results page rebuilt (collapsible cards, confidence summary at the top), synthetic-persona fixture at the new model, property golden tests, persistent warning header.
+- **Human judgment:** Semantic wall, absences and exposed identifiers keep a separate zone, not diluted into the themes (Yuya): they carry a weight of their own. A non-additive schema change limited to the engine alone, the display left broken until the sessions planned to replace it, with an explicit rule to stop and report back rather than overflow. The warning is a non-negotiable prerequisite, not a comfort. After a check done against the *description* of the problem and not against the mockup, a requirement that every visual check now be done against the reference image.
 
-### 2026-06-27 → 06-30 — Mode démo & cartes sensibles
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Premier rendu de bout en bout sur une fixture figée 100 % synthétique. Machinerie sensible d'alors — magasin de preuves partagé, axe de sensibilité gradué, flou-au-clic — **depuis remplacée** par la refonte A et par le couple repli + badge d'[ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md). Ce qui survit, ce sont les arbitrages devenus doctrine.
-- **Jugement humain :** Trois arbitrages posés ici tiennent encore dans l'ADR : une même preuve doit nourrir deux constats et le **montrer à l'écran** (« aussi exploité par »), la réutilisation visible étant l'argument le plus concret du produit ; l'éventail des lectures reste **à plat, jamais chiffré**, car pondérer reviendrait à classer l'intention ; la santé mentale ne s'affiche jamais sans protection. L'entorse d'alors — le flou nommait quand même le thème, au nom du consentement éclairé — était signalée comme provisoire à réexaminer : elle l'a été, remplacée par repli + badge.
+### 2026-06-27 → 06-30 — Demo mode & sensitive cards
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** First end-to-end render on a frozen 100% synthetic fixture. The sensitive machinery of the time — shared evidence store, graded sensitivity axis, blur-on-click — **since replaced** by refactor A and by the collapse + badge pair of [ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md). What survives are the arbitrations that became doctrine.
+- **Human judgment:** Three arbitrations laid down here still hold in the ADR: one and the same piece of evidence must feed two findings and **show it on screen** (« aussi exploité par »), the visible reuse being the product's most concrete argument; the spread of readings stays **flat, never numbered**, because weighting would amount to ranking intent; mental health is never displayed without protection. The lapse of the time — the blur named the theme anyway, in the name of informed consent — was flagged as provisional, to be re-examined: it was, replaced by collapse + badge.
 
-### 2026-06-26 — Doctrine des constats sensibles
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Spike de faisabilité mesurant si un classifieur lexical local lit des labels sensibles sur le texte d'un export, et **où il échoue** : huit personas synthétiques, corpus inventé. Résultat fondateur — le **mur d'opacité** : des phrases dont le sens tient à la tournure, sans mot à repérer, qu'aucun lexique ne rattrapera. Fonde [ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md).
-- **Jugement humain :** Session très cadrée, fond tranché à chaque étape par Yuya : contrat de mesure refondé deux fois (vers un affichage à deux niveaux, puis vers trois états de vérité dont « le signal concerne un proche »), corpus jugé trop net (le vrai signal se dit à mots couverts), constat central resserré de huit cas à six. Règle de méthode posée après un écart de l'agent, qui avait committé des personas sensibles avant relecture : présenter, valider, puis committer. Décision de fond : le mur n'est pas un échec à réparer, c'est la démonstration — un outil local ne franchit pas ce qu'une plateforme franchit.
+### 2026-06-26 — Doctrine of sensitive findings
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** Feasibility spike measuring whether a local lexical classifier reads sensitive labels on the text of an export, and **where it fails**: eight synthetic personas, an invented corpus. Founding result — the **opacity wall**: sentences whose meaning rests on the phrasing, with no word to spot, that no lexicon will catch. Founds [ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md).
+- **Human judgment:** A very tightly framed session, the substance settled at each step by Yuya: measurement contract refounded twice (toward a two-level display, then toward three truth states including « le signal concerne un proche »), corpus judged too clean (the real signal is said in veiled words), central finding tightened from eight cases to six. Method rule set after a lapse by the agent, which had committed sensitive personas before review: present, validate, then commit. Substantive decision: the wall is not a failure to fix, it's the demonstration — a local tool doesn't cross what a platform crosses.
 
-### 2026-06-19 → 06-24 — Construction du moteur générique
-- **Surface :** Claude Code
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Le moteur bâti pièce par pièce : fondations `web/`, frontière moteur/UI *enforced*, contrat d'insights typé (l'architecture générique que la refonte A ramènera plus tard à une valeur nommée), parser en flux et validation à l'entrée, harness Web Worker, golden tests, onze règles d'inférence. Les décisions de forme vivent dans [ADR-0002](docs/adr/0002-traitement-dans-le-navigateur.md) et [ADR-0004](docs/adr/0004-moteur-une-valeur-nommee.md).
-- **Jugement humain :** Plusieurs arbitrages de cette période survivent au-delà de la machinerie qu'ils gardaient. La frontière moteur/UI, exigée *prouvée par sondes* et non affirmée, a révélé un trou réel avant commit. La validation runtime placée sur la **frontière non fiable** — l'entrée d'une plateforme — jamais sur notre propre sortie : décision antérieure au grand mouvement, qui lui survit intacte. Le garde-fou éthique explicitement **hors du type** : un champ requis garantit la présence d'un cadrage, pas sa justesse. Et un incident d'attribution tenu par l'agent lui-même : du travail d'une session parallèle retrouvé dans le dossier, session stoppée avant tout commit plutôt que de le faire passer pour son livrable.
+### 2026-06-19 → 06-24 — Building the generic engine
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** The engine built piece by piece: `web/` foundations, engine/UI border *enforced*, typed insights contract (the generic architecture that refactor A will later bring back to a named value), streaming parser and validation at the entry, Web Worker harness, golden tests, eleven inference rules. The form decisions live in [ADR-0002](docs/adr/0002-traitement-dans-le-navigateur.md) and [ADR-0004](docs/adr/0004-moteur-une-valeur-nommee.md).
+- **Human judgment:** Several arbitrations from this period survive beyond the machinery they guarded. The engine/UI border, required *proven by probes* and not asserted, revealed a real hole before commit. Runtime validation placed on the **untrusted border** — a platform's input — never on our own output: a decision prior to the big move, which survives it intact. The ethical guardrail explicitly **outside the type**: a required field guarantees the presence of a framing, not its correctness. And an attribution incident held by the agent itself: work from a parallel session found in the folder, session stopped before any commit rather than passing it off as its own deliverable.
 
-### 2026-06-19 — Décisions de contrat : stack, schéma, catalogue de règles
-- **Surface :** Claude Code (connecté à Linear)
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Journée de décisions fondatrices : hébergement souverain sans backend ([ADR-0001](docs/adr/0001-hebergement-souverain-sans-backend.md)), traitement dans le navigateur et conventions de dev ([ADR-0002](docs/adr/0002-traitement-dans-le-navigateur.md)), puis le catalogue de règles d'inférence et le schéma d'insights qui en découle. Le finding structurant du catalogue : moins de 2 % du volume d'un export est du texte auto-décrit hors-ligne — le reste est opaque, et le résoudre violerait l'invariant privacy.
-- **Jugement humain :** Cadre méthodologique imposé en amont par Yuya : challenge obligatoire de la piste retenue, décision réservée à l'humain, ratification explicite avant écriture de l'ADR. Sur l'hébergement, recadrage clé : l'invariant privacy est tenu **par construction quel que soit l'hébergeur**, donc il ne départage pas — l'arbitrage se joue sur l'éthos et la résidence de la seule PII. Sur les règles, cadrage systémique imposé contre le cadrage personnel : « une plateforme peut repérer tes rythmes », jamais « tu es vulnérable à 3 h ». Deux erreurs de modèle introduites par l'IA sur le schéma, corrigées par le mainteneur.
+### 2026-06-19 — Contract decisions: stack, schema, rule catalog
+- **Surface:** Claude Code (connected to Linear)
+- **Default mode:** augmentation → automation
+- **Done:** A day of founding decisions: sovereign hosting with no backend ([ADR-0001](docs/adr/0001-hebergement-souverain-sans-backend.md)), processing in the browser and dev conventions ([ADR-0002](docs/adr/0002-traitement-dans-le-navigateur.md)), then the inference-rule catalog and the insights schema that follows from it. The catalog's structuring finding: less than 2% of an export's volume is self-described text offline — the rest is opaque, and resolving it would violate the privacy invariant.
+- **Human judgment:** Methodological framework imposed up front by Yuya: mandatory challenge of the chosen path, decision reserved for the human, explicit ratification before writing the ADR. On hosting, a key reframing: the privacy invariant is held **by construction whatever the host**, so it doesn't decide — the arbitration plays out on the ethos and the residence of the only PII. On the rules, systemic framing imposed against personal framing: « une plateforme peut repérer tes rythmes », never « tu es vulnérable à 3 h ». Two model errors introduced by the AI on the schema, corrected by the maintainer.
 
-### 2026-06-18 → 06-19 — Amorçage : roadmap, contrat de structure, fixture
-- **Surface :** claude.ai + Claude Code (connectés à Linear)
-- **Mode par défaut :** augmentation → automatisation
-- **Fait :** Cartographie de la roadmap en initiative, projets et issues. Contrat de structure de l'export **rétro-conçu d'un vrai export fourni par le mainteneur, toutes valeurs retirées**, avec ses pièges consignés (deux formats de date, trois encodages du vide, casse par section). Générateur de fixtures synthétiques en Python stdlib, et banc d'essai mesurant le parsing de gros exports.
-- **Jugement humain :** Recadrage pour que l'agent ne résolve pas les décisions d'architecture à l'intérieur de la session de cartographie. Règle fondatrice tenue dès ici : **la structure et les statistiques peuvent franchir, jamais une valeur** — le contrat est tiré du réel, ses valeurs déjà retirées. Le banc d'essai a tranché par la mesure une question qui aurait pu rester supposée : le facteur limitant du parsing est la mémoire, pas le CPU, ce qui a fondé le choix du traitement en flux.
+### 2026-06-18 → 06-19 — Bootstrapping: roadmap, structure contract, fixture
+- **Surface:** claude.ai + Claude Code (connected to Linear)
+- **Default mode:** augmentation → automation
+- **Done:** Mapping of the roadmap into an initiative, projects and issues. Export structure contract **reverse-engineered from a real export provided by the maintainer, all values removed**, with its pitfalls recorded (two date formats, three encodings of the empty, casing by section). Synthetic-fixture generator in Python stdlib, and a bench measuring the parsing of large exports.
+- **Human judgment:** Reframing so the agent wouldn't resolve the architecture decisions inside the mapping session. A founding rule held from here on: **structure and statistics may cross, never a value** — the contract is drawn from the real, its values already removed. The bench settled through measurement a question that could have stayed assumed: the limiting factor in parsing is memory, not CPU, which grounded the choice of streaming processing.
 
-<!-- Nouvelles entrées au-dessus de cette ligne, ordre antéchronologique. -->
+<!-- New entries above this line, reverse-chronological order. -->

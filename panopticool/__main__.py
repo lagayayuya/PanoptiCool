@@ -1,15 +1,15 @@
-"""Point d'entrée CLI : ``python -m panopticool``.
+"""CLI entry point: ``python -m panopticool``.
 
-Écrit un .zip contenant un unique ``user_data_tiktok.json`` synthétique,
-structurellement conforme au contrat (docs/tiktok-export-schema.md), puis le
-**valide** avec le validateur autonome (`panopticool.validate`).
+Writes a .zip containing a single synthetic ``user_data_tiktok.json``,
+structurally conformant to the contract (docs/tiktok-export-schema.md), then
+**validates** it with the standalone validator (`panopticool.validate`).
 
-Surface paramétrable :
-  --volume N        Watch History ≈ N, le reste à l'échelle §2 (jusqu'aux dizaines de milliers)
-  --ads on|off      reconstruction ads NON VÉRIFIÉE (§3), off par défaut
-  --persona NAME    profil d'identité du persona de démo (default = aléatoire)
-  --empty  SECTION  force une section à son encodage du vide (« absence comme signal »)
-  --absent SECTION  omet entièrement la clé d'une section
+Configurable surface:
+  --volume N        Watch History ≈ N, the rest scaled per §2 (up to tens of thousands)
+  --ads on|off      UNVERIFIED ads reconstruction (§3), off by default
+  --persona NAME    identity profile of the demo persona (default = random)
+  --empty  SECTION  forces a section to its empty encoding ("absence as signal")
+  --absent SECTION  omits a section's key entirely
 """
 
 from __future__ import annotations
@@ -29,7 +29,7 @@ DEFAULT_SEED = 1337
 
 
 def _valid_paths() -> set:
-    """Tous les chemins de section valides (feuilles + préfixes) pour --empty/--absent."""
+    """All valid section paths (leaves + prefixes) for --empty/--absent."""
     paths = set()
     for path, _ in enumerate_sections():
         for i in range(1, len(path) + 1):
@@ -38,7 +38,7 @@ def _valid_paths() -> set:
 
 
 def _overrides(empty, absent):
-    """Construit le dict de surcharges depuis les options CLI ; avertit si chemin inconnu."""
+    """Builds the overrides dict from the CLI options; warns on an unknown path."""
     valid = _valid_paths()
     overrides = {}
     for raw, state in [(s, EMPTY) for s in empty] + [(s, ABSENT) for s in absent]:

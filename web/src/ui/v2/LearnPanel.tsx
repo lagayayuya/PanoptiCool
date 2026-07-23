@@ -1,6 +1,6 @@
-// Panneaux pédagogiques « pour comprendre » (maquette « parcours guidé ») : contenu STATIQUE repris
-// tel quel de la maquette, dépliable par section via le bouton pointillé de l'en-tête. Le wording
-// est celui de la maquette (validé par yuya dans Claude Design) — pas un gabarit moteur.
+// « pour comprendre » educational panels (« parcours guidé » mockup): STATIC content taken
+// as is from the mockup, collapsible per section via the dotted button of the header. The wording
+// is the mockup's (validated by yuya in Claude Design) — not an engine template.
 
 import { UI_LEARN } from '../copy';
 import { NAVY } from './palette';
@@ -36,7 +36,7 @@ export function LearnPanel({
   );
 }
 
-/** Bouton pointillé « comprendre · … » / « fermer ✕ » des en-têtes de section. */
+/** Dotted button « comprendre · … » / « fermer ✕ » of the section headers. */
 export function LearnToggle({
   open,
   label,
@@ -100,8 +100,8 @@ const TOGGLE = {
   cursor: 'pointer',
   flex: 'none',
   fontSize: '10.5px',
-  // `lineHeight` explicite : rend la hauteur de ce chip DÉTERMINISTE (28,5 px) — le badge « 100 %
-  // local » voisin s'y aligne (cf. `LOCAL_BADGE`), ce qui exige une hauteur connue, pas « normal ».
+  // explicit `lineHeight`: makes this chip's height DETERMINISTIC (28.5 px) — the neighboring « 100 %
+  // local » badge aligns to it (cf. `LOCAL_BADGE`), which requires a known height, not « normal ».
   lineHeight: 1,
   fontWeight: 500,
   fontFamily: 'inherit',

@@ -1,11 +1,11 @@
-// robots.txt — rendu, et non posé dans `public/`, pour UNE raison : la ligne `Sitemap:` exige une
-// URL absolue. En statique, elle aurait réécrit le domaine à la main, à côté de celui de
-// `astro.config.ts` — la duplication que ce lot a précisément retirée de `SiteHead`.
+// robots.txt — rendered, and not placed in `public/`, for ONE reason: the `Sitemap:` line requires an
+// absolute URL. In static, it would have rewritten the domain by hand, alongside that of
+// `astro.config.ts` — the duplication this batch precisely removed from `SiteHead`.
 //
-// RIEN N'EST INTERDIT ICI, et ce n'est pas un oubli : l'anglais n'est pas « caché par robots.txt »,
-// il n'est PAS CONSTRUIT (cf. les deux listes de `i18n/locales.ts`). Un `Disallow: /en` serait au
-// mieux inutile, au pire un panneau indiquant une porte — robots.txt est public, et un chemin
-// interdit y est un chemin annoncé.
+// NOTHING IS FORBIDDEN HERE, and it is not an oversight: English is not "hidden by robots.txt",
+// it is NOT BUILT (cf. the two lists of `i18n/locales.ts`). A `Disallow: /en` would be at
+// best useless, at worst a sign pointing to a door — robots.txt is public, and a forbidden
+// path in it is an announced path.
 
 import type { APIRoute } from 'astro';
 

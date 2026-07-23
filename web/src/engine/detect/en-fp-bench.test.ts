@@ -1,61 +1,61 @@
-// Banc de faux positifs EN — le CAPTEUR (PANO-35). Personas et vérité-terrain dans
-// `en-registers.fixture.ts`, scellées par un commit ANTÉRIEUR à ce fichier : c'est l'historique, et
-// lui seul, qui prouve que les attendus n'ont pas été ajustés à la mesure. Le comptage est partagé
-// avec le banc FR (`register-bench.harness.ts`) ; ce fichier ne porte que ce qui est propre à
-// l'anglais.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// EN false-positive bench — the SENSOR (PANO-35). Personas and ground truth in
+// `en-registers.fixture.ts`, sealed by a commit PRIOR to this file: it is the history, and
+// it alone, that proves the expectations were not adjusted to the measurement. The counting is shared
+// with the FR bench (`register-bench.harness.ts`); this file carries only what is specific to
+// English.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── Ce que ce fichier est, et ce qu'il n'est pas ─────────────────────────────────────────────────
-// Ce n'est pas un rapport : le rapport d'époque (ex-`docs/banc-fp-en-mental-health.md`, condensé
-// dans `docs/methode-portabilite-en.md`) datait ses chiffres, et les états courants se lisent dans
-// les attendus figés ci-dessous — qui sont la source. Ce fichier est un CAPTEUR — il devient rouge
-// quand quelqu'un déplace un seuil, touche une règle d'étage, ou admet un terme qui sur-déclenche.
+// ── What this file is, and what it is not ─────────────────────────────────────────────────
+// It is not a report: the report of the time (ex-`docs/banc-fp-en-mental-health.md`, condensed
+// into `docs/methode-portabilite-en.md`) dated its figures, and the current states read in
+// the frozen expectations below — which are the source. This file is a SENSOR — it goes red
+// when someone moves a threshold, touches a storey rule, or admits a term that over-fires.
 //
-// Le précédent qu'il corrige est explicite : le calibrage FR est cité « mesuré PANO-33 » dans quatre
-// modules, mais ses 8 personas n'ont jamais été versionnées — la mesure est invérifiable aujourd'hui.
-// Ici, la preuve EST l'artefact, et le chiffre s'en déduit.
+// The precedent it corrects is explicit: the FR calibration is cited « measured PANO-33 » in four
+// modules, but its 8 personas were never versioned — the measurement is unverifiable today.
+// Here, the proof IS the artifact, and the figure is deduced from it.
 //
-// ── Pourquoi l'attendu EXACT est le capteur, et pas le taux ──────────────────────────────────────
-// Le compteur agrégé est trop grossier : un terme qui se met à sur-déclencher sur une voix pendant
-// qu'un autre cesse ailleurs laisse le total PLAT. L'attendu figé par persona — label, étage agrégé,
-// étage d'item, surface matchée — bouge dans les deux cas.
+// ── Why the EXACT expectation is the sensor, and not the rate ──────────────────────────────────────
+// The aggregated counter is too coarse: a term that starts over-firing on one voice while
+// another stops elsewhere leaves the total FLAT. The per-persona frozen expectation — label, aggregated storey,
+// item storey, matched surface — moves in both cases.
 //
-// ── Hors du chemin de démo, à dessein ────────────────────────────────────────────────────────────
-// Ce banc MESURE, il ne se livre pas aux utilisateurs.
+// ── Off the demo path, by design ────────────────────────────────────────────────────────────
+// This bench MEASURES, it is not delivered to users.
 //
-// ── CE QUE CE BANC NE MESURE PAS : l'auto-déclaration EN (PANO-35 lot 2) ─────────────────────────
-// Frontière déclarée ici parce que c'est ici qu'on la cite (CLAUDE.md, *Ce qu'un filet prouve*).
+// ── WHAT THIS BENCH DOES NOT MEASURE: EN self-declaration (PANO-35 batch 2) ─────────────────────────
+// Boundary declared here because it is here it is cited (CLAUDE.md, *Ce qu'un filet prouve*).
 //
-// Ce banc ne dit RIEN du taux de faux positifs des ÉTIQUETTES D'ÉTAT admises par copule
-// (« i'm <étiquette> ») — ni en bien ni en mal. La raison n'est pas un oubli, elle est structurelle,
-// et elle a été mesurée : en livrant les têtes de copule EN, les modificateurs EN et les quatre
-// termes candidats du pilote (§2.1 de sa note) dans la configuration la PLUS permissive possible,
-// les six voix ci-dessous rendent un delta NUL. Aucun attendu ne bouge.
+// This bench says NOTHING of the false-positive rate of the STATE LABELS admitted by copula
+// (« i'm <label> ») — neither for good nor for ill. The reason is not an oversight, it is structural,
+// and it was measured: by shipping the EN copula heads, the EN modifiers and the four
+// candidate terms of the pilot (§2.1 of its note) in the MOST permissive configuration possible,
+// the six voices below return a NULL delta. No expectation moves.
 //
-// Ce zéro n'est pas un résultat de sûreté, c'est une CÉCITÉ, et il faut savoir laquelle :
-//   - les voix ATTEIGNENT bel et bien la construction — sept items portent une copule (garde plus
-//     bas, qui les nomme) ;
-//   - mais aucune ne l'apparie jamais à un terme ADMISSIBLE. Les créneaux copulaires de la voix
-//     hyperbolique sont occupés par des termes déjà RETIRÉS (« falling apart », « spiraling »,
-//     « overwhelmed ») ou qui n'ont jamais été candidats (« unwell », « obsessed », « cooked »).
+// This zero is not a safety result, it is a BLINDNESS, and one must know which:
+//   - the voices DO reach the construction — seven items carry a copula (guard
+//     below, which names them);
+//   - but none ever pairs it with an ADMISSIBLE term. The copular slots of the
+//     hyperbolic voice are occupied by terms already REMOVED (« falling apart », « spiraling »,
+//     « overwhelmed ») or that were never candidates (« unwell », « obsessed », « cooked »).
 //
-// La cause est la discipline même qui rend ce banc fiable ailleurs : la fixture déclare avoir évité
-// délibérément les exclusions déjà figées par la batterie adverse — or « depressed » EST sur cette
-// liste d'exclusions. Écarter un biais réel en a donc installé un second, et le second est invisible
-// parce qu'il produit un zéro. C'est le résultat central du lot 2, et il se généralise : un banc
-// écrit en évitant des exclusions devient incapable de mesurer leur admission future.
+// The cause is the very discipline that makes this bench reliable elsewhere: the fixture declares having avoided
+// deliberately the exclusions already frozen by the adversarial battery — yet « depressed » IS on that
+// exclusion list. Setting aside one real bias therefore installed a second, and the second is invisible
+// because it produces a zero. It is the central result of batch 2, and it generalizes: a bench
+// written by avoiding exclusions becomes unable to measure their future admission.
 //
-// Ce que ce banc PROUVE tout de même sur ce terrain, et c'est réel : la NON-RÉGRESSION. La
-// machinerie copulaire ne ressuscite aucun des cinq termes hyperboliques retirés.
+// What this bench PROVES on this terrain all the same, and it is real: the NON-REGRESSION. The
+// copular machinery revives none of the five removed hyperbolic terms.
 //
-// L'instrument réclamé ici n'a finalement JAMAIS été construit, et c'est un résultat : la mesure a
-// montré que la copule n'ancre rien en anglais, la sûreté est passée à l'ÉTAGE
-// (`SELF_DECLARATION_HEADS_EN`, tier qui n'affirme jamais), et la question que l'instrument devait
-// trancher a disparu plutôt que d'être tranchée (ex-`docs/criteres-mesure-copule-en.md`, condensé
-// dans `docs/methode-portabilite-en.md`).
+// The instrument called for here was finally NEVER built, and it is a result: the measurement
+// showed that the copula anchors nothing in English, the safety moved to the STOREY
+// (`SELF_DECLARATION_HEADS_EN`, a tier that never asserts), and the question the instrument was meant to
+// settle disappeared rather than being settled (ex-`docs/criteres-mesure-copule-en.md`, condensed
+// into `docs/methode-portabilite-en.md`).
 
 import { describe, expect, it } from 'vitest';
 import { EN_REGISTER_PERSONAS } from './en-registers.fixture';
@@ -67,36 +67,36 @@ import {
 } from './register-bench.harness';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// L'ATTENDU FIGÉ — relevé le 2026-07-18, à diff nul
+// THE FROZEN EXPECTATION — recorded 2026-07-18, at null diff
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// Ces lignes ne sont PAS la vérité-terrain (elle est scellée dans la fixture) : c'est ce que le
-// détecteur produit AUJOURD'HUI, et c'est leur ÉCART avec le sceau qui est le résultat du banc. Un
-// attendu qui bouge se relit avant d'être réécrit : un terme nouvellement admis qui apparaît sur
-// `plain`, `hyperbolic` ou `slang` est un tort, pas un progrès de rappel.
+// These lines are NOT the ground truth (it is sealed in the fixture): it is what the
+// detector produces TODAY, and it is their GAP with the seal that is the bench's result. An
+// expectation that moves is reread before being rewritten: a newly admitted term that appears on
+// `plain`, `hyperbolic` or `slang` is a wrong, not a recall gain.
 
 const EXPECTED: Readonly<Record<string, readonly string[]>> = {
-  // Le témoin ne déclenche rien. « why is my lawn mower smoking » — l'homographie tabac tendue
-  // sciemment dans la fixture — ne franchit pas : `health_physical` ne porte pas le terme nu.
+  // The witness fires nothing. « why is my lawn mower smoking » — the tobacco homography stretched
+  // knowingly in the fixture — does not cross: `health_physical` does not carry the bare term.
   plain: [],
 
-  // LE RÉSULTAT CENTRAL DU BANC, ET SA CORRECTION. Cette voix déclenchait un constat
-  // `mental_health` large sur cinq termes colloquiaux livrés par le lot pilote — « falling apart »,
-  // « rock bottom », « spiraling », « running on empty », « overwhelmed » — alors qu'elle parle
-  // d'une file d'attente, d'un levain et d'une finale de série. Le seuil de 2 était franchi 2,5
-  // fois : ce que ADR-0003 déduisait (sur l'hyperbole, le seuil n'écarte pas, il ACCUMULE) a été
-  // mesuré ici, puis les cinq termes ont été retirés du lexique.
+  // THE CENTRAL RESULT OF THE BENCH, AND ITS CORRECTION. This voice fired a broad
+  // `mental_health` finding on five colloquial terms shipped by the pilot batch — « falling apart »,
+  // « rock bottom », « spiraling », « running on empty », « overwhelmed » — while she talks
+  // about a queue, a sourdough starter and a series finale. The threshold of 2 was crossed 2.5
+  // times: what ADR-0003 deduced (on hyperbole, the threshold does not set aside, it ACCUMULATES) was
+  // measured here, then the five terms were removed from the lexicon.
   //
-  // Le vide ci-dessous est donc un RÉSULTAT, pas une absence de couverture — et c'est la garde la
-  // plus importante du banc : si cette liste se repeuple, un terme hyperbolique est revenu.
+  // The emptiness below is therefore a RESULT, not an absence of coverage — and it is the most
+  // important guard of the bench: if this list repopulates, a hyperbolic term has returned.
   hyperbolic: [],
 
-  // Un seul item, et il suffit : `religion` tague au seuil 1. Voir la correction d'annotation plus
-  // bas — ce n'est pas la même erreur que celle de `hyperbolic`, et les confondre effacerait la
-  // seule des deux qui soit vraiment un tort.
+  // A single item, and it suffices: `religion` tags at threshold 1. See the annotation correction
+  // below — it is not the same error as `hyperbolic`'s, and confusing them would erase the
+  // only one of the two that is truly a wrong.
   slang: ['religion[indirect] #1 indirect halal'],
 
-  // Le vrai positif. Sans lui, aucun des zéros ci-dessus ne prouve qu'il reste un détecteur vivant
-  // derrière — un détecteur mort affiche exactement le même sans-faute.
+  // The true positive. Without it, none of the zeros above proves there is still a living detector
+  // behind — a dead detector displays exactly the same flawlessness.
   distress: [
     'mental_health[explicit] #1 indirect therapist',
     'mental_health[explicit] #5 indirect sertraline',
@@ -114,16 +114,16 @@ const EXPECTED: Readonly<Record<string, readonly string[]>> = {
     'mental_health[explicit] #29 indirect psychiatrist+psychologist',
   ],
 
-  // RÉSIDU REFERMÉ — et pas par le lot qui l'avait ouvert. Le tag reste ATTENDU (signal sans vécu :
-  // taguer l'entourage EST la démonstration) ; c'était l'ÉTAGE qui était en cause. Le constat
-  // restait NOMMÉ par #29 — « teenager missing school anxiety letter », une recherche
-  // ADMINISTRATIVE qui échappait aux deux règles de registre. Cette voie est morte : `anxiety` nu
-  // ne nomme plus, il vit au tier des noms nus (`indirectSolo`).
+  // RESIDUE CLOSED — and not by the batch that had opened it. The tag stays EXPECTED (signal without lived experience:
+  // tagging those around IS the demonstration); it was the STOREY that was at issue. The finding
+  // stayed NAMED by #29 — « teenager missing school anxiety letter », an ADMINISTRATIVE
+  // search that escaped both register rules. That path is dead: bare `anxiety`
+  // no longer names, it lives in the bare-name tier (`indirectSolo`).
   //
-  // La leçon vaut plus que la ligne. Ce résidu avait résisté aux règles d'ÉTAGE, qui cherchaient à
-  // reconnaître un REGISTRE — une interrogation, un possessif, une 3ᵉ personne. Il est tombé par
-  // une décision de LEXIQUE, prise sur une voix qui n'a rien d'un proche aidant. Le tort ne venait
-  // pas de la façon dont cet homme écrivait, il venait de ce qu'un nom nu osait affirmer.
+  // The lesson is worth more than the line. This residue had resisted the STOREY rules, which sought to
+  // recognize a REGISTER — a question, a possessive, a 3rd person. It fell by
+  // a LEXICON decision, taken on a voice that is nothing like a caring relative. The wrong did not come
+  // from the way this man wrote, it came from what a bare name dared to assert.
   caregiver: [
     'mental_health[indirect] #1 indirect anxiety',
     'mental_health[indirect] #2 indirect wont leave his room',
@@ -137,12 +137,12 @@ const EXPECTED: Readonly<Record<string, readonly string[]>> = {
     'mental_health[indirect] #29 indirect anxiety',
   ],
 
-  // Même sur-classification, sur une voix qui ne parle de PERSONNE. #19 (« prevalence of ») a été
-  // dégradé ; #10 et #26 tiennent — l'un est une ASSERTION définitionnelle (« burnout is an
-  // occupational phenomenon »), l'autre un nom d'INSTRUMENT (« maslach burnout inventory »). Ni
-  // l'un ni l'autre n'interroge : les couvrir demanderait de distinguer « X est Y » de « j'ai X »,
-  // c'est-à-dire un ancrage 1ʳᵉ personne — mesuré comme dégradant aussi le vrai positif, et écarté
-  // pour cette raison. RÉSIDU ASSUMÉ.
+  // Same over-classification, on a voice that talks about NO ONE. #19 (« prevalence of ») was
+  // degraded; #10 and #26 hold — one is a definitional ASSERTION (« burnout is an
+  // occupational phenomenon »), the other an INSTRUMENT name (« maslach burnout inventory »). Neither
+  // questions: covering them would require distinguishing « X est Y » from « j'ai X »,
+  // that is, a 1st-person anchoring — measured as also degrading the true positive, and set aside
+  // for that reason. ASSUMED RESIDUE.
   advocate: [
     'mental_health[explicit] #0 indirect antidepressants',
     'mental_health[explicit] #2 indirect therapy',
@@ -161,9 +161,9 @@ const EXPECTED: Readonly<Record<string, readonly string[]>> = {
   ],
 };
 /**
- * Les désaccords ASSUMÉS entre la vérité-terrain scellée et ce que la mesure a montré — corrections
- * de l'ANNOTATEUR, jamais du sceau. Elles ne relâchent RIEN : le tort principal reste calculé sur la
- * vérité scellée, et cette liste ne sert qu'à publier un second chiffre à côté du premier.
+ * The ASSUMED disagreements between the sealed ground truth and what the measurement showed — corrections
+ * of the ANNOTATOR, never of the seal. They relax NOTHING: the main wrong stays computed on the
+ * sealed truth, and this list serves only to publish a second figure alongside the first.
  */
 const ANNOTATOR_CORRECTIONS: readonly AnnotatorCorrection[] = [
   {
@@ -175,53 +175,53 @@ const ANNOTATOR_CORRECTIONS: readonly AnnotatorCorrection[] = [
   },
 ];
 
-describe('banc FP EN — capteur de régression', () => {
+describe('EN FP bench — regression sensor', () => {
   for (const persona of EN_REGISTER_PERSONAS) {
-    it(`${persona.id} — détections inchangées (registre : ${persona.register})`, () => {
-      // Égalité STRICTE dans les deux sens : un terme qui apparaît est un sur-déclenchement
-      // potentiel, un terme qui disparaît est une perte de rappel. Les deux se relisent.
+    it(`${persona.id} — detections unchanged (register: ${persona.register})`, () => {
+      // STRICT equality in both directions: a term that appears is a potential over-firing,
+      // a term that disappears is a loss of recall. Both are reread.
       expect(fingerprint(detectFor(persona))).toEqual(EXPECTED[persona.id]);
     });
   }
 
-  it('les six voix sont couvertes — un attendu orphelin signalerait une persona retirée en douce', () => {
+  it('the six voices are covered — an orphan expectation would signal a persona removed on the sly', () => {
     expect(Object.keys(EXPECTED).sort()).toEqual(EN_REGISTER_PERSONAS.map((p) => p.id).sort());
   });
 });
 
-describe('banc FP EN — comptage', () => {
+describe('EN FP bench — counting', () => {
   expectBenchCounts(EN_REGISTER_PERSONAS, {
-    // `hyperbolic/mental_health` — le tort que ce banc existait pour trouver — a été ÉTEINT par le
-    // retrait des cinq termes hyperboliques. Reste `slang/religion`, qui n'est pas un tort du
-    // détecteur mais une erreur d'annotateur, publiée plutôt que corrigée en silence.
+    // `hyperbolic/mental_health` — the wrong this bench existed to find — was EXTINGUISHED by the
+    // removal of the five hyperbolic terms. Remains `slang/religion`, which is not a detector
+    // wrong but an annotator error, published rather than corrected in silence.
     torts: ['slang/religion'],
-    // Le résidu du lot : la règle de registre informationnel a dégradé les items INTERROGATIFS,
-    // pas les registres assertif (« burnout is an occupational phenomenon »), technique (« maslach
-    // burnout inventory ») ni administratif (« teenager missing school anxiety letter »).
+    // The residue of the batch: the informational-register rule degraded the INTERROGATIVE items,
+    // not the assertive (« burnout is an occupational phenomenon »), technical (« maslach
+    // burnout inventory ») or administrative (« teenager missing school anxiety letter ») registers.
     escalated: ['advocate/mental_health'],
     corrections: ANNOTATOR_CORRECTIONS,
-    // Ce zéro se lit avec la note : il porte sur 32 cellules, dont 24 sans lexique EN. Ce n'est pas
-    // un brevet de sûreté.
+    // This zero reads with the note: it bears on 32 cells, 24 of which without an EN lexicon. It is not
+    // a certificate of safety.
     tortsAfterCorrection: [],
-    // `distress` écrit « depression » et « burnout » : le terme précis est présent, le constat nommé
-    // est donc légitime.
+    // `distress` writes « depression » and « burnout »: the precise term is present, the named finding
+    // is therefore legitimate.
     livedStages: { distress: 'explicit' },
   });
 
   // ───────────────────────────────────────────────────────────────────────────────────────────────
-  // GARDE DE FRONTIÈRE — rend VÉRIFIABLE la prémisse de la cécité déclarée en tête
+  // BOUNDARY GUARD — makes VERIFIABLE the premise of the blindness declared at the top
   // ───────────────────────────────────────────────────────────────────────────────────────────────
-  // La frontière du haut repose sur un fait : les voix atteignent la copule, mais ne l'apparient
-  // jamais à un terme admissible. Une prose peut se périmer en silence ; ce décompte, non. Il fige
-  // les sept items porteurs de copule, et il rougit si la fixture bouge — auquel cas la frontière
-  // doit être RELUE avant d'être réécrite.
+  // The boundary at the top rests on a fact: the voices reach the copula, but never pair it
+  // with an admissible term. Prose can expire in silence; this count, no. It freezes
+  // the seven copula-carrying items, and it goes red if the fixture moves — in which case the boundary
+  // must be REREAD before being rewritten.
   //
-  // Les têtes ci-dessous sont les CANDIDATES mesurées par le lot 2, pas des données livrées : la
-  // copule EN n'est pas en production, et ce fichier est le seul endroit du dépôt où elles vivent.
-  // Elles couvrent le jeu de candidates de CE lot, pas l'anglais : une tête qu'un lot ultérieur
-  // proposerait doit être ajoutée ici, sinon la garde cesse de couvrir ce qu'elle prétend couvrir.
-  // Le verrou qui décide de la livraison reste `detect.test.ts` ; celle-ci est de la profondeur.
-  it('la copule EN est ATTEINTE par les voix scellées — sans quoi la cécité déclarée serait fausse', () => {
+  // The heads below are the CANDIDATES measured by batch 2, not shipped data: the
+  // EN copula is not in production, and this file is the only place in the repo where they live.
+  // They cover the candidate set of THIS batch, not English: a head that a later batch
+  // would propose must be added here, otherwise the guard ceases to cover what it claims to cover.
+  // The lock that decides shipping remains `detect.test.ts`; this one is depth.
+  it('the EN copula is REACHED by the sealed voices — without which the declared blindness would be false', () => {
     const heads = [
       'i am',
       'im',
@@ -239,9 +239,9 @@ describe('banc FP EN — comptage', () => {
         )
         .map((item) => `${p.id}: ${item.text}`),
     );
-    // Les sept. Aucun n'apparie sa copule à un terme admissible : quatre portent des termes RETIRÉS
-    // ou jamais candidats, deux sont du rire (« cooked », « weak »), et le septième n'est pas une
-    // étiquette d'état du tout. C'est la cécité, item par item.
+    // The seven. None pairs its copula with an admissible term: four carry REMOVED terms
+    // or never candidates, two are laughter (« cooked », « weak »), and the seventh is not a
+    // state label at all. It is the blindness, item by item.
     expect(porteurs).toEqual([
       'hyperbolic: i am literally falling apart over this ticket queue',
       'hyperbolic: im spiraling and its not even 9am',
@@ -253,7 +253,7 @@ describe('banc FP EN — comptage', () => {
     ]);
   });
 
-  it('le tort hyperbolique est ÉTEINT, et la garde porte les termes retirés', () => {
+  it('the hyperbolic wrong is EXTINGUISHED, and the guard carries the removed terms', () => {
     const hyperbolic = EN_REGISTER_PERSONAS.find((p) => p.id === 'hyperbolic');
     if (hyperbolic === undefined) {
       throw new Error('persona `hyperbolic` absente');
@@ -262,9 +262,9 @@ describe('banc FP EN — comptage', () => {
       .filter((d) => d.label === 'mental_health')
       .flatMap((d) => d.items.flatMap((i) => i.surfaces));
     expect(surfaces).toEqual([]);
-    // Nommer les cinq termes retirés plutôt que se contenter du vide : le jour où l'un revient, le
-    // message d'échec dit LEQUEL. Un `toEqual([])` nu dirait seulement « quelque chose a bougé », et
-    // la raison du retrait — mesurée, pas supposée — se serait perdue.
+    // Naming the five removed terms rather than settling for the emptiness: the day one returns, the
+    // failure message says WHICH. A bare `toEqual([])` would say only « something moved », and
+    // the reason for the removal — measured, not supposed — would have been lost.
     for (const terme of [
       'falling apart',
       'overwhelmed',

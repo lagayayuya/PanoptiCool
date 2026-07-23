@@ -1,63 +1,63 @@
-// Lexique `religion` (PANO-72, passe 2) — label de SUJET (pratique / appartenance / avis /
-// curiosité, décision D). Le plus délicat des six.
+// `religion` lexicon (PANO-72, pass 2) — SUBJECT label (practice / affiliation / opinion /
+// curiosity, decision D). The most delicate of the six.
 //
-// ── Justification de généricité (discipline PANO-70 §3, §2.5) ─────────────────────────────────
-// Vocabulaire religieux du FR courant (toutes confessions), écrit à l'aveugle depuis l'usage
-// commun, jamais depuis un export :
-//   · soutenu : appartenance et pratique (croyant, pratiquant, pèlerinage, catéchisme) ;
-//   · courant : lieux, textes, figures, rites (mosquée, coran, imam, ramadan, messe) ;
-//   · familier : formules lexicalisées marquées (hamdoulah, bismillah).
-// FRONTIÈRES tenues (décision D — religion NE re-confond PAS ces cas) :
-//   · label de SUJET : PAS de registre « opinion hostile » ici (≠ politics). Un avis sur la
-//     religion qui emploie ce vocabulaire topical est capté en indirect ; l'éventail de lectures
-//     porte la lecture « avis personnel ». La critique d'une religion comme IDÉE n'est taguée
-//     NULLE PART ;
-//   · hostilité anti-CROYANT (insulte visant une personne) → `conflictual`, jamais ici ;
-//   · terme visant un GROUPE ethnico-religieux dans l'absolu → HAINEUX, exclu de TOUT lexique,
-//     SIGNALÉ comme périmètre d'un futur label dédié — jamais tranché seul, jamais inclus ici.
-// Exclusion assumée (décision yuya) : « wallah / inchallah / machallah » EXCLUS
-// (interjections lexicalisées dans l'argot FR général — ne pas taguer une population sur son
-// sociolecte) ; « hamdoulah / alhamdulillah » (plus marqués) en indirectColloquial seulement.
+// ── Genericity justification (PANO-70 §3, §2.5 discipline) ────────────────────────────────────
+// Religious vocabulary of everyday FR (all faiths), written blind from common
+// usage, never from an export:
+//   · formal: affiliation and practice (croyant, pratiquant, pèlerinage, catéchisme);
+//   · everyday: places, texts, figures, rites (mosquée, coran, imam, ramadan, messe);
+//   · colloquial: marked lexicalized formulas (hamdoulah, bismillah).
+// BOUNDARIES held (decision D — religion does NOT re-conflate these cases):
+//   · SUBJECT label: NO "hostile opinion" register here (≠ politics). An opinion on
+//     religion that uses this topical vocabulary is captured as indirect; the fan of readings
+//     carries the "personal opinion" reading. The criticism of a religion as an IDEA is tagged
+//     NOWHERE;
+//   · anti-BELIEVER hostility (insult targeting a person) → `conflictual`, never here;
+//     · term targeting an ethno-religious GROUP in the absolute → HATEFUL, excluded from EVERY lexicon,
+//     FLAGGED as the scope of a future dedicated label — never decided alone, never included here.
+// Assumed exclusion (yuya decision): « wallah / inchallah / machallah » EXCLUDED
+// (lexicalized interjections in general FR slang — do not tag a population on its
+// sociolect); « hamdoulah / alhamdulillah » (more marked) in indirectColloquial only.
 // ───────────────────────────────────────────────────────────────────────────────────────────────
 //
-// Entrées NORMALISÉES. Seuil 1 (calibrage PANO-33) : « église » culturelle taguera en LARGE, et
-// l'éventail de lectures (« curiosité / intérêt ») porte cette lecture — multi-interprétabilité, pas
-// un bug. La sécurité du sensible vit dans le GRILLAGE d'affichage — le constat démarre replié,
-// derrière un badge « sensible » — et non dans le seuil : monter le seuil réserverait l'affichage aux
-// cas les plus nets sans rien rendre plus sûr, chaque carte étant déjà derrière une porte (ADR-0003).
+// NORMALIZED entries. Threshold 1 (PANO-33 calibration): a cultural « église » will tag as BROAD, and
+// the fan of readings (« curiosité / intérêt ») carries that reading — multi-interpretability, not
+// a bug. The sensitive's safety lives in the display SCREEN — the finding starts folded,
+// behind a "sensitive" badge — and not in the threshold: raising the threshold would reserve the display for the
+// clearest cases without making anything safer, each card being already behind a gate (ADR-0003).
 //
-// ── CE QUE L'ANGLAIS PORTE, ET CE QU'IL NE PORTE PAS ────────────────────────────────────────────
-// Le lot anglais vit AU SEUL TIER LARGE (raisons et frontières dans `indirectCore`). Trois
-// conséquences qu'un lecteur suppose autrement, et qui sont mesurées :
+// ── WHAT ENGLISH CARRIES, AND WHAT IT DOES NOT CARRY ────────────────────────────────────────────
+// The English batch lives IN THE SOLE BROAD TIER (reasons and boundaries in `indirectCore`). Three
+// consequences a reader would assume otherwise, and which are measured:
 //
-//   · **`selfDeclaredEn` n'existe pas** — la porte de langue n'est pas touchée, et aucune
-//     auto-déclaration anglaise ne rend quoi que ce soit. L'anglais ne NOMME jamais sur ce label.
-//   · **La démotion d'adhésion et la frontière de négation n'ont AUCUNE surface anglaise.** Ce sont
-//     les deux réparations dont ce module est le plus fier, et elles sont bilingues en apparence
-//     seulement : `adherence` plafonne un constat NOMMÉ, et il n'y en a pas en anglais.
-//   · **La négation et la 3ᵉ personne sont structurellement INERTES en anglais ici** — mesuré :
-//     « i am not doing ramadan » et « she is doing ramadan » rendent tous deux un constat large.
-//     Ce n'est pas un défaut, c'est `subjectNotState` : il DÉGRADE explicit → indirect, et un
-//     marqueur déjà indirect n'a nulle part où descendre. Des trois filtres de doctrine, seule la
-//     CITATION a un effet anglais sur ce label.
+//   · **`selfDeclaredEn` does not exist** — the language gate is not touched, and no English
+//     self-declaration yields anything. English NEVER NAMES on this label.
+//   · **The adherence demotion and the negation boundary have NO English surface.** These are
+//     the two repairs this module is proudest of, and they are bilingual in appearance
+//     only: `adherence` caps a NAMED finding, and there is none in English.
+//   · **Negation and the 3rd person are structurally INERT in English here** — measured:
+//     « i am not doing ramadan » and « she is doing ramadan » both yield a broad finding.
+//     This is not a defect, it is `subjectNotState`: it DEGRADES explicit → indirect, and a
+//     marker already indirect has nowhere to descend. Of the three doctrine filters, only
+//     QUOTATION has an English effect on this label.
 //
-// La sûreté anglaise de ce label est donc NON MESURÉE : la seule voix anglaise du banc est une
-// visiteuse de monuments, adverse à ce vocabulaire par construction et rouge d'avance. C'est un
-// témoin, pas un plancher — aucun chiffre issu de ce banc ne se cite comme mesure de sûreté.
-// (Ex-note de lot condensée dans `docs/methode-portabilite-en.md`.)
+// The English safety of this label is therefore UNMEASURED: the sole English voice of the bench is a
+// monument visitor, adverse to this vocabulary by construction and red in advance. It is a
+// witness, not a floor — no figure from this bench is cited as a safety measure.
+// (Ex-batch note condensed in `docs/methode-portabilite-en.md`.)
 
 import type { TopicalLexicon } from './types';
 
 export const RELIGION_LEXICON: TopicalLexicon = {
   kind: 'topical',
   label: 'religion',
-  // Lectures du registre §5 : pratique / appartenance · avis personnel · curiosité / intérêt.
+  // Readings from registry §5: practice / affiliation · personal opinion · curiosity / interest.
   readingTemplateIds: [
     'sensitive.religion.reading.practice',
     'sensitive.religion.reading.opinion',
     'sensitive.religion.reading.curiosity',
   ],
-  // Pratique/déclaration à soi, NON copulaire (locutions) — le tag nommé passe surtout par
+  // Practice/declaration of oneself, NON-copular (phrases) — the named tag goes mostly through
   // `selfDeclared`.
   explicit: [
     'je prie',
@@ -70,66 +70,66 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'mon eglise',
     'ma mosquee',
   ],
-  // ── LA RÈGLE D'ADMISSION DES TRADITIONS, écrite pour être auditable ────────────────────────────
-  // Elle répond à « quelles traditions ce lexique porte-t-il, et pourquoi celles-là », question
-  // qu'une LISTE seule ne peut pas trancher — c'est l'équivalent, pour ce label, de la règle qui
-  // écarte les organisations côté `politics`.
+  // ── THE ADMISSION RULE FOR TRADITIONS, written to be auditable ─────────────────────────────────
+  // It answers "which traditions does this lexicon carry, and why those", a question
+  // that a LIST alone cannot decide — it is the equivalent, for this label, of the rule that
+  // discards organizations on the `politics` side.
   //
-  //   (1) Le lexique porte des TRADITIONS, jamais des ORGANISATIONS. Entre l'appellation ordinaire
-  //       qu'une personne emploie POUR ELLE-MÊME ; n'entrent pas les institutions, obédiences,
-  //       mouvements, ordres, congrégations, ni aucune figure. Même raison que côté politique : un
-  //       nom d'organisation date, se scinde et se renomme, quand une appellation ordinaire dure.
+  //   (1) The lexicon carries TRADITIONS, never ORGANIZATIONS. The ordinary appellation
+  //       a person uses FOR THEMSELVES enters; institutions, denominations, movements, orders,
+  //       congregations, and any figure do not. Same reason as on the political side: an
+  //       organization name dates, splits and gets renamed, whereas an ordinary appellation endures.
   //
-  //       AMENDÉE au lot anglais, et l'amendement porte sur le CRITÈRE, pas sur une liste. Ce que la
-  //       clause vise est la DURABILITÉ — « date, se scinde et se renomme » — et non la forme
-  //       grammaticale du nom. Une appellation qu'une personne emploie POUR ELLE-MÊME comme
-  //       appartenance, et qui est stable à l'échelle des siècles, entre MÊME SI une organisation
-  //       porte le même nom. `mormon`, `quaker`, `amish` sont de celles-là : « i was raised mormon »
-  //       est une identité d'appartenance en anglais ordinaire, pas la citation d'une institution.
-  //       Restent dehors les obédiences et branches qui se lisent comme des divisions
-  //       administratives d'une tradition — baptist, methodist, presbyterian, episcopalian,
+  //       AMENDED at the English batch, and the amendment bears on the CRITERION, not on a list. What the
+  //       clause targets is DURABILITY — « dates, splits and gets renamed » — and not the grammatical
+  //       form of the name. An appellation a person uses FOR THEMSELVES as an
+  //       affiliation, and that is stable at the scale of centuries, enters EVEN IF an organization
+  //       bears the same name. `mormon`, `quaker`, `amish` are of that kind: « i was raised mormon »
+  //       is an affiliation identity in ordinary English, not the citation of an institution.
+  //       The denominations and branches that read as administrative divisions
+  //       of a tradition stay out — baptist, methodist, presbyterian, episcopalian,
   //       anglican, lutheran, sunni, shia.
   //
-  //       L'amendement est écrit ici plutôt qu'appliqué en exception parce qu'une exception non
-  //       écrite se re-dérive à l'identique : la session suivante relit la règle d'origine, ne voit
-  //       pas pourquoi `mormon` y échappe, et le retire.
+  //       The amendment is written here rather than applied as an exception because an unwritten
+  //       exception re-derives identically: the next session rereads the original rule, does not see
+  //       why `mormon` escapes it, and removes it.
   //
-  //       DETTE NOMMÉE, et c'est une décision FRANÇAISE qu'un lot ANGLAIS n'avait pas à prendre : la
-  //       règle amendée admettrait `mormon` en français aussi. Ce serait une septième famille au
-  //       témoin de symétrie et un déplacement de décomptes gelés et ratifiés. Laissé ouvert.
-  //       (Vérifié au passage, contre l'hypothèse qui l'avait motivé : `protestant` ET `evangelique`
-  //       sont admis tous les deux en FR — il n'y a pas d'asymétrie française à réparer de ce côté.)
-  //   (2) Une tradition entre dès que son appellation ordinaire EXISTE dans la langue — quel que
-  //       soit son poids démographique. Le critère est linguistique, pas statistique, ET C'EST LE
-  //       CŒUR DE LA RÈGLE : classer par poids garantirait que les traditions les moins nombreuses
-  //       ne produisent aucune trace, or une non-détection n'affiche RIEN. Le silence sélectif est
-  //       un jugement déguisé (ADR-0003) — ici il aurait visé les minorités.
-  //   (3) Toute tradition admise entre AUX DEUX TIERS où ses pendants existent : l'appellation en
-  //       auto-déclaration, le nom de domaine en vocabulaire de sujet. Une entrée orpheline est un
-  //       déséquilibre à retardement.
+  //       NAMED DEBT, and it is a FRENCH decision that an ENGLISH batch had no business making: the
+  //       amended rule would admit `mormon` in French too. That would be a seventh family in the
+  //       symmetry witness and a shift of frozen, ratified counts. Left open.
+  //       (Verified in passing, against the hypothesis that motivated it: `protestant` AND `evangelique`
+  //       are both admitted in FR — there is no French asymmetry to repair on this side.)
+  //   (2) A tradition enters as soon as its ordinary appellation EXISTS in the language — whatever
+  //       its demographic weight. The criterion is linguistic, not statistical, AND IT IS THE
+  //       HEART OF THE RULE: classing by weight would guarantee that the least numerous traditions
+  //       produce no trace, yet a non-detection displays NOTHING. Selective silence is
+  //       a disguised judgment (ADR-0003) — here it would have targeted minorities.
+  //   (3) Every admitted tradition enters IN BOTH TIERS where its counterparts exist: the appellation in
+  //       self-declaration, the domain name in subject vocabulary. An orphan entry is a
+  //       delayed imbalance.
   //
-  // ADMISES À LA REVUE DE COUVERTURE, le trou ayant été mesuré (« je suis hindoue », « je suis
-  // sikh » ne rendaient RIEN dans le cadre exact où cinq autres posaient un constat nommé) :
-  // hindou·e, sikh·e, orthodoxe. `agnostique` rejoint `athee` au tier LARGE — ce sont des postures
-  // et non des traditions, et la démotion ratifiée vaut pour les deux identiquement.
+  // ADMITTED AT THE COVERAGE REVIEW, the gap having been measured (« je suis hindoue », « je suis
+  // sikh » yielded NOTHING in the exact frame where five others set a named finding):
+  // hindou·e, sikh·e, orthodoxe. `agnostique` joins `athee` in the BROAD tier — they are postures
+  // and not traditions, and the ratified demotion holds for both identically.
   //
-  // NON ADMISES, et le dire vaut mieux qu'une liste sans bord : jaïn, bahá'í, zoroastrien, shintō,
-  // taoïste. La règle (2) les admettrait, la règle (1) ne les exclut pas — ce qui les retient est
-  // que je ne sais pas si leur appellation s'écrit en français courant sans glose, et je préfère un
-  // manque DÉCLARÉ à une entrée que personne ne peut auditer. C'est une frontière de ma
-  // connaissance, pas une décision de doctrine : elle se lève par une mesure, pas par un arbitrage.
+  // NOT ADMITTED, and saying so is worth more than a list without a boundary: jaïn, bahá'í, zoroastrien, shintō,
+  // taoïste. Rule (2) would admit them, rule (1) does not exclude them — what holds them back is
+  // that I do not know whether their appellation is written in everyday French without a gloss, and I prefer a
+  // DECLARED lack to an entry no one can audit. It is a boundary of my
+  // knowledge, not a doctrine decision: it is lifted by a measurement, not by an arbitration.
   //
-  // Appartenance AUTO-DÉCLARÉE (« je suis croyant », « chui musulman ») → tag nommé via pattern.
-  // Emprunt lexicalisé « muslim » (employé par des francophones). « feuj » EXCLU (terme de groupe
-  // ethnico-religieux — signalé à yuya).
+  // SELF-DECLARED affiliation (« je suis croyant », « chui musulman ») → named tag via pattern.
+  // Lexicalized loanword « muslim » (used by francophones). « feuj » EXCLUDED (ethno-religious group
+  // term — flagged to yuya).
   //
-  // « athée » RETIRÉ de ce tier (ratifié à la mesure du banc de registres) et descendu en
-  // `indirectCore`. Le sujet n'était pas en cause : une athée militante écrit du vocabulaire
-  // religieux en permanence, une plateforme le lirait, et la carte est légitime. C'était l'ÉTAGE.
-  // Au tier nommé, l'éventail est classé et met « pratique / appartenance » EN PREMIER — une athée
-  // recevait donc une carte privilégiant « elle pratique », la lecture juste (« avis personnel »)
-  // reléguée au second rang alors qu'elle était déjà écrite. Au tier large l'éventail est à plat,
-  // les trois lectures s'affichent à égalité, et la carte devient vraie sans rien inventer.
+  // « athée » REMOVED from this tier (ratified at the measurement of the registers bench) and moved down to
+  // `indirectCore`. The subject was not in question: a militant atheist writes religious
+  // vocabulary constantly, a platform would read it, and the card is legitimate. It was the TIER.
+  // At the named tier, the fan is ranked and puts « pratique / appartenance » FIRST — an atheist
+  // therefore received a card privileging « she practices », the right reading (« avis personnel »)
+  // relegated to second rank although it was already written. At the broad tier the fan is flat,
+  // the three readings display equally, and the card becomes true without inventing anything.
   selfDeclaredFr: [
     'croyant',
     'croyante',
@@ -155,47 +155,47 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'pratiquant',
     'pratiquante',
   ],
-  // ── LES APPELLATIONS ANGLAISES — le versant qui manquait à des noms de domaine ratifiés ───────
-  // Ce tier n'affirme JAMAIS (constat large ; `TopicalLexicon.selfDeclaredEn`). Il ne change donc
-  // rien à ce que ce label ose dire : l'anglais continue de ne jamais NOMMER sur `religion`, comme
-  // l'en-tête de ce module l'écrit depuis le lot anglais.
+  // ── THE ENGLISH APPELLATIONS — the side that ratified domain names were missing ───────────────
+  // This tier NEVER asserts (broad finding; `TopicalLexicon.selfDeclaredEn`). It therefore changes
+  // nothing about what this label dares to say: English continues never to NAME on `religion`, as
+  // this module's header has written since the English batch.
   //
-  // CE QU'IL RÉPARE, et ce n'est pas une extension mais l'application de la règle (3) ci-dessus —
-  // « toute tradition admise entre AUX DEUX TIERS où ses pendants existent ; une entrée orpheline
-  // est un déséquilibre à retardement ». Mesuré : les noms de DOMAINE étaient câblés, les
-  // APPELLATIONS ne l'étaient pas.
+  // WHAT IT REPAIRS, and it is not an extension but the application of rule (3) above —
+  // « every admitted tradition enters IN BOTH TIERS where its counterparts exist; an orphan entry
+  // is a delayed imbalance ». Measured: the DOMAIN names were wired, the
+  // APPELLATIONS were not.
   //
   //     christianity ✓ / christian ✗      judaism ✓ / jewish ✗      hinduism ✓ / hindu ✗
   //     buddhism ✓ / buddhist ✗           sikhism ✓ / sikh ✗        islam ✓ / muslim ✗
   //
-  // Six traditions orphelines par la règle du module lui-même. `mormon`, `quaker`, `amish`,
-  // `evangelical` ne l'étaient pas (ils vivent en `indirectCore`), ce qui rendait le trou invisible
-  // à qui regardait la liste plutôt que les paires.
+  // Six traditions orphaned by the module's own rule. `mormon`, `quaker`, `amish`,
+  // `evangelical` were not (they live in `indirectCore`), which made the gap invisible
+  // to whoever looked at the list rather than the pairs.
   //
-  // LES DEUX PÔLES ENTRENT ENSEMBLE, et c'est la condition de l'admission : `atheist`, `agnostic`,
-  // `non religious`, `secular` sont ici au même titre que les traditions. N'ajouter que les
-  // appellations croyantes ferait de ce label un détecteur de croyants — le silence sélectif
-  // qu'ADR-0003 nomme (*L'incertitude*, neutralité). Ils sont DÉJÀ au tier large en `indirectCore` ;
-  // les répéter ici leur donne le même chemin cadré qu'aux traditions, pas un étage de plus.
+  // THE TWO POLES ENTER TOGETHER, and it is the condition of the admission: `atheist`, `agnostic`,
+  // `non religious`, `secular` are here on the same footing as the traditions. Adding only the
+  // believer appellations would make this label a believer detector — the selective silence
+  // ADR-0003 names (*The uncertainty*, neutrality). They are ALREADY in the broad tier in `indirectCore`;
+  // repeating them here gives them the same framed path as the traditions, not one more tier.
   //
-  // N'ENTRENT PAS, à la même porte, et l'exclusion vaut plus que l'inclusion :
-  //   · `devout`, `observant`, `practicing`, `spiritual`, `born again`, `godless` — adjectifs
-  //     d'INTENSITÉ ou de posture, pas des appellations. Mesuré en anglais ordinaire : « devout fan
+  // DO NOT ENTER, at the same gate, and the exclusion is worth more than the inclusion:
+  //   · `devout`, `observant`, `practicing`, `spiritual`, `born again`, `godless` — adjectives
+  //     of INTENSITY or posture, not appellations. Measured in ordinary English: « devout fan
   //     of this show », « a born again gym person since january », « im spiritual not religious ».
-  //   · `orthodox` — LE PLUS TENTANT ET LE PLUS DANGEREUX. Son usage dominant anglais est
-  //     « conforme, canonique » : « an orthodox approach to the problem », « orthodox economics ».
-  //     Le français porte `orthodoxe` en `selfDeclaredFr` et peut se le permettre ; l'anglais ne le
-  //     peut pas. Même forme de décision que `temple`, dans l'autre sens — et il ne faut PAS
-  //     l'harmoniser.
-  //   · `catholic` est admis ICI mais resterait exclu d'un tier NU : « she has catholic taste in
-  //     music » (= éclectique) est de l'anglais courant. C'est le cadre qui le rend admissible, et
-  //     c'est tout ce que le cadre achète.
-  //   · les obédiences (`baptist`, `methodist`, `presbyterian`, `episcopalian`, `anglican`,
-  //     `lutheran`, `sunni`, `shia`) — règle (1), inchangée.
-  //   · TOUTE LA COUCHE PHATIQUE : `bless you`, `blessed`, `amen`, `preach`, `hallelujah`. Déjà
-  //     exclue de `indirectCore`, et elle le reste ici — troisième porte d'ADR-0003, dont la
-  //     SECONDE raison suffit : marqueurs saillants de l'anglais afro-américain et du Sud des
-  //     États-Unis. Vérifié un par un : aucune appellation admise ci-dessus ne tombe de ce côté.
+  //   · `orthodox` — THE MOST TEMPTING AND THE MOST DANGEROUS. Its dominant English use is
+  //     "conforming, canonical": « an orthodox approach to the problem », « orthodox economics ».
+  //     French carries `orthodoxe` in `selfDeclaredFr` and can afford it; English
+  //     cannot. Same form of decision as `temple`, in the other direction — and it must NOT
+  //     be harmonized.
+  //   · `catholic` is admitted HERE but would stay excluded from a BARE tier: « she has catholic taste in
+  //     music » (= eclectic) is everyday English. It is the frame that makes it admissible, and
+  //     that is all the frame buys.
+  //   · the denominations (`baptist`, `methodist`, `presbyterian`, `episcopalian`, `anglican`,
+  //     `lutheran`, `sunni`, `shia`) — rule (1), unchanged.
+  //   · THE WHOLE PHATIC LAYER: `bless you`, `blessed`, `amen`, `preach`, `hallelujah`. Already
+  //     excluded from `indirectCore`, and it stays so here — ADR-0003's third gate, whose
+  //     SECOND reason suffices: salient markers of African-American English and the Southern
+  //     United States. Verified one by one: no appellation admitted above falls on that side.
   selfDeclaredEn: [
     'muslim',
     'christian',
@@ -211,19 +211,19 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'protestant',
     'religious',
     'a believer',
-    // Le pôle non-croyant, au même tier et dans le même lot.
+    // The non-believer pole, at the same tier and in the same batch.
     'atheist',
     'agnostic',
     'non religious',
     'secular',
   ],
-  // ADHÉSION — leur NÉGATION plafonne une auto-déclaration en large (doctrine et raison d'être :
-  // `TopicalLexicon.adherence`). Verbes et noms de l'adhésion elle-même, jamais des traditions : ce
-  // qui contredit « je suis catholique » n'est pas une autre appartenance, c'est le retrait de la
-  // croyance ou de la pratique. Tenus COURTS et génériques exprès — cette liste plafonne, donc une
-  // entrée de trop coûte du rappel sur des gens qui affirment réellement.
+  // ADHERENCE — their NEGATION caps a self-declaration to broad (doctrine and reason for being:
+  // `TopicalLexicon.adherence`). Verbs and nouns of adherence itself, never of traditions: what
+  // contradicts « je suis catholique » is not another affiliation, it is the withdrawal of the
+  // belief or the practice. Kept SHORT and generic on purpose — this list caps, so one
+  // entry too many costs recall on people who genuinely assert.
   adherence: ['crois', 'croire', 'croyais', 'pratique', 'pratique ma religion', 'ma foi'],
-  // Vocabulaire de sujet, non ambigu → tag large.
+  // Subject vocabulary, unambiguous → broad tag.
   indirectCore: [
     'religion',
     'spiritualite',
@@ -249,120 +249,120 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'bouddhisme',
     'hindouisme',
     'sikhisme',
-    // ── L'AXE DE LA CROYANCE, ET POURQUOI SES DEUX PÔLES NE SONT PAS AU MÊME ÉTAGE ──────────────
-    // Question rouverte par le lot de symétrie FR, et TRANCHÉE À LAISSER EN L'ÉTAT. Ce qui suit est
-    // le raisonnement, parce que la raison écrite jusqu'ici était incomplète et invitait à rouvrir.
+    // ── THE AXIS OF BELIEF, AND WHY ITS TWO POLES ARE NOT AT THE SAME TIER ──────────────────────
+    // Question reopened by the FR symmetry batch, and DECIDED TO LEAVE AS IS. What follows is
+    // the reasoning, because the reason written until now was incomplete and invited reopening.
     //
-    // (1) `athee` N'EST PAS le cas de `valide`. Sur `health_physical`, admettre « je suis valide »
-    //     poserait un constat de CONDITION sur quelqu'un déclarant n'en avoir aucune — le terme
-    //     majoritaire y nomme l'ABSENCE de la chose détectée. Ici non : `religion` est un label de
-    //     SUJET (ADR-0003, *L'état et le sujet*), la chose détectée est le SUJET et non la croyance,
-    //     et une athée tient une POSITION sur ce sujet. Les deux pôles appartiennent donc bien au
-    //     même axe, et la couverture est SYMÉTRIQUE — les deux déclenchent.
+    // (1) `athee` IS NOT the case of `valide`. On `health_physical`, admitting « je suis valide »
+    //     would set a CONDITION finding on someone declaring they have none — the
+    //     majority term there names the ABSENCE of the thing detected. Not here: `religion` is a
+    //     SUBJECT label (ADR-0003, *The state and the subject*), the thing detected is the SUBJECT and not the belief,
+    //     and an atheist holds a POSITION on this subject. The two poles therefore do belong to the
+    //     same axis, and the coverage is SYMMETRIC — both fire.
     //
-    // (2) Mais la raison de la démotion n'a jamais été « athée est moins une position ». C'était
-    //     l'ÉVENTAIL, et il est écrit depuis le pôle pratiquant : sa tête est « pratique /
-    //     appartenance ». L'éventail est `ranked` au tier nommé et `equal` au tier large
-    //     (`rules/d1-sensitive-topics.ts`). D'où l'asymétrie des conséquences, et elle ne se
-    //     retourne pas :
-    //       · promouvoir `athee` → sa carte remettrait « pratique / appartenance » EN TÊTE, très
-    //         exactement le défaut que la démotion ratifiée a corrigé. Régression ;
-    //       · rétrograder `croyant` → perte d'un constat nommé sur une auto-déclaration vraie et
-    //         explicite, alors que pour elle la tête classée est JUSTE. Rappel perdu, rien gagné.
-    //     La raison ne s'applique donc PAS symétriquement, et c'est ce qui rend l'asymétrie d'étage
-    //     légitime : elle compense une asymétrie de l'ÉVENTAIL, pas un jugement sur le pôle normal.
+    // (2) But the reason for the demotion was never « atheist is less of a position ». It was
+    //     the FAN, and it is written from the practicing pole: its head is « pratique /
+    //     appartenance ». The fan is `ranked` at the named tier and `equal` at the broad tier
+    //     (`rules/d1-sensitive-topics.ts`). Hence the asymmetry of consequences, and it does not
+    //     reverse:
+    //       · promoting `athee` → its card would put « pratique / appartenance » AT THE HEAD, very
+    //         exactly the defect that the ratified demotion corrected. Regression;
+    //       · demoting `croyant` → loss of a named finding on a true and
+    //         explicit self-declaration, whereas for it the ranked head is RIGHT. Recall lost, nothing gained.
+    //     The reason therefore does NOT apply symmetrically, and that is what makes the tier asymmetry
+    //     legitimate: it compensates for a FAN asymmetry, not a judgment on the normal pole.
     //
-    // (3) Ce que l'asymétrie ne fait pas : elle ne rend le produit sourd à personne. Une athée
-    //     reçoit sa carte, avec trois lectures à égalité. Seule l'AFFIRMATION diffère — « un label
-    //     plus sensible mérite de moins affirmer » (ADR-0003).
+    // (3) What the asymmetry does not do: it does not make the product deaf to anyone. An atheist
+    //     receives her card, with three readings equal. Only the ASSERTION differs — « a
+    //     more sensitive label deserves to assert less » (ADR-0003).
     //
-    // DETTE NOMMÉE, et c'est la vraie réparation : UN SEUL éventail sert les deux pôles. Des
-    // éventails PAR PÔLE — « avis personnel » en tête du côté non-croyant — permettraient un étage
-    // symétrique sans rien remettre de faux en tête. C'est un mécanisme neuf, pas un lot de lexique.
+    // NAMED DEBT, and it is the real repair: A SINGLE fan serves both poles. PER-POLE
+    // fans — « avis personnel » at the head on the non-believer side — would allow a symmetric
+    // tier without putting anything false at the head. It is a new mechanism, not a lexicon batch.
     'athee',
     'atheisme',
     'agnostique',
     'agnosticisme',
-    // LES SYNONYMES DU PÔLE NON-CROYANT, et leur absence était un vrai trou de couverture : `athee`
-    // était câblé, ses voisins ordinaires ne l'étaient pas. La couverture se vérifie dans les deux
-    // sens (CLAUDE.md), et « je suis incroyant » rendait RIEN là où « je suis athee » rendait un
-    // constat large — même pôle, même registre, deux comportements.
+    // THE SYNONYMS OF THE NON-BELIEVER POLE, and their absence was a real coverage gap: `athee`
+    // was wired, its ordinary neighbors were not. Coverage is verified in both
+    // directions (CLAUDE.md), and « je suis incroyant » yielded NOTHING where « je suis athee » yielded a
+    // broad finding — same pole, same register, two behaviors.
     'incroyant',
     'incroyante',
     'non croyant',
     'non pratiquant',
-    // L'anticléricalisme est une position SUR le sujet, et le pôle critique est celui qu'ADR-0003
-    // nomme comme le silence le plus coûteux (*L'incertitude*, neutralité). Mesuré : la forme
-    // historique (« l'anticléricalisme du 19e siècle ») reste sur le sujet, donc pas de tort de
-    // registre.
+    // Anticlericalism is a position ON the subject, and the critical pole is the one ADR-0003
+    // names as the costliest silence (*The uncertainty*, neutrality). Measured: the historical
+    // form (« l'anticléricalisme du 19e siècle ») stays on the subject, so no register
+    // wrong.
     'anticlerical',
     'anticlericalisme',
-    // `laique` / `laicite` ÉCARTÉS, et ce n'est pas une pudeur. Leur usage dominant en français
-    // n'est pas une position personnelle sur la croyance : c'est le vocabulaire CIVIQUE des
-    // institutions. Mesuré — « une école laïque » et « un état laïque » déclenchaient, sur des
-    // phrases de politique scolaire qui ne disent rien de la croyance de qui les écrit. Le terme est
-    // par ailleurs transversal aux deux bords politiques, ce que le témoin `politics-symmetry`
-    // enregistre déjà pour `laicite`. Sa maison probable est `politics`, jamais ici.
+    // `laique` / `laicite` DISCARDED, and it is not a coyness. Their dominant use in French
+    // is not a personal position on belief: it is the CIVIC vocabulary of
+    // institutions. Measured — « une école laïque » and « un état laïque » fired, on
+    // school-policy sentences that say nothing of the belief of whoever writes them. The term is
+    // moreover transversal to the two political sides, which the `politics-symmetry` witness
+    // already records for `laicite`. Its probable home is `politics`, never here.
     'catechisme',
     'pelerinage',
     'aid moubarak',
     'priere du vendredi',
-    // ── VOCABULAIRE ANGLAIS ────────────────────────────────────────────────────────────────────
-    // Fusionné en ligne (même discipline que `mental_health` et `politics`) : le détecteur ne
-    // sépare pas les langues, seul `selfDeclaredFr` est appairé à des têtes.
+    // ── ENGLISH VOCABULARY ──────────────────────────────────────────────────────────────────────
+    // Merged inline (same discipline as `mental_health` and `politics`): the detector does not
+    // separate the languages, only `selfDeclaredFr` is paired with heads.
     //
-    // POURQUOI CE LOT EXISTE, et ce n'est PAS « l'anglais n'avait rien ». Il en avait, par accident
-    // orthographique, et c'était PENCHÉ : islam 5 surfaces (islam, ramadan, halal, hijab, imam),
-    // judaïsme 2, christianisme 2, bouddhisme / hindouisme / sikhisme 0 — chacune franchissant
-    // SEULE au seuil 1. Autrement dit : mentionner une fois de la nourriture halal posait un
-    // constat, écrire qu'on va à l'église tous les dimanches n'en posait aucun. Personne ne l'avait
-    // décidé. Le banc n'avait pas tort sur le mécanisme (des entrées FR rencontrant un texte EN) ;
-    // il n'a jamais demandé LESQUELLES, seulement s'il y en avait.
+    // WHY THIS BATCH EXISTS, and it is NOT « English had nothing ». It had some, by orthographic
+    // accident, and it was TILTED: islam 5 surfaces (islam, ramadan, halal, hijab, imam),
+    // judaism 2, christianity 2, buddhism / hinduism / sikhism 0 — each crossing
+    // ALONE at threshold 1. In other words: mentioning halal food once set a
+    // finding, writing that one goes to church every Sunday set none. No one had
+    // decided it. The bench was not wrong about the mechanism (FR entries meeting an EN text);
+    // it never asked WHICH, only whether there were any.
     //
-    // LA LIGNE D'ADMISSION DE CE LOT (doctrine, ADR-0003 *le marqueur de sociolecte*) : le mot qui
-    // NOMME entre, le mot qui FAIT n'entre pas. Test du référent — ce terme pointe-t-il vers un
-    // lieu, un texte, une figure, un rite, une tradition ? Si oui il entre, que l'auteur soit
-    // croyant, critique ou touriste (principe de démonstration). Sinon il reste dehors, si religieux
-    // que soit son étymologie.
+    // THIS BATCH'S ADMISSION LINE (doctrine, ADR-0003 *the sociolect marker*): the word that
+    // NAMES enters, the word that DOES does not. Referent test — does this term point to a
+    // place, a text, a figure, a rite, a tradition? If so it enters, whether the author is
+    // a believer, a critic or a tourist (principle of demonstration). Otherwise it stays out, however religious
+    // its etymology.
     //
-    // EXCLUS PAR CETTE LIGNE, et le dire vaut mieux qu'une liste sans bord : `bless you`, `blessed`,
-    // `amen`, `preach`, `hallelujah`, `godspeed`, `holy`, `sacred`, `oh my god`, `thank god` — ils
-    // accomplissent un acte social sans rien désigner, et plusieurs sont des marqueurs de sociolecte
-    // (anglais afro-américain, Sud des États-Unis). Exclus aussi les emprunts que l'anglais a
-    // SÉCULARISÉS — `karma`, `zen`, `guru`, `mantra`, `nirvana`, `yoga`, `chakra`, `dharma` — et
-    // c'est le tour cruel du lot : ce sont les mots des traditions qui étaient à zéro. D'où une
-    // couverture qui reste plus mince pour le bouddhisme, l'hindouisme et le sikhisme, PAR FAIT DE
-    // LANGUE et non par choix : le vocabulaire utilisable y est l'emprunt non digéré (gurdwara,
-    // mandir, puja, diwali), plus propre et plus rare. Déclaré plutôt qu'égalisé en admettant
+    // EXCLUDED BY THIS LINE, and saying so is worth more than a list without a boundary: `bless you`, `blessed`,
+    // `amen`, `preach`, `hallelujah`, `godspeed`, `holy`, `sacred`, `oh my god`, `thank god` — they
+    // accomplish a social act without designating anything, and several are sociolect markers
+    // (African-American English, Southern United States). Excluded too are the loanwords English has
+    // SECULARIZED — `karma`, `zen`, `guru`, `mantra`, `nirvana`, `yoga`, `chakra`, `dharma` — and
+    // it is the batch's cruel turn: these are the words of the traditions that were at zero. Hence a
+    // coverage that stays thinner for buddhism, hinduism and sikhism, BY FACT OF
+    // LANGUAGE and not by choice: the usable vocabulary there is the undigested loanword (gurdwara,
+    // mandir, puja, diwali), cleaner and rarer. Declared rather than equalized by admitting
     // `karma`.
     //
-    // AUCUNE ENTRÉE COLLOQUIALE ANGLAISE, et ce n'est pas un oubli : le tier colloquial est le foyer
-    // des formules MARQUÉES (donc désignantes — `hamdoulah`, `bismillah`). Son pendant anglais
-    // serait celui des formules NON marquées, c'est-à-dire exactement ce que la ligne refuse. Le
-    // tier inverse son sens en changeant de langue (ADR-0003, corollaire de tier).
+    // NO ENGLISH COLLOQUIAL ENTRY, and it is not an oversight: the colloquial tier is the focus
+    // of MARKED formulas (hence designating — `hamdoulah`, `bismillah`). Its English counterpart
+    // would be that of UNmarked formulas, i.e. exactly what the line refuses. The
+    // tier inverts its meaning when changing language (ADR-0003, tier corollary).
     //
-    // NOMS NUS ÉVITÉS AU PROFIT DU SYNTAGME, là où la collision anglaise est dure — la leçon de
-    // `politics` appliquée à des CAS, jamais comme ligne (la plupart de ces mots sont monosémiques
-    // en anglais et un syntagme leur coûterait tout leur rappel pour rien) : `the sabbath` et non
-    // `sabbath` (Black Sabbath), `easter mass` et non `mass` (physique) ni `easter` (œufs).
-    // ÉCARTÉS ENTIÈREMENT pour la même raison : `lent` (prétérit de *lend*), `bishop` (pièce
-    // d'échecs), `confession` (aveu), `minister` (collision `politics` frontale), `faith`, `grace`,
-    // `hope`, `charity`, `trinity`, `saint` (prénoms et noms propres), `mecca` (*a mecca for
-    // cyclists*), `cathedral`, `abbey`, `chapel` (registre du MONUMENT et non du culte — écrits
-    // surtout par qui visite, plus la collision immobilière *cathedral ceiling*).
+    // BARE NOUNS AVOIDED IN FAVOR OF THE PHRASE, where the English collision is hard — the lesson of
+    // `politics` applied to CASES, never as a line (most of these words are monosemous
+    // in English and a phrase would cost them all their recall for nothing): `the sabbath` and not
+    // `sabbath` (Black Sabbath), `easter mass` and not `mass` (physics) nor `easter` (eggs).
+    // DISCARDED ENTIRELY for the same reason: `lent` (preterite of *lend*), `bishop` (chess
+    // piece), `confession` (avowal), `minister` (head-on `politics` collision), `faith`, `grace`,
+    // `hope`, `charity`, `trinity`, `saint` (first names and proper nouns), `mecca` (*a mecca for
+    // cyclists*), `cathedral`, `abbey`, `chapel` (register of the MONUMENT and not of worship — written
+    // mostly by whoever visits, plus the real-estate collision *cathedral ceiling*).
     //
-    // COLLISIONS ADMISES ET DÉCLARÉES, parce que le rappel qu'elles portent n'a pas de substitut :
-    // `quaker` (marque de flocons d'avoine), `pastor` (*al pastor*, patronyme), `monk` (patronyme),
-    // `kosher` (*that's not kosher* = irrégulier), `baptism` (*baptism of fire*), `gospel`
-    // (*gospel truth*). Aucune n'est mesurée — voir la garde de phaticité pour ce qui l'est.
+    // ADMITTED AND DECLARED COLLISIONS, because the recall they carry has no substitute:
+    // `quaker` (oat flakes brand), `pastor` (*al pastor*, surname), `monk` (surname),
+    // `kosher` (*that's not kosher* = irregular), `baptism` (*baptism of fire*), `gospel`
+    // (*gospel truth*). None is measured — see the phaticity guard for what is.
     //
-    // `temple` ENTRE EN ANGLAIS ALORS QU'IL EST EXCLU EN FRANÇAIS, et la divergence est DÉLIBÉRÉE :
-    // ne pas l'harmoniser. C'est le seul mot anglais ordinaire des lieux de culte bouddhiste et
-    // hindou ; l'exclure recreerait, sur les deux traditions déjà à zéro, très exactement le trou
-    // que la règle d'admission des traditions existe pour empêcher. Le français peut se le
-    // permettre (il a d'autres mots et d'autres homonymes) ; l'anglais ne le peut pas.
+    // `temple` ENTERS IN ENGLISH WHILE IT IS EXCLUDED IN FRENCH, and the divergence is DELIBERATE:
+    // do not harmonize it. It is the only ordinary English word for buddhist and
+    // hindu places of worship; excluding it would recreate, on the two traditions already at zero, very exactly the gap
+    // that the tradition admission rule exists to prevent. French can afford
+    // it (it has other words and other homonyms); English cannot.
     //
-    // Traditions — l'écart 5-2-2-0-0-0 fermé au niveau du nom de domaine.
+    // Traditions — the 5-2-2-0-0-0 gap closed at the domain-name level.
     'christianity',
     'judaism',
     'buddhism',
@@ -372,37 +372,37 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'mormonism',
     'quaker',
     'amish',
-    // `evangelical` entre APRÈS l'amendement de la règle (1) — admission RATIFIÉE — et contre la
-    // proposition d'origine de ce même lot, qui
-    // l'excluait comme mot de `politics` déguisé (*evangelical voters*). Deux objections ont eu
-    // raison de l'exclusion : le français admet déjà `evangelique`, et au tier LARGE un texte sur
-    // des électeurs évangéliques PARLE bien de religion — le cas que le principe de démonstration
-    // protège. La maintenir aurait fabriqué une divergence FR/EN sans raison, dans le lot qui en
-    // corrige une.
+    // `evangelical` enters AFTER the amendment of rule (1) — RATIFIED admission — and against the
+    // original proposal of this same batch, which
+    // excluded it as a disguised `politics` word (*evangelical voters*). Two objections defeated
+    // the exclusion: French already admits `evangelique`, and at the BROAD tier a text about
+    // evangelical voters DOES speak of religion — the case the principle of demonstration
+    // protects. Maintaining it would have fabricated an FR/EN divergence for no reason, in the batch that
+    // corrects one.
     'evangelical',
-    // Lieux.
+    // Places.
     'church',
     'mosque',
     'gurdwara',
     'mandir',
-    // `temple` EN SYNTAGME, et le détour n'est pas un raffinement — c'est la seule forme
-    // implémentable. Le fork ratifié disait « `temple` entre en anglais malgré son exclusion
-    // française » ; IL N'EXISTE PAS D'« EN ANGLAIS » pour ce tier. Le détecteur porte UN lexique et
-    // ne route rien par langue : seul `selfDeclaredFr` est appairé à des têtes, et les tiers
-    // indirects sont vus par les deux langues. Le `temple` nu retaguait donc « j'ai mal aux
-    // temples », c'est-à-dire la collision anatomique que l'exclusion FR ratifiée (PANO-72) tient
-    // depuis le sondage — mesuré, `lexicon-battery.test.ts` a rougi.
+    // `temple` AS A PHRASE, and the detour is not a refinement — it is the only
+    // implementable form. The ratified fork said « `temple` enters in English despite its French
+    // exclusion »; THERE IS NO « IN ENGLISH » for this tier. The detector carries ONE lexicon and
+    // routes nothing by language: only `selfDeclaredFr` is paired with heads, and the indirect
+    // tiers are seen by both languages. Bare `temple` therefore re-tagged « j'ai mal aux
+    // temples », i.e. the anatomical collision that the ratified FR exclusion (PANO-72) has held
+    // since the survey — measured, `lexicon-battery.test.ts` reddened.
     //
-    // Le syntagme fait le tri que le lexique ne sait pas faire : l'article et l'épithète anglais
-    // n'apparaissent pas dans la tournure française. La décision ratifiée est donc tenue — les
-    // lieux de culte bouddhiste et hindou cessent d'être muets — sans rouvrir une exclusion FR.
-    // CE QUE ÇA COÛTE, et il faut le lire avant de citer cette entrée : « a temple in kyoto »,
-    // « temple visit », « at temple » ne déclenchent PAS. La couverture est celle de la tournure la
-    // plus fréquente, pas celle du mot.
+    // The phrase does the sorting the lexicon cannot do: the English article and epithet
+    // do not appear in the French turn. The ratified decision is therefore held — the
+    // buddhist and hindu places of worship stop being silent — without reopening an FR exclusion.
+    // WHAT IT COSTS, and it must be read before citing this entry: « a temple in kyoto »,
+    // « temple visit », « at temple » do NOT fire. The coverage is that of the most
+    // frequent turn, not that of the word.
     'the temple',
     'buddhist temple',
     'hindu temple',
-    // Textes.
+    // Texts.
     'quran',
     'koran',
     'gospel',
@@ -414,7 +414,7 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'pastor',
     'monk',
     'pope',
-    // Rites et pratiques.
+    // Rites and practices.
     'eid',
     'hanukkah',
     'diwali',
@@ -425,15 +425,15 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'baptism',
     'pilgrimage',
     'sermon',
-    // `prayer` ET `pray` — le nom et le verbe. Le verbe a failli manquer, et son absence était
-    // mesurable : « i am a muslim and i pray every day » ne rendait RIEN quand « i go to church on
-    // sundays » rendait un constat, parce que `muslim` est gardé derrière la porte de langue et que
-    // seul le nom était admis. Le français couvre les deux depuis toujours (`je prie`, `priere`).
+    // `prayer` AND `pray` — the noun and the verb. The verb nearly went missing, and its absence was
+    // measurable: « i am a muslim and i pray every day » yielded NOTHING when « i go to church on
+    // sundays » yielded a finding, because `muslim` is kept behind the language gate and
+    // only the noun was admitted. French has always covered both (`je prie`, `priere`).
     //
-    // Les deux NOMMENT une chose, et c'est ce qui les admet malgré leur voisinage phatique : ce qui
-    // est phatique est la LOCUTION (« praying for you », « thoughts and prayers »), jamais le terme.
-    // La ligne traite les termes dont l'usage dominant est phatique, pas les locutions bâties sur un
-    // terme désignant — frontière assertée dans `religion-symmetry.test.ts`.
+    // Both NAME a thing, and that is what admits them despite their phatic neighborhood: what
+    // is phatic is the PHRASE (« praying for you », « thoughts and prayers »), never the term.
+    // The line handles terms whose dominant use is phatic, not phrases built on a
+    // designating term — boundary asserted in `religion-symmetry.test.ts`.
     'prayer',
     'pray',
     // Prescriptions.
@@ -441,23 +441,23 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'niqab',
     'kippah',
     'turban',
-    // Postures — tier LARGE, strictement comme leurs pendants français : ce sont des positions SUR
-    // la religion, et l'éventail à plat leur convient. Un `selfDeclaredEn` futur ne doit pas les
-    // remonter.
+    // Postures — BROAD tier, strictly like their French counterparts: they are positions ON
+    // religion, and the flat fan suits them. A future `selfDeclaredEn` must not move them
+    // back up.
     'atheist',
     'atheism',
     'agnostic',
     'agnosticism',
-    // Génériques.
+    // Generics.
     'spirituality',
     'interfaith',
     'place of worship',
   ],
-  // Culturel-polysémique (« belle église romane » = tourisme) → tag large + éventail « curiosité ».
-  // EXCLUS après sondage FP (PANO-72, seuil 1) — collisions hors-domaine trop massives, pas de la
-  // multi-interprétabilité mais du bruit : « voile » (bateau), « temple » (« mal aux temples » /
-  // tourisme / jeu), « pasteur » (Institut/Louis Pasteur, toponymes), « baptême » (« baptême de
-  // l'air / du feu »). La pratique reste captée par les auto-déclarations et le vocabulaire de sujet.
+  // Cultural-polysemous (« belle église romane » = tourism) → broad tag + « curiosité » fan.
+  // EXCLUDED after FP survey (PANO-72, threshold 1) — off-domain collisions too massive, not
+  // multi-interpretability but noise: « voile » (boat), « temple » (« mal aux temples » /
+  // tourism / game), « pasteur » (Institut/Louis Pasteur, place names), « baptême » (« baptême de
+  // l'air / du feu »). Practice stays captured by the self-declarations and the subject vocabulary.
   indirectColloquial: [
     'eglise',
     'bible',
@@ -468,14 +468,14 @@ export const RELIGION_LEXICON: TopicalLexicon = {
     'starfoullah',
     'bismillah',
   ],
-  // Label de SUJET — l'en-tête de ce module le disait depuis toujours en ces mots ; le drapeau lui
-  // donne enfin un effet (ADR-0003, *L'état et le sujet*). La négation dégrade au lieu de supprimer.
+  // SUBJECT label — this module's header had always said it in these words; the flag finally
+  // gives it an effect (ADR-0003, *The state and the subject*). Negation degrades instead of suppressing.
   //
-  // C'est ce qui manquait à l'axe PRATIQUE ↔ CRITIQUE, ratifié au catalogue et pourtant muet d'un
-  // côté : « je ne crois pas en dieu » ne taguait rien là où « je crois en dieu » posait un constat
-  // nommé. Le silence sélectif est un jugement déguisé (ADR-0003, *L'incertitude*) — celui-ci était
-  // livré. Il reste que la critique de la religion comme IDÉE, sans vocabulaire du sujet, n'est
-  // toujours taguée nulle part : la frontière d'origine de ce module tient.
+  // It is what the PRACTICE ↔ CRITICISM axis was missing, ratified in the catalogue and yet mute on one
+  // side: « je ne crois pas en dieu » tagged nothing where « je crois en dieu » set a named
+  // finding. Selective silence is a disguised judgment (ADR-0003, *The uncertainty*) — this one was
+  // delivered. It remains that the criticism of religion as an IDEA, without subject vocabulary, is
+  // still tagged nowhere: this module's original boundary holds.
   subjectNotState: true,
   includeColloquial: true,
   indirectThreshold: 1,

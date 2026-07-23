@@ -1,50 +1,50 @@
-// Validation d'ingest — frontière de confiance (PANO-26, ADR-0004).
+// Ingest validation — trust boundary (PANO-26, ADR-0004).
 //
-// Le JSON TikTok parsé (`data: unknown` de PANO-25) est NON FIABLE : c'est ICI qu'on le valide
-// contre le contrat, pas ailleurs. La sortie validée est un `TikTokExport` (PANO-24).
+// The parsed TikTok JSON (`data: unknown` from PANO-25) is UNTRUSTED: it is HERE that we validate it
+// against the contract, nowhere else. The validated output is a `TikTokExport` (PANO-24).
 //
-// SOURCE DE VÉRITÉ = le type `TikTokExport` écrit à la main (PANO-24, contrat lisible). Ce schéma
-// `valibot` en est le **miroir runtime**. Les deux sont tenus alignés par un **pont compile-time**
-// (cf. `validateTikTokExport`), pas par convention.
+// SOURCE OF TRUTH = the hand-written `TikTokExport` type (PANO-24, readable contract). This
+// `valibot` schema is its **runtime mirror**. The two are kept aligned by a **compile-time bridge**
+// (cf. `validateTikTokExport`), not by convention.
 //
-// PONT (forward), réalisé par le type de retour de `validateTikTokExport` : `v.safeParse` rend
-// `output: v.InferOutput<typeof TikTokExportSchema>`, qu'on retourne comme `data: TikTokExport`.
-//   - GARANTIT : `InferOutput<Schema>` ⊆ `TikTokExport` — le schéma ne produit jamais hors-contrat
-//     (drift « schéma plus large » → erreur de typecheck sur le `return`).
-//   - NE GARANTIT PAS : l'équivalence stricte (un schéma plus *strict* que le contrat = faux rejets,
-//     non signalé ici → attrapé par les golden tests PANO-28) ; le `readonly` (mutable assignable à
-//     readonly → non re-enforcé au runtime) ; l'absence de `v.any()` permissif. Équivalence stricte =
-//     pont bidirectionnel / `Equals<A, B>`. Non retenu en v1, assumé.
+// BRIDGE (forward), realized by `validateTikTokExport`'s return type: `v.safeParse` returns
+// `output: v.InferOutput<typeof TikTokExportSchema>`, which we return as `data: TikTokExport`.
+//   - GUARANTEES: `InferOutput<Schema>` ⊆ `TikTokExport` — the schema never produces out-of-contract
+//     (a "wider schema" drift → typecheck error on the `return`).
+//   - DOES NOT GUARANTEE: strict equivalence (a schema *stricter* than the contract = false
+//     rejections, not flagged here → caught by the PANO-28 golden tests); `readonly` (mutable
+//     assignable to readonly → not re-enforced at runtime); the absence of permissive `v.any()`.
+//     Strict equivalence = a bidirectional bridge / `Equals<A, B>`. Not retained in v1, assumed.
 //
-// CLÉS INCONNUES = SIGNAL (pas avalement). `v.object` ignore les clés hors-contrat (ne PAS rejeter :
-// un vrai export d'une autre version en aurait, faux rejets). Mais une clé inconnue = la plateforme
-// a peut-être ajouté un champ que le miroir ne montre pas encore : on la **compte/loggue en dev-only**
-// (`collectUnknownKeyPaths`), jamais en silence. Cohérent avec « l'absence comme signal ».
+// UNKNOWN KEYS = SIGNAL (not swallowing). `v.object` ignores out-of-contract keys (do NOT reject: a
+// real export from another version would have them, false rejections). But an unknown key = the
+// platform may have added a field the mirror does not show yet: we **count/log it in dev-only**
+// (`collectUnknownKeyPaths`), never silently. Consistent with "absence as signal".
 //
-// PRIVACY. La validation tourne sur l'export RÉEL. Tout ce qui sort d'ici (issues, warn dev) ne porte
-// que des **chemins de clés + types attendus**, JAMAIS la valeur reçue (ni le message valibot par
-// défaut, qui l'embarque). PII-safe par construction.
+// PRIVACY. Validation runs on the REAL export. Everything that leaves here (issues, dev warn) carries
+// only **key paths + expected types**, NEVER the received value (nor the default valibot message,
+// which embeds it). PII-safe by construction.
 
 import * as v from 'valibot';
 import type { TikTokExport } from './tiktok-export';
 
-// --- Briques d'encodage (miroir du vocabulaire `Unverified*` de `tiktok-export.ts`) ----------
+// --- Encoding building blocks (mirror of the `Unverified*` vocabulary from `tiktok-export.ts`) --
 
-/** `null` à vide (§1.2) ; liste non vérifiée si peuplée. */
+/** `null` when empty (§1.2); list unverified if populated. */
 const unverifiedNullableList = v.nullable(v.array(v.unknown()));
-/** `[]` à vide (§1.2) ; item non vérifié. */
+/** `[]` when empty (§1.2); item unverified. */
 const unverifiedList = v.array(v.unknown());
-/** `{}` à vide (§1.2) ; clés non vérifiées si peuplé (ou sous-arbre différé, ex. `SettingsMap`). */
+/** `{}` when empty (§1.2); keys unverified if populated (or a deferred subtree, e.g. `SettingsMap`). */
 const unverifiedObject = v.record(v.string(), v.unknown());
 
-// Listes à items CONNUS dont l'encodage de vide est `null` (registre PANO-11 ; §1.2 « la plupart
-// → null ») : `v.nullable(v.array(item))` inline, miroir runtime de `NullableList<T>` (cf.
-// tiktok-export.ts). Le §4 est muet sur le vide de ces sections peuplées → complété en PANO-28.
+// Lists with KNOWN items whose empty encoding is `null` (PANO-11 registry; §1.2 "most → null"):
+// `v.nullable(v.array(item))` inline, the runtime mirror of `NullableList<T>` (cf.
+// tiktok-export.ts). §4 is silent on the empty of these populated sections → completed in PANO-28.
 
 // --- Comment ---------------------------------------------------------------------------------
 
 const commentItem = v.object({
-  date: v.string(), // §1.3 minuscule, §1.1 format `… UTC`
+  date: v.string(), // §1.3 lowercase, §1.1 format `… UTC`
   comment: v.string(),
   photo: v.string(),
   video: v.string(),
@@ -85,7 +85,7 @@ const favoriteCollectionItem = v.object({ Date: v.string(), FavoriteCollection: 
 const favoriteEffectItem = v.object({ Date: v.string(), EffectLink: v.string() });
 const favoriteSoundItem = v.object({ Date: v.string(), Link: v.string() });
 const favoriteVideoItem = v.object({ Date: v.string(), Link: v.string() });
-const likeItem = v.object({ date: v.string(), link: v.string() }); // §1.3 minuscules
+const likeItem = v.object({ date: v.string(), link: v.string() }); // §1.3 lowercase
 
 const likesAndFavoritesCategory = v.object({
   Collection: unverifiedObject,
@@ -154,7 +154,7 @@ const profileMap = v.object({
 
 const followingItem = v.object({ Date: v.string(), UserName: v.string() });
 
-/** Dupliquée §1.6 — schéma unique référencé sous deux parents. */
+/** Duplicated §1.6 — single schema referenced under two parents. */
 const offTikTokActivitySection = v.object({ OffTikTokActivityDataList: unverifiedNullableList });
 
 const profileAndSettingsCategory = v.object({
@@ -182,7 +182,7 @@ const profileAndSettingsCategory = v.object({
   'Off TikTok Activity': offTikTokActivitySection,
   'Profile Info': v.object({ App: v.number(), ProfileMap: profileMap }),
   ProfileViews: v.object({ ProfileViewList: unverifiedNullableList }),
-  Settings: v.object({ App: v.number(), SettingsMap: unverifiedObject }), // §1.7 différé (cf. type)
+  Settings: v.object({ App: v.number(), SettingsMap: unverifiedObject }), // §1.7 deferred (cf. type)
 });
 
 // --- TikTok Live -----------------------------------------------------------------------------
@@ -260,7 +260,7 @@ const statusItem = v.object({
   GAID: v.string(),
   'Android ID': v.string(),
   IDFV: v.string(),
-  UID: v.number(), // §1.8 int, distinct du `DID` string
+  UID: v.number(), // §1.8 int, distinct from the `DID` string
   DID: v.string(),
   'Web ID': v.string(),
 });
@@ -268,13 +268,14 @@ const statusItem = v.object({
 const watchHistoryItem = v.object({ Date: v.string(), Link: v.string(), Title: v.string() });
 
 /**
- * Exporté pour l'ingestion en flux (`ingest/ingest-stream.ts`, PANO-91) : elle réutilise ces entrées
- * pour bâtir un schéma « streamed » DRY où seul `Watch History → VideoList` est relâché en dates-only
- * (le tableau replié par le parseur en flux). Tout le reste du contrat reste validé à l'identique.
+ * Exported for streaming ingestion (`ingest/ingest-stream.ts`, PANO-91): it reuses these entries to
+ * build a DRY "streamed" schema where only `Watch History → VideoList` is loosened to dates-only
+ * (the array folded by the streaming parser). Everything else in the contract stays validated
+ * identically.
  */
 export const yourActivityCategory = v.object({
   'Activity Summary': v.object({ ActivitySummaryMap: activitySummaryMap }),
-  // §3 : `""` à vide ; peuplé UNVERIFIED (liste probable) → admis sans inventer l'item.
+  // §3: `""` when empty; populated UNVERIFIED (likely a list) → admitted without inventing the item.
   'Ad Interests': v.object({ AdInterestCategories: v.union([v.string(), v.array(v.unknown())]) }),
   'Ads Visit History': v.object({ AdsVisitHistoryList: v.nullable(v.array(adsVisitItem)) }),
   Donation: v.object({ DonationList: unverifiedNullableList }),
@@ -296,9 +297,9 @@ export const yourActivityCategory = v.object({
   'Watch History': v.object({ VideoList: v.nullable(v.array(watchHistoryItem)) }),
 });
 
-// --- Racine ----------------------------------------------------------------------------------
+// --- Root --------------------------------------------------------------------------------------
 
-/** Miroir runtime du contrat `TikTokExport` (10 catégories §0). Clés requises → absente = échec. */
+/** Runtime mirror of the `TikTokExport` contract (10 categories §0). Required keys → absent = failure. */
 export const TikTokExportSchema = v.object({
   Comment: commentCategory,
   'Direct Message': directMessageCategory,
@@ -312,17 +313,17 @@ export const TikTokExportSchema = v.object({
   'Your Activity': yourActivityCategory,
 });
 
-// --- Sortie & validation ---------------------------------------------------------------------
+// --- Output & validation -----------------------------------------------------------------------
 
-/** Issue de validation — **PII-safe** : chemin de clé + type attendu, jamais la valeur reçue. */
+/** Validation issue — **PII-safe**: key path + expected type, never the received value. */
 export interface ValidationIssue {
-  /** Chemin pointé de la clé en faute (clés seulement). */
+  /** Dotted path of the offending key (keys only). */
   path: string;
-  /** Type attendu par le contrat à ce chemin. */
+  /** Type expected by the contract at this path. */
   expected: string;
 }
 
-/** Résultat de validation — union discriminée, plain-data (style `ParseResult` de PANO-25). */
+/** Validation result — discriminated union, plain-data (PANO-25's `ParseResult` style). */
 export type ValidationResult =
   | { ok: true; data: TikTokExport }
   | { ok: false; issues: ValidationIssue[] };
@@ -332,9 +333,9 @@ function isPlainObject(x: unknown): x is Record<string, unknown> {
 }
 
 /**
- * Chemins des clés présentes dans `raw` mais retirées par `v.object` (donc hors-contrat).
- * Retourne des CHEMINS uniquement (jamais de valeur → PII-safe). Exporté pour les tests ;
- * appelé en dev-only par `validateTikTokExport`.
+ * Paths of the keys present in `raw` but removed by `v.object` (hence out-of-contract).
+ * Returns PATHS only (never a value → PII-safe). Exported for the tests; called in dev-only by
+ * `validateTikTokExport`.
  */
 export function collectUnknownKeyPaths(raw: unknown, validated: unknown, prefix = ''): string[] {
   if (Array.isArray(raw) && Array.isArray(validated)) {
@@ -359,9 +360,9 @@ export function collectUnknownKeyPaths(raw: unknown, validated: unknown, prefix 
 }
 
 /**
- * Valide `data` (JSON parsé non fiable) contre le contrat. Ne lève jamais. En dev, signale les
- * clés hors-contrat (chemins seulement). Le `return { ok: true, data: result.output }` EST le pont
- * forward : `result.output` (InferOutput) doit être assignable à `TikTokExport` (cf. en-tête).
+ * Validates `data` (untrusted parsed JSON) against the contract. Never throws. In dev, reports the
+ * out-of-contract keys (paths only). The `return { ok: true, data: result.output }` IS the forward
+ * bridge: `result.output` (InferOutput) must be assignable to `TikTokExport` (cf. header).
  */
 export function validateTikTokExport(data: unknown): ValidationResult {
   const result = v.safeParse(TikTokExportSchema, data);

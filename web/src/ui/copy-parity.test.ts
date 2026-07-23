@@ -1,37 +1,38 @@
-// LA PARITÉ FR/EN DE LA COPY D'INTERFACE — ce que le TYPE ne peut pas tenir.
+// FR/EN PARITY OF THE INTERFACE COPY — what the TYPE cannot hold.
 //
-// POURQUOI CE FICHIER EXISTE, alors que `copy.en.ts` est annoté `UiCopy` et que le compilateur
-// refuse déjà une clé manquante (`ts(2741)`) comme une clé en trop (`ts(2353)`) — les deux mesurés.
-// Il reste UN trou, et il est structurel :
+// WHY THIS FILE EXISTS, even though `copy.en.ts` is annotated `UiCopy` and the compiler already
+// refuses a missing key (`ts(2741)`) as much as an extra key (`ts(2353)`) — both measured.
+// ONE hole remains, and it is structural:
 //
-//   **`typeof` d'un tableau donne `T[]`, jamais un n-uplet.** Une traduction anglaise peut fournir
-//   DEUX colonnes là où le français en a TROIS, ou quatre graduations d'axe au lieu de cinq, et
-//   compiler sans un mot. Ce périmètre porte DIX tableaux — les colonnes des trois panneaux
-//   pédagogiques et du panneau IA, les étapes et cartes de l'accueil, les puces du résumé, les
-//   gages de confiance et les graduations horaires —, et une
-//   colonne manquante ne se voit pas à la relecture : elle se voit sur la page, en anglais, un jour
-//   où plus personne ne compare les deux fichiers.
+//   **`typeof` of an array gives `T[]`, never a tuple.** An English translation can provide
+//   TWO columns where French has THREE, or four axis ticks instead of five, and
+//   compile without a word. This perimeter carries TEN arrays — the columns of the three
+//   educational panels and of the AI panel, the steps and cards of the home page, the summary
+//   bullets, the confidence pledges and the hour ticks —, and a
+//   missing column is not seen on rereading: it is seen on the page, in English, one day
+//   when no one compares the two files anymore.
 //
-// Le filet est donc au RUNTIME, et il ne double pas le compilateur : il couvre exactement ce que le
-// compilateur laisse passer.
+// The net is therefore at RUNTIME, and it does not duplicate the compiler: it covers exactly what
+// the compiler lets through.
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme de preuve déclare sa frontière.
-//   - IL NE JUGE PAS LA TRADUCTION. Une entrée anglaise qui recopie le français a la bonne forme,
-//     la bonne longueur, et passe. Le témoin de non-recopie plus bas n'attrape que le cas grossier —
-//     zéro texte traduit. Entre « rien n'est traduit » et « bien traduit », il n'y a qu'une
-//     relecture humaine ;
-//   - IL N'ATTEINT PAS L'ÉCRAN. Il compare deux objets. Qu'une chaîne soit RENDUE, au bon endroit,
-//     relève des goldens — et aucun golden anglais n'existe tant que le franglais n'est pas levé ;
-//   - IL NE VOIT PAS LES ENTRÉES MORTES. Une clé que plus aucun composant ne lit passe comme les
-//     autres, dans les deux langues.
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+// CLAUDE.md obligation: a proof mechanism declares its border.
+//   - IT DOES NOT JUDGE THE TRANSLATION. An English entry that copies the French has the right form,
+//     the right length, and passes. The non-copy witness below only catches the crude case —
+//     zero translated text. Between « nothing is translated » and « well translated », there is only
+//     a human rereading;
+//   - IT DOES NOT REACH THE SCREEN. It compares two objects. That a string is RENDERED, in the right
+//     place, is the business of the goldens — and no English golden exists as long as the franglais
+//     is not lifted;
+//   - IT DOES NOT SEE DEAD ENTRIES. A key that no component reads anymore passes like the
+//     others, in both languages.
 
 import { describe, expect, it } from 'vitest';
 import { EN } from './copy.en';
 import { FR } from './copy.fr';
 
-/** Chemins de tous les tableaux du bundle, avec leur longueur. Récursif : les tableaux vivent à
- *  plusieurs niveaux (`UI_LEARN_PANELS.rhythm.columns`, `UI_LANDING.feats[].`…). */
+/** Paths of all the arrays in the bundle, with their length. Recursive: the arrays live at
+ *  several levels (`UI_LEARN_PANELS.rhythm.columns`, `UI_LANDING.feats[].`…). */
 function arrayLengths(value: unknown, path = ''): Record<string, number> {
   if (Array.isArray(value)) {
     const own = { [path]: value.length };
@@ -49,22 +50,22 @@ function arrayLengths(value: unknown, path = ''): Record<string, number> {
   return {};
 }
 
-describe('copy — parité FR/EN', () => {
-  it('chaque tableau a la MÊME longueur dans les deux langues (ce que le type ne tient pas)', () => {
+describe('copy — FR/EN parity', () => {
+  it('each array has the SAME length in both languages (what the type does not hold)', () => {
     const fr = arrayLengths(FR);
     const en = arrayLengths(EN);
     expect(en).toEqual(fr);
   });
 
-  // Contrôle « par quel chemin le zéro arrive » (CLAUDE.md) : l'égalité ci-dessus serait vraie et
-  // VIDE si le balayage ne trouvait aucun tableau — une faute dans `arrayLengths` la rendrait verte
-  // pour la pire des raisons.
+  // Control « by which path the zero arrives » (CLAUDE.md): the equality above would be true and
+  // EMPTY if the sweep found no array — a bug in `arrayLengths` would make it green
+  // for the worst of reasons.
   //
-  // La liste est ÉNUMÉRÉE plutôt que comptée, sur le modèle de la sentinelle des claims dans
-  // `engine/wording.test.ts` : un tableau AJOUTÉ fait tomber ce test, et c'est voulu — il oblige à
-  // se demander si sa traduction a la bonne longueur, au lieu de le laisser entrer sans regard.
-  // À mettre à jour SCIEMMENT, jamais par réflexe.
-  it('le balayage trouve exactement les tableaux connus (l’égalité ci-dessus porte sur du contenu)', () => {
+  // The list is ENUMERATED rather than counted, on the model of the claims sentinel in
+  // `engine/wording.test.ts`: an ADDED array makes this test fall, and that is intended — it forces
+  // one to ask whether its translation has the right length, instead of letting it in unwatched.
+  // To be updated KNOWINGLY, never by reflex.
+  it('the sweep finds exactly the known arrays (the equality above bears on content)', () => {
     expect(Object.keys(arrayLengths(FR)).sort()).toEqual([
       'UI_ACTIVITY.hourMarks',
       'UI_AI_LEARN.columns',
@@ -79,9 +80,9 @@ describe('copy — parité FR/EN', () => {
     ]);
   });
 
-  it('les deux bundles ne sont pas le même texte (le bundle EN n’est pas une copie)', () => {
-    // Comparaison sur les chaînes CONSTANTES uniquement : les fonctions ne se comparent pas, et
-    // quelques entrées sont identiques À DESSEIN (marque, URL, glyphes, `previewCommand`).
+  it('the two bundles are not the same text (the EN bundle is not a copy)', () => {
+    // Comparison on the CONSTANT strings only: functions do not compare, and
+    // a few entries are identical BY DESIGN (brand, URL, glyphs, `previewCommand`).
     const flat = (o: unknown, out: string[] = []): string[] => {
       if (typeof o === 'string') out.push(o);
       else if (o !== null && typeof o === 'object') for (const v of Object.values(o)) flat(v, out);
@@ -91,7 +92,7 @@ describe('copy — parité FR/EN', () => {
     const enStrings = flat(EN);
     expect(frStrings.length).toBe(enStrings.length);
     const identical = frStrings.filter((s, i) => s === enStrings[i]).length;
-    // Un bundle recopié rendrait `identical === frStrings.length`. On exige une marge nette.
+    // A copied bundle would give `identical === frStrings.length`. We require a clear margin.
     expect(identical / frStrings.length).toBeLessThan(0.2);
   });
 });

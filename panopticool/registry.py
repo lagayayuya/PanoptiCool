@@ -1,24 +1,24 @@
-"""Registre structurel — l'oracle de forme du faux export TikTok.
+"""Structural registry — the shape oracle of the fake TikTok export.
 
-Ce module **décrit la structure** dérivée de `docs/tiktok-export-schema.md` et
-**rien d'autre** : il ne fabrique aucune valeur (la population synthétique vit dans
-``populators.py``). Toute forme ici doit se justifier par une ligne du contrat ; on
-n'invente ni champ ni catégorie.
+This module **describes the structure** derived from `docs/tiktok-export-schema.md`
+and **nothing else**: it fabricates no value (the synthetic population lives in
+``populators.py``). Every shape here must be justified by a line of the contract; we
+invent neither field nor category.
 
-Modèle — le registre est un arbre de `dict` (= conteneurs
-objet) dont les feuilles sont :
+Model — the registry is a tree of `dict` (= object
+containers) whose leaves are:
 
-* `Section`     — un emplacement de données : un wrapper objet portant une liste
-                  (`LIST`) ou une map (`MAP`) sous une clé, plus d'éventuels
-                  *siblings* de métadonnées (`App`, `IsFastLane`).
-* `DirectEmpty` — une sous-section qui vaut **directement** un encodage du vide
-                  (`{}` / `[]` / `null`), sans wrapper.
-* `Scalar`      — un champ scalaire feuille (sentinelle `""`, `"N/A"`, `"None"`, …).
+* `Section`     — a data location: an object wrapper holding a list
+                  (`LIST`) or a map (`MAP`) under a key, plus optional
+                  metadata *siblings* (`App`, `IsFastLane`).
+* `DirectEmpty` — a subsection that **directly** equals an empty encoding
+                  (`{}` / `[]` / `null`), without a wrapper.
+* `Scalar`      — a leaf scalar field (sentinel `""`, `"N/A"`, `"None"`, …).
 
-Chaque `Section` porte les attributs demandés par PANO-11 : type de conteneur,
-clé de liste, casse des clés d'item (§1.3), encodage du vide (§1.2), siblings (§1.4),
-et le format de date applicable (§1.1). Le *chemin* n'est pas stocké : il découle de
-la position dans l'arbre et se récupère via `enumerate_sections()`.
+Each `Section` carries the attributes required by PANO-11: container type,
+list key, item-key case (§1.3), empty encoding (§1.2), siblings (§1.4),
+and the applicable date format (§1.1). The *path* is not stored: it follows from
+the position in the tree and is recovered via `enumerate_sections()`.
 """
 
 from __future__ import annotations
@@ -26,15 +26,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
-# --- Formats de date coexistants (§1.1) -------------------------------------
-# Chaînes strftime, directement consommables par les populators.
+# --- Coexisting date formats (§1.1) -----------------------------------------
+# strftime strings, directly consumable by the populators.
 DATE = "%Y-%m-%d %H:%M:%S"
 DATE_UTC = "%Y-%m-%d %H:%M:%S UTC"  # CommentsList[].date, Tako Chat History
 
 
-# --- Encodages du vide (§1.2) ------------------------------------------------
+# --- Empty encodings (§1.2) --------------------------------------------------
 class Empty(Enum):
-    """Les trois encodages du vide, non interchangeables, fixés par section."""
+    """The three empty encodings, not interchangeable, fixed per section."""
 
     NULL = "null"
     LIST = "[]"
@@ -44,15 +44,15 @@ class Empty(Enum):
         return {Empty.NULL: None, Empty.LIST: [], Empty.OBJECT: {}}[self]
 
 
-# --- Types de conteneur ------------------------------------------------------
+# --- Container types ---------------------------------------------------------
 class Container(Enum):
-    LIST = "list"  # wrapper -> {..siblings.., key: [items] | encodage_vide}
-    MAP = "map"    # wrapper -> {..siblings.., key: {..} | encodage_vide}
+    LIST = "list"  # wrapper -> {..siblings.., key: [items] | empty_encoding}
+    MAP = "map"    # wrapper -> {..siblings.., key: {..} | empty_encoding}
 
 
 @dataclass(frozen=True)
 class Sibling:
-    """Métadonnée voisine d'une liste dans son wrapper (§1.4) — valeur synthétique."""
+    """Metadata neighbor of a list within its wrapper (§1.4) — synthetic value."""
 
     name: str
     value: object
@@ -60,21 +60,21 @@ class Sibling:
 
 @dataclass(frozen=True)
 class Section:
-    """Emplacement de données : un wrapper objet portant une liste ou une map."""
+    """Data location: an object wrapper holding a list or a map."""
 
-    container: Container          # type de conteneur (LIST | MAP)
-    key: str                      # clé portant la liste/map dans le wrapper
-    item_keys: tuple = ()         # casse exacte des clés d'item (§1.3)
-    date_format: str = ""         # format de date applicable (§1.1), si pertinent
-    empty: Empty = Empty.NULL     # encodage du vide par défaut (§1.2)
-    siblings: tuple = ()          # métadonnées voisines (§1.4)
-    key_kind: str = ""            # pour MAP : "opaque_id" | "fixed_keys"
-    note: str = ""                # piège de fidélité / TODO de phase suivante
+    container: Container          # container type (LIST | MAP)
+    key: str                      # key holding the list/map in the wrapper
+    item_keys: tuple = ()         # exact case of the item keys (§1.3)
+    date_format: str = ""         # applicable date format (§1.1), if relevant
+    empty: Empty = Empty.NULL     # default empty encoding (§1.2)
+    siblings: tuple = ()          # neighboring metadata (§1.4)
+    key_kind: str = ""            # for MAP: "opaque_id" | "fixed_keys"
+    note: str = ""                # fidelity pitfall / next-phase TODO
 
 
 @dataclass(frozen=True)
 class DirectEmpty:
-    """Sous-section valant directement un encodage du vide (sans wrapper)."""
+    """Subsection equal directly to an empty encoding (without a wrapper)."""
 
     empty: Empty
     note: str = ""
@@ -82,19 +82,19 @@ class DirectEmpty:
 
 @dataclass(frozen=True)
 class Scalar:
-    """Champ scalaire feuille — sentinelle de vide pour le squelette."""
+    """Leaf scalar field — empty sentinel for the skeleton."""
 
     value: object = ""
     note: str = ""
 
 
-# --- Constantes de siblings synthétiques (§1.4) ------------------------------
-# `App` est un identifiant applicatif entier ; valeur synthétique constante.
+# --- Synthetic sibling constants (§1.4) --------------------------------------
+# `App` is an integer application identifier; constant synthetic value.
 APP = Sibling("App", 1233)
 FASTLANE_OFF = Sibling("IsFastLane", False)
 
 
-# Raccourcis de lecture ------------------------------------------------------
+# Reading shortcuts ----------------------------------------------------------
 NULL, LIST, OBJECT = Empty.NULL, Empty.LIST, Empty.OBJECT
 
 
@@ -106,7 +106,7 @@ def _map(key, *, kind="fixed_keys", date=None, empty=OBJECT, siblings=(), note="
     return Section(Container.MAP, key, (), date or "", empty, siblings, kind, note)
 
 
-# Les 10 catégories top-level exactes, dans l'ordre du contrat (§0).
+# The exact 10 top-level categories, in contract order (§0).
 CATEGORIES = (
     "Comment",
     "Direct Message",
@@ -122,7 +122,7 @@ CATEGORIES = (
 
 
 # ===========================================================================
-#  REGISTRE — transcription fidèle de docs/tiktok-export-schema.md §4
+#  REGISTRY — faithful transcription of docs/tiktok-export-schema.md §4
 # ===========================================================================
 REGISTRY: dict = {
     # --- Comment -----------------------------------------------------------
@@ -131,7 +131,7 @@ REGISTRY: dict = {
             "CommentsList",
             items=("date", "comment", "photo", "video", "sticker",
                    "originalPostUrl", "original post link"),
-            date=DATE_UTC,  # CommentsList[].date est suffixé UTC (§1.1)
+            date=DATE_UTC,  # CommentsList[].date is UTC-suffixed (§1.1)
             empty=NULL,
             siblings=(APP,),
             note="clés d'item minuscules (§1.3) ; date suffixée UTC (§1.1) ; "
@@ -152,7 +152,7 @@ REGISTRY: dict = {
         "Tako Chat History": _list(
             "TakoChatHistoryList",
             items=("Chat Title", "Messages"),
-            date=DATE_UTC,  # Messages[].Date suffixé UTC (§1.1)
+            date=DATE_UTC,  # Messages[].Date UTC-suffixed (§1.1)
             empty=NULL,
             note="Messages: list of {Date[..UTC], Content:object} ; peuplé (≈1)",
         ),
@@ -216,7 +216,7 @@ REGISTRY: dict = {
         ),
         "Like List": _list(
             "ItemFavoriteList",
-            items=("date", "link"),  # clés minuscules ! (§1.3)
+            items=("date", "link"),  # lowercase keys! (§1.3)
             date=DATE, empty=NULL, siblings=(APP,),
             note="clés d'item minuscules (§1.3) ; peuplé (≈3491)",
         ),
@@ -248,7 +248,7 @@ REGISTRY: dict = {
             "AIMojiList": DirectEmpty(NULL, note="vide documenté : null"),
         },
         "AISelfImage": DirectEmpty(OBJECT, note="encodage objet vide {}"),
-        "Autofill": {  # objet plat de scalaires, "N/A" quand vide (§4)
+        "Autofill": {  # flat object of scalars, "N/A" when empty (§4)
             "PhoneNumber": Scalar("N/A"),
             "Email": Scalar("N/A"),
             "FirstName": Scalar("N/A"),
@@ -274,7 +274,7 @@ REGISTRY: dict = {
             siblings=(APP, FASTLANE_OFF),
             note="IsFastLane (§1.4) ; peuplé (≈147) ; PEUPLÉ par le squelette",
         ),
-        # Doublon §1.6 — présent aussi sous Your Activity.
+        # Duplicate §1.6 — also present under Your Activity.
         "Off TikTok Activity": _list(
             "OffTikTokActivityDataList", empty=NULL,
             note="DOUBLON (§1.6) ; vide documenté : null",
@@ -321,7 +321,7 @@ REGISTRY: dict = {
         },
     },
 
-    # --- TikTok Shop (tout null à la source — shop inutilisé) --------------
+    # --- TikTok Shop (all null at the source — shop unused) ----------------
     "TikTok Shop": {
         "Communication With Shops": _list(
             "CommunicationHistories", empty=NULL, note="shop inutilisé ; null"),
@@ -339,7 +339,7 @@ REGISTRY: dict = {
             "ReturnAndRefundHistories", empty=NULL, note="null"),
         "Saved Address Information": _list("SavedAddress", empty=NULL, note="null"),
         "Shopping Cart List": _list("ShoppingCart", empty=NULL, note="null"),
-        "TikTokFavoriteItem": {  # imbrication supplémentaire (§4)
+        "TikTokFavoriteItem": {  # extra nesting (§4)
             "TikTokFavoriteItemResult": _list(
                 "TikTokFavoriteItemList", empty=NULL, note="null"),
         },
@@ -377,7 +377,7 @@ REGISTRY: dict = {
         ),
         "Mini Drama Watch History": DirectEmpty(
             OBJECT, note="encodage objet vide {}"),
-        # Doublon §1.6 — présent aussi sous Profile And Settings.
+        # Duplicate §1.6 — also present under Profile And Settings.
         "Off TikTok Activity": _list(
             "OffTikTokActivityDataList", empty=NULL,
             note="DOUBLON (§1.6) ; null"),
@@ -394,7 +394,7 @@ REGISTRY: dict = {
             note="≈134 ; PEUPLÉ par le squelette"),
         "Share History": _list("ShareHistoryList", empty=NULL, note="null"),
         "Status": _list(
-            "Status List",  # clé de liste avec espace
+            "Status List",  # list key with a space
             items=("Resolution", "App Version", "IDFA", "GAID", "Android ID",
                    "IDFV", "UID", "DID", "Web ID"),
             empty=NULL,
@@ -408,23 +408,23 @@ REGISTRY: dict = {
 }
 
 
-# --- Garde-fou : exactement les 10 catégories du contrat (§0) ---------------
+# --- Guard-rail: exactly the 10 categories of the contract (§0) -------------
 assert tuple(REGISTRY.keys()) == CATEGORIES, (
     "Le registre doit refléter exactement les 10 catégories top-level du contrat."
 )
 
 
-# --- Énumération à plat des sections (chemin + descripteur) -----------------
+# --- Flat enumeration of the sections (path + descriptor) -------------------
 _LEAF = (Section, DirectEmpty, Scalar)
 
 
 def enumerate_sections(node=REGISTRY, path=()):
-    """Parcourt l'arbre et émet ``(chemin, descripteur)`` pour chaque feuille.
+    """Walks the tree and emits ``(path, descriptor)`` for each leaf.
 
-    Le *chemin* est le tuple de clés depuis la racine JSON. C'est la forme
-    « énumérée » du registre demandée par PANO-11 : chaque section avec son
-    chemin, son type de conteneur, sa clé de liste, la casse de ses clés d'item
-    et son encodage du vide.
+    The *path* is the tuple of keys from the JSON root. This is the "enumerated"
+    form of the registry required by PANO-11: each section with its
+    path, its container type, its list key, the case of its item keys,
+    and its empty encoding.
     """
     if isinstance(node, dict):
         for key, child in node.items():

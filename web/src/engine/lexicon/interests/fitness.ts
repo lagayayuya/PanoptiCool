@@ -1,19 +1,19 @@
-// Lexique d'intérêt `fitness` (D2, PANO-77 lot 2 · enrichi entités) — fitness / cross-training.
+// Interest lexicon `fitness` (D2, PANO-77 batch 2 · entities enriched) — fitness / cross-training.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du fitness FR : formats, mouvements, ABRÉVIATIONS CrossFit, ENSEIGNES. À
-// l'aveugle ; jargon et enseignes = signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR fitness: formats, moves, CrossFit ABBREVIATIONS, CHAINS. Blind;
+// jargon and chains = generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « fitness », « crossfit », « hiit », « amrap », « emom », « burpees »,
-//     « tabata », « pilates », enseignes (« basic fit », « fitness park »).
-//   · ANCRÉ — 50/50 : « cardio » (cardiologie), « box » (boîte), « forme » (« en forme »), « wod »,
-//     « pr » (RP), « snatch », « clean », « fran » (prénom / WOD), « circuit » : co-occurrence.
-//   · EXCLU — « bien etre » / « developpement personnel » ÉCARTÉS (frôlent `mental_health`, D1).
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « fitness », « crossfit », « hiit », « amrap », « emom », « burpees »,
+//     « tabata », « pilates », chains (« basic fit », « fitness park »).
+//   · ANCHORED — 50/50: « cardio » (cardiology), « box » (box), « forme » (« en forme »), « wod »,
+//     « pr » (PR), « snatch », « clean », « fran » (first name / WOD), « circuit »: co-occurrence.
+//   · EXCLUDED — « bien etre » / « developpement personnel » DISCARDED (brush `mental_health`, D1).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de `muscu` (fonte), chevauchement assumé. BIEN-ÊTRE et RAPPORT AU CORPS
-// restent D1 : on reste sur le mouvement, pas le mieux-être.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from `muscu` (weights), overlap assumed. WELLBEING and BODY IMAGE
+// stay D1: we stay on movement, not on wellness.
 
 import type { InterestLexicon } from '../types';
 
@@ -26,7 +26,7 @@ export const FITNESS_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Formats / mouvements
+    // Formats / moves
     'fitness',
     'cross training',
     'crossfit',
@@ -53,30 +53,30 @@ export const FITNESS_LEXICON: InterestLexicon = {
     'double under',
     'muscle up',
     'air squat',
-    // Enseignes
+    // Chains
     'basic fit',
     'fitness park',
     'neoness',
-    // Variantes EN (PANO-88) : SOLO univoques.
+    // EN variants (PANO-88): SOLO univocal.
     'workout',
     'full body workout',
     'no pain no gain',
   ],
   anchored: [
-    'cardio', // cardiologie vs cardio (sport)
-    'box', // boxe / boîte
-    'forme', // « en forme » / forme générique
-    'circuit', // électrique / circuit d'entraînement
-    'seance', // séance générique
-    'intensite', // générique
+    'cardio', // cardiology vs cardio (sport)
+    'box', // boxing / box
+    'forme', // « en forme » / generic form
+    'circuit', // electrical / training circuit
+    'seance', // generic session
+    'intensite', // generic
     'wod', // workout of the day
-    'pr', // record perso vs relations publiques
-    'snatch', // arraché (jargon) vs anglais
-    'clean', // épaulé (jargon) vs « clean » (propre)
-    'fran', // WOD nommé vs prénom
-    'thruster', // mouvement vs propulseur
-    'gym', // salle vs gymnastique (EN, ancré)
-    'warm up', // échauffement vs générique (EN)
+    'pr', // personal record vs public relations
+    'snatch', // snatch (jargon) vs English
+    'clean', // clean (jargon) vs « clean » (tidy)
+    'fran', // named WOD vs first name
+    'thruster', // move vs thruster/booster
+    'gym', // gym vs gymnastics (EN, anchored)
+    'warm up', // warm-up vs generic (EN)
   ],
   selfDeclared: ['coach sportif', 'addict au fitness'],
 };

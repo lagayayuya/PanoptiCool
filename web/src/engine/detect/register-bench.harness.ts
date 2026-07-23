@@ -1,14 +1,14 @@
-// Harnais commun des bancs de registres (PANO-35) — la mécanique de mesure, sans aucune donnée.
+// Common harness of the register benches (PANO-35) — the measurement mechanics, without any data.
 //
-// Les DEUX bancs (EN, FR) partagent leur comptage parce que la doctrine qu'il applique est une :
-// trois états de vérité-terrain, deux compteurs qui ne s'additionnent jamais, et le tort défini
-// comme « non-porteur tagué » (ADR-0003, *L'incertitude*). Recopier ce comptage par langue, c'est
-// fabriquer une divergence à retardement — le jour où l'un des deux compterait la
-// sur-classification dans le tort, plus rien ne serait comparable.
+// The TWO benches (EN, FR) share their counting because the doctrine it applies is one:
+// three ground-truth states, two counters that never add up together, and the wrong defined
+// as « tagged non-carrier » (ADR-0003, *L'incertitude*). Copying this counting per language is
+// manufacturing a delayed divergence — the day one of the two counted
+// over-classification as a wrong, nothing would be comparable anymore.
 //
-// Ce qui reste PROPRE à chaque langue vit dans son fichier de test : les attendus figés, les
-// commentaires qui disent ce que la mesure a trouvé, et les gardes spécifiques (les cinq termes
-// retirés côté EN, le tier colloquial côté FR). Le harnais n'a pas d'opinion, il compte.
+// What stays SPECIFIC to each language lives in its test file: the frozen expectations, the
+// comments that say what the measurement found, and the specific guards (the five terms
+// removed on the EN side, the colloquial tier on the FR side). The harness has no opinion, it counts.
 
 import { expect, it } from 'vitest';
 import { WIRED_LEXICONS } from '../lexicon/index';
@@ -21,14 +21,14 @@ import {
 } from './register-bench';
 
 /**
- * Une détection réduite à des lignes stables, lisibles en diff :
- * `label[étage AGRÉGÉ] #item étage-DE-L-ITEM surfaces`.
+ * A detection reduced to stable, diff-readable lines:
+ * `label[AGGREGATED storey] #item ITEM-storey surfaces`.
  *
- * Les DEUX étages sont portés, et ce n'est pas de la redondance : l'agrégé décide du constat (nommé
- * ou large), celui de l'item est là où se lit la dégradation — 3ᵉ personne ou registre
- * informationnel. N'en garder qu'un rendait le capteur aveugle aux règles d'étage, qui sont
- * pourtant la moitié de ce que ces bancs surveillent. Mesuré : sans l'étage d'item, retirer un
- * marqueur de `THIRD_PERSON_EN` ne faisait pas rougir le banc.
+ * BOTH storeys are carried, and this is not redundancy: the aggregated one decides the finding (named
+ * or broad), the item one is where the degradation reads — 3rd person or informational
+ * register. Keeping only one made the sensor blind to the storey rules, which are
+ * nonetheless half of what these benches watch. Measured: without the item storey, removing a
+ * `THIRD_PERSON_EN` marker did not make the bench go red.
  */
 export function fingerprint(detections: readonly LabelDetection<SensitiveLabel>[]): string[] {
   return detections.flatMap((d) =>
@@ -70,7 +70,7 @@ export function allCells(personas: readonly RegisterPersona[]): Cell[] {
 
 const key = (c: Cell) => `${c.persona.id}/${c.label}`;
 
-/** Un désaccord ASSUMÉ entre la vérité-terrain scellée et ce que la mesure a montré. */
+/** An ASSUMED disagreement between the sealed ground truth and what the measurement showed. */
 export interface AnnotatorCorrection {
   personaId: string;
   label: SensitiveLabel;
@@ -80,57 +80,57 @@ export interface AnnotatorCorrection {
 }
 
 export interface BenchExpectations {
-  /** Non-porteurs tagués — le SEUL tort compté. */
+  /** Tagged non-carriers — the ONLY wrong counted. */
   torts: readonly string[];
-  /** Signaux sans vécu promus en constat NOMMÉ : le tag est légitime, l'étage ne l'est pas. */
+  /** Signals without lived experience promoted to a NAMED finding: the tag is legitimate, the storey is not. */
   escalated: readonly string[];
-  /** Corrections d'annotateur déclarées — elles ne relâchent aucun attendu, elles publient un
-   *  second chiffre à côté du premier. */
+  /** Declared annotator corrections — they relax no expectation, they publish a
+   *  second figure alongside the first. */
   corrections: readonly AnnotatorCorrection[];
-  /** Torts restants une fois les corrections déclarées appliquées. */
+  /** Wrongs remaining once the declared corrections are applied. */
   tortsAfterCorrection: readonly string[];
   /**
-   * Les vécus NON tagués, déclarés un par un — un défaut de rappel qu'on publie plutôt que de le
-   * cacher derrière une vérité-terrain réécrite.
+   * The lived experiences NOT tagged, declared one by one — a recall defect we publish rather than
+   * hide behind a rewritten ground truth.
    *
-   * Optionnel, et le défaut est le plus strict (`[]`, soit « aucun rappel manqué ») : un banc qui
-   * omet le champ garde donc exactement l'assertion qu'il avait avant que ce champ existe. Ajouté
-   * parce qu'un `[]` en dur interdisait de sceller un vécu sur un label dont l'anglais n'a rien à
-   * détecter — la seule issue aurait été de dégrader le sceau pour arranger le vert, c'est-à-dire
-   * l'inverse exact de ce que ces bancs protègent.
+   * Optional, and the default is the strictest (`[]`, i.e. « no missed recall »): a bench that
+   * omits the field therefore keeps exactly the assertion it had before this field existed. Added
+   * because a hardcoded `[]` forbade sealing a lived experience on a label that English has nothing to
+   * detect — the only way out would have been to degrade the seal to arrange the green, that is,
+   * the exact reverse of what these benches protect.
    */
   missedRecall?: readonly string[];
   /**
-   * Les signaux SANS VÉCU non tagués, déclarés un par un — le pendant exact de `missedRecall` sur
-   * l'autre compteur, et le même défaut le plus strict (`[]`).
+   * The signals WITHOUT lived experience not tagged, declared one by one — the exact counterpart of `missedRecall` on
+   * the other counter, and the same strictest default (`[]`).
    *
-   * Ajouté pour la même raison, et elle s'est présentée deux fois : un `[]` en dur interdisait de
-   * sceller un proche aidant sur un label dont l'anglais n'a rien à détecter. La seule issue aurait
-   * été de dégrader le sceau pour arranger le vert — l'inverse exact de ce que ces bancs protègent.
+   * Added for the same reason, and it arose twice: a hardcoded `[]` forbade
+   * sealing a caring relative on a label that English has nothing to detect. The only way out would
+   * have been to degrade the seal to arrange the green — the exact reverse of what these benches protect.
    */
   missedSignal?: readonly string[];
   /**
-   * L'étage ATTENDU pour chaque persona `lived`, par identifiant.
+   * The EXPECTED storey for each `lived` persona, by identifier.
    *
-   * Paramétré, et non fixé à `explicit`, parce que **vécu et nommé sont deux axes distincts**.
-   * ADR-0003 (*Le mécanisme*) pose la règle dure : un constat précis n'apparaît QUE si le terme
-   * précis est présent. Une personne réellement en détresse qui n'écrit aucun terme clinique doit
-   * donc produire un constat **large** — la nommer serait la violation, pas le service. Écrire
-   * `lived ⇒ explicit` dans le harnais fusionnait les deux axes et aurait interdit d'ajouter la
-   * voix qui ne se nomme pas.
+   * Parameterized, and not fixed to `explicit`, because **lived and named are two distinct axes**.
+   * ADR-0003 (*Le mécanisme*) lays down the hard rule: a precise finding appears ONLY if the precise
+   * term is present. A genuinely distressed person who writes no clinical term must
+   * therefore produce a **broad** finding — naming them would be the violation, not the service. Writing
+   * `lived ⇒ explicit` in the harness merged the two axes and would have forbidden adding the
+   * voice that does not name itself.
    *
-   * `AUCUN` est le troisième étage possible, et il n'est pas une commodité : c'est un vécu que rien
-   * n'a tagué. Il se déclare ICI **et** dans `missedRecall` — deux fois, à dessein, parce qu'un
-   * rappel manqué doit coûter deux lignes à écrire et se voir dans les deux relectures.
+   * `AUCUN` is the third possible storey, and it is not a convenience: it is a lived experience that nothing
+   * tagged. It is declared HERE **and** in `missedRecall` — twice, by design, because a
+   * missed recall must cost two lines to write and be visible in both reviews.
    */
   livedStages: Readonly<Record<string, 'explicit' | 'indirect' | 'AUCUN'>>;
 }
 
 /**
- * Émet le comptage commun. Appelé DANS un `describe` propre à la langue.
+ * Emits the common counting. Called INSIDE a language-specific `describe`.
  *
- * Les attendus sont passés en paramètre plutôt que calculés : un banc qui déduirait son propre
- * attendu de la sortie courante ne mesurerait rien. Ce sont des valeurs relevées, puis figées.
+ * The expectations are passed as a parameter rather than computed: a bench that derived its own
+ * expectation from the current output would measure nothing. These are recorded values, then frozen.
  */
 export function expectBenchCounts(
   personas: readonly RegisterPersona[],
@@ -138,50 +138,50 @@ export function expectBenchCounts(
 ): void {
   const cells = allCells(personas);
 
-  it("TORT — un non-porteur tagué, et rien d'autre n'est compté ici", () => {
+  it('WRONG — a tagged non-carrier, and nothing else is counted here', () => {
     const torts = cells.filter((c) => c.truth === 'nonCarrier' && c.detection !== undefined);
     expect(torts.map(key)).toEqual(expectations.torts);
   });
 
-  it('RAPPEL — le vécu est bien tagué (sans quoi les zéros ne prouveraient rien)', () => {
+  it('RECALL — the lived experience is indeed tagged (without which the zeros would prove nothing)', () => {
     const missed = cells.filter((c) => c.truth === 'lived' && c.detection === undefined);
     expect(missed.map(key)).toEqual(expectations.missedRecall ?? []);
   });
 
-  it("SIGNAL SANS VÉCU — tagué comme attendu : c'est la démonstration, pas un tort", () => {
+  it('SIGNAL WITHOUT LIVED EXPERIENCE — tagged as expected: it is the demonstration, not a wrong', () => {
     const untagged = cells.filter(
       (c) => c.truth === 'signalWithoutLived' && c.detection === undefined,
     );
     expect(untagged.map(key)).toEqual(expectations.missedSignal ?? []);
   });
 
-  it('SUR-CLASSIFICATION — un signal sans vécu promu en constat NOMMÉ', () => {
-    // Le tort propre à cet état : le tag est légitime, l'ÉTAGE ne l'est pas. Un constat nommé porte
-    // la confiance haute et le quasi-factuel (« tu as écrit ce terme »).
+  it('OVER-CLASSIFICATION — a signal without lived experience promoted to a NAMED finding', () => {
+    // The wrong specific to this state: the tag is legitimate, the STOREY is not. A named finding carries
+    // high confidence and the quasi-factual (« tu as écrit ce terme »).
     const escalated = cells.filter(
       (c) => c.truth === 'signalWithoutLived' && c.detection?.stage === 'explicit',
     );
     expect(escalated.map(key)).toEqual(expectations.escalated);
   });
 
-  it("VÉCU — l'étage du vrai positif tient, et c'est le critère d'arrêt des règles d'étage", () => {
-    // Écrit comme une assertion à part, et pas comme un corollaire du rappel : une règle d'étage
-    // trop large ne fait pas disparaître le constat, elle l'abaisse — donc le compteur de rappel
-    // resterait vert pendant que le vrai positif perdrait son étage. C'est précisément le mode de
-    // défaillance qui a fait écarter l'ancrage 1ʳᵉ personne (ADR-0003, *Le registre informationnel*).
+  it('LIVED — the true-positive storey holds, and it is the stopping criterion of the storey rules', () => {
+    // Written as a separate assertion, and not as a corollary of recall: a storey rule
+    // too broad does not make the finding disappear, it lowers it — so the recall counter
+    // would stay green while the true positive lost its storey. This is precisely the failure
+    // mode that led to setting aside the 1st-person anchoring (ADR-0003, *Le registre informationnel*).
     //
-    // L'étage attendu vient de la table, jamais d'un `explicit` présumé : celle qui vit la chose sans
-    // jamais la nommer doit rester en LARGE, et un `explicit` sur elle serait un constat nommé
-    // fabriqué sans terme — l'inverse exact de ce qu'on surveille.
+    // The expected storey comes from the table, never from a presumed `explicit`: the one who lives the thing without
+    // ever naming it must stay BROAD, and an `explicit` on her would be a named finding
+    // fabricated without a term — the exact reverse of what we watch.
     const observed: Record<string, string> = {};
     for (const c of cells.filter((x) => x.truth === 'lived')) {
       observed[key(c)] = c.detection?.stage ?? 'AUCUN';
     }
-    // La clé attendue se construit depuis le LABEL réellement `lived` de la persona, jamais depuis
-    // `mental_health` en dur : les deux bancs n'ont pour l'instant que des vécus de santé mentale,
-    // et une constante suffirait — jusqu'à la première persona vécue sur un autre label, où la
-    // comparaison porterait sur une clé qui n'existe pas et où la garde passerait au vert sans
-    // rien vérifier. Une garde qui peut se taire n'en est pas une.
+    // The expected key is built from the persona's actually `lived` LABEL, never from
+    // hardcoded `mental_health`: the two benches for now have only mental-health lived experiences,
+    // and a constant would suffice — until the first lived persona on another label, where the
+    // comparison would bear on a key that does not exist and where the guard would go green without
+    // checking anything. A guard that can go silent is not one.
     const attendu: Record<string, string> = {};
     for (const [id, stage] of Object.entries(expectations.livedStages)) {
       const cell = cells.find((c) => c.persona.id === id && c.truth === 'lived');
@@ -193,11 +193,11 @@ export function expectBenchCounts(
     expect(observed).toEqual(attendu);
   });
 
-  it("la correction d'annotation est déclarée, et elle ne relâche aucun attendu", () => {
+  it('the annotation correction is declared, and it relaxes no expectation', () => {
     for (const correction of expectations.corrections) {
       const persona = personas.find((p) => p.id === correction.personaId);
-      // Le sceau doit être INTACT : si la vérité-terrain avait été réécrite pour arranger le
-      // chiffre, c'est ici que ça se verrait.
+      // The seal must be INTACT: if the ground truth had been rewritten to arrange the
+      // figure, this is where it would show.
       expect(persona?.truth[correction.label]).toBe(correction.sealed);
       expect(correction.corrected).not.toBe(correction.sealed);
     }

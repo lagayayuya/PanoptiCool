@@ -1,55 +1,55 @@
-// Prompts + budget de tokens de l'analyse IA locale (PANO-45). Deux prompts sélectionnables, TOUS
-// DEUX éditables à la main dans l'UI ; le texte ci-dessous n'est que le point de départ.
+// Prompts + token budget of the local AI analysis (PANO-45). Two selectable prompts, BOTH
+// hand-editable in the UI; the text below is only the starting point.
 //
-// WORDING = BROUILLON (porte humaine PANO-45, décision yuya) — ces deux chaînes sont dictées telles
-// quelles ; elles ne sont PAS à « améliorer » au fil d'une session. Toute retouche passe par yuya.
+// WORDING = DRAFT (human gate PANO-45, yuya's decision) — these two strings are dictated as they
+// stand; they are NOT to be "improved" over the course of a session. Any tweak goes through yuya.
 //
-// Le prompt par défaut mentionne « et recherches » UNIQUEMENT si des recherches partent réellement
-// dans le lot : sous un plafond de tokens serré, seules les commentaires les plus récents survivent
-// (voir `selectItemsForBudget`) — annoncer des recherches absentes ferait mentir le prompt.
+// The default prompt mentions « et recherches » ONLY if searches actually go out in the batch:
+// under a tight token cap, only the most recent comments survive (see `selectItemsForBudget`) —
+// announcing absent searches would make the prompt lie.
 
 import type { Locale } from '../i18n/locales';
 import type { AiItem } from './items';
 
 export type PromptMode = 'default' | 'safety';
 
-/** Filet de sécurité — clause ajoutée au prompt par défaut (brouillon, wording yuya). */
+/** Safety net — clause appended to the default prompt (draft, yuya's wording). */
 const SAFETY_CLAUSE =
   "Et n'infère pas de sujets sensibles tels que l'orientation sexuelle, la santé mentale ou une quelconque généralisation.";
 
-/** Le même filet, en anglais. Wording DICTÉ par yuya (2026-07-20), au mot près. */
+/** The same net, in English. Wording DICTATED by yuya (2026-07-20), word for word. */
 const SAFETY_CLAUSE_EN =
   'And do not infer sensitive subjects such as sexual orientation, mental health, or any generalization.';
 
 /**
- * Prompt système, dérivé de la LANGUE, du mode ET de la composition réelle du lot envoyé (avec ou
- * sans recherches).
+ * System prompt, derived from the LANGUAGE, the mode AND the actual composition of the batch sent
+ * (with or without searches).
  *
- * ─── LA LANGUE ARRIVE EN PARAMÈTRE, ET C'EST DÉLIBÉRÉ ───────────────────────────────────────────
- * Même arbitrage qu'`engine/wording.ts`, pour une autre raison : ces deux chaînes se testent sans
- * DOM, et une langue ambiante obligerait chaque assertion à poser `<html lang>` avant l'import.
- * Le seul appelant (`ui/v2/AiSection.tsx`) est un îlot : il lit `currentLocale()` une fois.
+ * ─── THE LANGUAGE ARRIVES AS A PARAMETER, AND THAT IS DELIBERATE ─────────────────────────────────
+ * Same trade-off as `engine/wording.ts`, for another reason: these two strings are tested without a
+ * DOM, and an ambient language would force every assertion to set `<html lang>` before the import.
+ * The only caller (`ui/v2/AiSection.tsx`) is an island: it reads `currentLocale()` once.
  *
- * ⚠ LE PROMPT DÉCIDE LA LANGUE DE LA RÉPONSE, et rien d'autre ne la fixe : aucun paramètre n'est
- * envoyé au serveur pour ça. Conséquence assumée — quelqu'un qui ouvre `/en` sur un export français
- * recevra une analyse ANGLAISE de commentaires français.
+ * ⚠ THE PROMPT DECIDES THE RESPONSE LANGUAGE, and nothing else fixes it: no parameter is sent to
+ * the server for that. Accepted consequence — someone who opens `/en` on a French export will
+ * receive an ENGLISH analysis of French comments.
  *
- * ⚠ CE QU'AUCUN BANC NE COUVRE. Le banc du 12/07 a mesuré le format d'entrée et la qualité de
- * sortie EN FRANÇAIS, sur ces chaînes-là. Rien n'a été mesuré côté anglais, et deux effets sont
- * prévisibles sans être vérifiés : (1) les modèles étant massivement alignés en anglais, une clause
- * nommant explicitement « sexual orientation, mental health » a plus de chances de déclencher un
- * REFUS GLOBAL qu'en français — le mode `safety` serait alors plus sûr et moins utile ; (2)
- * `DEFAULT_CHARS_PER_TOKEN` est calibré sur du français (cf. son commentaire), donc un lot anglais
- * est SUR-estimé et l'outil envoie moins d'items qu'il ne le pourrait — atténué dès que le serveur
- * expose `/tokenize`, jamais quand il est ancien. Aucun des deux n'est corrigé ici : les nommer
- * plutôt que les corriger à l'aveugle est le choix.
+ * ⚠ WHAT NO BENCH COVERS. The 12/07 bench measured the input format and the output quality IN
+ * FRENCH, on those strings. Nothing was measured on the English side, and two effects are
+ * predictable without being verified: (1) since models are massively aligned in English, a clause
+ * explicitly naming « sexual orientation, mental health » is more likely to trigger a GLOBAL
+ * REFUSAL than in French — the `safety` mode would then be safer and less useful; (2)
+ * `DEFAULT_CHARS_PER_TOKEN` is calibrated on French (cf. its comment), so an English batch is
+ * OVER-estimated and the tool sends fewer items than it could — mitigated as soon as the server
+ * exposes `/tokenize`, never when it is old. Neither is fixed here: naming them rather than fixing
+ * them blindly is the choice.
  */
 export function buildSystemPrompt(
   locale: Locale,
   mode: PromptMode,
   includesSearches: boolean,
 ): string {
-  // Wording anglais DICTÉ par yuya (2026-07-20), au mot près — même porte humaine que le français.
+  // English wording DICTATED by yuya (2026-07-20), word for word — same human gate as the French.
   if (locale === 'en') {
     const channels = includesSearches ? 'comments and searches' : 'comments';
     const base = `Here are the TikTok export data ${channels} of a person. What can you infer about their personality, identity, interests, and beliefs? Provide a general summary at the end. Be concise.`;
@@ -61,16 +61,16 @@ export function buildSystemPrompt(
 }
 
 /**
- * Format d'un item, UNE ligne : `[index] texte`, précédé de `(rech)` pour une recherche. Format retenu
- * par le benchmark (12/07) — les variantes plus riches (JSON par item, dates, canaux) ont dégradé la
- * qualité. Les retours à la ligne d'un commentaire sont aplatis : une ligne = un item, sinon
- * l'alignement index→texte que le modèle cite se casse.
+ * Format of an item, ONE line: `[index] text`, preceded by `(rech)` for a search. Format kept by
+ * the benchmark (12/07) — the richer variants (per-item JSON, dates, channels) degraded the
+ * quality. A comment's line breaks are flattened: one line = one item, otherwise the index→text
+ * alignment the model cites breaks.
  *
- * ⚠ `(rech)` N'EST PAS TRADUIT quand le prompt est anglais, et c'est un choix tenu, pas un oubli :
- * le marqueur fait partie du FORMAT que le banc du 12/07 a mesuré. Le changer en `(search)` change
- * le compte de tokens de chaque ligne de recherche et ce que le modèle voit comme séparateur de
- * canal — aucune mesure ne soutient cette variante. Il opacifie sans doute le prompt anglais ; la
- * traduction se décide sur un test manuel contre un modèle local, jamais en passant.
+ * ⚠ `(rech)` IS NOT TRANSLATED when the prompt is English, and that is a held choice, not an
+ * oversight: the marker is part of the FORMAT the 12/07 bench measured. Changing it to `(search)`
+ * changes the token count of each search line and what the model sees as the channel separator —
+ * no measurement supports that variant. It probably makes the English prompt more opaque; the
+ * translation is decided on a manual test against a local model, never in passing.
  */
 export function formatItemLine(item: AiItem): string {
   const marker = item.kind === 'search' ? ' (rech)' : '';
@@ -82,11 +82,11 @@ export function buildUserMessage(items: AiItem[]): string {
 }
 
 /**
- * Estimation du nombre de tokens. `charsPerToken` est CALIBRÉ sur le compteur réel du serveur (voir
- * `calibrateCharsPerToken`) : l'heuristique fixe utilisée jusqu'ici sous-estimait lourdement (5071
- * estimés contre 8850 réels sur un même lot — le gabarit de conversation, les accents et les emoji
- * tokenisent bien plus dense qu'un texte anglais). Tant qu'aucun run n'a eu lieu, on part d'une valeur
- * volontairement PESSIMISTE : mieux vaut envoyer un peu moins que de faire tronquer le prompt.
+ * Token count estimate. `charsPerToken` is CALIBRATED on the server's real counter (see
+ * `calibrateCharsPerToken`): the fixed heuristic used until now under-estimated heavily (5071
+ * estimated against 8850 real on a single batch — the conversation template, the accents and the
+ * emoji tokenize far denser than English text). As long as no run has occurred, we start from a
+ * deliberately PESSIMISTIC value: better to send a little less than to have the prompt truncated.
  */
 export const DEFAULT_CHARS_PER_TOKEN = 2;
 
@@ -94,13 +94,14 @@ export function estimateTokens(text: string, charsPerToken: number): number {
   return Math.ceil(text.length / charsPerToken);
 }
 
-/** Bornes de garde : un ratio hors de cet intervalle trahit une mesure aberrante, pas une calibration. */
+/** Guard bounds: a ratio outside this interval betrays an aberrant measurement, not a calibration. */
 const MIN_CHARS_PER_TOKEN = 1.2;
 const MAX_CHARS_PER_TOKEN = 6;
 
 /**
- * Recale le ratio chars/token sur le `prompt_tokens` réellement renvoyé par le serveur (champ `usage`
- * de l'API OpenAI-compatible). Le prochain envoi estime alors juste, sur CE modèle et CE tokenizer.
+ * Recalibrates the chars/token ratio on the `prompt_tokens` actually returned by the server (`usage`
+ * field of the OpenAI-compatible API). The next send then estimates accurately, on THIS model and
+ * THIS tokenizer.
  */
 export function calibrateCharsPerToken(
   promptChars: number,
@@ -113,25 +114,25 @@ export function calibrateCharsPerToken(
 }
 
 export interface Selection {
-  /** Items réellement envoyés, en ordre chronologique (index croissant). */
+  /** Items actually sent, in chronological order (increasing index). */
   items: AiItem[];
-  /** Palier de priorité atteint (voir `selectItemsForBudget`). */
+  /** Priority tier reached (see `selectItemsForBudget`). */
   tier: 'recent_comments' | 'comments_and_recent_searches' | 'all';
   droppedComments: number;
   droppedSearches: number;
 }
 
 /**
- * Plafond par TOKENS, avec la priorité décidée par yuya :
- *   1. les commentaires les plus récents ;
- *   2. tous les commentaires + les recherches les plus récentes ;
- *   3. tout.
- * On ne découpe RIEN (pas de batch/map-reduce, différé) : ce qui ne tient pas dans la fenêtre ne part
- * pas, et l'UI dit combien d'items ont été laissés de côté — un silence ici se lirait comme « tout a
- * été analysé », ce qui serait faux.
+ * Cap by TOKENS, with the priority decided by yuya:
+ *   1. the most recent comments;
+ *   2. all comments + the most recent searches;
+ *   3. everything.
+ * We split NOTHING (no batch/map-reduce, deferred): what does not fit in the window does not go
+ * out, and the UI says how many items were left aside — a silence here would read as "everything
+ * was analyzed", which would be false.
  */
-/** Ordre de priorité partagé par `selectItemsForBudget` et `selectItemsForBudgetExact` : commentaires
- * du plus récent au plus ancien, PUIS recherches du plus récent au plus ancien — jamais un mélange. */
+/** Priority order shared by `selectItemsForBudget` and `selectItemsForBudgetExact`: comments from
+ * most recent to oldest, THEN searches from most recent to oldest — never a mix. */
 function recentFirst(list: AiItem[]): AiItem[] {
   return [...list].sort(
     (a, b) => (b.epoch ?? Number.NEGATIVE_INFINITY) - (a.epoch ?? Number.NEGATIVE_INFINITY),
@@ -167,7 +168,7 @@ export function selectItemsForBudget(
   budgetTokens: number,
   charsPerToken: number,
 ): Selection {
-  const cost = (item: AiItem) => estimateTokens(formatItemLine(item), charsPerToken) + 1; // +1 : saut de ligne
+  const cost = (item: AiItem) => estimateTokens(formatItemLine(item), charsPerToken) + 1; // +1: line break
   const { comments, searches } = priorityOrder(items);
 
   const kept: AiItem[] = [];
@@ -185,8 +186,8 @@ export function selectItemsForBudget(
   };
 
   const keptComments = take(comments);
-  // Les recherches ne sont proposées qu'une fois TOUS les commentaires servis (paliers 2 et 3) : sous
-  // budget serré, un commentaire (texte spontané) porte plus de signal qu'une recherche isolée.
+  // Searches are only offered once ALL comments are served (tiers 2 and 3): under a tight
+  // budget, a comment (spontaneous text) carries more signal than an isolated search.
   const keptSearches = keptComments === comments.length ? take(searches) : 0;
 
   return {
@@ -196,9 +197,9 @@ export function selectItemsForBudget(
 }
 
 /**
- * Budget d'items = fenêtre de contexte du serveur − la réserve de génération − le prompt système.
- * La réserve garantit qu'il reste de la place pour ÉCRIRE la réponse : un prompt qui remplit toute la
- * fenêtre ne laisse rien au modèle pour générer.
+ * Items budget = the server's context window − the generation reserve − the system prompt.
+ * The reserve guarantees room is left to WRITE the response: a prompt that fills the whole window
+ * leaves nothing for the model to generate.
  */
 export const COMPLETION_RESERVE_TOKENS = 1024;
 
@@ -214,29 +215,29 @@ export function itemsBudget(
 }
 
 export interface ExactSelection extends Selection {
-  /** Tokens RÉELS du prompt final retenu (système + items), mesurés via `countTokens` — jamais estimés. */
+  /** REAL tokens of the final kept prompt (system + items), measured via `countTokens` — never estimated. */
   promptTokens: number;
 }
 
-/** Signature de `countRealPromptTokens` (llama-client.ts) — injectée plutôt qu'importée, pour rester
- * testable sans serveur réel (voir prompt.test.ts, un compteur simulé y tient lieu de serveur). */
+/** Signature of `countRealPromptTokens` (llama-client.ts) — injected rather than imported, to stay
+ * testable without a real server (see prompt.test.ts, where a simulated counter stands in for the server). */
 export type RealTokenCounter = (
   systemPrompt: string,
   userMessage: string,
 ) => Promise<number | null>;
 
 /**
- * Comme `selectItemsForBudget`, mais ne fait AUCUNE hypothèse chars/token : chaque candidat est
- * VÉRIFIÉ par un comptage réel (`countTokens`, voir `countRealPromptTokens`), sur le prompt EXACT qui
- * serait envoyé (système + items retenus, avec le bon "et recherches" une fois qu'une recherche entre
- * dans le lot). Recherche dichotomique sur le nombre d'items retenus dans l'ordre de priorité (mêmes
- * paliers que `selectItemsForBudget` : commentaires du plus récent au plus ancien, PUIS recherches) —
- * `O(log n)` appels réseau plutôt qu'un appel par item, tout en restant un comptage exact à chaque
- * étape (l'heuristique chars/token a un écart mesuré de ~1,75× sur du texte réel, dans le sens qui
- * fait déborder la fenêtre — elle ne doit plus fonder cette décision une fois le serveur joignable).
+ * Like `selectItemsForBudget`, but makes NO chars/token assumption: each candidate is VERIFIED by a
+ * real count (`countTokens`, see `countRealPromptTokens`), on the EXACT prompt that would be sent
+ * (system + kept items, with the right "and searches" once a search enters the batch). Binary
+ * search on the number of kept items in priority order (same tiers as `selectItemsForBudget`:
+ * comments from most recent to oldest, THEN searches) — `O(log n)` network calls rather than one
+ * call per item, while staying an exact count at each step (the chars/token heuristic has a measured
+ * gap of ~1.75× on real text, in the direction that overflows the window — it must no longer ground
+ * this decision once the server is reachable).
  *
- * Renvoie `null` si `countTokens` échoue dès le premier essai (endpoint absent/serveur injoignable) —
- * l'appelant retombe alors sur `selectItemsForBudget` (heuristique chars/token, borne grossière).
+ * Returns `null` if `countTokens` fails on the very first attempt (missing endpoint/unreachable
+ * server) — the caller then falls back to `selectItemsForBudget` (chars/token heuristic, coarse bound).
  */
 export async function selectItemsForBudgetExact(
   items: AiItem[],
@@ -246,7 +247,7 @@ export async function selectItemsForBudgetExact(
   completionReserve: number = COMPLETION_RESERVE_TOKENS,
 ): Promise<ExactSelection | null> {
   const { comments, searches } = priorityOrder(items);
-  const ordered = [...comments, ...searches]; // priorité : tous les commentaires avant toute recherche.
+  const ordered = [...comments, ...searches]; // priority: all comments before any search.
 
   const promptTokensFor = async (k: number): Promise<number | null> => {
     const slice = ordered.slice(0, k);
@@ -255,16 +256,17 @@ export async function selectItemsForBudgetExact(
     return countTokens(systemPrompt, userMessage);
   };
 
-  // k = 0 tient toujours PAR CONVENTION (rien à envoyer) : si même le prompt système seul dépasse la
-  // fenêtre, ce n'est pas cette fonction qui le détecte — `itemsBudget`/l'UI le signalent en amont.
+  // k = 0 always holds BY CONVENTION (nothing to send): if even the system prompt alone exceeds the
+  // window, it is not this function that detects it — `itemsBudget`/the UI signal it upstream.
   const zeroTokens = await promptTokensFor(0);
-  if (zeroTokens === null) return null; // serveur/`endpoint` indisponible dès le premier essai.
+  if (zeroTokens === null) return null; // server/`endpoint` unavailable on the very first attempt.
 
   const fits = async (k: number): Promise<boolean> => {
     if (k === 0) return true;
     const tokens = await promptTokensFor(k);
-    // Un échec EN COURS de recherche (serveur qui tombe en plein milieu) est traité comme "ne tient
-    // pas" : on préfère sous-livrer que propager `null` au milieu d'une dichotomie déjà entamée.
+    // A failure DURING the search (a server that goes down mid-way) is treated as "does not fit":
+    // we prefer to under-deliver rather than propagate `null` in the middle of an already-started
+    // binary search.
     return tokens !== null && tokens + completionReserve <= contextWindow;
   };
 

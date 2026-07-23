@@ -1,29 +1,29 @@
-// Items envoyés au modèle local (PANO-45 — analyse IA sur la page principale). ÉPURE assumée
-// (décision yuya, benchmark 12/07) : le modèle reçoit les items BRUTS — commentaires + recherches —
-// et rien d'autre. Pas d'agrégats comportementaux, pas de thèmes D2, pas de sélection de canaux : le
-// benchmark a montré que chacun de ces ajouts DÉGRADE la qualité de la sortie. Ce module ne fait donc
-// qu'une chose : extraire les deux canaux textuels d'un export normalisé, en items indexés.
+// Items sent to the local model (PANO-45 — AI analysis on the main page). Deliberate MINIMALISM
+// (yuya's decision, benchmark 12/07): the model receives the RAW items — comments + searches —
+// and nothing else. No behavioral aggregates, no D2 themes, no channel selection: the
+// benchmark showed that each of these additions DEGRADES the output quality. This module therefore
+// does only one thing: extract the two textual channels of a normalized export, as indexed items.
 //
-// Pourquoi une voie SÉPARÉE du moteur : `EngineOutput` ne porte que les preuves effectivement citées
-// par un constat (borne mémoire, ADR-0003) — jamais la liste complète des commentaires et
-// recherches. L'analyse IA en a besoin ; l'élargir au moteur serait une décision de doctrine
-// (ADR-0002). On repart donc des octets du zip dans un worker dédié (`items-worker.ts`), sans
-// toucher au schéma moteur.
+// Why a path SEPARATE from the engine: `EngineOutput` only carries the evidence actually cited
+// by a finding (memory bound, ADR-0003) — never the complete list of comments and
+// searches. The AI analysis needs it; extending the engine to it would be a doctrine decision
+// (ADR-0002). We therefore start again from the zip's bytes in a dedicated worker (`items-worker.ts`),
+// without touching the engine schema.
 //
-// Confidentialité : ces textes ne quittent JAMAIS l'appareil — ils partent au serveur `llama.cpp` de
-// l'utilisateur (localhost), sur clic explicite, et nulle part ailleurs.
+// Privacy: these texts NEVER leave the device — they go to the user's `llama.cpp` server
+// (localhost), on an explicit click, and nowhere else.
 
 import type { NormalizedExport } from '../engine/normalize';
 
 export interface AiItem {
-  /** Index STABLE et GLOBAL (ordre chronologique, tous canaux confondus) — la clé d'ancrage que le
-   * modèle cite (« (idx 3, 7) »). Conservé même quand l'item n'est pas envoyé (plafond de tokens) :
-   * deux runs sur le même export citent le même numéro pour le même item. */
+  /** STABLE and GLOBAL index (chronological order, all channels combined) — the anchoring key the
+   * model cites (« (idx 3, 7) »). Kept even when the item is not sent (token cap):
+   * two runs on the same export cite the same number for the same item. */
   index: number;
   kind: 'comment' | 'search';
   text: string;
-  /** Epoch ms, ou null si la date source est absente/illisible — sert au tri par récence (priorité
-   * d'envoi). Les items sans date sont considérés comme les plus anciens. */
+  /** Epoch ms, or null if the source date is missing/unreadable — used for sorting by recency (send
+   * priority). Items without a date are considered the oldest. */
   epoch: number | null;
 }
 
@@ -32,7 +32,7 @@ export interface AiItemCounts {
   searches: number;
 }
 
-/** Date brute d'export (`YYYY-MM-DD HH:MM:SS`, éventuellement suffixée ` UTC`) → epoch ms, ou null. */
+/** Raw export date (`YYYY-MM-DD HH:MM:SS`, possibly suffixed with ` UTC`) → epoch ms, or null. */
 function toEpoch(raw: string | undefined): number | null {
   const trimmed = raw?.trim().replace('T', ' ').slice(0, 19);
   const parsed = trimmed ? Date.parse(`${trimmed.replace(' ', 'T')}Z`) : Number.NaN;
@@ -40,8 +40,8 @@ function toEpoch(raw: string | undefined): number | null {
 }
 
 /**
- * Commentaires + recherches d'un export normalisé, triés par date croissante et indexés 0..N-1.
- * Les textes vides sont écartés (ils ne portent aucun signal et coûteraient une ligne au modèle).
+ * Comments + searches of a normalized export, sorted by increasing date and indexed 0..N-1.
+ * Empty texts are discarded (they carry no signal and would cost the model a line).
  */
 export function extractAiItems(norm: NormalizedExport): AiItem[] {
   const items: Omit<AiItem, 'index'>[] = [];

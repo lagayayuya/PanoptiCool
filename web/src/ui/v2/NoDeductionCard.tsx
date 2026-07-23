@@ -1,19 +1,19 @@
-// Cas limite « Aucune déduction » (maquettes « parcours guidé » / « v4 Mobile », section 02) —
-// remplace le paragraphe vide quand AUCUN bloc thème/signal ne ressort de l'export. La carte :
-//   - nomme le cas (3 puces éteintes + titre) et donne LA raison probable, choisie selon le volume
-//     de texte disponible (`lowData` : < 5 items — même seuil que la bannière IA, cf. AiSection) ;
-//   - rappelle l'asymétrie (encart orange : l'export ≈ 26 % des données, les modèles de TikTok
-//     analysent plus finement que nos lexiques) ;
-//   - « Tes données, quand même » : compte recherches/commentaires + dépli des textes BRUTS que
-//     les lexiques ont parcourus (transparence : voir exactement ce qui a été lu) ;
-//   - si l'export contient du texte (`!lowData`) : bloc « Aide-nous à enrichir le vocabulaire » —
-//     textarea locale + issue GitHub pré-remplie OU e-mail. RIEN ne part sans clic (invariant) ;
-//   - trois tuiles de conseils (vérifier l'export, IA locale, revenir plus tard).
+// « Aucune déduction » edge case (« parcours guidé » / « v4 Mobile » mockups, section 02) —
+// replaces the empty paragraph when NO theme/signal block comes out of the export. The card:
+//   - names the case (3 dimmed bullets + title) and gives THE probable reason, chosen according to the volume
+//     of available text (`lowData`: < 5 items — same threshold as the AI banner, cf. AiSection);
+//   - recalls the asymmetry (orange callout: the export ≈ 26 % of the data, TikTok's models
+//     analyze more finely than our lexicons);
+//   - « Tes données, quand même »: search/comment count + disclosure of the RAW texts that
+//     the lexicons went through (transparency: see exactly what was read);
+//   - if the export contains text (`!lowData`): « Aide-nous à enrichir le vocabulaire » block —
+//     local textarea + pre-filled GitHub issue OR email. NOTHING goes out without a click (invariant);
+//   - three advice tiles (check the export, local AI, come back later).
 //
-// Les textes bruts viennent d'une extraction LOCALE (worker `items-worker`, même voie que la
-// section IA — PANO-45) : `EngineOutput` ne porte que les preuves citées par un constat (magasin
-// borné, ADR-0003), donc RIEN dans ce cas précis. Double extraction assumée avec AiSection :
-// elle ne court que sur ce cas limite, entièrement sur l'appareil.
+// The raw texts come from a LOCAL extraction (worker `items-worker`, same route as the
+// AI section — PANO-45): `EngineOutput` only carries the evidence cited by a finding (bounded
+// store, ADR-0003), so NOTHING in this precise case. Double extraction accepted with AiSection:
+// it only runs on this edge case, entirely on the device.
 
 import { useEffect, useState } from 'preact/hooks';
 import type { AiItem } from '../../ai/items';
@@ -22,8 +22,8 @@ import { UI_BRAND, UI_NO_DEDUCTION } from '../copy';
 import type { AiSource } from './ai-source';
 import { NAVY } from './palette';
 
-/** Seuil « peu de données » (maquette : « en dessous de 5 items, chaque phrase pèse trop lourd »).
- * Partagé avec la bannière de la section IA (AiSection). */
+/** « peu de données » threshold (mockup: « en dessous de 5 items, chaque phrase pèse trop lourd »).
+ * Shared with the AI section's banner (AiSection). */
 export const LOW_DATA_THRESHOLD = 5;
 
 const GH_ISSUE_BASE = `${UI_BRAND.githubUrl}/issues/new`;
@@ -44,7 +44,7 @@ export function NoDeductionCard({
   const [dataOpen, setDataOpen] = useState(false);
   const [suggestText, setSuggestText] = useState('');
 
-  // Extraction locale des textes bruts — uniquement quand cette carte est affichée (cas limite).
+  // Local extraction of the raw texts — only when this card is displayed (edge case).
   useEffect(() => {
     if (aiSource === undefined) return;
     let cancelled = false;
@@ -54,7 +54,7 @@ export function NoDeductionCard({
         const result = await extractAiItemsInWorker(bytes);
         if (!cancelled && result.ok) setItems(result.items);
       } catch {
-        // Échec de relecture : la carte reste utile sans le dépli des données (pas de crash).
+        // Re-read failure: the card stays useful without the data disclosure (no crash).
       }
     })();
     return () => {
@@ -66,7 +66,7 @@ export function NoDeductionCard({
   const searches = (items ?? []).filter((i) => i.kind === 'search');
   const comments = (items ?? []).filter((i) => i.kind === 'comment');
   const lowData = known && (items?.length ?? 0) < LOW_DATA_THRESHOLD;
-  // Bloc d'enrichissement : seulement quand l'export contient du texte non reconnu (maquette).
+  // Enrichment block: only when the export contains unrecognized text (mockup).
   const showEnrich = known && !lowData;
 
   const ndReason = lowData ? UI_NO_DEDUCTION.reasonLowData : UI_NO_DEDUCTION.reasonNoMatch;
@@ -92,7 +92,7 @@ export function NoDeductionCard({
         <span style={WARN_TEXT}>{UI_NO_DEDUCTION.warn}</span>
       </div>
 
-      {/* --- Tes données, quand même ------------------------------------------------------------ */}
+      {/* --- Your data, even so ----------------------------------------------------------------- */}
       {known && (
         <div style={DATA_BLOCK}>
           <div style={isMobile ? M_DATA_HEAD : DATA_HEAD}>
@@ -144,7 +144,7 @@ export function NoDeductionCard({
         </div>
       )}
 
-      {/* --- Aide-nous à enrichir le vocabulaire -------------------------------------------------- */}
+      {/* --- Help us enrich the vocabulary ------------------------------------------------------- */}
       {showEnrich && (
         <div style={isMobile ? M_ENRICH : ENRICH}>
           <span style={ENRICH_TITLE}>{UI_NO_DEDUCTION.enrichTitle}</span>
@@ -177,7 +177,7 @@ export function NoDeductionCard({
         </div>
       )}
 
-      {/* --- Conseils ----------------------------------------------------------------------------- */}
+      {/* --- Advice ------------------------------------------------------------------------------- */}
       <div style={isMobile ? M_TIPS : TIPS}>
         <div style={TIP}>
           <span style={TIP_TITLE}>{UI_NO_DEDUCTION.tip1Title}</span>
@@ -202,7 +202,7 @@ export function NoDeductionCard({
   );
 }
 
-// --- Styles (maquettes « parcours guidé » / « v4 Mobile », bloc noDeductions) ----------------------
+// --- Styles (« parcours guidé » / « v4 Mobile » mockups, noDeductions block) -----------------------
 const CARD = {
   display: 'flex',
   flexDirection: 'column',

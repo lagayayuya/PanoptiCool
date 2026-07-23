@@ -1,12 +1,12 @@
-// Fixture de test partagée : un `TikTokExport` minimal **valide** (10 catégories, clés requises,
-// encodages de vide partout). Typé `TikTokExport` → vérifié contre le contrat au compile-time.
-// Foyer unique (consommé par validate.test.ts et pipeline.test.ts) ; non exporté de `index.ts`
-// (test-only, tree-shaké de l'app). Factory : renvoie un objet frais à chaque appel (mutable côté
-// test après cast).
+// Shared test fixture: a minimal **valid** `TikTokExport` (10 categories, required keys, empty
+// encodings everywhere). Typed `TikTokExport` → checked against the contract at compile time. Single
+// home (consumed by validate.test.ts and pipeline.test.ts); not exported from `index.ts` (test-only,
+// tree-shaken from the app). Factory: returns a fresh object on each call (mutable on the test side
+// after a cast).
 
 import type { TikTokExport } from './tiktok-export';
 
-/** Export TikTok minimal valide — encodages de vide partout (cas conforme du contrat). */
+/** Minimal valid TikTok export — empty encodings everywhere (a contract-conformant case). */
 export function validTikTokExport(): TikTokExport {
   return {
     Comment: { Comments: { App: 0, CommentsList: [] } },

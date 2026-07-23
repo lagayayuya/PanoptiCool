@@ -1,14 +1,14 @@
-// Tests de la machinerie de détection (PANO-71) — les quatre filtres mesurés PANO-33 + la
-// normalisation indexée. Lexiques FACTICES locaux (termes génériques FR inventés pour exercer
-// chaque filtre) ; le lexique-graine réel vit dans `engine/lexicon/` et a ses propres goldens.
-// Toutes les phrases sont SYNTHÉTIQUES (inventées ici, aucune donnée réelle).
+// Tests of the detection machinery (PANO-71) — the four filters measured PANO-33 + the
+// indexed normalization. Local DUMMY lexicons (generic FR terms invented to exercise
+// each filter); the real seed lexicon lives in `engine/lexicon/` and has its own goldens.
+// All sentences are SYNTHETIC (invented here, no real data).
 
 import { describe, expect, it } from 'vitest';
 import type { ItemLevelLexicon, TopicalLexicon } from '../lexicon/types';
 import { detectLabels } from './detect';
 import { normalizeFr, surfaceForm } from './normalize-fr';
 
-/** Lexique topical de test (label arbitraire parmi les 6 ; les termes servent les filtres). */
+/** Test topical lexicon (arbitrary label among the 6; the terms serve the filters). */
 function topical(overrides: Partial<TopicalLexicon> = {}): TopicalLexicon {
   return {
     kind: 'topical',
@@ -30,12 +30,12 @@ const CONFLICTUAL: ItemLevelLexicon = {
   targets: ["t'es", 'tu es', 'degage'],
 };
 
-describe('normalizeFr — normalisation indexée', () => {
-  it('minuscules + accents retirés + apostrophe typographique unifiée', () => {
+describe('normalizeFr — indexed normalization', () => {
+  it('lowercase + accents stripped + typographic apostrophe unified', () => {
     expect(normalizeFr('J’ai de l’Anxiété').norm).toBe("j'ai de l'anxiete");
   });
 
-  it('surfaceForm re-projette un match du normalisé sur le texte ORIGINAL, au caractère près', () => {
+  it('surfaceForm re-projects a match of the normalized text onto the ORIGINAL text, down to the character', () => {
     const t = normalizeFr('Mon Anxiété chronique');
     const start = t.norm.indexOf('anxiete');
     const surface = surfaceForm(t, start, start + 'anxiete'.length);
@@ -44,8 +44,8 @@ describe('normalizeFr — normalisation indexée', () => {
   });
 });
 
-describe('detectLabels — frontières de mots', () => {
-  it('un marqueur ne matche pas À L’INTÉRIEUR d’un mot (« psy » ⊄ « psychologie »)', () => {
+describe('detectLabels — word boundaries', () => {
+  it('a marker does not match INSIDE a word (« psy » ⊄ « psychologie »)', () => {
     const out = detectLabels(
       ['la psychologie est un domaine', 'un cours de psychologie'],
       [topical({ indirectThreshold: 1 })],
@@ -53,14 +53,14 @@ describe('detectLabels — frontières de mots', () => {
     expect(out).toEqual([]);
   });
 
-  it('l’apostrophe est une frontière (« l’anxiete » matche « anxiete »)', () => {
+  it('the apostrophe is a boundary (« l’anxiete » matches « anxiete »)', () => {
     const out = detectLabels(["mon anxiété m'épuise en ce moment"], [topical()]);
     expect(out[0]?.stage).toBe('explicit');
   });
 });
 
-describe('detectLabels — fenêtre de négation', () => {
-  it('négation avant le marqueur → hit supprimé', () => {
+describe('detectLabels — negation window', () => {
+  it('negation before the marker → hit suppressed', () => {
     const out = detectLabels(
       ['pas de psy pour moi', 'aucune therapie prévue'],
       [topical({ indirectThreshold: 1 })],
@@ -68,7 +68,7 @@ describe('detectLabels — fenêtre de négation', () => {
     expect(out).toEqual([]);
   });
 
-  it('double négation (verbe d’omission + négation) = AFFIRMATION → hit conservé', () => {
+  it('double negation (omission verb + negation) = AFFIRMATION → hit kept', () => {
     const out = detectLabels(
       ['je rate jamais la manif du samedi'],
       [topical({ indirectThreshold: 1 })],
@@ -78,8 +78,8 @@ describe('detectLabels — fenêtre de négation', () => {
   });
 });
 
-describe('detectLabels — citation / discours rapporté', () => {
-  it('marqueur de citation → attribué à autrui → hit supprimé', () => {
+describe('detectLabels — citation / reported speech', () => {
+  it('citation marker → attributed to someone else → hit suppressed', () => {
     const out = detectLabels(
       ['parait que la therapie marche bien'],
       [topical({ indirectThreshold: 1 })],
@@ -87,14 +87,14 @@ describe('detectLabels — citation / discours rapporté', () => {
     expect(out).toEqual([]);
   });
 
-  it('marqueur entre guillemets → hit supprimé', () => {
+  it('marker inside quotes → hit suppressed', () => {
     const out = detectLabels(['il a crié « anxiete » sur le plateau'], [topical()]);
     expect(out).toEqual([]);
   });
 });
 
-describe('detectLabels — 3ᵉ personne (B3 : dégradé, jamais supprimé)', () => {
-  it('terme explicite appliqué à un proche → DÉGRADÉ en indirect (signal-sans-vécu, tagué quand même)', () => {
+describe('detectLabels — 3rd person (B3: degraded, never suppressed)', () => {
+  it('explicit term applied to a relative → DEGRADED to indirect (signal-without-lived-experience, tagged anyway)', () => {
     const out = detectLabels(
       ["l'anxiété de mon fils m'inquiète beaucoup", 'chercher un psy pour mon fils'],
       [topical()],
@@ -102,19 +102,19 @@ describe('detectLabels — 3ᵉ personne (B3 : dégradé, jamais supprimé)', ()
     expect(out).toHaveLength(1);
     expect(out[0]?.stage).toBe('indirect');
     expect(out[0]?.items.every((i) => i.stage === 'indirect')).toBe(true);
-    // La forme de surface reste celle du texte original (accents inclus).
+    // The surface form stays that of the original text (accents included).
     expect(out[0]?.items[0]?.surfaces).toContain('anxiété');
   });
 });
 
-// --- Filtres EN (PANO-35 lot 1) : MIROIR des goldens FR ci-dessus -------------------------------
-// Chaque test ci-dessous est le pendant EXACT d'un golden FR, sur les mêmes lexiques factices. Les
-// marqueurs restent FR (« anxiete », « psy », « therapie ») : c'est VOULU — le risque réel mesuré
-// vient des HOMOGRAPHES FR/EN (« depression », « burnout », « diabetes »), donc d'un marqueur FR
-// atteint par une PHRASE EN. On exerce exactement ce chemin, sans rien ajouter aux lexiques D1.
+// --- EN filters (PANO-35 batch 1): MIRROR of the FR goldens above -------------------------------
+// Each test below is the EXACT counterpart of an FR golden, on the same dummy lexicons. The
+// markers stay FR (« anxiete », « psy », « therapie »): this is INTENDED — the real measured risk
+// comes from FR/EN HOMOGRAPHS (« depression », « burnout », « diabetes »), hence from an FR marker
+// reached by an EN SENTENCE. We exercise exactly this path, without adding anything to the D1 lexicons.
 
-describe('detectLabels — fenêtre de négation EN (miroir du FR)', () => {
-  it('négation EN avant le marqueur → hit supprimé', () => {
+describe('detectLabels — EN negation window (mirror of FR)', () => {
+  it('EN negation before the marker → hit suppressed', () => {
     const out = detectLabels(
       ['i am not in therapie right now', 'there is no psy involved here'],
       [topical({ indirectThreshold: 1 })],
@@ -122,7 +122,7 @@ describe('detectLabels — fenêtre de négation EN (miroir du FR)', () => {
     expect(out).toEqual([]);
   });
 
-  it('contraction EN (« don’t » / « dont ») → hit supprimé', () => {
+  it('EN contraction (« don’t » / « dont ») → hit suppressed', () => {
     const out = detectLabels(
       ["i don't need therapie", 'i dont need a psy'],
       [topical({ indirectThreshold: 1 })],
@@ -130,13 +130,13 @@ describe('detectLabels — fenêtre de négation EN (miroir du FR)', () => {
     expect(out).toEqual([]);
   });
 
-  it('« never » → hit supprimé', () => {
+  it('« never » → hit suppressed', () => {
     expect(
       detectLabels(['i never had anxiete in my life'], [topical({ indirectThreshold: 1 })]),
     ).toEqual([]);
   });
 
-  it('double négation EN (verbe d’omission + négation) = AFFIRMATION → hit conservé', () => {
+  it('EN double negation (omission verb + negation) = AFFIRMATION → hit kept', () => {
     const out = detectLabels(
       ['i never miss my manif on saturday'],
       [topical({ indirectThreshold: 1 })],
@@ -146,8 +146,8 @@ describe('detectLabels — fenêtre de négation EN (miroir du FR)', () => {
   });
 });
 
-describe('detectLabels — citation / discours rapporté EN (miroir du FR)', () => {
-  it('marqueur de citation EN → attribué à autrui → hit supprimé', () => {
+describe('detectLabels — EN citation / reported speech (mirror of FR)', () => {
+  it('EN citation marker → attributed to someone else → hit suppressed', () => {
     const out = detectLabels(
       ['she told me therapie works well', 'apparently the therapie helps a lot'],
       [topical({ indirectThreshold: 1 })],
@@ -155,16 +155,16 @@ describe('detectLabels — citation / discours rapporté EN (miroir du FR)', () 
     expect(out).toEqual([]);
   });
 
-  it('PASSIF MÉDICAL EN n’est PAS une citation (même piège qu’en FR) → hit conservé', () => {
-    // « i was told i have… » rapporte un diagnostic REÇU, pas les propos d’un tiers sur un tiers.
+  it('EN MEDICAL PASSIVE is NOT a citation (same trap as in FR) → hit kept', () => {
+    // « i was told i have… » reports a RECEIVED diagnosis, not a third party's words about a third party.
     const out = detectLabels(['i was told i have anxiete'], [topical()]);
     expect(out).toHaveLength(1);
     expect(out[0]?.stage).toBe('explicit');
   });
 });
 
-describe('detectLabels — 3ᵉ personne EN (B3 : dégradé, jamais supprimé)', () => {
-  it('terme explicite appliqué à un proche EN → DÉGRADÉ en indirect (signal-sans-vécu, tagué quand même)', () => {
+describe('detectLabels — EN 3rd person (B3: degraded, never suppressed)', () => {
+  it('explicit term applied to an EN relative → DEGRADED to indirect (signal-without-lived-experience, tagged anyway)', () => {
     const out = detectLabels(
       ['my sister has anxiete and it worries me', 'looking for a psy for my son'],
       [topical()],
@@ -174,28 +174,28 @@ describe('detectLabels — 3ᵉ personne EN (B3 : dégradé, jamais supprimé)',
     expect(out[0]?.items.every((i) => i.stage === 'indirect')).toBe(true);
   });
 
-  it('RÉGRESSION MESURÉE (docs/portabilite-en-filtres.md) : « my sister has X » ne NOMME plus', () => {
-    // Avant ce lot, les 3 filtres protecteurs échouaient OUVERT en EN : ce texte produisait un tag
-    // `explicit` (= NOMMÉ) sur le locuteur, violant SENS-B3. Il doit rester non-nommé, à jamais.
+  it('MEASURED REGRESSION (docs/portabilite-en-filtres.md): « my sister has X » no longer NAMES', () => {
+    // Before this batch, the 3 protective filters failed OPEN in EN: this text produced an
+    // `explicit` (= NAMED) tag on the speaker, violating SENS-B3. It must stay unnamed, forever.
     const out = detectLabels(['my sister has anxiete'], [topical({ indirectThreshold: 1 })]);
     expect(out[0]?.stage).not.toBe('explicit');
   });
 
-  // ── PARENTÉ ÉLARGIE — comblement mesuré, et la raison de sa cécité vaut plus que la liste ──────
-  // Le lot 1 avait couvert la famille nucléaire américaine. Manquaient « my mum » (la forme
-  // britannique, donc la plus courante hors Amérique du Nord) et TOUTE la parenté élargie.
+  // ── EXTENDED KINSHIP — measured fill, and the reason for its blindness is worth more than the list ──────
+  // Batch 1 had covered the American nuclear family. Missing were « my mum » (the British
+  // form, hence the most common outside North America) and ALL extended kinship.
   //
-  // POURQUOI PERSONNE NE L'A VU, et c'est le point à retenir : sur `mental_health`, seul label
-  // mesuré jusqu'ici, les noms de trouble fréquents (« depression », « anxiety », « ptsd ») vivent
-  // au tier `indirectSolo` et ne peuvent STRUCTURELLEMENT plus nommer. « my nan has depression »
-  // dégradait donc déjà — mais grâce au tier, pas grâce à la liste de 3ᵉ personne. Un tier créé
-  // contre l'HYPERBOLE masquait un défaut de PARENTÉ, et le masque n'a sauté qu'en ouvrant un label
-  // dont les noms de condition sont restés en `explicit`.
+  // WHY NO ONE SAW IT, and it is the point to remember: on `mental_health`, the only label
+  // measured until now, the frequent disorder names (« depression », « anxiety », « ptsd ») live
+  // in the `indirectSolo` tier and can STRUCTURALLY no longer name. « my nan has depression »
+  // therefore already degraded — but thanks to the tier, not thanks to the 3rd-person list. A tier created
+  // against HYPERBOLE masked a KINSHIP defect, and the mask fell only by opening a label
+  // whose condition names stayed in `explicit`.
   //
-  // Ce test emploie donc un lexique dont le terme est `explicit` — SANS quoi il passerait au vert
-  // pour la raison d'à côté, et vérifierait le tier au lieu de la liste (CLAUDE.md : une assertion
-  // vérifie ce qu'elle ATTEINT).
-  it('la parenté élargie dégrade — grands-parents, « my mum », oncles, cousins', () => {
+  // This test therefore uses a lexicon whose term is `explicit` — WITHOUT which it would go green
+  // for the adjacent reason, and would verify the tier instead of the list (CLAUDE.md: an assertion
+  // verifies what it REACHES).
+  it('extended kinship degrades — grandparents, « my mum », uncles, cousins', () => {
     for (const proche of [
       'my mum',
       'my nan',
@@ -219,135 +219,135 @@ describe('detectLabels — 3ᵉ personne EN (B3 : dégradé, jamais supprimé)',
     }
   });
 
-  it("CONTRÔLE — sans marqueur de parenté, le même énoncé NOMME : c'est bien la liste qui agit", () => {
-    // Sans ce contrôle, le test du dessus passerait au vert même si la dégradation venait
-    // d'ailleurs (le seuil, un tier, un filtre voisin). Il fixe le point de comparaison.
+  it('CONTROL — without a kinship marker, the same statement NAMES: it is indeed the list that acts', () => {
+    // Without this control, the test above would go green even if the degradation came
+    // from elsewhere (the threshold, a tier, a neighboring filter). It fixes the comparison point.
     const out = detectLabels(['my neighbour has anxiete'], [topical({ indirectThreshold: 1 })]);
     expect(out[0]?.stage).toBe('explicit');
   });
 });
 
-// ── REGISTRE INFORMATIONNEL EN COMPOSÉ (« diabetes symptoms ») ───────────────────────────────────
-// CE QUE CES TESTS NE COUVRENT PAS, et il faut le lire avant de les citer :
-//   · ce sont des sondes de MÉCANISME, pas une mesure de taux. Aucune vérité-terrain, aucun
-//     dénominateur — les bancs de registres restent les seuls instruments de taux, et aucun d'eux
-//     n'exerce la santé physique à ce jour ;
-//   · ils portent sur l'ANGLAIS seul. Le français n'a pas ce défaut (il porte « symptomes » nu), et
-//     le dernier cas ci-dessous le fige plutôt que de le supposer ;
-//   · ils ne disent rien des têtes NON admises (« treatment », « diet ») au-delà du fait qu'elles ne
-//     dégradent pas — ce qui est le comportement voulu, pas une lacune.
-describe('detectLabels — registre informationnel EN en COMPOSÉ', () => {
-  // Lexique factice au tier `explicit` — c'est ce tier que la règle plafonne. « diabete » sert
-  // aussi de témoin de la tolérance de pluriel : il matche « diabetes », et le composé doit se
-  // reconnaître APRÈS le « s » que le span du marqueur n'inclut pas.
+// ── EN INFORMATIONAL REGISTER IN COMPOUND FORM (« diabetes symptoms ») ───────────────────────────────────
+// WHAT THESE TESTS DO NOT COVER, and it must be read before citing them:
+//   · they are MECHANISM probes, not a rate measurement. No ground truth, no
+//     denominator — the register benches remain the only rate instruments, and none of them
+//     exercises physical health to date;
+//   · they bear on ENGLISH alone. French does not have this defect (it carries bare « symptomes »), and
+//     the last case below freezes it rather than supposing it;
+//   · they say nothing of the NON-admitted heads (« treatment », « diet ») beyond the fact that they do not
+//     degrade — which is the intended behavior, not a gap.
+describe('detectLabels — EN informational register in COMPOUND form', () => {
+  // Dummy lexicon at the `explicit` tier — it is this tier the rule caps. « diabete » also serves
+  // as a witness of the plural tolerance: it matches « diabetes », and the compound must be
+  // recognized AFTER the « s » that the marker span does not include.
   const HP = (terms: string[]) =>
     detectLabels(terms, [topical({ explicit: ['diabete', 'psoriasis'] })]);
 
-  it('LE DÉFAUT REFERMÉ — « X symptoms » ne NOMME plus, alors que « symptoms of X » dégradait déjà', () => {
-    // L'anglais compose sa requête de santé la plus fréquente en antéposé, et la liste par
-    // préposition la manquait entièrement. Les deux ordres de mots doivent produire le même étage.
+  it('THE DEFECT CLOSED — « X symptoms » no longer NAMES, whereas « symptoms of X » already degraded', () => {
+    // English composes its most frequent health query in preposed form, and the by-preposition
+    // list missed it entirely. Both word orders must produce the same storey.
     expect(HP(['diabetes symptoms'])[0]?.stage).toBe('indirect');
     expect(HP(['symptoms of diabetes'])[0]?.stage).toBe('indirect');
   });
 
-  it('le composé franchit SEUL, comme la forme par préposition — sinon les deux règles se composent en DISPARITION', () => {
-    // Le seuil est à 2 et il n'y a qu'un item : sans le franchissement solo, le cadrage retirerait
-    // l'étage nommé puis le seuil retirerait le constat, alors qu'aucune des deux règles ne demande
-    // qu'il ne reste rien à montrer. Même raisonnement que la voie par préposition.
+  it('the compound crosses ALONE, like the by-preposition form — otherwise the two rules compose into DISAPPEARANCE', () => {
+    // The threshold is 2 and there is only one item: without the solo crossing, the framing would remove
+    // the named storey then the threshold would remove the finding, whereas neither rule requires
+    // that there be nothing left to show. Same reasoning as the by-preposition path.
     const out = HP(['diabetes symptoms']);
     expect(out).toHaveLength(1);
     expect(out[0]?.items[0]?.solo).toBe(true);
   });
 
-  it('LE COÛT, mesuré et assumé — « my diabetes symptoms » dégrade AUSSI', () => {
-    // Il faut l'écrire, parce que c'est le seul endroit où cette règle se trompe : un possessif
-    // devant le composé ne la retient pas. Quelqu'un qui décrit SES symptômes par cette tournure
-    // perd son étage nommé.
+  it('THE COST, measured and assumed — « my diabetes symptoms » degrades TOO', () => {
+    // It must be written, because it is the only place where this rule errs: a possessive
+    // before the compound does not hold it back. Someone who describes THEIR symptoms by this turn of phrase
+    // loses their named storey.
     //
-    // Pourquoi c'est accepté plutôt que rattrapé : (1) une règle d'étage se trompe en
-    // SOUS-affirmant, ce qui se rattrape, là où un filtre fabriquerait un faux négatif aveugle
-    // (ADR-0003) ; (2) le rattrapage évident — exiger l'absence de possessif — est l'ancrage
-    // 1ʳᵉ personne, mesuré et écarté ; (3) la borne est un fait de langue déjà invoqué par la voie
-    // par préposition : qui vit une condition la nomme AUSSI au possessif nu ailleurs, et cet
-    // item-là suffit à tenir l'étage. La ligne suivante le fige.
+    // Why it is accepted rather than caught: (1) a storey rule errs by
+    // UNDER-asserting, which can be caught, where a filter would fabricate a blind false negative
+    // (ADR-0003); (2) the obvious catch — requiring the absence of a possessive — is the
+    // 1st-person anchoring, measured and set aside; (3) the bound is a fact of language already invoked by the
+    // by-preposition path: whoever lives a condition names it ALSO in bare possessive elsewhere, and that
+    // item suffices to hold the storey. The following line freezes it.
     expect(HP(['my diabetes symptoms have been worse'])[0]?.stage).toBe('indirect');
     expect(
       HP(['my diabetes symptoms have been worse', 'my diabetes is hard to manage'])[0]?.stage,
     ).toBe('explicit');
   });
 
-  it('la tête doit être ACCOLÉE au terme — sinon ce serait « symptoms » nu par la bande', () => {
+  it('the head must be ADJACENT to the term — otherwise it would be bare « symptoms » by the back door', () => {
     expect(HP(['my diabetes and her symptoms are unrelated'])[0]?.stage).toBe('explicit');
-    // Et la frontière de mot tient : « symptomatic » n'est pas « symptoms ».
+    // And the word boundary holds: « symptomatic » is not « symptoms ».
     expect(HP(['psoriasis symptomatic relief'])[0]?.stage).toBe('explicit');
   });
 
-  it('« treatment » et « diet » NE dégradent pas — chercher un soin est un signal de vécu', () => {
-    // Exclusion assumée, pas oubli : le critère d'admission demande d'interroger, définir ou
-    // quantifier. « diabetes treatment » cherche un SOIN, et chercher un soin pour soi est un
-    // signal de vécu (ADR-0003, « Pour qui », pas « quel mot »). Le FR traite « traitement du
-    // diabete » de la même façon, dans les deux ordres de mots.
+  it('« treatment » and « diet » do NOT degrade — seeking care is a signal of lived experience', () => {
+    // Assumed exclusion, not oversight: the admission criterion requires questioning, defining or
+    // quantifying. « diabetes treatment » seeks CARE, and seeking care for oneself is a
+    // signal of lived experience (ADR-0003, « Pour qui », pas « quel mot »). FR treats « traitement du
+    // diabete » the same way, in both word orders.
     expect(HP(['diabetes treatment options'])[0]?.stage).toBe('explicit');
     expect(HP(['diabetes diet plan'])[0]?.stage).toBe('explicit');
   });
 
-  it('LE FRANÇAIS NE BOUGE PAS — il porte « symptomes » nu et n’a jamais eu ce défaut', () => {
-    // Figé plutôt que supposé : c'est la vérification qui a montré que ce défaut était EN-only, et
-    // sans elle un lecteur pourrait croire que la liste de composés lui manque aussi.
+  it('FRENCH DOES NOT MOVE — it carries bare « symptomes » and never had this defect', () => {
+    // Frozen rather than supposed: it is the check that showed this defect was EN-only, and
+    // without it a reader could believe the compound list is missing for it too.
     expect(HP(['symptomes du diabete'])[0]?.stage).toBe('indirect');
     expect(HP(['mon diabete me fatigue'])[0]?.stage).toBe('explicit');
   });
 });
 
-describe('detectLabels — conflictual EN (B5) : insulte REÇUE exclue', () => {
-  it('« he called me… » (insulte reçue/rapportée) → exclue, comme « il m’a traité de… »', () => {
+describe('detectLabels — EN conflictual (B5): RECEIVED insult excluded', () => {
+  it('« he called me… » (received/reported insult) → excluded, like « il m’a traité de… »', () => {
     expect(detectLabels(['he called me a bouffon in front of everyone'], [CONFLICTUAL])).toEqual(
       [],
     );
   });
 });
 
-describe('detectLabels — PORTE DE LANGUE : une copule EN ne lit jamais `selfDeclaredFr`', () => {
-  it('« i am X » sur un terme `selfDeclaredFr` ne tague PAS — le zéro vient de la porte, plus de l’absence de têtes', () => {
-    // Ce test a été le verrou de la dette « copule EN non livrée » (PANO-35 lot 2), à inverser le
-    // jour de la livraison. La copule EN EST livrée depuis (`SELF_DECLARATION_HEADS_EN`, tier
-    // `selfDeclaredEn` qui atterrit en LARGE) — et le test n’a PAS été inversé, parce que son zéro a
-    // CHANGÉ DE CAUSE sans changer de valeur : les têtes anglaises ne lisent que `selfDeclaredEn`,
-    // et `selfDeclaredFr` reste inatteignable depuis une copule anglaise (la porte de langue,
-    // vérifiée par mutations dans `selfdeclared-language-gate.test.ts`). Un zéro a plusieurs causes
-    // possibles ; celui-ci tient désormais la porte, pas la dette.
+describe('detectLabels — LANGUAGE GATE: an EN copula never reads `selfDeclaredFr`', () => {
+  it('« i am X » on a `selfDeclaredFr` term does NOT tag — the zero comes from the gate, no longer from the absence of heads', () => {
+    // This test was the lock of the « EN copula not shipped » debt (PANO-35 batch 2), to be inverted the
+    // day of shipping. The EN copula IS shipped since (`SELF_DECLARATION_HEADS_EN`, tier
+    // `selfDeclaredEn` which lands BROAD) — and the test was NOT inverted, because its zero
+    // CHANGED CAUSE without changing value: the English heads read only `selfDeclaredEn`,
+    // and `selfDeclaredFr` stays unreachable from an English copula (the language gate,
+    // verified by mutations in `selfdeclared-language-gate.test.ts`). A zero has several possible
+    // causes; this one now holds the gate, not the debt.
     const out = detectLabels(['i am depressif'], [topical({ selfDeclaredFr: ['depressif'] })]);
     expect(out).toEqual([]);
   });
 });
 
 describe('detectLabels — conflictual (B5, item-level)', () => {
-  it('insulte émise + cible 2ᵉ personne → tag explicite, surfaces = insultes', () => {
+  it('insult issued + 2nd-person target → explicit tag, surfaces = insults', () => {
     const out = detectLabels(["t'es vraiment qu'un bouffon"], [CONFLICTUAL]);
     expect(out).toHaveLength(1);
     expect(out[0]?.stage).toBe('explicit');
     expect(out[0]?.items[0]?.surfaces).toEqual(['bouffon']);
   });
 
-  it('juron sans cible (frustration) → exclu', () => {
+  it('swear-word without a target (frustration) → excluded', () => {
     expect(detectLabels(['quel bouffon ce scénario de film'], [CONFLICTUAL])).toEqual([]);
   });
 
-  it('insulte CITÉE (reçue/rapportée) → exclue', () => {
+  it('CITED insult (received/reported) → excluded', () => {
     expect(detectLabels(["il m'a traite de bouffon devant tout le monde"], [CONFLICTUAL])).toEqual(
       [],
     );
   });
 });
 
-describe('detectLabels — tolérances de variation (PANO-36 phase 0)', () => {
-  it('tiret ↔ espace : une seule entrée couvre les deux graphies', () => {
+describe('detectLabels — variation tolerances (PANO-36 phase 0)', () => {
+  it('hyphen ↔ space: a single entry covers both spellings', () => {
     const lex = topical({ explicit: ['burn out'], indirectThreshold: 1 });
     expect(detectLabels(['en plein burn-out cette semaine'], [lex])[0]?.stage).toBe('explicit');
     expect(detectLabels(['en plein burn out cette semaine'], [lex])[0]?.stage).toBe('explicit');
   });
 
-  it('auto-censure symbolique : « c*nne » matche « conne », surface = forme masquée tapée', () => {
+  it('symbolic self-censorship: « c*nne » matches « conne », surface = masked form typed', () => {
     const lex: ItemLevelLexicon = {
       kind: 'item-level',
       label: 'conflictual',
@@ -359,7 +359,7 @@ describe('detectLabels — tolérances de variation (PANO-36 phase 0)', () => {
     expect(out[0]?.items[0]?.surfaces).toEqual(['c*nne']);
   });
 
-  it('auto-censure : un mot innocent ne matche pas (pas de symbole ≠ lettre différente)', () => {
+  it('self-censorship: an innocent word does not match (no symbol ≠ different letter)', () => {
     const lex: ItemLevelLexicon = {
       kind: 'item-level',
       label: 'conflictual',
@@ -369,15 +369,15 @@ describe('detectLabels — tolérances de variation (PANO-36 phase 0)', () => {
     expect(detectLabels(["t'es venue avec ta canne"], [lex])).toEqual([]);
   });
 
-  it('allongement expressif : « abruuuuuti » matche « abruti », surface = forme allongée entière', () => {
+  it('expressive elongation: « abruuuuuti » matches « abruti », surface = entire elongated form', () => {
     const out = detectLabels(["t'es un abruuuuuti fini"], [CONFLICTUAL]);
     expect(out).toHaveLength(1);
     expect(out[0]?.items[0]?.surfaces).toEqual(['abruuuuuti']);
   });
 
-  it('allongement : le squelette est GARDÉ — sans allongement visible, pas de match squelette', () => {
-    // « cône » → squelette « cone » = squelette de « conne », mais aucune répétition ≥ 3 dans la
-    // surface → rejeté. Le fallback ne s'ouvre qu'aux allongements réels.
+  it('elongation: the skeleton is GUARDED — without a visible elongation, no skeleton match', () => {
+    // « cône » → skeleton « cone » = skeleton of « conne », but no repetition ≥ 3 in the
+    // surface → rejected. The fallback opens only to real elongations.
     const lex: ItemLevelLexicon = {
       kind: 'item-level',
       label: 'conflictual',
@@ -387,23 +387,23 @@ describe('detectLabels — tolérances de variation (PANO-36 phase 0)', () => {
     expect(detectLabels(["t'es sous ce cône de chantier"], [lex])).toEqual([]);
   });
 
-  it('allongement sur marqueur topical : « manifffff » compte comme « manif »', () => {
+  it('elongation on a topical marker: « manifffff » counts as « manif »', () => {
     const out = detectLabels(['grosse manifffff demain'], [topical({ indirectThreshold: 1 })]);
     expect(out).toHaveLength(1);
     expect(out[0]?.items[0]?.surfaces).toEqual(['manifffff']);
   });
 
-  it('pluriel : un marqueur singulier couvre sa forme au pluriel, sans déborder', () => {
+  it('plural: a singular marker covers its plural form, without overreaching', () => {
     const lex = topical({
       explicit: ['idee noire'],
       indirectCore: ['manif'],
       indirectThreshold: 1,
     });
-    // Pluriel capté…
+    // Plural captured…
     expect(detectLabels(['plein de manifs ce mois-ci'], [lex])[0]?.items[0]?.surfaces).toEqual([
       'manifs',
     ]);
-    // …mais la frontière de mot tient (« console » ne matche pas « con »).
+    // …but the word boundary holds (« console » does not match « con »).
     const conLex: ItemLevelLexicon = {
       kind: 'item-level',
       label: 'conflictual',
@@ -414,7 +414,7 @@ describe('detectLabels — tolérances de variation (PANO-36 phase 0)', () => {
   });
 });
 
-describe('detectLabels — pattern d’auto-déclaration (PANO-72)', () => {
+describe('detectLabels — self-declaration pattern (PANO-72)', () => {
   const lex = topical({
     explicit: [],
     selfDeclaredFr: ['depressif', 'depressive'],
@@ -422,41 +422,41 @@ describe('detectLabels — pattern d’auto-déclaration (PANO-72)', () => {
     indirectThreshold: 1,
   });
 
-  it('« je suis dépressif » → explicit ; modificateurs intercalés tolérés', () => {
+  it('« je suis dépressif » → explicit; interposed modifiers tolerated', () => {
     expect(detectLabels(['je suis depressif'], [lex])[0]?.stage).toBe('explicit');
     expect(detectLabels(['jsuis une grosse depressive'], [lex])[0]?.stage).toBe('explicit');
     expect(detectLabels(['chui un vrai depressif'], [lex])[0]?.stage).toBe('explicit');
   });
 
-  it('surface = le span entier (copule + modificateurs + terme)', () => {
+  it('surface = the whole span (copula + modifiers + term)', () => {
     const out = detectLabels(['je suis un pauvre depressif'], [lex]);
     expect(out[0]?.items[0]?.surfaces).toEqual(['je suis un pauvre depressif']);
   });
 
-  it('négation brise le pattern (« je suis pas dépressif ») → non tagué', () => {
+  it('negation breaks the pattern (« je suis pas dépressif ») → not tagged', () => {
     expect(detectLabels(['je suis pas depressif du tout'], [lex])).toEqual([]);
   });
 
-  it('terme d’auto-déclaration NU (sans copule) ne matche pas via ce champ', () => {
-    // « depressif » n'est pas dans explicit/indirect ici → un « film dépressif » ne tague rien.
+  it('BARE self-declaration term (without copula) does not match via this field', () => {
+    // « depressif » is not in explicit/indirect here → a « film dépressif » tags nothing.
     expect(detectLabels(['ce film est vraiment depressif'], [lex])).toEqual([]);
   });
 
-  it('auto-déclaration JAMAIS dégradée par une 3ᵉ personne dans le même commentaire', () => {
-    // La copule ancre la 1ʳᵉ personne : reste explicit malgré « ma fille ».
+  it('self-declaration NEVER degraded by a 3rd person in the same comment', () => {
+    // The copula anchors the 1st person: stays explicit despite « ma fille ».
     const out = detectLabels(['je suis depressif comme ma fille'], [lex]);
     expect(out[0]?.stage).toBe('explicit');
   });
 });
 
-describe('detectLabels — agrégation par label', () => {
-  it('sous le seuil indirect → AUCUNE détection (et l’item ne sera jamais une preuve)', () => {
+describe('detectLabels — aggregation per label', () => {
+  it('below the indirect threshold → NO detection (and the item will never be evidence)', () => {
     expect(detectLabels(['je vois un psy demain'], [topical({ indirectThreshold: 2 })])).toEqual(
       [],
     );
   });
 
-  it('seuil indirect atteint → tag indirect portant TOUS les items contributeurs', () => {
+  it('indirect threshold reached → indirect tag carrying ALL contributing items', () => {
     const out = detectLabels(
       ['je vois un psy demain', 'la therapie me fait du bien', 'sujet sans rapport'],
       [topical({ indirectThreshold: 2 })],
@@ -466,21 +466,21 @@ describe('detectLabels — agrégation par label', () => {
     expect(out[0]?.items.map((i) => i.itemIndex)).toEqual([0, 1]);
   });
 
-  it('≥ 1 item explicite → tag explicite, items = explicites ET indirects (toutes les preuves)', () => {
+  it('≥ 1 explicit item → explicit tag, items = explicit AND indirect (all the evidence)', () => {
     const out = detectLabels(['mon anxiété au quotidien', 'je vois un psy demain'], [topical()]);
     expect(out).toHaveLength(1);
     expect(out[0]?.stage).toBe('explicit');
     expect(out[0]?.items).toHaveLength(2);
   });
 
-  it('un même item peut alimenter PLUSIEURS labels ; un autre aucun', () => {
+  it('a single item can feed SEVERAL labels; another none', () => {
     const out = detectLabels(
       ["t'es un abruti et ta manif est ridicule", 'je rentre en manif à vélo'],
       [topical({ label: 'politics', indirectThreshold: 2 }), CONFLICTUAL],
     );
     const labels = out.map((d) => d.label).sort();
     expect(labels).toEqual(['conflictual', 'politics']);
-    // L'item 0 contribue aux deux labels ; les surfaces different par label.
+    // Item 0 contributes to both labels; the surfaces differ per label.
     expect(out.find((d) => d.label === 'politics')?.items.map((i) => i.itemIndex)).toEqual([0, 1]);
     expect(out.find((d) => d.label === 'conflictual')?.items.map((i) => i.itemIndex)).toEqual([0]);
   });

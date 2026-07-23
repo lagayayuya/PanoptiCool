@@ -1,39 +1,39 @@
-// Copy de l'INTERFACE — LE SÉLECTEUR. Aucune prose ne vit ici.
+// INTERFACE copy — THE SELECTOR. No prose lives here.
 //
-// TROIS FICHIERS, UN PÉRIMÈTRE (même forme que `engine/wording.*`, structure ratifiée yuya) :
-//   - `copy.fr.ts` — la prose française. ORACLE DE FORME : `UiCopy` en est dérivé.
-//   - `copy.en.ts` — la prose anglaise, annotée `UiCopy`.
-//   - CE FICHIER — le choix de la langue, et rien d'autre.
+// THREE FILES, ONE PERIMETER (same shape as `engine/wording.*`, structure ratified by yuya):
+//   - `copy.fr.ts` — the French prose. FORM ORACLE: `UiCopy` is derived from it.
+//   - `copy.en.ts` — the English prose, annotated `UiCopy`.
+//   - THIS FILE — the language choice, and nothing else.
 //
-// ─── POURQUOI LA LANGUE SE RÉSOUT ICI, ET UNE SEULE FOIS ────────────────────────────────────────
-// Les composants sont des îlots `client:only` : la page publie déjà sa langue sur `<html lang>`, et
-// `i18n/current.ts` la lit. Cette langue est CONSTANTE pour la vie de la page — elle se résout donc
-// à l'évaluation du module, et chaque groupe est ré-exporté tel quel.
+// ─── WHY THE LANGUAGE RESOLVES HERE, AND ONLY ONCE ──────────────────────────────────────────────
+// The components are `client:only` islands: the page already publishes its language on `<html lang>`, and
+// `i18n/current.ts` reads it. This language is CONSTANT for the life of the page — it therefore resolves
+// at module evaluation, and each group is re-exported as is.
 //
-// CE QUE CE CHOIX ACHÈTE, et c'est la raison de le préférer à un `copy(locale).header.wordmark` :
-// AUCUN SITE D'APPEL NE BOUGE. `UI_HEADER.wordmark` reste `UI_HEADER.wordmark`, dans les dix-sept
-// composants qui lisent ce fichier. Le lot ne produit donc pas des centaines de lignes de diff
-// mécanique dans lesquelles une vraie modification se cacherait — et le rendu français reste
-// identique PAR CONSTRUCTION : hors navigateur (goldens, `pages/index.astro` au build),
-// `currentLocale()` retombe sur `DEFAULT_LOCALE`.
+// WHAT THIS CHOICE BUYS, and it is the reason to prefer it to a `copy(locale).header.wordmark`:
+// NO CALL SITE MOVES. `UI_HEADER.wordmark` stays `UI_HEADER.wordmark`, in the seventeen
+// components that read this file. The batch therefore does not produce hundreds of lines of mechanical
+// diff in which a real modification would hide — and the French rendering stays
+// identical BY CONSTRUCTION: outside the browser (goldens, `pages/index.astro` at build),
+// `currentLocale()` falls back to `DEFAULT_LOCALE`.
 //
-// ⚠ CE QUE ÇA COÛTE, ET QUI SE PAIE DANS LES TESTS. Rendre de l'anglais en Node suppose de poser
-// `document.documentElement.lang` AVANT l'import de ce module, donc `vi.resetModules()` + import
-// dynamique (`ui/format.test.ts` montre la manœuvre). ⚠ ELLE DOIT COUVRIR `format.ts` AUSSI : les
-// deux fichiers portent un état de langue au niveau du module, et en oublier un rendrait un arbre
-// anglais avec des NOMBRES FRANÇAIS — fine insécable U+202F, « 0 comment » au singulier. Un défaut
-// invisible à l'œil, qu'un golden figerait sans que personne le lise.
+// ⚠ WHAT IT COSTS, AND WHAT IS PAID IN THE TESTS. Rendering English in Node requires setting
+// `document.documentElement.lang` BEFORE the import of this module, so `vi.resetModules()` + a dynamic
+// import (`ui/format.test.ts` shows the maneuver). ⚠ IT MUST COVER `format.ts` TOO: the
+// two files carry a language state at the module level, and forgetting one would render an English
+// tree with FRENCH NUMBERS — narrow no-break space U+202F, « 0 comment » in the singular. A defect
+// invisible to the eye, that a golden would freeze without anyone reading it.
 //
-// L'ASYMÉTRIE AVEC LE MOTEUR EST DE PRINCIPE. `engine/wording.ts` prend la langue en PARAMÈTRE : il
-// passe la 2ᵉ passe `tsc` sans DOM et n'a pas de `document` à lire. Ici le DOM est permis, et la
-// plomberie qu'on s'épargne (une prop traversant chaque composant intermédiaire) est précisément
-// celle qu'on oublie de brancher sur le composant suivant, six mois plus tard.
+// THE ASYMMETRY WITH THE ENGINE IS A MATTER OF PRINCIPLE. `engine/wording.ts` takes the language as a PARAMETER: it
+// passes the 2nd `tsc` pass without a DOM and has no `document` to read. Here the DOM is allowed, and the
+// plumbing we spare ourselves (a prop crossing each intermediate component) is precisely
+// the one we forget to wire onto the next component, six months later.
 
 import { currentLocale } from '../i18n/current';
 import { EN } from './copy.en';
 import { FR } from './copy.fr';
 
-/** La forme du catalogue d'interface — dérivée du français, qui est l'oracle. */
+/** The shape of the interface catalog — derived from the French, which is the oracle. */
 export type UiCopy = typeof FR;
 
 const B: UiCopy = currentLocale() === 'en' ? EN : FR;

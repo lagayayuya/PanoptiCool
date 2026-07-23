@@ -1,23 +1,23 @@
 ---
-// LA RACINE — elle envoie vers la langue par défaut, et c'est tout ce qu'elle fait.
+// THE ROOT — it sends to the default language, and that is all it does.
 //
-// POURQUOI ELLE EST ÉCRITE À LA MAIN au lieu d'une entrée dans `redirects` (astro.config.ts).
-// Les robots d'aperçu de lien (Slack, Discord, iMessage, Signal…) lisent le <head> de la PREMIÈRE
-// réponse et ne suivent PAS un `meta refresh`. Une redirection générée n'en porte aucun : l'aperçu
-// de `panopti.cool` — l'URL qu'on partage, celle qui compte — serait devenu une carte vide le jour
-// de la mise en langues. Cette page porte donc `SiteHead` en entier, et l'aperçu survit.
+// WHY IT IS WRITTEN BY HAND instead of an entry in `redirects` (astro.config.ts).
+// Link-preview bots (Slack, Discord, iMessage, Signal…) read the <head> of the FIRST
+// response and do NOT follow a `meta refresh`. A generated redirect carries none: the preview
+// of `panopti.cool` — the URL that gets shared, the one that matters — would have become an empty card
+// on the day of the multi-language rollout. This page therefore carries `SiteHead` in full, and the preview survives.
 //
-// Les autres URLs d'avant (`/analyse`, `/mentions-legales`) restent des redirections générées :
-// elles ne s'affichent pas en carte dans une conversation, et trois pages à maintenir pour deux
-// cas qui ne se produisent pas serait payer cher un principe (décision yuya, 2026-07-18).
+// The other former URLs (`/analyse`, `/mentions-legales`) stay generated redirects:
+// they do not display as a card in a conversation, and three pages to maintain for two
+// cases that do not occur would be paying dearly for a principle (yuya's decision, 2026-07-18).
 //
-// Le canonical pointe vers `/fr` (calculé par `SiteHead` à partir de la langue par défaut) : la
-// racine ne se réclame donc d'aucun contenu propre, et n'entre en concurrence avec `/fr` sur aucun
-// moteur.
+// The canonical points to `/fr` (computed by `SiteHead` from the default language): the
+// root therefore claims no content of its own, and competes with `/fr` on no
+// engine.
 //
-// PAS D'ÎLOT, PAS DE POLICE : cette page ne s'affiche presque jamais. Charger quatre graisses de
-// JetBrains Mono pour une redirection ferait payer un aller-retour réseau à chaque visiteur de la
-// racine — c'est-à-dire à tout le monde.
+// NO ISLAND, NO FONT: this page almost never displays. Loading four weights of
+// JetBrains Mono for a redirect would make every visitor of the root pay a network round-trip —
+// that is, everyone.
 import { DEFAULT_LOCALE, HTML_LANG, localePath } from '../i18n/locales';
 import { UI_ROOT } from '../ui/copy';
 import SiteHead from '../ui/SiteHead.astro';
@@ -32,7 +32,7 @@ const target = localePath(DEFAULT_LOCALE, '/');
     <meta http-equiv="refresh" content={`0; url=${target}`} />
   </head>
   <body>
-    <!-- Vu seulement si la redirection ne part pas. Un lien, pas un écran. -->
+    <!-- Seen only if the redirect does not fire. A link, not a screen. -->
     <a href={target}>{UI_ROOT.fallbackLink}</a>
   </body>
 </html>

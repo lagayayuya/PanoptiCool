@@ -1,84 +1,84 @@
-// Sonde à CADRE CALQUÉ — un même cadre promené sur 46 termes d'identité, les six labels plus
-// l'identité de genre, en anglais ET en français.
+// TRACED-FRAME probe — a single frame walked over 46 identity terms, the six labels plus gender
+// identity, in English AND in French.
 //
-// ── CE QU'UNE SONDE FAIT QU'UNE PERSONA NE PEUT PAS FAIRE ────────────────────────────────────────
-// Une sonde balaie un AXE ; une persona échantillonne une VIE. Une voix ne porte qu'un ou deux termes
-// par label, et son silence ne distingue JAMAIS « ce terme-là n'est pas câblé » de « rien de ce label
-// ne l'est ». C'est la troisième fois dans ce dépôt qu'une sonde hors corpus trouve ce qu'aucune
-// persona n'avait vu — et la raison est structurelle, pas chanceuse : les deux instruments ne
-// regardent pas dans la même direction.
+// ── WHAT A PROBE DOES THAT A PERSONA CANNOT ──────────────────────────────────────────────────────
+// A probe sweeps an AXIS; a persona samples a LIFE. A voice carries only one or two terms per label,
+// and its silence NEVER distinguishes « that term is not wired » from « nothing of this label is ».
+// It is the third time in this repo that an out-of-corpus probe finds what no persona had seen — and
+// the reason is structural, not lucky: the two instruments do not look in the same direction.
 //
-// ── CE QUE CETTE SONDE A ÉTABLI, ET CE QUE LE LOT DES ADJECTIFS EN A FAIT ────────────────────────
-// CE QU'ELLE A TROUVÉ : la couverture anglaise n'était pas absente, elle était de FORME NOMINALE. Le
-// lexique portait les NOMS de pratique et de condition (`islam`, `ramadan`, `mosque`, `depression`,
-// `diabetes`) et la bande d'orientation, mais PAS les ADJECTIFS D'APPARTENANCE par lesquels les gens
-// se décrivent : `muslim`, `catholic`, `depressed`, `diabetic`, `autistic` ne déclenchaient RIEN.
+// ── WHAT THIS PROBE ESTABLISHED, AND WHAT THE EN ADJECTIVES BATCH MADE OF IT ──────────────────────
+// WHAT IT FOUND: the English coverage was not absent, it was of NOMINAL FORM. The lexicon carried
+// the NOUNS of practice and condition (`islam`, `ramadan`, `mosque`, `depression`, `diabetes`) and
+// the orientation band, but NOT the ADJECTIVES OF MEMBERSHIP by which people describe themselves:
+// `muslim`, `catholic`, `depressed`, `diabetic`, `autistic` triggered NOTHING.
 //
-// CE QUI A ÉTÉ LIVRÉ DEPUIS : le tier `selfDeclaredEn`, et la table ci-dessous est mise à jour ligne
-// à ligne. Trois choses à ne pas confondre en la lisant :
-//   · les adjectifs admis déclenchent désormais, en constat LARGE — ce tier ne NOMME jamais ;
-//   · la réparation est CADRÉE : seule l'auto-déclaration est atteinte. La 3ᵉ personne et le
-//     syntagme nu restent muets (« my neighbour is diabetic » → RIEN), et c'est une frontière
-//     déclarée, tenue par le bloc `chemin` plus bas ;
-//   · certains zéros de la table sont des EXCLUSIONS mesurées, pas des trous — `orthodox`, `trans`,
-//     `deaf`, `socialist`. Chacun a sa raison écrite à son lexique.
-// Le français, lui, porte les deux formes ET les NOMME : l'écart d'étage entre les langues subsiste,
-// par décision.
+// WHAT HAS BEEN DELIVERED SINCE: the `selfDeclaredEn` tier, and the table below is updated line by
+// line. Three things not to confuse when reading it:
+//   · the admitted adjectives now trigger, at a BROAD finding — this tier NEVER names;
+//   · the repair is FRAMED: only self-declaration is reached. The 3rd person and the bare phrase
+//     stay mute (« my neighbour is diabetic » → RIEN), and it is a declared boundary, held by the
+//     `chemin` block below;
+//   · some zeros of the table are measured EXCLUSIONS, not holes — `orthodox`, `trans`, `deaf`,
+//     `socialist`. Each has its reason written at its lexicon.
+// The French, itself, carries both forms AND NAMES them: the storey gap between the languages
+// remains, by decision.
 //
-// ── DEUX HYPOTHÈSES PUBLIÉES FAUSSES, ET LA SECONDE EST PLUS COÛTEUSE QUE LA PREMIÈRE ────────────
-// (1) L'écriture a d'abord conclu à un défaut de CADRE : « i am depressed » muet quand « i have
-//     depression » déclenche ressemblait à une porte sur la copule. Le bloc `chemin` l'a RÉFUTÉ —
-//     les mêmes termes étaient muets en 3ᵉ personne et en syntagme nu. C'était une ABSENCE DE TERME.
+// ── TWO HYPOTHESES PUBLISHED FALSE, AND THE SECOND IS MORE COSTLY THAN THE FIRST ──────────────────
+// (1) The writing first concluded to a FRAME defect: « i am depressed » mute when « i have
+//     depression » triggers looked like a gate on the copula. The `chemin` block REFUTED it — the
+//     same terms were mute in the 3rd person and in the bare phrase. It was an ABSENCE OF TERM.
 //
-// (2) MAIS LA RÉFUTATION A LAISSÉ DEBOUT UNE SECONDE HYPOTHÈSE, que personne n'avait écrite parce
-//     que personne ne la voyait : que le cadre, une fois les termes admis, ANCRERAIT — comme il le
-//     fait en français. MESURÉ DEPUIS, ET FAUX. La copule ne désambiguïse pas en anglais : « im so
-//     ocd about my desk drawers », « im autistic about train timetables » portent toutes le cadre.
-//     C'est pourquoi le tier livré n'affirme jamais — ce qui protège est l'ÉTAGE, pas le cadre.
-//     Détail et surface de mesure : `filters-en.ts`, sur `SELF_DECLARATION_HEADS_EN`.
-//     Une hypothèse réfutée peut donc en abriter une autre, et c'est la leçon de méthode à garder.
+// (2) BUT THE REFUTATION LEFT STANDING A SECOND HYPOTHESIS, that no one had written because no one
+//     saw it: that the frame, once the terms admitted, WOULD ANCHOR — as it does in French. MEASURED
+//     SINCE, AND FALSE. The copula does not disambiguate in English: « im so ocd about my desk
+//     drawers », « im autistic about train timetables » all carry the frame. That is why the
+//     delivered tier never affirms — what protects is the STOREY, not the frame.
+//     Detail and measurement surface: `filters-en.ts`, on `SELF_DECLARATION_HEADS_EN`.
+//     A refuted hypothesis can therefore shelter another, and it is the method lesson to keep.
 //
-// ── PAR QUEL CHEMIN LES ZÉROS ARRIVENT ───────────────────────────────────────────────────────────
-// CLAUDE.md, *Ce qu'un filet prouve* : une assertion négative vérifie ce qu'elle ATTEINT. Deux pièges
-// documentés ont été désamorcés PAR CONSTRUCTION, et non par confiance :
+// ── BY WHICH PATH THE ZEROS ARRIVE ───────────────────────────────────────────────────────────────
+// CLAUDE.md, *What a net proves*: a negative assertion verifies what it REACHES. Two documented
+// traps were defused BY CONSTRUCTION, and not by trust:
 //
-//   · le SEUIL DE RÉPÉTITION — le cas d'école du dépôt, où « aucune couverture anglaise » mesurait en
-//     réalité un item unique sous le seuil. D'où trois VOLUMES par terme. Le piège s'est présenté :
-//     `burnt out` est muet à un item et déclenche à trois. Une sonde à un item l'aurait déclaré non
-//     câblé, à tort.
-//   · le CADRE — d'où le bloc `chemin`, qui rejoue les termes muets en 3ᵉ personne et en syntagme nu.
+//   · the REPETITION THRESHOLD — the repo's textbook case, where « no English coverage » actually
+//     measured a single item below the threshold. Hence three VOLUMES per term. The trap presented
+//     itself: `burnt out` is mute at one item and triggers at three. A one-item probe would have
+//     declared it not wired, wrongly.
+//   · the FRAME — hence the `chemin` block, which replays the mute terms in the 3rd person and in
+//     the bare phrase.
 //
-// ── CE QUE CETTE SONDE NE COUVRE PAS ─────────────────────────────────────────────────────────────
-// - **Elle ne mesure AUCUN faux positif.** Chaque énoncé est une auto-déclaration sincère hors
-//   contexte. Elle ne dit rien de ce qui arrive à l'hyperbole, à l'homographie ou à la citation :
-//   c'est le travail des bancs de registres, et un vert ici n'en dit rien.
-// - **Elle ne mesure pas une VIE.** Un terme isolé n'est pas une personne : elle ne dit rien de ce
-//   qui arrive quand le terme est noyé dans vingt items ordinaires, ni de qui n'emploie jamais le
-//   terme attendu. Les personas seules voient ça.
-// - **Un seul cadre par langue** (« i am X » / « je suis X »), plus les variantes du bloc `chemin`
-//   sur un sous-ensemble. Les formes narratives longues ne sont pas balayées.
-// - **Le pendant français est une TRADUCTION, donc une seconde variable.** Un écart EN/FR sur un
-//   terme peut venir du terme et non de la langue. L'écart n'est lisible qu'en MASSE, jamais sur une
-//   ligne isolée.
-// - **`conflictual` est absent de ce balayage**, et c'est une propriété du label, pas un oubli : sa
-//   porte est l'insulte ÉMISE VISANT quelqu'un, ce qui n'est pas une identité et n'a pas de forme
-//   « je suis X ». Son rappel n'est pas mesuré ici.
-// - **Le silence n'est PAS le résultat sûr.** Position du mainteneur, portée ici parce qu'elle change
-//   la lecture : le produit montre ce qu'un algorithme déduirait. Un terme qui déclenche largement
-//   n'est pas une mauvaise nouvelle, un silence n'est pas une bonne nouvelle — le silence est une
-//   asymétrie de traitement entre deux utilisateurs, et elle n'affiche RIEN.
+// ── WHAT THIS PROBE DOES NOT COVER ───────────────────────────────────────────────────────────────
+// - **It measures NO false positive.** Each utterance is a sincere self-declaration out of context.
+//   It says nothing of what happens to hyperbole, homography or quotation: that is the work of the
+//   register benches, and a green here says nothing of it.
+// - **It does not measure a LIFE.** An isolated term is not a person: it says nothing of what
+//   happens when the term is drowned in twenty ordinary items, nor of whoever never uses the
+//   expected term. The personas alone see that.
+// - **A single frame per language** (« i am X » / « je suis X »), plus the variants of the `chemin`
+//   block on a subset. The long narrative forms are not swept.
+// - **The French counterpart is a TRANSLATION, therefore a second variable.** An EN/FR gap on a term
+//   can come from the term and not from the language. The gap is legible only in MASS, never on an
+//   isolated line.
+// - **`conflictual` is absent from this sweep**, and it is a property of the label, not an
+//   omission: its gate is the insult EMITTED TARGETING someone, which is not an identity and has no
+//   « je suis X » form. Its recall is not measured here.
+// - **Silence is NOT the safe result.** Maintainer's position, carried here because it changes the
+//   reading: the product shows what an algorithm would deduce. A term that triggers broadly is not
+//   bad news, a silence is not good news — the silence is an asymmetry of treatment between two
+//   users, and it displays NOTHING.
 //
-// ── CE QUI A ÉTÉ LU ──────────────────────────────────────────────────────────────────────────────
-// LU : `CLAUDE.md` ; `register-bench.ts` ; `register-bench.harness.ts` ; les en-têtes des fixtures
-// politique, religieuse et sexualité ; le corps de `en_lived_plain` ; le bloc de leçons de
-// `sexuality-bench.test.ts`. NON LU, délibérément : `lexicon/*`, `filters-*.ts`, les documents de
-// portabilité EN, `criteres-mesure-copule-en.md`.
+// ── WHAT WAS READ ────────────────────────────────────────────────────────────────────────────────
+// READ: `CLAUDE.md`; `register-bench.ts`; `register-bench.harness.ts`; the headers of the political,
+// religious and sexuality fixtures; the body of `en_lived_plain`; the lessons block of
+// `sexuality-bench.test.ts`. NOT READ, deliberately: `lexicon/*`, `filters-*.ts`, the EN
+// portability documents, `criteres-mesure-copule-en.md`.
 
 import { describe, expect, it } from 'vitest';
 import { WIRED_LEXICONS } from '../lexicon/index';
 import { detectLabels } from './detect';
 
-/** Le résumé d'une détection, ou `RIEN`. Trois items identiques : le volume qui passe le seuil. */
+/** The summary of a detection, or `RIEN`. Three identical items: the volume that passes the threshold. */
 const run = (texts: readonly string[]) => {
   const out = detectLabels([...texts], WIRED_LEXICONS);
   return out.map((d) => `${d.label}[${d.stage}]`).join(', ') || 'RIEN';
@@ -87,11 +87,11 @@ const run = (texts: readonly string[]) => {
 const x3 = (t: string) => run([t, t, t]);
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. LE BALAYAGE APPARIÉ — la table figée
+// 1. THE PAIRED SWEEP — the frozen table
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
-/** `label | terme EN | terme FR | attendu EN | attendu FR`. Valeurs RELEVÉES puis figées, jamais
- *  déduites de la sortie courante — une table qui se recalcule ne mesure rien. */
+/** `label | EN term | FR term | expected EN | expected FR`. Values RECORDED then frozen, never
+ *  deduced from the current output — a table that recomputes itself measures nothing. */
 const SWEEP: readonly (readonly [string, string, string, string, string])[] = [
   ['religion', 'muslim', 'musulman', 'religion[indirect]', 'religion[explicit]'],
   ['religion', 'christian', 'chretien', 'religion[indirect]', 'religion[explicit]'],
@@ -100,16 +100,16 @@ const SWEEP: readonly (readonly [string, string, string, string, string])[] = [
   ['religion', 'hindu', 'hindou', 'religion[indirect]', 'religion[explicit]'],
   ['religion', 'buddhist', 'bouddhiste', 'religion[indirect]', 'religion[explicit]'],
   ['religion', 'sikh', 'sikh', 'religion[indirect]', 'religion[explicit]'],
-  // `orthodox` RESTE MUET, et c'est une EXCLUSION, pas un oubli : son usage dominant anglais est
-  // « conforme, canonique » (« an orthodox approach », « orthodox economics »). Le français porte
-  // `orthodoxe` en auto-déclaration et peut se le permettre ; l'anglais ne le peut pas. La ligne
-  // ci-dessous est donc la seule tradition volontairement laissée à `RIEN`.
+  // `orthodox` STAYS MUTE, and it is an EXCLUSION, not an omission: its dominant English use is
+  // « compliant, canonical » (« an orthodox approach », « orthodox economics »). The French carries
+  // `orthodoxe` in self-declaration and can afford it; the English cannot. The line below is
+  // therefore the only tradition deliberately left at `RIEN`.
   ['religion', 'orthodox', 'orthodoxe', 'RIEN', 'religion[explicit]'],
-  // AVANT LE LOT DES ADJECTIFS : ces trois-là étaient les SEULS termes religieux anglais à
-  // déclencher, et ils disaient tous la NON-CROYANCE ou la distance — jamais l'appartenance à une
-  // tradition. C'était le résultat le plus net du balayage, et c'est lui que le lot a réparé : les
-  // sept lignes au-dessus sont passées de `RIEN` au constat large. La valeur d'avant est conservée
-  // dans le commentaire plutôt que remplacée en silence.
+  // BEFORE THE ADJECTIVES BATCH: these three were the ONLY English religious terms to trigger, and
+  // they all said NON-BELIEF or distance — never membership in a tradition. It was the sharpest
+  // result of the sweep, and it is the one the batch repaired: the seven lines above went from
+  // `RIEN` to the broad finding. The prior value is kept in the comment rather than replaced in
+  // silence.
   ['religion', 'atheist', 'athee', 'religion[indirect]', 'religion[indirect]'],
   ['religion', 'agnostic', 'agnostique', 'religion[indirect]', 'religion[indirect]'],
   ['religion', 'evangelical', 'evangelique', 'religion[indirect]', 'religion[explicit]'],
@@ -122,21 +122,21 @@ const SWEEP: readonly (readonly [string, string, string, string, string])[] = [
   ['sexuality', 'queer', 'queer', 'sexuality[indirect]', 'sexuality[explicit]'],
   ['sexuality', 'straight', 'hetero', 'sexuality[indirect]', 'sexuality[explicit]'],
 
-  // L'identité de genre n'a PAS de label à elle : tout ce qui déclenche ici est rangé sous
-  // `sexuality`. Ce n'est pas un défaut de câblage, c'est la doctrine à six labels (ADR-0003) — la
-  // sonde le rend visible, elle ne le tranche pas.
+  // Gender identity has NO label of its own: everything that triggers here is filed under
+  // `sexuality`. It is not a wiring defect, it is the six-label doctrine (ADR-0003) — the probe
+  // makes it visible, it does not settle it.
   ['gender', 'trans', 'trans', 'RIEN', 'sexuality[explicit]'],
   ['gender', 'transgender', 'transgenre', 'sexuality[indirect]', 'sexuality[explicit]'],
   ['gender', 'nonbinary', 'non binaire', 'sexuality[indirect]', 'sexuality[explicit]'],
   ['gender', 'genderfluid', 'genre fluide', 'sexuality[indirect]', 'RIEN'],
   ['gender', 'intersex', 'intersexe', 'sexuality[indirect]', 'RIEN'],
 
-  // `politics` était MUET en anglais sur les neuf termes, tous volumes confondus — le dernier trou
-  // de couverture connu, et le seul label anglophone sans tier d'auto-déclaration. Le lot
-  // `selfDeclaredEn` l'a comblé : huit des neuf déclenchent désormais, en constat LARGE.
-  // La valeur d'AVANT reste écrite ici, sans quoi la mise à jour effacerait le constat au lieu de
-  // l'enregistrer — même discipline que la ligne `religion` plus haut.
-  //     AVANT : les neuf à `RIEN`.  APRÈS : huit à `politics[indirect]`, `ecologist` inchangé.
+  // `politics` was MUTE in English on the nine terms, all volumes together — the last known coverage
+  // hole, and the only anglophone label without a self-declaration tier. The `selfDeclaredEn` batch
+  // filled it: eight of the nine now trigger, at a BROAD finding.
+  // The BEFORE value stays written here, without which the update would erase the finding instead of
+  // recording it — same discipline as the `religion` line above.
+  //     BEFORE: the nine at `RIEN`.  AFTER: eight at `politics[indirect]`, `ecologist` unchanged.
   ['politics', 'socialist', 'socialiste', 'politics[indirect]', 'politics[explicit]'],
   ['politics', 'communist', 'communiste', 'politics[indirect]', 'politics[explicit]'],
   ['politics', 'conservative', 'conservateur', 'politics[indirect]', 'politics[explicit]'],
@@ -145,9 +145,9 @@ const SWEEP: readonly (readonly [string, string, string, string, string])[] = [
   ['politics', 'feminist', 'feministe', 'politics[indirect]', 'politics[explicit]'],
   ['politics', 'marxist', 'marxiste', 'politics[indirect]', 'politics[explicit]'],
   ['politics', 'libertarian', 'libertarien', 'politics[indirect]', 'RIEN'],
-  // `ecologist` reste à RIEN dans les DEUX langues, et le zéro ne dit pas la même chose des deux
-  // côtés : en anglais le lexique porte `environmentalist` et NON `ecologist` (choix de forme, pas
-  // d'exclusion doctrinale) ; en français `ecologiste` n'est pas au tier, `ecolo` l'est.
+  // `ecologist` stays at RIEN in BOTH languages, and the zero does not say the same thing on both
+  // sides: in English the lexicon carries `environmentalist` and NOT `ecologist` (form choice, not
+  // doctrinal exclusion); in French `ecologiste` is not at the tier, `ecolo` is.
   ['politics', 'ecologist', 'ecologiste', 'RIEN', 'RIEN'],
 
   ['mental_health', 'depressed', 'depressif', 'mental_health[indirect]', 'mental_health[explicit]'],
@@ -155,8 +155,8 @@ const SWEEP: readonly (readonly [string, string, string, string, string])[] = [
   ['mental_health', 'anxious', 'anxieux', 'mental_health[indirect]', 'mental_health[explicit]'],
   ['mental_health', 'schizophrenic', 'schizophrene', 'RIEN', 'mental_health[explicit]'],
   ['mental_health', 'autistic', 'autiste', 'mental_health[indirect]', 'RIEN'],
-  // Muet à UN item, déclenche à TROIS — le seuil de répétition prit sur le fait. Le bloc `volume`
-  // plus bas est ce qui empêche cette ligne d'être lue comme « non câblé ».
+  // Mute at ONE item, triggers at THREE — the repetition threshold caught in the act. The `volume`
+  // block below is what prevents this line from being read as « not wired ».
   [
     'mental_health',
     'burnt out',
@@ -183,17 +183,17 @@ const SWEEP: readonly (readonly [string, string, string, string, string])[] = [
   ['health_physical', 'deaf', 'sourd', 'RIEN', 'RIEN'],
   ['health_physical', 'blind', 'aveugle', 'RIEN', 'RIEN'],
   ['health_physical', 'immunocompromised', 'immunodeprime', 'health_physical[indirect]', 'RIEN'],
-  // CETTE LIGNE DISAIT « la SEULE auto-déclaration anglaise du balayage qui atteigne le constat
-  // NOMMÉ, et elle est isolée : ses voisins immédiats de label sont muets ». L'observation était
-  // JUSTE et sa lecture était fausse : ce n'était pas une singularité du terme, c'était un DÉFAUT.
-  // `epileptic` était en `explicit` ET en `selfDeclaredEn` ; un terme aux deux tiers court-circuite
-  // le second, donc il NOMMAIT dès un item — dans n'importe quel cadre, y compris « the editing in
-  // that trailer is epileptic ». La sonde avait donc vu le tort, et l'avait rangé en curiosité.
+  // THIS LINE SAID « the ONLY English self-declaration of the sweep that reaches the NAMED finding,
+  // and it is isolated: its immediate label neighbors are mute ». The observation was RIGHT and its
+  // reading was false: it was not a singularity of the term, it was a DEFECT.
+  // `epileptic` was in `explicit` AND in `selfDeclaredEn`; a term at both tiers short-circuits the
+  // second, so it NAMED from one item — in any frame, including « the editing in that trailer is
+  // epileptic ». The probe had therefore seen the wrong, and had filed it as a curiosity.
   //
-  // C'est le motif de CLAUDE.md par un chemin de plus : ce qui manquait n'était pas la mesure, c'est
-  // qu'un écart isolé se lit spontanément comme une propriété du terme plutôt que comme un bug. Le
-  // terme est retombé en LARGE avec ses voisins, et l'intersection qui l'avait produit est désormais
-  // tenue par `detect/storey-intersection.test.ts`.
+  // It is the CLAUDE.md motive by one more path: what was missing was not the measurement, it is
+  // that an isolated gap reads spontaneously as a property of the term rather than as a bug. The
+  // term fell back to BROAD with its neighbors, and the intersection that produced it is now held by
+  // `detect/storey-intersection.test.ts`.
   [
     'health_physical',
     'epileptic',
@@ -203,8 +203,8 @@ const SWEEP: readonly (readonly [string, string, string, string, string])[] = [
   ],
 ];
 
-describe('sonde à cadre calqué — balayage EN/FR', () => {
-  it('la table entière tient, ligne à ligne', () => {
+describe('traced-frame probe — EN/FR sweep', () => {
+  it('the whole table holds, line by line', () => {
     const observed = SWEEP.map(([label, en, fr]) => [
       label,
       en,
@@ -215,32 +215,32 @@ describe('sonde à cadre calqué — balayage EN/FR', () => {
     expect(observed).toEqual(SWEEP.map((row) => [...row]));
   });
 
-  it("ANGLAIS — l'appartenance politique déclenche désormais, et des DEUX bords", () => {
-    // AVANT LE LOT `selfDeclaredEn` : les NEUF rendaient `RIEN`, tous volumes confondus, et
-    // l'assertion s'écrivait « aucun terme d'appartenance politique ne déclenche ». C'était le
-    // dernier trou de couverture connu, et il valait pour les deux bords à la fois.
+  it('ENGLISH — political membership now triggers, and on BOTH edges', () => {
+    // BEFORE THE `selfDeclaredEn` BATCH: the NINE returned `RIEN`, all volumes together, and the
+    // assertion was written « no political membership term triggers ». It was the last known
+    // coverage hole, and it held for both edges at once.
     //
-    // APRÈS : huit sur neuf déclenchent, en constat LARGE. L'assertion est TOURNÉE, jamais
-    // supprimée — la valeur d'avant reste écrite ci-dessus et à la table.
+    // AFTER: eight of nine trigger, at a BROAD finding. The assertion is TURNED, never removed — the
+    // prior value stays written above and at the table.
     //
-    // ET LE SENS DE CETTE LIGNE A CHANGÉ, ce qui est le point : elle ne mesure plus une absence,
-    // elle mesure que le rappel ne s'est pas installé d'UN SEUL CÔTÉ. Les huit couvrent les deux
-    // bords (`socialist`, `communist`, `marxist`, `anarchist`, `feminist` / `conservative`,
-    // `liberal`, `libertarian`) : un lot qui n'en réparerait qu'un ferait rougir ici sans avoir à
-    // toucher au témoin de symétrie.
+    // AND THE MEANING OF THIS LINE CHANGED, which is the point: it no longer measures an absence, it
+    // measures that the recall did not settle on ONE SIDE ONLY. The eight cover both edges
+    // (`socialist`, `communist`, `marxist`, `anarchist`, `feminist` / `conservative`, `liberal`,
+    // `libertarian`): a batch that would repair only one would go red here without having to touch
+    // the symmetry witness.
     const muets = SWEEP.filter(([label]) => label === 'politics').filter(
       ([, en]) => x3(`i am ${en}`) === 'RIEN',
     );
     expect(muets.map(([, en]) => en)).toEqual(['ecologist']);
   });
 
-  it("ANGLAIS — l'appartenance religieuse déclenche désormais, et le pôle non-croyant AUSSI", () => {
-    // AVANT LE LOT DES ADJECTIFS : `['atheist', 'agnostic', 'evangelical']` — les trois seuls, et
-    // tous du côté de la non-croyance ou de la distance. C'était le résultat le plus net du
-    // balayage, et il décrivait un détecteur de non-croyants.
+  it('ENGLISH — religious membership now triggers, and the non-believer pole TOO', () => {
+    // BEFORE THE ADJECTIVES BATCH: `['atheist', 'agnostic', 'evangelical']` — the only three, and
+    // all on the side of non-belief or distance. It was the sharpest result of the sweep, and it
+    // described a non-believer detector.
     //
-    // APRÈS : les sept traditions rejoignent les trois. La valeur d'avant reste écrite ci-dessus,
-    // sans quoi la mise à jour effacerait le constat au lieu de l'enregistrer.
+    // AFTER: the seven traditions join the three. The prior value stays written above, without which
+    // the update would erase the finding instead of recording it.
     const fired = SWEEP.filter(([label]) => label === 'religion')
       .filter(([, en]) => x3(`i am ${en}`) !== 'RIEN')
       .map(([, en]) => en);
@@ -258,9 +258,9 @@ describe('sonde à cadre calqué — balayage EN/FR', () => {
     ]);
   });
 
-  it("et le SEUL zéro religieux qui reste est une EXCLUSION, pas un trou — c'est `orthodox`", () => {
-    // Sans cette ligne, le zéro d'`orthodox` dans la table ne se distinguerait pas d'un oubli. Sa
-    // cause est nommée au lexique : usage dominant anglais « conforme, canonique ».
+  it('and the ONLY religious zero that remains is an EXCLUSION, not a hole — it is `orthodox`', () => {
+    // Without this line, the zero of `orthodox` in the table would not distinguish itself from an
+    // omission. Its cause is named at the lexicon: dominant English use « compliant, canonical ».
     const muets = SWEEP.filter(([label]) => label === 'religion')
       .filter(([, en]) => x3(`i am ${en}`) === 'RIEN')
       .map(([, en]) => en);
@@ -269,25 +269,26 @@ describe('sonde à cadre calqué — balayage EN/FR', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. LE VOLUME — le piège du seuil, désamorcé plutôt que supposé
+// 2. THE VOLUME — the threshold trap, defused rather than supposed
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
-describe('sonde — volume', () => {
-  it('`burnt out` est MUET à un item et déclenche à trois', () => {
-    // La ligne qui justifie tout le dispositif à trois volumes : le zéro à un item et le zéro d'un
-    // terme absent ont exactement la même apparence.
+describe('probe — volume', () => {
+  it('`burnt out` is MUTE at one item and triggers at three', () => {
+    // The line that justifies the whole three-volume apparatus: the zero at one item and the zero of
+    // an absent term have exactly the same appearance.
     expect(run(['i am burnt out'])).toBe('RIEN');
     expect(x3('i am burnt out')).toBe('mental_health[indirect]');
   });
 
-  it("un terme ABSENT reste muet à tous les volumes — l'autre chemin du zéro", () => {
-    // AVANT LE LOT DES ADJECTIFS, cette propriété était portée par `muslim`, qui n'était câblé nulle
-    // part. Il l'est désormais (tier `selfDeclaredEn`), et il ne peut donc plus tenir ce rôle : le
-    // garder aurait transformé la démonstration en son contraire.
+  it('an ABSENT term stays mute at all volumes — the other path of the zero', () => {
+    // BEFORE THE ADJECTIVES BATCH, this property was carried by `muslim`, which was wired nowhere. It
+    // now is (`selfDeclaredEn` tier), and can therefore no longer hold this role: keeping it would
+    // have turned the demonstration into its opposite.
     //
-    // `orthodox` le remplace, et le remplacement est FIDÈLE — c'est le seul terme religieux du
-    // balayage volontairement laissé hors lexique (exclusion mesurée, cf. la table). La propriété
-    // testée est inchangée : distinguer le zéro d'un terme ABSENT du zéro d'un terme sous SEUIL.
+    // `orthodox` replaces it, and the replacement is FAITHFUL — it is the only religious term of the
+    // sweep deliberately left outside the lexicon (measured exclusion, cf. the table). The property
+    // tested is unchanged: distinguishing the zero of an ABSENT term from the zero of a term below
+    // THRESHOLD.
     expect(run(['i am orthodox'])).toBe('RIEN');
     expect(x3('i am orthodox')).toBe('RIEN');
     expect(
@@ -295,75 +296,77 @@ describe('sonde — volume', () => {
     ).toBe('RIEN');
   });
 
-  it('et le terme réparé, lui, déclenche aux MÊMES volumes — le témoin du remplacement', () => {
-    // Sans lui, la substitution ci-dessus ressemblerait à un choix de confort. Elle enregistre une
-    // réparation : `muslim` a changé de camp, et c'est vérifié plutôt qu'affirmé.
+  it('and the repaired term, itself, triggers at the SAME volumes — the witness of the replacement', () => {
+    // Without it, the substitution above would look like a comfort choice. It records a repair:
+    // `muslim` changed sides, and it is verified rather than affirmed.
     expect(x3('i am muslim')).toBe('religion[indirect]');
   });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. LE CHEMIN — ce qui a réfuté l'hypothèse de la copule
+// 3. THE PATH — what refuted the copula hypothesis
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
-describe('sonde — chemin du zéro', () => {
-  it("LA RÉPARATION EST CADRÉE : l'auto-déclaration déclenche, la 3ᵉ personne reste muette", () => {
-    // AVANT LE LOT : les deux colonnes rendaient `RIEN`, et c'est ce qui a RÉFUTÉ l'hypothèse d'une
-    // porte grammaticale — si la copule avait été filtrée, la 3ᵉ personne aurait déclenché. Elle ne
-    // déclenchait pas : les termes étaient simplement absents.
+describe('probe — path of the zero', () => {
+  it('THE REPAIR IS FRAMED: self-declaration triggers, the 3rd person stays mute', () => {
+    // BEFORE THE BATCH: both columns returned `RIEN`, and it is what REFUTED the grammatical-gate
+    // hypothesis — if the copula had been filtered, the 3rd person would have triggered. It did not
+    // trigger: the terms were simply absent.
     //
-    // APRÈS, et c'est la FRONTIÈRE DU LOT, à lire avant de le citer : les termes sont admis au SEUL
-    // tier `selfDeclaredEn`, qui ne se matche que par la copule. La colonne de gauche est réparée,
-    // celle de droite ne l'est PAS — « my neighbour is diabetic » rend toujours `RIEN`. Le lot
-    // répare l'auto-déclaration, il ne répare ni la 3ᵉ personne ni le syntagme nu.
+    // AFTER, and it is the BOUNDARY OF THE BATCH, to be read before citing it: the terms are admitted
+    // to the SOLE `selfDeclaredEn` tier, which matches only by the copula. The left column is
+    // repaired, the right one is NOT — « my neighbour is diabetic » still returns `RIEN`. The batch
+    // repairs self-declaration, it repairs neither the 3rd person nor the bare phrase.
     //
-    // Ce n'est pas un oubli : admettre ces adjectifs NUS en `indirectCore` est une décision
-    // distincte, à mesurer séparément — c'est la porte où « straight » a été mesuré à 1 → 4 torts.
+    // It is not an omission: admitting these BARE adjectives in `indirectCore` is a distinct
+    // decision, to be measured separately — it is the gate where « straight » was measured at 1 → 4
+    // wrongs.
     for (const term of ['muslim', 'catholic', 'depressed', 'diabetic']) {
       expect(x3(`i am ${term}`)).not.toBe('RIEN');
       expect(x3(`my neighbour is ${term}`)).toBe('RIEN');
     }
   });
 
-  it('et les termes NON ADMIS restent muets dans les DEUX cadres — le zéro qui mesure une porte', () => {
-    // Le contrôle qui empêche de lire le bloc ci-dessus comme « tout adjectif passe désormais par la
-    // copule ». Ces quatre-là sont exclus à la porte d'admission, chacun pour une raison écrite à
-    // son lexique : `progressive` (politics — adjectif d'usage général, verres et surcharge de
-    // musculation), `trans` (préfixe ingérable), `deaf` et `disabled` (territoire hors périmètre).
+  it('and the NON-ADMITTED terms stay mute in BOTH frames — the zero that measures a gate', () => {
+    // The control that prevents reading the block above as « every adjective now goes through the
+    // copula ». These four are excluded at the admission gate, each for a reason written at its
+    // lexicon: `progressive` (politics — general-use adjective, lenses and muscle-building overload),
+    // `trans` (unmanageable prefix), `deaf` and `disabled` (territory out of perimeter).
     //
-    // `socialist` TENAIT CE RÔLE et ne le peut plus : le lot `selfDeclaredEn` l'a admis, et le
-    // garder ici aurait transformé la démonstration en son contraire. `progressive` le remplace, et
-    // le remplacement est FIDÈLE — c'est un terme politique du même balayage, exclu par DÉCISION
-    // (règle d'admission, ADR-0003) et non par oubli. La propriété testée est inchangée : distinguer
-    // le zéro d'un terme ABSENT du zéro d'un terme sous seuil. Même substitution, même raison et même
-    // écriture que `muslim` → `orthodox` au bloc `volume`.
+    // `socialist` HELD THIS ROLE and can no longer: the `selfDeclaredEn` batch admitted it, and
+    // keeping it here would have turned the demonstration into its opposite. `progressive` replaces
+    // it, and the replacement is FAITHFUL — it is a political term of the same sweep, excluded by
+    // DECISION (admission rule, ADR-0003) and not by omission. The property tested is unchanged:
+    // distinguishing the zero of an ABSENT term from the zero of a term below threshold. Same
+    // substitution, same reason and same writing as `muslim` → `orthodox` at the `volume` block.
     for (const term of ['progressive', 'trans', 'deaf', 'disabled']) {
       expect(x3(`i am ${term}`)).toBe('RIEN');
       expect(x3(`my neighbour is ${term}`)).toBe('RIEN');
     }
   });
 
-  it('le témoin inverse — `gay` déclenche dans les trois mêmes cadres', () => {
-    // Sans ce témoin, le bloc au-dessus passerait au vert même si le détecteur était éteint : c'est
-    // la mutation la moins coûteuse qui distingue un filet vide d'un filet qui tient.
+  it('the inverse witness — `gay` triggers in the same three frames', () => {
+    // Without this witness, the block above would go green even if the detector were off: it is the
+    // least costly mutation that distinguishes an empty net from a net that holds.
     expect(x3('i am gay')).toBe('sexuality[indirect]');
     expect(x3('my brother is gay')).toBe('sexuality[indirect]');
     expect(x3('gay bar')).toBe('sexuality[indirect]');
   });
 
-  it("l'ADJECTIF déclenche désormais — mais un ÉTAGE EN DESSOUS du nom, et c'est la doctrine", () => {
-    // LA FORME EXACTE DU TROU, telle que ce bloc la mesurait AVANT le lot :
+  it('the ADJECTIVE now triggers — but one STOREY BELOW the noun, and it is the doctrine', () => {
+    // THE EXACT SHAPE OF THE HOLE, as this block measured it BEFORE the batch:
     //     « i am depressed » → RIEN        « i have depression »  → mental_health[indirect]
     //     « i am diabetic »  → RIEN        « i have diabetes »    → health_physical[explicit]
     //     « i am muslim »    → RIEN        « i go to the mosque » → religion[indirect]
     //
-    // APRÈS : la colonne de gauche déclenche. Elle ne rejoint PAS la droite pour autant, et l'écart
-    // qui subsiste n'est pas un reste de trou — c'est la décision du lot. `selfDeclaredEn`
-    // n'affirme jamais : « i have diabetes » NOMME, « i am diabetic » pose un constat LARGE.
+    // AFTER: the left column triggers. It does NOT join the right for all that, and the gap that
+    // remains is not a leftover of the hole — it is the decision of the batch. `selfDeclaredEn`
+    // never affirms: « i have diabetes » NAMES, « i am diabetic » poses a BROAD finding.
     //
-    // Que l'adjectif reste sous le nom est le résultat qu'il faut savoir lire. Ce n'est pas que
-    // l'adjectif vaudrait moins ; c'est que le cadre anglais ne l'ancre pas (`filters-en.ts`), et
-    // qu'on ne fait pas porter une affirmation à un cadre qui ne discrimine rien.
+    // That the adjective stays below the noun is the result one must know how to read. It is not
+    // that the adjective would be worth less; it is that the English frame does not anchor it
+    // (`filters-en.ts`), and one does not make a frame that discriminates nothing carry an
+    // affirmation.
     expect(x3('i am depressed')).toBe('mental_health[indirect]');
     expect(x3('i have depression')).toBe('mental_health[indirect]');
     expect(x3('i am diabetic')).toBe('health_physical[indirect]');
@@ -372,10 +375,10 @@ describe('sonde — chemin du zéro', () => {
     expect(x3('i go to the mosque every friday')).toBe('religion[indirect]');
   });
 
-  it("AUCUN de ces adjectifs n'atteint le constat NOMMÉ — la propriété qui borne le lot", () => {
-    // La contre-épreuve du bloc ci-dessus, et elle est indifférente au terme : peu importe lequel
-    // est admis demain à `selfDeclaredEn`, aucun ne peut nommer. Si cette ligne rougit, le tier a
-    // changé d'étage — dire LEQUEL avant de mettre à jour quoi que ce soit.
+  it('NONE of these adjectives reaches the NAMED finding — the property that bounds the batch', () => {
+    // The counter-proof of the block above, and it is indifferent to the term: no matter which is
+    // admitted tomorrow to `selfDeclaredEn`, none can name. If this line goes red, the tier changed
+    // storey — say WHICH before updating anything at all.
     for (const p of [
       'i am depressed',
       'i am diabetic',

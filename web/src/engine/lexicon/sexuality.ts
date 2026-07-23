@@ -1,51 +1,51 @@
-// Lexique `sexuality` (PANO-72, passe 2) — orientation / identité de genre.
+// `sexuality` lexicon (PANO-72, pass 2) — orientation / gender identity.
 //
-// ── Justification de généricité (discipline PANO-70 §3, §2.5) ─────────────────────────────────
-// Vocabulaire d'orientation et d'identité du FR courant, écrit à l'aveugle depuis l'usage commun
-// (incluant les emprunts anglais LEXICALISÉS chez les francophones : « coming out », « wlw »),
-// jamais depuis un export. Le label détecte TOUTE orientation/identité, symétriquement — vécu,
-// hétéro comme non-hétéro (neutralité §4.3 tenue par la SYMÉTRIE, pas par l'omission).
-// FRONTIÈRES tenues :
-//   · orientation/identité (le label) ≠ INSULTE à connotation sexuelle visant une personne (→
-//     `conflictual`, jamais ici) ;
-//   · SLUR d'identité (jamais une auto-désignation) : visant une personne → conflictual ; visant
-//     un GROUPE dans l'absolu → futur label dédié, SIGNALÉ, exclu partout pour l'instant ;
-//   · règle catalogue « jamais nommer depuis l'indirect » : les identités nues vivent en
-//     `indirectCore` (tag large, « cette actrice est lesbienne » reste indirect) ; seul le pattern
-//     d'auto-déclaration (« je suis lesbienne ») produit un tag nommé.
-// Pas d'emprunt anglais généraliste (dette PANO-35, FR-only v1) : seulement le lexicalisé.
+// ── Genericity justification (PANO-70 §3, §2.5 discipline) ────────────────────────────────────
+// Orientation and identity vocabulary of everyday FR, written blind from common usage
+// (including the English loanwords LEXICALIZED among francophones: « coming out », « wlw »),
+// never from an export. The label detects ALL orientation/identity, symmetrically — lived experience,
+// hetero as well as non-hetero (neutrality §4.3 held by SYMMETRY, not by omission).
+// BOUNDARIES held:
+//   · orientation/identity (the label) ≠ sexually-connoted INSULT targeting a person (→
+//     `conflictual`, never here);
+//   · identity SLUR (never a self-designation): targeting a person → conflictual; targeting
+//     a GROUP in the absolute → future dedicated label, FLAGGED, excluded everywhere for now;
+//   · catalogue rule "never name from the indirect": the bare identities live in
+//     `indirectCore` (broad tag, « cette actrice est lesbienne » stays indirect); only the
+//     self-declaration pattern (« je suis lesbienne ») produces a named tag.
+// No general-purpose English loanword (PANO-35 debt, FR-only v1): only the lexicalized one.
 // ───────────────────────────────────────────────────────────────────────────────────────────────
 //
-// Entrées NORMALISÉES. Seuil 1 (calibrage PANO-33 — coût outing) : le colloquial est DÉSACTIVÉ
-// (à seuil 1, un seul hit colloquial taguerait ; on n'y met donc que du signal communautaire net,
-// tout en `indirectCore`). Exclusions assumées (décision yuya) : « arc-en-ciel »,
-// « entre filles/meufs » EXCLUS (FP météo/amitié à seuil 1) ; « yuri/yaoi » EXCLUS (fiction).
+// NORMALIZED entries. Threshold 1 (PANO-33 calibration — outing cost): colloquial is DISABLED
+// (at threshold 1, a single colloquial hit would tag; we therefore put only clear community signal there,
+// all in `indirectCore`). Assumed exclusions (yuya decision): « arc-en-ciel »,
+// « entre filles/meufs » EXCLUDED (weather/friendship FP at threshold 1); « yuri/yaoi » EXCLUDED (fiction).
 
 import type { TopicalLexicon } from './types';
 
 export const SEXUALITY_LEXICON: TopicalLexicon = {
   kind: 'topical',
   label: 'sexuality',
-  // Lectures du registre §5 : vécu personnel · allié · curiosité.
+  // Readings from registry §5: personal lived experience · ally · curiosity.
   readingTemplateIds: [
     'sensitive.sexuality.reading.lived',
     'sensitive.sexuality.reading.ally',
     'sensitive.sexuality.reading.curiosity',
   ],
-  // Auto-référence NON copulaire (locutions) — le tag nommé passe surtout par `selfDeclared`.
+  // NON-copular self-reference (phrases) — the named tag goes mostly through `selfDeclared`.
   //
-  // « ma transition » NU A ÉTÉ RETIRÉ D'ICI, et il faut dire ce qu'il faisait : il posait un constat
-  // NOMMÉ — celui qui oute — sur « ma transition vers le management a pris deux ans ». Mesuré, en
-  // français livré. Le possessif avait été pris pour la forme PORTÉE qui désambiguïse (ADR-0003,
-  // deuxième porte) ; il ne l'est pas, parce que « ma transition professionnelle » est portée
-  // exactement pareil. Ce qui distingue une transition de genre d'une reconversion n'est pas le
-  // possessif, c'est le DOMAINE — d'où les quatre formes qualifiées ci-dessous.
+  // BARE « ma transition » WAS REMOVED FROM HERE, and one must say what it did: it set a
+  // NAMED finding — the one that outs — on « ma transition vers le management a pris deux ans ». Measured, in
+  // delivered French. The possessive had been taken for the BORNE form that disambiguates (ADR-0003,
+  // second gate); it is not, because « ma transition professionnelle » is borne
+  // exactly the same. What distinguishes a gender transition from a career change is not the
+  // possessive, it is the DOMAIN — hence the four qualified forms below.
   //
-  // Le terme nu n'est pas évincé pour autant : il vit désormais en `indirectCore`. DÉMOTION, PAS
-  // FILTRAGE — même geste que la question rapportée, et pour la même raison. Quelqu'un qui écrit
-  // « ma transition » sans autre mot parle très probablement de la sienne ; lui retirer son constat
-  // serait faux, et le lui laisser NOMMÉ l'oute sur une phrase de carrière. Il reste, il n'affirme
-  // plus.
+  // The bare term is not ousted for all that: it now lives in `indirectCore`. DEMOTION, NOT
+  // FILTERING — same gesture as the reported question, and for the same reason. Someone who writes
+  // « ma transition » with no other word is very probably speaking of their own; removing their finding
+  // would be false, and leaving it NAMED outs them on a career sentence. It stays, it no longer
+  // asserts.
   explicit: [
     'mon coming out',
     "j'ai fait mon coming out",
@@ -54,8 +54,8 @@ export const SEXUALITY_LEXICON: TopicalLexicon = {
     'transition de genre',
     'mon parcours de transition',
   ],
-  // Identités AUTO-DÉCLARÉES (« je suis lesbienne », « chui non binaire ») → tag nommé via pattern.
-  // Symétrie : « hétéro » inclus (toute orientation exposée, décision yuya).
+  // SELF-DECLARED identities (« je suis lesbienne », « chui non binaire ») → named tag via pattern.
+  // Symmetry: « hétéro » included (all orientation exposed, yuya decision).
   selfDeclaredFr: [
     'gay',
     'lesbienne',
@@ -66,12 +66,12 @@ export const SEXUALITY_LEXICON: TopicalLexicon = {
     'homosexuel',
     'homosexuelle',
     'trans',
-    // Synonyme exact de `trans` pour une auto-déclaration, et il n'y était pas : « je suis
-    // transgenre » rendait un constat LARGE là où « je suis trans » en rendait un NOMMÉ. La même
-    // phrase recevait deux confiances selon le mot choisi, ce qu'aucune doctrine ne demande.
+    // Exact synonym of `trans` for a self-declaration, and it was not there: « je suis
+    // transgenre » yielded a BROAD finding where « je suis trans » yielded a NAMED one. The same
+    // sentence received two confidences depending on the word chosen, which no doctrine requires.
     'transgenre',
     'queer',
-    // « pan » nu écarté (sondage FP PANO-72 : « je suis un pan de mur ») — pansexuel(le) suffit.
+    // bare « pan » discarded (FP survey PANO-72: « je suis un pan de mur ») — pansexuel(le) suffices.
     'pansexuel',
     'pansexuelle',
     'non binaire',
@@ -81,86 +81,86 @@ export const SEXUALITY_LEXICON: TopicalLexicon = {
     'ace',
     'aro',
     'hetero',
-    // ── LES QUATRE TERMES DE LA RÉPARATION DE SYMÉTRIE FR (règle ratifiée) ───────────────────────
-    // Une auto-déclaration « je suis hétéro » ou « je suis cis » doit déclencher EXACTEMENT AUTANT
-    // que « je suis gay » ou « je suis trans ». Le fondement décide de la forme : un lexique qui
-    // n'attrape que les identités MINORITAIRES est un détecteur de minorités, pas un détecteur
-    // d'orientation — et sa démonstration s'inverse, puisqu'il prétend montrer ce qu'une plateforme
-    // déduit de tout le monde en ne déduisant que sur certains.
+    // ── THE FOUR TERMS OF THE FR SYMMETRY REPAIR (ratified rule) ─────────────────────────────────
+    // A self-declaration « je suis hétéro » or « je suis cis » must fire EXACTLY AS MUCH
+    // as « je suis gay » or « je suis trans ». The rationale decides the form: a lexicon that
+    // catches only MINORITY identities is a minority detector, not an
+    // orientation detector — and its demonstration inverts, since it claims to show what a platform
+    // infers from everyone while inferring only on some.
     //
-    // ÉTAT MESURÉ AVANT CE LOT, par balayage de ~130 termes (le pendant FR de la sonde à cadre
-    // calqué) : l'orientation minoritaire rendait 16 termes dont 15 au constat NOMMÉ, la majoritaire
-    // rendait `hetero` SEUL — le registre soutenu `heterosexuel` était muet. Le versant genre était
-    // pire : `cis`, `cisgenre` et `cisgender` muets tous les trois, contre `trans` / `transgenre` /
-    // `non binaire` / `enby` au constat nommé. La symétrie n'était donc pas « une paire sur deux »,
-    // c'était UNE GRAPHIE contre seize.
+    // STATE MEASURED BEFORE THIS BATCH, by a sweep of ~130 terms (the FR counterpart of the copied-frame
+    // probe): the minority orientation yielded 16 terms of which 15 at the NAMED finding, the majority
+    // yielded `hetero` ALONE — the formal register `heterosexuel` was mute. The gender side was
+    // worse: `cis`, `cisgenre` and `cisgender` mute all three, against `trans` / `transgenre` /
+    // `non binaire` / `enby` at the named finding. The symmetry was therefore not "one pair in two",
+    // it was ONE SPELLING against sixteen.
     //
-    // CE LOT N'ACHÈTE AUCUN RAPPEL MESURÉ, et c'est le résultat honnête plutôt qu'une réserve :
-    // ajouté aux cinq fixtures scellées, le diff est VIDE — zéro constat neuf, zéro perdu, zéro
-    // tort. Deux causes indépendantes, et le corpus connaissait déjà la première, écrite dans son
-    // propre sceau : **personne ne déclare son hétérosexualité**. La seconde est que le seul item du
-    // corpus qui écrive une auto-déclaration majoritaire (« i am straight, for the fortieth time »)
-    // est ANGLAIS, donc hors d'atteinte de la porte de langue. Il entre quand même, pour la raison
-    // du mainteneur : une francophone qui écrit « je suis cis » ne reçoit RIEN aujourd'hui là où
-    // « je suis trans » reçoit un constat nommé, et cette asymétrie est VIVANTE que le banc
-    // l'exerce ou non. Une non-détection n'affiche rien.
+    // THIS BATCH BUYS NO MEASURED RECALL, and it is the honest result rather than a reservation:
+    // added to the five sealed fixtures, the diff is EMPTY — zero new finding, zero lost, zero
+    // wrong. Two independent causes, and the corpus already knew the first, written in its
+    // own seal: **no one declares their heterosexuality**. The second is that the only item in the
+    // corpus that writes a majority self-declaration (« i am straight, for the fortieth time »)
+    // is ENGLISH, hence out of reach of the language gate. It enters anyway, for the
+    // maintainer's reason: a francophone who writes « je suis cis » receives NOTHING today where
+    // « je suis trans » receives a named finding, and this asymmetry is LIVE whether the bench
+    // exercises it or not. A non-detection displays nothing.
     //
-    // GRAPHIES FRANÇAISES SEULEMENT. `straight`, `heterosexual` et `cisgender` sont ÉCARTÉS : les
-    // mettre ici pré-chargerait le tier pour le jour où une tête de copule anglaise est câblée,
-    // c'est-à-dire enregistrerait une couverture LATENTE comme si elle était vivante (ADR-0003,
-    // *annoter*). `cis` est homographe de l'anglais et se trouve donc inscrit au registre de
-    // `selfdeclared-language-gate.test.ts`, qui tient qu'il ne NOMME pas en anglais.
+    // FRENCH SPELLINGS ONLY. `straight`, `heterosexual` and `cisgender` are DISCARDED: putting
+    // them here would pre-load the tier for the day an English copula head is wired,
+    // i.e. would register a LATENT coverage as if it were live (ADR-0003,
+    // *annotate*). `cis` is a homograph of English and is therefore inscribed in the registry of
+    // `selfdeclared-language-gate.test.ts`, which holds that it does not NAME in English.
     //
-    // FRONTIÈRE DE MOT MESURÉE, le préfixe savant étant le risque évident : `cisaille`,
-    // `cistercien`, `cisjordanien`, `cisalpine` et `ciseleur` restent tous muets.
+    // WORD BOUNDARY MEASURED, the learned prefix being the obvious risk: `cisaille`,
+    // `cistercien`, `cisjordanien`, `cisalpine` and `ciseleur` all stay mute.
     'heterosexuel',
     'heterosexuelle',
     'cis',
     'cisgenre',
-    // « en transition » RETIRÉ D'ICI, pour le motif de `ma transition` ci-dessus et avec une mesure
-    // de plus : « je suis en transition professionnelle » est une phrase de reconversion parfaitement
-    // ordinaire, et elle NOMMAIT. C'est même le membre le plus exposé de la famille — la copule y
-    // ajoute la première personne, donc l'affirmation portait sur le locuteur sans détour.
-    // Démoté en `indirectCore`, où il continue de compter comme preuve.
+    // « en transition » REMOVED FROM HERE, for the reason of `ma transition` above and with one more
+    // measurement: « je suis en transition professionnelle » is a perfectly ordinary career-change
+    // sentence, and it NAMED. It is even the most exposed member of the family — the copula
+    // adds the first person, so the assertion bore on the speaker without detour.
+    // Demoted to `indirectCore`, where it continues to count as evidence.
   ],
-  // ── LA RÉPARATION DE SYMÉTRIE ANGLAISE — les deux versants, au tier qui n'affirme pas ─────────
-  // Pendant EN de la réparation FR ci-dessus, et la règle est la même : une auto-déclaration
-  // « i am straight » ou « i am cisgender » doit déclencher EXACTEMENT AUTANT que « i am gay » ou
+  // ── THE ENGLISH SYMMETRY REPAIR — both sides, at the tier that does not assert ────────────────
+  // EN counterpart of the FR repair above, and the rule is the same: a self-declaration
+  // « i am straight » or « i am cisgender » must fire EXACTLY AS MUCH as « i am gay » or
   // « i am a trans woman ».
   //
-  // CE QUI CHANGE PAR RAPPORT AU FRANÇAIS, ET QUI EST LE CŒUR DU LOT : ce tier atterrit en LARGE
-  // (`TopicalLexicon.selfDeclaredEn`). L'anglais ne NOMME donc toujours pas sur ce label — et c'est
-  // ce qui rend l'admission tenable ici, là où un calque du tier français aurait fait nommer
-  // « i am gay », c'est-à-dire OUTÉ sur le label dont le coût d'erreur est le plus élevé du produit.
-  // Les deux versants se déclenchent à égalité, aucun ne se fait nommer.
+  // WHAT CHANGES RELATIVE TO FRENCH, AND WHICH IS THE HEART OF THE BATCH: this tier lands as BROAD
+  // (`TopicalLexicon.selfDeclaredEn`). English therefore still does not NAME on this label — and it is
+  // what makes the admission tenable here, where a copy of the French tier would have named
+  // « i am gay », i.e. OUTED on the label whose error cost is the highest in the product.
+  // Both sides fire equally, neither gets named.
   //
-  // ÉTAT MESURÉ AVANT CE LOT (balayage de 127 termes, quatre cadres) : le versant minoritaire
-  // rendait un constat LARGE par homographie (`gay`, `lesbian`, `transgender`, `nonbinary`…), le
-  // versant majoritaire rendait ZÉRO — `straight`, `heterosexual`, `cis`, `cisgender` muets tous
-  // les quatre, dans tous les cadres. La dette d'appartenance nommait ce défaut ; il est ici.
+  // STATE MEASURED BEFORE THIS BATCH (sweep of 127 terms, four frames): the minority side
+  // yielded a BROAD finding by homography (`gay`, `lesbian`, `transgender`, `nonbinary`…), the
+  // majority side yielded ZERO — `straight`, `heterosexual`, `cis`, `cisgender` mute all
+  // four, in all frames. The affiliation debt named this defect; it is here.
   //
-  // LE TORT LE PLUS COÛTEUX DU CORPUS EST CELUI QUE CE BLOC VISE. `en_misread` écrit « i am
-  // straight, for the fortieth time » à l'item #0 et se faisait taguer sur son SEUL item #2
-  // (« people assume i am gay ») : la seule identité que le produit savait voir chez elle était
-  // celle qui n'est pas la sienne. Son item #0 compte désormais.
+  // THE COSTLIEST WRONG OF THE CORPUS IS THE ONE THIS BLOCK TARGETS. `en_misread` writes « i am
+  // straight, for the fortieth time » at item #0 and got tagged on its ONLY item #2
+  // (« people assume i am gay »): the only identity the product could see in her was
+  // the one that is not hers. Her item #0 now counts.
   //
-  // N'ENTRENT PAS, et c'est là que la sonde contredit l'intuition :
-  //   · `bi`, `ace`, `aro`, `trans`, `pan`, `cis` NUS. LE CADRE NE LES SAUVE PAS — « im ace at
-  //     darts » et « im bi weekly on the newsletter » PORTENT la copule. Ce sont exactement les
-  //     faux positifs que la porte de langue a mesurés sur ces graphies ; les réadmettre par le
-  //     cadre referait par la porte ce qui a été fermé par la fenêtre. Leurs formes longues
-  //     (`bisexual`, `asexual`, `aromantic`, `transgender`, `pansexual`, `cisgender`) suffisent, et
-  //     `a trans woman` / `cis woman` couvrent la tournure ordinaire.
-  //   · `questioning`, `closeted`, `out`, `pronouns`, `ally` — mesurés à 8 torts côté indirect, et
-  //     le cadre ne change rien à leur polysémie.
-  //   · LE REGISTRE DE SOCIOLECTE EN BLOC — inchangé, et sa raison ne bouge pas d'un pouce.
+  // DO NOT ENTER, and this is where the probe contradicts intuition:
+  //   · BARE `bi`, `ace`, `aro`, `trans`, `pan`, `cis`. THE FRAME DOES NOT SAVE THEM — « im ace at
+  //     darts » and « im bi weekly on the newsletter » CARRY the copula. They are exactly the
+  //     false positives the language gate measured on these spellings; readmitting them by the
+  //     frame would remake by the gate what was closed by the window. Their long forms
+  //     (`bisexual`, `asexual`, `aromantic`, `transgender`, `pansexual`, `cisgender`) suffice, and
+  //     `a trans woman` / `cis woman` cover the ordinary turn.
+  //   · `questioning`, `closeted`, `out`, `pronouns`, `ally` — measured at 8 wrongs on the indirect side, and
+  //     the frame changes nothing about their polysemy.
+  //   · THE SOCIOLECT REGISTER EN BLOC — unchanged, and its reason does not move an inch.
   //
-  // RÉSIDU DÉCLARÉ, non réparé, et il ne se referme PAS par locution couvrante : « im straight up
-  // done with this » → constat large. J'ai essayé (`straight up`, `straight ahead`, `straight
-  // home`…) et ça ne marche pas, parce que `isSwallowed` n'est PAS appelé sur le chemin
-  // d'auto-déclaration — les locutions couvrantes protègent `hitSurfaces` et pas `hitSelfDeclared`.
-  // C'est un manque de MACHINERIE, il vaut aussi pour le français, et il ne se répare pas en
-  // passant. Acceptation ASSUMÉE, pas mesurée : l'instrument qui la mesurerait n'existe pas.
+  // DECLARED RESIDUE, unrepaired, and it does NOT close by covering phrase: « im straight up
+  // done with this » → broad finding. I tried (`straight up`, `straight ahead`, `straight
+  // home`…) and it does not work, because `isSwallowed` is NOT called on the
+  // self-declaration path — the covering phrases protect `hitSurfaces` and not `hitSelfDeclared`.
+  // It is a MACHINERY lack, it holds for French too, and it does not get repaired in
+  // passing. ASSUMED acceptance, not measured: the instrument that would measure it does not exist.
   selfDeclaredEn: [
     'gay',
     'lesbian',
@@ -182,55 +182,55 @@ export const SEXUALITY_LEXICON: TopicalLexicon = {
     'a trans woman',
     'a trans man',
     'a gay man',
-    // Le versant majoritaire, dans le MÊME lot — jamais « ensuite ».
+    // The majority side, in the SAME batch — never "afterwards".
     'straight',
     'heterosexual',
     'cisgender',
     'cis woman',
     'cis man',
   ],
-  // Intérêt communautaire + identités nues → tag LARGE (jamais nommé, B1). Emprunts lexicalisés
-  // seulement (wlw). « mlm » écarté (polysémie « multi-level marketing » massive).
+  // Community interest + bare identities → BROAD tag (never named, B1). Lexicalized loanwords
+  // only (wlw). « mlm » discarded (massive « multi-level marketing » polysemy).
   indirectCore: [
-    // ── COUVERTURE EN ACCIDENTELLE, ANNOTÉE (ADR-0003, *annoter* — quatrième mouvement) ──────────
-    // Ces cinq-là sont des chaînes IDENTIQUES dans les deux langues, et elles taguent de l'anglais
-    // DEPUIS TOUJOURS sans qu'aucune décision l'ait voulu. L'annotation ne change RIEN au
-    // comportement : elle rend intentionnel ce qui était accidentel, et empêche qu'un futur lot
-    // croie couvrir l'anglais pour la première fois. Couverture VIVANTE (elle produit des constats
-    // aujourd'hui), pas latente — la distinction décide de la façon dont on l'annote.
+    // ── ACCIDENTAL EN COVERAGE, ANNOTATED (ADR-0003, *annotate* — fourth movement) ───────────────
+    // These five are IDENTICAL strings in both languages, and they have tagged English
+    // FOREVER without any decision having wanted it. The annotation changes NOTHING in the
+    // behavior: it makes intentional what was accidental, and prevents a future batch from
+    // believing it covers English for the first time. LIVE coverage (it produces findings
+    // today), not latent — the distinction decides how it is annotated.
     'lgbt',
     'lgbtq',
     'lgbtqia',
     'queer',
-    // `pride` PORTE UN TORT MESURÉ, et l'annotation l'enregistre plutôt que de le taire :
+    // `pride` CARRIES A MEASURED WRONG, and the annotation records it rather than silencing it:
     //
     //     « pride and prejudice book review »  →  sexuality[indirect]
     //
-    // C'est vraisemblablement la plus grosse source de faux positifs anglais de ce lexique — le mot
-    // anglais ordinaire de l'estime de soi, d'un titre de roman, d'un groupe de lions — et elle
-    // n'avait JAMAIS été décidée. Il ne s'évince pas pour autant : il se déclenche aussi sur des
-    // porteurs (la voix vécue anglaise du banc écrit « we went to pride »), donc il est du côté
-    // « discrimine mal » de la ligne d'ADR-0003 et non du côté « ne discrimine pas du tout ».
-    // Ni ajouté ni retiré : annoté, pour qu'il cesse d'être invisible.
+    // It is likely the biggest source of English false positives in this lexicon — the ordinary
+    // English word for self-esteem, a novel title, a group of lions — and it
+    // had NEVER been decided. It is not ousted for all that: it also fires on
+    // bearers (the bench's English lived voice writes « we went to pride »), so it is on the
+    // "discriminates badly" side of ADR-0003's line and not on the "does not discriminate at all" side.
+    // Neither added nor removed: annotated, so it ceases to be invisible.
     'pride',
     'marche des fiertes',
     'fiertes',
     'coming out',
     'gay',
     'lesbienne',
-    // ADJECTIF MASCULIN — « bar lesbien », « couple lesbien », « film lesbien ». Il manquait, et le
-    // trou était invisible parce que le féminin, lui, était admis : la couverture se vérifiait dans
-    // un seul sens. Ces syntagmes sont la manière ORDINAIRE de nommer un lieu ou un couple, et sans
-    // eux une vie entière décrite en vingt-quatre items ne produisait aucune preuve (mesuré, banc
-    // de registres).
+    // MASCULINE ADJECTIVE — « bar lesbien », « couple lesbien », « film lesbien ». It was missing, and the
+    // gap was invisible because the feminine, for its part, was admitted: coverage was verified in
+    // one direction only. These phrases are the ORDINARY way to name a place or a couple, and without
+    // them a whole life described in twenty-four items produced no evidence (measured, registers
+    // bench).
     'lesbien',
     'bisexuel',
     'bisexuelle',
     'pansexuel',
-    // FÉMININS ET FORMES MANQUANTES du même axe. `homosexuel`/`homosexuelle` n'étaient NULLE PART en
-    // indirect — seulement en auto-déclaration — si bien que « il est homosexuel » ne rendait rien
-    // là où « il est gay » rendait un constat large. Deux mots pour une même chose, deux
-    // comportements : c'est une asymétrie de morphologie, pas une décision.
+    // MISSING FEMININES AND FORMS of the same axis. `homosexuel`/`homosexuelle` were NOWHERE in
+    // indirect — only in self-declaration — such that « il est homosexuel » yielded nothing
+    // where « il est gay » yielded a broad finding. Two words for one same thing, two
+    // behaviors: it is a morphology asymmetry, not a decision.
     'pansexuelle',
     'asexuel',
     'asexuelle',
@@ -252,41 +252,41 @@ export const SEXUALITY_LEXICON: TopicalLexicon = {
     'transphobe',
     'sortir du placard',
     'wlw',
-    // ── VARIANTES EN (PANO-35) — vocabulaire du SUJET, constat LARGE ────────────────────────────
+    // ── EN VARIANTS (PANO-35) — SUBJECT vocabulary, BROAD finding ────────────────────────────────
     //
-    // Ce que ce bloc répare : la couverture anglaise de ce label était QUASI NULLE, et personne ne
-    // l'avait mesurée. Neuf chaînes traversaient par homographie (`pride`, `lgbt`, `queer`, `gay`,
-    // `coming out`, `drag queen`, `wlw`…) ; les mots anglais ordinaires de l'orientation et de
-    // l'identité — `lesbian`, `bisexual`, `asexual`, `homosexual`, `transgender`, `nonbinary`,
-    // `homophobia`, `transphobia` — ne rendaient RIEN. Dix-huit des entrées ci-dessous sont le
-    // pendant EN STRICT d'une entrée FR déjà ratifiée : ce ne sont pas des décisions neuves, ce sont
-    // les mêmes, dans l'autre langue, et la couverture se vérifie dans les deux sens.
+    // What this block repairs: the English coverage of this label was NEARLY NULL, and no one
+    // had measured it. Nine strings crossed by homography (`pride`, `lgbt`, `queer`, `gay`,
+    // `coming out`, `drag queen`, `wlw`…); the ordinary English words of orientation and
+    // identity — `lesbian`, `bisexual`, `asexual`, `homosexual`, `transgender`, `nonbinary`,
+    // `homophobia`, `transphobia` — yielded NOTHING. Eighteen of the entries below are the
+    // STRICT EN counterpart of an already-ratified FR entry: they are not new decisions, they are
+    // the same, in the other language, and coverage is verified in both directions.
     //
-    // CE QUE CE BLOC NE RÉPARE PAS, et c'est le plus important : le défaut nommé par le banc — un
-    // anglophone qui écrit « i am gay » reçoit un constat LARGE là où une francophone reçoit un
-    // constat NOMMÉ — vit à la COPULE, et aucun terme d'un tier indirect ne l'atteint. Mesuré :
-    // `en_lived_plain` gagne UNE preuve et RESTE `indirect`. L'asymétrie de traitement entre deux
-    // utilisateurs du même produit survit intégralement à ce bloc.
+    // WHAT THIS BLOCK DOES NOT REPAIR, and it is the most important: the defect named by the bench — an
+    // anglophone who writes « i am gay » receives a BROAD finding where a francophone receives a
+    // NAMED finding — lives at the COPULA, and no term of an indirect tier reaches it. Measured:
+    // `en_lived_plain` gains ONE evidence and STAYS `indirect`. The treatment asymmetry between two
+    // users of the same product survives this block entirely.
     //
-    // LE ZÉRO DE TORTS EST LE PRODUIT DES EXCLUSIONS, PAS DES ADMISSIONS. Mesuré sur les six voix :
-    // ce bloc coûte 0 tort neuf, le FR ne bouge pas. La preuve en négatif est ce qui a été écarté —
-    // `straight` en indirect porterait `en_homograph_guard` de 1 tort à 4 (menuiserie, scie,
-    // fléchettes), et `pronouns` / `transition` / `ally` / `out` l'y porteraient à 8.
+    // THE ZERO WRONGS IS THE PRODUCT OF THE EXCLUSIONS, NOT THE ADMISSIONS. Measured on the six voices:
+    // this block costs 0 new wrong, FR does not move. The proof in the negative is what was discarded —
+    // `straight` in indirect would take `en_homograph_guard` from 1 wrong to 4 (carpentry, saw,
+    // darts), and `pronouns` / `transition` / `ally` / `out` would take it to 8.
     //
-    // EXCLUS AU MÊME ENDROIT, chacun avec sa raison :
-    //   · `straight`, `out`, `came out`, `pronouns`, `ally` — mesurés ci-dessus. `straight` a sa
-    //     maison à la copule, où le cadre le désambiguïse ; l'exclure ici est ce qui rend la
-    //     symétrie hétéro POSSIBLE plus tard, pas ce qui la refuse.
-    //   · `cis` nu (préfixe savant), `gender` nu (« gender pay gap »), `inter` nu, `sex` nu.
-    //   · `rainbow` — pendant d'`arc-en-ciel`, déjà écarté côté FR. Le réadmettre en anglais referait
-    //     par la porte ce qui a été écarté par la fenêtre.
-    //   · `mlm` — déjà écarté côté FR pour « multi-level marketing », et le motif est ANGLAIS.
-    //   · `top surgery` / `bottom surgery` — frontière `health_physical` non instruite. Dette nommée.
-    //   · LE REGISTRE DE SOCIOLECTE EN BLOC (troisième porte, ADR-0003) : la couche lexicale que
-    //     l'anglais général a reprise aux communautés LGBTQ+ est saillante et facile à lister, et
-    //     c'est très exactement l'ajout que ce label appellera. Elle ne discrimine pas — tout le
-    //     monde l'écrit — et c'est un marqueur de GROUPE : l'admettre taguerait des gens sur leur
-    //     manière de parler, ici au seuil 1 et avec un coût d'outing. La seconde raison suffit.
+    // EXCLUDED IN THE SAME PLACE, each with its reason:
+    //   · `straight`, `out`, `came out`, `pronouns`, `ally` — measured above. `straight` has its
+    //     home at the copula, where the frame disambiguates it; excluding it here is what makes the
+    //     hetero symmetry POSSIBLE later, not what refuses it.
+    //   · bare `cis` (learned prefix), bare `gender` (« gender pay gap »), bare `inter`, bare `sex`.
+    //   · `rainbow` — counterpart of `arc-en-ciel`, already discarded on the FR side. Readmitting it in English would remake
+    //     by the gate what was discarded by the window.
+    //   · `mlm` — already discarded on the FR side for « multi-level marketing », and the reason is ENGLISH.
+    //   · `top surgery` / `bottom surgery` — `health_physical` boundary not instructed. Named debt.
+    //   · THE SOCIOLECT REGISTER EN BLOC (third gate, ADR-0003): the lexical layer that
+    //     general English took back from the LGBTQ+ communities is salient and easy to list, and
+    //     it is very exactly the addition this label will call for. It does not discriminate — everyone
+    //     writes it — and it is a GROUP marker: admitting it would tag people on their
+    //     way of speaking, here at threshold 1 and with an outing cost. The second reason suffices.
     'lesbian',
     'bisexual',
     'bisexuality',
@@ -308,28 +308,28 @@ export const SEXUALITY_LEXICON: TopicalLexicon = {
     'sexual orientation',
     'gender identity',
     'out of the closet',
-    // LE SEUL TERME DU LOT QUI ACHÈTE DU RAPPEL HORS AUTO-DÉCLARATION ET HORS VOCABULAIRE
-    // COMMUNAUTAIRE, et la raison est une inversion entre les deux langues qui vaut d'être écrite :
-    // le français porte le fait dans une MORPHOLOGIE qu'aucun lexique ne lit (l'accord réciproque de
-    // « on s'est pacsées » dit que les deux personnes sont des femmes) ; l'anglais, qui n'a pas
-    // d'accord, ne peut le porter que LEXICALEMENT — d'où l'existence de ce syntagme, qui y est la
-    // forme ordinaire et non un terme administratif.
-    // Il discrimine mal et non pas rien : mesuré, « my dog and my cat are the same sex » se
-    // déclenche. Il reste à ce titre (ADR-0003, *Admettre n'est pas évincer*).
+    // THE ONLY TERM OF THE BATCH THAT BUYS RECALL OUTSIDE SELF-DECLARATION AND OUTSIDE COMMUNITY
+    // VOCABULARY, and the reason is an inversion between the two languages worth writing down:
+    // French carries the fact in a MORPHOLOGY that no lexicon reads (the reciprocal agreement of
+    // « on s'est pacsées » says that both persons are women); English, which has no
+    // agreement, can carry it only LEXICALLY — hence the existence of this phrase, which is there the
+    // ordinary form and not an administrative term.
+    // It discriminates badly and not at all: measured, « my dog and my cat are the same sex »
+    // fires. It stays on that basis (ADR-0003, *Admitting is not ousting*).
     'same sex',
     'gender affirming',
     'gender dysphoria',
     'deadname',
     'deadnaming',
-    // LES DEUX FORMES DÉMOTÉES depuis `explicit` et `selfDeclaredFr` — voir la justification à
-    // chacun de ces deux tiers. Elles gardent leur rappel (la voix non binaire du banc ne perd ni
-    // son étage ni sa preuve, mesuré) et perdent le droit d'affirmer, qui est très exactement ce
-    // qu'ADR-0003 fait varier quand un label coûte cher : « un label plus sensible ne mérite pas un
-    // lexique plus étroit — il mérite de moins affirmer ».
+    // THE TWO FORMS DEMOTED from `explicit` and `selfDeclaredFr` — see the justification at
+    // each of those two tiers. They keep their recall (the bench's non-binary voice loses neither
+    // its tier nor its evidence, measured) and lose the right to assert, which is very exactly what
+    // ADR-0003 varies when a label is costly: « a more sensitive label does not deserve a
+    // narrower lexicon — it deserves to assert less ».
     'ma transition',
     'en transition',
   ],
-  // Colloquial DÉSACTIVÉ (seuil 1 + coût outing) : aucun terme polysémique admis en un seul hit.
+  // Colloquial DISABLED (threshold 1 + outing cost): no polysemous term admitted on a single hit.
   indirectColloquial: [],
   includeColloquial: false,
   indirectThreshold: 1,

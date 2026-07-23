@@ -1,21 +1,21 @@
-// Barre de site sticky (maquettes « Accueil v2 » / « parcours guidé » + variantes Mobile) :
-// œil + wordmark, badge contextuel optionnel (« démo · données fictives »), sélecteur de langue et
-// lien GitHub. Sur MOBILE (maquettes « … Mobile ») : paddings resserrés, cibles tactiles ≥ 44 px,
-// GitHub en icône seule, badge masqué (pas la place à 390 px — l'info « démo » passe dans le kicker
-// du héros, cf. ResultsView), et un SOMMAIRE optionnel en chips horizontales scrollables sous la
-// barre (le parcours n'a pas de sidebar sur mobile).
+// Sticky site bar (« Accueil v2 » / « parcours guidé » mockups + Mobile variants):
+// eye + wordmark, optional contextual badge (« démo · données fictives »), language selector and
+// GitHub link. On MOBILE (« … Mobile » mockups): tightened paddings, touch targets ≥ 44 px,
+// GitHub as an icon only, badge hidden (no room at 390 px — the « démo » info moves into the kicker
+// of the hero, cf. ResultsView), and an optional TABLE OF CONTENTS as horizontal scrollable chips under the
+// bar (the journey has no sidebar on mobile).
 //
-// LE SÉLECTEUR DE LANGUE EST TOUJOURS VISIBLE, y compris quand une seule langue est publiée.
-// C'est délibéré et ça se paye d'un bouton inerte : il ANNONCE que le site a une notion de langue.
-// Le jour où une bannière suggérera l'anglais à qui arrive en `navigator.language: en`, cette
-// suggestion devra être CORRIGEABLE d'un geste visible — un produit qui dit à quelqu'un ce qu'il a
-// déduit de lui doit lui laisser la main sur cette déduction, sous peine de démontrer le problème
-// qu'il dénonce. Un sélecteur qui n'apparaîtrait qu'une fois l'anglais prêt laisserait ce geste
-// sans place.
+// THE LANGUAGE SELECTOR IS ALWAYS VISIBLE, including when a single language is published.
+// This is deliberate and it costs an inert button: it ANNOUNCES that the site has a notion of language.
+// On the day a banner suggests English to whoever arrives with `navigator.language: en`, that
+// suggestion must be CORRECTABLE with a visible gesture — a product that tells someone what it has
+// deduced of them must leave them the control over that deduction, on pain of demonstrating the problem
+// it denounces. A selector that only appeared once English was ready would leave that gesture
+// without a place.
 //
-// Une langue déclarée mais non publiée reste INERTE (info-bulle « bientôt disponible ») : elle se
-// voit, elle ne se clique pas. L'état actif se lit sur la page (`<html lang>`), et n'est stocké
-// nulle part — la persistance viendra avec la bannière de suggestion, pas avant.
+// A declared but unpublished language stays INERT (« bientôt disponible » tooltip): it is
+// seen, it is not clicked. The active state is read from the page (`<html lang>`), and is stored
+// nowhere — persistence will come with the suggestion banner, not before.
 
 import { currentLocale, currentPath, localeHref } from '../../i18n/current';
 import { isPublished, LOCALES, type Locale, localePath } from '../../i18n/locales';
@@ -26,8 +26,8 @@ import { useIsMobile } from './useIsMobile';
 
 const GITHUB_URL = UI_BRAND.githubUrl;
 
-/** Entrée du sommaire mobile (chips sous la barre). `muted` : section indisponible sur mobile
- * (IA locale) — chip pointillée, texte éteint, mais le lien reste (l'encart explique pourquoi). */
+/** Mobile table-of-contents entry (chips under the bar). `muted`: section unavailable on mobile
+ * (local AI) — dotted chip, dimmed text, but the link stays (the callout explains why). */
 export interface TocChip {
   n: string;
   label: string;
@@ -49,7 +49,7 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
   const active = currentLocale();
   const here = currentPath();
   const langGroup = (
-    // biome-ignore lint/a11y/useSemanticElements: un <fieldset> imposerait son chrome de formulaire — deux contrôles suffisent (markup de la maquette).
+    // biome-ignore lint/a11y/useSemanticElements: a <fieldset> would impose its form chrome — two controls suffice (mockup markup).
     <div role="group" aria-label={UI_HEADER.langGroupAriaLabel} style={LANG_GROUP}>
       {LOCALES.map((locale) => {
         const label = LANG_LABEL[locale];
@@ -62,7 +62,7 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
             </button>
           );
         }
-        // Publiée : un vrai lien vers LA MÊME page. Non publiée : un bouton mort qui le dit.
+        // Published: a real link to THE SAME page. Unpublished: a dead button that says so.
         return isPublished(locale) ? (
           <a
             key={locale}
@@ -176,8 +176,8 @@ const BADGE = {
   marginLeft: '4px',
   whiteSpace: 'nowrap',
 } as const;
-/** Le libellé de chaque langue — un code, pas de la prose : il ne se traduit pas d'une langue à
- * l'autre (« FR » reste « FR » sur le site anglais). Les chaînes vivent au catalogue. */
+/** The label of each language — a code, not prose: it does not translate from one language to
+ * the other (« FR » stays « FR » on the English site). The strings live in the catalog. */
 const LANG_LABEL: Record<Locale, string> = { fr: UI_HEADER.langFr, en: UI_HEADER.langEn };
 
 const LANG_GROUP = {
@@ -195,8 +195,8 @@ const LANG_BASE = {
   padding: '9px 11px',
 } as const;
 const LANG_ON = { ...LANG_BASE, color: NAVY.bgPage, background: NAVY.accent } as const;
-/** Ce qu'il faut à un <a> pour se poser dans le groupe comme le fait un <button> : ni soulignement,
- * ni ligne de base décalée. Les cotes (taille, padding) restent celles de `LANG_BASE`. */
+/** What an <a> needs to sit in the group as a <button> does: neither underline,
+ * nor a shifted baseline. The dimensions (size, padding) stay those of `LANG_BASE`. */
 const LANG_LINK = {
   display: 'flex',
   alignItems: 'center',
@@ -223,7 +223,7 @@ const GH_LINK = {
   padding: '9px 13px',
 } as const;
 
-// --- Variante mobile (maquettes « … Mobile » : cibles 44 px, GitHub icône seule) -------------------
+// --- Mobile variant (« … Mobile » mockups: 44 px targets, GitHub icon only) ------------------------
 const M_WRAP = {
   position: 'sticky',
   top: 0,
@@ -232,8 +232,8 @@ const M_WRAP = {
   backdropFilter: 'blur(12px)',
   borderBottom: `1px solid ${NAVY.borderHeader}`,
 } as const;
-// Le fond de la barre couvre toute la largeur (M_WRAP), mais le CONTENU s'aligne sur la colonne
-// 480 px du reste de la page (M_SHELL) — sinon logo et wordmark flottent au bord sur tablette.
+// The bar's background covers the full width (M_WRAP), but the CONTENT aligns on the
+// 480 px column of the rest of the page (M_SHELL) — otherwise logo and wordmark float at the edge on tablet.
 const M_ROW = {
   display: 'flex',
   alignItems: 'center',

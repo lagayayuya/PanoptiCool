@@ -1,33 +1,33 @@
-# Détecteur d'intérêts (D2) — taxonomie canonique
+# Interest detector (D2) — canonical taxonomy
 
-> Référence **ratifiée par yuya** (session PANO-74, exécutée PANO-76). Les lots 2–3 exécutent la
-> suite **sans re-ratifier** : ils ajoutent des lexiques pour des thèmes déjà listés ici. Toute
-> extension hors de cette liste, ou tout thème qui frôle un sujet sensible (D1), **remonte à yuya**
-> avant écriture.
+> Reference **ratified by yuya** (session PANO-74, executed PANO-76). Batches 2–3 execute the
+> follow-up **without re-ratifying**: they add lexicons for themes already listed here. Any extension
+> outside this list, or any theme that grazes a sensitive subject (D1), **goes back up to yuya**
+> before being written.
 >
-> Analogue pour D2 de ce que `docs/constats-sensibles.md` est pour D1 : le **sens** (quels thèmes,
-> où sont les frontières) vit ici ; la **mécanique** (règle par classement, câblage `Theme[]`) vit
-> dans le code (`engine/rules/d2-interests.ts`, socle PANO-75). Le code ne câble que le sous-ensemble
-> déjà écrit (`INTEREST_LEXICONS`) ; cette liste est le catalogue complet visé.
+> The D2 analogue of what `docs/constats-sensibles.md` is for D1: the **sense** (which themes, where
+> the boundaries are) lives here; the **mechanics** (rule by ranking, `Theme[]` wiring) lives in the
+> code (`engine/rules/d2-interests.ts`, foundation PANO-75). The code wires only the subset already
+> written (`INTEREST_LEXICONS`); this list is the full intended catalog.
 
-## Cadre de sens (ratifié PANO-74, non rouvrable)
+## Sense framework (ratified PANO-74, not reopenable)
 
-- **Granularité — scénario B** : des thèmes d'usage grand public, ni trop fins (pas « squat » comme
-  thème) ni trop larges (pas « sport » comme thème unique). ~52 thèmes, groupés en familles.
-- **Critère d'inclusion — « valeur démonstrative »** : un thème entre s'il illustre concrètement ce
-  qu'une plateforme *pourrait* déduire et *revendre*. On ne vise pas l'exhaustivité d'une taxonomie
-  publicitaire ; on vise la démonstration parlante.
-- **Frontière sensible tenue** : aucun thème d'intérêt ne recouvre un sujet **sensible** (les 6
-  labels D1 : santé mentale, santé physique, sexualité, politique, religion, conflictuel). Les
-  intérêts sont **non sensibles** par construction (`sensitive: false`).
-- **Exclusions explicites (ratifiées)** : bien-être/développement personnel · régime/nutrition
-  (frôle les troubles alimentaires → D1) · actualité/politique (→ D1) · rencontres/dating · astrologie
-  appliquée à soi · **jeux d'argent** · alcool. Ces zones ne deviennent JAMAIS des thèmes d'intérêt.
+- **Granularity — scenario B**: mainstream-usage themes, neither too fine (not « squat » as a theme)
+  nor too broad (not « sport » as a single theme). ~52 themes, grouped into families.
+- **Inclusion criterion — "demonstrative value"**: a theme enters if it concretely illustrates what a
+  platform *could* deduce and *resell*. We do not aim for the exhaustiveness of an advertising
+  taxonomy; we aim for the telling demonstration.
+- **Sensitive boundary held**: no interest theme overlaps a **sensitive** subject (the 6 D1 labels:
+  mental health, physical health, sexuality, politics, religion, conflictual). Interests are **non
+  sensitive** by construction (`sensitive: false`).
+- **Explicit exclusions (ratified)**: wellness/personal development · diet/nutrition (grazes eating
+  disorders → D1) · news/politics (→ D1) · dating · astrology applied to oneself · **gambling** ·
+  alcohol. These zones NEVER become interest themes.
 
-## Catalogue des thèmes (~52)
+## Theme catalog (~52)
 
-Groupés en familles (la famille est une commodité de lecture, pas une entité produite — D2 produit
-des **thèmes**, pas des familles).
+Grouped into families (the family is a reading convenience, not a produced entity — D2 produces
+**themes**, not families).
 
 ### Sport & activité
 muscu · running · football · basket · cyclisme · fitness/cross-training · randonnée · skate ·
@@ -61,40 +61,41 @@ voitures/tuning · motos · voyage
 philosophie · sociologie · psychologie · histoire · économie · biologie · physique · mathématiques ·
 astronomie/espace
 
-## Notes de frontière (à porter par les lexiques, lots 2–3)
+## Boundary notes (to be carried by the lexicons, batches 2–3)
 
-- **psychologie** → champ **académique** seulement (biais cognitifs, Freud, expériences célèbres…).
-  Exclure le **clinique** (dépression, anxiété, thérapie) : c'est `mental_health` (D1). Un lexique
-  psychologie qui capte « je fais une dépression » est un bug de frontière → remonter.
-- **économie / histoire** → champ **savoir** (concepts, écoles, périodes). Éviter l'**actualité** et
-  la **politique** (réforme, élection, tel parti) : c'est `politics` (D1) ou hors-champ.
-- **cuisine végé/vegan** → intérêt **culinaire** (recettes, restos), pas **conviction militante** ni
-  **régime** : rester sur le plat, pas sur l'éthique ni la perte de poids.
-- **sports de combat** → **pratique sportive** (boxe, judo, MMA en tant que discipline), jamais
-  l'agression réelle (→ `conflictual`, D1).
+- **psychologie** → **academic** field only (cognitive biases, Freud, famous experiments…). Exclude
+  the **clinical** (depression, anxiety, therapy): that is `mental_health` (D1). A psychology lexicon
+  that catches « je fais une dépression » is a boundary bug → escalate.
+- **économie / histoire** → **knowledge** field (concepts, schools, periods). Avoid **current
+  affairs** and **politics** (reform, election, such-and-such party): that is `politics` (D1) or
+  out-of-scope.
+- **cuisine végé/vegan** → **culinary** interest (recipes, restaurants), not **militant conviction**
+  nor **diet**: stay on the dish, not on ethics or weight loss.
+- **sports de combat** → **sporting practice** (boxing, judo, MMA as a discipline), never real
+  aggression (→ `conflictual`, D1).
 
-## Discipline d'écriture des lexiques (PANO-70 §3, reprise D2)
+## Discipline for writing the lexicons (PANO-70 §3, carried over to D2)
 
-- **À l'aveugle** : chaque marqueur vient de l'usage courant de la langue (du français à l'origine ;
-  les variantes anglaises, annotées `(EN)` en ligne, suivent la même règle), jamais d'un export réel.
-  Aucun terme reverse-engineeré depuis une donnée ; aucune donnée ajustée à un terme.
-- **Généricité** : chaque terme est défendable pour un inconnu, aurait été écrit à l'identique sans
-  avoir jamais vu aucun export.
-- **Ancrage contre la polysémie** : un marqueur mot-nu polysémique (football « but », K-pop « bts »,
-  sneakers « jordan ») tire à chaque occurrence hors-domaine — le plancher et le classement du socle
-  ne rattrapent que le bruit **résiduel**, pas un faux-positif systématique. On **exclut le mot nu à
-  l'écriture** et on **ancre** (« air max », « fond de teint »). Chaque lexique documente en tête son
-  **sondage faux-positifs** : termes écartés et pourquoi.
-- **Frontière sensible dure** : aucun marqueur d'intérêt ne doit déclencher un des 6 lexiques D1. Un
-  garde-fou de test (`interests-battery.test.ts`) passe **tous** les marqueurs d'intérêt dans D1 et
-  exige zéro détection ; un échec est un signal de frontière à remonter, pas seulement un test rouge.
+- **Blind**: each marker comes from ordinary language usage (French originally; the English variants,
+  annotated `(EN)` inline, follow the same rule), never from a real export. No term
+  reverse-engineered from data; no data adjusted to a term.
+- **Genericity**: each term is defensible to a stranger, would have been written identically without
+  ever having seen any export.
+- **Anchoring against polysemy**: a bare-word polysemous marker (football « but », K-pop « bts »,
+  sneakers « jordan ») fires on every out-of-domain occurrence — the foundation's floor and ranking
+  only catch the **residual** noise, not a systematic false positive. We **exclude the bare word at
+  writing time** and we **anchor** (« air max », « fond de teint »). Each lexicon documents at its
+  head its **false-positive probe**: terms discarded and why.
+- **Hard sensitive boundary**: no interest marker must trigger one of the 6 D1 lexicons. A test
+  safeguard (`interests-battery.test.ts`) passes **all** interest markers through D1 and requires zero
+  detection; a failure is a boundary signal to escalate, not merely a red test.
 
-## Plan de lots — ACHEVÉ
+## Batch plan — COMPLETED
 
-Le plan (lot 1 : ~12 thèmes démonstratifs ; lots 2–3 : le reste) a été exécuté : **les ~52 thèmes
-du catalogue sont écrits et câblés**, et les premiers lots ont été rétrofités au standard des
-suivants. Ce document reste l'oracle de sens : toute extension passe toujours par lui, et par yuya
-si elle sort du catalogue.
+The plan (batch 1: ~12 demonstrative themes; batches 2–3: the rest) has been executed: **the ~52
+themes of the catalog are written and wired**, and the first batches were retrofitted to the standard
+of the later ones. This document stays the sense oracle: any extension still goes through it, and
+through yuya if it leaves the catalog.
 
-Le socle (`InterestLexicon`, règle par classement, câblage `Theme[]`) est en place (PANO-75) et
-**n'est pas rouvert** par les lots de contenu.
+The foundation (`InterestLexicon`, rule by ranking, `Theme[]` wiring) is in place (PANO-75) and **is
+not reopened** by the content batches.

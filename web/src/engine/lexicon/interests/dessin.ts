@@ -1,28 +1,28 @@
-// Lexique d'intérêt `dessin` (D2, PANO-89 lot 4) — dessin / illustration.
+// Interest lexicon `dessin` (D2, PANO-89 batch 4) — drawing / illustration.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du dessin FR : techniques, OUTILS/logiciels, jargon communauté. Entités =
-// signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR drawing: techniques, TOOLS/software, community jargon. Entities =
+// generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « procreate », « wacom », « posca », « fanart », « lineart », « character design »,
 //     « croquis », « encrage », « aquarelle », « inktober », « tablette graphique ».
-//   · ANCRÉ — « dessin » (dessin animé / plan), « illustration » (exemple), « perspective » (point de
-//     vue), « encre », « planche », « portrait » (partagé photo), « palette » (partagé maquillage) : co-occurrence.
-//   · EXCLU — « art » nu (trop générique).
+//   · ANCHORED — « dessin » (cartoon / plan), « illustration » (example), « perspective » (point of
+//     view), « encre », « planche », « portrait » (shared with photo), « palette » (shared with maquillage): co-occurrence.
+//   · EXCLUDED — bare « art » (too generic).
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN réel vérifié par recherche (ArtTok / glossaires dessin-peinture).
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Real EN usage verified by research (ArtTok / drawing-painting glossaries).
 //   · SOLO — « sketchbook », « sketching », « digital art », « art style », « linework »,
-//     « speedpaint », « arttok » : univoques.
-//   · ANCRÉ — « sketch » (sketch COMIQUE / « sketchy »), « rendering » (RENDU 3D — massif en tech),
-//     « shading » (ombrage de courbe / graphe), « canvas » (Canvas LMS / toile de tente), « brush »
-//     (brosse à dents / à cheveux — partagé `coiffure`, `maquillage`), « wip » (partagé `tricot`),
-//     « reference photo » (partagé `photographie`) : compagnon requis.
-//   · EXCLU — « oc » (« original character », réel mais 2 lettres) → ÉCARTÉ, comme « ia » nu en FR.
+//     « speedpaint », « arttok »: univocal.
+//   · ANCHORED — « sketch » (COMEDY sketch / « sketchy »), « rendering » (3D RENDER — massive in tech),
+//     « shading » (curve / graph shading), « canvas » (Canvas LMS / tent canvas), « brush »
+//     (toothbrush / hairbrush — shared `coiffure`, `maquillage`), « wip » (shared `tricot`),
+//     « reference photo » (shared `photographie`): companion required.
+//   · EXCLUDED — « oc » (« original character », real but 2 letters) → DISCARDED, like bare « ia » in FR.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de `photographie` et `manga_anime`.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from `photographie` and `manga_anime`.
 
 import type { InterestLexicon } from '../types';
 
@@ -53,7 +53,7 @@ export const DESSIN_LEXICON: InterestLexicon = {
     'storyboard',
     'colorisation',
     'fusain',
-    // Variantes EN (PANO-88) : SOLO univoques (techniques / communauté).
+    // EN variants (PANO-88): SOLO univocal (techniques / community).
     'sketchbook',
     'sketching',
     'digital art',
@@ -63,22 +63,22 @@ export const DESSIN_LEXICON: InterestLexicon = {
     'arttok',
   ],
   anchored: [
-    'dessin', // dessin animé / plan / dessin technique
-    'illustration', // exemple / illustration générique
-    'perspective', // point de vue
-    'encre', // encre générique
-    'planche', // planche (bois) / planche de BD
-    'portrait', // partagé photographie
-    'palette', // partagé maquillage
-    'gouache', // fairly dessin mais gardé ancré
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'sketch', // sketch comique / « sketchy » (EN)
-    'rendering', // rendu 3D — massif en tech (EN)
-    'shading', // ombrage de courbe / graphe (EN)
-    'canvas', // Canvas LMS / toile de tente (EN)
-    'brush', // brosse à dents / à cheveux — partagé coiffure, maquillage (EN)
-    'wip', // partagé tricot / écriture / DIY (EN)
-    'reference photo', // partagé photographie (EN)
+    'dessin', // cartoon / plan / technical drawing
+    'illustration', // example / generic illustration
+    'perspective', // point of view
+    'encre', // generic ink
+    'planche', // plank (wood) / comic page
+    'portrait', // shared with photography
+    'palette', // shared with maquillage
+    'gouache', // fairly drawing but kept anchored
+    // EN variants (PANO-88): ANCHORED.
+    'sketch', // comedy sketch / « sketchy » (EN)
+    'rendering', // 3D render — massive in tech (EN)
+    'shading', // curve / graph shading (EN)
+    'canvas', // Canvas LMS / tent canvas (EN)
+    'brush', // toothbrush / hairbrush — shared coiffure, maquillage (EN)
+    'wip', // shared tricot / writing / DIY (EN)
+    'reference photo', // shared photography (EN)
   ],
   selfDeclared: ['dessinateur', 'dessinatrice', 'illustrateur'],
 };

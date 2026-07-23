@@ -1,200 +1,199 @@
-// Banc `sexuality` — SIX voix, et la PAIRE VÉCU/PROCHE est l'instrument. Vérité-terrain scellée.
+// `sexuality` bench — SIX voices, and the LIVED/RELATIVE PAIR is the instrument. Sealed ground truth.
 //
-// ── Ce fichier est scellé ────────────────────────────────────────────────────────────────────────
-// Écrit et commité AVANT tout tour du détecteur sur ces voix. « Faux positif » n'a pas de sens sans
-// un état attendu écrit d'avance, et juger après avoir vu la sortie revient à juger avec indulgence
-// — une détection plausible se rationalise toujours. Le sceau est le commit.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// ── This file is sealed ────────────────────────────────────────────────────────────────────────
+// Written and committed BEFORE any detector pass on these voices. « False positive » has no meaning without
+// an expected state written in advance, and judging after seeing the output amounts to judging leniently
+// — a plausible detection always rationalizes itself. The seal is the commit.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── L'ÉTAT EXACT DE LA MESURE AVANT CE FICHIER ───────────────────────────────────────────────────
-// Vérifié par balayage des six fixtures scellées, pas supposé, et la formulation compte parce que la
-// version approximative est plus flatteuse que la vraie :
+// ── THE EXACT STATE OF THE MEASUREMENT BEFORE THIS FILE ───────────────────────────────────────────────────
+// Verified by sweeping the six sealed fixtures, not supposed, and the wording counts because the
+// approximate version is more flattering than the true one:
 //
-//   **AUCUNE persona du corpus scellé ne porte `sexuality` — ni `lived`, ni `signalWithoutLived`,
-//   dans AUCUNE des deux langues.** Le rappel de ce label n'a JAMAIS été mesuré sur une voix, pas
-//   une fois, y compris dans le français livré et ratifié de longue date.
+//   **NO persona of the sealed corpus carries `sexuality` — neither `lived`, nor `signalWithoutLived`,
+//   in EITHER language.** The recall of this label has NEVER been measured on a voice, not
+//   once, including in the French shipped and ratified long ago.
 //
-// Ce qui existe à la place, et qui ne s'y substitue pas : des SONDES À UN ITEM dans
-// `lexicon-battery.test.ts` et `selfdeclared-language-gate.test.ts`. Une sonde établit qu'un lexème
-// est câblé ; elle ne dit rien de ce qui arrive quand ce lexème est noyé dans vingt-trois items de
-// vie ordinaire, ni de ce qui arrive à quelqu'un qui n'emploie jamais le lexème attendu. C'est très
-// exactement l'écart que CLAUDE.md nomme (*Ce qu'un filet prouve*) : aucun banc existant ne pouvait
-// rendre autre chose que zéro sur `sexuality`, parce qu'aucun n'a jamais mis le détecteur devant une
-// personne. Un rapport « aucun faux positif » appuyé sur eux n'aurait rien dit du tout.
+// What exists instead, and does not substitute for it: SINGLE-ITEM PROBES in
+// `lexicon-battery.test.ts` and `selfdeclared-language-gate.test.ts`. A probe establishes that a lexeme
+// is wired; it says nothing of what happens when that lexeme is drowned in twenty-three items of
+// ordinary life, nor of what happens to someone who never uses the expected lexeme. It is very
+// exactly the gap CLAUDE.md names (*Ce qu'un filet prouve*): no existing bench could
+// return anything but zero on `sexuality`, because none ever put the detector in front of a
+// person. A report « no false positive » leaning on them would have said nothing at all.
 //
-// ── LE COÛT D'ERREUR EST ASYMÉTRIQUE, ET ÇA CHANGE LA LECTURE DES DEUX COMPTEURS ─────────────────
-// Sur les autres labels, un tort et un manque de rappel sont deux défauts de même nature. Ici non :
-// un constat NOMMÉ faux sur ce label OUTE quelqu'un. Le dommage n'est pas symétrique de celui d'une
-// non-détection, et aucun total ne peut absorber cette différence. C'est la raison pour laquelle la
-// paire de ce lot mesure un ÉTAGE et non une présence — voir juste en dessous.
+// ── THE ERROR COST IS ASYMMETRIC, AND IT CHANGES THE READING OF THE TWO COUNTERS ─────────────────
+// On the other labels, a wrong and a missed recall are two defects of the same nature. Here not:
+// a false NAMED finding on this label OUTS someone. The damage is not symmetric with that of a
+// non-detection, and no total can absorb this difference. It is the reason the
+// pair of this batch measures a STOREY and not a presence — see just below.
 //
-// Ce que ce cadrage n'autorise PAS, et le dire ici évite de l'inventer plus tard : la prudence ne
-// justifie pas d'écrire des voix fades. Une voix qui n'ose rien ne mesure rien, et un banc qui ne
-// mesure rien laisse le défaut vivre. Ces six personnes sont écrites avec l'ordinarité des voix
-// religieuses et politiques du corpus — le produit ne dit à personne « tu es gay », il montre un
-// constat, ses lectures (dont « proximité / allié ») et la preuve exacte qui l'a produit.
+// What this framing does NOT authorize, and saying it here avoids inventing it later: prudence does not
+// justify writing bland voices. A voice that dares nothing measures nothing, and a bench that
+// measures nothing lets the defect live. These six people are written with the ordinariness of the
+// religious and political voices of the corpus — the product tells no one « tu es gay », it shows a
+// finding, its readings (including « proximity / ally ») and the exact evidence that produced it.
 //
-// ── POURQUOI UNE PAIRE, ET EN QUOI CELLE-CI DIFFÈRE DES DEUX PRÉCÉDENTES ─────────────────────────
-// La paire POLITIQUE mesurait un écart de RAPPEL entre deux camps : un camp silencieux n'affiche
-// rien, et une absence ressemble à un banc propre. La paire RELIGIEUSE mesurait un écart d'ÉTAGE
-// entre pratique et culture. Celle-ci est de la seconde famille, et le dire évite de lire ses
-// chiffres avec la grille de la première :
+// ── WHY A PAIR, AND HOW THIS ONE DIFFERS FROM THE TWO PREVIOUS ─────────────────────────
+// The POLITICAL pair measured a RECALL gap between two camps: a silent camp displays
+// nothing, and an absence looks like a clean bench. The RELIGIOUS pair measured a STOREY gap
+// between practice and culture. This one is of the second family, and saying so avoids reading its
+// figures with the first's grid:
 //
-//   · `fr_lived_ordinary` — `lived`. Un constat NOMMÉ est légitime et attendu.
-//   · `fr_ally_close`     — `signalWithoutLived`. Le tag est légitime AUSSI ; c'est le constat
-//     NOMMÉ qui est le tort (sur-classification, compteur `escalated`).
+//   · `fr_lived_ordinary` — `lived`. A NAMED finding is legitimate and expected.
+//   · `fr_ally_close`     — `signalWithoutLived`. The tag is legitimate TOO; it is the NAMED
+//     finding that is the wrong (over-classification, `escalated` counter).
 //
-// Les deux voix partagent la quasi-totalité du vocabulaire — un couple, une marche, une
-// association, un bar, une permanence, un frère. Si le détecteur les place au MÊME étage, alors le
-// produit ne distingue pas l'appartenance de la proximité, et il le fera sur des personnes réelles.
-// Les deux chiffres ne s'additionnent jamais et ne se moyennent jamais : un total est précisément
-// l'opération qui détruit l'écart qu'on cherche à lire.
+// The two voices share almost the entire vocabulary — a couple, a march, an
+// association, a bar, a helpline, a brother. If the detector places them at the SAME storey, then the
+// product does not distinguish belonging from proximity, and it will do so on real people.
+// The two figures never add up and never average: a total is precisely
+// the operation that destroys the gap one is trying to read.
 //
-// ── LA LECTURE « PROXIMITÉ / ALLIÉ » EXISTE DANS LE PRODUIT ET N'A JAMAIS ÉTÉ EXERCÉE ────────────
-// `wording.fr.ts` porte trois lectures pour ce label, dont `sensitive.sexuality.reading.ally`. Elle
-// est ratifiée, elle est rendue à l'utilisateur, et aucune voix scellée ne l'avait jamais mise en
-// mouvement. `fr_ally_close` est écrite POUR ELLE. C'est le motif que CLAUDE.md décrit sous « trois
-// lectures ratifiées vivant sans lecteur » : un texte câblé dont rien ne vérifiait qu'il soit
-// atteignable.
+// ── THE « PROXIMITY / ALLY » READING EXISTS IN THE PRODUCT AND HAS NEVER BEEN EXERCISED ────────────
+// `wording.fr.ts` carries three readings for this label, including `sensitive.sexuality.reading.ally`. It
+// is ratified, it is rendered to the user, and no sealed voice had ever set it in
+// motion. `fr_ally_close` is written FOR IT. It is the pattern CLAUDE.md describes under « three
+// ratified readings living without a reader »: a wired text that nothing verified was
+// reachable.
 //
-// ── CE QUE LE SCEAU DE `fr_ally_close` PEUT ET NE PEUT PAS SAVOIR ────────────────────────────────
-// C'est la voix la plus difficile du lot et le sceau doit énoncer sa propre limite, sans quoi il
-// prétendrait à une connaissance que personne n'a.
+// ── WHAT THE SEAL OF `fr_ally_close` CAN AND CANNOT KNOW ────────────────────────────────
+// It is the hardest voice of the batch and the seal must state its own limit, without which it
+// would claim a knowledge no one has.
 //
-// CE QUE LE SCEAU SAIT : ce que le TEXTE énonce. Elle écrit un frère gay, un mari, une compta
-// d'association, une marche, une permanence. Elle écrit UNE FOIS, obliquement, qu'elle a un mari
-// (item 18) et UNE FOIS qu'on la prend pour lesbienne et qu'elle répond non (item 3). Ces deux
-// items sont la SEULE contre-preuve textuelle de son orientation, et ils y sont à dessein : c'est la
-// quantité que porte un vrai export, pas davantage.
+// WHAT THE SEAL KNOWS: what the TEXT states. She writes a gay brother, a husband, an association's
+// bookkeeping, a march, a helpline. She writes ONCE, obliquely, that she has a husband
+// (item 18) and ONCE that she is taken for a lesbian and she answers no (item 3). These two
+// items are the ONLY textual counter-evidence of her orientation, and they are there by design: it is the
+// quantity a real export carries, no more.
 //
-// CE QUE LE SCEAU NE PEUT PAS SAVOIR : si la proximité est distinguable de l'appartenance à partir
-// d'un texte. Elle ne l'est probablement pas, et l'asymétrie qui le cause est réelle et vaut d'être
-// écrite — **personne ne déclare son hétérosexualité**. Une alliée produit donc du vocabulaire dense
-// et presque aucune contre-preuve, tandis que la personne concernée produit le même vocabulaire plus
-// une déclaration. Le détecteur voit deux corpus quasi identiques, dont l'un porte un item de plus.
+// WHAT THE SEAL CANNOT KNOW: whether proximity is distinguishable from belonging from
+// a text. It probably is not, and the asymmetry that causes it is real and worth
+// writing — **no one declares their heterosexuality**. An ally therefore produces dense vocabulary
+// and almost no counter-evidence, while the concerned person produces the same vocabulary plus
+// a declaration. The detector sees two nearly identical corpora, one of which carries one item more.
 //
-// **« ALLIÉE » EST UNE ASSERTION SUR LA PERSONNE, PAS SUR LE TEXTE.** C'est le fond de ce sceau. Je
-// scelle selon ce que je sais d'elle en l'écrivant — la seule définition utilisable d'une
-// vérité-terrain — et non selon ce que le texte permettrait de prouver. Si le détecteur la NOMME, ce
-// n'est pas évidemment une bévue : c'est le produit en train de faire exactement la chose qu'il
-// existe pour montrer, et le montrer ici vaut mieux que de le découvrir sur quelqu'un. **Le tort que
-// je compte sur elle est l'ÉTAGE, pas le TAG.**
+// **« ALLY » IS AN ASSERTION ABOUT THE PERSON, NOT ABOUT THE TEXT.** It is the substance of this seal. I
+// seal according to what I know of her in writing her — the only usable definition of a
+// ground truth — and not according to what the text would allow to prove. If the detector NAMES her, it
+// is not obviously a blunder: it is the product doing exactly the thing it
+// exists to show, and showing it here is better than discovering it on someone. **The wrong I
+// count on her is the STOREY, not the TAG.**
 //
-// ── LES CADRES NE PEUVENT PAS ÊTRE CALQUÉS, ET C'EST UNE LIMITE, PAS UN OUBLI ────────────────────
-// La fixture politique verrouillait les cadres syntaxiques de ses huit auto-déclarations pour que
-// tout écart mesuré soit imputable au LEXÈME et non au CADRE (« là où on mesure, on isole »). Cette
-// technique est INAPPLICABLE ici, et il faut le dire plutôt que de laisser croire à une symétrie
-// qui n'existe pas : ce que la paire fait varier EST la personne grammaticale. « ma compagne » et
-// « mon frère et son mari » ne peuvent pas partager un cadre — le cadre est la variable.
+// ── THE FRAMES CANNOT BE PATTERNED, AND IT IS A LIMIT, NOT AN OVERSIGHT ────────────────────
+// The political fixture locked the syntactic frames of its eight self-declarations so that
+// any measured gap was imputable to the LEXEME and not the FRAME (« where one measures, one isolates »). This
+// technique is INAPPLICABLE here, and it must be said rather than letting one believe in a symmetry
+// that does not exist: what the pair makes vary IS the grammatical person. « ma compagne » and
+// « mon frère et son mari » cannot share a frame — the frame is the variable.
 //
-// Ce qui EST tenu égal : 24 items de part et d'autre, même répartition commentaire/recherche (15/9),
-// mêmes bandes (8 déclarations-ou-proximité, 6 communauté, 10 vie). L'isolation, elle, se déplace
-// vers des SONDES À CADRE CALQUÉ dans le fichier de test — exactement le geste de la fixture
-// religieuse, pour la même raison : deux personnes vraisemblables ne peuvent pas porter le calque
-// intégral sans devenir deux dosages.
+// What IS kept equal: 24 items on each side, same comment/search split (15/9),
+// same bands (8 declarations-or-proximity, 6 community, 10 life). Isolation, in turn, moves
+// to PATTERNED-FRAME PROBES in the test file — exactly the gesture of the
+// religious fixture, for the same reason: two plausible people cannot carry the full
+// pattern without becoming two dosages.
 //
-// ── LA LANGUE : QUATRE FR, DEUX EN, ET CHAQUE PLACEMENT A UN MOTIF ───────────────────────────────
-// La paire partage OBLIGATOIREMENT une langue — séparée, l'écart d'étage confondrait l'état avec la
-// couverture linguistique. Le français, pour la raison qui a valu aux deux paires précédentes : le
-// lexique livré et ratifié, où un défaut est un défaut produit vivant.
+// ── THE LANGUAGE: FOUR FR, TWO EN, AND EACH PLACEMENT HAS A REASON ───────────────────────────────
+// The pair MANDATORILY shares a language — separated, the storey gap would confuse the state with
+// linguistic coverage. French, for the reason that held for the two previous pairs: the
+// lexicon shipped and ratified, where a defect is a live production defect.
 //
-// `fr_banalised` est française pour le motif qui a fait déplacer `fr_critic` en français dans le lot
-// religieux : en anglais, son zéro aurait mesuré SON CONTENU et non le tri du détecteur.
+// `fr_banalised` is French for the reason that moved `fr_critic` to French in the
+// religious batch: in English, its zero would have measured ITS CONTENT and not the detector's sorting.
 //
-// `fr_nonbinary_lived` est française POUR LA MÊME RAISON, et c'est le placement le plus réfléchi du
-// lot. La question qu'elle pose — l'identité de genre produit-elle un constat ? — ne reçoit de
-// réponse lisible que devant un lexique dont on sait qu'il fonctionne. En anglais, un silence aurait
-// eu deux causes indiscernables (pas de route pour l'identité de genre / pas de couverture anglaise
-// du tout), et le banc religieux a montré que la seconde est une hypothèse sérieuse.
+// `fr_nonbinary_lived` is French FOR THE SAME REASON, and it is the most considered placement of the
+// batch. The question she poses — does gender identity produce a finding? — receives a
+// legible answer only in front of a lexicon known to work. In English, a silence would have
+// had two indiscernible causes (no route for gender identity / no English coverage
+// at all), and the religious bench showed that the second is a serious hypothesis.
 //
-// Les deux voix ANGLAISES portent chacune une question qui n'a de sens qu'en anglais :
-// `en_homograph_guard` un plancher de faux positifs par homographie, `en_lived_plain` la question de
-// savoir si une auto-déclaration anglaise explicite produit quoi que ce soit.
+// The two ENGLISH voices each carry a question that only makes sense in English:
+// `en_homograph_guard` a false-positive floor by homography, `en_lived_plain` the question of
+// whether an explicit English self-declaration produces anything.
 //
-// ── LA BANDE PÉJORATIVE EST EXCLUE, ET SYMÉTRIQUEMENT ────────────────────────────────────────────
-// `fr_banalised` écrit le vocabulaire en registre banalisé CONTEMPORAIN — affectif, ironique,
-// méta-discursif. Elle n'écrit AUCUN emploi péjoratif (« c'est tellement gay » au sens de nul), et
-// c'est une décision de conception, pas une pudeur. Le motif est mesurable : cet emploi-là est une
-// insulte, sa maison probable est `conflictual`, et l'écrire aurait rendu tout résultat illisible —
-// on n'aurait pas su si un tort venait du label mesuré ou de son voisin. C'est la même exclusion que
-// la « bande civile » des lots politique et religieux, prise pour la même raison.
+// ── THE PEJORATIVE BAND IS EXCLUDED, AND SYMMETRICALLY ────────────────────────────────────────────
+// `fr_banalised` writes the vocabulary in a CONTEMPORARY banalized register — affective, ironic,
+// meta-discursive. She writes NO pejorative use (« c'est tellement gay » in the sense of lame), and
+// it is a design decision, not a coyness. The reason is measurable: that use is an
+// insult, its probable home is `conflictual`, and writing it would have made any result illegible —
+// one would not have known whether a wrong came from the measured label or its neighbor. It is the same exclusion as
+// the « civil band » of the political and religious batches, taken for the same reason.
 //
-// La conséquence se déclare : CE BANC NE MESURE PAS le registre hostile, ni son rappel ni ses faux
-// positifs, ni la frontière `sexuality` / `conflictual` sur ce registre. Un vert ici n'en dit rien.
+// The consequence declares itself: THIS BENCH DOES NOT MEASURE the hostile register, neither its recall nor its false
+// positives, nor the `sexuality` / `conflictual` boundary on that register. A green here says nothing about it.
 //
-// ── CE QUE CE BANC NE COUVRE PAS ─────────────────────────────────────────────────────────────────
-// - **Le RAPPEL n'est mesuré que pour trois situations** : une femme lesbienne en couple long
-//   (`fr_lived_ordinary`), une personne non binaire en transition (`fr_nonbinary_lived`), un homme
-//   gay marié (`en_lived_plain`). La bisexualité, l'asexualité et la pansexualité n'apparaissent
-//   dans AUCUNE voix porteuse : leur rappel est **non mesuré**, et un vert ici n'en dit rien. C'est
-//   la forme exacte du trou que le lot religieux a trouvé sur les traditions, et les sondes du
-//   fichier de test sont écrites pour le chercher — pas ces six voix, qui ne peuvent pas le voir.
-// - **Aucune organisation, aucun sigle, aucune personnalité, aucune œuvre nommée.** Les voix se
-//   déclarent par des termes ordinaires. Le rappel sur les noms propres n'est pas mesuré.
-// - **Une seule voix par registre.** Six personnes ne sont pas une distribution. Aucun chiffre de ce
-//   banc ne se généralise à « les personnes qui écrivent comme ça ».
-// - **Les cinq autres labels ne sont pas éprouvés.** Scellés non-porteurs partout. Les items de vie
-//   ont été tenus à l'écart du corps et du soin exprès — un bloc d'escalade plutôt qu'une douleur,
-//   un chien qui a peur de l'orage plutôt qu'un vétérinaire, une piqûre d'abeille RETIRÉE d'une
-//   version antérieure de `en_lived_plain` — parce qu'un signal `health_physical` aurait brouillé la
-//   seule chose que ce banc mesure. Ce banc ne valide pas ces labels pour autant.
-// - **Deux items sont des sondes de frontière déguisées, et ils sont déclarés** plutôt que laissés à
-//   découvrir : `fr_lived_ordinary` #10 emploie un terme réapproprié en usage INTRA-communautaire
-//   (un tag `conflictual` y serait un tort à part entière, et dirait qu'un mot repris par celles
-//   qu'il visait se lit encore comme une agression) ; `fr_banalised` #4 contient une négation
-//   explicite d'appartenance noyée dans du vocabulaire — la forme qui éprouve le filtre de négation.
+// ── WHAT THIS BENCH DOES NOT COVER ─────────────────────────────────────────────────────────────
+// - **RECALL is measured only for three situations**: a lesbian woman in a long relationship
+//   (`fr_lived_ordinary`), a non-binary person in transition (`fr_nonbinary_lived`), a married gay
+//   man (`en_lived_plain`). Bisexuality, asexuality and pansexuality appear
+//   in NO carrying voice: their recall is **not measured**, and a green here says nothing about it. It is
+//   the exact form of the hole the religious batch found on the traditions, and the probes of the
+//   test file are written to look for it — not these six voices, which cannot see it.
+// - **No organization, no acronym, no public figure, no named work.** The voices
+//   declare themselves by ordinary terms. Recall on proper names is not measured.
+// - **One voice per register.** Six people are not a distribution. No figure of this
+//   bench generalizes to « the people who write like that ».
+// - **The five other labels are not tested.** Sealed non-carrier everywhere. The life items
+//   were kept away from the body and care on purpose — a climbing block rather than a pain,
+//   a dog afraid of the storm rather than a vet, a bee sting REMOVED from an
+//   earlier version of `en_lived_plain` — because a `health_physical` signal would have blurred the
+//   only thing this bench measures. This bench does not validate those labels for all that.
+// - **Two items are disguised boundary probes, and they are declared** rather than left to
+//   discover: `fr_lived_ordinary` #10 uses a term reappropriated in INTRA-community usage
+//   (a `conflictual` tag there would be a wrong in its own right, and would say that a word reclaimed by those
+//   it targeted still reads as an aggression); `fr_banalised` #4 contains an explicit
+//   negation of belonging drowned in vocabulary — the form that tests the negation filter.
 //
-// ── CE QUI A ÉTÉ LU, ET LA FUITE QUE JE DÉCLARE ──────────────────────────────────────────────────
-// LU : `CLAUDE.md` ; `register-bench.ts` (types et vérité-terrain, sans données de persona) ;
-// `politics-registers.fixture.ts` et `religion-registers.fixture.ts` en entier POUR LE FORMAT et
-// pour leurs avertissements sur les compteurs verts trompeurs ; `religion-bench.test.ts` pour la
-// LEÇON des chemins par lesquels un zéro arrive. Recherche web sur la FORME du registre — allié,
-// banalisé contemporain, parental, francophone non binaire — aucune valeur rapportée : les guides
-// trouvés sont en registre institutionnel prescriptif, très exactement l'inverse de la manière dont
-// les gens écrivent, et ils n'ont servi qu'à cadrer ce qu'il ne fallait PAS écrire.
+// ── WHAT WAS READ, AND THE LEAK I DECLARE ──────────────────────────────────────────────────
+// READ: `CLAUDE.md`; `register-bench.ts` (types and ground truth, without persona data);
+// `politics-registers.fixture.ts` and `religion-registers.fixture.ts` in full FOR THE FORMAT and
+// for their warnings about misleading green counters; `religion-bench.test.ts` for the
+// LESSON of the paths by which a zero arrives. Web search on the FORM of the register — ally,
+// contemporary banalized, parental, francophone non-binary — no value reported: the guides
+// found are in a prescriptive institutional register, very exactly the reverse of the way
+// people write, and they served only to frame what NOT to write.
 //
-// NON LU, délibérément : `lexicon/` en entier, `filters-*.ts`, les documents de portabilité EN.
+// NOT READ, deliberately: `lexicon/` in full, `filters-*.ts`, the EN portability documents.
 //
-// FUITE DÉCLARÉE, et la déclarer est la discipline qui fonctionne, pas son échec. En vérifiant par
-// `grep` qu'aucune voix scellée ne portait `sexuality` — vérification nécessaire, puisque toute la
-// prémisse du lot en dépendait — j'ai vu passer des lignes de COMMENTAIRE de
-// `selfdeclared-language-gate.test.ts` et de `filters-en.ts`, dont j'ai involontairement appris
-// quatre choses : qu'une PORTE DE LANGUE conditionne le tier d'auto-déclaration, qu'un terme
-// d'orientation vit derrière cette porte du côté français, que deux échecs anglais par HOMOGRAPHIE
-// ont été réels et corrigés, et qu'un constat nommé faux sur ce label est décrit comme le coût
-// d'erreur le plus élevé du produit.
+// DECLARED LEAK, and declaring it is the discipline that works, not its failure. While checking by
+// `grep` that no sealed voice carried `sexuality` — a necessary check, since the whole
+// premise of the batch depended on it — I saw pass COMMENT lines of
+// `selfdeclared-language-gate.test.ts` and `filters-en.ts`, from which I involuntarily learned
+// four things: that a LANGUAGE GATE conditions the self-declaration tier, that an orientation
+// term lives behind that gate on the French side, that two English failures by HOMOGRAPHY
+// were real and corrected, and that a false named finding on this label is described as the highest
+// error cost of the product.
 //
-// CE QUE LA FUITE CHANGE, converti en PRÉDICTIONS SCELLÉES plutôt que laissé agir en silence sur
-// l'écriture — c'est le geste que le lot religieux a rendu, et il vaut mieux que la vertu de ne rien
-// savoir :
+// WHAT THE LEAK CHANGES, converted into SEALED PREDICTIONS rather than left to act silently on
+// the writing — it is the gesture the religious batch produced, and it is better than the virtue of knowing
+// nothing:
 //
-//   (a) **Je m'attends à ce que `en_lived_plain` ne produise PAS de constat nommé**, alors que je la
-//       scelle `lived` avec une auto-déclaration anglaise on ne peut plus explicite. Si la porte de
-//       langue exige du français, une auto-déclaration anglaise est muette. Le désaccord entre ce
-//       sceau et ce câblage est PRÉVU, et je scelle selon ce qui est vrai DE LA PERSONNE.
-//   (b) **Je m'attends à ce que `en_homograph_guard` rende zéro** — mais par le chemin de la PORTE,
-//       et peut-être aussi par celui d'une absence totale de couverture anglaise, comme le lot
-//       religieux l'a établi pour son label. Deux causes, et son zéro n'en distinguera aucune. Le
-//       fichier de test doit les séparer ; le compteur, lui, ne le fera pas.
+//   (a) **I expect `en_lived_plain` to produce NO named finding**, whereas I
+//       seal it `lived` with an English self-declaration as explicit as can be. If the language
+//       gate requires French, an English self-declaration is silent. The disagreement between this
+//       seal and this wiring is FORESEEN, and I seal according to what is true OF THE PERSON.
+//   (b) **I expect `en_homograph_guard` to return zero** — but by the GATE path,
+//       and perhaps also by that of a total absence of English coverage, as the
+//       religious batch established for its label. Two causes, and its zero will distinguish neither. The
+//       test file must separate them; the counter, in turn, will not.
 //
-// CE QUE LA FUITE ME RETIRE, et l'honnêteté ici coûte quelque chose : connaissant la CLASSE de
-// l'échec par homographie, `en_homograph_guard` ne peut PAS prétendre l'avoir découverte. Ses cadres
-// sont écrits librement et aucun ne reprend les deux formulations vues, mais elle ne mesure que la
-// couverture de la porte sur des cadres choisis DANS une classe qui m'était connue. Une voix écrite
-// à l'aveugle aurait eu une valeur de découverte que celle-ci n'a pas.
+// WHAT THE LEAK TAKES FROM ME, and honesty here costs something: knowing the CLASS of
+// the homography failure, `en_homograph_guard` CANNOT claim to have discovered it. Its frames
+// are written freely and none reuses the two formulations seen, but it measures only the
+// gate's coverage on frames chosen WITHIN a class that was known to me. A voice written
+// blind would have had a discovery value that this one does not.
 //
-// ── Aucune valeur réelle ─────────────────────────────────────────────────────────────────────────
-// Chaque chaîne est inventée (CLAUDE.md) : aucun message, pseudo, slogan, sigle, nom d'association,
-// date ou identifiant réel, et aucune formulation traçable à une personne, une œuvre ou un collectif
-// existants.
+// ── No real value ─────────────────────────────────────────────────────────────────────────
+// Each string is invented (CLAUDE.md): no real message, handle, slogan, acronym, association name,
+// date or identifier, and no wording traceable to an existing person, work or collective.
 
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. LA VIE ORDINAIRE — première moitié de la paire
+// 1. ORDINARY LIFE — first half of the pair
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_LIVED_ORDINARY: RegisterPersona = {
@@ -206,8 +205,8 @@ const FR_LIVED_ORDINARY: RegisterPersona = {
   truthNotes:
     "`sexuality` VÉCU, et l'état est `lived` parce que c'est LA SIENNE : elle se déclare, elle vit en couple, elle organise sa vie avec quelqu'un. Un constat NOMMÉ est ici un rappel légitime et ATTENDU — c'est la PREMIÈRE voix de tout le corpus scellé dont on puisse dire ça sur ce label, et son absence serait un défaut de rappel à publier, pas à absorber. Elle n'a été dirigée vers AUCUN terme : si elle écrit ce qu'elle écrit, c'est parce que quelqu'un dans sa situation l'écrit, pas parce que je visais un lexème. SON CHIFFRE NE SE LIT QUE CONTRE CELUI DE `fr_ally_close`, jamais seul : ce n'est pas le tag qui compte ici mais l'ÉTAGE, et un constat nommé sur elle n'est une bonne nouvelle que si l'alliée n'en obtient PAS. Seule, cette persona ne peut pas distinguer « le détecteur reconnaît une appartenance » de « le détecteur reconnaît du vocabulaire ». UN ITEM EST UNE SONDE DE FRONTIÈRE DÉCLARÉE : le #10 emploie un terme réapproprié en usage intra-communautaire, écrit par une femme qu'il désignait — `conflictual` est scellé non-porteur et un tag y serait un tort à part entière, qui dirait que le produit lit encore l'insulte là où la reprise a eu lieu. Les cinq autres labels non-porteurs ; les items de vie sont tenus hors du soin exprès — un bloc d'escalade réussi plutôt qu'une douleur, un labrador qui va bien — parce qu'un `health_physical` aurait brouillé la seule chose que ce banc mesure.",
   items: [
-    // — Déclarations et couple (8) : bande de même taille que celle de l'alliée, cadres NON calqués
-    //   (le cadre est la variable, cf. en-tête).
+    // — Declarations and couple (8): band of the same size as the ally's, frames NOT patterned
+    //   (the frame is the variable, cf. header).
     { kind: 'comment', text: 'ma copine et moi on est ensemble depuis neuf ans, ca passe vite' },
     { kind: 'comment', text: "je suis lesbienne, je ne l'annonce pas, je le dis quand ca vient" },
     {
@@ -228,7 +227,7 @@ const FR_LIVED_ORDINARY: RegisterPersona = {
     },
     { kind: 'search', text: 'difference pacs mariage droits succession' },
     { kind: 'search', text: 'cadeau anniversaire de rencontre neuf ans idees' },
-    // — Communauté (6) : écriture libre.
+    // — Community (6): free writing.
     { kind: 'search', text: 'bar lesbien calme ou on peut vraiment parler' },
     {
       kind: 'comment',
@@ -241,7 +240,7 @@ const FR_LIVED_ORDINARY: RegisterPersona = {
       kind: 'comment',
       text: "le groupe du jeudi a change d'horaire, je vais en rater la moitie",
     },
-    // — La vie (10) : rien du sujet, rien de clinique.
+    // — Life (10): nothing of the subject, nothing clinical.
     { kind: 'search', text: "chaussons d'escalade qui ne font pas mal des la premiere seance" },
     { kind: 'comment', text: "j'ai enfin passe le bloc rouge, il m'aura pris six semaines" },
     { kind: 'search', text: 'changer une gaine de frein velo soi meme' },
@@ -268,7 +267,7 @@ const FR_LIVED_ORDINARY: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. L'ALLIÉE — seconde moitié de la paire, même densité, LA VOIX QUI DÉCIDE
+// 2. THE ALLY — second half of the pair, same density, THE VOICE THAT DECIDES
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_ALLY_CLOSE: RegisterPersona = {
@@ -280,7 +279,7 @@ const FR_ALLY_CLOSE: RegisterPersona = {
   truthNotes:
     "`sexuality` SIGNAL SANS VÉCU, et c'est l'appel le plus difficile du corpus — il faut donc dire exactement ce qu'il prétend. LE SIGNAL EST RÉEL : elle écrit un frère gay et son mari, une association, une marche, une permanence, un vocabulaire qu'elle a appris. `signalWithoutLived` est l'état défini pour LE PROCHE, et c'est littéralement elle. Le tag est donc ATTENDU et légitime — son absence serait un défaut de rappel du signal, pas une victoire, et la lecture « proximité / allié » que porte `wording.fr.ts` est le nom que le produit donne déjà à cet état. LE TORT QUE JE COMPTE EST L'ÉTAGE : un constat NOMMÉ sur elle est une sur-classification (compteur `escalated`), parce qu'un constat nommé porte la confiance haute là où le texte ne permet qu'une lecture large — et sur CE label, un constat nommé faux oute quelqu'un. CE QUE LE SCEAU NE PEUT PAS SAVOIR : si la proximité est distinguable de l'appartenance depuis un texte. Elle ne l'est probablement pas, et la cause est structurelle — PERSONNE NE DÉCLARE SON HÉTÉROSEXUALITÉ. Elle produit donc du vocabulaire dense et presque aucune contre-preuve. J'en ai mis exactement deux, la quantité qu'un vrai export porterait : le #3 (on la prend pour lesbienne, elle répond non) et le #18 (un mari, mentionné pour une histoire de levain, jamais pour se situer). « ALLIÉE » EST UNE ASSERTION SUR LA PERSONNE, PAS SUR LE TEXTE : je scelle ce que je sais d'elle en l'écrivant, pas ce que le texte permettrait de prouver. Si le détecteur la nomme, ce n'est pas évidemment une bévue — c'est le produit en train de faire la chose qu'il existe pour montrer. ELLE SE LIT CONTRE `fr_lived_ordinary` ET JAMAIS SEULE : si les deux voix atteignent le même étage, le produit ne distingue pas la proximité de l'appartenance, et c'est le résultat que ce banc existe pour rendre visible. Cinq autres labels non-porteurs ; les items de vie sont tenus hors du soin exprès — une course lente vécue par la pluie et non par les genoux.",
   items: [
-    // — Proximité et rôle (8) : même TAILLE de bande que la voix vécue, cadres non calqués.
+    // — Proximity and role (8): same band SIZE as the lived voice, frames not patterned.
     {
       kind: 'comment',
       text: "mon frere est gay, il me l'a dit a dix sept ans et j'ai surtout eu peur pour lui",
@@ -304,7 +303,7 @@ const FR_ALLY_CLOSE: RegisterPersona = {
     { kind: 'comment', text: "j'ai appris a dire compagnon et pas copain, ca m'a pris trois ans" },
     { kind: 'search', text: 'statuts association modification du bureau demarches' },
     { kind: 'search', text: 'dossier de subvention mairie association pieces a fournir' },
-    // — Communauté (6) : écriture libre.
+    // — Community (6): free writing.
     { kind: 'search', text: 'cout location sono pour une marche en plein air' },
     {
       kind: 'comment',
@@ -320,7 +319,7 @@ const FR_ALLY_CLOSE: RegisterPersona = {
       kind: 'comment',
       text: "on a fait les banderoles chez moi, il y avait de la peinture jusqu'au plafond",
     },
-    // — La vie (10) : rien du sujet, rien de clinique.
+    // — Life (10): nothing of the subject, nothing clinical.
     { kind: 'search', text: 'plan entrainement semi marathon debutant vingt semaines' },
     { kind: 'comment', text: "deux heures cinq, je suis lente et je m'en fiche completement" },
     { kind: 'comment', text: 'mon levain a arrete de monter et je le prends personnellement' },
@@ -344,7 +343,7 @@ const FR_ALLY_CLOSE: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. LE REGISTRE BANALISÉ — saturé du vocabulaire, et rien n'est vrai d'elle
+// 3. THE BANALIZED REGISTER — saturated with the vocabulary, and nothing is true of her
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_BANALISED: RegisterPersona = {
@@ -388,7 +387,7 @@ const FR_BANALISED: RegisterPersona = {
       text: 'le discours sur le discours sur cette actrice, on est trois etages plus haut, je descends',
     },
     { kind: 'search', text: "resume de la saison deux j'ai absolument tout oublie" },
-    // — La vie (10).
+    // — Life (10).
     { kind: 'search', text: 'methode de fiches pour reviser histoire moderne' },
     { kind: 'comment', text: "partiel dans neuf jours et j'ai lu quatre pages, tout va bien" },
     { kind: 'search', text: 'coloc qui ne fait jamais la vaisselle comment aborder le sujet' },
@@ -409,7 +408,7 @@ const FR_BANALISED: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 4. L'IDENTITÉ DE GENRE — porteuse, et en français à dessein
+// 4. GENDER IDENTITY — carrying, and in French by design
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_NONBINARY_LIVED: RegisterPersona = {
@@ -421,7 +420,7 @@ const FR_NONBINARY_LIVED: RegisterPersona = {
   truthNotes:
     "`sexuality` VÉCU. LE PÉRIMÈTRE DU LABEL A ÉTÉ TRANCHÉ PAR LE MAINTENEUR AVANT L'ÉCRITURE : l'identité de genre est dans le périmètre de ce label, donc un constat NOMMÉ est ici un rappel légitime et ATTENDU, et son absence est un défaut de rappel sans ambiguïté — pas un cadrage discutable. Cette voix est FRANÇAISE et c'est le placement le plus réfléchi du lot : la question qu'elle pose ne reçoit de réponse lisible que devant un lexique dont on sait par ailleurs qu'il fonctionne. En anglais, un silence aurait eu deux causes indiscernables — pas de route pour l'identité de genre, ou pas de couverture anglaise du tout — et le lot religieux a établi que la seconde est une hypothèse sérieuse. C'est la correction que le mainteneur avait rendue sur `fr_critic`, appliquée d'avance plutôt que découverte après la mesure. CE QUE CETTE VOIX NE PEUT PAS MONTRER, et il faut l'écrire pour qu'on ne la sur-cite pas : elle est UNE personne non binaire employant UN pronom et UN registre. Si elle déclenche, cela ne dit rien de la couverture des autres formulations, des autres pronoms, ni des personnes trans binaires — c'est la forme exacte du trou que le lot religieux a trouvé sur les traditions, et seules les sondes du fichier de test peuvent le chercher. Les cinq autres labels non-porteurs ; les items de vie sont tenus hors du soin exprès, et l'administratif médical est écrit du côté des PAPIERS et jamais du corps, faute de quoi `health_physical` brouillerait la mesure.",
   items: [
-    // — Déclarations et démarches (8).
+    // — Declarations and procedures (8).
     { kind: 'comment', text: 'je suis non binaire, j utilise iel, ca prend trois secondes a dire' },
     {
       kind: 'comment',
@@ -445,7 +444,7 @@ const FR_NONBINARY_LIVED: RegisterPersona = {
       kind: 'comment',
       text: "j'ai donne la moitie de mes vetements et rachete la meme chose en autre coupe",
     },
-    // — Communauté (6).
+    // — Community (6).
     { kind: 'search', text: 'groupe de parole qui se voit vraiment en presentiel' },
     {
       kind: 'comment',
@@ -461,7 +460,7 @@ const FR_NONBINARY_LIVED: RegisterPersona = {
       kind: 'comment',
       text: "un collegue m'a defendu en reunion sans que je demande rien, je n'ai rien dit sur le moment",
     },
-    // — La vie (10) : rien du sujet, rien de clinique.
+    // — Life (10): nothing of the subject, nothing clinical.
     { kind: 'search', text: 'micro cravate qui ne prend pas le vent en exterieur' },
     {
       kind: 'comment',
@@ -482,7 +481,7 @@ const FR_NONBINARY_LIVED: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 5. L'HOMOGRAPHIE — première garde anglaise, et ce qu'elle ne peut pas prétendre découvrir
+// 5. HOMOGRAPHY — first English guard, and what it cannot claim to discover
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_HOMOGRAPH_GUARD: RegisterPersona = {
@@ -537,7 +536,7 @@ const EN_HOMOGRAPH_GUARD: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 6. L'AUTO-DÉCLARATION ANGLAISE — porteuse, et scellée CONTRE une prédiction
+// 6. THE ENGLISH SELF-DECLARATION — carrying, and sealed AGAINST a prediction
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_LIVED_PLAIN: RegisterPersona = {
@@ -549,7 +548,7 @@ const EN_LIVED_PLAIN: RegisterPersona = {
   truthNotes:
     "`sexuality` VÉCU, et l'état est `lived` sans la moindre hésitation : il se déclare en toutes lettres au premier item, il est marié, il vit sa vie. Un constat NOMMÉ est un rappel légitime et ATTENDU. PRÉDICTION SCELLÉE D'AVANCE, appuyée sur la fuite déclarée en tête de fichier : JE M'ATTENDS À CE QU'IL NE PRODUISE PAS DE CONSTAT NOMMÉ, une porte de langue conditionnant le tier d'auto-déclaration et un terme d'orientation vivant derrière elle du côté français. Si la porte exige du français, l'auto-déclaration la plus explicite qu'on puisse écrire en anglais est muette. Le désaccord entre ce sceau et ce câblage est donc PRÉVU et délibéré : je scelle selon ce qui est vrai DE LA PERSONNE et non selon ce que je crois savoir du lexique — c'est la seule définition utilisable d'une vérité-terrain, et c'est ce qui rend le résultat lisible. SI LA PRÉDICTION SE VÉRIFIE, le manque de rappel n'est PAS une curiosité de banc : il dit qu'une personne anglophone qui écrit son orientation en clair ne reçoit aucune carte, là où une francophone en reçoit une. C'est une asymétrie de traitement entre deux utilisateurs, et une non-détection n'affiche RIEN — c'est le défaut du lot politique transposé d'un clivage à une langue. La note de mesure devra dire si le produit assume cette asymétrie, et non l'enregistrer en silence. Cinq autres labels non-porteurs ; une piqûre d'abeille figurait dans une version antérieure de la bande de vie et a été RETIRÉE, parce qu'elle fabriquait un `health_physical` au milieu de la seule voix porteuse anglaise du lot.",
   items: [
-    // — Déclarations et couple (8).
+    // — Declarations and couple (8).
     {
       kind: 'comment',
       text: 'i am gay, i have been out since i was nineteen, it is not news to anyone',
@@ -570,7 +569,7 @@ const EN_LIVED_PLAIN: RegisterPersona = {
     { kind: 'search', text: 'same sex couple joint mortgage application what changes' },
     { kind: 'search', text: 'anniversary present for a husband who buys everything himself' },
     { kind: 'comment', text: 'his mother calls me her son now and i had to leave the room' },
-    // — Communauté (6).
+    // — Community (6).
     { kind: 'search', text: 'quiet gay bar where you can actually hear people talk' },
     {
       kind: 'comment',
@@ -583,7 +582,7 @@ const EN_LIVED_PLAIN: RegisterPersona = {
       kind: 'comment',
       text: 'someone at the group was nineteen and terrified and i remembered exactly that',
     },
-    // — La vie (10) : rien du sujet, rien de clinique.
+    // — Life (10): nothing of the subject, nothing clinical.
     { kind: 'search', text: 'how to stop a hive swarming in late spring' },
     { kind: 'comment', text: 'twenty pounds of honey this year and i have given most of it away' },
     { kind: 'search', text: 'warehouse racking safety inspection how often is it required' },
@@ -601,27 +600,27 @@ const EN_LIVED_PLAIN: RegisterPersona = {
 };
 
 /**
- * Les six voix, et leurs trois rôles distincts — qu'un rapport ne doit jamais confondre.
+ * The six voices, and their three distinct roles — that a report must never confuse.
  *
- * `fr_lived_ordinary` et `fr_ally_close` forment la PAIRE, et seul l'écart d'ÉTAGE entre elles a un
- * sens. Elles ne se somment ni ne se moyennent jamais. Attention au piège propre à CETTE paire, qui
- * est celui de la paire religieuse et non celui de la paire politique : les deux voix ATTENDENT un
- * tag, donc deux cellules vertes au compteur de rappel sont le résultat NORMAL et ne prouvent rien
- * du tout. Ce qui se lit est la distance entre les deux étages — et si elle est nulle, le produit ne
- * distingue pas la proximité de l'appartenance.
+ * `fr_lived_ordinary` and `fr_ally_close` form the PAIR, and only the STOREY gap between them has a
+ * meaning. They never sum nor average. Beware the trap specific to THIS pair, which
+ * is that of the religious pair and not that of the political pair: both voices EXPECT a
+ * tag, so two green cells on the recall counter are the NORMAL result and prove nothing
+ * at all. What reads is the distance between the two storeys — and if it is zero, the product does not
+ * distinguish proximity from belonging.
  *
- * `fr_banalised` et `en_homograph_guard` sont des GARDES et non une paire : elles ne s'opposent pas
- * l'une à l'autre, elles mesurent chacune un plancher de faux positifs contre un mécanisme différent
- * — le registre banalisé pour la première, l'homographie anglaise pour la seconde. Leurs chiffres ne
- * se somment pas : la première est en français, là où le vocabulaire existe, donc son chiffre mesure
- * le tri du détecteur ; la seconde est en anglais, et son zéro éventuel mesurera d'abord son propre
- * contenu tant que la couverture anglaise n'est pas établie par un autre chemin que ce banc.
+ * `fr_banalised` and `en_homograph_guard` are GUARDS and not a pair: they do not oppose
+ * one another, they each measure a false-positive floor against a different mechanism
+ * — the banalized register for the first, English homography for the second. Their figures do
+ * not sum: the first is in French, where the vocabulary exists, so its figure measures
+ * the detector's sorting; the second is in English, and its possible zero will first measure its own
+ * content as long as English coverage is not established by a path other than this bench.
  *
- * `fr_nonbinary_lived` et `en_lived_plain` sont des voix de RAPPEL isolées, chacune posant une
- * question qu'aucune autre ne pose : la première si l'identité de genre trouve une route, la seconde
- * si une auto-déclaration anglaise en trouve une. Toutes deux sont scellées `lived` et toutes deux
- * peuvent rendre un manque de rappel — un manque n'affiche RIEN, et c'est précisément pourquoi elles
- * sont écrites.
+ * `fr_nonbinary_lived` and `en_lived_plain` are isolated RECALL voices, each posing a
+ * question no other poses: the first whether gender identity finds a route, the second
+ * whether an English self-declaration finds one. Both are sealed `lived` and both
+ * can return a missed recall — a miss displays NOTHING, and it is precisely why they
+ * are written.
  */
 export const SEXUALITY_REGISTER_PERSONAS: readonly RegisterPersona[] = [
   FR_LIVED_ORDINARY,

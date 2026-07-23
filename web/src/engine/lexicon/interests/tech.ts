@@ -1,20 +1,20 @@
-// Lexique d'intérêt `tech` (D2, PANO-77 lot 2 · enrichi entités) — tech grand public / hardware.
+// Interest lexicon `tech` (D2, PANO-77 batch 2 · entities enriched) — consumer tech / hardware.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la tech FR : appareils, composants, MARQUES, ABRÉVIATIONS/jargon. À
-// l'aveugle ; marques et sigles = signal public générique enrichi par recherche (constructeurs,
-// glossaire hardware).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR tech: devices, components, BRANDS, ABBREVIATIONS/jargon. Blind;
+// brands and acronyms = generic public signal enriched by research (manufacturers,
+// hardware glossary).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « smartphone », « processeur », « carte graphique », « overclocking »,
-//     sigles hardware (« cpu », « gpu », « ssd », « rtx », « pcie »), marques (« nvidia », « intel »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « smartphone », « processeur », « carte graphique », « overclocking »,
+//     hardware acronyms (« cpu », « gpu », « ssd », « rtx », « pcie »), brands (« nvidia », « intel »,
 //     « xiaomi », « macbook », « iphone »).
-//   · ANCRÉ — 50/50 : « tech » (technique), « apple » (fruit), « ram » (bélier / Dodge Ram), « puce »
-//     (insecte), « tablette » (chocolat), « souris » (animal), « ecran », « cloud », « boot » : co-occurrence.
-//   · EXCLU — « pomme » (jamais listé, trop de FP même ancré).
+//   · ANCHORED — 50/50: « tech » (technique), « apple » (fruit), « ram » (ram / Dodge Ram), « puce »
+//     (flea), « tablette » (chocolate), « souris » (mouse animal), « ecran », « cloud », « boot »: co-occurrence.
+//   · EXCLUDED — « pomme » (never listed, too many FP even anchored).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de `ia` (thème plus étroit).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from `ia` (narrower theme).
 
 import type { InterestLexicon } from '../types';
 
@@ -27,7 +27,7 @@ export const TECH_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Vocabulaire générique
+    // Generic vocabulary
     'smartphone',
     'ordinateur portable',
     'processeur',
@@ -44,7 +44,7 @@ export const TECH_LEXICON: InterestLexicon = {
     'carte mere',
     'montre connectee',
     'config pc',
-    // Sigles hardware
+    // Hardware acronyms
     'cpu',
     'gpu',
     'ssd',
@@ -52,7 +52,7 @@ export const TECH_LEXICON: InterestLexicon = {
     'pcie',
     'nvme',
     'ddr5',
-    // Marques
+    // Brands
     'nvidia',
     'intel',
     'xiaomi',
@@ -75,26 +75,26 @@ export const TECH_LEXICON: InterestLexicon = {
     'drone dji',
     'firmware',
     'nas synology',
-    // Variantes EN (PANO-88) : SOLO univoques.
+    // EN variants (PANO-88): univocal SOLO.
     'unboxing',
     'teardown',
   ],
   anchored: [
-    'tech', // abréviation « technique »
+    'tech', // abbreviation of « technique »
     'apple', // fruit
-    'ram', // bélier / Dodge Ram
-    'puce', // insecte / puce électronique
-    'tablette', // chocolat / tablette
-    'souris', // animal / souris d'ordinateur
-    'ecran', // écran générique
-    'cloud', // nuage
-    'boot', // démarrage / botte anglaise
-    'gadget', // gadget générique
-    'amd', // marque vs sigle divers
-    'core', // cœur / Intel Core
+    'ram', // ram (animal) / Dodge Ram
+    'puce', // flea / electronic chip
+    'tablette', // chocolate / tablet
+    'souris', // animal / computer mouse
+    'ecran', // generic screen
+    'cloud', // cloud
+    'boot', // boot-up / English boot
+    'gadget', // generic gadget
+    'amd', // brand vs miscellaneous acronym
+    'core', // core / Intel Core
     'geek',
-    'setup', // config vs mise en place générique (EN)
-    'flagship', // haut de gamme vs « vaisseau amiral » (EN)
+    'setup', // config vs generic setup (EN)
+    'flagship', // high-end vs « vaisseau amiral » (EN)
   ],
   selfDeclared: ['geek', 'passionne de tech'],
 };

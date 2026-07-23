@@ -1,15 +1,15 @@
-// Micro-bench CANARI de `detectLabels` sur les 12 lexiques d'intérêt (PANO-76). PAS une optimisation
-// ni une refonte du matcher (perf = PANO-87) : juste un repère indicatif pour repérer une régression
-// catastrophique (ex. un marqueur qui ferait exploser le backtracking regex). Il imprime le temps et
-// n'assère qu'une borne TRÈS lâche — un canari, pas un seuil de perf.
+// CANARY micro-bench of `detectLabels` over the 12 interest lexicons (PANO-76). NOT an optimization
+// nor a rework of the matcher (perf = PANO-87): just an indicative marker to catch a catastrophic
+// regression (e.g. a marker that would blow up regex backtracking). It prints the time and
+// asserts only a VERY loose bound — a canary, not a perf threshold.
 //
-// `Date.now()` est autorisé ici (test, pas moteur) : le moteur reste pur, seul le bench chronomètre.
+// `Date.now()` is allowed here (test, not engine): the engine stays pure, only the bench times.
 
 import { describe, expect, it } from 'vitest';
 import { INTEREST_LEXICONS } from '../lexicon/interests';
 import { detectLabels } from './detect';
 
-/** Corpus synthétique large : phrases variées, certaines porteuses, la plupart anodines. */
+/** Large synthetic corpus: varied sentences, some bearing signals, most anodyne. */
 function syntheticCorpus(n: number): string[] {
   const seeds = [
     'grosse seance de musculation puis footing tranquille',
@@ -28,8 +28,8 @@ function syntheticCorpus(n: number): string[] {
   return out;
 }
 
-describe('interests — micro-bench canari (indicatif, PANO-76)', () => {
-  it('detectLabels sur 2000 items × 12 lexiques tient dans une borne très lâche', () => {
+describe('interests — canary micro-bench (indicative, PANO-76)', () => {
+  it('detectLabels over 2000 items × 12 lexicons stays within a very loose bound', () => {
     const corpus = syntheticCorpus(2000);
     const start = Date.now();
     const detections = detectLabels(corpus, INTEREST_LEXICONS);
@@ -37,9 +37,9 @@ describe('interests — micro-bench canari (indicatif, PANO-76)', () => {
     console.log(
       `[interests bench] detectLabels(${corpus.length} items × ${INTEREST_LEXICONS.length} lexiques) = ${elapsedMs} ms, ${detections.length} thèmes détectés`,
     );
-    // Borne canari (généreuse, anti-flakiness) : un blow-up de backtracking la ferait sauter.
+    // Canary bound (generous, anti-flakiness): a backtracking blow-up would make it snap.
     expect(elapsedMs).toBeLessThan(10_000);
-    // Sanity : le corpus porteur déclenche bien plusieurs thèmes.
+    // Sanity: the bearing corpus does trigger several themes.
     expect(detections.length).toBeGreaterThan(0);
   });
 });

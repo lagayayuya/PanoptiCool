@@ -1,73 +1,73 @@
-// Banc de faux positifs EN — LE CORPS. Trois voix et leur VÉRITÉ-TERRAIN.
+// EN false-positive bench — THE BODY. Three voices and their GROUND TRUTH.
 //
-// ── Ce fichier est scellé ────────────────────────────────────────────────────────────────────────
-// Écrit et commité AVANT toute lecture du lexique et AVANT le premier tour du détecteur. C'est sa
-// seule propriété qui compte : « faux positif » n'a pas de sens sans un état attendu écrit d'avance,
-// et juger après avoir vu la sortie revient à juger avec indulgence. Le sceau est le commit ; le
-// relire dans l'historique est la seule façon de vérifier que la vérité-terrain n'a pas été ajustée
-// à la mesure.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// ── This file is sealed ────────────────────────────────────────────────────────────────────────
+// Written and committed BEFORE any reading of the lexicon and BEFORE the first pass of the detector. It is its
+// only property that counts: « false positive » has no meaning without an expected state written in advance,
+// and judging after seeing the output amounts to judging leniently. The seal is the commit; rereading
+// it in the history is the only way to check that the ground truth was not adjusted
+// to the measurement.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── Pourquoi ces trois voix existent ─────────────────────────────────────────────────────────────
-// Aucune voix scellée d'aucun banc n'écrit sur le corps. Mesuré, pas supposé : 0 item sur 30 dans
-// chacune des trois voix témoins du banc EN. Un rapport « aucun faux positif sur `health_physical` »
-// appuyé sur ces bancs-là ne dirait donc rien du tout — le détecteur n'aurait simplement jamais été
-// mis devant le sujet. C'est le motif nommé par CLAUDE.md (*Ce qu'un filet prouve*) : une assertion
-// négative vérifie ce qu'elle ATTEINT, pas ce qu'elle affirme.
+// ── Why these three voices exist ─────────────────────────────────────────────────────────────
+// No sealed voice of any bench writes about the body. Measured, not supposed: 0 items out of 30 in
+// each of the three witness voices of the EN bench. A report « no false positive on `health_physical` »
+// leaning on those benches would therefore say nothing at all — the detector would simply never have been
+// put in front of the subject. It is the pattern named by CLAUDE.md (*Ce qu'un filet prouve*): a negative
+// assertion verifies what it REACHES, not what it affirms.
 //
-// ── La variable est la POSITION face à la maladie, pas le registre ───────────────────────────────
-// Le banc EN de `mental_health` fait varier la FAÇON d'écrire (plate, hyperbolique, argotique). Ce
-// banc-ci fait varier autre chose : la RELATION entre celle qui écrit et la maladie dont il est
-// question. Les trois voix emploient un vocabulaire corporel dense et littéral ; ce qui les sépare,
-// c'est à qui la maladie appartient — à elle, à personne, à sa mère. Les trois états de
-// vérité-terrain d'ADR-0003 sont exactement ces trois positions, et c'est pour ça que le trio
-// mesure quelque chose plutôt que d'accumuler des voix.
+// ── The variable is the POSITION toward the illness, not the register ───────────────────────────────
+// The EN `mental_health` bench varies the WAY of writing (flat, hyperbolic, slang). This
+// bench varies something else: the RELATION between the one who writes and the illness in
+// question. The three voices use a dense, literal bodily vocabulary; what separates them
+// is who the illness belongs to — to her, to no one, to her mother. The three
+// ground-truth states of ADR-0003 are exactly these three positions, and that is why the trio
+// measures something rather than accumulating voices.
 //
-// ── Écriture par SITUATION, jamais par vocabulaire ───────────────────────────────────────────────
-// La consigne d'écriture portait sur des situations, jamais sur des mots. Aucune de ces voix n'a été
-// dirigée vers un terme : ce que chaque personne écrit est ce que quelqu'un dans sa situation écrit,
-// et les mots qui en sortent sont le RÉSULTAT à mesurer, pas l'entrée. Viser un terme aurait produit
-// un banc qui se confirme lui-même.
+// ── Writing by SITUATION, never by vocabulary ───────────────────────────────────────────────
+// The writing instruction bore on situations, never on words. None of these voices was
+// steered toward a term: what each person writes is what someone in their situation writes,
+// and the words that come out are the RESULT to measure, not the input. Aiming at a term would have produced
+// a bench that confirms itself.
 //
-// ── CE QUI A ÉTÉ LU, et c'est la garantie ────────────────────────────────────────────────────────
-// Déclaré ici parce qu'une écriture aveugle qui ne dit pas ce qu'elle a vu ne se vérifie pas.
+// ── WHAT WAS READ, and it is the guarantee ────────────────────────────────────────────────────────
+// Declared here because a blind writing that does not say what it saw cannot be verified.
 //
-// LU : `CLAUDE.md` ; `register-bench.ts` (types et vérité-terrain, sans données) ;
-// `register-bench.harness.ts` (la mécanique de comptage) ; `en-registers.fixture.ts` et
-// `en-fp-bench.test.ts` — POUR LEUR FORME, c'est-à-dire comment une voix se déclare et comment sa
-// vérité-terrain s'inscrit.
+// READ: `CLAUDE.md`; `register-bench.ts` (types and ground truth, without data);
+// `register-bench.harness.ts` (the counting mechanics); `en-registers.fixture.ts` and
+// `en-fp-bench.test.ts` — FOR THEIR FORM, that is, how a voice declares itself and how its
+// ground truth is recorded.
 //
-// NON LU, à dessein : aucun module de `lexicon/`, aucune liste de termes, aucun fichier
-// `filters-*.ts`, aucune note de portabilité, aucun message d'historique portant sur le lexique ou
-// les filtres. La valeur de ce fichier tient à ce que son auteur ignore quels termes sont à l'étude.
+// NOT READ, by design: no module of `lexicon/`, no term list, no `filters-*.ts`
+// file, no portability note, no history message bearing on the lexicon or
+// the filters. The value of this file rests on its author not knowing which terms are under study.
 //
-// FUITE À DÉCLARER, et elle n'est pas nulle : `en-fp-bench.test.ts`, dont la lecture était
-// nécessaire à la forme, NOMME dans ses commentaires cinq termes hyperboliques retirés, un jeu de
-// têtes de copule candidates, et le tier d'un nom nu. Ce sont des termes de `mental_health`, pas du
-// corps — mais la discipline tenue est donc « ignorance du lexique du CORPS », pas « ignorance du
-// lexique ». Nommer la fuite vaut mieux que la présumer inoffensive.
+// LEAK TO DECLARE, and it is not nil: `en-fp-bench.test.ts`, whose reading was
+// necessary for the form, NAMES in its comments five removed hyperbolic terms, a set of
+// candidate copula heads, and the tier of a bare name. These are `mental_health` terms, not body
+// ones — but the discipline held is therefore « ignorance of the BODY lexicon », not « ignorance of the
+// lexicon ». Naming the leak is better than presuming it harmless.
 //
-// ── Aucune valeur réelle ─────────────────────────────────────────────────────────────────────────
-// Chaque chaîne est inventée (CLAUDE.md). La recherche externe a porté sur la FORME du registre —
-// l'escalade puis l'auto-résolution des recherches de symptômes chez quelqu'un qui va bien, la
-// prédominance du vocabulaire LOGISTIQUE sur le vocabulaire de la souffrance chez qui vit avec une
-// condition, le partage entre charge émotionnelle et logistique chez les proches aidants. Jamais sur
-// des contenus repris. Aucun message, pseudo, date ou identifiant réel n'entre ici.
+// ── No real value ─────────────────────────────────────────────────────────────────────────
+// Each string is invented (CLAUDE.md). The external research bore on the FORM of the register —
+// the escalation then self-resolution of symptom searches by someone who is fine, the
+// predominance of LOGISTICAL vocabulary over the vocabulary of suffering in someone living with a
+// condition, the split between emotional and logistical load in caring relatives. Never on
+// reused content. No real message, handle, date or identifier enters here.
 //
-// ── CE QUE CE BANC NE MESURE PAS ─────────────────────────────────────────────────────────────────
-// - Le REGISTRE. Les trois voix écrivent en anglais courant et ponctué. Une personne qui vivrait la
-//   même condition en argot dense ou en hyperbole permanente n'est pas ici, et rien de ce banc ne
-//   permet de conclure sur elle. Le croisement position × registre reste entier.
-// - Les cinq autres labels. Ils sont scellés `nonCarrier` partout parce que ces vies ne les portent
-//   pas, pas parce qu'ils ont été éprouvés : un zéro sur eux mesure l'absence de sujet, pas la
-//   sûreté du détecteur.
-// - La détresse VITALE et le pronostic grave. Aucune voix n'est en fin de vie ni devant un
-//   diagnostic qui menace. Le coût d'erreur y est maximal et la retenue ne coûte rien à la
-//   démonstration.
-// - Le français. Ces voix sont anglaises ; le banc FR a les siennes.
+// ── WHAT THIS BENCH DOES NOT MEASURE ─────────────────────────────────────────────────────────────
+// - The REGISTER. The three voices write in everyday, punctuated English. A person who lived the
+//   same condition in dense slang or permanent hyperbole is not here, and nothing in this bench
+//   allows a conclusion about her. The position × register crossing remains whole.
+// - The five other labels. They are sealed `nonCarrier` everywhere because these lives do not carry
+//   them, not because they were tested: a zero on them measures the absence of a subject, not the
+//   detector's safety.
+// - VITAL distress and grave prognosis. No voice is at end of life nor facing a
+//   threatening diagnosis. The error cost there is maximal and restraint costs nothing to the
+//   demonstration.
+// - French. These voices are English; the FR bench has its own.
 
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
@@ -75,7 +75,7 @@ export type { BenchItem, GroundTruth, RegisterPersona, SensitiveLabel } from './
 export { SENSITIVE_LABELS } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. VIVRE AVEC — le vrai positif
+// 1. LIVING WITH — the true positive
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const LIVING: RegisterPersona = {
@@ -132,7 +132,7 @@ const LIVING: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. CELLE QUI CHERCHE — la voix qui porte le risque de ce banc
+// 2. THE ONE WHO SEARCHES — the voice that carries this bench's risk
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const WORRIER: RegisterPersona = {
@@ -186,7 +186,7 @@ const WORRIER: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. LE PROCHE AIDANT — signal réel, corps de quelqu'un d'autre
+// 3. THE CARING RELATIVE — real signal, someone else's body
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const RELATIVE: RegisterPersona = {
@@ -243,7 +243,7 @@ const RELATIVE: RegisterPersona = {
 };
 
 /**
- * Les trois voix du corps. L'ordre est celui des trois états de vérité-terrain : le vécu, le
- * non-porteur, le signal sans vécu.
+ * The three body voices. The order is that of the three ground-truth states: the lived, the
+ * non-carrier, the signal without lived experience.
  */
 export const EN_BODY_REGISTER_PERSONAS: readonly RegisterPersona[] = [LIVING, WORRIER, RELATIVE];

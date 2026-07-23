@@ -1,58 +1,58 @@
-// Copy FR de l'INTERFACE — la prose des composants, en français. Périmètre ratifiable n°2.
+// INTERFACE FR copy — the components' prose, in French. Ratifiable perimeter no. 2.
 //
 // ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-// │ WORDING PROVISOIRE — À RELIRE PAR yuya, au même titre que `engine/wording.fr.ts`.         │
+// │ PROVISIONAL WORDING — TO BE REVIEWED BY yuya, on the same footing as `engine/wording.fr.ts`. │
 // └──────────────────────────────────────────────────────────────────────────────────────────┘
 //
-// CE FICHIER EST L'ORACLE DE FORME du périmètre n°2. `copy.ts` dérive `UiCopy = typeof FR`, et
-// `copy.en.ts` s'en annote : une entrée ajoutée ici et oubliée en anglais est une erreur de
-// COMPILATION.
+// THIS FILE IS THE FORM ORACLE of perimeter no. 2. `copy.ts` derives `UiCopy = typeof FR`, and
+// `copy.en.ts` annotates itself with it: an entry added here and forgotten in English is a
+// COMPILATION error.
 //
-// ⚠ NE PAS ANNOTER LES GROUPES `Readonly<Record<string, string>>` ni les figer `as const`. Le
-// premier efface les clés du type et laisse compiler une traduction VIDE (mesuré, cf.
-// `engine/wording.ts`) ; le second fige les chaînes en types LITTÉRAUX, et l'anglais ne peut alors
-// plus satisfaire le français. Les littéraux nus sont le seul point d'équilibre : clés exactes,
-// valeurs `string`. Les `satisfies` existants sont conservés — ils VÉRIFIENT sans élargir.
+// ⚠ DO NOT ANNOTATE THE GROUPS `Readonly<Record<string, string>>` nor freeze them `as const`. The
+// first erases the type's keys and lets an EMPTY translation compile (measured, cf.
+// `engine/wording.ts`); the second freezes the strings into LITERAL types, and English can then
+// no longer satisfy French. Bare literals are the only balance point: exact keys,
+// `string` values. The existing `satisfies` are kept — they VERIFY without widening.
 //
-// ⚠ LES TABLEAUX NE SONT PAS À PARITÉ DE LONGUEUR. `typeof` d'un tableau donne `T[]`, pas un
-// n-uplet : une traduction anglaise peut en fournir 2 là où le français en a 3, et compiler.
-// `copy-parity.test.ts` compare les longueurs au RUNTIME — c'est le seul filet sur ce point.
+// ⚠ THE ARRAYS ARE NOT AT LENGTH PARITY. `typeof` of an array gives `T[]`, not a
+// tuple: an English translation can provide 2 where French has 3, and compile.
+// `copy-parity.test.ts` compares the lengths at RUNTIME — it is the only net on this point.
 //
-// POURQUOI CE PÉRIMÈTRE EST SÉPARÉ DE `engine/wording.*` : `wording.test.ts` y interdit la 2ᵉ
-// personne (le moteur ne s'adresse jamais à la personne, ADR-0003), or presque toute phrase
-// d'interface tutoie (« ton export », « tu peux »). L'interdiction EXILAIT donc la prose d'interface
-// hors du fichier ratifiable. D'où DEUX périmètres, un fichier par langue chacun.
+// WHY THIS PERIMETER IS SEPARATE FROM `engine/wording.*`: `wording.test.ts` forbids there the 2nd
+// person (the engine never addresses the person, ADR-0003), yet almost every interface
+// sentence uses "tu" (« ton export », « tu peux »). The prohibition therefore EXILED the interface prose
+// out of the ratifiable file. Hence TWO perimeters, one file per language each.
 //
-// FORME. Un objet PLAT par surface : une clé absente ou mal tapée est une erreur de COMPILATION au
-// point d'appel. Les phrases À TROUS sont des FONCTIONS qui rendent la phrase ENTIÈRE — jamais des
-// fragments « préfixe » / « suffixe » dont l'espace final serait porteur : un relecteur ne peut pas
-// vérifier ce qu'il ne voit pas d'un bloc.
+// SHAPE. A FLAT object per surface: an absent or mistyped key is a COMPILATION error at the
+// call point. FILL-IN sentences are FUNCTIONS that render the WHOLE sentence — never
+// « préfixe » / « suffixe » fragments whose trailing space would be load-bearing: a reviewer cannot
+// verify what he does not see as a block.
 //
-// CE QUI N'ENTRE PAS ICI :
-//   - les glyphes purement décoratifs (« · », « › », « ▲ ») restent dans le composant — ce n'est
-//     pas de la prose, et les extraire nuirait à la lecture du balisage ;
-//   - le TEXTE LÉGAL de `pages/fr/mentions-legales.astro` (décision yuya) — c'est un texte de
-//     RÉFÉRENCE, qui se lit d'un bloc et non par entrées de table, et dont la version anglaise
-//     est une page JUMELLE écrite par un humain, pas des chaînes traduites.
+// WHAT DOES NOT ENTER HERE:
+//   - purely decorative glyphs (« · », « › », « ▲ ») stay in the component — it is
+//     not prose, and extracting them would hurt the reading of the markup;
+//   - the LEGAL TEXT of `pages/fr/mentions-legales.astro` (yuya's decision) — it is a
+//     REFERENCE text, read as a block and not by table entries, and whose English version
+//     is a TWIN page written by a human, not translated strings.
 //
-// ─── ORDRE DE LECTURE : LE PARCOURS, PAS L'ARBORESCENCE ────────────────────────────────────────
-// Les groupes suivent l'ordre dans lequel une personne RENCONTRE les textes, pas l'ordre des
-// fichiers. Auditer « tout ce que le produit dit » se fait alors dans le sens où le produit le dit.
+// ─── READING ORDER: THE JOURNEY, NOT THE TREE ──────────────────────────────────────────────────
+// The groups follow the order in which a person ENCOUNTERS the texts, not the order of the
+// files. Auditing "everything the product says" is then done in the direction the product says it.
 //
-//   1. VOCABULAIRE PARTAGÉ  — identité, unités comptées, niveaux de confiance
-//   1 bis. RACINE           — `pages/index.astro`, la page qui envoie vers une langue
-//   2. ACCUEIL              — `ui/v2/LandingPage.tsx`
-//   3. ANALYSE              — `ui/v2/AnalysisPage.tsx` (dépôt, chargement, échecs)
-//   4. RÉSULTATS            — `ui/v2/ResultsView.tsx` et ses sections
-//   5. CHROME               — barre de site, pied de page, panneaux « pour comprendre »
+//   1. SHARED VOCABULARY   — identity, counted units, confidence levels
+//   1 bis. ROOT             — `pages/index.astro`, the page that sends to a language
+//   2. HOME                 — `ui/v2/LandingPage.tsx`
+//   3. ANALYSIS             — `ui/v2/AnalysisPage.tsx` (upload, loading, failures)
+//   4. RESULTS              — `ui/v2/ResultsView.tsx` and its sections
+//   5. CHROME               — site bar, footer, « pour comprendre » panels
 
 import type { ModelChoice, Os } from '../ai/install-help';
 import type { Volumes } from '../engine/analysis';
 import { plural } from './format';
 
-// Les unités comptées sont HISSÉES hors du bundle : plusieurs groupes les référencent (section IA,
-// carte « aucune déduction »), et une référence croisée n'est pas résoluble à l'intérieur du
-// littéral qui la contient.
+// The counted units are HOISTED out of the bundle: several groups reference them (AI section,
+// « aucune déduction » card), and a cross-reference is not resolvable inside the
+// literal that contains it.
 const UNITS = {
   search: (n: number) => plural(n, 'recherche', 'recherches'),
   comment: (n: number) => plural(n, 'commentaire', 'commentaires'),
@@ -60,33 +60,33 @@ const UNITS = {
 };
 
 export const FR = {
-  // --- Unités comptées — PARTAGÉES ---------------------------------------------------------------
-  // Les mêmes mots se comptent sur plusieurs surfaces (carte « aucune déduction », section IA). Les
-  // écrire à chaque appel, c'était garantir qu'un endroit finirait par accorder et l'autre non — ce
-  // qui était EXACTEMENT l'état avant cette passe.
+  // --- Counted units — SHARED --------------------------------------------------------------------
+  // The same words are counted on several surfaces (« aucune déduction » card, AI section). Writing
+  // them at each call was a guarantee that one place would end up agreeing and the other not — which
+  // was EXACTLY the state before this pass.
   UI_UNITS: UNITS,
 
-  // --- Identité et contact (partagés par plusieurs surfaces) ------------------------------------
-  // `contactMail` était écrit DEUX fois (pied de page et carte « aucune déduction ») : une adresse
-  // qui change se serait mise à diverger.
+  // --- Identity and contact (shared by several surfaces) ----------------------------------------
+  // `contactMail` was written TWICE (footer and « aucune déduction » card): an address
+  // that changes would have started to diverge.
   UI_BRAND: {
     name: 'PanoptiCool',
     contactMail: 'yuya@panopti.cool',
     githubUrl: 'https://github.com/lagayayuya/PanoptiCool',
   },
 
-  // --- Racine (`pages/index.astro`) --------------------------------------------------------------
-  // La racine envoie vers la langue par défaut. Ce texte n'est vu QUE si la redirection automatique
-  // ne part pas (redirection désactivée, robot, connexion coupée en plein vol) : c'est un filet, pas
-  // un écran. Il reste écrit ici quand même — « aucun littéral visible dans un composant » ne
-  // s'assouplit pas parce qu'un texte est rare, sinon la règle ne veut plus rien dire.
+  // --- Root (`pages/index.astro`) ----------------------------------------------------------------
+  // The root sends to the default language. This text is seen ONLY if the automatic redirect
+  // does not fire (redirect disabled, bot, connection cut mid-flight): it is a net, not
+  // a screen. It stays written here anyway — "no literal visible in a component" does not
+  // relax because a text is rare, otherwise the rule no longer means anything.
   UI_ROOT: {
     title: 'PanoptiCool',
     description: 'PanoptiCool — découvre ce que tes réseaux savent de toi.',
     fallbackLink: 'Continuer vers PanoptiCool →',
   },
 
-  // --- Barre de site (`ui/v2/SiteHeader.tsx`) ---------------------------------------------------
+  // --- Site bar (`ui/v2/SiteHeader.tsx`) --------------------------------------------------------
   UI_HEADER: {
     homeAriaLabel: 'PanoptiCool — accueil',
     logoAlt: 'PanoptiCool',
@@ -94,63 +94,63 @@ export const FR = {
     langGroupAriaLabel: 'Langue',
     langFr: 'FR',
     langEn: 'EN',
-    /** Info-bulle d'une langue DÉCLARÉE mais pas encore publiée — plus « EN » en dur : la règle vaut
-     * pour toute langue qu'on routerait sans l'assumer. */
+    /** Tooltip of a language DECLARED but not yet published — no longer « EN » hard-coded: the rule holds
+     * for any language one would route without owning it. */
     langUnavailableTitle: 'bientôt disponible',
     githubLabel: 'GitHub',
     githubAriaLabel: 'Voir le code sur GitHub',
     tocAriaLabel: 'Sommaire',
   },
 
-  // --- Pied de page (`ui/v2/SiteFooter.tsx`) ----------------------------------------------------
+  // --- Footer (`ui/v2/SiteFooter.tsx`) ----------------------------------------------------------
   UI_FOOTER: {
     tagline: 'PanoptiCool — tes données restent chez toi.',
     legalLink: 'Mentions légales',
     credits: 'Développé par Yuya et Claude (Sonnet 5, Opus 4.8 et Fable 5)',
   },
 
-  // --- Panneaux « pour comprendre » (`ui/v2/LearnPanel.tsx`) ------------------------------------
+  // --- « pour comprendre » panels (`ui/v2/LearnPanel.tsx`) --------------------------------------
   UI_LEARN: {
     kicker: 'pour comprendre',
     close: 'fermer ✕',
-    /** Bouton pointillé d'en-tête de section — `label` nomme ce que le panneau explique. */
+    /** Dotted section-header button — `label` names what the panel explains. */
     open: (label: string) => `comprendre · ${label}`,
   },
 
-  // --- Section 01 · activité (`ui/v2/ActivitySection.tsx`) --------------------------------------
+  // --- Section 01 · activity (`ui/v2/ActivitySection.tsx`) --------------------------------------
   UI_ACTIVITY: {
     rhythmTitle: "Rythme d'activité",
     rhythmNote: 'ta journée type · heure par heure',
-    /** Graduations de l'axe des heures — libellés d'axe, pas des données du moteur. */
+    /** Hour-axis tick marks — axis labels, not engine data. */
     hourMarks: ['0h', '6h', '12h', '18h', '23h'],
-    /** « créneau à risque » revient dans la légende par décision de la maquette retouchée
-     * (2026-07-20) — ex-PANO-85, qui l'en avait retiré. */
+    /** « créneau à risque » returns to the legend by decision of the retouched mockup
+     * (2026-07-20) — ex-PANO-85, which had removed it. */
     legendNight: 'nuit · créneau à risque',
     legendDay: 'journée',
 
-    // Compteurs du pied de carte (retouche 2026-07-20) : nombre approché en gras + libellé. Le
-    // total n'est plus compté ici — il vit en tuile dans les volumes.
+    // Card-foot counters (2026-07-20 retouch): an approximate number in bold + a label. The
+    // total is no longer counted here — it lives as a tile in the volumes.
     counterApprox: (n: string) => `≈ ${n}`,
     counter12MonthsLabel: 'vidéos vues · 12 derniers mois',
     counter30DaysLabel: 'vidéos vues · 30 derniers jours',
 
     volumesTitle: 'Volumes dans ton export',
     volumesNote: "sur la période couverte par l'export (~1 an)",
-    /** `Record` sur une union FERMÉE (`keyof Volumes`) : un champ de volume sans libellé ne compile
-     * pas — garantie plus forte que l'accès par clé, et elle vaut au point de DÉFINITION. */
+    /** `Record` over a CLOSED union (`keyof Volumes`): a volume field without a label does not
+     * compile — a stronger guarantee than access by key, and it holds at the DEFINITION point. */
     volumeTileLabels: {
       endorsements: 'likes, favoris et republications',
       comments: 'commentaires postés',
       searches: 'recherches tapées',
       follows: 'comptes suivis',
     } satisfies Record<keyof Omit<Volumes, 'allTime'>, string>,
-    /** Tuile hors `Volumes` : le total vient du rythme (`videosWatched.total`), pas des règles R. */
+    /** Tile outside `Volumes`: the total comes from the rhythm (`videosWatched.total`), not the R rules. */
     volumeTileVideosWatched: 'vidéos visionnées',
 
     opacityTitle: "Ce qu'on peut vraiment analyser",
-    /** Repli quand le pourcentage est non nul mais arrondirait à « 0 % » — afficher « 0 % » dirait
-     * l'inverse du constat (« rien de lisible » au lieu de « presque rien »). Le « 1 % » est PASSÉ,
-     * pas écrit : il vient du même formateur que les autres pourcentages. */
+    /** Fallback when the percentage is non-null but would round to « 0 % » — displaying « 0 % » would say
+     * the opposite of the finding (« rien de lisible » instead of « presque rien »). The « 1 % » is PASSED,
+     * not written: it comes from the same formatter as the other percentages. */
     opacityUnderOnePercent: (onePercent: string) => `< ${onePercent}`,
     opacityDonutAriaLabel: (pctLabel: string) => `${pctLabel} des items sont lisibles hors-ligne`,
     opacityReadableLegend: (count: string, n: number) =>
@@ -160,14 +160,14 @@ export const FR = {
     estimateTag: 'estimation',
   },
 
-  // --- Estimation du temps passé (`ui/v2/time-estimate.ts`) -------------------------------------
-  // Le constat FORT de la carte « rythme ». Il TUTOIE (« ta vie ») : c'est exactement la prose que
-  // `engine/wording.ts` ne peut pas héberger, et la raison d'être de ce fichier.
+  // --- Time-spent estimate (`ui/v2/time-estimate.ts`) -------------------------------------------
+  // The STRONG finding of the « rythme » card. It uses "tu" (« ta vie »): it is exactly the prose
+  // `engine/wording.ts` cannot host, and the reason this file exists.
   UI_TIME_ESTIMATE: {
-    /** ≥ 24 h — le total en heures accompagne le compte en jours (« soit ~Y h »). */
+    /** ≥ 24 h — the total in hours accompanies the count in days (« soit ~Y h »). */
     days: (days: string, dayWord: string, spent: string, hours: string) =>
       `~${days} ${dayWord} de ta vie ${spent} cette année sur TikTok, soit ~${hours} h.`,
-    /** < 24 h — format HEURES, sans « soit ». */
+    /** < 24 h — HOURS format, without « soit ». */
     hours: (hours: string, hourWord: string, spent: string) =>
       `~${hours} ${hourWord} de ta vie ${spent} cette année sur TikTok.`,
     dayOne: 'jour',
@@ -180,7 +180,7 @@ export const FR = {
     hourSpentMany: 'passées',
   },
 
-  // --- 2. ACCUEIL (`ui/v2/LandingPage.tsx`) ------------------------------------------------------
+  // --- 2. HOME (`ui/v2/LandingPage.tsx`) ---------------------------------------------------------
   UI_LANDING: {
     heroKicker: 'tes exports de données, décodés chez toi',
     heroTitle: 'Découvre ce que tes réseaux savent de toi.',
@@ -217,7 +217,7 @@ export const FR = {
     ],
 
     discoverTitle: 'Ce que tu vas découvrir',
-    /** Les trois cartes. Couleurs et bordures restent dans le composant : ce n'est pas de la prose. */
+    /** The three cards. Colors and borders stay in the component: it is not prose. */
     feats: [
       {
         tag: 'analyse',
@@ -228,7 +228,7 @@ export const FR = {
         tag: 'ia locale',
         title: 'Une IA qui tourne chez toi',
         text: 'Installe un petit modèle open source et fais-lui analyser tes traces. Coupe le wifi si tu veux : tout fonctionne hors ligne.',
-        // Sur MOBILE l'analyse locale n'est pas disponible — badge + texte adaptés, pas une omission.
+        // On MOBILE local analysis is not available — adapted badge + text, not an omission.
         mobileBadge: 'sur ordinateur',
         mobileText:
           'Installe un petit modèle open source et fais-lui analyser tes traces. Pour l’instant, cette analyse n’est disponible que sur ordinateur.',
@@ -241,8 +241,8 @@ export const FR = {
     ],
 
     whyKicker: 'pourquoi « panopticool » ?',
-    /** ⚠ FRAGMENTS SUBIS, pas choisis : « panopticon » est en ITALIQUE au milieu de la phrase. Un
-     * balisage inline au cœur d'un texte ne peut pas tenir en une chaîne — cf. aussi la modale. */
+    /** ⚠ IMPOSED FRAGMENTS, not chosen: « panopticon » is in ITALICS in the middle of the sentence. An
+     * inline markup at the heart of a text cannot hold in a single string — cf. also the modal. */
     whyTextBefore: 'Le panoptique (en anglais, ',
     whyTextItalic: 'panopticon',
     whyTextAfter:
@@ -250,11 +250,11 @@ export const FR = {
     whyLink: 'Voir la démo avec des données fictives →',
   },
 
-  // --- 2 bis. Modale de consentement (`LandingPage.ConsentModal`) --------------------------------
-  // La porte d'entrée du produit : c'est ELLE qui prévient de ce qu'on s'apprête à regarder. Groupe
-  // séparé parce qu'elle se relit d'un bloc — c'est le texte le plus sensible de la page.
-  // ⚠ Ses trois puces portent des passages EN GRAS au milieu de la phrase : les fragments sont donc
-  // subis. Ils sont nommés dans l'ordre de lecture pour rester relisibles bout à bout.
+  // --- 2 bis. Consent modal (`LandingPage.ConsentModal`) -----------------------------------------
+  // The product's front door: it is IT that warns of what one is about to look at. A separate
+  // group because it is reread as a block — it is the most sensitive text of the page.
+  // ⚠ Its three bullets carry BOLD passages in the middle of the sentence: the fragments are therefore
+  // imposed. They are named in reading order to stay rereadable end to end.
   UI_CONSENT: {
     dialogAriaLabel: 'Avant de continuer',
     kicker: 'avant de continuer',
@@ -282,9 +282,9 @@ export const FR = {
     laterButton: 'Pas maintenant',
   },
 
-  // --- 3. ANALYSE · dépôt, chargement, échecs (`ui/v2/AnalysisPage.tsx`) -------------------------
+  // --- 3. ANALYSIS · upload, loading, failures (`ui/v2/AnalysisPage.tsx`) ------------------------
   UI_ANALYSE: {
-    /** Zone de dépôt. Le verbe change avec le support : on ne « glisse » pas au doigt. */
+    /** Drop zone. The verb changes with the device: one does not « glisse » with a finger. */
     kicker: 'analyse locale',
     titleDesktop: 'Dépose ton export TikTok',
     titleMobile: 'Choisis ton export TikTok',
@@ -303,20 +303,20 @@ export const FR = {
       "Pas encore d'export ? Dans l'app TikTok : Profil → Paramètres → Compte → Télécharger tes données (format JSON). ",
     hintDemoLink: 'Ou essaie avec des données fictives →',
 
-    /** Badge de la barre de site une fois l'analyse rendue. Volontairement DISTINCT de `kicker`
-     * ci-dessus bien que « analyse locale » s'y répète : ce sont deux rôles d'interface, et les
-     * confondre ferait bouger l'un en changeant l'autre. La répétition est ici VISIBLE, donc arbitrable. */
+    /** Site-bar badge once the analysis is rendered. Deliberately DISTINCT from `kicker`
+     * above even though « analyse locale » repeats in it: they are two interface roles, and
+     * confusing them would move one by changing the other. The repetition is VISIBLE here, thus arbitrable. */
     badgeDemo: 'démo · données fictives',
     badgeReal: 'analyse locale',
 
-    /** Sommaire MOBILE (chips) — libellés plus courts que ceux du sommaire desktop (`UI_RESULTS`),
-     * faute de place à 390 px. Deux jeux à dessein, pas une divergence. */
+    /** MOBILE table of contents (chips) — shorter labels than those of the desktop TOC (`UI_RESULTS`),
+     * for lack of room at 390 px. Two sets on purpose, not a divergence. */
     tocActivity: 'Activité',
     tocDeductions: 'Déductions',
     tocSummary: 'Résumé',
     tocAi: 'IA locale',
 
-    // --- Messages d'échec (`errorMessage`) ---
+    // --- Failure messages (`errorMessage`) ---
     errorTooLarge: (size: string, limit: string) =>
       `Export trop volumineux pour cette version (${size}, limite ${limit}).`,
     errorMegabytes: (n: string) => `${n} Mo`,
@@ -328,37 +328,37 @@ export const FR = {
       'Fichier illisible ou corrompu : vérifie que tu as bien sélectionné le .zip de ton export TikTok.',
     errorUnexpected: 'Impossible d’analyser ce fichier.',
 
-    /** Panneau TEMPORAIRE de test des cas limites (masqué hors démo, cf. `SHOW_DEV_EDGE_CASE_PANEL`).
-     * Il vit ici comme le reste : du texte affiché est du texte affiché, même provisoire. */
+    /** TEMPORARY edge-case test panel (hidden outside the demo, cf. `SHOW_DEV_EDGE_CASE_PANEL`).
+     * It lives here like the rest: displayed text is displayed text, even provisional. */
     devPanelLabel: '🧪 temporaire — test des cas limites',
     devCaseNormal: 'Normal',
     devCaseNoDeductions: 'Cas : aucune déduction',
     devCaseLowData: 'Cas : peu de données',
   },
 
-  // --- Cartes de déduction (`ui/v2/ThemeCardNavy.tsx`) -------------------------------------------
-  // Itération 2026-07-20 (design v4, tests utilisateurs) : l'appareil de confiance est RETIRÉ de
-  // l'affichage — plus de légende, de puces ni de « confiance moyenne / incertaine » sur les cartes.
-  // Le mot ajoutait de la confusion pour peu de gain ; le cadrage (« des hypothèses, pas un
-  // verdict ») vit désormais dans l'intro de la section 02 (`UI_RESULTS.sec02Framing`). Le MOTEUR,
-  // lui, garde `confidence` : le classement des cartes (`compareCards`) lit le même niveau
-  // qu'avant — seul l'affichage a bougé.
+  // --- Deduction cards (`ui/v2/ThemeCardNavy.tsx`) -----------------------------------------------
+  // 2026-07-20 iteration (design v4, user tests): the confidence apparatus is REMOVED from
+  // the display — no more legend, bullets nor « confiance moyenne / incertaine » on the cards.
+  // The word added confusion for little gain; the framing (« des hypothèses, pas un
+  // verdict ») now lives in the intro of section 02 (`UI_RESULTS.sec02Framing`). The ENGINE,
+  // for its part, keeps `confidence`: the card ranking (`compareCards`) reads the same level
+  // as before — only the display has moved.
   UI_CARD: {
-    /** Badge d'un constat sensible (D1). */
+    /** Badge of a sensitive finding (D1). */
     sensitiveTag: 'sensible',
-    /** En-tête fermé : « N sources » — preuves DISTINCTES, seul chiffre que la carte annonce. */
+    /** Closed header: « N sources » — DISTINCT pieces of evidence, the only number the card announces. */
     headSources: (n: number) => `${n} ${plural(n, 'source', 'sources')}`,
 
-    /** Canal d'une preuve — union FERMÉE (`Evidence['channel']`), cf. le `Record` du composant. */
+    /** Channel of a piece of evidence — CLOSED union (`Evidence['channel']`), cf. the component's `Record`. */
     channelSearch: 'recherche',
     channelComment: 'commentaire',
 
     fanMain: 'principale',
     fanSecondary: 'secondaire',
 
-    /** Titre uniforme d'une inférence (retouche 2026-07-20) : quand les preuves portent un
-     * éventail, il remplace le claim — l'éventail EST la lecture. Sans claim ni éventail, la
-     * variante « aucune » tient la ligne plutôt que de la faire disparaître. */
+    /** Uniform title of an inference (2026-07-20 retouch): when the evidence carries a
+     * fan, it replaces the claim — the fan IS the reading. Without a claim or a fan, the
+     * « aucune » variant holds the line rather than making it disappear. */
     readingsHeading: 'Plusieurs lectures pertinentes.',
     readingsHeadingNone: 'Aucune lecture pertinente.',
 
@@ -368,10 +368,10 @@ export const FR = {
     usageTitle: 'Ce qui peut en être fait — selon qui y accède',
   },
 
-  // --- Vue de résultats (`ui/v2/ResultsView.tsx`) ------------------------------------------------
+  // --- Results view (`ui/v2/ResultsView.tsx`) ----------------------------------------------------
   UI_RESULTS: {
     kicker: 'résultats d’analyse',
-    /** Mobile + démo : le badge du header n'a pas la place, l'info passe dans le kicker. */
+    /** Mobile + demo: the header badge has no room, the info moves into the kicker. */
     kickerDemo: 'résultats d’analyse · démo, données fictives',
     heroTitleLine1: 'Ce que TikTok',
     heroTitleLine2: 'pourrait déduire',
@@ -392,13 +392,13 @@ export const FR = {
     sec01Sub: "Quand tu utilises l'app, et combien de traces tu laisses.",
     sec01LearnLabel: 'les métadonnées',
     sec02Title: 'Déductions par thème',
-    /** Le verbe change avec le support : on ne « clique » pas sur un téléphone. */
+    /** The verb changes with the device: one does not « clique » on a phone. */
     sec02Sub: (tapVerb: string) =>
       `Ce que l'algorithme pourrait conclure, thème par thème. ${tapVerb} une carte pour voir les preuves :`,
-    /** Le CADRAGE de la section — c'est ici que vit ce que l'appareil de confiance disait
-     * (maladroitement) carte par carte : des hypothèses, jamais un verdict (ADR-0003).
-     * ⚠ FRAGMENTS SUBIS : « surlignage » porte le style du surlignage lui-même, « principale » la
-     * teinte de la lecture principale — deux mots-exemples au cœur de la phrase (maquette). */
+    /** The section's FRAMING — this is where what the confidence apparatus said
+     * (clumsily) card by card lives: hypotheses, never a verdict (ADR-0003).
+     * ⚠ IMPOSED FRAGMENTS: « surlignage » carries the style of the highlight itself, « principale » the
+     * tint of the main reading — two example-words at the heart of the sentence (mockup). */
     sec02FramingLead:
       'Ces déductions sont des hypothèses, elles illustrent ce qu’un algorithme pourrait inférer, sans garantie de fiabilité. Elles ne disent rien de qui tu es vraiment. Le ',
     sec02FramingHighlightWord: 'surlignage',
@@ -430,9 +430,9 @@ export const FR = {
     ],
   },
 
-  // --- Panneaux pédagogiques de la vue de résultats ----------------------------------------------
-  // Contenu STATIQUE repris de la maquette (validé par yuya dans Claude Design) — pas un gabarit
-  // moteur. Trois panneaux, un par section dépliable.
+  // --- Educational panels of the results view ----------------------------------------------------
+  // STATIC content taken from the mockup (validated by yuya in Claude Design) — not an engine
+  // template. Three panels, one per collapsible section.
   UI_LEARN_PANELS: {
     rhythm: {
       question: 'Pourquoi mes horaires intéressent-ils TikTok ?',
@@ -460,9 +460,9 @@ export const FR = {
         },
         {
           title: 'Avec un score',
-          // « interne » et rien d'autre : depuis l'itération 2026-07-20, la page n'affiche plus de
-          // niveaux (« moyenne / incertaine » retirés partout) — ce panneau ne peut donc plus
-          // renvoyer à des mentions que le lecteur ne verra nulle part.
+          // « interne » and nothing else: since the 2026-07-20 iteration, the page no longer displays
+          // levels (« moyenne / incertaine » removed everywhere) — this panel can therefore no longer
+          // refer to mentions the reader will see nowhere.
           text: 'Chaque déduction porte un niveau de confiance interne : plus les signaux se recoupent, plus le score monte.',
         },
         {
@@ -492,7 +492,7 @@ export const FR = {
     },
   },
 
-  // --- Section 04 · IA locale (`ui/v2/AiSection.tsx`) --------------------------------------------
+  // --- Section 04 · local AI (`ui/v2/AiSection.tsx`) --------------------------------------------
   UI_AI: {
     kicker: '04 · aller plus loin',
     title: 'Analyser avec une IA locale',
@@ -500,7 +500,7 @@ export const FR = {
     learnLabel: 'le modèle',
     lede: "Le modèle tourne sur ton ordinateur : rien n'est envoyé sur Internet. Trois étapes — installer, choisir un prompt, lancer.",
 
-    // --- Bannière « peu de données » ---
+    // --- « peu de données » banner ---
     lowDataCounts: (comments: number, searches: number) =>
       `Ton export contient très peu de texte : ${comments} ${UNITS.comment(comments)} et ${searches} ${UNITS.search(searches)}.`,
     lowDataText: (threshold: number) =>
@@ -508,35 +508,35 @@ export const FR = {
     lowDataCountSuffix: ' — très peu de données',
     lowDataHint: 'Peu de données : le résultat sera indicatif, à lire avec recul.',
 
-    // --- Bannière navigateur (avant l'étape 1) ---
-    // ADR-0006 : trois moteurs, trois discours — Firefox demande tout seul, Chromium exige sans
-    // proposer, WebKit ne peut pas marcher. La bannière le dit AVANT que la personne n'installe
-    // quoi que ce soit, et remplace l'ex-pastille « bloqué par le navigateur » (retirée : elle
-    // s'affichait aussi quand le blocage n'était pas la cause).
+    // --- Browser banner (before step 1) ---
+    // ADR-0006: three engines, three discourses — Firefox asks on its own, Chromium requires without
+    // offering, WebKit cannot work. The banner says it BEFORE the person installs
+    // anything, and replaces the ex-pill « bloqué par le navigateur » (removed: it
+    // also showed when the block was not the cause).
     browserFallbackName: 'ton navigateur',
     bwCompatTitle: (browser: string) => `Tu navigues avec ${browser} : compatible.`,
     bwCompatTextFirefox:
       'Ce navigateur sait se connecter à un modèle qui tourne chez toi. Il demandera simplement ton accord au premier contact : une petite fenêtre apparaîtra en haut à gauche, sous la barre d’adresse — clique « Autoriser ».',
-    /** Chromium n'ouvre JAMAIS la fenêtre de lui-même (ADR-0006, décision 3) : on donne le chemin
-     * manuel d'emblée, plutôt que de laisser guetter un dialogue qui ne vient pas. */
+    /** Chromium NEVER opens the window on its own (ADR-0006, decision 3): we give the manual
+     * path straight away, rather than letting one watch for a dialog that does not come. */
     bwCompatTextChromium:
       'Ce navigateur sait se connecter à un modèle qui tourne chez toi — mais il ne te le proposera pas de lui-même : si la connexion échoue, clique sur l’icône à gauche de l’adresse de ce site, mets « Réseau local » sur « Autoriser », puis recharge la page.',
     bwBlockedTitle: (browser: string) =>
       `Tu navigues avec ${browser} : ce site ne pourra pas voir le modèle sur ta machine.`,
     bwBlockedText: (browser: string) =>
       `${browser} bloque les connexions d’un site web vers ta propre machine, sans offrir de l’autoriser. Deux solutions : rouvrir cette page dans Firefox, Chrome, Brave ou Edge — ou suivre l’option B ci-dessous. L’option A est désactivée, l’option B fonctionne partout.`,
-    /** Navigateur non reconnu : on ne nomme AUCUNE cause (ADR-0006, décision 4) — ni compatible,
-     * ni bloqué. L'option A reste ouverte, l'option B est l'issue sûre. */
+    /** Unrecognized browser: we name NO cause (ADR-0006, decision 4) — neither compatible,
+     * nor blocked. Option A stays open, option B is the safe outcome. */
     bwUnknownTitle: 'Navigateur non reconnu.',
     bwUnknownText:
       'Impossible de dire si ton navigateur laisse un site joindre un modèle sur ta machine. Essaie l’option A ; si elle échoue, l’option B fonctionne partout.',
 
-    // --- Mode localhost (le site est servi depuis la machine, route B aboutie) ---
+    // --- localhost mode (the site is served from the machine, route B completed) ---
     readyTitle: 'Tout est prêt : le site et le modèle tournent déjà sur ta machine.',
     readyText:
       'Rien à installer. Passe directement à l’étape 2 pour choisir ton prompt, puis lance l’analyse.',
 
-    // --- Étape 1 · installer ---
+    // --- Step 1 · install ---
     step1Label: 'Installer',
     osPickLabel: 'ton système :',
 
@@ -545,7 +545,7 @@ export const FR = {
     termIntro:
       'Un terminal, c’est une simple fenêtre où tu colles du texte et tu appuies sur Entrée. Les commandes de cette page ne peuvent rien casser sur ton ordinateur.',
     termHowLead: (osLabel: string, how: string) => `Pour l’ouvrir sur ${osLabel} : ${how}`,
-    /** `Record` sur l'union FERMÉE des OS : un système ajouté sans son mode d'emploi ne compile pas. */
+    /** `Record` over the CLOSED union of OSes: a system added without its instructions does not compile. */
     termHows: {
       macos: 'appuie sur ⌘ + Espace, tape « Terminal », puis Entrée.',
       windows: 'ouvre le menu Démarrer, tape « PowerShell », puis Entrée.',
@@ -554,7 +554,7 @@ export const FR = {
 
     step1InstallText:
       'Ouvre un terminal et colle cette commande : elle installe llama.cpp, le petit moteur libre qui fait tourner le modèle. Même commande quel que soit le chemin choisi ensuite :',
-    /** ⚠ FRAGMENTS SUBIS : « brew.sh » est un lien au cœur de la phrase. */
+    /** ⚠ IMPOSED FRAGMENTS: « brew.sh » is a link at the heart of the sentence. */
     brewNoteLead:
       'Commande non reconnue ? Installe d’abord Homebrew — une seule commande, indiquée sur ',
     brewNoteLinkLabel: 'brew.sh',
@@ -562,11 +562,11 @@ export const FR = {
     step1ChooseText:
       'Choisis un modèle, du meilleur au plus léger. Le plus lourd demande le plus de mémoire :',
 
-    // --- Étape 1 · le choix des deux routes ---
+    // --- Step 1 · the choice of the two routes ---
     routeIntro: 'Dernier choix : deux chemins pour lancer ce modèle, même résultat.',
     routeSiteTitle: 'A · Depuis ce site',
-    /** Edge figure dans la liste (ADR-0006 : les Chromium marchent, cadenas compris) — la maquette
-     * l'omettait, l'ADR fait foi. */
+    /** Edge is in the list (ADR-0006: the Chromiums work, padlock included) — the mockup
+     * omitted it, the ADR prevails. */
     routeSiteText:
       'Tu restes sur cette page : plus qu’une commande à lancer. Nécessite Chrome, Brave, Edge ou Firefox.',
     routeSiteUnavailable: (browser: string) => `indisponible avec ${browser}`,
@@ -574,21 +574,21 @@ export const FR = {
     routeLocalText:
       'Tu télécharges aussi le site : tout tourne en local, avec n’importe quel navigateur — même sans Internet ensuite.',
 
-    // --- Route A · lancer le serveur depuis ce site ---
+    // --- Route A · launch the server from this site ---
     step1ServeText:
       'Lance le serveur, il télécharge le modèle au premier lancement, puis reste ouvert en arrière-plan :',
-    /** Taille d'un modèle. Le NOMBRE vient de `format.ts`, l'UNITÉ est du texte et vit donc ici —
-     * même partage que `UI_ANALYSE.errorMegabytes`. */
+    /** Size of a model. The NUMBER comes from `format.ts`, the UNIT is text and thus lives here —
+     * same sharing as `UI_ANALYSE.errorMegabytes`. */
     modelSize: (gb: string) => `${gb} Go`,
-    /** Jugement du produit sur un modèle — `Record` sur l'union FERMÉE de `ModelChoice['note']`,
-     * donc une note ajoutée sans texte ne compile pas. */
+    /** The product's judgment on a model — `Record` over the CLOSED union of `ModelChoice['note']`,
+     * so a note added without text does not compile. */
     modelNotes: {
       recommended: 'recommandé',
       borderline: 'limite, mais fonctionnel',
     } satisfies Record<NonNullable<ModelChoice['note']>, string>,
-    /** La note de permission AVANT le premier clic, adaptée au navigateur reconnu (ADR-0006) —
-     * Firefox ouvrira une fenêtre, Chromium jamais. Quand le navigateur n'est pas reconnu, la
-     * version générique ne promet rien. */
+    /** The permission note BEFORE the first click, adapted to the recognized browser (ADR-0006) —
+     * Firefox will open a window, Chromium never. When the browser is not recognized, the
+     * generic version promises nothing. */
     permNoteFirefox: (browser: string) =>
       `Lorsque tu cliqueras sur « vérifier la connexion », ${browser} te demandera l’autorisation d’accéder au réseau local : une petite fenêtre apparaîtra en haut à gauche, sous la barre d’adresse — clique « Autoriser ».`,
     permNoteChromium: (browser: string) =>
@@ -600,26 +600,26 @@ export const FR = {
     step1AddressAria: 'Adresse du serveur',
     step1Foot:
       "Tu peux changer cette adresse pour pointer vers n'importe quel serveur compatible, et donc faire tourner un tout autre modèle si tu préfères.",
-    /** État du sondage de `localhost`. « non vérifié » tant que rien n'a été tenté : la page ne
-     * contacte le serveur QUE sur clic explicite (invariant de privacy) — sauf en mode localhost,
-     * où le serveur sondé est celui qui vient de servir la page. */
+    /** State of the `localhost` probe. « non vérifié » as long as nothing has been attempted: the page
+     * contacts the server ONLY on an explicit click (privacy invariant) — except in localhost mode,
+     * where the probed server is the one that just served the page. */
     probeOk: 'serveur détecté',
     probeChecking: 'vérification…',
     probeIdle: 'non vérifié',
-    /** DEUX étiquettes d'échec, plus trois (itération 2026-07-20) : l'ex-pastille « bloqué par le
-     * navigateur » s'affichait aussi quand le blocage n'était pas certain. La pastille ne dit plus
-     * que ce qu'on SAIT — « non détecté » quand la permission était accordée (le réseau a vraiment
-     * été atteint), « connexion impossible » sinon. Le DIAGNOSTIC, lui, vit dans le texte d'aide
-     * sous le bouton de lancement, où la permission lue départage (ADR-0006, décision 2). */
+    /** TWO failure labels, no longer three (2026-07-20 iteration): the ex-pill « bloqué par le
+     * navigateur » also showed when the block was not certain. The pill now says
+     * only what we KNOW — « non détecté » when the permission was granted (the network was really
+     * reached), « connexion impossible » otherwise. The DIAGNOSIS, for its part, lives in the help text
+     * under the launch button, where the read permission decides (ADR-0006, decision 2). */
     probeErrorAbsent: 'serveur non détecté',
     probeErrorUnknown: 'connexion impossible',
     probeModelSuffix: (modelId: string) => ` : ${modelId}`,
-    /** Le MÊME libellé avant et après le premier sondage (retouche 2026-07-20) : l'ex-glyphe ⟳
-     * cachait l'action derrière un symbole. */
+    /** The SAME label before and after the first probe (2026-07-20 retouch): the ex-glyph ⟳
+     * hid the action behind a symbol. */
     probeCheckAction: 'vérifier la connexion',
     probeCheckAria: 'Vérifier la connexion au serveur',
 
-    // --- Route B · télécharger le site et tout lancer en local ---
+    // --- Route B · download the site and launch everything locally ---
     localDownloadText:
       'Télécharge la version locale du site — ici, ou depuis GitHub si tu veux vérifier le code :',
     localZipButton: (zipName: string) => `⬇ ${zipName}`,
@@ -628,21 +628,21 @@ export const FR = {
       'Puis colle cette commande dans ton terminal : elle décompresse le site et lance tout ensemble. Le modèle choisi plus haut se télécharge au premier lancement :',
     localCmdExplain:
       'Ce que fait la commande : va dans Téléchargements → décompresse le zip → lance le site et le modèle ensemble.',
-    /** ⚠ FRAGMENTS SUBIS : l'adresse est mise en évidence au cœur de la phrase. */
+    /** ⚠ IMPOSED FRAGMENTS: the address is highlighted at the heart of the sentence. */
     localOpenBefore: 'Quand le terminal affiche « llama_server: listening on... », ouvre ',
     localOpenAfter:
       ' dans n’importe quel navigateur : tu retrouves cette page, servie depuis ta machine et déjà branchée au modèle. L’étape suivante se passe là-bas.',
 
-    // --- Étape 2 · prompt & lancement (carte fusionnée, maquette v4) ---
+    // --- Step 2 · prompt & launch (merged card, v4 mockup) ---
     step2MergedLabel: 'Prompt & lancement',
-    /** ⚠ FRAGMENTS SUBIS : même mise en évidence de l'adresse. */
+    /** ⚠ IMPOSED FRAGMENTS: same highlighting of the address. */
     step2WaitingBefore:
       'Tu as choisi l’option B « Tout sur ta machine ». Pour continuer, termine les étapes ci-dessus (téléchargement du site et commande dans le terminal), puis ouvre ',
     step2WaitingAfter:
       ' dans un navigateur : tu retrouveras cette section là-bas, prête à lancer l’analyse.',
 
-    // --- Étape 2 · prompt ---
-    /** Consommé par l'aperçu décoratif MOBILE (la maquette mobile garde les 3 cartes d'avant). */
+    // --- Step 2 · prompt ---
+    /** Consumed by the MOBILE decorative preview (the mobile mockup keeps the previous 3 cards). */
     step2Label: "Prompt d'analyse",
     step2PresetDefault: 'Prompt par défaut',
     step2PresetSafety: 'Prompt « filet de sécurité »',
@@ -654,8 +654,8 @@ export const FR = {
       `${comments} ${UNITS.comment(comments)} · ${searches} ${UNITS.search(searches)} inclus · `,
     tokensExact: (n: string) => `${n} tokens (vérifié)`,
     tokensEstimated: (n: string) => `≈ ${n} tokens`,
-    /** L'accord porte sur DEUX mots — le nom et le participe. « 1 items laissés » se trompait deux
-     * fois ; n'accorder que le nom l'aurait corrigé à moitié. */
+    /** The agreement bears on TWO words — the noun and the participle. « 1 items laissés » got it wrong
+     * twice; agreeing only the noun would have fixed it halfway. */
     tokensDropped: (dropped: number, contextWindow: string) =>
       ` · ${dropped} ${UNITS.item(dropped)} ${plural(dropped, 'laissé', 'laissés')} de côté (fenêtre de ${contextWindow} tokens)`,
     payloadShow: 'voir exactement ce qui sera envoyé ▾',
@@ -667,36 +667,36 @@ export const FR = {
       `Priorité au plus récent : seuls les commentaires les plus récents tiennent dans la fenêtre du modèle (${comments} ${UNITS.comment(comments)} et ${searches} ${UNITS.search(searches)} au total).`,
     searchesTruncated: (droppedSearches: number) =>
       `Tous les commentaires tiennent, plus les recherches les plus récentes (${droppedSearches} ${UNITS.search(droppedSearches)} ${plural(droppedSearches, 'plus ancienne laissée', 'plus anciennes laissées')} de côté).`,
-    /** Aperçu brut de la charge utile — étiquettes techniques, volontairement non traduites. */
+    /** Raw preview of the payload — technical labels, deliberately not translated. */
     payloadPreview: (systemPrompt: string, userMessage: string) =>
       `[système]\n${systemPrompt}\n\n[items]\n${userMessage}`,
 
-    // --- Étape 3 · lancer ---
-    /** Consommé par l'aperçu décoratif MOBILE — la carte desktop fusionnée porte `step2MergedLabel`. */
+    // --- Step 3 · launch ---
+    /** Consumed by the MOBILE decorative preview — the merged desktop card carries `step2MergedLabel`. */
     step3Label: 'Lancer',
     step3Stop: '■ Arrêter',
     step3Run: 'Lancer l’analyse',
     step3Running: 'analyse en cours…',
-    /** ⚠ Ne promet PLUS de fenêtre de permission. Le navigateur décide seul d'en ouvrir une, et
-     * certains n'en ouvrent jamais (ADR-0006) — la phrase envoyait donc guetter un dialogue qui ne
-     * vient pas. Ce qui reste est ce qui est vrai : la page ne parle qu'au serveur local. */
+    /** ⚠ NO LONGER promises a permission window. The browser alone decides to open one, and
+     * some never open one (ADR-0006) — the sentence therefore sent one to watch for a dialog that does
+     * not come. What remains is what is true: the page only talks to the local server. */
     step3WarnIdle:
       'Serveur non vérifié — lance-le (étape 1) puis clique sur « vérifier la connexion ». Cette page ne contacte que le serveur qui tourne chez toi, et rien d’autre.',
-    /** QUATRE aides d'échec, choisies sur ce qu'on SAIT (permission lue + moteur reconnu,
-     * ADR-0006, décisions 2-4) — jamais une cause affirmée sans preuve. */
+    /** FOUR failure helpers, chosen on what we KNOW (read permission + recognized engine,
+     * ADR-0006, decisions 2-4) — never a cause asserted without evidence. */
     step3WarnAbsent:
       'Serveur non détecté — lance-le (étape 1) puis clique sur « vérifier la connexion ».',
-    /** Le navigateur CONNAÎT la permission et ne l'a pas accordée. On donne le chemin exact, et on
-     * prévient qu'il ne le proposera pas : sur Chromium la fenêtre ne s'ouvre jamais d'elle-même
-     * (ADR-0006), donc quelqu'un qui attend un dialogue attend indéfiniment. */
+    /** The browser KNOWS the permission and did not grant it. We give the exact path, and we
+     * warn that it will not offer it: on Chromium the window never opens on its own
+     * (ADR-0006), so someone waiting for a dialog waits indefinitely. */
     step3WarnBlocked:
       'Ton navigateur bloque l’accès à ton propre ordinateur — ton serveur, lui, tourne peut-être très bien. Pour l’autoriser : clique sur l’icône à gauche de l’adresse de ce site, mets « Réseau local » sur « Autoriser », puis recharge la page. Ton navigateur ne te le proposera pas de lui-même.',
-    /** Firefox reconnu, permission illisible : la fenêtre spontanée est SON comportement mesuré
-     * (ADR-0006) — on peut donc la nommer sans mentir. */
+    /** Firefox recognized, permission unreadable: the spontaneous window is ITS measured behavior
+     * (ADR-0006) — we can therefore name it without lying. */
     step3WarnFirefox:
       'Serveur non détecté — lance-le (étape 1). Si Firefox affiche une demande d’autorisation (en haut à gauche, sous la barre d’adresse), accepte-la, puis relance la vérification.',
-    /** Ni permission lisible, ni moteur reconnu : on ne nomme AUCUNE cause, et l'issue sûre est la
-     * route B — servir le site depuis la machine marche dans tous les moteurs (ADR-0006, déc. 5). */
+    /** Neither a readable permission, nor a recognized engine: we name NO cause, and the safe outcome is
+     * route B — serving the site from the machine works in all engines (ADR-0006, dec. 5). */
     step3WarnUnknown:
       'Impossible de dire si ton serveur est éteint ou si ton navigateur a bloqué la connexion. Vérifie d’abord que le serveur tourne (étape 1). S’il tourne, c’est ton navigateur — l’option B « Tout sur ta machine » fonctionne partout.',
     runInterrupted: 'Analyse interrompue (sortie partielle) — ',
@@ -707,11 +707,11 @@ export const FR = {
 
     copyButton: 'copier',
     copyButtonDone: 'copié ✓',
-    /** La rangée de commande copie au clic — l'étiquette n'est plus un bouton, l'aria le dit. */
+    /** The command row copies on click — the label is no longer a button, the aria says so. */
     copyCommandAria: 'Copier la commande',
   },
 
-  // --- Panneau « pour comprendre » de la section IA ----------------------------------------------
+  // --- « pour comprendre » panel of the AI section -----------------------------------------------
   UI_AI_LEARN: {
     question: 'Comment fonctionne le modèle qui tourne chez toi ?',
     columns: [
@@ -734,33 +734,33 @@ export const FR = {
     ],
   },
 
-  // --- Section 04 en variante MOBILE (`AiMobileNotice`) ------------------------------------------
-  // L'IA locale demande un ordinateur : sur mobile, un encart explicatif remplace la section, suivi
-  // d'un APERÇU DÉCORATIF (aria-hidden) des trois étapes.
+  // --- Section 04 in MOBILE variant (`AiMobileNotice`) -------------------------------------------
+  // Local AI requires a computer: on mobile, an explanatory callout replaces the section, followed
+  // by a DECORATIVE PREVIEW (aria-hidden) of the three steps.
   UI_AI_MOBILE: {
     sectionNumber: '04',
     calloutTitle: "L'analyse par IA n'est disponible que sur ordinateur pour l'instant.",
     calloutText:
       "Le modèle tourne localement sur ta machine et demande un ordinateur. Ouvre PanoptiCool sur ton ordi pour cette étape — rien ne change pour le reste de l'analyse.",
-    /** Valeurs FIGÉES de l'aperçu décoratif : elles IMITENT `MODEL_CHOICES` sans le lire, pour que la
-     * vignette reste stable si le catalogue de modèles bouge. Ce sont des décors, pas des données. */
+    /** FROZEN values of the decorative preview: they IMITATE `MODEL_CHOICES` without reading it, so that the
+     * thumbnail stays stable if the model catalog moves. They are props, not data. */
     previewCommand: 'brew install llama.cpp',
     previewModelOn: 'UD-Q4_K_XL',
     previewModelOff: 'IQ4_XS',
-    /** Tailles de l'aperçu : des NOMBRES, formatés au rendu comme celles du vrai tableau — une
-     * virgule figée dans une chaîne échapperait au formatage central (cf. `ModelChoice.sizeGb`).
-     * Elles restent DÉLIBÉRÉMENT indépendantes de `MODEL_CHOICES` : la vignette est un décor figé,
-     * elle ne doit pas bouger quand le catalogue de modèles change. */
+    /** Preview sizes: NUMBERS, formatted at render like those of the real table — a
+     * comma frozen into a string would escape the central formatting (cf. `ModelChoice.sizeGb`).
+     * They stay DELIBERATELY independent of `MODEL_CHOICES`: the thumbnail is a frozen prop,
+     * it must not move when the model catalog changes. */
     previewModelOnSizeGb: 2.2,
     previewModelOffSizeGb: 2.0,
     previewPrompt:
       "Tu es un analyste. À partir des recherches et commentaires TikTok ci-dessous, déduis prudemment : centres d'intérêt, habitudes, rythme de vie…",
   },
 
-  // --- Cas limite « aucune déduction » (`ui/v2/NoDeductionCard.tsx`) ------------------------------
+  // --- « aucune déduction » edge case (`ui/v2/NoDeductionCard.tsx`) -------------------------------
   UI_NO_DEDUCTION: {
     title: 'Aucune déduction ne ressort de ton export',
-    /** Deux raisons possibles, choisies sur le VOLUME de texte disponible (`lowData`). */
+    /** Two possible reasons, chosen on the VOLUME of available text (`lowData`). */
     reasonLowData:
       'La raison la plus probable : ton export contient très peu de texte à lire — presque rien à comparer aux lexiques thématiques (cuisine, santé, politique…). Ce n’est pas une anomalie, juste un manque de matière.',
     reasonNoMatch:
@@ -776,7 +776,7 @@ export const FR = {
     dataColComments: 'commentaires',
     dataEmptySearches: "aucune recherche dans l'export",
     dataEmptyComments: "aucun commentaire dans l'export",
-    /** Les verbatims sont encadrés de guillemets français — l'item lui-même vient de l'export. */
+    /** The verbatims are wrapped in French quotation marks — the item itself comes from the export. */
     dataQuote: (text: string) => `« ${text} »`,
     dataFoot:
       "C'est exactement ce texte que nos lexiques ont parcouru sans trouver de correspondance.",
@@ -788,7 +788,7 @@ export const FR = {
     enrichAriaLabel: 'Mots à proposer',
     enrichGithubButton: 'Proposer sur GitHub',
     enrichMailButton: (mail: string) => `ou par e-mail → ${mail}`,
-    /** Titre et corps de l'issue GitHub / de l'e-mail pré-remplis. RIEN ne part sans clic. */
+    /** Pre-filled title and body of the GitHub issue / of the email. NOTHING goes out without a click. */
     enrichIssueTitle: 'Proposition de mots pour les lexiques',
     enrichMailSubject: 'Mots à ajouter aux lexiques PanoptiCool',
     enrichBodyPlaceholder: '(liste tes mots ici)',

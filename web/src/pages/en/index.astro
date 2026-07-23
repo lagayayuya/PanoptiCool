@@ -1,10 +1,10 @@
 ---
-// Page d'accueil (refonte design 2026-07-15, maquette « Accueil v2 ») — REMPLACE la page d'accueil
-// historique. Build statique (ADR-0001/0002) ; l'interactivité (modale de consentement, œil animé)
-// tient dans un unique îlot `client:only`, comme partout ailleurs.
+// Home page (2026-07-15 design rework, « Accueil v2 » mockup) — REPLACES the historical
+// home page. Static build (ADR-0001/0002); the interactivity (consent modal, animated eye)
+// fits in a single `client:only` island, as everywhere else.
 //
-// Police JetBrains Mono AUTO-HÉBERGÉE (PANO-56) : import ciblé sous-ensemble « latin », 4 graisses,
-// zéro CDN — la contrainte est le zéro-CDN, pas la liste des pages qui l'appliquent.
+// SELF-HOSTED JetBrains Mono font (PANO-56): targeted « latin » subset import, 4 weights,
+// zero CDN — the constraint is the zero-CDN, not the list of pages that apply it.
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
@@ -13,16 +13,16 @@ import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../../i18n/locales';
 import SiteHead from '../../ui/SiteHead.astro';
 import { LandingPage } from '../../ui/v2/LandingPage';
 
-// La langue vient du DOSSIER de la page, elle n'est pas écrite ici : c'est ce qui rend
-// `<html lang>` vrai par construction dans chaque arbre de langue — et `i18n/current.ts`,
-// qui lit cet attribut pour fabriquer les liens des îlots, en dépend entièrement.
+// The language comes from the page's FOLDER, it is not written here: it is what makes
+// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
+// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 
-// LES TEXTES DU <head> SONT ÉCRITS ICI, EN ANGLAIS, et ce n'est pas un oubli de `ui/copy.ts`.
-// Ce catalogue résout la langue en lisant `document.documentElement.lang` : au BUILD, en Node, il
-// n'y a pas de `document` et il retombe donc sur la langue par défaut. Une page anglaise qui lirait
-// `UI_*` émettrait un titre et une description FRANÇAIS dans son <head> — c'est-à-dire dans la
-// seule partie de la page qu'un moteur et un aperçu de partage lisent vraiment.
+// THE <head> TEXTS ARE WRITTEN HERE, IN ENGLISH, and it is not an oversight of `ui/copy.ts`.
+// This catalog resolves the language by reading `document.documentElement.lang`: at BUILD, in Node, there
+// is no `document` and it therefore falls back to the default language. An English page that read
+// `UI_*` would emit a FRENCH title and description in its <head> — that is, in the
+// only part of the page a search engine and a share preview really read.
 ---
 
 <!doctype html>

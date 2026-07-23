@@ -1,13 +1,13 @@
-// Smoke test D2 sur EXPORT RÉEL — la porte de yuya en fin de lot (PANO-76). GARDÉ : sauté par défaut,
-// ne tourne QUE si la variable d'environnement `D2_SMOKE_ZIP` pointe vers un .zip d'export.
+// D2 smoke test on a REAL EXPORT — yuya's gate at the end of the batch (PANO-76). GUARDED: skipped
+// by default, runs ONLY if the environment variable `D2_SMOKE_ZIP` points to an export .zip.
 //
-//   D2_SMOKE_ZIP=/chemin/vers/ton/export.zip npx vitest run src/engine/d2-smoke.test.ts
+//   D2_SMOKE_ZIP=/path/to/your/export.zip npx vitest run src/engine/d2-smoke.test.ts
 //
-// AGRÉGATS SEULEMENT (décision PANO-74) : il imprime les thèmes détectés, leur volume de preuves et
-// leur niveau de confiance — JAMAIS le texte verbatim d'un commentaire (aucun `evidence[].text`, aucun
-// `triggerTerms`). L'invariant privacy tient : l'export ne quitte pas la machine, et RIEN de son
-// contenu textuel n'est journalisé. À lancer par yuya sur son propre export ; JAMAIS exécuté sur des
-// données réelles par l'agent (seulement vérifié sur un zip synthétique).
+// AGGREGATES ONLY (PANO-74 decision): it prints the detected themes, their evidence volume and their
+// confidence level — NEVER the verbatim text of a comment (no `evidence[].text`, no `triggerTerms`).
+// The privacy invariant holds: the export does not leave the machine, and NOTHING of its textual
+// content is logged. To be run by yuya on their own export; NEVER executed on real data by the agent
+// (only checked on a synthetic zip).
 
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -15,9 +15,9 @@ import { processExport } from './pipeline';
 
 const ZIP = process.env.D2_SMOKE_ZIP;
 
-describe('D2 — smoke test sur export réel (gardé par D2_SMOKE_ZIP)', () => {
+describe('D2 — smoke test on a real export (guarded by D2_SMOKE_ZIP)', () => {
   it.skipIf(!ZIP)(
-    'résume les thèmes d’intérêt détectés — agrégats seulement, zéro verbatim',
+    'summarizes the detected interest themes — aggregates only, zero verbatim',
     () => {
       if (ZIP === undefined) {
         return;
@@ -27,12 +27,12 @@ describe('D2 — smoke test sur export réel (gardé par D2_SMOKE_ZIP)', () => {
         console.log(
           `[D2 smoke] échec pipeline au stade « ${res.stage} » — export non exploitable.`,
         );
-        expect(res.ok).toBe(false); // documente l'échec sans faire planter (observation, pas assertion)
+        expect(res.ok).toBe(false); // documents the failure without crashing (observation, not assertion)
         return;
       }
       const out = res.output;
 
-      // Résumé AGRÉGÉ — que des identités de thème, des comptes et un niveau de confiance.
+      // AGGREGATED summary — only theme identities, counts and a confidence level.
       console.log(`[D2 smoke] ${out.themes.length} thème(s) d’intérêt détecté(s) :`);
       for (const theme of out.themes) {
         for (const d of theme.deductions) {
@@ -43,9 +43,9 @@ describe('D2 — smoke test sur export réel (gardé par D2_SMOKE_ZIP)', () => {
       }
       console.log(`[D2 smoke] registre de thèmes : ${out.themes.map((t) => t.id).join(', ')}`);
 
-      // Garde-fou privacy structurel : le smoke n'imprime aucun verbatim. On VÉRIFIE aussi qu'un
-      // constat de thème n'est JAMAIS sensible, même sur données réelles (invariant de frontière) —
-      // c'était `sensitivity === undefined`, c'est désormais le discriminant `sensitive: false`.
+      // Structural privacy guardrail: the smoke prints no verbatim. We also VERIFY that a theme
+      // finding is NEVER sensitive, even on real data (a boundary invariant) — it was
+      // `sensitivity === undefined`, it is now the `sensitive: false` discriminant.
       for (const theme of out.themes) {
         for (const d of theme.deductions) {
           expect(d.sensitive).toBe(false);

@@ -1,209 +1,216 @@
 # CLAUDE.md — PanoptiCool
 
-Conventions et invariants du dépôt. Écrit pour les agents IA ; les règles valent pour tout le monde.
-Pour ce qu'est le produit et comment le lancer, voir [`README.md`](README.md) — ce fichier ne le
-recopie pas.
+Conventions and invariants of the repo. Written for AI agents; the rules apply to everyone.
+For what the product is and how to launch it, see [`README.md`](README.md) — this file does not
+recopy it.
 
-## Le produit, en une phrase
+## The product, in one sentence
 
-PanoptiCool lit l'export de données qu'une plateforme remet à son utilisateur et lui montre ce qu'un
-algorithme pourrait en déduire : le propos est une démonstration du système, jamais un verdict sur la
-personne. TikTok est le **premier connecteur**, pas le sujet.
+PanoptiCool reads the data export a platform hands over to its user and shows them what an algorithm
+could deduce from it: the point is a demonstration of the system, never a verdict on the person.
+TikTok is the **first connector**, not the subject.
 
-**Deux objectifs arbitrent, et ce ne sont pas des finitions** (le README les développe — ici, ce qu'ils
-imposent) :
+**Two objectives arbitrate, and they are not finishing touches** (the README develops them — here,
+what they impose):
 
-- **Pédagogie.** Le but est que la personne *comprenne* ce qui est déduit et comment. Une déduction
-  juste que personne ne comprend a raté sa cible : la clarté fait partie de la fonction, pas de
-  l'habillage.
-- **Accessibilité.** L'outil vise le plus grand nombre, pas les initiés. Quand une solution technique
-  élégante coûte de la clarté au lecteur, elle perd — et le jargon n'est jamais le prix à payer pour
-  la justesse.
+- **Education.** The goal is for the person to *understand* what is deduced and how. A correct
+  deduction that no one understands has missed its target: clarity is part of the function, not of
+  the packaging.
+- **Accessibility.** The tool aims at the greatest number, not the initiated. When an elegant
+  technical solution costs the reader clarity, it loses — and jargon is never the price to pay for
+  correctness.
 
-Ces deux-là se retiennent surtout au moment d'arbitrer : ils tranchent les cas où « c'est correct »
-et « c'est compréhensible » ne pointent pas dans la même direction.
+These two are held to mind above all at the moment of arbitrating: they settle the cases where « c'est correct »
+and « c'est compréhensible » don't point in the same direction.
 
 ## Stack
 
-- **`web/`** — le produit. Astro (build statique) + îlots Preact, moteur **TS pur** dans un Web
+- **`web/`** — the product. Astro (static build) + Preact islands, a **pure TS** engine in a Web
   Worker. Biome, Vitest, TS strict++ (`noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`).
-- **`web/src/ai/`** — l'analyse par un modèle **local** (`llama.cpp` chez l'utilisateur) : optionnelle,
-  hors `npm install`, inactive tant que le serveur ne répond pas. C'est une voie **séparée du moteur,
-  à dessein** — `EngineOutput` ne porte que les preuves citées par un constat (borne mémoire,
-  ADR-0003) là où le modèle a besoin des items bruts. Elle repart donc du zip dans son propre worker.
-  La brancher sur le moteur « pour simplifier » casserait la borne : ne pas le faire.
-- **`panopticool/`** — le générateur de faux exports (fixture). Python ≥ 3.10, **stdlib uniquement**,
-  zéro dépendance. Ce n'est pas le produit : c'est son banc d'essai, et la provenance reproductible
-  des archives de `samples/`. Modules : `registry` (oracle de forme) → `populators` (+ `personas`,
-  `ads_unverified`) → `generator` (rendu + zip streamé) ; `volume` (échelle) ; `validate`
-  (conformité au contrat, autonome).
+- **`web/src/ai/`** — analysis by a **local** model (`llama.cpp` on the user's machine): optional,
+  outside `npm install`, inactive as long as the server doesn't respond. It's a path **separate from
+  the engine, by design** — `EngineOutput` carries only the evidence cited by a finding (memory
+  bound, ADR-0003) whereas the model needs the raw items. So it starts again from the zip in its own
+  worker. Wiring it onto the engine « pour simplifier » would break the bound: don't do it.
+- **`panopticool/`** — the fake-export generator (fixture). Python ≥ 3.10, **stdlib only**, zero
+  dependencies. It is not the product: it's its test bench, and the reproducible provenance of the
+  archives in `samples/`. Modules: `registry` (shape oracle) → `populators` (+ `personas`,
+  `ads_unverified`) → `generator` (rendering + streamed zip); `volume` (scale); `validate`
+  (conformance to the contract, standalone).
 
-## Invariants non négociables
+## Non-negotiable invariants
 
-Toute proposition qui viole l'un de ces points est rejetée d'office.
+Any proposal that violates one of these points is rejected outright.
 
-- **Privacy par architecture.** Traitement 100 % client (navigateur / Web Worker) : **aucune donnée
-  d'export ne quitte l'appareil**, et il n'y a pas de serveur à qui l'envoyer — le site est un build
-  statique. Le seul destinataire réseau possible est le serveur `llama.cpp` **qui tourne sur la
-  machine de l'utilisateur** (analyse IA optionnelle, sur clic explicite) : localhost ne quitte pas
-  l'appareil, et l'invariant tient. Vers un tiers, rien, jamais. La confiance se **démontre** (code
-  ouvert, traitement visible), elle ne se promet pas.
-- **Aucune valeur tirée d'un vrai export n'entre dans ce dépôt** — ni dans le code, ni dans les
-  tests, ni dans les fixtures versionnées, ni dans un lexique, ni dans un prompt. **Toute valeur
-  émise par le générateur est synthétique** (inventée, sans PII, sans lien avec une personne
-  réelle). Ce qui a le droit de franchir, c'est **la structure et les statistiques, jamais une
-  valeur** : un schéma, une distribution, un ordre de grandeur — jamais un fragment de texte, un
-  pseudo, une date, un identifiant. Le contrat de structure est l'exemple type : tiré du réel,
-  *toutes ses valeurs déjà retirées*. Les sorties générées (`out/`) sont synthétiques mais restent
-  hors versionnement par hygiène.
-- **Regarder est permis ; copier ne l'est pas.** Un vrai export peut nourrir le travail —
-  diagnostiquer, cadrer, calibrer — sous **consentement explicite** : celui du mainteneur sur ses
-  propres données, ou celui d'une personne qu'il connaît et qui le donne. Il vit hors versionnement
-  (`Instagram/`, `out/`) et n'en sort que sous forme de structure ou de statistique. Fermer les yeux
-  n'a jamais protégé personne : ce qui protège les tiers présents dans un export sans l'avoir
-  demandé — une conversation privée contient les messages de l'autre — c'est que **les valeurs ne
-  sortent jamais**. Le consentement ouvre le regard ; il ne desserre rien de la règle du dessus.
-- **Inférences sensibles cadrées** comme « ce qu'une plateforme *pourrait* déduire » — systémique,
-  jamais un verdict personnel. La doctrine est dans
-  [ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md), son catalogue vivant dans
+- **Privacy by architecture.** Processing 100% client-side (browser / Web Worker): **no export data
+  leaves the device**, and there is no server to send it to — the site is a static build. The only
+  possible network recipient is the `llama.cpp` server **running on the user's machine** (optional AI
+  analysis, on an explicit click): localhost doesn't leave the device, and the invariant holds.
+  Toward a third party, nothing, ever. Trust is **demonstrated** (open code, visible processing), it
+  is not promised.
+- **No value drawn from a real export enters this repo** — neither in the code, nor in the tests,
+  nor in the versioned fixtures, nor in a lexicon, nor in a prompt. **Every value emitted by the
+  generator is synthetic** (invented, without PII, with no link to a real person). What is allowed to
+  cross is **the structure and the statistics, never a value**: a schema, a distribution, an order of
+  magnitude — never a fragment of text, a pseudonym, a date, an identifier. The structure contract is
+  the textbook example: drawn from the real, *all its values already removed*. The generated outputs
+  (`out/`) are synthetic but remain out of versioning as a matter of hygiene.
+- **Looking is allowed; copying is not.** A real export can feed the work — diagnosing, framing,
+  calibrating — under **explicit consent**: that of the maintainer on his own data, or that of a
+  person he knows who gives it. It lives out of versioning (`Instagram/`, `out/`) and comes out only
+  in the form of a structure or a statistic. Closing your eyes has never protected anyone: what
+  protects the third parties present in an export without having asked for it — a private
+  conversation contains the other person's messages — is that **the values never come out**. Consent
+  opens the looking; it loosens nothing of the rule above.
+- **Sensitive inferences framed** as « ce qu'une plateforme *pourrait* déduire » — systemic, never a
+  personal verdict. The doctrine is in
+  [ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md), its living catalog in
   [`docs/constats-sensibles.md`](docs/constats-sensibles.md).
-- **Open source AGPL v3** ([ADR-0005](docs/adr/0005-licence-agpl-v3.md)). Pas de dépendance
-  propriétaire bloquante sans justification explicite.
+- **Open source AGPL v3** ([ADR-0005](docs/adr/0005-licence-agpl-v3.md)). No blocking proprietary
+  dependency without explicit justification.
 
-## Le cœur, et ce qu'on n'y touche pas
+## The core, and what we don't touch in it
 
-`web/src/engine/detect/` et `web/src/engine/lexicon/` sont le **noyau mesuré** du produit. Trois
-obligations de doctrine y vivent :
+`web/src/engine/detect/` and `web/src/engine/lexicon/` are the **measured core** of the product.
+Three doctrinal obligations live there:
 
-1. les **filtres du sensible** (négation, citation, 3ᵉ personne) — ce qui empêche de qualifier
-   quelqu'un sur une phrase qui dit le contraire ;
-2. l'**ancrage des preuves** — chaque déduction reliée à la miette exacte qui l'a produite ;
-3. le **wording en DEUX périmètres ratifiables**, chacun un sélecteur sans prose plus **un fichier
-   de prose par langue** — `web/src/engine/wording.fr.ts` / `.en.ts` (ce que la machine ose
-   déduire ; sans 2ᵉ personne, par doctrine, dans les deux langues) et `web/src/ui/copy.fr.ts` /
-   `.en.ts` (ce que l'interface dit ; le tutoiement est la norme du FR). Le contrôle humain sur ce
-   que le produit ose dire tient à ce qu'on puisse tout relire d'une traite, **une langue à la
-   fois**. Ne pas les éparpiller, ne pas les fusionner : la propriété (a) de `wording.test.ts`
-   balaie les deux langues, et la parité FR↔EN est tenue par le compilateur (`wording-parity`,
-   `copy-parity` — l'annoter en `Record<string, string>` la décrocherait en silence).
+1. the **sensitive filters** (negation, quotation, 3rd person) — what prevents qualifying someone on
+   a sentence that says the opposite;
+2. the **anchoring of evidence** — each deduction tied to the exact crumb that produced it;
+3. the **wording in TWO ratifiable perimeters**, each a selector without prose plus **one prose file
+   per language** — `web/src/engine/wording.fr.ts` / `.en.ts` (what the machine dares to deduce;
+   without the 2nd person, by doctrine, in both languages) and `web/src/ui/copy.fr.ts` / `.en.ts`
+   (what the interface says; the informal "tu" is the norm in FR). Human control over what the
+   product dares to say rests on being able to reread it all in one go, **one language at a time**.
+   Don't scatter them, don't merge them: property (a) of `wording.test.ts` sweeps both languages, and
+   FR↔EN parity is held by the compiler (`wording-parity`, `copy-parity` — annotating it as
+   `Record<string, string>` would silently detach it).
 
-Se tromper de cible ici, c'est risquer de nommer quelqu'un « dépressif » à tort. **Tout changement de
-comportement s'y prouve par un golden à diff nul, jamais par « les tests passent ».**
+Getting the target wrong here means risking naming someone « dépressif » wrongly. **Any change of
+behavior there is proven by a zero-diff golden, never by « les tests passent ».**
 
-Quatre goldens de bout en bout s'en chargent, et il faut savoir lequel voit quoi :
+Four end-to-end goldens take care of it, and you have to know which one sees what:
 
-- `web/src/ui/v2/render-golden.test.ts` — le sous-arbre `ResultsView`, **en desktop et en français
-  uniquement**. Il inclut la persona de démo **à dessein** : les archives de `samples/` n'exercent
-  ni la détection de thèmes ni celle des signaux sensibles (0 preuve, 0 thème : mesuré). Ses
-  variantes `render-golden-mobile` et `render-golden-en` couvrent ce que cette frontière exclut —
-  chacune la sienne, jamais plus.
-- `web/src/ui/v2/ui-golden.test.ts` — accueil, parcours d'analyse, section IA, barre et pied de
-  page, variantes mobiles comprises. Ajouté parce que le premier ne les rendait pas.
+- `web/src/ui/v2/render-golden.test.ts` — the `ResultsView` subtree, **in desktop and in French
+  only**. It includes the demo persona **by design**: the archives in `samples/` exercise neither
+  theme detection nor sensitive-signal detection (0 evidence, 0 theme: measured). Its variants
+  `render-golden-mobile` and `render-golden-en` cover what this border excludes — each its own, never
+  more.
+- `web/src/ui/v2/ui-golden.test.ts` — home page, analysis flow, AI section, bar and footer, mobile
+  variants included. Added because the first one didn't render them.
 
-Chacun **déclare sa frontière dans son en-tête** ; la règle qui l'impose est ci-dessous.
+Each **declares its border in its header**; the rule that requires it is below.
 
-## Ce qu'un filet prouve
+## What a net proves
 
-Un mécanisme de preuve — golden, témoin, banc, mesure — **déclare dans son propre fichier ce qu'il NE
-couvre pas**. Pas en annexe : dans son en-tête, là où le lit quiconque s'apprête à le citer.
+A proof mechanism — golden, witness, bench, measurement — **declares in its own file what it does NOT
+cover**. Not in an appendix: in its header, where anyone about to cite it reads it.
 
-La raison est un motif observé **sept fois** dans ce dépôt, jamais par malveillance : un filet est écrit
-sur des cas TYPIQUES, puis cité comme s'il couvrait le domaine. L'écart est invisible, parce que ce
-qui manque au filet manque aussi au raisonnement de qui l'invoque. « Mesuré » devient alors un mot
-qui clôt la discussion sans l'avoir ouverte.
+The reason is a pattern observed **seven times** in this repo, never out of malice: a net is written
+on TYPICAL cases, then cited as if it covered the domain. The gap is invisible, because what the net
+lacks also lacks in the reasoning of whoever invokes it. « Mesuré » then becomes a word that closes
+the discussion without having opened it.
 
-Une garantie qui énonce sa frontière ne peut plus être sur-citée : le lecteur suivant voit d'un coup
-d'œil si son cas tombe dedans ou dehors.
+A guarantee that states its border can no longer be over-cited: the next reader sees at a glance
+whether their case falls inside or outside.
 
-**Une assertion négative vérifie ce qu'elle ATTEINT, pas ce qu'elle affirme.** C'est la forme la plus
-coûteuse du motif, parce qu'elle passe au vert pour une raison qui n'est pas la sienne. Le cas
-d'école du dépôt : un test affirmait que `health_physical` n'avait aucune couverture anglaise, et il
-passait — mais le terme EN matchait bel et bien (par tolérance de pluriel), et l'unique item était
-simplement resté sous le SEUIL de répétition. Le test mesurait le seuil et disait « couverture » ;
-les deux ont coïncidé jusqu'au jour où une autre règle a retiré l'écran.
+**A negative assertion verifies what it REACHES, not what it affirms.** It's the most costly form of
+the pattern, because it goes green for a reason that isn't its own. The repo's textbook case: a test
+affirmed that `health_physical` had no English coverage, and it passed — but the EN term did match
+(by plural tolerance), and the single item had simply stayed below the repetition THRESHOLD. The test
+measured the threshold and said « couverture »; the two coincided until the day another rule removed
+the screen.
 
-Deux gestes en découlent, et ils ne coûtent rien à l'écriture :
+Two gestures follow from this, and they cost nothing to write:
 
-- devant un `expect(...).toBeNull()` ou un `toHaveLength(0)`, se demander **par quel chemin** le zéro
-  arrive, et vérifier que c'est celui qu'on croit — un zéro a souvent plusieurs causes possibles, et
-  le test n'en distingue aucune ;
-- une couverture se vérifie **dans les deux sens**. « Chaque câblage a son texte » et « chaque texte
-  est câblé » sont deux propriétés distinctes : n'en tenir qu'une est ce qui a laissé trois lectures
-  ratifiées vivre sans lecteur, invisibles aux deux filets en place.
+- in front of an `expect(...).toBeNull()` or a `toHaveLength(0)`, ask **by which path** the zero
+  arrives, and check that it's the one you think — a zero often has several possible causes, and the
+  test distinguishes none;
+- a coverage is verified **in both directions**. « Chaque câblage a son texte » and « chaque texte
+  est câblé » are two distinct properties: holding only one is what let three ratified readings live
+  without a reader, invisible to the two nets in place.
 
-**Un témoin se vérifie par MUTATION, jamais par relecture.** Un filet vide et un filet qui tient ont
-exactement la même apparence au vert. La seule vérification qui les distingue est de **casser
-délibérément ce qu'il surveille et de constater qu'il rougit**, puis de rétablir. Ce qui se consigne
-dans le fichier est la mutation **passée** et ce qu'elle a **fait** — jamais ce qu'on croit qu'elle
-ferait.
+**A witness is verified by MUTATION, never by rereading.** An empty net and a net that holds look
+exactly the same when green. The only verification that distinguishes them is to **deliberately break
+what it watches and observe it going red**, then restore. What gets recorded in the file is the
+mutation **that was done** and what it **did** — never what you think it would do.
 
-Trois instances en deux fichiers, toutes trouvées en passant la mutation, **aucune en relisant** :
+Three instances in two files, all found by running the mutation, **none by rereading**:
 
-- un témoin d'exclusion qui ajoutait le terme exclu au **texte** au lieu de muter le **lexique** — un
-  terme exclu n'étant dans aucune liste, il ne pouvait rien changer par construction ;
-- des cadres d'auto-déclaration n'écrivant que « i am », si bien qu'une tête « im » laissait le bloc
-  vert — dix lignes sous un aveu identique du lot précédent ;
-- une sonde « aucune auto-déclaration anglaise ne nomme » interrogeant un terme qui n'était dans
-  aucun tier (lot `religion`).
+- an exclusion witness that added the excluded term to the **text** instead of mutating the
+  **lexicon** — an excluded term not being in any list, it could change nothing by construction;
+- self-declaration frames writing only « i am », so that an « im » head left the block green — ten
+  lines below an identical admission from the previous batch;
+- a probe « aucune auto-déclaration anglaise ne nomme » querying a term that was in no tier
+  (`religion` batch).
 
-Corollaire : **une mutation dont le résultat n'est pas celui qu'on avait prévu est le cas le plus
-utile.** Son résultat réel se publie, y compris quand il établit que la mutation ne prouve pas ce
-qu'on lui demandait — c'est ce qu'a fait la mutation 4 de la porte de langue.
+Corollary: **a mutation whose result isn't the one that was predicted is the most useful case.** Its
+real result is published, including when it establishes that the mutation doesn't prove what was
+asked of it — that's what mutation 4 of the language gate did.
 
-## Le contrat de structure
+## The structure contract
 
-La **seule** source de vérité sur le format d'un export TikTok est
-[`docs/tiktok-export-schema.md`](docs/tiktok-export-schema.md) : les 10 catégories top-level, les
-conteneurs, les clés de liste, la casse des clés d'item, les 3 encodages du vide (`null` / `[]` /
-`{}`) et les pièges de fidélité.
+The **only** source of truth on the format of a TikTok export is
+[`docs/tiktok-export-schema.md`](docs/tiktok-export-schema.md): the 10 top-level categories, the
+containers, the list keys, the casing of item keys, the 3 encodings of the empty (`null` / `[]` /
+`{}`) and the fidelity pitfalls.
 
-**On n'invente aucun champ ni catégorie hors de ce contrat.** Toute structure produite par le code
-doit pouvoir se justifier par une ligne de ce document. C'est une spec rétro-conçue d'un format
-externe : elle ne se réécrit pas, et son numérotage (`§x.y`) est son adressage — les renvois
-`contrat §x.y` du code sont corrects et utiles.
+**We invent no field or category outside this contract.** Any structure produced by the code must be
+justifiable by a line of this document. It's a spec reverse-engineered from an external format: it is
+not rewritten, and its numbering (`§x.y`) is its addressing — the `contract §x.y` cross-references in
+the code are correct and useful.
 
 ## Conventions
 
-- **Docs et commentaires en français**, code et identifiants en anglais.
-- **Le registre (`panopticool/registry.py`) est l'oracle structurel.** Il décrit la forme ; il ne
-  fabrique pas de données. La population (valeurs synthétiques) est tenue à part, dans des
-  *populators* enfichables.
-- **Un artefact a UNE maison.** Les autres surfaces y renvoient sans le recopier. Une décision vit
-  dans un ADR (`docs/adr/`) ; un choix trop petit pour un ADR s'inscrit **inline**, dans le
-  commentaire qui porte la contrainte (cf. la règle plus bas) ; le format dans le contrat. Recopier,
-  c'est fabriquer une divergence à retardement.
-- **Un renvoi doit survivre.** Citer un numéro d'ADR (stable) plutôt qu'un `§` d'un document qui se
-  réécrit. Exception : le contrat de structure ci-dessus, dont les `§` sont l'adressage.
-- **Un commentaire ne parle jamais au présent d'un fichier voisin.** « X reste sur /temp », « cf. Y
-  qui porte la distinction » : ces phrases deviennent fausses le jour où X ou Y bouge, sans que rien
-  ne le signale — et un lecteur ne peut pas distinguer un renvoi mort d'un renvoi qu'il n'a pas
-  compris. Un commentaire dit une **contrainte que le code ne peut pas montrer**. Si le passé
-  explique une contrainte encore vivante, le dire au passé (« remplace Y », « ex-Y ») reste honnête :
-  ça survit à la disparition de Y. La provenance pour la provenance (« promu du spike X ») n'apprend
-  rien et meurt avec X — si elle mérite d'être gardée, sa maison est un ADR.
-- **Pas de code qui tourne pour personne.** Une fonction sans monteur est morte, même belle. Si une
-  idée revient, elle reviendra conçue et rendue.
-- **Commit après chaque unité logique**, messages en style `type: résumé`. **Jamais de `git push`**
-  sans demande explicite.
-- **Les décisions sont celles du mainteneur.** L'agent challenge, propose options et tradeoffs, ne
-  valide pas par défaut, et n'écrit rien de structurant sans accord explicite.
-- **Vérifier l'état git réel** avant toute affirmation sur les commits ou le suivi des fichiers.
-- Le journal de collaboration IA est tenu dans `AI_USAGE.md` (ratifié à la main) ; la méthode de
-  travail dans [`METHODE.md`](METHODE.md).
+- **Docs and comments in English**, like code and identifiers. The repo's prose was French until the
+  translation of 2026-07-23; the git history predating it stays French, and rewriting it was refused
+  (forcing it would break every cross-reference and machine-rewrite a ratified record). What stays
+  French is what is **data or product**, never commentary on it: the ratified product copy
+  (`wording.fr.ts`, `copy.fr.ts`), the detection lexicon, the generated reference renders, the FR
+  pages and the legal notice, the validator's output, and the French examples quoted inside the
+  prose — a quoted example is the measured thing, so translating it would destroy what it proves.
+- **The registry (`panopticool/registry.py`) is the structural oracle.** It describes the shape; it
+  does not fabricate data. Population (synthetic values) is kept apart, in pluggable *populators*.
+- **An artifact has ONE home.** The other surfaces refer to it without copying it. A decision lives
+  in an ADR (`docs/adr/`); a choice too small for an ADR is recorded **inline**, in the comment that
+  carries the constraint (cf. the rule below); the format in the contract. Copying is manufacturing a
+  delayed divergence.
+- **A cross-reference must survive.** Cite an ADR number (stable) rather than a `§` of a document that
+  gets rewritten. Exception: the structure contract above, whose `§` are the addressing.
+- **A comment never speaks in the present of a neighboring file.** « X reste sur /temp », « cf. Y
+  qui porte la distinction »: these sentences become false the day X or Y moves, without anything
+  signaling it — and a reader can't tell a dead cross-reference from one they didn't understand. A
+  comment states a **constraint the code can't show**. If the past explains a still-living
+  constraint, saying it in the past (« remplace Y », « ex-Y ») stays honest: it survives the
+  disappearance of Y. Provenance for provenance's sake (« promu du spike X ») teaches nothing and
+  dies with X — if it deserves to be kept, its home is an ADR.
+- **No code that runs for no one.** A function without an assembler is dead, however beautiful. If an
+  idea comes back, it will come back designed and rendered.
+- **Commit after each logical unit**, messages in `type: summary` style, **in English** — subject
+  and body alike, like the rest of the prose. Same exception as above: a French value quoted as
+  evidence (a lexicon term, a copy string, a mockup typo) stays French inside an English message,
+  because it is the thing being cited. The history predating the 2026-07-23 translation is in
+  French and stays so — it was not rewritten, and that refusal is recorded in `AI_USAGE.md`.
+  **Never a `git push`** without an explicit request.
+- **The decisions are the maintainer's.** The agent challenges, proposes options and tradeoffs,
+  doesn't validate by default, and writes nothing structuring without explicit agreement.
+- **Verify the real git state** before any assertion about the commits or the tracking of files.
+- The AI collaboration journal is kept in `AI_USAGE.md` (ratified by hand); the working method in
+  [`METHODE.md`](METHODE.md).
 
-## Vérifier
+## Verify
 
-Ce que la CI exige, depuis `web/` — les quatre doivent passer :
+What the CI requires, from `web/` — all four must pass:
 
 ```sh
 npm run lint && npm run typecheck && npm run test && npm run build
 ```
 
-Et depuis la racine, le smoke du générateur :
+And from the root, the generator smoke:
 
 ```sh
 python -m panopticool -o /tmp/ci.zip && python -m panopticool.validate /tmp/ci.zip
 ```
 
-**Ne jamais restreindre le périmètre du lint ou du typecheck pour faire passer la CI.** Une CI verte
-qui a rétréci son périmètre ne prouve rien — c'est un mensonge qui coûte plus cher que le rouge.
+**Never narrow the scope of the lint or the typecheck to make the CI pass.** A green CI that has
+shrunk its scope proves nothing — it's a lie that costs more than the red.

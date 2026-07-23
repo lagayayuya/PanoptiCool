@@ -1,137 +1,137 @@
-// Banc `politics` — QUATRE voix, et la PAIRE OPPOSÉE est l'instrument. Vérité-terrain scellée.
+// `politics` bench — FOUR voices, and the OPPOSED PAIR is the instrument. Sealed ground truth.
 //
-// ── Ce fichier est scellé ────────────────────────────────────────────────────────────────────────
-// Écrit et commité AVANT tout tour du détecteur sur ces voix. « Faux positif » n'a pas de sens sans
-// un état attendu écrit d'avance, et juger après avoir vu la sortie revient à juger avec indulgence
-// — une détection plausible se rationalise toujours. Le sceau est le commit.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// ── This file is sealed ────────────────────────────────────────────────────────────────────────
+// Written and committed BEFORE any detector pass on these voices. « False positive » has no meaning without
+// an expected state written in advance, and judging after seeing the output amounts to judging leniently
+// — a plausible detection always rationalizes itself. The seal is the commit.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── L'ÉTAT EXACT DE LA MESURE POLITIQUE AVANT CE FICHIER ─────────────────────────────────────────
-// Vérifié, pas supposé, et la formulation compte parce que la version approximative est plus
-// flatteuse que la vraie : le rappel politique du produit a été mesuré EXACTEMENT UNE FOIS, sur une
-// voix construite pour ne JAMAIS nommer de camp (`clinical_slang`, banc de borne haute — son sceau
-// dit « il ne dit jamais où il se situe »), et le résultat a été enregistré comme un MANQUE DÉCLARÉ
+// ── THE EXACT STATE OF THE POLITICAL MEASUREMENT BEFORE THIS FILE ─────────────────────────────────────────
+// Verified, not supposed, and the wording counts because the approximate version is more
+// flattering than the true one: the product's political recall was measured EXACTLY ONCE, on a
+// voice built to NEVER name a camp (`clinical_slang`, upper-bound bench — its seal
+// says « it never says where it stands »), and the result was recorded as a DECLARED MISS
 // (`missedRecall: ['clinical_slang/politics']`).
 //
-// Autrement dit : l'unique voix politiquement engagée de tout le corpus scellé n'est pas détectée,
-// et c'est l'attendu. La détection politique NOMMÉE — celle qui produit un constat de haute
-// confiance sur une personne — n'a jamais été éprouvée dans AUCUNE des deux langues, ni en rappel,
-// ni en faux positif, ni dans un sens ni dans l'autre du clivage.
+// In other words: the only politically engaged voice in the whole sealed corpus is not detected,
+// and that is the expected. NAMED political detection — the one that produces a high-confidence
+// finding on a person — has never been tested in EITHER language, neither in recall,
+// nor in false positive, neither in one direction of the divide nor the other.
 //
-// C'est le motif nommé par CLAUDE.md (*Ce qu'un filet prouve*) : aucun banc existant ne pouvait
-// rendre autre chose que zéro sur `politics`, parce qu'aucun n'a jamais mis le détecteur devant le
-// sujet. Un rapport « aucun faux positif politique » appuyé sur eux n'aurait rien dit du tout.
+// It is the pattern named by CLAUDE.md (*Ce qu'un filet prouve*): no existing bench could
+// return anything but zero on `politics`, because none ever put the detector in front of the
+// subject. A report « no political false positive » leaning on them would have said nothing at all.
 //
-// ── POURQUOI UNE PAIRE, ET POURQUOI ELLE NE SE FUSIONNE JAMAIS ───────────────────────────────────
-// Une non-détection n'affiche RIEN. C'est la propriété qui rend un biais politique invisible : si
-// le lexique porte le vocabulaire d'un camp mieux que celui de l'autre, le camp silencieux ne
-// produit aucune trace, aucune alerte, aucun compteur rouge — il produit une absence, et une
-// absence ressemble à un banc propre. Seules DEUX voix opposées, écrites avec la même densité,
-// peuvent rendre cette absence lisible : l'écart entre leurs deux chiffres EST la mesure.
+// ── WHY A PAIR, AND WHY IT NEVER MERGES ───────────────────────────────────────
+// A non-detection displays NOTHING. It is the property that makes a political bias invisible: if
+// the lexicon carries one camp's vocabulary better than the other's, the silent camp
+// produces no trace, no alert, no red counter — it produces an absence, and an
+// absence looks like a clean bench. Only TWO opposed voices, written with the same density,
+// can make this absence legible: the gap between their two figures IS the measure.
 //
-// Les deux nombres de cette paire ne s'additionnent jamais et ne se moyennent jamais. Un total les
-// détruit : c'est précisément la somme qui masque l'asymétrie.
+// The two numbers of this pair never add up and never average. A total
+// destroys them: it is precisely the sum that masks the asymmetry.
 //
-// ── LA PAIRE EST EN FRANÇAIS, ET C'EST LA DÉCISION PORTANTE ──────────────────────────────────────
-// Les deux voix opposées partagent OBLIGATOIREMENT une langue. Séparées, l'écart mesuré confondrait
-// le camp avec la langue, et plus aucune lecture ne serait possible. Le français parce que c'est le
-// lexique livré et ratifié de longue date — un biais y est un défaut produit vivant, pas une
-// hypothèse — et parce qu'un périmètre anglais en cours de proposition ferait de toute mesure EN un
-// tir sur cible mobile.
+// ── THE PAIR IS IN FRENCH, AND IT IS THE LOAD-BEARING DECISION ──────────────────────────────────────
+// The two opposed voices MANDATORILY share a language. Separated, the measured gap would confuse
+// the camp with the language, and no reading would be possible anymore. French because it is the
+// lexicon shipped and ratified long ago — a bias there is a live production defect, not a
+// hypothesis — and because an English perimeter under proposal would make any EN measurement a
+// shot at a moving target.
 //
-// Les voix 3 et 4 sont donc anglaises : ce sont des GARDES (faux positifs), pas des membres de la
-// paire, et un plancher de faux positifs neuf vaut davantage là où du vocabulaire arrive.
+// Voices 3 and 4 are therefore English: they are GUARDS (false positives), not members of the
+// pair, and a fresh false-positive floor is worth more where vocabulary arrives.
 //
-// ── LA SYMÉTRIE D'ÉCRITURE, ET SA LIMITE ASSUMÉE ─────────────────────────────────────────────────
-// Contrainte : les deux voix FR portent le MÊME NOMBRE d'items (24), la même répartition
-// commentaire/recherche (15/9), le même nombre d'auto-déclarations (8), d'items d'enjeu (6) et
-// d'items de vie non politiques (10).
+// ── THE WRITING SYMMETRY, AND ITS ASSUMED LIMIT ─────────────────────────────────────────────────
+// Constraint: the two FR voices carry the SAME NUMBER of items (24), the same
+// comment/search split (15/9), the same number of self-declarations (8), stake items (6) and
+// non-political life items (10).
 //
-// Sur les huit AUTO-DÉCLARATIONS, les CADRES SYNTAXIQUES sont volontairement calqués l'un sur
-// l'autre — « je suis X depuis toujours et je ne m'en cache pas », « j'ai toujours voté X, même
+// On the eight SELF-DECLARATIONS, the SYNTACTIC FRAMES are deliberately patterned on one
+// another — « je suis X depuis toujours et je ne m'en cache pas », « j'ai toujours voté X, même
 // quand ça ne servait à rien », « je suis X, et je ne trouve pas ça honteux à dire ».
-// C'est délibéré et c'est le cœur de l'instrument : si les cadres différaient, un écart mesuré
-// pourrait venir du CADRE et non du LEXÈME, et l'expérience ne prouverait rien. Là où on mesure, on
-// isole.
+// It is deliberate and it is the heart of the instrument: if the frames differed, a measured gap
+// could come from the FRAME and not the LEXEME, and the experiment would prove nothing. Where one measures, one
+// isolates.
 //
-// DEUX ASYMÉTRIES ONT ÉTÉ CORRIGÉES À LA RELECTURE, et les noter est utile parce qu'elles étaient
-// invisibles à l'écriture. (a) La voix de gauche portait « famille de SYNDIQUÉS » face à une
-// « famille d'ARTISANS » — une identité politique d'un côté, une profession de l'autre : l'écart
-// mesuré serait venu de MON texte. Corrigé en syndiqués / patrons, les deux versants d'un même axe
-// de relations sociales. (b) « MILITANTE depuis vingt ans » faisait face à « ENGAGÉ depuis vingt
-// ans », deux mots d'intensité inégale ; « militant » s'employant dans les deux camps en français,
-// il est désormais des deux côtés. La limite qui subsiste est réelle et déclarée : le français
-// n'offre pas de vocabulaire d'appartenance parfaitement symétrique entre les deux bords, et ces
-// deux appariements sont les plus proches que j'aie su écrire — pas une équivalence prouvée.
+// TWO ASYMMETRIES WERE CORRECTED ON REVIEW, and noting them is useful because they were
+// invisible at writing time. (a) The left voice carried « famille de SYNDIQUÉS » facing a
+// « famille d'ARTISANS » — a political identity on one side, a profession on the other: the gap
+// measured would have come from MY text. Corrected to unionized / bosses, the two sides of a single axis
+// of social relations. (b) « MILITANTE depuis vingt ans » faced « ENGAGÉ depuis vingt
+// ans », two words of unequal intensity; « militant » being used in both camps in French,
+// it is now on both sides. The limit that remains is real and declared: French
+// offers no perfectly symmetric belonging vocabulary between the two sides, and these
+// two pairings are the closest I could write — not a proven equivalence.
 //
-// Partout ailleurs — enjeux et vie — les deux voix sont écrites LIBREMENT et ne se calquent pas :
-// un miroir intégral produirait deux dosages plutôt que deux personnes, et une persona fausse ne
-// mesure rien de réel. Le compromis est donc explicite : cadres verrouillés là où porte la mesure,
-// écriture libre là où porte la vraisemblance.
+// Everywhere else — stakes and life — the two voices are written FREELY and do not pattern on each other:
+// a full mirror would produce two dosages rather than two people, and a false persona
+// measures nothing real. The compromise is therefore explicit: frames locked where the measure bears,
+// free writing where plausibility bears.
 //
-// ── CE QUE LE SCEAU DE LA VOIX IRONIQUE PEUT ET NE PEUT PAS SAVOIR ───────────────────────────────
-// `en_ironic` est scellée NON-PORTEUSE, et cet état a un sens PLUS ÉTROIT qu'ailleurs dans le
-// corpus. Le sceau sait qu'AUCUN item n'énonce une position sincère : chaque énoncé politique y est
-// une proposition absurde, une surenchère ou une vanne, et aucun ne peut être lu au premier degré
-// par un lecteur humain. Le sceau NE SAIT PAS quelles sont ses opinions réelles — elles sont
-// absentes du texte par construction, et c'est la définition même de la voix.
+// ── WHAT THE SEAL OF THE IRONIC VOICE CAN AND CANNOT KNOW ───────────────────────────────
+// `en_ironic` is sealed NON-CARRIER, and this state has a NARROWER meaning than elsewhere in the
+// corpus. The seal knows that NO item states a sincere position: each political statement there is
+// an absurd proposition, an escalation or a joke, and none can be read at face value
+// by a human reader. The seal DOES NOT KNOW what her real opinions are — they are
+// absent from the text by construction, and it is the very definition of the voice.
 //
-// Donc : `nonCarrier` signifie ici « LE TEXTE ne porte aucun signal politique vrai », jamais « cette
-// personne est apolitique ». Tout constat posé sur elle est un TORT, quelles que soient ses vues
-// privées — parce que le détecteur ne lit que le texte, et que le texte n'affirme rien.
+// So: `nonCarrier` here means « THE TEXT carries no true political signal », never « this
+// person is apolitical ». Any finding placed on her is a WRONG, whatever her
+// private views — because the detector reads only the text, and the text affirms nothing.
 //
-// ── CE QUE CE BANC NE COUVRE PAS ─────────────────────────────────────────────────────────────────
-// - **La BANDE CIVILE des deux camps, et elle seule.** Aucune hostilité envers un groupe ou une
-//   appartenance n'est écrite ici, dans AUCUNE des deux voix opposées. C'est une décision, et
-//   l'important est qu'elle s'applique SYMÉTRIQUEMENT : exclue des deux côtés, elle laisse l'écart
-//   interprétable. Le discours politique réel comporte, aux deux extrémités, des registres plus
-//   durs — CE BANC NE LES MESURE PAS, ni leur rappel ni leurs faux positifs. Un vert ici ne dit
-//   rien de ce périmètre.
-// - **Un seul axe : le rôle de l'État** (redistribution et services publics contre impôts, dépense
-//   et responsabilité individuelle). Les autres clivages — institutionnel, international,
-//   écologique, sociétal — ne sont pas éprouvés. L'axe écologique a été écarté sciemment : il
-//   risquait d'être capté comme CENTRE D'INTÉRÊT plutôt que comme `politics`, ce qui aurait
-//   confondu la mesure.
-// - **Aucune organisation, aucun sigle, aucune personnalité.** Les voix se déclarent par des termes
-//   de courant, jamais par un nom propre. Le rappel sur les noms d'organisations n'est pas mesuré.
-// - **Deux langues, deux rôles différents.** La paire FR mesure un ÉCART ; les voix EN mesurent un
-//   PLANCHER de faux positifs. Il n'existe PAS de paire opposée anglaise dans ce fichier : le biais
-//   éventuel du lexique EN entre camps n'est pas mesuré ici.
-// - **Les cinq autres labels ne sont pas éprouvés.** Scellés non-porteurs partout. Les items de vie
-//   ont été écrits pour rester clairement à l'écart du corps et du soin (un genou douloureux, un
-//   père vieillissant : tenus NON cliniques exprès) — mais ce banc ne mesure pas ces labels.
+// ── WHAT THIS BENCH DOES NOT COVER ─────────────────────────────────────────────────────────────
+// - **The CIVIL BAND of both camps, and it alone.** No hostility toward a group or a
+//   belonging is written here, in NEITHER of the two opposed voices. It is a decision, and
+//   what matters is that it applies SYMMETRICALLY: excluded on both sides, it leaves the gap
+//   interpretable. Real political discourse comprises, at both ends, harsher
+//   registers — THIS BENCH DOES NOT MEASURE THEM, neither their recall nor their false positives. A green here says
+//   nothing about that perimeter.
+// - **A single axis: the role of the State** (redistribution and public services versus taxes, spending
+//   and individual responsibility). The other divides — institutional, international,
+//   ecological, societal — are not tested. The ecological axis was set aside knowingly: it
+//   risked being captured as an INTEREST rather than as `politics`, which would have
+//   confused the measure.
+// - **No organization, no acronym, no public figure.** The voices declare themselves by terms
+//   of current, never by a proper name. Recall on organization names is not measured.
+// - **Two languages, two different roles.** The FR pair measures a GAP; the EN voices measure a
+//   FLOOR of false positives. There is NO opposed English pair in this file: the possible bias
+//   of the EN lexicon between camps is not measured here.
+// - **The five other labels are not tested.** Sealed non-carrier everywhere. The life items
+//   were written to stay clearly away from the body and care (a painful knee, an
+//   aging father: kept NON-clinical on purpose) — but this bench does not measure those labels.
 //
-// ── CE QUI A ÉTÉ LU, ET LA FUITE QUE JE DÉCLARE ──────────────────────────────────────────────────
-// LU : `CLAUDE.md` ; `register-bench.ts` (types et vérité-terrain, sans données de persona) ;
-// `fr-registers.fixture.ts`, `conflictual-registers.fixture.ts`, `en-body-registers.fixture.ts` et
-// `en-upper-bound.fixture.ts` POUR LE FORMAT, plus le sceau de `clinical_slang` pour établir l'état
-// de la mesure ci-dessus. Recherche web sur la FORME du discours politique ordinaire dans les deux
-// langues (registre, mélange soutenu/familier, politique comme fil parmi d'autres) — aucune valeur
-// rapportée.
+// ── WHAT WAS READ, AND THE LEAK I DECLARE ──────────────────────────────────────────────────
+// READ: `CLAUDE.md`; `register-bench.ts` (types and ground truth, without persona data);
+// `fr-registers.fixture.ts`, `conflictual-registers.fixture.ts`, `en-body-registers.fixture.ts` and
+// `en-upper-bound.fixture.ts` FOR THE FORMAT, plus the seal of `clinical_slang` to establish the state
+// of the measurement above. Web search on the FORM of ordinary political discourse in both
+// languages (register, formal/colloquial mix, politics as one thread among others) — no value
+// reported.
 //
-// NON LU, délibérément : `lexicon/` en entier, `filters-*.ts`, les documents de portabilité EN, et
-// la proposition de vocabulaire EN en cours dans une session concurrente.
+// NOT READ, deliberately: `lexicon/` in full, `filters-*.ts`, the EN portability documents, and
+// the EN vocabulary proposal in progress in a concurrent session.
 //
-// FUITE DÉCLARÉE, et la déclarer est la discipline qui fonctionne, pas son échec. En vérifiant par
-// `grep` si `politics` était asserté quelque part — vérification nécessaire, puisque toute la
-// prémisse de ce lot en dépendait — j'ai vu passer dans `lexicon-battery.test.ts` quatre termes FR
-// péjoratifs de camp (deux visant chaque bord, au singulier et au pluriel) ainsi que l'INTITULÉ
-// d'un test décrivant qu'une auto-déclaration à la 1ʳᵉ personne mène à un constat explicite. Les
-// quatre termes sont volontairement ABSENTS de ce fichier : les réutiliser aurait fabriqué un
-// rappel garanti des deux côtés et vidé la paire de son pouvoir de mesure. L'intitulé vu ne modifie
-// pas l'écriture, l'auto-déclaration ayant été retenue comme axe AVANT ce grep.
+// DECLARED LEAK, and declaring it is the discipline that works, not its failure. While checking by
+// `grep` whether `politics` was asserted anywhere — a necessary check, since the whole
+// premise of this batch depended on it — I saw pass in `lexicon-battery.test.ts` four FR
+// pejorative camp terms (two aiming at each side, in singular and plural) as well as the TITLE
+// of a test describing that a 1st-person self-declaration leads to an explicit finding. The
+// four terms are deliberately ABSENT from this file: reusing them would have manufactured a
+// guaranteed recall on both sides and drained the pair of its measuring power. The title seen does not modify
+// the writing, self-declaration having been retained as the axis BEFORE this grep.
 //
-// ── Aucune valeur réelle ─────────────────────────────────────────────────────────────────────────
-// Chaque chaîne est inventée (CLAUDE.md) : aucun message, pseudo, slogan, sigle, date ou
-// identifiant réel, et aucune formulation traçable à un mouvement existant.
+// ── No real value ─────────────────────────────────────────────────────────────────────────
+// Each string is invented (CLAUDE.md): no real message, handle, slogan, acronym, date or
+// identifier, and no wording traceable to an existing movement.
 
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. L'ENGAGEMENT REDISTRIBUTIF — première moitié de la paire
+// 1. THE REDISTRIBUTIVE COMMITMENT — first half of the pair
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_STATE_COLLECTIVE: RegisterPersona = {
@@ -143,7 +143,7 @@ const FR_STATE_COLLECTIVE: RegisterPersona = {
   truthNotes:
     "`politics` VÉCU, et l'état est `lived` et non `signalWithoutLived` parce que l'orientation est LA SIENNE : elle se déclare, elle adhère, elle cotise. Un constat NOMMÉ est ici un rappel légitime et ATTENDU — c'est la première voix du corpus dont on puisse dire ça, `clinical_slang` ne nommant jamais de camp. Son absence serait un défaut de rappel. Les cinq autres labels non-porteurs, et les items de vie ont été tenus à l'écart du soin exprès : « chaussures confortables pour rester debout longtemps » remplace la plainte de genou qui aurait été naturelle à son âge et à son métier, parce qu'un signal `health_physical` aurait brouillé la seule chose que ce banc mesure. SON CHIFFRE NE SE LIT QUE CONTRE CELUI DE `fr_state_individual`, jamais seul : un rappel élevé ici n'est une bonne nouvelle que si l'autre voix obtient le même. Seule, cette persona ne peut pas distinguer « le lexique détecte l'engagement politique » de « le lexique détecte CE camp ».",
   items: [
-    // — Auto-déclarations (8) : cadres syntaxiques calqués sur la voix opposée, à dessein.
+    // — Self-declarations (8): syntactic frames patterned on the opposed voice, by design.
     { kind: 'comment', text: "je suis de gauche depuis toujours et je ne m'en cache pas" },
     { kind: 'comment', text: "on est une famille de syndiques, mon pere l'etait avant moi" },
     { kind: 'comment', text: "je me reconnais dans ce qu'elle dit sur les services publics" },
@@ -152,7 +152,7 @@ const FR_STATE_COLLECTIVE: RegisterPersona = {
     { kind: 'comment', text: 'militante depuis vingt ans, et je continue' },
     { kind: 'comment', text: 'je suis pour la redistribution, assume, et je le repete' },
     { kind: 'search', text: 'montant cotisation adherent annuelle section locale' },
-    // — Enjeux (6) : écriture libre, non calquée.
+    // — Stakes (6): free writing, not patterned.
     { kind: 'search', text: 'budget hopital public par habitant comparaison' },
     {
       kind: 'comment',
@@ -165,7 +165,7 @@ const FR_STATE_COLLECTIVE: RegisterPersona = {
     },
     { kind: 'search', text: 'nombre de postes supprimes education nationale' },
     { kind: 'comment', text: "la greve derange, c'est fait pour. sinon personne n'ecoute" },
-    // — La vie (10) : rien de politique.
+    // — Life (10): nothing political.
     { kind: 'search', text: 'partition chorale voix alto debutant' },
     { kind: 'comment', text: 'on a repris ce morceau hier soir, ca commence a tenir' },
     { kind: 'search', text: 'chaussures confortables pour rester debout longtemps' },
@@ -180,7 +180,7 @@ const FR_STATE_COLLECTIVE: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. L'ENGAGEMENT LIBÉRAL — seconde moitié de la paire, écrite avec la même densité
+// 2. THE LIBERAL COMMITMENT — second half of the pair, written with the same density
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_STATE_INDIVIDUAL: RegisterPersona = {
@@ -192,7 +192,7 @@ const FR_STATE_INDIVIDUAL: RegisterPersona = {
   truthNotes:
     "`politics` VÉCU, dans les mêmes termes et pour les mêmes raisons que `fr_state_collective` : il se déclare, il adhère, il cotise. Un constat NOMMÉ est ici un rappel légitime et ATTENDU, et son absence est un défaut de rappel. Les huit auto-déclarations reprennent les CADRES de l'autre voix mot pour mot là où c'est possible — seul le lexème de camp change — pour que tout écart mesuré soit imputable au lexème et à rien d'autre. Comme chez elle, les items de vie sont tenus hors du soin exprès : le père âgé refuse de l'aide pour les COURSES, sans rien de médical, parce qu'un `health_physical` en `signalWithoutLived` aurait brouillé la mesure. LE CRITÈRE DE LECTURE EST L'ÉCART, jamais la somme : si cette voix obtient un rappel nommé plus faible que `fr_state_collective` à densité égale, le produit est un instrument politiquement biaisé, et le silence sélectif n'aurait été visible par aucun autre moyen — une non-détection n'affiche rien.",
   items: [
-    // — Auto-déclarations (8) : mêmes cadres que la voix opposée, seul le lexème de camp change.
+    // — Self-declarations (8): same frames as the opposed voice, only the camp lexeme changes.
     { kind: 'comment', text: "je suis de droite depuis toujours et je ne m'en cache pas" },
     { kind: 'comment', text: "on est une famille de patrons, mon pere l'etait avant moi" },
     { kind: 'comment', text: "je me reconnais dans ce qu'il dit sur les charges des entreprises" },
@@ -201,7 +201,7 @@ const FR_STATE_INDIVIDUAL: RegisterPersona = {
     { kind: 'comment', text: 'militant depuis vingt ans, et je continue' },
     { kind: 'comment', text: 'je suis pour la baisse des impots, assume, et je le repete' },
     { kind: 'search', text: 'montant cotisation adherent annuelle federation locale' },
-    // — Enjeux (6) : écriture libre, non calquée.
+    // — Stakes (6): free writing, not patterned.
     { kind: 'search', text: 'taux de prelevements obligatoires comparaison europeenne' },
     {
       kind: 'comment',
@@ -214,7 +214,7 @@ const FR_STATE_INDIVIDUAL: RegisterPersona = {
     },
     { kind: 'search', text: 'nombre de normes nouvelles par an pour les petites entreprises' },
     { kind: 'comment', text: "la greve bloque des gens qui n'ont rien demande, moi le premier" },
-    // — La vie (10) : rien de politique.
+    // — Life (10): nothing political.
     { kind: 'search', text: 'usure pneus velo route kilometrage moyen' },
     { kind: 'comment', text: "quatre vingts bornes dimanche, j'ai bien dormi apres" },
     { kind: 'search', text: 'isolation combles perdus prix au metre carre' },
@@ -232,7 +232,7 @@ const FR_STATE_INDIVIDUAL: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. L'EXPOSÉE NON ENGAGÉE — le risque de faux positif
+// 3. THE UNENGAGED EXPOSED — the false-positive risk
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_EXPOSED_APOLITICAL: RegisterPersona = {
@@ -281,7 +281,7 @@ const EN_EXPOSED_APOLITICAL: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 4. L'IRONIE — la lecture que le label porte, et que rien n'a jamais exercée
+// 4. IRONY — the reading the label carries, and that nothing has ever exercised
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_IRONIC: RegisterPersona = {
@@ -339,20 +339,20 @@ const EN_IRONIC: RegisterPersona = {
 };
 
 /**
- * Les quatre voix, et leurs deux rôles distincts — qu'un rapport ne doit jamais confondre.
+ * The four voices, and their two distinct roles — that a report must never confuse.
  *
- * `fr_state_collective` et `fr_state_individual` forment la PAIRE, et seul l'ÉCART entre leurs deux
- * chiffres a un sens. Elles ne se somment ni ne se moyennent jamais : un total est précisément
- * l'opération qui masque une asymétrie, puisque le camp silencieux n'affiche rien et se laisse
- * absorber par le camp détecté. Un rappel nommé élevé sur l'une n'est une bonne nouvelle que si
- * l'autre obtient le même à densité égale — et la densité est égale par construction (24 items,
- * 15/9, 8 auto-déclarations aux cadres calqués).
+ * `fr_state_collective` and `fr_state_individual` form the PAIR, and only the GAP between their two
+ * figures has a meaning. They never sum nor average: a total is precisely
+ * the operation that masks an asymmetry, since the silent camp displays nothing and lets itself be
+ * absorbed by the detected camp. A high named recall on one is good news only if
+ * the other gets the same at equal density — and the density is equal by construction (24 items,
+ * 15/9, 8 self-declarations with patterned frames).
  *
- * `en_exposed_apolitical` et `en_ironic` sont des GARDES et non une paire : elles ne s'opposent pas
- * l'une à l'autre, elles mesurent chacune un plancher de faux positifs contre un mécanisme
- * différent — l'exposition sans adhésion pour la première, la forme sans sincérité pour la seconde.
- * Elles empêchent qu'un rappel gagné sur la paire FR soit payé en torts sans que personne ne le
- * compte.
+ * `en_exposed_apolitical` and `en_ironic` are GUARDS and not a pair: they do not oppose
+ * each other, they each measure a false-positive floor against a different
+ * mechanism — exposure without adherence for the first, form without sincerity for the second.
+ * They prevent a recall won on the FR pair from being paid in wrongs without anyone
+ * counting it.
  */
 export const POLITICS_REGISTER_PERSONAS: readonly RegisterPersona[] = [
   FR_STATE_COLLECTIVE,

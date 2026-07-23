@@ -1,5 +1,5 @@
-// Client fil-principal du worker d'extraction (PANO-45) — même idiome que `lib/engine-client.ts` :
-// instancie un worker jetable, lui TRANSFÈRE les octets (zéro-copie), résout avec la liste d'items.
+// Main-thread client of the extraction worker (PANO-45) — same idiom as `lib/engine-client.ts`:
+// instantiates a throwaway worker, TRANSFERS the bytes to it (zero-copy), resolves with the item list.
 
 import type { AiItemsResult } from './items-worker';
 
@@ -16,7 +16,7 @@ export function extractAiItemsInWorker(zipBytes: Uint8Array): Promise<AiItemsRes
       worker.terminate();
     };
 
-    // Transfert zéro-copie seulement si la vue possède tout son buffer (même garde qu'engine-client).
+    // Zero-copy transfer only if the view owns its whole buffer (same guard as engine-client).
     const buffer = zipBytes.buffer;
     const ownsFullBuffer =
       buffer instanceof ArrayBuffer &&

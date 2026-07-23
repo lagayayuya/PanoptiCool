@@ -1,125 +1,124 @@
-// Témoin de SYMÉTRIE du lexique `sexuality`, PAR VERSANT D'AXE — le filet qui n'existait pas quand
-// l'asymétrie est passée.
+// SYMMETRY witness of the `sexuality` lexicon, BY AXIS SIDE — the net that did not exist when the
+// asymmetry got through.
 //
-// ── POURQUOI CE FICHIER EXISTE ───────────────────────────────────────────────────────────────────
-// Le lexique livrait, en français, une couverture MAJORITAIRE quasi nulle sur deux axes. Mesuré par
-// balayage d'environ 130 termes, le pendant FR de la sonde à cadre calqué :
+// ── WHY THIS FILE EXISTS ──────────────────────────────────────────────────────────────────────────
+// The lexicon delivered, in French, a near-nil MAJORITY coverage on two axes. Measured by a sweep
+// of about 130 terms, the FR counterpart of the traced-frame probe:
 //
-//   · ORIENTATION — 16 termes minoritaires rendaient un constat, 15 au tier NOMMÉ ; le versant
-//     majoritaire rendait `hetero` SEUL, le registre soutenu `heterosexuel` étant muet.
-//   · GENRE — `trans`, `transgenre`, `non binaire`, `enby` au constat NOMMÉ ; `cis`, `cisgenre` et
-//     `cisgender` muets TOUS LES TROIS. Zéro contre quatre.
+//   · ORIENTATION — 16 minority terms returned a finding, 15 at the NAMED tier; the majority side
+//     returned `hetero` ALONE, the formal register `heterosexuel` being mute.
+//   · GENDER — `trans`, `transgenre`, `non binaire`, `enby` at a NAMED finding; `cis`, `cisgenre`
+//     and `cisgender` mute ALL THREE. Zero against four.
 //
-// La symétrie n'était donc pas « une paire sur deux » : c'était UNE GRAPHIE contre seize d'un côté,
-// et RIEN DU TOUT de l'autre.
+// The symmetry was therefore not « one pair out of two »: it was ONE SPELLING against sixteen on one
+// side, and NOTHING AT ALL on the other.
 //
-// Personne ne l'avait écrit, et c'est le même mécanisme que côté politique et religieux : chaque
-// terme PRÉSENT était localement défendable, et le défaut vivait dans la COMPOSITION. Une relecture
-// vérifie que les termes présents sont légitimes, jamais que les ABSENTS le sont symétriquement.
+// No one had written it, and it is the same mechanism as on the political and religious side: each
+// term PRESENT was locally defensible, and the defect lived in the COMPOSITION. A re-reading
+// verifies that the present terms are legitimate, never that the ABSENT ones are so symmetrically.
 //
-// LE FONDEMENT, ratifié, et il décide de la forme du filet : un lexique qui n'attrape que les
-// identités MINORITAIRES est un détecteur de minorités, pas un détecteur d'orientation — et sa
-// démonstration s'INVERSE, puisqu'il prétend montrer ce qu'une plateforme déduit de tout le monde en
-// ne déduisant que sur certains. C'est le défaut politique (la gauche encodée en identité, la droite
-// en accusation) dans sa forme la plus pure.
+// THE FOUNDATION, ratified, and it decides the shape of the net: a lexicon that catches only
+// MINORITY identities is a minority detector, not an orientation detector — and its demonstration
+// INVERTS, since it claims to show what a platform deduces about everyone while deducing only about
+// some. It is the political defect (the left encoded as identity, the right as accusation) in its
+// purest form.
 //
-// ── CE QU'IL FAUT SAVOIR AVANT DE LIRE UN SEUL VERT ──────────────────────────────────────────────
-// **LES TERMES MAJORITAIRES SONT ADMIS ET NE SE DÉCLENCHENT SUR AUCUNE VOIX SCELLÉE.** Mesuré :
-// ajoutés aux cinq fixtures, le diff est VIDE — zéro constat neuf, zéro perdu, zéro tort. Ce témoin
-// mesure donc une propriété d'ADMISSION, jamais un rappel réalisé, et **un témoin qui laisserait
-// croire à une parité d'EFFET mentirait**.
+// ── WHAT MUST BE KNOWN BEFORE READING A SINGLE GREEN ──────────────────────────────────────────────
+// **THE MAJORITY TERMS ARE ADMITTED AND TRIGGER ON NO SEALED VOICE.** Measured: added to the five
+// fixtures, the diff is EMPTY — zero new finding, zero lost, zero wrong. This witness therefore
+// measures an ADMISSION property, never a realized recall, and **a witness that let one believe in a
+// parity of EFFECT would lie**.
 //
-// Deux causes indépendantes, et le corpus connaissait déjà la première — elle est écrite dans le
-// sceau de `sexuality-registers.fixture.ts` : **personne ne déclare son hétérosexualité**. La
-// seconde est que le seul item du corpus écrivant une auto-déclaration majoritaire (« i am straight,
-// for the fortieth time », `en_misread`) est ANGLAIS, donc hors d'atteinte de la porte de langue.
+// Two independent causes, and the corpus already knew the first — it is written in the seal of
+// `sexuality-registers.fixture.ts`: **no one declares their heterosexuality**. The second is that
+// the only corpus item writing a majority self-declaration (« i am straight, for the fortieth
+// time », `en_misread`) is ENGLISH, therefore out of reach of the language gate.
 //
-// Ce qui rend la réparation juste malgré ce vide, et c'est la position du mainteneur : la rareté
-// d'usage est une raison de n'attendre AUCUN gain, jamais une raison de ne pas réparer. Une
-// francophone qui écrit « je suis cis » ne recevait RIEN là où « je suis trans » recevait un constat
-// nommé. Une non-détection n'affiche rien : l'asymétrie est vivante que le banc l'exerce ou non.
+// What makes the repair right despite this void, and it is the maintainer's position: rarity of use
+// is a reason to expect NO gain, never a reason not to repair. A francophone who writes « je suis
+// cis » received NOTHING where « je suis trans » received a named finding. A non-detection displays
+// nothing: the asymmetry is alive whether the bench exercises it or not.
 //
-// Et le seul endroit où le terme majoritaire DÉCLENCHE vraiment est le cas d'`en_misread` — quelqu'un
-// qui corrige une supposition répétée. C'est le tort le plus coûteux du corpus, et l'argument le plus
-// fort en faveur de la règle : la seule identité que le produit sait voir chez elle est celle qui
-// n'est pas la sienne.
+// And the only place where the majority term REALLY triggers is the case of `en_misread` — someone
+// who corrects a repeated assumption. It is the most costly wrong of the corpus, and the strongest
+// argument in favor of the rule: the only identity the product knows how to see in her is the one
+// that is not hers.
 //
-// ── CE QUE CE TÉMOIN NE COUVRE PAS — à lire AVANT de le citer ────────────────────────────────────
-// Il ne mesure PAS « la symétrie du lexique », et le croire serait la sur-citation exacte que ce
-// dépôt paie sept fois. Précisément :
+// ── WHAT THIS WITNESS DOES NOT COVER — to be read BEFORE citing it ────────────────────────────────
+// It does NOT measure « the symmetry of the lexicon », and believing so would be the exact
+// over-citation this repo pays seven times over. Precisely:
 //
-//   · **IL NE DIT RIEN DES ABSENTS**, et c'est sa limite la plus dure — la même que celle des deux
-//     témoins voisins. Un versant dont le vocabulaire manque ENTIÈREMENT passe ce test au vert : on
-//     ne peut classer que ce qui est là. C'est LA MOITIÉ du défaut d'origine, et ce filet ne la
-//     rattrape pas. Mesuré encore aujourd'hui, et non réparé : `transsexuel`, `nonbinaire`, `agenre`,
-//     `intersexe`, `genre fluide`, `aromantique`, `demisexuel` sont MUETS côté minoritaire, et
-//     `cisgender` l'est côté majoritaire. Un vert ici ne dit rien de ce qui n'a jamais été proposé.
-//   · **IL NE COUVRE QUE LE CHEMIN DE L'AUTO-DÉCLARATION**, et c'est une restriction DÉLIBÉRÉE, pas
-//     un périmètre par commodité. `indirectCore` reste ASYMÉTRIQUE À DESSEIN : `straight` nu en a
-//     été écarté SUR MESURE (1 → 4 torts — menuiserie, scie, fléchettes), et `cis` nu est un préfixe
-//     savant. La copule est le seul cadre qui lève l'ambiguïté. Citer ce fichier pour dire « le
-//     lexique est symétrique » serait donc faux : ce qui est symétrique est UN CHEMIN.
-//   · **LA MARGE DE REDONDANCE RESTE TRÈS INÉGALE, et le décompte ci-dessous la publie** plutôt que
-//     de la masquer. Un tableau équilibré en COLONNES peut rester asymétrique en CHEMINS — leçon du
-//     lot politique. Ici les chemins ne sont pas équilibrés et ne peuvent pas l'être : le versant
-//     minoritaire garde des dizaines d'entrées indirectes (mention nue, vocabulaire communautaire,
-//     seuil 1), le versant majoritaire n'en a AUCUNE. La symétrie tenue est celle de l'ÉTAGE ATTEINT
-//     PAR UNE AUTO-DÉCLARATION, pas celle du volume.
-//   · **La partition est un JUGEMENT**, écrite à la main pour être contestable terme à terme. Un
-//     lecteur qui la conteste conteste le témoin. `queer` est le cas le plus discutable : c'est une
-//     ombrelle qui couvre orientation ET genre, rangée ici en orientation faute de troisième seau.
-//   · **Les décomptes comptent des ENTRÉES, jamais des personnes ni des identités distinctes.** Les
-//     paires morphologiques (`bisexuel`/`bisexuelle`) pèsent deux. 15 contre 3 est un fait de
-//     lexique et de langue, PAS un score d'équilibre — le lire comme un score serait s'en servir
-//     contre son objet.
-//   · **Il ne mesure aucun faux positif.** C'est le travail des bancs de registres.
+//   · **IT SAYS NOTHING ABOUT THE ABSENT**, and it is its hardest limit — the same as that of the
+//     two neighboring witnesses. A side whose vocabulary is ENTIRELY missing passes this test green:
+//     one can only classify what is there. It is HALF of the original defect, and this net does not
+//     catch it. Still measured today, and not repaired: `transsexuel`, `nonbinaire`, `agenre`,
+//     `intersexe`, `genre fluide`, `aromantique`, `demisexuel` are MUTE on the minority side, and
+//     `cisgender` is on the majority side. A green here says nothing of what was never proposed.
+//   · **IT COVERS ONLY THE SELF-DECLARATION PATH**, and it is a DELIBERATE restriction, not a
+//     perimeter by convenience. `indirectCore` stays ASYMMETRIC BY DESIGN: bare `straight` was set
+//     aside from it ON MEASUREMENT (1 → 4 wrongs — carpentry, saw, darts), and bare `cis` is a
+//     learned prefix. The copula is the only frame that lifts the ambiguity. Citing this file to say
+//     « the lexicon is symmetric » would therefore be false: what is symmetric is ONE PATH.
+//   · **THE REDUNDANCY MARGIN STAYS VERY UNEQUAL, and the count below publishes it** rather than
+//     masking it. A table balanced in COLUMNS can stay asymmetric in PATHS — lesson of the political
+//     batch. Here the paths are not balanced and cannot be: the minority side keeps dozens of
+//     indirect entries (bare mention, community vocabulary, threshold 1), the majority side has
+//     NONE. The symmetry held is that of the STOREY REACHED BY A SELF-DECLARATION, not that of the
+//     volume.
+//   · **The partition is a JUDGMENT**, written by hand to be contestable term by term. A reader who
+//     contests it contests the witness. `queer` is the most debatable case: it is an umbrella that
+//     covers orientation AND gender, filed here in orientation for lack of a third bucket.
+//   · **The counts count ENTRIES, never people nor distinct identities.** The morphological pairs
+//     (`bisexuel`/`bisexuelle`) weigh two. 15 against 3 is a fact of lexicon and language, NOT a
+//     balance score — reading it as a score would be using it against its object.
+//   · **It measures no false positive.** That is the work of the register benches.
 //
-// Ce qu'il tient, en revanche, il le tient dur : il rougit si quelqu'un ajoute une identité à UN
-// SEUL versant, et il rougit si une identité présente cesse de produire un constat nommé.
+// What it holds, on the other hand, it holds hard: it goes red if someone adds an identity to ONE
+// SIDE ONLY, and it goes red if a present identity stops producing a named finding.
 //
-// ── COMMENT IL ROUGIT, en DEUX temps — vérifié par mutation, dans les deux sens ──────────────────
-// L'ajout d'une identité ne fait pas rougir le décompte tout de suite, et c'est voulu :
-//   1. le terme ajouté n'est pas classé → l'EXHAUSTIVITÉ rougit. L'auteur doit dire de quel versant
-//      il relève, ce qui est le geste qui manquait ;
-//   2. une fois classé, le DÉCOMPTE rougit en nommant le versant.
-// Un retrait rougit en un seul temps (exhaustivité inverse + décompte).
+// ── HOW IT GOES RED, in TWO steps — verified by mutation, in both directions ──────────────────────
+// Adding an identity does not make the count go red right away, and it is intended:
+//   1. the added term is not classified → EXHAUSTIVENESS goes red. The author must say which side it
+//      belongs to, which is the gesture that was missing;
+//   2. once classified, the COUNT goes red by naming the side.
+// A removal goes red in a single step (inverse exhaustiveness + count).
 //
-// MUTATIONS PASSÉES, et leur résultat RÉEL — pas ce que j'avais prévu. QUATRE DES SIX ONT RENDU
-// AUTRE CHOSE que l'attendu, et c'est le cas que CLAUDE.md déclare le plus utile : le résultat réel
-// se publie, y compris quand il défait la description qu'on avait écrite d'avance.
+// MUTATIONS RUN, and their REAL result — not what I had predicted. FOUR OF THE SIX RETURNED
+// SOMETHING OTHER than expected, and it is the case CLAUDE.md declares the most useful: the real
+// result is published, including when it undoes the description one had written in advance.
 //
-//   1. `heterosexuel` RETIRÉ — le DÉFAUT D'ORIGINE reproduit, la forme exacte qu'avait le versant
-//      majoritaire avant ce lot → exhaustivité inverse + décompte + parité            (3 rouges) ✓
-//   2. `cis` et `cisgenre` RETIRÉS ensemble — versant genre majoritaire ramené à ZÉRO, l'état
-//      mesuré d'avant → exhaustivité inverse + décompte + versant vide + parité       (4 rouges) ✓
-//   3. `demisexuel` ajouté SANS classement       → exhaustivité + ABSENTS   (2 rouges, 1 prévu)
-//   4. le même, une fois CLASSÉ                  → décompte + ABSENTS       (2 rouges, 1 prévu)
-//   5. `hetero` renvoyé au seul tier `indirectCore` → exhaustivité inverse + décompte + parité +
-//      chemins indirects                                                   (4 rouges, 1 prévu)
-//   6. `straight` ADMIS en `indirectCore`, l'exclusion mesurée défaite → ligne écartée (1 rouge) ✓
+//   1. `heterosexuel` REMOVED — the ORIGINAL DEFECT reproduced, the exact shape the majority side
+//      had before this batch → inverse exhaustiveness + count + parity                 (3 reds) ✓
+//   2. `cis` and `cisgenre` REMOVED together — majority gender side brought back to ZERO, the
+//      measured prior state → inverse exhaustiveness + count + empty side + parity      (4 reds) ✓
+//   3. `demisexuel` added WITHOUT classification    → exhaustiveness + ABSENT   (2 reds, 1 predicted)
+//   4. the same, once CLASSIFIED                    → count + ABSENT           (2 reds, 1 predicted)
+//   5. `hetero` sent back to the `indirectCore` tier only → inverse exhaustiveness + count + parity +
+//      indirect paths                                                          (4 reds, 1 predicted)
+//   6. `straight` ADMITTED in `indirectCore`, the measured exclusion undone → set-aside line (1 red) ✓
 //
-// CE QUE LES 3 ET 4 ONT APPRIS, et je ne l'avais pas vu en écrivant : `demisexuel` figure dans la
-// liste des ABSENTS mesurés, si bien que le câbler fait rougir DEUX fois. Ce n'est pas un défaut du
-// témoin, c'est une propriété qu'on n'obtient pas en la visant — la liste des absents n'est pas une
-// note morte, elle FORCE sa propre mise à jour le jour où la dette est payée. Un lot qui admettrait
-// `demisexuel` ne peut pas le faire sans venir rayer la ligne qui le déclarait manquant.
+// WHAT 3 AND 4 TAUGHT, and I had not seen it while writing: `demisexuel` figures in the list of
+// measured ABSENT, so that wiring it goes red TWICE. It is not a defect of the witness, it is a
+// property one does not obtain by aiming at it — the list of absent is not a dead note, it FORCES
+// its own update the day the debt is paid. A batch that would admit `demisexuel` cannot do it
+// without coming to strike out the line that declared it missing.
 //
-// CE QUE LA 5 A DÉFAIT DE MA DESCRIPTION, et c'est l'aveu qui compte. J'avais écrit qu'elle
-// distinguerait ce témoin d'un compteur de listes, en attrapant un terme PRÉSENT mais au mauvais
-// tier — le défaut `nationaliste`. Elle ne prouve pas ça. La partition est indexée sur
-// `selfDeclaredFr` lui-même : déplacer un terme l'en retire, donc les assertions de LISTE rougissent
-// les premières, et la parité de comportement n'est jamais celle qui tranche. **Ce témoin ne sait
-// donc PAS mesurer un terme resté classé mais dégradé** — il n'existe aucune mutation capable de
-// l'isoler tant que la partition lit la même liste que le détecteur. La propriété de comportement
-// est réelle, mais elle est REDONDANTE avec les listes, jamais indépendante d'elles.
+// WHAT 5 UNDID OF MY DESCRIPTION, and it is the confession that counts. I had written that it would
+// distinguish this witness from a list counter, by catching a term PRESENT but at the wrong tier —
+// the `nationaliste` defect. It does not prove that. The partition is indexed on `selfDeclaredFr`
+// itself: moving a term removes it from it, so the LIST assertions go red first, and the behavior
+// parity is never the one that decides. **This witness therefore does NOT know how to measure a term
+// that stays classified but degraded** — there exists no mutation able to isolate it as long as the
+// partition reads the same list as the detector. The behavior property is real, but it is REDUNDANT
+// with the lists, never independent of them.
 //
-// La 2 reste celle qui compte : c'est le défaut que ce fichier existe pour empêcher de revenir, et
-// il est arrêté quatre fois.
+// N°2 stays the one that counts: it is the defect this file exists to prevent from coming back, and
+// it is stopped four times.
 //
-// LA 6 EST À LIRE AVEC SON SENS, et c'est un aveu utile : elle protège une EXCLUSION, pas une
-// admission. Le versant majoritaire est donc tenu par deux lignes opposées — `heterosexuel` DOIT
-// être là, `straight` nu ne DOIT PAS y être. Les confondre ferait « réparer » la symétrie en
-// rouvrant les quatre torts que la mesure avait fermés.
+// N°6 IS TO BE READ WITH ITS MEANING, and it is a useful confession: it protects an EXCLUSION, not
+// an admission. The majority side is therefore held by two opposite lines — `heterosexuel` MUST be
+// there, bare `straight` must NOT be there. Confusing them would « repair » the symmetry by
+// reopening the four wrongs the measurement had closed.
 
 import { describe, expect, it } from 'vitest';
 import { WIRED_LEXICONS } from '../lexicon/index';
@@ -127,20 +126,20 @@ import { SEXUALITY_LEXICON } from '../lexicon/sexuality';
 import { detectLabels } from './detect';
 
 /**
- * LA PARTITION — le jugement que ce témoin met par écrit, pour qu'il soit contestable.
+ * THE PARTITION — the judgment this witness puts in writing, so that it can be contested.
  *
- * DEUX AXES, quatre versants. Les séparer est nécessaire : l'orientation et le genre ont été
- * mesurés à des états TRÈS différents (une graphie majoritaire d'un côté, zéro de l'autre), et les
- * fondre en « minoritaire / majoritaire » aurait laissé le versant genre disparaître dans le total.
+ * TWO AXES, four sides. Separating them is necessary: orientation and gender were measured at VERY
+ * different states (one majority spelling on one side, zero on the other), and merging them into
+ * « minority / majority » would have let the gender side disappear into the total.
  *
- * Il n'y a PAS de seau neutre ici, contrairement aux témoins politique et religieux, et l'absence
- * est un résultat : sur ces deux axes, toute étiquette d'auto-déclaration prend un versant. Le jour
- * où une entrée n'en prend aucun, c'est l'exhaustivité qui le dira.
+ * There is NO neutral bucket here, unlike the political and religious witnesses, and the absence is
+ * a result: on these two axes, every self-declaration label takes a side. The day an entry takes
+ * none, it is exhaustiveness that will say it.
  */
 type Versant = 'orientation-min' | 'orientation-maj' | 'genre-min' | 'genre-maj';
 
 const AXE: Readonly<Record<string, Versant>> = {
-  // Orientation, versant minoritaire.
+  // Orientation, minority side.
   gay: 'orientation-min',
   lesbienne: 'orientation-min',
   bi: 'orientation-min',
@@ -155,20 +154,20 @@ const AXE: Readonly<Record<string, Versant>> = {
   asexuelle: 'orientation-min',
   ace: 'orientation-min',
   aro: 'orientation-min',
-  // Ombrelle, et c'est l'entrée la plus discutable de la partition : `queer` couvre aussi bien
-  // l'orientation que le genre. Rangée en orientation faute d'un seau qui dirait « les deux » —
-  // forcer un troisième seau pour une entrée fabriquerait une catégorie plus qu'il n'en clarifie.
+  // Umbrella, and it is the most debatable entry of the partition: `queer` covers orientation as
+  // well as gender. Filed in orientation for lack of a bucket that would say « both » — forcing a
+  // third bucket for one entry would fabricate a category more than it clarifies one.
   queer: 'orientation-min',
-  // Orientation, versant majoritaire — les trois entrées de la réparation, `hetero` compris.
+  // Orientation, majority side — the three entries of the repair, `hetero` included.
   hetero: 'orientation-maj',
   heterosexuel: 'orientation-maj',
   heterosexuelle: 'orientation-maj',
-  // Genre, versant minoritaire.
+  // Gender, minority side.
   trans: 'genre-min',
   transgenre: 'genre-min',
   'non binaire': 'genre-min',
   enby: 'genre-min',
-  // Genre, versant majoritaire — le versant qui était ENTIÈREMENT vide avant ce lot.
+  // Gender, majority side — the side that was ENTIRELY empty before this batch.
   cis: 'genre-maj',
   cisgenre: 'genre-maj',
 };
@@ -176,34 +175,34 @@ const AXE: Readonly<Record<string, Versant>> = {
 const SELF_DECLARED = SEXUALITY_LEXICON.selfDeclaredFr ?? [];
 const versantDe = (v: Versant) => SELF_DECLARED.filter((t) => AXE[t] === v);
 
-/** L'étage rendu par une auto-déclaration isolée — le geste que l'asymétrie rendait muet. */
+/** The storey returned by an isolated self-declaration — the gesture the asymmetry muted. */
 const stageOfSelfDeclaration = (term: string): string => {
   const out = detectLabels([`je suis ${term} depuis toujours`], WIRED_LEXICONS);
   return out.find((d) => d.label === 'sexuality')?.stage ?? 'RIEN';
 };
 
-describe('symétrie sexuality — la partition est exhaustive', () => {
-  // PROPRIÉTÉ D'EXHAUSTIVITÉ, et c'est elle qui rend le témoin vivant plutôt que décoratif : une
-  // entrée ajoutée au lexique sans être classée fait rougir ici. L'auteur du prochain terme est donc
-  // OBLIGÉ de dire de quel versant il relève — c'est-à-dire de regarder l'autre versant.
-  it('chaque étiquette du lexique est classée (sinon le témoin serait aveugle aux ajouts)', () => {
+describe('sexuality symmetry — the partition is exhaustive', () => {
+  // EXHAUSTIVENESS PROPERTY, and it is what makes the witness alive rather than decorative: an entry
+  // added to the lexicon without being classified goes red here. The author of the next term is
+  // therefore OBLIGED to say which side it belongs to — that is, to look at the other side.
+  it('every lexicon label is classified (otherwise the witness would be blind to additions)', () => {
     expect(SELF_DECLARED.filter((t) => AXE[t] === undefined)).toEqual([]);
   });
 
-  // Le sens INVERSE de la même couverture (CLAUDE.md : elle se vérifie dans les deux sens). Sans
-  // lui, la partition garderait des termes fantômes après un retrait du lexique, et son décompte
-  // mesurerait une liste morte.
-  it('chaque étiquette classée existe encore dans le lexique', () => {
+  // The INVERSE direction of the same coverage (CLAUDE.md: it is verified in both directions).
+  // Without it, the partition would keep ghost terms after a lexicon removal, and its count would
+  // measure a dead list.
+  it('every classified label still exists in the lexicon', () => {
     expect(Object.keys(AXE).filter((t) => !SELF_DECLARED.includes(t))).toEqual([]);
   });
 });
 
-describe('symétrie sexuality — les deux versants de CHAQUE axe sont peuplés', () => {
-  // LE DÉCOMPTE FIGÉ. Ce ne sont pas des cibles, ce sont des valeurs RELEVÉES puis gelées, et il
-  // faut les lire comme l'en-tête le demande : 15 contre 3 n'est PAS un déséquilibre à corriger,
-  // c'est un fait de lexique. La propriété qui compte est la SUIVANTE (aucun versant à zéro), pas
-  // l'égalité de ces nombres — laquelle serait fabriquée si on la visait.
-  it('le décompte par versant est celui qui a été relevé', () => {
+describe('sexuality symmetry — both sides of EACH axis are populated', () => {
+  // THE FROZEN COUNT. These are not targets, they are RECORDED values then frozen, and they must be
+  // read as the header asks: 15 against 3 is NOT an imbalance to correct, it is a fact of lexicon.
+  // The property that matters is the FOLLOWING one (no side at zero), not the equality of these
+  // numbers — which would be fabricated if aimed at.
+  it('the per-side count is the one that was recorded', () => {
     expect({
       'orientation-min': versantDe('orientation-min').length,
       'orientation-maj': versantDe('orientation-maj').length,
@@ -217,30 +216,30 @@ describe('symétrie sexuality — les deux versants de CHAQUE axe sont peuplés'
     });
   });
 
-  // LA PROPRIÉTÉ DE FOND N° 1 — aucun versant n'est VIDE. C'est très exactement ce qui était faux :
-  // `genre-maj` valait ZÉRO. Elle est distincte du décompte parce qu'elle survit à un regel des
-  // chiffres : quelqu'un qui met les nombres à jour après un retrait ne peut pas faire passer un
-  // versant à zéro sans que cette ligne-ci le dise.
-  it('aucun versant n’est vide — la forme exacte du défaut d’origine', () => {
+  // THE SUBSTANTIVE PROPERTY N° 1 — no side is EMPTY. It is very exactly what was false:
+  // `genre-maj` was ZERO. It is distinct from the count because it survives a refreeze of the
+  // numbers: someone who updates the numbers after a removal cannot make a side pass to zero without
+  // this line saying it.
+  it('no side is empty — the exact shape of the original defect', () => {
     const vides = (
       ['orientation-min', 'orientation-maj', 'genre-min', 'genre-maj'] as const
     ).filter((v) => versantDe(v).length === 0);
     expect(vides).toEqual([]);
   });
 
-  // LA PROPRIÉTÉ DE FOND N° 2, et la seule qui parle de COMPORTEMENT plutôt que de liste : une
-  // identité isolée, dans le cadre le plus ordinaire, doit produire un constat NOMMÉ — quel que soit
-  // le versant. Un décompte équilibré ne l'aurait pas révélé : il faut que le terme soit DANS le
-  // lexique ET au bon tier (défaut `nationaliste`, présent au mauvais tier).
-  it('toute identité classée produit un constat NOMMÉ, quel que soit le versant', () => {
+  // THE SUBSTANTIVE PROPERTY N° 2, and the only one that speaks of BEHAVIOR rather than of a list: an
+  // isolated identity, in the most ordinary frame, must produce a NAMED finding — whatever the side.
+  // A balanced count would not have revealed it: the term must be IN the lexicon AND at the right
+  // tier (the `nationaliste` defect, present at the wrong tier).
+  it('any classified identity produces a NAMED finding, whatever the side', () => {
     const muettes = SELF_DECLARED.filter((t) => stageOfSelfDeclaration(t) !== 'explicit');
     expect(muettes).toEqual([]);
   });
 
-  // LA PARITÉ, énoncée dans les termes de la règle ratifiée plutôt que par un total : « je suis
-  // hétéro » et « je suis cis » doivent rendre EXACTEMENT ce que rendent « je suis gay » et « je
-  // suis trans ». Écrite paire à paire, pour qu'un écart se lise sur une ligne.
-  it('la règle ratifiée, paire à paire — autant, et le même étage', () => {
+  // THE PARITY, stated in the terms of the ratified rule rather than by a total: « je suis hétéro »
+  // and « je suis cis » must return EXACTLY what « je suis gay » and « je suis trans » return.
+  // Written pair by pair, so that a gap reads on one line.
+  it('the ratified rule, pair by pair — as many, and the same storey', () => {
     const PAIRES: readonly (readonly [string, string])[] = [
       ['gay', 'hetero'],
       ['homosexuel', 'heterosexuel'],
@@ -248,20 +247,20 @@ describe('symétrie sexuality — les deux versants de CHAQUE axe sont peuplés'
       ['trans', 'cis'],
       ['transgenre', 'cisgenre'],
     ];
-    // L'ÉTAGE ATTENDU EST ÉCRIT EN DUR, et ce n'est pas de la redondance avec l'égalité — c'est ce
-    // qui empêche l'assertion d'être VACUEUSE. Comparer seulement les deux versants passerait au
-    // vert si les DEUX devenaient muets, c'est-à-dire sous la mutation la plus destructrice
-    // possible. Une symétrie de silence est une symétrie ; ce n'est pas celle qui est ratifiée.
+    // THE EXPECTED STOREY IS HARD-WRITTEN, and it is not redundancy with the equality — it is what
+    // prevents the assertion from being VACUOUS. Comparing only the two sides would go green if BOTH
+    // became mute, that is under the most destructive mutation possible. A symmetry of silence is a
+    // symmetry; it is not the one that is ratified.
     for (const [min, maj] of PAIRES) {
       expect(`${min}:${stageOfSelfDeclaration(min)}`).toBe(`${min}:explicit`);
       expect(`${maj}:${stageOfSelfDeclaration(maj)}`).toBe(`${maj}:explicit`);
     }
   });
 
-  // Le contrôle NÉGATIF des assertions ci-dessus : sans lui, elles passeraient au vert si TOUT
-  // taguait, y compris ce qui ne doit pas. Le second et le troisième éprouvent la frontière de mot
-  // du préfixe savant `cis`, qui est le risque évident de ce lot.
-  it('contrôle négatif — un mot hors lexique ne tague pas, et la frontière de mot tient', () => {
+  // The NEGATIVE control of the assertions above: without it, they would go green if EVERYTHING
+  // tagged, including what must not. The second and third test the word boundary of the learned
+  // prefix `cis`, which is the obvious risk of this batch.
+  it('negative control — a word outside the lexicon does not tag, and the word boundary holds', () => {
     expect(stageOfSelfDeclaration('boulanger')).toBe('RIEN');
     expect(stageOfSelfDeclaration('cisaille')).toBe('RIEN');
     expect(stageOfSelfDeclaration('cistercien')).toBe('RIEN');
@@ -269,40 +268,39 @@ describe('symétrie sexuality — les deux versants de CHAQUE axe sont peuplés'
   });
 });
 
-describe('symétrie sexuality — le CHEMIN tenu, et les chemins qui restent inégaux', () => {
+describe('sexuality symmetry — the PATH held, and the paths that stay unequal', () => {
   const TOUS_INDIRECTS: readonly string[] = [
     ...SEXUALITY_LEXICON.indirectCore,
     ...SEXUALITY_LEXICON.indirectColloquial,
   ];
 
-  // LA LIGNE ÉCARTÉE, tenue par un test plutôt que par un commentaire — et c'est l'assertion la plus
-  // facile à défaire par bonne intention. Quelqu'un qui voudrait « finir » la symétrie ajouterait
-  // `straight` nu ici, rouvrant les 4 torts que la mesure avait fermés (menuiserie, scie, fléchettes).
-  // Le versant majoritaire est tenu par DEUX lignes opposées : `heterosexuel` doit être présent en
-  // auto-déclaration, `straight` nu doit rester absent de l'indirect.
-  it('ÉCARTÉS de l’indirect — `straight` et `cis` nus, sur mesure', () => {
+  // THE SET-ASIDE LINE, held by a test rather than by a comment — and it is the assertion easiest to
+  // undo by good intention. Someone wanting to « finish » the symmetry would add bare `straight`
+  // here, reopening the 4 wrongs the measurement had closed (carpentry, saw, darts).
+  // The majority side is held by TWO opposite lines: `heterosexuel` must be present in
+  // self-declaration, bare `straight` must stay absent from the indirect.
+  it('SET ASIDE from the indirect — bare `straight` and `cis`, on measurement', () => {
     expect(TOUS_INDIRECTS.filter((t) => t === 'straight' || t === 'cis')).toEqual([]);
   });
 
-  // LA MARGE DE REDONDANCE, PUBLIÉE PLUTÔT QUE MASQUÉE. Le lot politique a établi que la propriété
-  // réelle n'est pas le décompte mais le nombre de CHEMINS indépendants menant à un constat depuis
-  // chaque bord — et qu'une table équilibrée en colonnes peut rester asymétrique en chemins.
+  // THE REDUNDANCY MARGIN, PUBLISHED RATHER THAN MASKED. The political batch established that the
+  // real property is not the count but the number of independent PATHS leading to a finding from
+  // each edge — and that a table balanced in columns can stay asymmetric in paths.
   //
-  // Ici le chiffre dit l'inverse d'un équilibre, et c'est voulu : le versant minoritaire dispose de
-  // dizaines d'entrées indirectes (mention nue, vocabulaire communautaire, seuil 1), le versant
-  // majoritaire n'en a AUCUNE. Une auto-déclaration majoritaire n'a donc qu'UN chemin — la copule —
-  // là où une auto-déclaration minoritaire en a plusieurs et peut être détectée sans jamais se
-  // déclarer.
+  // Here the number says the opposite of a balance, and it is intended: the minority side has dozens
+  // of indirect entries (bare mention, community vocabulary, threshold 1), the majority side has
+  // NONE. A majority self-declaration therefore has only ONE path — the copula — where a minority
+  // self-declaration has several and can be detected without ever declaring itself.
   //
-  // C'EST UNE ASYMÉTRIE QUI RESTE, et l'écrire est la seule lecture honnête du vert ci-dessus. Elle
-  // n'est pas réparable par ajout : `straight` et `cis` nus ont été mesurés et écartés. La symétrie
-  // que ce fichier tient est celle d'UN CHEMIN, et ce chiffre est ce qui empêche de la sur-lire.
-  it('les chemins indirects restent NULS du côté majoritaire — l’asymétrie qui demeure', () => {
+  // IT IS AN ASYMMETRY THAT REMAINS, and writing it is the only honest reading of the green above. It
+  // is not repairable by addition: bare `straight` and `cis` were measured and set aside. The
+  // symmetry this file holds is that of ONE PATH, and this number is what prevents over-reading it.
+  it('the indirect paths stay NIL on the majority side — the asymmetry that remains', () => {
     const majoritaires = ['hetero', 'heterosexuel', 'heterosexuelle', 'cis', 'cisgenre'];
     expect(TOUS_INDIRECTS.filter((t) => majoritaires.includes(t))).toEqual([]);
 
-    // Le pendant minoritaire, mesuré dans le même geste — sans lui, le zéro ci-dessus ressemblerait
-    // à une propriété du lexique entier plutôt qu'à un déséquilibre entre deux versants.
+    // The minority counterpart, measured in the same gesture — without it, the zero above would look
+    // like a property of the whole lexicon rather than an imbalance between two sides.
     const minoritaires = [
       'gay',
       'lesbienne',
@@ -314,10 +312,10 @@ describe('symétrie sexuality — le CHEMIN tenu, et les chemins qui restent in�
     expect(TOUS_INDIRECTS.filter((t) => minoritaires.includes(t)).length).toBeGreaterThan(4);
   });
 
-  // CE QUE LE LOT NE RÉPARE PAS, figé pour que la dette reste lisible et ne se redécouvre pas comme
-  // une surprise. Ces termes sont MUETS, des deux côtés de l'axe, et leur absence n'est pas une
-  // décision : c'est ce que le balayage a trouvé et que ce lot n'a pas traité.
-  it('les ABSENTS mesurés — la moitié du défaut que ce filet ne rattrape pas', () => {
+  // WHAT THE BATCH DOES NOT REPAIR, frozen so the debt stays legible and does not get rediscovered
+  // as a surprise. These terms are MUTE, on both sides of the axis, and their absence is not a
+  // decision: it is what the sweep found and this batch did not handle.
+  it('the measured ABSENT — the half of the defect this net does not catch', () => {
     const absents = [
       'transsexuel',
       'nonbinaire',

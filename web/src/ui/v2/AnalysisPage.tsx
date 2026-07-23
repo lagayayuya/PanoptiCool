@@ -1,15 +1,15 @@
-// Parcours d'analyse (/analyse, refonte 2026-07-15) — l'îlot interactif unique de la page. Deux
-// entrées, un seul rendu (`ResultsView`), comme l'historique `DemoAnalysis` (/temp) :
-//   - `?demo` dans l'URL → l'export SYNTHÉTIQUE traverse le moteur réel, badge « démo · données
-//     fictives » (le lien « essaie d'abord avec des données fictives » de l'accueil) ;
-//   - sinon → zone de dépôt (drag & drop OU clic) pour l'export réel de l'utilisateur.
+// Analysis journey (/analyse, 2026-07-15 rework) — the page's single interactive island. Two
+// entries, a single render (`ResultsView`), like the historical `DemoAnalysis` (/temp):
+//   - `?demo` in the URL → the SYNTHETIC export goes through the real engine, « démo · données
+//     fictives » badge (the « essaie d'abord avec des données fictives » link of the home page);
+//   - otherwise → drop zone (drag & drop OR click) for the user's real export.
 //
-// Invariant dur (CLAUDE.md), inchangé : le fichier ne quitte JAMAIS l'appareil — lu en mémoire,
-// transféré tel quel au Worker du moteur (PANO-27), zéro réseau. La lecture reste `file.arrayBuffer()`
-// (pas `Blob.stream()`) : la décompression zip (`unzipSync`, fflate) exige de toute façon l'archive
-// complète en mémoire — un flux ne réduirait pas le pic tant que l'ingestion streaming (PANO-91)
-// ne consomme pas un `ReadableStream` de bout en bout. `aiSource` RELIT le `File` à la demande
-// (le buffer d'origine est détaché par le transfert au worker).
+// Hard invariant (CLAUDE.md), unchanged: the file NEVER leaves the device — read in memory,
+// transferred as is to the engine's Worker (PANO-27), zero network. The read stays `file.arrayBuffer()`
+// (not `Blob.stream()`): the zip decompression (`unzipSync`, fflate) requires the whole archive
+// in memory anyway — a stream would not reduce the peak as long as streaming ingestion (PANO-91)
+// does not consume a `ReadableStream` end to end. `aiSource` RE-READS the `File` on demand
+// (the original buffer is detached by the transfer to the worker).
 
 import { useEffect, useState } from 'preact/hooks';
 import { buildDemoExportZip } from '../../demo/synthetic-export';
@@ -27,30 +27,30 @@ import { SiteHeader, type TocChip } from './SiteHeader';
 import { useIsMobile } from './useIsMobile';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────
-// TEMPORAIRE — panneau de test des cas limites (demandé pour valider `NoDeductionCard` et la
-// bannière « peu de données » de `AiSection` sans avoir à fabriquer un vrai export pauvre). À
-// SUPPRIMER une fois la validation faite : ni le panneau ni `EdgeCase` ne sont censés survivre en
-// prod. Ne touche à AUCUN chemin réel (export utilisateur) — seulement à la source synthétique.
+// TEMPORARY — edge-case test panel (requested to validate `NoDeductionCard` and the
+// « peu de données » banner of `AiSection` without having to fabricate a real poor export). TO
+// BE REMOVED once the validation is done: neither the panel nor `EdgeCase` is meant to survive in
+// prod. Touches NO real path (user export) — only the synthetic source.
 //
-// MASQUÉ pour l'instant (`SHOW_DEV_EDGE_CASE_PANEL = false`) — code conservé tel quel pour
-// pouvoir le rallumer d'un coup en repassant la constante à `true`, sans le réécrire.
+// HIDDEN for now (`SHOW_DEV_EDGE_CASE_PANEL = false`) — code kept as is to
+// be able to turn it back on at once by flipping the constant to `true`, without rewriting it.
 // ─────────────────────────────────────────────────────────────────────────────────────────────
 
 const SHOW_DEV_EDGE_CASE_PANEL = false;
 
 type EdgeCase = 'normal' | 'noDeductions' | 'lowData';
 
-/** Nombre d'items (commentaires + recherches) gardés en cas « peu de données » — sous
- * `LOW_DATA_THRESHOLD` (5, `NoDeductionCard.ts`) pour déclencher la bannière partout. */
+/** Number of items (comments + searches) kept in the « peu de données » case — below
+ * `LOW_DATA_THRESHOLD` (5, `NoDeductionCard.ts`) to trigger the banner everywhere. */
 const LOW_DATA_ITEM_COUNT = 3;
 
-/** Retire les déductions D1 (sujets sensibles) et D2 (centres d'intérêt) d'une `Analysis` — seul
- * moyen fiable de garantir « aucune déduction » sur la fixture démo, dont le texte est conçu pour
- * matcher plusieurs lexiques. Le reste (rythme, volumes, mur sémantique) n'est PAS touché : le cas
- * testé est « pas de déductions », pas « pas de données ». TEMPORAIRE, cf. bloc ci-dessus.
+/** Removes the D1 (sensitive subjects) and D2 (interests) deductions from an `Analysis` — the only
+ * reliable way to guarantee « aucune déduction » on the demo fixture, whose text is designed to
+ * match several lexicons. The rest (rhythm, volumes, semantic wall) is NOT touched: the case
+ * tested is "no deductions", not "no data". TEMPORARY, cf. block above.
  *
- * Lot A1 : filtrait `insights[]` sur deux `ruleId` — il fallait connaître les identités D1/D2 pour
- * deviner lesquels des insights étaient des déductions. Les deux champs sont nommés : on les vide. */
+ * Batch A1: filtered `insights[]` on two `ruleId` — one had to know the D1/D2 identities to
+ * guess which of the insights were deductions. Both fields are named: we empty them. */
 function stripDeductionsForTest(output: Analysis): Analysis {
   return { ...output, themes: [], signals: [] };
 }
@@ -99,12 +99,12 @@ type Status =
   | { kind: 'loading' }
   | { kind: 'output'; output: Analysis; aiSource: AiSource; demo: boolean };
 
-/** Messages d'échec — mêmes regroupements que l'historique (PANO-63), wording non figé.
+/** Failure messages — same groupings as the historical ones (PANO-63), wording not frozen.
  *
- * EXPORTÉ pour le golden d'interface (`ui-golden.test.ts`) : ces quatre phrases ne sont atteignables
- * par le rendu qu'au prix d'un échec moteur simulé, et la branche `too_large` porte en plus un
- * formatage décimal (« Mo »). Les figer en appelant la fonction est un filet PLUS DIRECT que de
- * fabriquer l'état de page qui les affiche — et il couvre les quatre branches, pas une. */
+ * EXPORTED for the interface golden (`ui-golden.test.ts`): these four sentences are only reachable
+ * by the render at the price of a simulated engine failure, and the `too_large` branch also carries a
+ * decimal formatting (« Mo »). Freezing them by calling the function is a MORE DIRECT net than
+ * fabricating the page state that displays them — and it covers all four branches, not one. */
 export function errorMessage(result: Extract<EngineResult, { ok: false }>): string {
   if (result.stage === 'too_large') {
     const mb = (n: number) => UI_ANALYSE.errorMegabytes(formatDecimal(n / (1024 * 1024)));
@@ -119,22 +119,22 @@ export function errorMessage(result: Extract<EngineResult, { ok: false }>): stri
   return UI_ANALYSE.errorUnreadable;
 }
 
-/** `?demo` présent dans l'URL AU CHARGEMENT — lu une seule fois, au tout premier rendu (SSR-safe :
- * ces pages sont des îlots `client:only`, `window` existe toujours). Sert d'état INITIAL `loading`
- * pour ne JAMAIS flasher la zone de dépôt avant que la démo ne démarre (le `useEffect` qui lance
- * l'analyse ne court qu'après le premier rendu). */
+/** `?demo` present in the URL AT LOAD — read only once, at the very first render (SSR-safe:
+ * these pages are `client:only` islands, `window` always exists). Serves as the INITIAL `loading`
+ * state so as to NEVER flash the drop zone before the demo starts (the `useEffect` that launches
+ * the analysis only runs after the first render). */
 function isDemoUrl(): boolean {
   return typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('demo');
 }
 
 export function AnalysisPage() {
-  // Démarre en `loading` en mode démo → la zone de dépôt (idle) n'apparaît jamais entre le montage
-  // et le lancement de l'analyse (corrige le flash d'une demi-seconde).
+  // Starts in `loading` in demo mode → the drop zone (idle) never appears between the mount
+  // and the launch of the analysis (fixes the half-second flash).
   const [status, setStatus] = useState<Status>(() =>
     isDemoUrl() ? { kind: 'loading' } : { kind: 'idle' },
   );
   const [dragOver, setDragOver] = useState(false);
-  // TEMPORAIRE (panneau de test ci-dessus) — cas limite actuellement affiché en mode démo.
+  // TEMPORARY (test panel above) — edge case currently displayed in demo mode.
   const [edgeCase, setEdgeCase] = useState<EdgeCase>('normal');
   const isMobile = useIsMobile();
 
@@ -147,7 +147,7 @@ export function AnalysisPage() {
         return;
       }
       if (result.stage === 'validate') {
-        // Filet d'observation minimal (PANO-63) — jamais réseau, jamais persisté.
+        // Minimal observation net (PANO-63) — never network, never persisted.
         console.warn('[PanoptiCool] export réel — échec de validation :', result.issues);
       }
       setStatus({ kind: 'idle', error: errorMessage(result) });
@@ -156,7 +156,7 @@ export function AnalysisPage() {
     }
   }
 
-  /** TEMPORAIRE — relance la démo avec la variante choisie dans le panneau de test. */
+  /** TEMPORARY — reruns the demo with the variant chosen in the test panel. */
   async function runDemo(nextEdgeCase: EdgeCase): Promise<void> {
     setEdgeCase(nextEdgeCase);
     setStatus({ kind: 'loading' });
@@ -179,8 +179,8 @@ export function AnalysisPage() {
     }
   }
 
-  // Mode démo (`?demo`) : lancé au montage — même moteur, source synthétique régénérée à la demande.
-  // L'état est DÉJÀ `loading` (initializer ci-dessus), donc aucun flash de la zone de dépôt.
+  // Demo mode (`?demo`): launched on mount — same engine, synthetic source regenerated on demand.
+  // The state is ALREADY `loading` (initializer above), so no flash of the drop zone.
   useEffect(() => {
     if (isDemoUrl()) {
       void analyze(
@@ -211,10 +211,10 @@ export function AnalysisPage() {
         : UI_ANALYSE.badgeReal
       : undefined;
 
-  // Sommaire en chips (rendu par SiteHeader sur MOBILE uniquement, maquette « v4 Mobile ») :
-  // seulement quand les résultats sont affichés — la zone de dépôt n'a pas de sections. La chip
-  // 04 est éteinte/pointillée : l'IA locale n'est pas disponible sur mobile (l'ancre mène à
-  // l'encart qui l'explique).
+  // Table of contents as chips (rendered by SiteHeader on MOBILE only, « v4 Mobile » mockup):
+  // only when the results are displayed — the drop zone has no sections. The 04
+  // chip is dimmed/dotted: local AI is not available on mobile (the anchor leads to
+  // the callout that explains it).
   const toc: TocChip[] | undefined =
     status.kind === 'output'
       ? [
@@ -231,7 +231,7 @@ export function AnalysisPage() {
 
       {status.kind === 'output' ? (
         <>
-          {/* TEMPORAIRE — uniquement en mode démo, cf. bloc en tête de fichier. */}
+          {/* TEMPORARY — only in demo mode, cf. block at the top of the file. */}
           {SHOW_DEV_EDGE_CASE_PANEL && status.demo && (
             <DevEdgeCasePanel current={edgeCase} onPick={(c) => void runDemo(c)} />
           )}
@@ -241,8 +241,8 @@ export function AnalysisPage() {
           </div>
         </>
       ) : status.kind === 'loading' ? (
-        // Écran de chargement DÉDIÉ (plus la coquille de dépôt) : évite le flash de la zone
-        // d'upload au lancement de la démo, et donne un retour propre pendant l'analyse d'un export.
+        // DEDICATED loading screen (no longer the drop shell): avoids the flash of the upload
+        // zone at the launch of the demo, and gives clean feedback during the analysis of an export.
         <div style={isMobile ? M_UPLOAD_SHELL : UPLOAD_SHELL}>
           <div style={LOADING_BOX}>
             <span style={SPINNER} aria-hidden="true" />
@@ -261,8 +261,8 @@ export function AnalysisPage() {
             {isMobile ? UI_ANALYSE.ledeMobile : UI_ANALYSE.ledeDesktop}
           </p>
 
-          {/* Mobile : gros bouton tactile « Choisir mon fichier » — le drag & drop n'existe pas au
-              doigt, on ne parle donc pas de « glisser ». Desktop : zone de dépôt classique. */}
+          {/* Mobile: large touch button « Choisir mon fichier » — drag & drop does not exist with a
+              finger, so we do not speak of « glisser ». Desktop: classic drop zone. */}
           {isMobile ? (
             <label style={M_PICK_BTN}>
               <span style={M_PICK_ICON} aria-hidden="true">
@@ -395,8 +395,8 @@ const FILE_INPUT = {
 const ERROR = { margin: 0, fontSize: '12px', lineHeight: 1.6, color: NAVY.risk } as const;
 const HINT = { margin: 0, fontSize: '11px', lineHeight: 1.7, color: NAVY.textDim } as const;
 const DEMO_LINK = { color: NAVY.accent, textDecoration: 'none' } as const;
-// Écran de chargement dédié — encart centré, spinner (animation `pano-spin` définie dans
-// analyse.astro, seul endroit où l'on peut poser un @keyframes global pour un style inline).
+// Dedicated loading screen — centered callout, spinner (animation `pano-spin` defined in
+// analyse.astro, the only place where one can put a global @keyframes for an inline style).
 const LOADING_BOX = {
   display: 'flex',
   flexDirection: 'column',
@@ -417,14 +417,14 @@ const SPINNER = {
   borderTopColor: NAVY.accent,
   animation: 'pano-spin 0.8s linear infinite',
 } as const;
-// Variante mobile de la zone de dépôt (paddings de la maquette « … Mobile »).
+// Mobile variant of the drop zone (paddings of the « … Mobile » mockup).
 const M_UPLOAD_SHELL = {
   ...UPLOAD_SHELL,
   maxWidth: '480px',
   padding: '36px 20px 48px',
 } as const;
 const M_TITLE = { ...TITLE, fontSize: '27px' } as const;
-// Bouton de sélection MOBILE (pas de drag & drop tactile) : cible pleine largeur ≥ 54 px.
+// MOBILE selection button (no touch drag & drop): full-width target ≥ 54 px.
 const M_PICK_BTN = {
   position: 'relative',
   display: 'flex',
@@ -444,7 +444,7 @@ const M_PICK_BTN = {
 const M_PICK_ICON = { fontSize: '18px', color: NAVY.accent, lineHeight: 1 } as const;
 const M_PICK_MAIN = { fontSize: '14px', fontWeight: 600, color: NAVY.accentBright } as const;
 
-// --- Panneau TEMPORAIRE de test des cas limites (à supprimer après validation) ----------------------
+// --- TEMPORARY edge-case test panel (to be removed after validation) --------------------------------
 const DEV_PANEL_OUTER = {
   background: 'rgba(232,117,78,.1)',
   borderBottom: `1px dashed ${NAVY.riskBorder}`,

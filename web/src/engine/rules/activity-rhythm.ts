@@ -1,18 +1,18 @@
-// Rythme d'activité horaire + compteurs de visionnage + estimation (PANO-85) — → `RhythmCard`.
+// Hourly activity rhythm + watch counters + estimate (PANO-85) — → `RhythmCard`.
 //
-// Lot A1 : rend `Rhythm | undefined` au lieu d'un `Insight` `aggregate`. L'agrégat n'était déjà plus
-// qu'un porteur de `value` : depuis la refonte v2, l'encart nocturne a été retiré du rendu
-// (`ActivitySection.tsx` — « le second encart orange créait un doublon visuel parasite »), donc son
-// `claim`/`framing`/`confidence` n'avait plus aucun lecteur.
+// Batch A1: returns `Rhythm | undefined` instead of an `aggregate` `Insight`. The aggregate was
+// already nothing but a `value` carrier: since the v2 refonte, the night inset was removed from the
+// render (`ActivitySection.tsx` — "the second orange inset created a spurious visual duplicate"), so
+// its `claim`/`framing`/`confidence` no longer had any reader.
 //
-// CE QUI PART AVEC, et qu'il faut dire plutôt que laisser découvrir : le cadrage nocturne GRADUÉ de
-// PANO-85 (`nightShare` + les 3 gabarits `night-moderate|balanced|high`, seuils 0.20 / 0.33) était la
-// décision yuya de PANO-85 — un qualificatif nuancé plutôt qu'un verdict « créneau à risque ». Il n'a
-// plus de producteur ICI parce qu'il n'a plus de scène : la carte affiche le graphe, les compteurs et
-// l'estimation, jamais la phrase. Le retirer ne juge pas le constat — c'est la doctrine du LOT B2
-// (§11.4) : pas de code qui tourne pour personne ; s'il revient, il reviendra CONÇU ET RENDU.
-// La coloration nuit/journée du graphe, elle, VIT (`NIGHT_HOURS` est redéclaré côté carte, les deux
-// conventions doivent rester alignées — inchangé depuis PANO-85).
+// WHAT LEAVES WITH IT, and must be stated rather than left to be discovered: the GRADUATED night
+// framing of PANO-85 (`nightShare` + the 3 templates `night-moderate|balanced|high`, thresholds 0.20
+// / 0.33) was yuya's PANO-85 decision — a nuanced qualifier rather than an "at-risk slot" verdict. It
+// no longer has a producer HERE because it no longer has a stage: the card shows the graph, the
+// counters and the estimate, never the sentence. Removing it does not judge the finding — it is the
+// BATCH B2 doctrine (§11.4): no code that runs for no one; if it returns, it will return DESIGNED AND
+// RENDERED. The night/day coloring of the graph, though, LIVES (`NIGHT_HOURS` is redeclared on the
+// card side, the two conventions must stay aligned — unchanged since PANO-85).
 
 import { readActivitySummary } from '../activity-summary';
 import type { Rhythm } from '../analysis';
@@ -21,10 +21,10 @@ import { parseRawDateUTC } from './shared';
 
 export const ACTIVITY_RHYTHM_SECTION_PATH = 'Your Activity/Watch History' as const;
 
-/** Écart au-delà duquel deux visionnages consécutifs sont comptés dans DEUX sessions distinctes. */
+/** Gap beyond which two consecutive views are counted in TWO distinct sessions. */
 const SESSION_GAP_MS = 5 * 60 * 1000;
-/** Durée nominale attribuée à la dernière vidéo d'une session (sans elle, une session d'une seule
- *  vidéo compterait 0 minute). */
+/** Nominal duration attributed to the last video of a session (without it, a single-video session
+ *  would count 0 minutes). */
 const NOMINAL_LAST_VIDEO_MS = 30 * 1000;
 
 function bucketByHour(rawDates: readonly string[]): number[] {
@@ -38,9 +38,9 @@ function bucketByHour(rawDates: readonly string[]): number[] {
   return hours;
 }
 
-/** Compteurs de visionnage (C, PANO-85). `total` est ALL-TIME (Activity Summary), les deux autres
- *  sont des fenêtres GLISSANTES sur Watch History — le mélange est VOULU (le total honnête vit dans
- *  Activity Summary, pas dans la fenêtre courte de Watch History). */
+/** Watch counters (C, PANO-85). `total` is ALL-TIME (Activity Summary), the other two are SLIDING
+ *  windows over Watch History — the mix is INTENDED (the honest total lives in Activity Summary, not
+ *  in the short Watch History window). */
 function watchCounts(
   rawDates: readonly string[],
   allTimeTotal: number,
@@ -65,9 +65,9 @@ function watchCounts(
   return { total: allTimeTotal, last12Months, last30Days };
 }
 
-/** Minutes ESTIMÉES (D, PANO-85) par sessionisation des dates : on somme les écarts INTRA-session et
- *  on ajoute une durée nominale par session pour sa dernière vidéo. Une estimation assumée, présentée
- *  comme telle à l'écran (miroir, pas oracle) — un chiffre, jamais un verdict. */
+/** ESTIMATED minutes (D, PANO-85) by sessionizing the dates: we sum the INTRA-session gaps and add a
+ *  nominal duration per session for its last video. An assumed estimate, presented as such on screen
+ *  (mirror, not oracle) — a figure, never a verdict. */
 function estimatedMinutes(rawDates: readonly string[]): number {
   const epochs = rawDates
     .map(parseRawDateUTC)
@@ -77,7 +77,7 @@ function estimatedMinutes(rawDates: readonly string[]): number {
     return 0;
   }
   let intraMs = 0;
-  let sessions = 1; // au moins une session dès qu'il y a une vidéo
+  let sessions = 1; // at least one session as soon as there is a video
   for (let i = 1; i < epochs.length; i += 1) {
     const gap = (epochs[i] ?? 0) - (epochs[i - 1] ?? 0);
     if (gap < SESSION_GAP_MS) {
@@ -90,7 +90,7 @@ function estimatedMinutes(rawDates: readonly string[]): number {
   return Math.round(totalMs / 60_000);
 }
 
-/** `undefined` si l'historique de visionnage est vide (rien à tracer). */
+/** `undefined` if the watch history is empty (nothing to plot). */
 export function readRhythm(input: NormalizedExport, now: number = Date.now()): Rhythm | undefined {
   const videoList = input['Your Activity']['Watch History'].VideoList;
   if (videoList.length === 0) {

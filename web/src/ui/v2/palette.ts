@@ -1,25 +1,25 @@
-// Palette du design « navy » (refonte 2026-07-15) — valeurs EXTRAITES des maquettes, pas inventées.
+// « navy » design palette (2026-07-15 rework) — values EXTRACTED from the mockups, not invented.
 //
-// PAS un design system : l'éthos du dépôt reste « pas de design system, juste lisible et sobre ». Ce
-// fichier évite seulement la duplication de valeurs exactes répétées dans plusieurs composants.
+// NOT a design system: the repo's ethos stays "no design system, just readable and sober". This
+// file only avoids the duplication of exact values repeated across several components.
 
 export const NAVY = {
-  // Fonds, du plus profond au plus élevé.
+  // Backgrounds, from deepest to highest.
   bgPage: '#070b18',
-  bgPageTop: '#0a1024', // départ du dégradé vertical de page
+  bgPageTop: '#0a1024', // start of the page's vertical gradient
   bgCard: '#0f1730',
-  bgInset: '#0b1226', // encart DANS une carte (tuiles de volume, chips)
+  bgInset: '#0b1226', // inset WITHIN a card (volume tiles, chips)
   bgThemeCard: '#131c38',
   bgSourceCard: '#0d1428',
 
-  // Bordures.
+  // Borders.
   borderHeader: '#1a2447',
   borderCard: '#1e2a52',
   borderInset: '#26325a',
   borderChip: '#2b3865',
   borderPill: '#36446f',
 
-  // Texte, du plus clair au plus discret.
+  // Text, from lightest to most discreet.
   textBright: '#e9eefb',
   textHeading: '#dde4f4',
   textBody: '#aab6d6',
@@ -30,45 +30,45 @@ export const NAVY = {
   textFaint: '#7583ab',
   textGhost: '#4d5a80',
 
-  // Accent principal (cyan).
+  // Main accent (cyan).
   accent: '#2fd4f0',
   accentBright: '#7ce6f8',
   accentBgSoft: 'rgba(47,212,240,.10)',
   accentBorderSoft: 'rgba(47,212,240,.55)',
 
-  // Opacité des puces « éteintes » (carte « aucune déduction »). Ex-`confidenceEmptyOpacity` : les
-  // teintes de confiance sont parties avec leur affichage (itération 2026-07-20) ; l'opacité, elle,
-  // a un lecteur.
+  // Opacity of the « éteintes » bullets (« aucune déduction » card). Ex-`confidenceEmptyOpacity`: the
+  // confidence tints left with their display (2026-07-20 iteration); the opacity, for its part,
+  // has a reader.
   dimmedDotOpacity: 0.16,
 
-  // Pédagogie (« pour comprendre ») — accent indigo, cadre pointillé.
+  // Education (« pour comprendre ») — indigo accent, dotted frame.
   learnAccent: '#a5b4ff',
   learnTitle: '#b8c4ff',
   learnBorder: '#3b4a86',
   learnBg: 'rgba(124,150,255,.05)',
 
-  // Éventail de lectures — lavande pour la lecture principale.
+  // Reading fan — lavender for the primary reading.
   readingPrimaryText: '#e6e1f5',
   readingPrimaryLabel: '#a99be0',
   readingPrimaryBg: 'rgba(169,155,224,.13)',
   readingPrimaryBorder: 'rgba(169,155,224,.42)',
 
-  // Risque / usage — accent orange.
+  // Risk / usage — orange accent.
   risk: '#e8754e',
   riskText: '#efc4b2',
   riskLabel: '#e6b6a3',
   riskBg: 'rgba(232,117,78,.08)',
   riskBorder: 'rgba(232,117,78,.3)',
 
-  // Graphe de rythme.
+  // Rhythm graph.
   graphDay: '#5b6d99',
 
-  // Divers.
+  // Miscellaneous.
   ok: '#4ade80',
   okBg: 'rgba(74,222,128,.07)',
   okBorder: 'rgba(74,222,128,.35)',
   donutRest: '#1c2749',
 } as const;
 
-/** Police du design — la même famille auto-hébergée que le reste du site (PANO-56). */
+/** Design font — the same self-hosted family as the rest of the site (PANO-56). */
 export const MONO = "'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace";

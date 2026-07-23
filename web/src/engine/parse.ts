@@ -1,37 +1,37 @@
-// Pipeline de parsing — approche A (PANO-25, ADR-0002, findings PANO-5).
+// Parsing pipeline — approach A (PANO-25, ADR-0002, PANO-5 findings).
 //
-// Décompresse l'export `.zip` en mémoire (`fflate`), localise l'unique `user_data_tiktok.json`,
-// puis `JSON.parse`. Conçu pour tourner dans le Web Worker (TS pur, sans DOM, ADR-0002).
+// Decompresses the `.zip` export in memory (`fflate`), locates the sole `user_data_tiktok.json`,
+// then `JSON.parse`. Designed to run in the Web Worker (pure TS, no DOM, ADR-0002).
 //
-// SEAM (a) — décidé en session PANO-25 : le parser rend `data: unknown`. La validation
-// `unknown → TikTokExport` est le job de PANO-26 (valibot) à la frontière d'ingest. Caster ici
-// mentirait au type (l'entrée est non fiable), contre strict++/`noUncheckedIndexedAccess`.
+// SEAM (a) — decided in the PANO-25 session: the parser returns `data: unknown`. The
+// `unknown → TikTokExport` validation is PANO-26's job (valibot) at the ingest boundary. Casting
+// here would lie to the type (the input is untrusted), against strict++/`noUncheckedIndexedAccess`.
 //
-// ÉCHECS BRUYANTS (critère 1) : aucune exception ne traverse la frontière — chaque échec est une
-// variante de `ParseResult` (union discriminée, sérialisable structured-clone). Pas de wording
-// dans le moteur (ADR-0004) : la variante porte un `error` + ses données structurées ; la
-// couche de présentation mappe le code vers un message.
+// LOUD FAILURES (criterion 1): no exception crosses the boundary — each failure is a variant of
+// `ParseResult` (discriminated union, structured-clone serializable). No wording in the engine
+// (ADR-0004): the variant carries an `error` + its structured data; the presentation layer maps the
+// code to a message.
 //
-// LIMITE CONNUE (critère 1, option 1a) : `JSON.parse` natif (approche A) collapse silencieusement
-// d'éventuelles clés dupliquées *dans un même objet* (`{"a":1,"a":2}` → `{a:2}`) — le `reviver` ne
-// les voit pas. Les détecter exigerait un parseur tokenisant (approche B, hors v1). Le contrat
-// `docs/tiktok-export-schema.md` n'a aucun cas du genre ; §1.6 (section dupliquée sous deux parents)
-// et §1.7 (clé malformée mais valide) ne sont PAS des doublons d'objet et sont gérés correctement.
+// KNOWN LIMITATION (criterion 1, option 1a): native `JSON.parse` (approach A) silently collapses any
+// duplicate keys *within one object* (`{"a":1,"a":2}` → `{a:2}`) — the `reviver` does not see them.
+// Detecting them would require a tokenizing parser (approach B, out of v1). The contract
+// `docs/tiktok-export-schema.md` has no such case; §1.6 (section duplicated under two parents) and
+// §1.7 (malformed but valid key) are NOT object duplicates and are handled correctly.
 
 import { strFromU8, type UnzipFileInfo, unzipSync } from 'fflate';
 
-/** Nom de l'unique fichier JSON attendu dans l'archive (contrat §0). */
+/** Name of the sole JSON file expected in the archive (contract §0). */
 const JSON_ENTRY_NAME = 'user_data_tiktok.json';
 
 /**
- * Seuil de taille **décompressée** (octets) au-delà duquel on refuse gracieusement (critère 2).
- * ~25 Mo = seuil de bascule A→B mesuré par PANO-5 ; au-delà, l'approche A risque l'OOM que
- * l'ADR-0002 veut éviter, et B (SAX) n'est pas implémentée en v1. À confirmer sur devices réels
- * (PANO-18). Réglable ; surchargeable par appel via `ParseOptions.sizeLimitBytes`.
+ * **Decompressed** size threshold (bytes) beyond which we refuse gracefully (criterion 2).
+ * ~25 MB = the A→B switchover threshold measured by PANO-5; beyond it, approach A risks the OOM
+ * ADR-0002 wants to avoid, and B (SAX) is not implemented in v1. To be confirmed on real devices
+ * (PANO-18). Adjustable; overridable per call via `ParseOptions.sizeLimitBytes`.
  */
 export const EXPORT_SIZE_LIMIT_BYTES = 25 * 1024 * 1024;
 
-/** Codes d'échec du pipeline. */
+/** Pipeline failure codes. */
 export type ParseErrorKind =
   | 'invalid_zip'
   | 'json_entry_not_found'
@@ -40,8 +40,8 @@ export type ParseErrorKind =
   | 'invalid_json';
 
 /**
- * Résultat du pipeline — union discriminée, plain-data (transférable hors du Worker). Le succès
- * porte `data: unknown` (seam a) ; chaque échec porte son code + les données utiles à l'UI.
+ * Pipeline result — discriminated union, plain-data (transferable out of the Worker). Success
+ * carries `data: unknown` (seam a); each failure carries its code + the data useful to the UI.
  */
 export type ParseResult =
   | { ok: true; data: unknown; originalSize: number }
@@ -52,21 +52,21 @@ export type ParseResult =
   | { ok: false; error: 'invalid_json' };
 
 export interface ParseOptions {
-  /** Seuil de refus (octets décompressés). Défaut `EXPORT_SIZE_LIMIT_BYTES`. */
+  /** Refusal threshold (decompressed bytes). Default `EXPORT_SIZE_LIMIT_BYTES`. */
   sizeLimitBytes?: number;
 }
 
-/** Basename d'un chemin d'entrée zip (séparateur `/`, standard zip). Tolère un préfixe de dossier. */
+/** Basename of a zip entry path (`/` separator, zip standard). Tolerates a folder prefix. */
 function basename(path: string): string {
   const slash = path.lastIndexOf('/');
   return slash === -1 ? path : path.slice(slash + 1);
 }
 
 /**
- * Résultat de la décompression seule (sans `JSON.parse`) : le texte JSON de l'entrée + sa taille.
- * Union discriminée, réutilisée par le parseur classique (`parseTikTokExport`) ET par l'ingestion en
- * flux (`ingest/ingest-stream.ts`, PANO-91), qui préfère le TEXTE (elle le tokenise sans matérialiser
- * le graphe) à un `JSON.parse` matérialisant.
+ * Result of decompression alone (without `JSON.parse`): the entry's JSON text + its size.
+ * Discriminated union, reused by the classic parser (`parseTikTokExport`) AND by streaming ingestion
+ * (`ingest/ingest-stream.ts`, PANO-91), which prefers the TEXT (it tokenizes it without materializing
+ * the graph) over a materializing `JSON.parse`.
  */
 export type DecompressResult =
   | { ok: true; text: string; originalSize: number }
@@ -76,10 +76,11 @@ export type DecompressResult =
   | { ok: false; error: 'export_too_large'; originalSize: number; limit: number };
 
 /**
- * Décompresse l'export et rend le TEXTE de l'unique `user_data_tiktok.json` (ne parse pas). Étape
- * partagée : le pic mémoire ici est la seule chaîne décompressée (bornée, ~le poids du JSON) — la
- * matérialisation du graphe (approche A) ou son évitement (flux, approche B) se décide APRÈS. Refus
- * gracieux au-delà de `sizeLimitBytes` (garde anti-zip-bomb ; réglable par appel — le flux le relève).
+ * Decompresses the export and returns the TEXT of the sole `user_data_tiktok.json` (does not parse).
+ * Shared step: the memory peak here is only the decompressed string (bounded, ~the weight of the
+ * JSON) — materializing the graph (approach A) or avoiding it (stream, approach B) is decided AFTER.
+ * Graceful refusal beyond `sizeLimitBytes` (anti-zip-bomb guard; adjustable per call — the stream
+ * raises it).
  */
 export function decompressJsonEntry(
   zipBytes: Uint8Array,
@@ -87,8 +88,8 @@ export function decompressJsonEntry(
 ): DecompressResult {
   const sizeLimit = options.sizeLimitBytes ?? EXPORT_SIZE_LIMIT_BYTES;
 
-  // Passe 1 — métadonnées seules : le filtre renvoie `false` (aucune décompression), ce qui permet
-  // de localiser l'entrée et de lire `originalSize` AVANT de décompresser (critère 2).
+  // Pass 1 — metadata only: the filter returns `false` (no decompression), which lets us locate the
+  // entry and read `originalSize` BEFORE decompressing (criterion 2).
   const candidates: { name: string; originalSize: number }[] = [];
   try {
     unzipSync(zipBytes, {
@@ -111,7 +112,7 @@ export function decompressJsonEntry(
   const entry = candidates[0];
   if (entry === undefined) return { ok: false, error: 'json_entry_not_found' };
 
-  // Critère 2 — refus gracieux AVANT de décompresser si la taille décompressée dépasse le seuil.
+  // Criterion 2 — graceful refusal BEFORE decompressing if the decompressed size exceeds the threshold.
   if (entry.originalSize > sizeLimit) {
     return {
       ok: false,
@@ -121,7 +122,7 @@ export function decompressJsonEntry(
     };
   }
 
-  // Passe 2 — décompresse la seule entrée retenue.
+  // Pass 2 — decompress the single retained entry.
   let bytes: Uint8Array | undefined;
   try {
     const decoded = unzipSync(zipBytes, {
@@ -137,10 +138,10 @@ export function decompressJsonEntry(
 }
 
 /**
- * Décompresse l'export, localise `user_data_tiktok.json`, le parse (approche A, `JSON.parse`). Ne
- * valide PAS la forme (PANO-26). Ne lève jamais : tout échec attendu est une variante de `ParseResult`.
- * L'ingestion du moteur passe désormais par le FLUX (`ingest/`) ; cette fonction reste la voie A de
- * référence (tests de parsing, comparaison mémoire).
+ * Decompresses the export, locates `user_data_tiktok.json`, parses it (approach A, `JSON.parse`).
+ * Does NOT validate the shape (PANO-26). Never throws: every expected failure is a variant of
+ * `ParseResult`. The engine's ingestion now goes through the STREAM (`ingest/`); this function
+ * remains the reference approach-A path (parsing tests, memory comparison).
  */
 export function parseTikTokExport(zipBytes: Uint8Array, options: ParseOptions = {}): ParseResult {
   const decompressed = decompressJsonEntry(zipBytes, options);

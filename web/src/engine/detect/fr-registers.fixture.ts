@@ -1,38 +1,38 @@
-// Banc de faux positifs FR — les personas et leur VÉRITÉ-TERRAIN (PANO-35). Pendant francophone du
-// banc EN, ouvert parce qu'une mesure anglaise a trouvé un défaut de MACHINERIE, donc indépendant de
-// la langue : le filtre de 3ᵉ personne est item-local et cherche un possessif, si bien qu'une
-// recherche formulée en général — « signes de dépression chez l'adolescent » — pose aujourd'hui un
-// constat NOMMÉ sur le parent qui la tape. Vérifié en production avant l'écriture de ces voix.
+// FR false-positive bench — the personas and their GROUND TRUTH (PANO-35). Francophone counterpart of the
+// EN bench, opened because an English measurement found a MACHINERY defect, hence independent of
+// language: the 3rd-person filter is item-local and looks for a possessive, so that a
+// search phrased in general — « signes de dépression chez l'adolescent » — today places a
+// NAMED finding on the parent who types it. Verified in production before writing these voices.
 //
-// ── Ce fichier est scellé, et son sceau porte plus loin que celui du banc EN ─────────────────────
-// Il est écrit et commité AVANT la conception des marqueurs de registre informationnel. C'est la
-// différence qui compte entre les deux langues :
-//   - côté EN, je connaissais déjà les items que je voulais voir dégrader — la mesure y sera
-//     CONFIRMATOIRE, et il faut la lire comme telle ;
-//   - côté FR, les voix existent avant les marqueurs. Je ne sais pas encore lesquels de ces items
-//     seront rattrapés, ni combien. La mesure y est PRÉDICTIVE.
-// C'est la seule façon honnête de vérifier une règle sur les données mêmes qui l'ont inspirée : ne
-// pas écrire la règle et les données dans le même mouvement.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// ── This file is sealed, and its seal reaches further than the EN bench's ─────────────────────
+// It is written and committed BEFORE the design of the informational-register markers. This is the
+// difference that counts between the two languages:
+//   - on the EN side, I already knew the items I wanted to see degrade — the measurement there will be
+//     CONFIRMATORY, and it must be read as such;
+//   - on the FR side, the voices exist before the markers. I do not yet know which of these items
+//     will be caught, nor how many. The measurement there is PREDICTIVE.
+// It is the only honest way to check a rule on the very data that inspired it: not
+// to write the rule and the data in the same motion.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── Limite déclarée ──────────────────────────────────────────────────────────────────────────────
-// L'exposition est PLUS forte qu'au banc EN, et il faut le dire : le tier colloquial FR de
-// `mental-health.ts` a été lu au cours du lot précédent. La voix hyperbolique ci-dessous en
-// recoupe donc forcément une partie — mais l'inverse serait pire, car « au bout de ma vie », « à
-// plat » ou « je sature » SONT le registre dramatique français ordinaire : les éviter pour
-// paraître aveugle produirait une persona fausse. Écriture à la voix, exposition déclarée, et un
-// contrepoids assumé — la moitié des formulations amplifiées ci-dessous ne figure dans aucun tier.
+// ── Declared limit ──────────────────────────────────────────────────────────────────────────────
+// The exposure is STRONGER than in the EN bench, and it must be said: the FR colloquial tier of
+// `mental-health.ts` was read during the previous batch. The hyperbolic voice below therefore
+// necessarily overlaps part of it — but the reverse would be worse, because « au bout de ma vie », « à
+// plat » or « je sature » ARE the ordinary French dramatic register: avoiding them to
+// appear blind would produce a false persona. Writing to the voice, declared exposure, and an
+// assumed counterweight — half of the amplified formulations below appear in no tier.
 //
-// ── Aucune valeur réelle ─────────────────────────────────────────────────────────────────────────
-// Chaque chaîne est inventée (CLAUDE.md) : aucun message, pseudo, date ou identifiant réel.
+// ── No real value ─────────────────────────────────────────────────────────────────────────
+// Each string is invented (CLAUDE.md): no real message, handle, date or identifier.
 
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. LA VOIX PLATE — le témoin
+// 1. THE FLAT VOICE — the witness
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_PLAIN: RegisterPersona = {
@@ -71,7 +71,7 @@ const FR_PLAIN: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. LA VOIX HYPERBOLIQUE
+// 2. THE HYPERBOLIC VOICE
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_HYPERBOLIC: RegisterPersona = {
@@ -110,7 +110,7 @@ const FR_HYPERBOLIC: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. LA DÉTRESSE VÉCUE — le vrai positif, et la garde contre une dégradation trop large
+// 3. LIVED DISTRESS — the true positive, and the guard against too broad a degradation
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_DISTRESS: RegisterPersona = {
@@ -152,7 +152,7 @@ const FR_DISTRESS: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 4. LE PROCHE AIDANT — la persona qui porte le bug de production
+// 4. THE CARING RELATIVE — the persona that carries the production bug
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_CAREGIVER: RegisterPersona = {
@@ -191,7 +191,7 @@ const FR_CAREGIVER: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 5. LA VOIX PROFESSIONNELLE
+// 5. THE PROFESSIONAL VOICE
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_ADVOCATE: RegisterPersona = {
@@ -251,7 +251,7 @@ const FR_ADVOCATE: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 6. LA DÉTRESSE SANS SOIN — la voix qui décide du sort des six formulations
+// 6. DISTRESS WITHOUT CARE — the voice that decides the fate of the six formulations
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_DISTRESS_COLLOQUIAL: RegisterPersona = {
@@ -295,16 +295,16 @@ const FR_DISTRESS_COLLOQUIAL: RegisterPersona = {
 };
 
 /**
- * Les six voix francophones. Pas de pendant à la voix argotique EN : le seul résultat qu'elle avait
- * produit portait sur `religion`, hors du sujet de ce lot, et une voix de plus sans question à lui
- * poser aurait été du volume sans mesure.
+ * The six francophone voices. No counterpart to the EN slang voice: the only result it had
+ * produced bore on `religion`, outside this batch's subject, and one more voice with no question to
+ * put to it would have been volume without measurement.
  *
- * `fr_distress` et `fr_distress_colloquial` forment une PAIRE, et c'est leur contraste qui mesure :
- * la première a le vocabulaire du soin (psychologue, sertraline, thérapie), la seconde n'a rien
- * d'autre que le registre familier. Si le retrait d'un terme colloquial ne coûte rien à la première
- * mais fait disparaître la seconde, alors ce terme porte un rappel que rien d'autre ne porte — et
- * c'est exactement la question que le retrait des cinq termes anglais avait tranchée dans l'autre
- * sens.
+ * `fr_distress` and `fr_distress_colloquial` form a PAIR, and it is their contrast that measures:
+ * the first has the vocabulary of care (psychologist, sertraline, therapy), the second has nothing
+ * else but the colloquial register. If removing a colloquial term costs nothing to the first
+ * but makes the second disappear, then that term carries a recall nothing else carries — and
+ * it is exactly the question that removing the five English terms had settled in the other
+ * direction.
  */
 export const FR_REGISTER_PERSONAS: readonly RegisterPersona[] = [
   FR_PLAIN,

@@ -1,78 +1,78 @@
-// Wording FR — la prose du MOTEUR, en français. Périmètre ratifiable n°1, moitié française.
+// FR wording — the ENGINE's prose, in French. Ratifiable scope #1, French half.
 //
 // ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-// │ WORDING PROVISOIRE — À RELIRE PAR yuya.                                                   │
-// │ Premier jet volontairement brouillon : le ton n'est PAS validé. Seules les PROPRIÉTÉS de   │
-// │ cadrage sont tenues (cf. wording.test.ts) — pas la qualité rédactionnelle.                 │
+// │ PROVISIONAL WORDING — TO BE REVIEWED BY yuya.                                              │
+// │ Deliberately rough first draft: the tone is NOT validated. Only the framing PROPERTIES     │
+// │ are held (cf. wording.test.ts) — not the writing quality.                                  │
 // └──────────────────────────────────────────────────────────────────────────────────────────┘
 //
-// CE FICHIER EST L'ORACLE DE FORME. `wording.ts` dérive le type du bundle de `typeof FR`, et
-// `wording.en.ts` s'annote avec lui : une entrée ajoutée ICI et oubliée en anglais est une erreur de
-// COMPILATION. C'est ce qui rend le lot anglais sûr à mener pendant que le lexique bouge ailleurs.
+// THIS FILE IS THE SHAPE ORACLE. `wording.ts` derives the bundle type from `typeof FR`, and
+// `wording.en.ts` annotates itself with it: an entry added HERE and forgotten in English is a
+// COMPILE error. This is what makes the English batch safe to run while the lexicon moves elsewhere.
 //
-// ⚠ NE PAS ANNOTER LES TABLES OUVERTES `Readonly<Record<string, string>>` — c'est l'annotation, et
-// non l'ouverture des clés, qui détruit la parité : `typeof` d'une table annotée ainsi efface les
-// clés, et une table anglaise VIDE compile alors sans une erreur (mesuré). Laissées en littéraux,
-// `typeof` capture les clés exactes et le compilateur tient les deux sens. Les tables à union FERMÉE
-// (`Record<SensitiveLabel, string>`) gardent leur annotation : l'union étant close, `typeof` en rend
-// les clés exactes de toute façon, et l'annotation ajoute l'exhaustivité sur le label.
+// ⚠ DO NOT ANNOTATE THE OPEN TABLES `Readonly<Record<string, string>>` — it is the annotation, not
+// the opening of the keys, that destroys parity: `typeof` of a table annotated that way erases the
+// keys, and an EMPTY English table then compiles without an error (measured). Left as literals,
+// `typeof` captures the exact keys and the compiler holds both directions. The CLOSED-union tables
+// (`Record<SensitiveLabel, string>`) keep their annotation: the union being closed, `typeof` yields
+// their exact keys anyway, and the annotation adds exhaustiveness over the label.
 //
-// Les CHAÎNES sont reprises VERBATIM de l'ex-`wording.ts` monolingue : ce lot déplace la prose
-// française, il ne la réécrit pas (les deux goldens le prouvent à l'octet).
+// The STRINGS are taken VERBATIM from the ex-monolingual `wording.ts`: this batch moves the French
+// prose, it does not rewrite it (the two goldens prove it to the byte).
 
 import type { SensitiveLabel } from './lexicon/types';
 
 export const FR = {
   // --- opacity semantic-wall -----------------------------------------------------------------
-  // Sujet = PanoptiCool (pas « vos données ») : le « vous » reste réservé au header (PANO-54), seul
-  // endroit autorisé — cf. propriété (a) de wording.test.ts, qui balaie TOUT ce fichier.
+  // Subject = PanoptiCool (not "your data"): the "you" stays reserved for the header (PANO-54), the
+  // only place allowed — cf. property (a) of wording.test.ts, which sweeps ALL of this file.
   opacitySemanticWallClaim: (): string =>
     `PanoptiCool ne peut analyser qu'une fraction des données de cet export.`,
 
-  /** Brouillon (PANO-45, porte humaine) — accompagne le camembert (PANO-57) : explicite ce que le
-   * ratio SIGNIFIE, pas seulement le chiffre déjà dans la légende. */
+  /** Draft (PANO-45, human gate) — accompanies the pie chart (PANO-57): makes explicit what the
+   * ratio MEANS, not just the figure already in the legend. */
   opacitySemanticWallExplainer: (): string =>
     `L'export ne rend visible que la partie émergée de l'iceberg. Le reste n'est accessible que pour TikTok et ses partenaires.`,
 
-  // --- D1 détecteur de sujets sensibles — UNE SEULE PHRASE SURVIT ------------------------------
-  // Les dix phrases des cinq labels à éventail sont RETIRÉES : elles répétaient le titre de la carte
-  // qu'on venait de cliquer, et l'éventail de lectures porte désormais le sens. Ce qui reste ici est
-  // le seul cas où la phrase informe encore — `conflictual` n'a pas d'éventail (B5 : l'insulte émise
-  // EST le signal), et sa phrase porte le CRITÈRE d'admission, pas le sujet : propos ÉMIS, VISANT un
-  // autre utilisateur. « Conflictuel » ne le dit pas.
+  // --- D1 sensitive-topics detector — ONLY ONE SENTENCE SURVIVES -------------------------------
+  // The ten sentences of the five fan labels are REMOVED: they repeated the title of the card one
+  // had just clicked, and the fan of readings now carries the meaning. What stays here is the only
+  // case where the sentence still informs — `conflictual` has no fan (B5: the emitted insult IS the
+  // signal), and its sentence carries the admission CRITERION, not the topic: a remark EMITTED,
+  // DIRECTED AT another user. "Conflict" does not say it.
   //
-  // AUCUN CANAL DANS CES PHRASES, et c'est une correction de FAIT, pas de style. Elles disaient
-  // toutes « repéré dans des commentaires » alors que D1 lit les commentaires ET les recherches :
-  // une preuve tirée d'une recherche était donc annoncée comme un commentaire. Un mainteneur l'a lu
-  // sur une carte rendue — « repéré dans des commentaires » au-dessus d'une unique recherche.
+  // NO CHANNEL IN THESE SENTENCES, and this is a correction of FACT, not of style. They all said
+  // "spotted in comments" whereas D1 reads comments AND searches: evidence drawn from a search was
+  // therefore announced as a comment. A maintainer read it on a rendered card — "spotted in
+  // comments" above a single search.
   //
-  // Le canal a par ailleurs DEUX maisons : chaque carte de preuve porte déjà le sien, par item. Le
-  // répéter ici, c'est le maintenir à deux endroits dont un seul est recalculé — l'autre périme en
-  // silence. Ne pas le réintroduire : la seule maison correcte est l'item.
+  // The channel moreover has TWO homes: each evidence card already carries its own, per item.
+  // Repeating it here means maintaining it in two places, only one of which is recomputed — the
+  // other goes stale silently. Do not reintroduce it: the only correct home is the item.
   d1ConflictualNamedClaim: (): string => `Propos agressif adressé à un autre utilisateur.`,
 
-  // --- D2 détecteur d'intérêts (PANO-75) -------------------------------------------------------
-  /** UNE fonction générique (un intérêt se cadre pareil quel que soit le thème ; le NOM du thème vit
-   * dans le libellé de thème, pas dans le claim). `signalCount` est un `number` EXIGÉ par la
-   * signature — l'ancien `p(q, 'signalCount')` rendait « ? » si le param manquait, en silence. */
+  // --- D2 interests detector (PANO-75) ---------------------------------------------------------
+  /** ONE generic function (an interest is framed the same whatever the theme; the theme's NAME lives
+   * in the theme label, not in the claim). `signalCount` is a `number` REQUIRED by the signature —
+   * the old `p(q, 'signalCount')` returned "?" if the param was missing, silently. */
   d2InterestClaim: (signalCount: number): string => {
-    // ACCORD EN NOMBRE (correction) : rendait « déduit de 1 commentaires » dès qu'un thème ne tenait
-    // qu'à une seule preuve — cas courant, pas un cas limite. La règle est écrite ICI, à la main,
-    // plutôt qu'importée d'un helper d'interface : ce fichier est PUR et passe la 2ᵉ passe
-    // `tsc -p src/engine/tsconfig.json` — le moteur ne dépend pas de l'UI, et l'inverse non plus.
-    // Le français met 0 AU SINGULIER, d'où `<= 1` et non `=== 1`. (L'anglais fait l'inverse : voir
-    // la note de `wording.en.ts`, qui ne peut donc PAS recopier cette ligne.)
+    // NUMBER AGREEMENT (fix): it returned "déduit de 1 commentaires" as soon as a theme rested on a
+    // single piece of evidence — a common case, not an edge case. The rule is written HERE, by hand,
+    // rather than imported from a UI helper: this file is PURE and passes the 2nd
+    // `tsc -p src/engine/tsconfig.json` pass — the engine does not depend on the UI, nor the reverse.
+    // French puts 0 IN THE SINGULAR, hence `<= 1` and not `=== 1`. (English does the reverse: see
+    // the note in `wording.en.ts`, which therefore CANNOT copy this line.)
     const word = signalCount <= 1 ? 'commentaire' : 'commentaires';
     return `Centre d'intérêt déduit de ${signalCount} ${word} sur le même thème.`;
   },
 
-  // --- NOM COURT d'un sujet sensible (titre de `SignalCardNavy`) -------------------------------
+  // --- SHORT NAME of a sensitive topic (title of `SignalCardNavy`) -----------------------------
   /**
-   * Mot court par label sensible — titre de la carte d'un signal, à la place de la phrase-claim
-   * (elle créait une dissonance avec les cartes de thème ; décision yuya, refonte 2026-07-15).
+   * Short word per sensitive label — the title of a signal's card, in place of the claim-sentence
+   * (it created a dissonance with the theme cards; yuya's decision, 2026-07-15 refonte).
    *
-   * `Record<SensitiveLabel, string>` : union FERMÉE, donc exhaustivité tenue par le COMPILATEUR —
-   * un label béni sans nom ne compile pas.
+   * `Record<SensitiveLabel, string>`: a CLOSED union, so exhaustiveness held by the COMPILER — a
+   * blessed label with no name does not compile.
    */
   sensitiveTopicName: {
     mental_health: 'Santé mentale',
@@ -83,25 +83,25 @@ export const FR = {
     religion: 'Religion',
   } as Record<SensitiveLabel, string>,
 
-  // --- LECTURES (éventail, ADR-0003) : clé de lexique → texte ----------------------------------
-  // Fragments courts, NON soumis à la propriété (c) : « un vécu personnel » n'est pas une phrase
-  // assertive. Clés portées par `LabelLexicon.readingTemplateIds` (lexique intouchable).
+  // --- READINGS (fan, ADR-0003): lexicon key → text --------------------------------------------
+  // Short fragments, NOT subject to property (c): "a personal experience" is not an assertive
+  // sentence. Keys carried by `LabelLexicon.readingTemplateIds` (untouchable lexicon).
   readings: {
-    // L'AXE « POUR QUI » — `mental_health`, `health_physical`, `sexuality` partagent les trois mêmes
-    // mécanismes, donc les trois mêmes mots : c'est moi · c'est quelqu'un d'autre · ce n'est
-    // personne. Trois libellés pour un mécanisme unique serait, à la lettre, ce que « trois
-    // mécanismes, pas trois degrés » interdit — la règle vaut à l'intérieur d'un label comme entre
-    // eux. `politics` et `religion` gardent leur formulation propre parce qu'elle nomme un SECOND
-    // SENS réel (la veille, l'intérêt culturel), pas une variante de style.
+    // THE "FOR WHOM" AXIS — `mental_health`, `health_physical`, `sexuality` share the same three
+    // mechanisms, hence the same three words: it's me · it's someone else · it's no one. Three
+    // labels for a single mechanism would be, to the letter, what "three mechanisms, not three
+    // degrees" forbids — the rule holds within a label as it does between them. `politics` and
+    // `religion` keep their own wording because it names a real SECOND MEANING (following, cultural
+    // interest), not a style variant.
     'sensitive.mental-health.reading.lived': 'vécu personnel',
     'sensitive.mental-health.reading.relative': 'préoccupation pour un proche',
     'sensitive.mental-health.reading.curiosity': 'simple curiosité',
-    // `politics` — RATIFIÉ : trois MÉCANISMES, pas trois degrés. `irony` est RÉCUPÉRÉ (seul des six
-    // à nommer un mécanisme qu'aucun autre ne couvre : le signal ne représente pas la personne, et
-    // c'est la lecture qui protège le plus sur un label où se tromper coûte cher). Trois sortent :
-    // `partisan` était un DEGRÉ d'`engaged` ; `mockery` décrivait un propos VISANT quelqu'un,
-    // c'est-à-dire `conflictual` ; `avis personnel` était le degré intermédiaire entre l'engagement
-    // et la veille, sans mécanisme propre.
+    // `politics` — RATIFIED: three MECHANISMS, not three degrees. `irony` is RECOVERED (the only one
+    // of the six to name a mechanism no other covers: the signal does not represent the person, and
+    // it is the reading that protects the most on a label where getting it wrong is costly). Three
+    // leave: `partisan` was a DEGREE of `engaged`; `mockery` described a remark DIRECTED AT someone,
+    // i.e. `conflictual`; `avis personnel` was the intermediate degree between engagement and
+    // following, with no mechanism of its own.
     'sensitive.politics.reading.engaged': 'engagement politique sincère',
     'sensitive.politics.reading.irony': 'ironie ou provocation',
     'sensitive.politics.reading.watch': 'curiosité / veille',
@@ -116,17 +116,17 @@ export const FR = {
     'sensitive.religion.reading.curiosity': 'curiosité / intérêt',
   },
 
-  // --- LIBELLÉS DE THÈME : clé de lexique → texte ----------------------------------------------
-  // Clés portées par `InterestLexicon.themeLabel` (lexique intouchable). Libellés courts, brouillon.
+  // --- THEME LABELS: lexicon key → text --------------------------------------------------------
+  // Keys carried by `InterestLexicon.themeLabel` (untouchable lexicon). Short labels, draft.
   themeLabels: {
     'theme.cuisine.label': 'Cuisine',
     'theme.engagement.label': 'Engagement',
     'theme.mental-health.label': 'Santé mentale',
     'theme.politics.label': 'Politique',
     'theme.conflictual.label': 'Conflictuel',
-    // Thème-graine D2 (PANO-75).
+    // D2 seed theme (PANO-75).
     'theme.gaming.label': 'Jeux vidéo',
-    // Thèmes D2 lot 1 (PANO-76).
+    // D2 themes batch 1 (PANO-76).
     'theme.muscu.label': 'Musculation',
     'theme.running.label': 'Running',
     'theme.football.label': 'Football',
@@ -137,8 +137,8 @@ export const FR = {
     'theme.sneakers.label': 'Sneakers',
     'theme.kpop.label': 'K-pop',
     'theme.manga-anime.label': 'Manga & anime',
-    // Thèmes D2 lot 2 (PANO-77). `theme.fitness.label` corrige l'ancien libellé « Musculation »
-    // (reliquat graine) : fitness/cross-training est un thème DISTINCT de muscu.
+    // D2 themes batch 2 (PANO-77). `theme.fitness.label` corrects the old label "Musculation"
+    // (seed remnant): fitness/cross-training is a theme DISTINCT from weight training.
     'theme.mode.label': 'Mode',
     'theme.cinema-series.label': 'Cinéma & séries',
     'theme.chiens.label': 'Chiens',
@@ -151,7 +151,7 @@ export const FR = {
     'theme.fitness.label': 'Fitness',
     'theme.coiffure.label': 'Coiffure',
     'theme.tech.label': 'Tech',
-    // Thèmes D2 lot 3 (PANO-78).
+    // D2 themes batch 3 (PANO-78).
     'theme.basket.label': 'Basket',
     'theme.cyclisme.label': 'Cyclisme',
     'theme.randonnee.label': 'Randonnée',
@@ -166,7 +166,7 @@ export const FR = {
     'theme.lecture.label': 'Lecture',
     'theme.expo-concert.label': 'Concerts & expos',
     'theme.motos.label': 'Motos',
-    // Thèmes D2 lot 4 (PANO-89) — achève le catalogue.
+    // D2 themes batch 4 (PANO-89) — completes the catalogue.
     'theme.lapins.label': 'Lapins',
     'theme.dessin.label': 'Dessin & illustration',
     'theme.jardinage.label': 'Jardinage',
@@ -183,8 +183,8 @@ export const FR = {
     'theme.astronomie.label': 'Astronomie & espace',
   },
 
-  // --- USAGES par thème (ADR-0003) : clé de lexique → texte ------------------------------------
-  // STRUCTURE actée, contenu = brouillon (le contenu réel/sourcé relève de PANO-55, hors périmètre).
+  // --- USAGES per theme (ADR-0003): lexicon key → text -----------------------------------------
+  // STRUCTURE settled, content = draft (the real/sourced content is PANO-55's remit, out of scope).
   usages: {
     'usage.advertiser.vulnerability': 'ciblage de moments de vulnérabilité',
     'usage.insurer.silent-sort': 'tri silencieux, décision défavorable jamais explicitée',
@@ -197,7 +197,7 @@ export const FR = {
       'optimisation du temps d’écran, tests de rétention sur les formats qui retiennent le plus',
     'usage.advertiser.attention-windows':
       'achat des fenêtres d’attention les plus captives, aux heures de forte présence',
-    // Usages des thèmes D2 (PANO-75/76, brouillon — contenu sourcé PANO-55).
+    // Usages of the D2 themes (PANO-75/76, draft — sourced content PANO-55).
     'usage.advertiser.gaming-hardware':
       'ciblage matériel et jeux, partenariats éditeurs et fabricants de consoles',
     'usage.advertiser.supplements':
@@ -220,7 +220,7 @@ export const FR = {
       'ciblage produits dérivés et billetterie, un public de fans à forte intention d’achat',
     'usage.advertiser.anime-merch':
       'ciblage figurines et éditions, abonnements de streaming et conventions',
-    // Usages des thèmes D2 lot 2 (PANO-77, brouillon — contenu sourcé PANO-55).
+    // Usages of the D2 themes batch 2 (PANO-77, draft — sourced content PANO-55).
     'usage.advertiser.fast-fashion':
       'ciblage vêtements et tendances, relances panier et déstockage éphémère',
     'usage.advertiser.streaming':
@@ -239,7 +239,7 @@ export const FR = {
       'ciblage soins et coloration, salons partenaires et produits capillaires',
     'usage.advertiser.consumer-tech':
       'ciblage appareils et gadgets, précommandes et reprises, extensions de garantie',
-    // Usages des thèmes D2 lot 3 (PANO-78, brouillon — contenu sourcé PANO-55).
+    // Usages of the D2 themes batch 3 (PANO-78, draft — sourced content PANO-55).
     'usage.advertiser.basketball-gear':
       'ciblage chaussures et maillots, abonnements de diffusion et produits dérivés de franchises',
     'usage.advertiser.cycling-gear':
@@ -263,8 +263,8 @@ export const FR = {
       'ciblage billetterie de concerts et d’expositions, festivals et voyages associés',
     'usage.advertiser.motorcycle-gear':
       'ciblage motos et équipement, permis moto, financement et assurances deux-roues',
-    // Usages des thèmes D2 lot 4 (PANO-89, brouillon). Pour les DISCIPLINES, usage SOBRE
-    // (édition/edtech/MOOC) : un segment d'apprentissage, pas un faux profil marketing agressif.
+    // Usages of the D2 themes batch 4 (PANO-89, draft). For the DISCIPLINES, SOBER usage
+    // (publishing/edtech/MOOC): a learning segment, not a fake aggressive marketing profile.
     'usage.advertiser.art-supplies':
       'ciblage matériel de dessin et logiciels, tablettes graphiques et cours en ligne',
     'usage.advertiser.gardening': 'ciblage graines et outils, jardineries et box potager',
@@ -275,7 +275,7 @@ export const FR = {
       'ciblage manuels, cours en ligne et éditions spécialisées — un segment d’apprentissage plutôt qu’un profil marketing agressif',
   },
 
-  // --- ACTEURS (`ThemeUsage.actor`) : clé de lexique → libellé ----------------------------------
+  // --- ACTORS (`ThemeUsage.actor`): lexicon key → label ----------------------------------------
   actorLabels: {
     advertiser: 'annonceur',
     insurer_employer: 'assureur / employeur',

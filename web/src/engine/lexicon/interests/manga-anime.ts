@@ -1,31 +1,31 @@
-// Lexique d'intérêt `manga_anime` (D2, PANO-76 lot 1, réécriture PROFONDE) — manga & animation JP.
+// Interest lexicon `manga_anime` (D2, PANO-76 batch 1, DEEP rewrite) — manga & JP animation.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du manga / anime FR : genres, œuvres emblématiques (entités publiques enrichies
-// par recherche), jargon fandom. À l'aveugle depuis l'usage commun.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR manga / anime: genres, emblematic works (public entities enriched
+// by research), fandom jargon. Blind from common usage.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — genres et titres univoques (souvent multi-mots, sûrs) : « manga », « mangaka »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal genres and titles (often multi-word, safe): « manga », « mangaka »,
 //     « shonen », « vostfr », « otaku », « naruto », « dragon ball », « demon slayer »,
 //     « jujutsu kaisen », « attack on titan », « my hero academia », « chainsaw man », etc.
-//   · ANCRÉ — homographes RÉCUPÉRÉS par co-occurrence : « anime » (= « animé » adjectif), « bleach »
-//     (produit ménager), « one piece » (maillot), « scan » (numérisation), « goku » : comptent près
-//     d'un compagnon manga.
-//   · EXCLU — « chapitre » nu (livre), « saison » nu (trop générique).
+//   · ANCHORED — homographs RECOVERED by co-occurrence: « anime » (= « animé » adjective), « bleach »
+//     (cleaning product), « one piece » (swimsuit), « scan » (scanning), « goku »: count near
+//     a manga companion.
+//   · EXCLUDED — bare « chapitre » (book), bare « saison » (too generic).
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Le fandom anglophone a son propre lexique, largement translittéré du japonais — donc très univoque.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// The anglophone fandom has its own lexicon, largely transliterated from Japanese — hence very univocal.
 //   · SOLO — « josei », « mecha », « tsundere », « yandere », « husbando », « scanlation », « fansub »,
 //     « simulcast », « light novel », « doujinshi », « chuunibyou », « nakama », « senpai »,
 //     « tankobon », « sakuga », « manhwa », « manhua », « omake », « ecchi », « shonen jump »,
 //     « myanimelist », « weeb », « weeaboo », « animetok », « powerscaling », « plot armor », « best girl ».
-//   · ANCRÉ — « canon » (= l'appareil photo CANON, et « canon » = beau en argot FRANÇAIS : double
-//     piège), « sub » (abonné YouTube, remplaçant au foot, sandwich, sous-basse : la pire collision du
-//     lot), « dub » (le dub reggae), « op » (« original poster » de Reddit, « overpowered » du jeu),
-//     « ship » (expédier un colis), « panel » (panneau solaire), « raw » (fichier RAW), « oshi » : compagnon requis.
+//   · ANCHORED — « canon » (= the CANON camera, and « canon » = good-looking in FRENCH slang: double
+//     trap), « sub » (YouTube subscriber, soccer substitute, sandwich, sub-bass: the worst collision of
+//     the batch), « dub » (dub reggae), « op » (Reddit « original poster », game « overpowered »),
+//     « ship » (to ship a parcel), « panel » (solar panel), « raw » (RAW file), « oshi »: companion required.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « cinéma & séries » (thème séparé).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « film & series » (separate theme).
 
 import type { InterestLexicon } from '../types';
 
@@ -69,7 +69,7 @@ export const MANGA_ANIME_LEXICON: InterestLexicon = {
     'sailor moon',
     'one punch man',
     'jujutsu',
-    // Plateformes, genres & titres (rétrofit PANO-90)
+    // Platforms, genres & titles (retrofit PANO-90)
     'crunchyroll',
     'manga plus',
     'scantrad',
@@ -81,7 +81,7 @@ export const MANGA_ANIME_LEXICON: InterestLexicon = {
     'jojo bizarre adventure',
     'chapitre scan',
     'arc narratif',
-    // Variantes EN (PANO-88) : SOLO univoques (genres / fandom / plateformes).
+    // EN variants (PANO-88): SOLO univocal (genres / fandom / platforms).
     'josei',
     'mecha',
     'tsundere',
@@ -112,23 +112,23 @@ export const MANGA_ANIME_LEXICON: InterestLexicon = {
     'best girl',
   ],
   anchored: [
-    'anime', // = « animé » (adjectif) / « dessin animé »
-    'bleach', // produit ménager (mais aussi l'œuvre)
-    'one piece', // maillot une pièce
-    'scan', // numérisation générique
-    'goku', // prénom (personnage) isolé ambigu
-    'saga', // saga générique vs saga manga
-    'filler', // épisode de remplissage vs « filler » (skincare/générique)
-    'arc', // arc narratif vs arc (arme / architecture)
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'canon', // l'appareil photo Canon ; et « canon » = beau en argot français — double piège (EN)
-    'sub', // abonné / remplaçant / sandwich / sous-basse — la pire collision du lot (EN)
-    'dub', // le dub reggae vs le doublage (EN)
-    'op', // « original poster » (Reddit) / « overpowered » (jeu) vs l'opening (EN)
-    'ship', // expédier un colis (EN)
-    'panel', // panneau solaire / panel de conférence vs case de manga (EN)
-    'raw', // fichier RAW (photo) vs scan non traduit (EN)
-    'oshi', // court et ambigu (EN)
+    'anime', // = « animé » (adjective) / « dessin animé »
+    'bleach', // cleaning product (but also the work)
+    'one piece', // one-piece swimsuit
+    'scan', // generic scanning
+    'goku', // first name (character) ambiguous in isolation
+    'saga', // generic saga vs manga saga
+    'filler', // filler episode vs « filler » (skincare/generic)
+    'arc', // narrative arc vs arc (weapon / architecture)
+    // EN variants (PANO-88): ANCHORED.
+    'canon', // the Canon camera; and « canon » = good-looking in French slang — double trap (EN)
+    'sub', // subscriber / substitute / sandwich / sub-bass — the worst collision of the batch (EN)
+    'dub', // dub reggae vs dubbing (EN)
+    'op', // « original poster » (Reddit) / « overpowered » (game) vs the opening (EN)
+    'ship', // to ship a parcel (EN)
+    'panel', // solar panel / conference panel vs manga panel (EN)
+    'raw', // RAW file (photo) vs untranslated scan (EN)
+    'oshi', // short and ambiguous (EN)
   ],
   selfDeclared: ['otaku', 'fan de manga'],
 };

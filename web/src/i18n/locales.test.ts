@@ -1,33 +1,33 @@
-// FILET DE COHÉRENCE DES LANGUES — il tient UN invariant, et c'est le seul qui compte ici :
+// LANGUAGE CONSISTENCY NET — it holds ONE invariant, and it is the only one that matters here:
 //
-//   **rien de ce qui s'adresse à un robot ne nomme une langue non publiée.**
+//   **nothing that addresses a bot names an unpublished language.**
 //
-// POURQUOI CET INVARIANT-LÀ. Il est né quand la symétrie `/fr` ⁄ `/en` existait avec l'anglais
-// ÉTEINT : un hreflang, une entrée de sitemap ou un `alternate` nommant `en` aurait invité
-// l'indexation d'une coquille. L'anglais est allumé depuis le 2026-07-20 et ce cas-là ne se pose
-// plus tel quel ; l'invariant, lui, ne dépend d'aucune langue en particulier et garde la porte pour
-// la prochaine — l'accident ne se voit pas à la relecture, il se voit trois semaines plus tard,
-// dans les résultats d'un moteur.
+// WHY THAT INVARIANT. It was born when the `/fr` ⁄ `/en` symmetry existed with English
+// OFF: an hreflang, a sitemap entry or an `alternate` naming `en` would have invited
+// the indexing of a shell. English has been on since 2026-07-20 and that case no longer arises
+// as such; the invariant, for its part, depends on no language in particular and keeps the gate for
+// the next one — the accident is not seen at review, it is seen three weeks later,
+// in a search engine's results.
 //
-// Il tient aussi la réciproque, moins spectaculaire mais plus probable : une langue déclarée
-// publiée dont les pages n'existent pas. C'est un sitemap qui annonce des 404.
+// It also holds the converse, less spectacular but more likely: a language declared
+// published whose pages do not exist. That is a sitemap announcing 404s.
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md. Ce fichier est le genre de test qu'on cite ensuite comme « l'i18n est
-// testée » — il ne teste pas l'i18n, il teste une correspondance de listes.
-//   - IL NE LIT PAS LE `dist/`. Il compare des listes TypeScript et l'arborescence de `src/pages/`.
-//     Que le build produise réellement ces URLs, qu'il n'en produise pas d'autres, et que
-//     `find dist -path '*en*'` reste vide, se vérifie sur le build — pas ici ;
-//   - IL NE SUIT AUCUNE REDIRECTION. Que `/` parte vers `/fr`, que `/analyse` réponde, qu'un
-//     `meta refresh` soit bien formé : rien de tout cela n'est exercé. Aucune requête n'est faite ;
-//   - IL NE REGARDE PAS LES LIENS DES COMPOSANTS. Un `href="/analyse"` oublié sans préfixe de
-//     langue passe ce test sans bruit ; ce sont les goldens de rendu qui le figent ;
-//   - IL NE VÉRIFIE PAS LE RENDU DE `lang`. Il lit la SOURCE des pages et y interdit un code de
-//     langue en dur ; que `Astro.currentLocale` rende ensuite la bonne valeur se voit au build ;
-//   - IL NE DIT RIEN DU CONTENU. Qu'une page `en/` existe ne prouve pas qu'elle soit traduite, ni
-//     que l'analyse anglaise vaille quelque chose. C'est un test de plomberie ; ce que l'anglais
-//     rend VRAIMENT se mesure ailleurs (`ui/v2/render-golden-en.test.ts`), et l'écart mesuré à
-//     l'allumage vit dans `i18n/locales.ts`, pas ici.
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+// CLAUDE.md obligation. This file is the kind of test one then cites as "the i18n is
+// tested" — it does not test the i18n, it tests a correspondence of lists.
+//   - IT DOES NOT READ THE `dist/`. It compares TypeScript lists and the tree of `src/pages/`.
+//     That the build actually produces these URLs, that it produces no others, and that
+//     `find dist -path '*en*'` stays empty, is verified on the build — not here;
+//   - IT FOLLOWS NO REDIRECT. That `/` goes to `/fr`, that `/analyse` responds, that a
+//     `meta refresh` is well-formed: none of that is exercised. No request is made;
+//   - IT DOES NOT LOOK AT THE COMPONENTS' LINKS. An `href="/analyse"` forgotten without a language
+//     prefix passes this test silently; it is the render goldens that freeze it;
+//   - IT DOES NOT VERIFY THE RENDERING OF `lang`. It reads the SOURCE of the pages and forbids a
+//     hard-coded language code there; that `Astro.currentLocale` then renders the right value is seen at build;
+//   - IT SAYS NOTHING ABOUT THE CONTENT. That an `en/` page exists does not prove it is translated, nor
+//     that the English analysis is worth anything. It is a plumbing test; what English
+//     ACTUALLY renders is measured elsewhere (`ui/v2/render-golden-en.test.ts`), and the gap measured at
+//     switch-on lives in `i18n/locales.ts`, not here.
 
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -44,17 +44,17 @@ import {
 
 const PAGES_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'pages');
 
-/** Les dossiers de `src/pages/` qui portent un nom de langue déclarée — les langues CONSTRUITES. */
+/** The folders of `src/pages/` that carry a declared language name — the BUILT languages. */
 function builtLocales(): Locale[] {
   return LOCALES.filter((locale) => existsSync(join(PAGES_DIR, locale)));
 }
 
-describe('langues publiées et langues construites', () => {
-  it('ne publie que des langues dont les pages existent', () => {
+describe('published languages and built languages', () => {
+  it('publishes only languages whose pages exist', () => {
     expect([...PUBLISHED_LOCALES].sort()).toEqual(builtLocales().sort());
   });
 
-  it('donne à chaque langue publiée toutes les pages du site', () => {
+  it('gives each published language all the site pages', () => {
     for (const locale of PUBLISHED_LOCALES) {
       const files = readdirSync(join(PAGES_DIR, locale));
       for (const path of PAGE_PATHS) {
@@ -64,25 +64,25 @@ describe('langues publiées et langues construites', () => {
     }
   });
 
-  it('publie un sous-ensemble des langues déclarées', () => {
+  it('publishes a subset of the declared languages', () => {
     for (const locale of PUBLISHED_LOCALES) {
       expect(LOCALES).toContain(locale);
     }
   });
 });
 
-describe('les pages déclarent leur langue au lieu de l’écrire', () => {
-  // POURQUOI CE TÉMOIN EXISTE. Les pages écrivaient `<html lang="fr">` en dur. Tant qu'un seul
-  // arbre existait, c'était juste ; à la première page anglaise — copiée de la française, comme le
-  // veut la marche à suivre de `locales.ts` — l'attribut mentait. Et il ment SILENCIEUSEMENT : les
-  // hreflang, le canonical et le sitemap se calculent côté serveur et restent corrects, pendant que
-  // `i18n/current.ts`, qui LIT cet attribut, fabrique pour tous les îlots des liens vers la mauvaise
-  // langue. Mesuré avant correction sur `/en/analyse` : le sélecteur affichait FR actif, les liens
-  // renvoyaient vers `/fr`, et le lien de langue se doublait en `/en/en/analyse`.
+describe('pages declare their language instead of writing it', () => {
+  // WHY THIS WITNESS EXISTS. The pages hard-wrote `<html lang="fr">`. As long as a single
+  // tree existed, it was right; at the first English page — copied from the French one, as
+  // `locales.ts`'s procedure requires — the attribute lied. And it lies SILENTLY: the
+  // hreflangs, the canonical and the sitemap are computed server-side and stay correct, while
+  // `i18n/current.ts`, which READS this attribute, fabricates for all the islands links to the wrong
+  // language. Measured before the fix on `/en/analyse`: the selector showed FR active, the links
+  // pointed to `/fr`, and the language link doubled into `/en/en/analyse`.
   //
-  // Dériver l'attribut de `Astro.currentLocale` rend la chose vraie par construction ; ce témoin
-  // garde la porte, parce que la faute se réintroduit d'un simple copier-coller.
-  it('n’écrit aucun code de langue en dur dans <html lang>', () => {
+  // Deriving the attribute from `Astro.currentLocale` makes the thing true by construction; this witness
+  // keeps the gate, because the fault reintroduces itself from a simple copy-paste.
+  it('writes no hard-coded language code in <html lang>', () => {
     for (const locale of PUBLISHED_LOCALES) {
       for (const file of readdirSync(join(PAGES_DIR, locale))) {
         const source = readFileSync(join(PAGES_DIR, locale, file), 'utf8');
@@ -92,43 +92,43 @@ describe('les pages déclarent leur langue au lieu de l’écrire', () => {
   });
 });
 
-describe("l'anglais est allumé — et les deux moitiés sont là", () => {
-  // CES DEUX TÉMOINS SONT L'INVERSE DE CE QU'ILS DISAIENT (allumage du 2026-07-20). Ils exigeaient
-  // `PUBLISHED_LOCALES` sans `en` et `src/pages/en/` absent ; leur rôle était de rendre l'allumage
-  // IMPOSSIBLE PAR INADVERTANCE, et ils l'ont tenu jusqu'au bout — la bascule a dû les retourner à
-  // la main, donc en connaissance de cause. Retournés, ils gardent l'autre porte : une extinction
-  // par inadvertance, qui laisserait un `/en` construit mais dépublié.
-  it("déclare l'anglais dans le routage", () => {
+describe('English is on — and both halves are there', () => {
+  // THESE TWO WITNESSES ARE THE INVERSE OF WHAT THEY SAID (switch-on of 2026-07-20). They required
+  // `PUBLISHED_LOCALES` without `en` and `src/pages/en/` absent; their role was to make switch-on
+  // IMPOSSIBLE BY INADVERTENCE, and they held it to the end — the flip had to turn them over by
+  // hand, thus knowingly. Turned over, they keep the other gate: a switch-off
+  // by inadvertence, which would leave a `/en` built but unpublished.
+  it('declares English in the routing', () => {
     expect(LOCALES).toContain('en');
   });
 
-  it('le publie, et ses pages existent', () => {
+  it('publishes it, and its pages exist', () => {
     expect(PUBLISHED_LOCALES).toContain('en');
     expect(existsSync(join(PAGES_DIR, 'en'))).toBe(true);
   });
 });
 
-describe('les URLs annoncées aux robots', () => {
-  // Le cœur du filet : on RECONSTRUIT ici ce que `SiteHead` et le sitemap émettent, à partir des
-  // mêmes fonctions, et on vérifie qu'aucune langue non publiée n'y apparaît.
+describe('the URLs announced to bots', () => {
+  // The heart of the net: we RECONSTRUCT here what `SiteHead` and the sitemap emit, from the
+  // same functions, and we verify that no unpublished language appears in them.
   const announced = PAGE_PATHS.flatMap((path) =>
     PUBLISHED_LOCALES.map((locale) => localePath(locale, path)),
   );
 
-  // ⚠ CETTE ASSERTION S'EST VIDÉE LE JOUR DE L'ALLUMAGE, ET ELLE EST RESTÉE VERTE. Elle bouclait
-  // sur `LOCALES \ PUBLISHED_LOCALES` ; les deux listes coïncidant depuis le 2026-07-20, cet
-  // ensemble est VIDE, la double boucle ne s'exécute plus, et le test passe sans rien atteindre.
-  // C'est le motif que CLAUDE.md nomme : une assertion négative vérifie ce qu'elle ATTEINT, pas ce
-  // qu'elle affirme — et elle passe alors au vert pour une raison qui n'est pas la sienne.
+  // ⚠ THIS ASSERTION EMPTIED ITSELF ON THE DAY OF SWITCH-ON, AND IT STAYED GREEN. It looped
+  // on `LOCALES \ PUBLISHED_LOCALES`; the two lists coinciding since 2026-07-20, this
+  // set is EMPTY, the double loop no longer executes, and the test passes without reaching anything.
+  // This is the pattern CLAUDE.md names: a negative assertion verifies what it REACHES, not what
+  // it asserts — and it then passes green for a reason that is not its own.
   //
-  // Réécrite dans le sens POSITIF : chaque URL annoncée porte un préfixe qui est une langue
-  // publiée. La propriété est la même, elle ne dépend plus de l'existence d'une langue éteinte, et
-  // le compte d'URLs vérifiées est asserté pour qu'un `announced` vide ne puisse pas la revider.
+  // Rewritten in the POSITIVE direction: each announced URL carries a prefix that is a published
+  // language. The property is the same, it no longer depends on the existence of a switched-off language, and
+  // the count of verified URLs is asserted so that an empty `announced` cannot re-empty it.
   //
-  // MUTATION PASSÉE : `localePath` forcé à préfixer `/de` au lieu de la langue reçue. L'assertion
-  // ROUGIT (« /de nomme de, qui n'est pas une langue publiée »). La version d'avant, elle, serait
-  // restée verte sur cette même mutation — sa boucle ne s'exécutait plus.
-  it('ne nomme que des langues publiées', () => {
+  // PAST MUTATION: `localePath` forced to prefix `/de` instead of the received language. The assertion
+  // turns RED (« /de nomme de, qui n'est pas une langue publiée »). The previous version, for its part, would have
+  // stayed green on that same mutation — its loop no longer executed.
+  it('names only published languages', () => {
     expect(announced.length).toBe(PAGE_PATHS.length * PUBLISHED_LOCALES.length);
     for (const url of announced) {
       const prefix = url.split('/')[1];
@@ -139,7 +139,7 @@ describe('les URLs annoncées aux robots', () => {
     }
   });
 
-  it('porte un code hreflang pour chaque langue publiée', () => {
+  it('carries an hreflang code for each published language', () => {
     for (const locale of PUBLISHED_LOCALES) {
       expect(HTML_LANG[locale]).toBeTruthy();
     }
@@ -147,16 +147,16 @@ describe('les URLs annoncées aux robots', () => {
 });
 
 describe('localePath', () => {
-  it('rend la racine sans barre finale — une seule forme, donc un seul canonical', () => {
+  it('renders the root without a trailing slash — a single form, thus a single canonical', () => {
     expect(localePath('fr', '/')).toBe('/fr');
   });
 
-  it('préfixe les autres chemins', () => {
+  it('prefixes the other paths', () => {
     expect(localePath('fr', '/analyse')).toBe('/fr/analyse');
     expect(localePath('en', '/mentions-legales')).toBe('/en/mentions-legales');
   });
 
-  it('laisse passer la query — le parcours de démo en dépend', () => {
+  it('lets the query through — the demo journey depends on it', () => {
     expect(localePath('fr', '/analyse?demo')).toBe('/fr/analyse?demo');
   });
 });

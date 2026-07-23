@@ -1,17 +1,17 @@
-// Lexique d'intérêt `maquillage` (D2, PANO-76 lot 1, réécriture PROFONDE) — make-up.
+// Interest lexicon `maquillage` (D2, PANO-76 batch 1, DEEP rewrite) — make-up.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du maquillage FR : produits, techniques, gestes. À l'aveugle.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR make-up: products, techniques, gestures. Blind.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « maquillage », « mascara », « eyeliner », « contouring », « anticernes »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « maquillage », « mascara », « eyeliner », « contouring », « anticernes »,
 //     « fond de teint » (phrase), « rouge a levres » (phrase).
-//   · ANCRÉ — 50/50 : « teint » (complexion), « palette » (peintre), « blush » (rougir), « fard »
-//     (« sans fard »), « base » (base générique), « poudre » (poudre générique) : co-occurrence.
-//   · EXCLU — « rouge » nu (couleur/politique), « pinceau » nu (peinture).
+//   · ANCHORED — 50/50: « teint » (complexion), « palette » (painter), « blush » (to blush), « fard »
+//     (« sans fard »), « base » (generic base), « poudre » (generic powder): co-occurrence.
+//   · EXCLUDED — bare « rouge » (color/politics), bare « pinceau » (painting).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « skincare » (soin de la peau).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « skincare » (skin care).
 
 import type { InterestLexicon } from '../types';
 
@@ -45,7 +45,7 @@ export const MAQUILLAGE_LEXICON: InterestLexicon = {
     'baume a levres',
     'maquillage yeux',
     'trousse de maquillage',
-    // Marques & jargon (rétrofit PANO-90)
+    // Brands & jargon (retrofit PANO-90)
     'sephora',
     'fenty beauty',
     'rare beauty',
@@ -54,23 +54,23 @@ export const MAQUILLAGE_LEXICON: InterestLexicon = {
     'cut crease',
     'no makeup makeup',
     'douyin makeup',
-    // Variantes EN (PANO-88) : SOLO univoques.
+    // EN variants (PANO-88): SOLO univocal.
     'grwm',
     'full glam',
   ],
   anchored: [
     'teint', // complexion / « avoir bonne mine »
-    'palette', // palette de peintre / gamme
-    'blush', // « blush » (rougir) anglais
-    'fard', // « sans fard » (franchise)
-    'base', // base de maquillage vs base générique
-    'poudre', // poudre libre vs poudre générique
-    'khol', // court (gardé aussi dans « crayon khol » solo)
-    'mac', // marque MAC vs ordinateur Mac
-    'baking', // technique maquillage vs pâtisserie anglaise
-    'nyx', // marque vs générique
-    'haul', // shopping beauté vs générique (EN, ancré)
-    'swatch', // test de teinte vs marque de montre (EN)
+    'palette', // painter's palette / range
+    'blush', // English « blush » (to blush)
+    'fard', // « sans fard » (candor)
+    'base', // make-up base vs generic base
+    'poudre', // loose powder vs generic powder
+    'khol', // short (also kept in « crayon khol » solo)
+    'mac', // MAC brand vs Mac computer
+    'baking', // make-up technique vs English baking
+    'nyx', // brand vs generic
+    'haul', // beauty haul vs generic (EN, anchored)
+    'swatch', // shade swatch vs watch brand (EN)
   ],
   selfDeclared: ['maquilleur', 'maquilleuse'],
 };

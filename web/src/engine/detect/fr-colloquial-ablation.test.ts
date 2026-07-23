@@ -1,21 +1,21 @@
-// ABLATION — le sort des six formulations colloquiales françaises (PANO-35).
+// ABLATION — the fate of the six French colloquial formulations (PANO-35).
 //
-// Ce fichier n'est pas un capteur de plus : c'est une EXPÉRIENCE, figée pour que sa conclusion ne se
-// reperde pas. Il enregistre une **acceptation mesurée d'un faux positif connu**, ce qui est le genre
-// de décision qui disparaît en silence si rien ne la tient.
+// This file is not one more sensor: it is an EXPERIMENT, frozen so its conclusion does not get
+// lost again. It records a **measured acceptance of a known false positive**, which is the kind
+// of decision that disappears in silence if nothing holds it.
 //
-// ── La question, et pourquoi la formulation évidente est biaisée ─────────────────────────────────
-// « Ces tournures apparaissent-elles dans une vraie détresse ? » trouve évidemment oui : la question
-// est construite pour ça. Celle qui décide, et qui avait fait tomber cinq termes anglais, est :
-// **portent-elles un rappel que rien d'autre ne porte ?** Les cinq anglais sont tombés parce que
-// `therapist`, `sertraline` et `antidepressants` détectaient déjà la personne — leur retrait coûtait
-// zéro. L'instrument est donc une ablation : retirer les termes et regarder qui disparaît.
+// ── The question, and why the obvious formulation is biased ─────────────────────────────────
+// « Do these turns of phrase appear in real distress? » obviously finds yes: the question
+// is built for it. The one that decides, and that had dropped five English terms, is:
+// **do they carry a recall nothing else carries?** The five English ones fell because
+// `therapist`, `sertraline` and `antidepressants` already detected the person — their removal cost
+// zero. The instrument is therefore an ablation: remove the terms and watch who disappears.
 //
-// ── Admission ≠ éviction ─────────────────────────────────────────────────────────────────────────
-// La règle d'ADR-0003 (*L'admission d'un terme*) est une règle de PORTE, pas d'expulsion. Ne pas
-// admettre un terme ne coûte aucun rappel — on n'a jamais eu le sien. Évicter un terme ratifié coûte
-// un rappel qui EXISTE. Une barre haute à l'entrée et une barre haute à la sortie ne sont pas la
-// même exigence, et c'est pourquoi ces six-là ne se tranchent pas par doctrine.
+// ── Admission ≠ eviction ─────────────────────────────────────────────────────────────────────────
+// The ADR-0003 rule (*L'admission d'un terme*) is a GATE rule, not an expulsion. Not
+// admitting a term costs no recall — we never had its own. Evicting a ratified term costs
+// a recall that EXISTS. A high bar at the entrance and a high bar at the exit are not the
+// same requirement, and it is why these six are not settled by doctrine.
 
 import { describe, expect, it } from 'vitest';
 import { MENTAL_HEALTH_LEXICON } from '../lexicon/mental-health';
@@ -25,9 +25,9 @@ import { FR_REGISTER_PERSONAS } from './fr-registers.fixture';
 import type { RegisterPersona } from './register-bench';
 
 /**
- * Les six formulations sous examen. Cinq vivent dans `indirectColloquial` ; **`j'en peux plus` vit
- * dans `indirectCore`** — le tier « peu ambigu », ce qui rend son éviction plus lourde encore que
- * celle des cinq autres.
+ * The six formulations under examination. Five live in `indirectColloquial`; **`j'en peux plus` lives
+ * in `indirectCore`** — the « low-ambiguity » tier, which makes its eviction heavier still than
+ * that of the five others.
  */
 const LES_SIX = [
   "j'en peux plus",
@@ -38,7 +38,7 @@ const LES_SIX = [
   'cafard',
 ] as const;
 
-/** Le lexique `mental_health` privé de certains termes — variante de test, jamais livrée. */
+/** The `mental_health` lexicon deprived of certain terms — test variant, never shipped. */
 function lexiconSans(termes: readonly string[]): TopicalLexicon {
   return {
     ...MENTAL_HEALTH_LEXICON,
@@ -55,44 +55,44 @@ function persona(id: string): RegisterPersona {
   return p;
 }
 
-/** L'étage produit pour une persona sous un lexique donné, ou `null` si aucun constat. */
+/** The storey produced for a persona under a given lexicon, or `null` if no finding. */
 function etage(p: RegisterPersona, lexicon: TopicalLexicon): 'explicit' | 'indirect' | null {
   const texts = p.items.map((i) => i.text);
   return detectLabels(texts, [lexicon])[0]?.stage ?? null;
 }
 
-describe("ablation des six formulations FR — ce que le retrait achète et ce qu'il coûte", () => {
+describe('ablation of the six FR formulations — what the removal buys and what it costs', () => {
   const sansLesSix = lexiconSans(LES_SIX);
 
-  it('CE QUE LE RETRAIT ACHÈTE — le faux positif hyperbolique disparaît entièrement', () => {
+  it('WHAT THE REMOVAL BUYS — the hyperbolic false positive disappears entirely', () => {
     const p = persona('fr_hyperbolic');
-    // Une jeune femme qui parle d'un comeback et de macarons, taguée « santé mentale » aujourd'hui.
+    // A young woman talking about a comeback and macarons, tagged « mental health » today.
     expect(etage(p, MENTAL_HEALTH_LEXICON)).toBe('indirect');
     expect(etage(p, sansLesSix)).toBeNull();
   });
 
-  it('CE QUE LE RETRAIT NE COÛTE PAS — la détresse SOIGNÉE est indifférente', () => {
+  it('WHAT THE REMOVAL DOES NOT COST — CARED-FOR distress is indifferent', () => {
     const p = persona('fr_distress');
-    // Exactement le motif qui avait condamné les cinq termes anglais : le vocabulaire du soin
-    // (psychologue, sertraline, thérapie) détecte déjà, donc les colloquiaux ne portent rien ici.
+    // Exactly the pattern that had condemned the five English terms: the care vocabulary
+    // (psychologist, sertraline, therapy) already detects, so the colloquial ones carry nothing here.
     expect(etage(p, MENTAL_HEALTH_LEXICON)).toBe('explicit');
     expect(etage(p, sansLesSix)).toBe('explicit');
   });
 
-  it('CE QUE LE RETRAIT COÛTE — la détresse SANS SOIN disparaît complètement', () => {
+  it('WHAT THE REMOVAL COSTS — distress WITHOUT CARE disappears completely', () => {
     const p = persona('fr_distress_colloquial');
-    // C'est le résultat qui décide. Une femme réellement en détresse, sans diagnostic ni suivi,
-    // détectée aujourd'hui — et plus détectée du tout après retrait. Pas dégradée : DISPARUE.
+    // It is the result that decides. A woman genuinely in distress, without diagnosis or follow-up,
+    // detected today — and no longer detected at all after removal. Not degraded: DISAPPEARED.
     expect(etage(p, MENTAL_HEALTH_LEXICON)).toBe('indirect');
     expect(etage(p, sansLesSix)).toBeNull();
   });
 
-  it("AUCUN terme n'est individuellement porteur — c'est le franchissement du seuil qui l'est", () => {
-    // Retirer UN SEUL des six ne change l'étage d'aucune des trois voix. Le mécanisme n'est donc pas
-    // « ce terme détecte cette femme », c'est « l'accumulation franchit le seuil de 2 ». La voix sans
-    // soin porte 5 hits dont 4 parmi les six ; le cinquième (« au fond du trou », colloquial mais
-    // hors des six) reste SEUL après retrait, donc sous le seuil. Elle tombe par le seuil, pas par
-    // le vocabulaire.
+  it('NO term is individually load-bearing — it is the threshold crossing that is', () => {
+    // Removing ONE SINGLE of the six changes the storey of none of the three voices. The mechanism is therefore not
+    // « this term detects this woman », it is « the accumulation crosses the threshold of 2 ». The voice without
+    // care carries 5 hits, 4 of which among the six; the fifth (« au fond du trou », colloquial but
+    // outside the six) remains ALONE after removal, hence below the threshold. She falls by the threshold, not by
+    // the vocabulary.
     for (const terme of LES_SIX) {
       const lex = lexiconSans([terme]);
       expect(etage(persona('fr_hyperbolic'), lex)).toBe('indirect');
@@ -101,19 +101,19 @@ describe("ablation des six formulations FR — ce que le retrait achète et ce q
     }
   });
 
-  it('LA DÉCISION — les six restent, et le faux positif est accepté en connaissance de cause', () => {
-    // Critère posé AVANT la mesure : si la voix sans soin survit au retrait, les six partent ; si
-    // elle disparaît, ils restent et le faux positif est le prix. Elle disparaît.
+  it('THE DECISION — the six stay, and the false positive is accepted knowingly', () => {
+    // Criterion posed BEFORE the measurement: if the voice without care survives the removal, the six go; if
+    // it disappears, they stay and the false positive is the price. It disappears.
     //
-    // Ce test est la trace de cette décision. Il n'assère pas un comportement de plus — les trois
-    // premiers le font — il énonce que le constat sur `fr_hyperbolic` est un faux positif CONNU,
-    // MESURÉ et ACCEPTÉ, et non un défaut qu'on n'aurait pas vu. Le jour où quelqu'un retire les six
-    // pour « nettoyer les FP », les tests ci-dessus rougissent et le renvoient ici.
+    // This test is the trace of that decision. It does not assert one more behavior — the three
+    // first ones do — it states that the finding on `fr_hyperbolic` is a KNOWN,
+    // MEASURED and ACCEPTED false positive, and not a defect one would not have seen. The day someone removes the six
+    // to « clean up the FPs », the tests above go red and send them back here.
     const fpAccepte = etage(persona('fr_hyperbolic'), MENTAL_HEALTH_LEXICON);
     const rappelPreserve = etage(persona('fr_distress_colloquial'), MENTAL_HEALTH_LEXICON);
     expect(fpAccepte).toBe('indirect');
     expect(rappelPreserve).toBe('indirect');
-    // Les six sont TOUJOURS dans le lexique livré. Cette assertion est le verrou de la décision.
+    // The six are STILL in the shipped lexicon. This assertion is the lock of the decision.
     const tousPresents = [
       ...MENTAL_HEALTH_LEXICON.indirectCore,
       ...MENTAL_HEALTH_LEXICON.indirectColloquial,

@@ -1,51 +1,51 @@
-// TÉMOIN DU REPLI PAR DÉFAUT D'UN CONSTAT SENSIBLE — SENS-C4, moitié « porte ».
+// WITNESS OF THE DEFAULT COLLAPSE OF A SENSITIVE FINDING — SENS-C4, the « door » half.
 //
-// POURQUOI CE FICHIER EXISTE. ADR-0003 (*Ce qui porte la sécurité : la porte, pas le seuil*) fait du
-// repli la **porte du consentement**, et ses *Conséquences* écrivent noir sur blanc qu'il peut
-// **tomber sans bruit**. C'était le seul point de la doctrine qui prédisait son propre mode de
-// défaillance sans que personne ne le regarde : le repli tenait à un `useState(false)` dans
-// `ThemeCardNavy.tsx`, figé par accident et non par mesure.
+// WHY THIS FILE EXISTS. ADR-0003 (*What carries the safety: the door, not the threshold*) makes the
+// collapse the **door of consent**, and its *Consequences* write in black and white that it can
+// **fall silently**. It was the only point of the doctrine that predicted its own mode of
+// failure without anyone watching it: the collapse hung on a `useState(false)` in
+// `ThemeCardNavy.tsx`, frozen by accident and not by measure.
 //
-// PAR ACCIDENT, ET IL FAUT DIRE LEQUEL — sinon la suite paraît redondante avec les goldens. Les deux
-// goldens de rendu **mockent `useState`** pour forcer tout booléen initialisé à `false` vers `true`
-// (leur « précaution 2 », sans laquelle ils ne verraient ni verbatim ni surbrillance). Ils sont donc
-// **structurellement aveugles** à la valeur initiale : basculer la source en `useState(true)` n'y
-// déplace pas un octet. Le badge « sensible », lui, est bien tenu par eux — il ne dépend d'aucun
-// état.
+// BY ACCIDENT, AND ONE MUST SAY WHICH — otherwise the rest seems redundant with the goldens. The two
+// render goldens **mock `useState`** to force every boolean initialized to `false` toward `true`
+// (their « precaution 2 », without which they would see neither verbatim nor highlight). They are
+// therefore **structurally blind** to the initial value: switching the source to `useState(true)` moves
+// not a byte there. The « sensible » badge, on the other hand, is indeed held by them — it depends on no
+// state.
 //
-// L'ASSERTION QUI PORTE est `aria-expanded="false"`, pas l'absence du corps. Une absence est un
-// **zéro**, et CLAUDE.md impose de se demander par quel chemin il arrive : un constat sans preuve
-// rendrait un corps vide quel que soit l'état. `aria-expanded` change de **valeur** sous mutation,
-// il ne peut pas passer au vert pour une autre raison. L'absence du verbatim n'est ici qu'une
-// assertion **secondaire**, et elle n'est légitime que parce que la preuve ci-dessous existe : le
-// seul chemin qui l'efface du rendu est le repli.
+// THE BEARING ASSERTION is `aria-expanded="false"`, not the absence of the body. An absence is a
+// **zero**, and CLAUDE.md requires asking by which path it arrives: a finding without evidence
+// would render an empty body whatever the state. `aria-expanded` changes **value** under mutation,
+// it cannot go green for another reason. The absence of the verbatim is here only a
+// **secondary** assertion, and it is legitimate only because the evidence below exists: the
+// only path that erases it from the render is the collapse.
 //
-// VÉRIFIÉ PAR MUTATION (le test ne prouve rien tant que ce n'est pas fait) :
-//   - `SignalCardNavy` : `useState(false)` → `useState(true)` ⇒ CE fichier rougit, et lui seul sur
-//     l'ensemble de la suite ;
-//   - `ThemeCardNavy` : même bascule sur l'autre repli (les cartes de thème, non sensibles) ⇒ ce
-//     fichier reste VERT. Le témoin est donc spécifique au mécanisme sensible, pas couplé par
-//     hasard au repli voisin.
+// VERIFIED BY MUTATION (the test proves nothing until this is done):
+//   - `SignalCardNavy`: `useState(false)` → `useState(true)` ⇒ THIS file goes red, and it alone in
+//     the whole suite;
+//   - `ThemeCardNavy`: same toggle on the other collapse (the theme cards, non-sensitive) ⇒ this
+//     file stays GREEN. The witness is therefore specific to the sensitive mechanism, not coupled by
+//     chance to the neighboring collapse.
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme de preuve déclare sa frontière, sinon il finit sur-cité.
-//   - LA MOITIÉ « BADGE » DE SENS-C4. Ce fichier vérifie que le badge est PRÉSENT, mais seulement
-//     pour s'ancrer sur le bon sujet (une carte sensible, pas une carte quelconque). Sa prose et sa
-//     place dans l'en-tête sont figées par les goldens de rendu, pas ici ;
-//   - LA CARTE DE SIGNAL SENSIBLE (`SignalCardNavy`) SEULEMENT. Le repli des cartes de THÈME est un
-//     `useState` distinct dans le même fichier ; il ne porte aucune doctrine du sensible et reste
-//     hors de ce témoin — la mutation croisée ci-dessus le mesure ;
-//   - LE COMPORTEMENT APRÈS CLIC. Ce qui est figé est l'état de **premier rendu**, c'est-à-dire ce
-//     que SENS-C4 protège (le coup d'œil non consenti). Rien ici ne dit que la carte s'ouvre ni
-//     qu'elle se referme ;
-//   - PAS DE SECOND TÉMOIN MOBILE, et c'est un choix mesuré plutôt qu'un oubli : `SignalCardNavy`
-//     ne lit pas `useIsMobile`. L'état `open` n'a donc **aucune branche de device** à exercer deux
-//     fois, et un témoin mobile rejouerait le même code sur la même valeur. Le jour où une variante
-//     `M_*` conditionnerait le repli, cette ligne devient fausse et ce témoin doit doubler ;
-//   - LE CHEMIN MOTEUR. Le constat ci-dessous est construit à la main, pas produit par le détecteur.
-//     Ce témoin dit « une carte sensible se rend repliée », jamais « le moteur émet un sensible » —
-//     cette seconde propriété vit dans les bancs de `detect/`. C'est délibéré : accrocher le témoin
-//     à la persona le rendrait vacant le jour où une règle cesse d'émettre.
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+// CLAUDE.md obligation: a proof mechanism declares its border, otherwise it ends up over-cited.
+//   - THE « BADGE » HALF OF SENS-C4. This file verifies that the badge is PRESENT, but only
+//     to anchor on the right subject (a sensitive card, not any card). Its prose and its
+//     place in the header are frozen by the render goldens, not here;
+//   - THE SENSITIVE SIGNAL CARD (`SignalCardNavy`) ONLY. The collapse of the THEME cards is a
+//     distinct `useState` in the same file; it carries no doctrine of the sensitive and remains
+//     outside this witness — the cross mutation above measures it;
+//   - THE BEHAVIOR AFTER CLICK. What is frozen is the **first-render** state, that is what
+//     SENS-C4 protects (the unconsented glance). Nothing here says the card opens or
+//     that it closes again;
+//   - NO SECOND MOBILE WITNESS, and it is a measured choice rather than an omission: `SignalCardNavy`
+//     does not read `useIsMobile`. The `open` state therefore has **no device branch** to exercise
+//     twice, and a mobile witness would replay the same code on the same value. The day a variant
+//     `M_*` conditions the collapse, this line becomes false and this witness must double;
+//   - THE ENGINE PATH. The finding below is built by hand, not produced by the detector.
+//     This witness says « a sensitive card renders collapsed », never « the engine emits a sensitive » —
+//     that second property lives in the benches of `detect/`. It is deliberate: hooking the witness
+//     to the persona would make it vacant the day a rule stops emitting.
 
 import { h } from 'preact';
 import { render } from 'preact-render-to-string';
@@ -54,8 +54,8 @@ import type { Signal } from '../../engine/analysis';
 import { UI_CARD } from '../copy';
 import { SignalCardNavy } from './ThemeCardNavy';
 
-// Verbatim synthétique (invariant du dépôt : aucune valeur d'un vrai export). Il n'a qu'un rôle —
-// être une chaîne que SEUL le corps déplié peut faire apparaître dans le rendu.
+// Synthetic verbatim (repo invariant: no value from a real export). It has only one role —
+// to be a string that ONLY the expanded body can make appear in the render.
 const VERBATIM = 'zzz-preuve-temoin-repli';
 
 const SENSITIVE_SIGNAL: Signal = {
@@ -72,16 +72,16 @@ const SENSITIVE_SIGNAL: Signal = {
   ],
 };
 
-it('SENS-C4 — un constat sensible démarre REPLIÉ (ADR-0003 : le repli est la porte du consentement)', () => {
+it('SENS-C4 — a sensitive finding starts COLLAPSED (ADR-0003: the collapse is the door of consent)', () => {
   const html = render(h(SignalCardNavy, { signal: SENSITIVE_SIGNAL, reuseMap: new Map() }));
 
-  // Ancrage : on regarde bien une carte SENSIBLE. Sans ça, le test tiendrait sur n'importe quelle
-  // carte et ne dirait plus rien de la doctrine qu'il cite.
+  // Anchoring: we are indeed looking at a SENSITIVE card. Without this, the test would hold on any
+  // card and would no longer say anything about the doctrine it cites.
   expect(html).toContain(UI_CARD.sensitiveTag);
 
-  // L'assertion qui porte : la porte est fermée au premier rendu.
+  // The bearing assertion: the door is closed at first render.
   expect(html).toContain('aria-expanded="false"');
 
-  // Secondaire : la preuve existe (ci-dessus), donc son absence du rendu ne peut venir que du repli.
+  // Secondary: the evidence exists (above), so its absence from the render can only come from the collapse.
   expect(html).not.toContain(VERBATIM);
 });

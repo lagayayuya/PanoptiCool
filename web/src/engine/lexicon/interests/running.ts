@@ -1,16 +1,16 @@
-// Lexique d'intérêt `running` (D2, PANO-76 lot 1, réécriture PROFONDE) — course à pied / trail.
+// Interest lexicon `running` (D2, PANO-76 batch 1, DEEP rewrite) — running / trail.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la course à pied FR : distances, allure, matériel, épreuves. À l'aveugle.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR running: distances, pace, gear, races. Blind.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — « running », « marathon », « footing », « trail running », « fractionne » (haute valeur).
-//   · ANCRÉ — « course » (shopping/auto), « trail » (sentier), « allure » (élégance), « borne » (km
-//     vs générique) : ne comptent qu'avec un compagnon du domaine.
-//   · EXCLU — « chrono » (« en un chrono »), « pace » (trop générique nu).
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — « running », « marathon », « footing », « trail running », « fractionne » (high value).
+//   · ANCHORED — « course » (shopping/auto), « trail » (path), « allure » (elegance), « borne » (km
+//     vs generic): count only with a domain companion.
+//   · EXCLUDED — « chrono » (« en un chrono »), « pace » (too generic bare).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « muscu » (fonte) et « randonnée » (marche).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « muscu » (weights) and « randonnée » (walking).
 
 import type { InterestLexicon } from '../types';
 
@@ -43,7 +43,7 @@ export const RUNNING_LEXICON: InterestLexicon = {
     'runner',
     'dix kilometres',
     'coureur du dimanche',
-    // Marques & jargon (rétrofit PANO-90)
+    // Brands & jargon (retrofit PANO-90)
     'asics',
     'hoka',
     'garmin',
@@ -53,21 +53,21 @@ export const RUNNING_LEXICON: InterestLexicon = {
     'utmb',
     'gel kayano',
     'fractionne court',
-    // Variantes EN (PANO-88) : SOLO univoque.
+    // EN variants (PANO-88): SOLO univocal.
     'tempo run',
   ],
   anchored: [
-    'course', // course à pied vs courses (shopping) / course auto
-    'trail', // trail running vs sentier
-    'allure', // allure de course vs élégance
-    'borne', // borne kilométrique vs générique
-    'denivele', // dénivelé (trail) vs générique géo
-    'nike', // marque running/sneakers (partagé) vs générique
-    'brooks', // marque vs patronyme
-    'cadence', // cadence de course vs rythme générique
-    'run', // course vs anglais générique (EN, ancré)
-    'pace', // allure vs anglais générique (EN)
-    'long run', // sortie longue vs générique (EN)
+    'course', // running vs courses (shopping) / car race
+    'trail', // trail running vs path
+    'allure', // running pace vs elegance
+    'borne', // km marker vs generic
+    'denivele', // elevation gain (trail) vs generic geo
+    'nike', // running/sneakers brand (shared) vs generic
+    'brooks', // brand vs surname
+    'cadence', // running cadence vs generic rhythm
+    'run', // running vs generic English (EN, anchored)
+    'pace', // pace vs generic English (EN)
+    'long run', // long run vs generic (EN)
   ],
   selfDeclared: ['coureur', 'coureuse', 'marathonien', 'traileur'],
 };

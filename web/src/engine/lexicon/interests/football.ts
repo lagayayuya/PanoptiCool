@@ -1,30 +1,30 @@
-// Lexique d'intérêt `football` (D2, PANO-76 lot 1, réécriture PROFONDE) — football (soccer).
+// Interest lexicon `football` (D2, PANO-76 batch 1, DEEP rewrite) — football (soccer).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du football FR : règles, compétitions, postes, transferts, jargon supporter.
-// À l'aveugle depuis l'usage commun.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR football: rules, competitions, positions, transfers, supporter jargon.
+// Blind from common usage.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — « football », « penalty », « mercato », « ligue des champions » (quasi-univoques).
-//   · ANCRÉ — le cœur du 50/50 : « but » (finalité), « match » (allumette), « foot » (anatomie),
-//     « corner » (coin), « cage » (prison), « arbitre », « tacle » : ne comptent qu'avec un
-//     compagnon foot. C'est l'exemple canonique de la co-occurrence (PANO-76).
-//   · EXCLU — « ballon » (baudruche, trop courant même ancré ici sans plus-value).
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — « football », « penalty », « mercato », « ligue des champions » (near-univocal).
+//   · ANCHORED — the heart of the 50/50: « but » (aim/goal), « match » (matchstick), « foot » (anatomy),
+//     « corner » (corner), « cage » (cage/prison), « arbitre », « tacle »: count only with a
+//     foot companion. It is the canonical example of co-occurrence (PANO-76).
+//   · EXCLUDED — « ballon » (balloon, too common even anchored here with no added value).
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Couche EN-only : ce que tape un anglophone et qu'aucun marqueur FR n'attrape.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// EN-only layer: what an anglophone types and that no FR marker catches.
 //   · SOLO — « offside », « clean sheet », « nutmeg », « own goal », « stoppage time », « false nine »,
 //     « tiki taka », « parked the bus », « transfer window », « counter attack », « free kick »,
-//     « penalty shootout », « soccer », « xg » ; compétitions (« champions league », « bundesliga »,
+//     « penalty shootout », « soccer », « xg »; competitions (« champions league », « bundesliga »,
 //     « serie a », « fa cup », « mls »).
-//   · ANCRÉ — « pitch » (l'argumentaire de vente, la hauteur d'un son : encore PLUS faible en EN qu'en
-//     FR), « boots » (chaussures en général), « kit » (trousse de secours, kit de batterie — et le kit
-//     du `cyclisme`), « derby » (la VILLE de Derby, le roller derby), « fixture » (un LUMINAIRE),
-//     « header » (l'en-tête HTTP), « striker » (un GRÉVISTE), « keeper », « var » (le département du
-//     Var, une variable), « gaffer » (le CHEF ÉLECTRICIEN d'un plateau de cinéma) : compagnon requis.
+//   · ANCHORED — « pitch » (the sales pitch, the pitch of a sound: even WEAKER in EN than in
+//     FR), « boots » (shoes in general), « kit » (first-aid kit, drum kit — and the `cyclisme`
+//     kit), « derby » (the CITY of Derby, roller derby), « fixture » (a light FIXTURE),
+//     « header » (the HTTP header), « striker » (a STRIKER/worker on strike), « keeper », « var » (the Var
+//     department, a variable), « gaffer » (the CHIEF ELECTRICIAN of a film set): companion required.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Jeux d'ARGENT / paris EXCLUS (PANO-74) : aucun marqueur de cote ou bookmaker.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. GAMBLING / betting EXCLUDED (PANO-74): no odds or bookmaker marker.
 
 import type { InterestLexicon } from '../types';
 
@@ -57,7 +57,7 @@ export const FOOTBALL_LEXICON: InterestLexicon = {
     'defenseur',
     "ballon d'or",
     'supporter de foot',
-    // Clubs & joueurs (rétrofit PANO-90)
+    // Clubs & players (retrofit PANO-90)
     'psg',
     'real madrid',
     'barcelone',
@@ -70,7 +70,7 @@ export const FOOTBALL_LEXICON: InterestLexicon = {
     'vinicius',
     'bellingham',
     'lamine yamal',
-    // Variantes EN (PANO-88) : SOLO univoques (règles, tactique, compétitions).
+    // EN variants (PANO-88): SOLO univocal (rules, tactics, competitions).
     'soccer',
     'offside',
     'clean sheet',
@@ -94,28 +94,28 @@ export const FOOTBALL_LEXICON: InterestLexicon = {
     'xg',
   ],
   anchored: [
-    'but', // dans le but de… (finalité)
-    'match', // allumette / « faire un match »
-    'foot', // pied (anatomie)
-    'corner', // coin (anglais)
-    'cage', // les cages (buts) vs cage générique
-    'arbitre', // arbitre de foot vs arbitrage générique
-    'tacle', // tacle vs métaphore
-    'transfert', // transfert de joueur vs virement/transfert générique
+    'but', // dans le but de… (aim/purpose)
+    'match', // matchstick / « faire un match »
+    'foot', // foot (anatomy)
+    'corner', // corner (English)
+    'cage', // the goal (cage) vs generic cage
+    'arbitre', // foot referee vs generic arbitration
+    'tacle', // tackle vs metaphor
+    'transfert', // player transfer vs generic transfer/wire
     'real', // Real Madrid vs « réel »
-    'barca', // FC Barcelone vs générique
-    'messi', // joueur vs patronyme
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'pitch', // argumentaire de vente / hauteur d'un son — plus faible encore qu'en FR (EN)
-    'boots', // chaussures en général / démarrage d'un ordinateur (EN)
-    'kit', // trousse de secours / kit de batterie — partagé cyclisme (EN)
-    'derby', // la ville de Derby / roller derby (EN)
-    'fixture', // = un luminaire (EN)
-    'header', // = en-tête HTTP (EN)
-    'striker', // = un gréviste (EN)
-    'keeper', // « a keeper » = ce qu'on garde (EN)
-    'var', // le département du Var / une variable (EN)
-    'gaffer', // = chef électricien d'un plateau de cinéma (EN)
+    'barca', // FC Barcelona vs generic
+    'messi', // player vs surname
+    // EN variants (PANO-88): ANCHORED.
+    'pitch', // sales pitch / pitch of a sound — even weaker than in FR (EN)
+    'boots', // shoes in general / booting a computer (EN)
+    'kit', // first-aid kit / drum kit — shared cyclisme (EN)
+    'derby', // the city of Derby / roller derby (EN)
+    'fixture', // = a light fixture (EN)
+    'header', // = HTTP header (EN)
+    'striker', // = a worker on strike (EN)
+    'keeper', // « a keeper » = something worth keeping (EN)
+    'var', // the Var department / a variable (EN)
+    'gaffer', // = chief electrician of a film set (EN)
   ],
   selfDeclared: ['footballeur', 'supporter de foot'],
 };

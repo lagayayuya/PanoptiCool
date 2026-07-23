@@ -1,155 +1,155 @@
-// Banc de faux positifs `conflictual` — le CAPTEUR. Voix et vérité-terrain dans
-// `conflictual-registers.fixture.ts`, scellées par un commit ANTÉRIEUR à ce fichier : c'est
-// l'historique, et lui seul, qui prouve que les attendus n'ont pas été ajustés à la mesure. Le
-// comptage est partagé avec les bancs EN, FR et corps (`register-bench.harness.ts`).
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// `conflictual` false-positive bench — the SENSOR. Voices and ground truth in
+// `conflictual-registers.fixture.ts`, sealed by a commit PRIOR to this file: it is
+// the history, and it alone, that proves the expectations were not adjusted to the measurement. The
+// counting is shared with the EN, FR and body benches (`register-bench.harness.ts`).
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── CE QUE LA PREMIÈRE MESURE A TROUVÉ ───────────────────────────────────────────────────────────
-// ⚠ CE RELEVÉ EST DATÉ ET N'EST PLUS L'ÉTAT COURANT. Il est conservé tel quel — c'est un rapport,
-// et le réécrire effacerait ce qui a motivé l'arbitrage. Ce qui a changé depuis, et où le lire :
-// `moron` a été RETIRÉ sur ce chiffre même, ce qui a fait tomber le tort `en_banter` et rendu
-// l'anglais muet des deux côtés ; le détail est dans les deux blocs ajoutés en fin d'en-tête, et
-// l'état courant est celui qu'assertent `expectBenchCounts` et la garde du zéro anglais.
+// ── WHAT THE FIRST MEASUREMENT FOUND ───────────────────────────────────────────────────────────
+// ⚠ THIS RECORD IS DATED AND IS NO LONGER THE CURRENT STATE. It is kept as is — it is a report,
+// and rewriting it would erase what motivated the arbitration. What has changed since, and where to read it:
+// `moron` was REMOVED on this very figure, which dropped the `en_banter` wrong and made
+// English silent on both sides; the detail is in the two blocks added at the end of the header, and
+// the current state is the one asserted by `expectBenchCounts` and the guard of the English zero.
 //
-// Relevé le 2026-07-18, 26 items par voix, quatre voix. Les deux chiffres d'une paire répondent à
-// des questions opposées et ne se fusionnent pas ; ils sont donc lus voix par voix.
+// Recorded 2026-07-18, 26 items per voice, four voices. The two figures of a pair answer
+// opposed questions and do not merge; they are therefore read voice by voice.
 //
-//   fr_contempt (agressivité VÉCUE) → 1 détection, sur une seule surface : `debile`.
-//   fr_banter   (vanne, NON-PORTEUSE) → 1 détection, sur la MÊME surface : `debile`.
-//   en_contempt (agressivité VÉCUE) → 0 détection.
-//   en_banter   (vanne, NON-PORTEUSE) → 1 détection, sur `moron`.
+//   fr_contempt (LIVED aggression) → 1 detection, on a single surface: `debile`.
+//   fr_banter   (banter, NON-CARRIER) → 1 detection, on the SAME surface: `debile`.
+//   en_contempt (LIVED aggression) → 0 detection.
+//   en_banter   (banter, NON-CARRIER) → 1 detection, on `moron`.
 //
-// Trois lectures, et aucune n'est une régression de ce lot — ce sont les premiers chiffres que ce
-// label ait jamais eus.
+// Three readings, and none is a regression of this batch — they are the first figures this
+// label ever had.
 //
-// LE FAIT QUI LES UNIT, et il vaut mieux que le détail de chaque voix : sur 104 items, DEUX surfaces
-// se sont déclenchées en tout — `debile` et `moron`. Aucune de `nul`, `pitoyable`, `incompetent`,
-// `abruti`, `betise` ; aucune de `idiot`, `useless`, `pathetic`, `clueless`, `rubbish`, `nonsense`,
-// alors que `idiot` et `useless` reviennent plusieurs fois dans les deux voix anglaises. Le rappel
-// sur l'agressivité réelle est donc proche de zéro dans LES DEUX langues, faute que le lexique porte
-// le registre ordinaire — et le ou les termes qu'il porte se déclenchent sans égard pour qui est
-// visé. Ce n'est pas une lecture inversée de la relation : c'est une lexicalisation clairsemée,
-// posée sur un détecteur qui n'a aucun accès à la relation.
+// THE FACT THAT UNITES THEM, and it is worth more than the detail of each voice: over 104 items, TWO surfaces
+// fired in all — `debile` and `moron`. None of `nul`, `pitoyable`, `incompetent`,
+// `abruti`, `betise`; none of `idiot`, `useless`, `pathetic`, `clueless`, `rubbish`, `nonsense`,
+// while `idiot` and `useless` recur several times in both English voices. Recall
+// on real aggression is therefore near zero in BOTH languages, for want of the lexicon carrying
+// the ordinary register — and the term(s) it does carry fire without regard for who is
+// targeted. It is not an inverted reading of the relation: it is a sparse lexicalization,
+// placed on a detector that has no access to the relation.
 //
-// 1. CÔTÉ FR, LE DÉTECTEUR NE DISTINGUE RIEN. Vingt-six items de mépris soutenu produisent une
-//    détection, et c'est le même mot qui fait tagger l'amie affectueuse. La restauratrice qui écrit
+// 1. ON THE FR SIDE, THE DETECTOR DISTINGUISHES NOTHING. Twenty-six items of sustained contempt produce one
+//    detection, and it is the same word that tags the affectionate friend. The restaurateur who writes
 //    « pitoyable », « incompetent », « c'est de la merde », « je supporte pas la betise satisfaite »
-//    n'est vue sur AUCUN de ces items. Le rappel et le tort reposent sur une seule et même surface :
-//    ce que la mesure montre, ce n'est pas un détecteur imprécis, c'est un détecteur qui n'a pas
-//    d'opinion sur la relation — exactement ce que la paire a été écrite pour éprouver.
+//    is seen on NONE of these items. Recall and wrong rest on one and the same surface:
+//    what the measurement shows is not an imprecise detector, it is a detector that has no
+//    opinion on the relation — exactly what the pair was written to test.
 //
-// 2. CÔTÉ EN, LE SEUL DÉCLENCHEMENT PORTE SUR LA NON-PORTEUSE, et le chemin du zéro n'est pas
-//    traçable ici. La voix hostile rend ZÉRO ; la voix affectueuse est la seule taguée. Il est
-//    tentant d'en conclure que l'anglais lit la relation à l'envers — ce serait faux, et c'est le
-//    genre de conclusion que ce dépôt paie cher : `detectFor` ne transmet que le texte des items,
-//    le détecteur n'a donc AUCUN modèle de la relation et ne peut pas l'inverser.
+// 2. ON THE EN SIDE, THE ONLY FIRING IS ON THE NON-CARRIER, and the path of the zero is not
+//    traceable here. The hostile voice returns ZERO; the affectionate voice is the only one tagged. It is
+//    tempting to conclude that English reads the relation backwards — that would be false, and it is the
+//    kind of conclusion this repo pays dearly for: `detectFor` transmits only the item text,
+//    the detector therefore has NO model of the relation and cannot invert it.
 //
-//    Ce que la mesure montre est plus étroit et plus utile. Deux items portent la même racine :
-//    `en_contempt` #15, « i have no patience for morons who lecture », ne déclenche pas ;
-//    `en_banter` #23, « you are the official moron of this house », déclenche. Le pluriel muet,
-//    le singulier vu. DEUX CHEMINS l'expliqueraient — une tolérance de pluriel absente sur ce
-//    terme, ou une règle d'étage qui dégrade la formulation générale (« morons who lecture ») là
-//    où l'adresse directe passe — ET CE BANC NE PEUT PAS TRANCHER : son auteur n'a lu ni le
-//    lexique ni les filtres, c'est la condition du sceau. La question est posée, pas résolue.
+//    What the measurement shows is narrower and more useful. Two items carry the same root:
+//    `en_contempt` #15, « i have no patience for morons who lecture », does not fire;
+//    `en_banter` #23, « you are the official moron of this house », fires. The plural silent,
+//    the singular seen. TWO PATHS would explain it — a plural tolerance absent on this
+//    term, or a storey rule that degrades the general formulation (« morons who lecture ») where
+//    direct address passes — AND THIS BENCH CANNOT DECIDE: its author read neither the
+//    lexicon nor the filters, it is the seal's condition. The question is posed, not resolved.
 //
-//    Si c'est le second chemin, le résultat est celui de la parabole `health_physical` : la
-//    machinerie écrite pour réduire les faux positifs serait ce qui abrite l'agresseuse et expose
-//    l'amie. C'est la première chose à vérifier, et elle demande un lecteur autorisé.
+//    If it is the second path, the result is that of the `health_physical` parable: the
+//    machinery written to reduce false positives would be what shelters the aggressor and exposes
+//    the friend. It is the first thing to check, and it requires an authorized reader.
 //
-// 3. LES DEUX TORTS SONT DES CONSTATS NOMMÉS (`explicit`), pas des constats larges. Ce n'est pas un
-//    détail d'étage : un constat nommé porte la confiance haute et le quasi-factuel (ADR-0003). Le
-//    produit, en l'état, dirait d'une jeune femme qui traite ses amies de débiles par tendresse
-//    qu'elle relève d'un constat conflictuel NOMMÉ.
+// 3. THE TWO WRONGS ARE NAMED FINDINGS (`explicit`), not broad findings. This is not a
+//    storey detail: a named finding carries high confidence and the quasi-factual (ADR-0003). The
+//    product, as it stands, would say of a young woman who calls her friends idiots out of tenderness
+//    that she warrants a NAMED conflictual finding.
 //
-// RIEN N'EST RETIRÉ NI CORRIGÉ ICI. Un lot concurrent travaille le lexique `conflictual` au moment
-// où ce capteur est monté ; l'arbitrage appartient au mainteneur, et le banc FIGE la question pour
-// qu'elle ne se reperde pas — le même geste que les six formulations colloquiales du banc FR.
+// NOTHING IS REMOVED NOR CORRECTED HERE. A concurrent batch works the `conflictual` lexicon at the moment
+// this sensor is mounted; the arbitration belongs to the maintainer, and the bench FREEZES the question so
+// it does not get lost again — the same gesture as the six colloquial formulations of the FR bench.
 //
-// ── LA QUESTION DU §2 EST TRANCHÉE — par un lecteur autorisé, comme il le demandait ──────────────
-// Ajouté après coup par le lot du lexique EN, qui a lu le lexique et les filtres. Le capteur nommait
-// deux chemins possibles pour l'asymétrie `morons` / `moron` et disait ne pas pouvoir choisir. Il
-// avait raison de ne pas choisir, et raison sur la conclusion. Mesuré :
+// ── THE §2 QUESTION IS SETTLED — by an authorized reader, as it asked ──────────────
+// Added afterward by the EN lexicon batch, which read the lexicon and the filters. The sensor named
+// two possible paths for the `morons` / `moron` asymmetry and said it could not choose. It
+// was right not to choose, and right about the conclusion. Measured:
 //
-//   · la tolérance de PLURIEL fonctionne (`moron` matche bien « morons ») → premier chemin ÉCARTÉ ;
-//   · « i have no patience for morons who lecture »        → RIEN ;
-//     « you are one of the morons who lecture » (la même, adressée) → TAGUÉ.
+//   · the PLURAL tolerance works (`moron` does match « morons ») → first path SET ASIDE;
+//   · « i have no patience for morons who lecture »        → NOTHING;
+//     « you are one of the morons who lecture » (the same, addressed) → TAGGED.
 //
-// Ce qui décide n'est donc ni le pluriel ni une règle d'étage : c'est la CIBLE de 2ᵉ personne, que
-// `conflictual` exige dans le même item (ADR-0003, exception `conflictual` : « émis ≠ cité » ET
-// « visant un autre utilisateur »).
+// What decides is therefore neither the plural nor a storey rule: it is the 2nd-person TARGET, which
+// `conflictual` requires in the same item (ADR-0003, `conflictual` exception: « issued ≠ cited » AND
+// « targeting another user »).
 //
-// ET LA PARABOLE DU §2 EST PLUS JUSTE ENCORE QUE SON AUTEUR NE POUVAIT L'ÉCRIRE. La garde n'est pas
-// seulement incapable de distinguer l'agression de la vanne : sur ces deux voix, elle est
-// ANTI-CORRÉLÉE. Le mépris s'exprime À PROPOS d'une catégorie (« morons who lecture », « les gens
-// comme ça ») — sans adresse, donc invisible. La tendresse, elle, ADRESSE (« you are the official
-// moron of this house ») — c'est exactement ce que la garde réclame. Le mécanisme écrit pour éviter
-// de taguer une critique d'idée sélectionne, sur ce couple, la voix qu'il fallait épargner.
+// AND THE §2 PARABLE IS EVEN MORE ACCURATE THAN ITS AUTHOR COULD WRITE IT. The guard is not
+// only unable to distinguish aggression from banter: on these two voices, it is
+// ANTI-CORRELATED. Contempt is expressed ABOUT a category (« morons who lecture », « les gens
+// comme ça ») — without address, hence invisible. Tenderness, in contrast, ADDRESSES (« you are the official
+// moron of this house ») — it is exactly what the guard requires. The mechanism written to avoid
+// tagging a critique of an idea selects, on this couple, the voice that should have been spared.
 //
-// Ce constat dépasse le lot qui l'écrit : il porte sur la porte du label, pas sur son vocabulaire.
-// Aucune correction n'est tentée ici — l'arbitrage appartient au mainteneur, et le capteur reste la
-// maison de la question.
+// This finding exceeds the batch that writes it: it bears on the label's gate, not on its vocabulary.
+// No correction is attempted here — the arbitration belongs to the maintainer, and the sensor stays the
+// home of the question.
 //
-// ── CE QUE CE CAPTEUR NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// La fixture déclare les frontières des VOIX (aucune injure identitaire, aucune menace, registre non
-// varié, cinq labels non éprouvés). Celles-ci sont les frontières du CAPTEUR, et elles diffèrent :
+// ── WHAT THIS SENSOR DOES NOT COVER ──────────────────────────────────────────────────────────────
+// The fixture declares the boundaries of the VOICES (no identity slur, no threat, register not
+// varied, five labels not tested). These are the boundaries of the SENSOR, and they differ:
 //
-// - Il ne couvre AUCUNE empreinte figée. `EXPECTED` est volontairement absent, comme au banc du
-//   corps et pour une raison de même nature : le lexique `conflictual` est en cours de modification
-//   par un lot concurrent, et une empreinte relevée sur un arbre instable enregistrerait un état
-//   transitoire en le présentant comme une référence. Un attendu qui rouille en une heure coûte plus
-//   cher que pas d'attendu du tout. Les chiffres ci-dessus sont donc un RAPPORT daté, pas une garde.
-// - Poser l'empreinte est une DETTE explicite, à reprendre quand le lexique sera stabilisé. Sans
-//   elle, ce capteur ne voit pas une surface qui se déplacerait d'un étage à l'autre.
-// - Ce qu'il couvre à la place est plus étroit et plus durable : les propriétés de DOCTRINE du
-//   comptage — le tort, le rappel, la sur-classification — plus la sévérité de l'étage sur les deux
-//   non-porteuses. Aucune ne dépend d'un terme ni d'un seuil, seulement du sceau.
-// - Il ne dit rien du VOLUME de l'agressivité : 26 items par voix, une seule densité éprouvée.
+// - It covers NO frozen fingerprint. `EXPECTED` is deliberately absent, as in the body
+//   bench and for a reason of the same nature: the `conflictual` lexicon is being modified
+//   by a concurrent batch, and a fingerprint recorded on an unstable tree would record a
+//   transient state while presenting it as a reference. An expectation that rusts in an hour costs more
+//   than no expectation at all. The figures above are therefore a dated REPORT, not a guard.
+// - Laying the fingerprint is an explicit DEBT, to be taken up when the lexicon is stabilized. Without
+//   it, this sensor does not see a surface that would move from one storey to another.
+// - What it covers instead is narrower and more durable: the DOCTRINE properties of the
+//   counting — the wrong, the recall, the over-classification — plus the storey severity on the two
+//   non-carriers. None depends on a term or a threshold, only on the seal.
+// - It says nothing of the VOLUME of aggression: 26 items per voice, a single density tested.
 
 import { describe, expect, it } from 'vitest';
 import { CONFLICTUAL_REGISTER_PERSONAS } from './conflictual-registers.fixture';
 import { detectFor, expectBenchCounts } from './register-bench.harness';
 
-describe('banc FP conflictual — comptage', () => {
+describe('conflictual FP bench — counting', () => {
   expectBenchCounts(CONFLICTUAL_REGISTER_PERSONAS, {
-    // LES DEUX VOIX DE VANNE SONT TAGUÉES, et c'est le résultat que ce banc a été monté pour
-    // produire. Aucune des deux n'a rien d'hostile de vrai ; les deux portent le vocabulaire de leur
-    // jumelle hostile, et c'est le seul écart entre elles que l'export ne consigne pas.
-    // MISE À JOUR APRÈS ARBITRAGE (2026-07-18) — `en_banter` n'est plus tagué. La seule surface qui
-    // le taguait était `moron`, et le mainteneur l'a RETIRÉ sur ce chiffre même : rappel nul sur les
-    // 26 items hostiles, un tort nommé sur l'amicale. Le tort anglais a donc disparu par le retrait
-    // du terme qui le produisait — pas par une amélioration du détecteur, et la distinction est tout
-    // l'objet de la garde plus bas.
+    // BOTH BANTER VOICES ARE TAGGED, and it is the result this bench was mounted to
+    // produce. Neither has anything truly hostile; both carry the vocabulary of their
+    // hostile twin, and it is the only gap between them the export does not record.
+    // UPDATE AFTER ARBITRATION (2026-07-18) — `en_banter` is no longer tagged. The only surface that
+    // tagged it was `moron`, and the maintainer REMOVED it on this very figure: zero recall on the
+    // 26 hostile items, a named wrong on the friendly one. The English wrong therefore disappeared by removing
+    // the term that produced it — not by an improvement of the detector, and the distinction is the whole
+    // point of the guard below.
     torts: ['fr_banter/conflictual'],
-    // Aucun `signalWithoutLived` dans ce banc : la paire oppose un vécu à un non-porteur, sans
-    // tiers. Une voix qui RAPPORTE un conflit sans en produire (la modératrice, le témoin d'une
-    // dispute) reste à écrire — c'est le troisième état d'ADR-0003, et ce banc ne l'éprouve pas.
+    // No `signalWithoutLived` in this bench: the pair opposes a lived experience to a non-carrier, without
+    // a third party. A voice that REPORTS a conflict without producing one (the moderator, the witness of a
+    // dispute) remains to be written — it is the third state of ADR-0003, and this bench does not test it.
     escalated: [],
-    // Aucune. La vérité-terrain a tenu à la mesure : rien de ce que le détecteur a rendu ne donne à
-    // penser qu'une des quatre voix aurait été mal annotée. Ce n'est pas une réussite d'annotation,
-    // c'est un banc à deux états sur un seul label.
+    // None. The ground truth held at measurement: nothing the detector returned suggests
+    // that one of the four voices was mis-annotated. It is not an annotation success,
+    // it is a two-state bench on a single label.
     corrections: [],
     tortsAfterCorrection: ['fr_banter/conflictual'],
-    // LE DÉFAUT DE RAPPEL, PUBLIÉ PLUTÔT QUE CACHÉ. Vingt-six items de mépris anglais explicite ne
-    // produisent aucun constat. Il se déclare ICI et dans `livedStages` — deux fois, à dessein.
+    // THE RECALL DEFECT, PUBLISHED RATHER THAN HIDDEN. Twenty-six items of explicit English contempt
+    // produce no finding. It is declared HERE and in `livedStages` — twice, by design.
     missedRecall: ['en_contempt/conflictual'],
-    // `fr_contempt` est tagué et NOMMÉ : elle écrit le terme, le constat nommé est légitime, et
-    // c'est le seul rappel que ce label ait dans tout le corpus scellé. `en_contempt` est à `AUCUN`,
-    // ce qui n'est pas une commodité mais un vécu que rien n'a vu.
+    // `fr_contempt` is tagged and NAMED: she writes the term, the named finding is legitimate, and
+    // it is the only recall this label has in the whole sealed corpus. `en_contempt` is at `AUCUN`,
+    // which is not a convenience but a lived experience that nothing saw.
     livedStages: { fr_contempt: 'explicit', en_contempt: 'AUCUN' },
   });
 
-  it('les deux torts sont des constats NOMMÉS, et pas des constats larges', () => {
-    // Écrit comme une assertion à part, et pas comme un corollaire du tort : l'étage est la moitié
-    // de la gravité. Un constat LARGE sur une non-porteuse est déjà un tort ; un constat NOMMÉ y
-    // ajoute la confiance haute et le quasi-factuel. Si un lot futur fait tomber ces deux voix en
-    // `indirect` sans les faire disparaître, le tort demeure — mais il aura changé d'ordre de
-    // grandeur, et cette ligne est le seul endroit où ça se verrait.
-    // `en_banter` a quitté cette liste avec le retrait de `moron` (cf. `torts`). La propriété
-    // qu'elle garde est inchangée et vaut toujours pour le français : un tort NOMMÉ n'est pas un
-    // tort large, et si un lot futur fait tomber `fr_banter` en `indirect`, c'est ici que ça se voit.
+  it('the two wrongs are NAMED findings, and not broad findings', () => {
+    // Written as a separate assertion, and not as a corollary of the wrong: the storey is half
+    // the severity. A BROAD finding on a non-carrier is already a wrong; a NAMED finding
+    // adds high confidence and the quasi-factual. If a future batch drops these two voices to
+    // `indirect` without making them disappear, the wrong remains — but it will have changed order of
+    // magnitude, and this line is the only place where that would show.
+    // `en_banter` left this list with the removal of `moron` (cf. `torts`). The property
+    // it keeps is unchanged and still holds for French: a NAMED wrong is not a
+    // broad wrong, and if a future batch drops `fr_banter` to `indirect`, it is here that it shows.
     for (const id of ['fr_banter']) {
       const persona = CONFLICTUAL_REGISTER_PERSONAS.find((p) => p.id === id);
       if (persona === undefined) {
@@ -160,15 +160,15 @@ describe('banc FP conflictual — comptage', () => {
     }
   });
 
-  it("le zéro d'`en_contempt` se lit par son chemin, et il n'a rien de rassurant", () => {
-    // La garde qui empêche la sur-citation de ce banc. `en_banter` produit un tort ; si un lot
-    // futur l'éteint SANS donner de rappel à `en_contempt`, le banc redeviendrait tout vert en
-    // anglais — et ce vert dirait « aucun faux positif » alors qu'il ne dirait que « le détecteur ne
-    // voit rien du tout ». Les deux zéros auraient la même cause, et celle de la non-porteuse ne
-    // serait pas la sienne.
+  it('the zero of `en_contempt` reads by its path, and it is nothing reassuring', () => {
+    // The guard that prevents the over-citation of this bench. `en_banter` produces a wrong; if a
+    // future batch extinguishes it WITHOUT giving recall to `en_contempt`, the bench would go all green in
+    // English — and that green would say « no false positive » while it would only say « the detector
+    // sees nothing at all ». The two zeros would have the same cause, and the non-carrier's would
+    // not be its own.
     //
-    // Cette ligne échoue donc le jour où l'anglais devient muet sur les deux voix, pour forcer la
-    // relecture plutôt que de laisser le silence passer pour de la sûreté.
+    // This line therefore fails the day English becomes silent on both voices, to force the
+    // review rather than let the silence pass for safety.
     const contempt = CONFLICTUAL_REGISTER_PERSONAS.find((p) => p.id === 'en_contempt');
     const banter = CONFLICTUAL_REGISTER_PERSONAS.find((p) => p.id === 'en_banter');
     if (contempt === undefined || banter === undefined) {
@@ -177,21 +177,21 @@ describe('banc FP conflictual — comptage', () => {
     const vuChezLHostile = detectFor(contempt).some((d) => d.label === 'conflictual');
     const vuChezLAmicale = detectFor(banter).some((d) => d.label === 'conflictual');
 
-    // ── CETTE GARDE A SONNÉ, ET ELLE EST RETOURNÉE PLUTÔT QU'ÉTEINTE (2026-07-18) ────────────────
-    // Elle a fait exactement son travail. Le retrait de `moron` — arbitré sur le chiffre que ce banc
-    // a produit — a rendu l'anglais MUET SUR LES DEUX VOIX, c'est-à-dire l'état précis que son
-    // auteur refusait de laisser passer pour de la sûreté. La bonne réponse à une garde qui sonne
-    // n'est pas de l'inverser en `false` : c'est de relire, puis d'écrire ce que la relecture a
-    // trouvé, pour que le silence reste NOMMÉ.
+    // ── THIS GUARD RANG, AND IT IS RE-AIMED RATHER THAN EXTINGUISHED (2026-07-18) ────────────────
+    // It did exactly its job. The removal of `moron` — arbitrated on the figure this bench
+    // produced — made English SILENT ON BOTH VOICES, that is, the precise state its
+    // author refused to let pass for safety. The right response to a guard that rings
+    // is not to invert it to `false`: it is to reread, then write what the review
+    // found, so the silence stays NAMED.
     //
-    // Ce que la relecture a trouvé : l'anglais de ce label ne lit PAS l'agressivité. `en_contempt`
-    // n'a jamais été vue (26 items, avant comme après), et `en_banter` ne l'était que par un terme
-    // dont le rappel mesuré était nul. Les deux zéros ont bien la même cause, et cette cause est un
-    // lexique EN qui n'atteint pas le registre ordinaire du mépris — pas un détecteur prudent.
+    // What the review found: the English of this label does NOT read aggression. `en_contempt`
+    // was never seen (26 items, before as after), and `en_banter` was only by a term
+    // whose measured recall was nil. The two zeros do have the same cause, and that cause is an
+    // EN lexicon that does not reach the ordinary register of contempt — not a cautious detector.
     //
-    // La garde est donc RE-POINTÉE sur ce qui reste à protéger : ce silence doit être DÉCLARÉ. Elle
-    // sonnera de nouveau le jour où l'anglais se remettra à taguer, pour forcer la question qui
-    // comptera alors — laquelle des deux voix a été vue.
+    // The guard is therefore RE-AIMED on what remains to protect: this silence must be DECLARED. It
+    // will ring again the day English starts tagging again, to force the question that
+    // will matter then — which of the two voices was seen.
     expect(
       { hostile: vuChezLHostile, amicale: vuChezLAmicale },
       "l'anglais de `conflictual` est MUET des deux côtés, et c'est un défaut de rappel déclaré — " +
@@ -199,8 +199,8 @@ describe('banc FP conflictual — comptage', () => {
         'visible : dire LAQUELLE avant de mettre à jour quoi que ce soit.',
     ).toEqual({ hostile: false, amicale: false });
 
-    // Le français, lui, garde la propriété d'origine : au moins une des deux voix est vue, donc le
-    // vert du banc n'y est pas un vert de cécité.
+    // French, in turn, keeps the original property: at least one of the two voices is seen, so the
+    // bench's green is not a green of blindness there.
     const frContempt = CONFLICTUAL_REGISTER_PERSONAS.find((p) => p.id === 'fr_contempt');
     const frBanter = CONFLICTUAL_REGISTER_PERSONAS.find((p) => p.id === 'fr_banter');
     if (frContempt === undefined || frBanter === undefined) {

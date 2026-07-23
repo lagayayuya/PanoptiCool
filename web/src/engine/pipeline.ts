@@ -1,12 +1,12 @@
-// Pipeline du moteur — orchestration `entrée → parse → validate → règles → EngineOutput`
-// (PANO-27, ADR-0002). Fonction **pure**, sans DOM ni Worker : c'est le cœur unit-testable
-// (ce que PANO-28 consommera sur `samples/*.zip`). Le Worker (`engine/worker.ts`) n'en est qu'un
-// adaptateur ; le moteur reste portable (ADR-0002).
+// Engine pipeline — orchestrates `input → parse → validate → rules → EngineOutput`
+// (PANO-27, ADR-0002). A **pure** function, no DOM and no Worker: this is the unit-testable core
+// (what PANO-28 will consume on `samples/*.zip`). The Worker (`engine/worker.ts`) is merely an
+// adapter; the engine stays portable (ADR-0002).
 //
-// Narrowing (la séparation 24/25/26 rendue concrète, sans cast) :
-//   parser → `data: unknown` → SEULE entrée de la validation ;
-//   validation `ok:true` → `data: TikTokExport` → SEULE entrée de `computeInsights`.
-// Le typecheck l'impose par les signatures ; aucun `as` ne court-circuite la frontière.
+// Narrowing (the 24/25/26 separation made concrete, without a cast):
+//   parser → `data: unknown` → the ONLY input of validation;
+//   validation `ok:true` → `data: TikTokExport` → the ONLY input of `computeInsights`.
+// The typecheck enforces it through the signatures; no `as` short-circuits the boundary.
 
 import type { Locale } from '../i18n/locales';
 import type { Analysis } from './analysis';
@@ -17,9 +17,9 @@ import type { ParseErrorKind } from './parse';
 import type { ValidationIssue } from './validate';
 
 /**
- * Résultat du moteur — union discriminée, plain-data (structured-clone-safe, ADR-0002). `too_large`
- * est un **refus gracieux distinct** (calme, PANO-25), jamais aplati sous `parse` (corrompu) :
- * l'UI lit `stage` sans rouvrir l'enum. Tous les échecs sont **PII-safe** (parse/validate le sont).
+ * Engine result — discriminated union, plain-data (structured-clone-safe, ADR-0002). `too_large`
+ * is a **distinct graceful refusal** (calm, PANO-25), never flattened under `parse` (corrupt):
+ * the UI reads `stage` without reopening the enum. Every failure is **PII-safe** (parse/validate are).
  */
 export type EngineResult =
   | { ok: true; output: Analysis }
@@ -28,27 +28,28 @@ export type EngineResult =
   | { ok: false; stage: 'validate'; issues: ValidationIssue[] };
 
 export interface ProcessOptions {
-  /** Seuil de refus (octets décompressés), transmis au parser. Défaut = constante PANO-25. */
+  /** Refusal threshold (decompressed bytes), passed through to the parser. Default = PANO-25 constant. */
   sizeLimitBytes?: number;
-  /** Horloge pour les fenêtres glissantes du rythme (`analyze`). Défaut = `Date.now()` réel ; les
-   *  tests et la démo la fixent pour que les fenêtres glissantes retombent sur la même horloge que
-   *  celle qui a construit l'export. */
+  /** Clock for the rhythm's sliding windows (`analyze`). Default = real `Date.now()`; the tests and
+   *  the demo fix it so the sliding windows land on the same clock as the one that built the
+   *  export. */
   now?: number;
-  /** Langue de la PROSE émise par le moteur (`Analysis` porte du texte depuis ADR-0004). Défaut =
-   *  `DEFAULT_LOCALE`. Elle entre PAR LES OPTIONS et non par un paramètre positionnel pour que les
-   *  ~18 sites d'appel existants — tests, goldens, démo — restent inchangés et continuent de rendre
-   *  du français : le lot anglais AJOUTE une langue, il n'en déplace aucune. */
+  /** Language of the PROSE emitted by the engine (`Analysis` carries text since ADR-0004). Default =
+   *  `DEFAULT_LOCALE`. It comes in THROUGH THE OPTIONS and not through a positional parameter so that
+   *  the ~18 existing call sites — tests, goldens, demo — stay unchanged and keep rendering French:
+   *  the English batch ADDS a language, it moves none. */
   locale?: Locale;
 }
 
 /**
- * Résultat de la phase d'ingestion (décompresse → tokenise en flux → valide → normalise). Union
- * discriminée : soit le `NormalizedExport` prêt pour les règles, soit un `EngineResult` d'échec déjà
- * formé. Depuis PANO-91, l'ingestion passe par le FLUX (`ingest/ingest-stream.ts`) : le graphe des
- * 10⁴–10⁵ items de visionnage n'est JAMAIS matérialisé (`Watch History` est replié en dates-only à la
- * volée). Fini le double pic `JSON.parse` + clone valibot du graphe entier — seule survit la liste
- * dates-only, portée par `normalized`. Le confinement en fonction reste utile : la chaîne décompressée
- * et le graphe des petites sections deviennent collectables au `return`, avant les règles.
+ * Result of the ingestion phase (decompress → stream-tokenize → validate → normalize). Discriminated
+ * union: either the `NormalizedExport` ready for the rules, or an already-formed failing
+ * `EngineResult`. Since PANO-91, ingestion goes through the STREAM (`ingest/ingest-stream.ts`): the
+ * graph of the 10⁴–10⁵ watch items is NEVER materialized (`Watch History` is folded to dates-only on
+ * the fly). Gone is the double peak of `JSON.parse` + valibot clone of the whole graph — only the
+ * dates-only list survives, carried by `normalized`. Confining it to a function stays useful: the
+ * decompressed string and the graph of the small sections become collectable at the `return`, before
+ * the rules.
  */
 type IngestResult =
   | { ok: true; normalized: NormalizedExport }
@@ -77,21 +78,21 @@ function ingest(zipBytes: Uint8Array, options: ProcessOptions): IngestResult {
 }
 
 /**
- * Exécute le pipeline complet sur les octets du `.zip`. Ne lève jamais : tout échec attendu est une
- * variante de `EngineResult`. Destiné à tourner DANS le Worker (mais pur, donc testable en node).
+ * Runs the full pipeline on the `.zip` bytes. Never throws: every expected failure is a variant of
+ * `EngineResult`. Meant to run INSIDE the Worker (but pure, hence testable in node).
  */
 export function processExport(zipBytes: Uint8Array, options: ProcessOptions = {}): EngineResult {
-  // Ingestion en flux (PANO-91) : le graphe des items de visionnage n'est jamais matérialisé (replié
-  // en dates-only) ; la chaîne décompressée et le graphe des petites sections sont libérés au retour
-  // d'`ingest`, avant l'analyse. Seul `normalized` (dates-only) survit.
+  // Streaming ingestion (PANO-91): the graph of watch items is never materialized (folded to
+  // dates-only); the decompressed string and the graph of the small sections are freed on the return
+  // of `ingest`, before analysis. Only `normalized` (dates-only) survives.
   //
-  // La borne mémoire d'ADR-0003 (seul le texte CITÉ franchit la frontière moteur→UI, jamais le
-  // graphe parsé) tient toujours, et désormais par CONSTRUCTION : sans magasin à remplir, une miette
-  // n'existe que portée par le constat qui la cite (`Analysis` → `Deduction.evidence`).
+  // The ADR-0003 memory bound (only CITED text crosses the engine→UI boundary, never the parsed
+  // graph) still holds, and now by CONSTRUCTION: with no store to fill, a crumb only exists carried
+  // by the finding that cites it (`Analysis` → `Deduction.evidence`).
   const ingested = ingest(zipBytes, options);
   if (!ingested.ok) {
     return ingested.result;
   }
-  // Le pipeline n'héberge aucune logique métier : il orchestre, `analyze` compose (lot A1).
+  // The pipeline hosts no business logic: it orchestrates, `analyze` composes (batch A1).
   return { ok: true, output: analyze(ingested.normalized, options.now, options.locale) };
 }

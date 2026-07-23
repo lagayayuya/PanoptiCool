@@ -1,117 +1,117 @@
-// Banc `en_identity` — CINQ voix anglaises, et l'AXE D'APPARTENANCE est l'instrument.
-// Vérité-terrain scellée.
+// `en_identity` bench — FIVE English voices, and the BELONGING AXIS is the instrument.
+// Sealed ground truth.
 //
-// ── Ce fichier est scellé ────────────────────────────────────────────────────────────────────────
-// Écrit et commité AVANT tout tour du détecteur SUR CES VOIX. « Faux positif » n'a pas de sens sans
-// un état attendu écrit d'avance, et juger après avoir vu la sortie revient à juger avec indulgence
-// — une détection plausible se rationalise toujours. Le sceau est le commit.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// ── This file is sealed ────────────────────────────────────────────────────────────────────────
+// Written and committed BEFORE any detector pass ON THESE VOICES. « False positive » has no meaning without
+// an expected state written in advance, and judging after seeing the output amounts to judging leniently
+// — a plausible detection always rationalizes itself. The seal is the commit.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── CE SCEAU N'EST PAS AVEUGLE, ET C'EST LA DÉCLARATION LA PLUS IMPORTANTE DU FICHIER ────────────
-// Les lots précédents déclaraient des FUITES — des lignes vues en passant. Ici, ce n'est pas une
-// fuite : la sonde `identity-frame-probe.test.ts` a été écrite, lancée et commitée AVANT ces voix,
-// sur ordre explicite du mainteneur, parce qu'elle seule pouvait dire si ces personas valaient leur
-// sceau. Elles ne sont donc PAS écrites à l'aveugle, et prétendre le contraire serait le seul vrai
-// mensonge possible dans ce fichier.
+// ── THIS SEAL IS NOT BLIND, AND IT IS THE MOST IMPORTANT DECLARATION OF THE FILE ────────────
+// The previous batches declared LEAKS — lines seen in passing. Here, this is not a
+// leak: the probe `identity-frame-probe.test.ts` was written, run and committed BEFORE these voices,
+// on the maintainer's explicit order, because it alone could say whether these personas were worth their
+// seal. They are therefore NOT written blind, and pretending otherwise would be the only true
+// lie possible in this file.
 //
-// CE QUE JE SAVAIS EN ÉCRIVANT, précisément : que la couverture anglaise est de FORME NOMINALE — les
-// noms de pratique et de condition déclenchent, les adjectifs d'appartenance non ; que `muslim`,
-// `trans`, `straight`, `cisgender`, `catholic` et les neuf termes politiques sont muets en anglais ;
-// que la bande d'orientation (`gay`, `lesbian`, `queer`, `transgender`, `nonbinary`) déclenche en
-// `indirect` ; que `atheist`, `agnostic` et `evangelical` déclenchent.
+// WHAT I KNEW WHILE WRITING, precisely: that the English coverage is of NOMINAL FORM — the
+// practice and condition nouns fire, the belonging adjectives do not; that `muslim`,
+// `trans`, `straight`, `cisgender`, `catholic` and the nine political terms are silent in English;
+// that the orientation band (`gay`, `lesbian`, `queer`, `transgender`, `nonbinary`) fires as
+// `indirect`; that `atheist`, `agnostic` and `evangelical` fire.
 //
-// CE QUE J'AI FAIT DE CE SAVOIR, et c'est vérifiable par un tiers en lisant les items : je n'ai visé
-// PERSONNE, ni vers les termes qui déclenchent ni loin d'eux. Chaque voix écrit ce que cette
-// personne-là écrirait — la femme qui prie écrit « i am muslim » parce que c'est ce qu'on écrit, et
-// non parce que je sais que c'est muet. La seule discipline qui reste disponible quand on ne peut
-// plus être aveugle est celle-ci : PRÉDIRE D'AVANCE, par écrit, et publier les prédictions FAUSSES.
-// Elles sont dans chaque `truthNotes`, et le lot sexualité a établi le standard en publiant sa
-// prédiction (b) perdante.
+// WHAT I DID WITH THAT KNOWLEDGE, and it is verifiable by a third party by reading the items: I aimed at
+// NO ONE, neither toward the terms that fire nor away from them. Each voice writes what that
+// person would write — the woman who prays writes « i am muslim » because that is what one writes, and
+// not because I know it is silent. The only discipline that remains available when one can
+// no longer be blind is this one: PREDICT IN ADVANCE, in writing, and publish the FALSE predictions.
+// They are in each `truthNotes`, and the sexuality batch established the standard by publishing its
+// losing prediction (b).
 //
-// ── LA RÈGLE DE SYMÉTRIE, RATIFIÉE PAR LE MAINTENEUR, ET CE QU'ELLE IMPOSE ICI ───────────────────
-// Une auto-déclaration « i am straight » ou « i am cisgender » doit déclencher EXACTEMENT AUTANT que
-// « i am gay » ou « i am trans ». Sans distinction.
+// ── THE SYMMETRY RULE, RATIFIED BY THE MAINTAINER, AND WHAT IT IMPOSES HERE ───────────────────
+// A self-declaration « i am straight » or « i am cisgender » must fire EXACTLY AS MUCH as
+// « i am gay » or « i am trans ». Without distinction.
 //
-// Le fondement doctrinal, porté ici parce qu'il change des SCEAUX et pas seulement un discours : un
-// lexique qui n'attrape que les identités MINORITAIRES est un détecteur de minorités, pas un
-// détecteur d'orientation — et sa démonstration s'inverse, puisqu'il prétend montrer ce qu'une
-// plateforme déduit de tout le monde en ne déduisant que sur certains. C'est le défaut politique
-// (un camp encodé comme identité, l'autre comme accusation) dans sa forme la plus pure, et la
-// réparation est la même : la couverture se vérifie SUR LES DEUX VERSANTS DE L'AXE.
+// The doctrinal ground, carried here because it changes SEALS and not just a discourse: a
+// lexicon that catches only MINORITY identities is a minority detector, not an
+// orientation detector — and its demonstration inverts, since it claims to show what a
+// platform infers about everyone by inferring only about some. It is the political defect
+// (one camp encoded as identity, the other as accusation) in its purest form, and the
+// repair is the same: coverage is verified ON BOTH SIDES OF THE AXIS.
 //
-// Conséquence directe sur ce fichier : `en_misread` est scellée `lived` sur `sexuality`. Elle est
-// hétérosexuelle et l'écrit ; sous la règle, un constat est LÉGITIME et ATTENDU sur elle, et son
-// absence est un défaut de RAPPEL comme un autre. La sceller `nonCarrier` aurait inscrit
-// l'asymétrie dans la vérité-terrain elle-même — le banc aurait alors mesuré le défaut avec un
-// instrument qui le partage.
+// Direct consequence on this file: `en_misread` is sealed `lived` on `sexuality`. She is
+// heterosexual and writes it; under the rule, a finding is LEGITIMATE and EXPECTED on her, and its
+// absence is a RECALL defect like any other. Sealing her `nonCarrier` would have inscribed
+// the asymmetry in the ground truth itself — the bench would then have measured the defect with an
+// instrument that shares it.
 //
-// Ce que la règle NE rouvre PAS : l'exclusion mesurée de `straight` NU de l'`indirectCore` (1 → 4
-// torts, bois de charpente et fléchettes). La règle vise l'AUTO-DÉCLARATION, où le cadre lève
-// l'ambiguïté.
+// What the rule does NOT reopen: the measured exclusion of BARE `straight` from `indirectCore` (1 → 4
+// wrongs, lumber and darts). The rule targets SELF-DECLARATION, where the frame lifts
+// the ambiguity.
 //
-// ── CE QUE MESURENT CES CINQ VOIX, ET POURQUOI CINQ ──────────────────────────────────────────────
-// Les paires des lots précédents opposaient deux voix. Ici l'instrument est un AXE à cinq points, et
-// il n'y a pas de paire à ne pas sommer — il y a cinq chiffres qui répondent à cinq questions
-// différentes. AUCUN ne se somme, ne se moyenne, ni ne se lit comme un taux :
+// ── WHAT THESE FIVE VOICES MEASURE, AND WHY FIVE ──────────────────────────────────────────────
+// The pairs of previous batches opposed two voices. Here the instrument is a five-point AXIS, and
+// there is no pair not to sum — there are five figures answering five different
+// questions. NONE sums, averages, nor reads as a rate:
 //
-//   · `en_practising`      — une vie de foi ordinaire dont le mot d'appartenance est muet.
-//   · `en_trans_lived`     — une identité de genre dont le mot le plus employé est muet.
-//   · `en_idiomatic`       — le plancher de faux positifs, là où l'idiome anglais va chercher des NOMS.
-//   · `en_left_evangelical`— celle qui a QUITTÉ, et dont le vocabulaire de départ est câblé.
-//   · `en_misread`         — celle qu'on assigne à tort, et le filtre de négation anglais.
+//   · `en_practising`      — an ordinary life of faith whose belonging word is silent.
+//   · `en_trans_lived`     — a gender identity whose most-used word is silent.
+//   · `en_idiomatic`       — the false-positive floor, where the English idiom goes looking for NOUNS.
+//   · `en_left_evangelical`— the one who LEFT, and whose vocabulary of departure is wired.
+//   · `en_misread`         — the one wrongly assigned, and the English negation filter.
 //
-// ── CE QUE CE BANC NE COUVRE PAS ─────────────────────────────────────────────────────────────────
-// - **Une seule voix par situation.** Cinq personnes ne sont pas une distribution. Aucun chiffre ne
-//   se généralise à « les gens qui écrivent comme ça ».
-// - **Une seule tradition religieuse porteuse** (`en_practising`, musulmane) et une seule sortie
-//   (`en_left_evangelical`, évangélique). Les autres traditions ne sont pas éprouvées EN RAPPEL ici ;
-//   la sonde les balaie, ce qui n'est pas la même chose qu'une vie.
-// - **Aucun registre hostile, dans aucune voix.** Pas d'emploi péjoratif, pas d'hostilité envers un
-//   groupe. Exclu SYMÉTRIQUEMENT, comme la « bande civile » des lots politique et religieux, et pour
-//   la même raison : on n'aurait pas su si un tort venait du label mesuré ou de `conflictual`. CE
-//   BANC NE MESURE DONC PAS cette frontière, et un vert ici n'en dit rien.
-// - **Aucune organisation, aucun sigle, aucune personnalité, aucune œuvre nommée.**
-// - **`politics` n'est porté par aucune voix.** La sonde l'a trouvé muet sur ses neuf termes anglais
-//   et c'est une dette nommée, pas le travail de ce lot. Un vert `politics` ici ne mesure que
-//   l'absence du sujet dans cinq vies.
-// - **Le corps et le soin sont tenus à l'écart des bandes de vie**, exprès, comme le lot sexualité
-//   l'avait fait : une épaule déchirée a été RETIRÉE de `en_misread` parce qu'un signal
-//   `health_physical` aurait brouillé la seule chose que cette voix mesure. Ce banc ne valide pas
-//   `health_physical` pour autant.
-// - **LE SILENCE N'EST PAS LE RÉSULTAT SÛR.** Position du mainteneur, portée ici parce qu'elle
-//   décide de la lecture des cinq chiffres : le produit montre ce qu'un algorithme déduirait. Une
-//   anglophone musulmane ne reçoit aucune carte là où une francophone en reçoit une nommée, et une
-//   non-détection n'affiche RIEN. Ce n'est pas de la prudence : c'est une asymétrie de traitement
-//   entre deux utilisateurs, invisible par construction.
+// ── WHAT THIS BENCH DOES NOT COVER ─────────────────────────────────────────────────────────────
+// - **One voice per situation.** Five people are not a distribution. No figure
+//   generalizes to « the people who write like that ».
+// - **One single carrying religious tradition** (`en_practising`, Muslim) and one single exit
+//   (`en_left_evangelical`, evangelical). The other traditions are not tested IN RECALL here;
+//   the probe sweeps them, which is not the same thing as a life.
+// - **No hostile register, in any voice.** No pejorative use, no hostility toward a
+//   group. Excluded SYMMETRICALLY, like the « civil band » of the political and religious batches, and for
+//   the same reason: one would not have known whether a wrong came from the measured label or from `conflictual`. THIS
+//   BENCH THEREFORE DOES NOT MEASURE this boundary, and a green here says nothing about it.
+// - **No organization, no acronym, no public figure, no named work.**
+// - **`politics` is carried by no voice.** The probe found it silent on its nine English terms
+//   and it is a named debt, not this batch's work. A `politics` green here measures only
+//   the absence of the subject in five lives.
+// - **The body and care are kept away from the life bands**, on purpose, as the sexuality batch
+//   had done: a torn shoulder was REMOVED from `en_misread` because a `health_physical`
+//   signal would have blurred the only thing this voice measures. This bench does not validate
+//   `health_physical` for all that.
+// - **SILENCE IS NOT THE SAFE RESULT.** Maintainer's position, carried here because it
+//   decides the reading of the five figures: the product shows what an algorithm would infer. A
+//   Muslim anglophone receives no card where a francophone receives a named one, and a
+//   non-detection displays NOTHING. This is not prudence: it is an asymmetry of treatment
+//   between two users, invisible by construction.
 //
-// ── CE QUI A ÉTÉ LU ──────────────────────────────────────────────────────────────────────────────
-// LU : `CLAUDE.md` ; `register-bench.ts` et `register-bench.harness.ts` ; les en-têtes des fixtures
-// politique, religieuse et sexualité POUR LE FORMAT et pour leurs avertissements sur les compteurs
-// verts trompeurs ; le corps de `en_lived_plain` ; le bloc de leçons de `sexuality-bench.test.ts` ;
-// et la sonde de ce lot, déclarée ci-dessus.
+// ── WHAT WAS READ ──────────────────────────────────────────────────────────────────────────────
+// READ: `CLAUDE.md`; `register-bench.ts` and `register-bench.harness.ts`; the headers of the
+// political, religious and sexuality fixtures FOR THE FORMAT and for their warnings about misleading
+// green counters; the body of `en_lived_plain`; the lessons block of `sexuality-bench.test.ts`;
+// and this batch's probe, declared above.
 //
-// RECHERCHE WEB : UNE seule requête, sur la FORME de l'emploi figuré du vocabulaire clinique en
-// anglais courant, pour `en_idiomatic`. Ce qu'elle a confirmé est une STATISTIQUE et non une valeur :
-// `bipolar` et `ocd` sont les deux glissements du diagnostic vers la description les plus courants,
-// et l'emploi figuré est reconnu comme tel par l'entourage. Les deux figurent dans la voix, écrites
-// par moi. AUCUNE valeur rapportée — pas un message, pas un pseudo, pas une date, pas un
-// identifiant. Chaque chaîne de ce fichier est inventée (CLAUDE.md).
+// WEB SEARCH: ONE single query, on the FORM of the figurative use of clinical vocabulary in
+// everyday English, for `en_idiomatic`. What it confirmed is a STATISTIC and not a value:
+// `bipolar` and `ocd` are the two most common slides from diagnosis to description,
+// and the figurative use is recognized as such by those around. Both appear in the voice, written
+// by me. NO reported value — not a message, not a handle, not a date, not an
+// identifier. Every string in this file is invented (CLAUDE.md).
 //
-// Ce que la recherche n'a PAS couvert, et le dire évite de surestimer la voix : les registres des
-// quatre autres personas — foi pratiquée, identité de genre, sortie de religion, démenti — sont
-// écrits sans recherche, sur ma seule compétence de langue. Leur vraisemblance est donc une
-// prétention, pas un résultat, et c'est au mainteneur de la juger à la lecture.
+// What the research did NOT cover, and saying so avoids overestimating the voice: the registers of the
+// four other personas — practiced faith, gender identity, exit from religion, denial — are
+// written without research, on my language competence alone. Their plausibility is therefore a
+// claim, not a result, and it is for the maintainer to judge on reading.
 //
-// NON LU, délibérément : `lexicon/` en entier, `filters-*.ts`, les documents de portabilité EN,
+// NOT READ, deliberately: `lexicon/` in full, `filters-*.ts`, the EN portability documents,
 // `criteres-mesure-copule-en.md`.
 
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. LA PRATIQUANTE — une foi ordinaire dont le mot d'appartenance est muet
+// 1. THE PRACTITIONER — an ordinary faith whose belonging word is silent
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_PRACTISING: RegisterPersona = {
@@ -122,7 +122,7 @@ const EN_PRACTISING: RegisterPersona = {
   truthNotes:
     "`religion` VÉCU, sans réserve : elle se déclare au premier item, elle pratique, elle organise sa semaine autour. Un constat NOMMÉ est un rappel légitime et ATTENDU. PRÉDICTION SCELLÉE D'AVANCE, appuyée sur la sonde de ce lot : JE M'ATTENDS À CE QU'ELLE DÉCLENCHE, MAIS PAS PAR SON IDENTITÉ — `muslim` étant muet en anglais, tout ce qu'elle obtiendra viendra des NOMS de pratique (mosquée, ramadan, jeûne, prières), et l'étage plafonnera vraisemblablement en LARGE là où `fr_practising` atteint le constat nommé pour la même vie. Si la prédiction se vérifie, le résultat n'est pas une curiosité de banc : il dit que sa phrase la plus explicite — « i am muslim » — ne vaut rien, et que le produit ne la voit que par ce qu'elle FAIT, jamais par ce qu'elle EST. C'est la même vie que la voix française, dans l'autre langue, et l'écart entre les deux chiffres est tout ce que ce couple existe pour montrer. Cinq autres labels non-porteurs : pas de condition, pas de soin, pas d'engagement politique, aucune hostilité. Un appel contestable, écrit ici parce qu'un annotateur qui cache ses arbitrages ne mesure rien — « can you take paracetamol while fasting » mêle un nom de médicament à une pratique religieuse ; je le juge HORS `health_physical`, personne n'y étant malade, mais s'il déclenche c'est un tort d'homographie de contexte et il aura été trouvé par une phrase que des milliers de gens tapent vraiment.",
   items: [
-    // — Foi et pratique (8).
+    // — Faith and practice (8).
     {
       kind: 'comment',
       text: 'i am muslim, i have never made a secret of it, it is just how i was raised',
@@ -143,7 +143,7 @@ const EN_PRACTISING: RegisterPersona = {
       text: 'my manager swapped my shift so i could get to eid prayers, small thing, meant a lot',
     },
     { kind: 'search', text: 'can you take paracetamol while fasting' },
-    // — Famille et communauté (6).
+    // — Family and community (6).
     {
       kind: 'comment',
       text: 'my sister is getting married and the guest list has become a diplomatic incident',
@@ -159,7 +159,7 @@ const EN_PRACTISING: RegisterPersona = {
     },
     { kind: 'search', text: 'traditional gift for a new baby' },
     { kind: 'comment', text: 'my cousin drove four hours for one meal and left the same night' },
-    // — La vie (10).
+    // — Life (10).
     { kind: 'search', text: 'how to bleed a radiator that will not bleed' },
     {
       kind: 'comment',
@@ -189,7 +189,7 @@ const EN_PRACTISING: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. LA VOIX TRANS — l'identité dont le mot le plus employé est muet
+// 2. THE TRANS VOICE — the identity whose most-used word is silent
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_TRANS_LIVED: RegisterPersona = {
@@ -200,7 +200,7 @@ const EN_TRANS_LIVED: RegisterPersona = {
   truthNotes:
     "`sexuality` VÉCU — et l'état demande une explication, parce que le label ne porte pas le nom de ce qu'elle est. DÉCISION DU MAINTENEUR, contre ma proposition initiale : je proposais `nonCarrier` en comptant un tag comme un tort, au motif que l'identité de genre n'est pas une orientation et que la ranger sous `sexuality` est une erreur de catégorie. La règle de symétrie ratifiée en tête de fichier tranche autrement, et mieux : sous cette règle le produit DOIT taguer l'identité des deux côtés de l'axe, un constat sur elle est donc légitime et attendu, et la question taxonomique — l'identité de genre mérite-t-elle un label à elle — devient une question NOMMÉE ET SÉPARÉE plutôt qu'une chose que son sceau devrait absorber. Sceller `nonCarrier` aurait fait porter à cette personne le coût d'un défaut de taxonomie du produit. PRÉDICTION SCELLÉE D'AVANCE : JE M'ATTENDS À CE QU'ELLE SOIT QUASI MUETTE. Elle écrit « trans » — le mot que les gens emploient — et la sonde l'a trouvé non câblé en anglais ; seul son item 5, qui met les deux mots côte à côte, porte la forme longue qui déclenche. Autrement dit son sort tient à un seul item, et c'est exactement ce qu'une sonde ne peut pas voir et qu'une vie montre. Si elle est taguée, l'étage attendu est LARGE. Cinq autres labels non-porteurs : le parcours médical est écrit comme de l'ADMINISTRATION — listes d'attente, papiers, courriers — et non comme du soin, à dessein ; s'il déclenche `health_physical`, c'est un tort, et il dira que le produit lit une identité comme une pathologie, ce qui est précisément le tort le plus coûteux qu'on puisse commettre sur cette voix.",
   items: [
-    // — Identité et parcours (8).
+    // — Identity and journey (8).
     {
       kind: 'comment',
       text: 'i am trans, i have been out three years, most days it is the least interesting thing about me',
@@ -224,7 +224,7 @@ const EN_TRANS_LIVED: RegisterPersona = {
       kind: 'comment',
       text: 'someone at choir quietly started using the right name and never mentioned it once',
     },
-    // — Communauté (6).
+    // — Community (6).
     { kind: 'search', text: 'support group meets when and where' },
     {
       kind: 'comment',
@@ -240,7 +240,7 @@ const EN_TRANS_LIVED: RegisterPersona = {
       kind: 'comment',
       text: 'i went to my first meeting terrified and left with three phone numbers',
     },
-    // — La vie (10).
+    // — Life (10).
     { kind: 'search', text: 'why are my tomato seedlings leggy' },
     {
       kind: 'comment',
@@ -264,7 +264,7 @@ const EN_TRANS_LIVED: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. LA VOIX IDIOMATIQUE — le plancher de faux positifs, là où l'idiome va chercher des NOMS
+// 3. THE IDIOMATIC VOICE — the false-positive floor, where the idiom goes looking for NOUNS
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_IDIOMATIC: RegisterPersona = {
@@ -313,7 +313,7 @@ const EN_IDIOMATIC: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 4. CELLE QUI A QUITTÉ — la culture gardée, la croyance partie
+// 4. THE ONE WHO LEFT — the culture kept, the belief gone
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_LEFT_EVANGELICAL: RegisterPersona = {
@@ -324,7 +324,7 @@ const EN_LEFT_EVANGELICAL: RegisterPersona = {
   truthNotes:
     "`religion` SIGNAL SANS VÉCU. Le signal est massif et réel — son texte est saturé de vocabulaire religieux — mais il ne porte plus sur une pratique : elle écrit noir sur blanc qu'elle ne croit pas, plusieurs fois. Le tag est donc LÉGITIME et ATTENDU ; c'est le constat NOMMÉ qui serait le tort (sur-classification). **CE QUE LE SCEAU SAIT ET CE QU'IL NE PEUT PAS SAVOIR**, et il faut l'énoncer sans quoi il prétendrait à une connaissance que personne n'a. Il SAIT ce que le texte énonce : le départ, l'incroyance, et les pratiques auxquelles elle continue d'assister. Il NE SAIT PAS si « garder la culture en ayant perdu la croyance » est distinguable de la pratique À PARTIR D'UN TEXTE — la fixture religieuse française a déjà établi que ce n'est probablement pas le cas, et rien ici ne le contredit. `signalWithoutLived` est donc **une assertion sur ELLE, pas sur ce que le texte permettrait de prouver** : je scelle selon ce que je sais d'elle en l'écrivant, seule définition utilisable d'une vérité-terrain. Si le détecteur la NOMME, ce n'est pas évidemment une bévue — c'est le produit en train de faire exactement la chose qu'il existe pour montrer. **Le tort que je compte sur elle est l'ÉTAGE, pas le TAG.** PRÉDICTION SCELLÉE D'AVANCE : JE M'ATTENDS À CE QU'ELLE DÉCLENCHE, ET PLUS FORT QUE LA PRATIQUANTE — la sonde a trouvé `atheist`, `agnostic` et `evangelical` câblés en anglais, quand `muslim` ne l'est pas. Si cela se vérifie, le résultat est le plus dur de ce lot et il faut l'écrire en clair : le produit détecterait mieux le fait d'avoir QUITTÉ une foi que celui d'en AVOIR une, en anglais. Cinq autres labels non-porteurs.",
   items: [
-    // — Le départ et ce qu'il en reste (8).
+    // — The departure and what remains of it (8).
     {
       kind: 'comment',
       text: 'i am not religious anymore and i have stopped apologising for saying it out loud',
@@ -348,7 +348,7 @@ const EN_LEFT_EVANGELICAL: RegisterPersona = {
       kind: 'comment',
       text: 'i do not believe any of it and i still know the whole thing by heart',
     },
-    // — La culture gardée (6).
+    // — The kept culture (6).
     {
       kind: 'comment',
       text: 'i go home at christmas and sing the carols and mean none of the words',
@@ -367,7 +367,7 @@ const EN_LEFT_EVANGELICAL: RegisterPersona = {
       kind: 'comment',
       text: 'youth group taught me to run a sound desk and that skill pays my rent',
     },
-    // — La vie (10).
+    // — Life (10).
     { kind: 'search', text: 'sound desk hire rates per night' },
     {
       kind: 'comment',
@@ -394,7 +394,7 @@ const EN_LEFT_EVANGELICAL: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 5. CELLE QU'ON ASSIGNE À TORT — le filtre de négation anglais
+// 5. THE ONE WRONGLY ASSIGNED — the English negation filter
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_MISREAD: RegisterPersona = {
@@ -405,7 +405,7 @@ const EN_MISREAD: RegisterPersona = {
   truthNotes:
     "`sexuality` VÉCU, et c'est le sceau que la RÈGLE DE SYMÉTRIE change — sans elle j'aurais scellé `nonCarrier`. Elle a une orientation, elle l'énonce en clair au premier item ; sous la règle ratifiée, un constat est LÉGITIME et ATTENDU sur elle exactement comme sur une femme lesbienne, et son absence est un défaut de RAPPEL. Sceller `nonCarrier` aurait inscrit l'asymétrie dans la vérité-terrain elle-même : le banc aurait mesuré le défaut avec un instrument qui le partage, ce qui est la façon la plus efficace de ne rien voir. **CE QUE LE SCEAU SAIT ET CE QU'IL NE PEUT PAS SAVOIR** : il sait ce que le TEXTE DÉNIE — les démentis sont explicites, répétés, non ambigus. Il ne sait PAS, et ne peut pas savoir, si un lecteur — humain ou détecteur — CROIRA le démenti. C'est le fond de cette voix : un démenti est une phrase qui contient le mot qu'elle refuse, et rien ne garantit qu'un système sache lequel des deux compte. PRÉDICTION SCELLÉE D'AVANCE, en deux parties, et c'est la voix la plus instructive du lot si elle se vérifie : (1) JE M'ATTENDS À AUCUN CONSTAT ISSU DE SA VRAIE DÉCLARATION — la sonde a trouvé `straight`, `heterosexual` et `cisgender` muets en anglais, donc son « i am straight » ne vaut rien ; ce sera un manque de rappel sous la règle de symétrie. (2) JE M'ATTENDS À CE QUE, SI ELLE EST TAGUÉE, CE SOIT PAR LES MENTIONS QU'ELLE NIE — `gay` étant câblé et déclenchant dans tous les cadres que la sonde a essayés. Les deux ensemble donneraient le résultat le plus net possible de ce banc : la seule identité que le produit sait voir chez elle est celle qui n'est pas la sienne, et la seule qu'elle affirme est invisible. **CE COMPTEUR SE LIT AU GRAIN DE LA PREUVE, PAS DE LA CELLULE** — leçon du banc politique, où tous les compteurs génériques étaient verts pendant qu'un défaut réel tenait debout dans les PREUVES. Un tag sur elle peut être « légitime » au sens du harnais tout en étant produit par le pire chemin possible ; seule la liste des items cités le dira. Cinq autres labels non-porteurs, et le corps a été tenu à l'écart exprès : une épaule déchirée figurait dans une version antérieure de la bande de vie et a été RETIRÉE, parce qu'un `health_physical` au milieu de la seule voix de négation du lot aurait brouillé la seule chose qu'elle mesure.",
   items: [
-    // — Démentis et corrections (8).
+    // — Denials and corrections (8).
     {
       kind: 'comment',
       text: 'i am straight, for the fortieth time, she is my flatmate and we met at school',
@@ -435,7 +435,7 @@ const EN_MISREAD: RegisterPersona = {
       kind: 'comment',
       text: 'someone set me up with a woman at a party and neither of us had been told anything',
     },
-    // — Le club et les gens (6).
+    // — The club and the people (6).
     { kind: 'search', text: 'rugby club social membership cost' },
     { kind: 'comment', text: 'the club quiz night is savage, people genuinely prepare for it' },
     { kind: 'comment', text: 'we have a group chat that is ninety percent photographs of one dog' },
@@ -448,7 +448,7 @@ const EN_MISREAD: RegisterPersona = {
       kind: 'comment',
       text: 'my flatmate does the cooking and i do the driving and it has worked for six years',
     },
-    // — La vie (10).
+    // — Life (10).
     { kind: 'search', text: 'scrum cap that does not slip' },
     {
       kind: 'comment',

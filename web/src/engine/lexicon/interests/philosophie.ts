@@ -1,27 +1,27 @@
-// Lexique d'intérêt `philosophie` (D2, PANO-89 lot 4) — philosophie (champ savoir).
+// Interest lexicon `philosophie` (D2, PANO-89 batch 4) — philosophy (knowledge field).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la philosophie FR : penseurs, courants, concepts. Entités = signal public
-// générique enrichi par recherche. Usage SOBRE (édition/edtech, pas un faux segment marketing).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR philosophy: thinkers, currents, concepts. Entities = generic public
+// signal enriched by research. SOBER usage (publishing/edtech, not a fake marketing segment).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — penseurs et courants univoques : « nietzsche », « descartes », « sartre », « foucault »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal thinkers and currents: « nietzsche », « descartes », « sartre », « foucault »,
 //     « spinoza », « stoicisme », « existentialisme », « metaphysique », « epistemologie », « cogito ».
-//   · ANCRÉ — concepts génériques : « morale », « ethique », « raison », « verite », « conscience »,
-//     « liberte », « etre » (verbe), « kant » (« quant ») : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — generic concepts: « morale », « ethique », « raison », « verite », « conscience »,
+//     « liberte », « etre » (verb), « kant » (« quant »): co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-//   · SOLO — courants et penseurs univoques : « philosopher », « stoicism », « existentialism »,
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+//   · SOLO — univocal currents and thinkers: « philosopher », « stoicism », « existentialism »,
 //     « metaphysics », « epistemology », « phenomenology », « nihilism », « empiricism »,
 //     « socrates », « aristotle », « trolley problem ».
-//   · ANCRÉ — « philosophy » (le PIÈGE MAJEUR : « my philosophy in life », « our company
-//     philosophy » — l'acception « devise personnelle » est au moins aussi courante que la
-//     discipline), « ethics » (« work ethics », comité d'éthique), « morality », « free will »,
-//     « consciousness », « plato » (Play-Doh, homophone approché) : compagnon requis.
+//   · ANCHORED — « philosophy » (the MAJOR TRAP: « my philosophy in life », « our company
+//     philosophy » — the « personal motto » sense is at least as common as the
+//     discipline), « ethics » (« work ethics », ethics committee), « morality », « free will »,
+//     « consciousness », « plato » (Play-Doh, approximate homophone): companion required.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Champ SAVOIR (penseurs, courants), jamais l'opinion politique partisane.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. KNOWLEDGE field (thinkers, currents), never partisan political opinion.
 
 import type { InterestLexicon } from '../types';
 
@@ -53,7 +53,7 @@ export const PHILOSOPHIE_LEXICON: InterestLexicon = {
     'dialectique',
     'empirisme',
     'cogito',
-    // Variantes EN (PANO-88) : SOLO univoques (courants / penseurs / cas d'école).
+    // EN variants (PANO-88): SOLO univocal (currents / thinkers / textbook cases).
     'philosopher',
     'stoicism',
     'existentialism',
@@ -67,22 +67,22 @@ export const PHILOSOPHIE_LEXICON: InterestLexicon = {
     'trolley problem',
   ],
   anchored: [
-    'morale', // morale générique
-    'ethique', // éthique générique
-    'raison', // raison / « avoir raison »
-    'verite', // vérité générique
-    'conscience', // conscience générique
-    'liberte', // liberté générique
-    'etre', // verbe être / l'être
+    'morale', // generic morals
+    'ethique', // generic ethics
+    'raison', // reason / « avoir raison »
+    'verite', // generic truth
+    'conscience', // generic consciousness/conscience
+    'liberte', // generic freedom
+    'etre', // verb to be / being
     'kant', // « quant à » (homophone) vs Kant
-    'platon', // fairly univoque mais gardé ancré (prénom rare)
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'philosophy', // « my philosophy in life » / « company philosophy » — piège majeur (EN)
-    'ethics', // « work ethics » / comité d'éthique (EN)
-    'morality', // morale générique (EN)
-    'free will', // libre arbitre / usage courant (EN)
-    'consciousness', // conscience générique (EN)
-    'plato', // Play-Doh (homophone approché) vs Platon (EN)
+    'platon', // fairly univocal but kept anchored (rare first name)
+    // EN variants (PANO-88): ANCHORED.
+    'philosophy', // « my philosophy in life » / « company philosophy » — major trap (EN)
+    'ethics', // « work ethics » / ethics committee (EN)
+    'morality', // generic morals (EN)
+    'free will', // free will / common usage (EN)
+    'consciousness', // generic consciousness (EN)
+    'plato', // Play-Doh (approximate homophone) vs Plato (EN)
   ],
   selfDeclared: ['etudiant en philosophie'],
 };

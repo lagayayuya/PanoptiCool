@@ -1,17 +1,17 @@
-// Témoins de `detectBrowser` — chaque moteur reçoit un DISCOURS différent (ADR-0006), donc une
-// détection fausse envoie de fausses instructions. Les UA sont des chaînes SYNTHÉTIQUES réduites
-// aux marqueurs discriminants (pas des UA copiées d'une vraie machine).
+// Witnesses of `detectBrowser` — each engine receives a different DISCOURSE (ADR-0006), so a
+// wrong detection sends wrong instructions. The UAs are SYNTHETIC strings reduced
+// to the discriminating markers (not UAs copied from a real machine).
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-//   - LES UA RÉELLES dans toute leur variété (forks, versions mobiles, anti-empreinte) : on fige la
-//     logique des marqueurs, pas le zoo des chaînes du monde ;
-//   - LA VÉRITÉ du comportement réseau : elle reste à `local-network.ts`, lue à l'échec.
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+//   - REAL UAs in all their variety (forks, mobile versions, anti-fingerprinting): we freeze the
+//     logic of the markers, not the world's zoo of strings;
+//   - THE TRUTH of the network behavior: it stays with `local-network.ts`, read at failure.
 
 import { describe, expect, it } from 'vitest';
 import { detectBrowser } from './browser';
 
 describe('detectBrowser', () => {
-  it('nomme les Chromium par leur marqueur propre, Chrome en dernier', () => {
+  it('names the Chromium browsers by their own marker, Chrome last', () => {
     expect(detectBrowser('Mozilla/5.0 Chrome/126.0 Safari/537.36 Edg/126.0', false)).toEqual({
       name: 'Edge',
       engine: 'chromium',
@@ -26,14 +26,14 @@ describe('detectBrowser', () => {
     });
   });
 
-  it("nomme Brave par son API, jamais par l'UA (Brave se déclare Chrome)", () => {
+  it('names Brave by its API, never by the UA (Brave declares itself Chrome)', () => {
     expect(detectBrowser('Mozilla/5.0 Chrome/126.0 Safari/537.36', true)).toEqual({
       name: 'Brave',
       engine: 'chromium',
     });
   });
 
-  it('distingue Firefox et Safari (le seul « Safari/ » SANS « Chrome/ »)', () => {
+  it('distinguishes Firefox and Safari (the only « Safari/ » WITHOUT « Chrome/ »)', () => {
     expect(detectBrowser('Mozilla/5.0 Gecko/20100101 Firefox/128.0', false)).toEqual({
       name: 'Firefox',
       engine: 'firefox',
@@ -44,7 +44,7 @@ describe('detectBrowser', () => {
     });
   });
 
-  it("ne conclut RIEN d'un UA muet — c'est le chemin « aucune cause nommée » (ADR-0006)", () => {
+  it('concludes NOTHING from a mute UA — this is the « no named cause » path (ADR-0006)', () => {
     expect(detectBrowser('Node.js/22', false)).toEqual({ name: null, engine: 'unknown' });
     expect(detectBrowser('', false)).toEqual({ name: null, engine: 'unknown' });
   });

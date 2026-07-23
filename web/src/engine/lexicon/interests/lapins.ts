@@ -1,25 +1,25 @@
-// Lexique d'intérêt `lapins` (D2, PANO-89 lot 4) — lapins de compagnie.
+// Interest lexicon `lapins` (D2, PANO-89 batch 4) — pet rabbits.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du lapin de compagnie FR : races, soin, habitat. Entités = signal public
-// générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR pet rabbits: breeds, care, habitat. Entities = generic public
+// signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « lapin nain », « clapier », « cuniculiculture », « lapereau », « lapin de compagnie ».
-//   · ANCRÉ — « lapin » (« poser un lapin »), « belier » (zodiaque / bélier), « angora » (laine /
-//     chat), « foin » (« faire du foin »), « terrier » (chien terrier), « nac » (sigle) : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « lapin » (« poser un lapin »), « belier » (zodiac / ram), « angora » (wool /
+//     cat), « foin » (« faire du foin »), « terrier » (terrier dog), « nac » (acronym): co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN réel vérifié par recherche (House Rabbit Society / BunnyTok).
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Real EN usage verified by research (House Rabbit Society / BunnyTok).
 //   · SOLO — « timothy hay », « rabbit hutch », « house rabbit », « bunnytok », « holland lop »,
-//     « mini lop », « flemish giant » : univoques.
-//   · ANCRÉ — « rabbit » (« down the RABBIT HOLE » — idiome massif), « bunny » (Easter/Playboy/snow/gym
-//     bunny), « binky » (= TÉTINE en EN courant, avant le saut de joie du lapin), « hay » (« hit the
-//     hay », « make hay »), « hutch » (buffet / Starsky & Hutch), « zoomies » (partagé chats/chiens).
+//     « mini lop », « flemish giant »: univocal.
+//   · ANCHORED — « rabbit » (« down the RABBIT HOLE » — massive idiom), « bunny » (Easter/Playboy/snow/gym
+//     bunny), « binky » (= PACIFIER in common EN, before the rabbit's joy hop), « hay » (« hit the
+//     hay », « make hay »), « hutch » (sideboard / Starsky & Hutch), « zoomies » (shared cats/dogs).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. « angora »/« belier » partagés (chats / autres) : assumé (co-occurrence par thème).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. « angora »/« belier » shared (cats / others): assumed (per-theme co-occurrence).
 
 import type { InterestLexicon } from '../types';
 
@@ -43,7 +43,7 @@ export const LAPINS_LEXICON: InterestLexicon = {
     'fauve de bourgogne',
     'enclos a lapin',
     'granules lapin',
-    // Variantes EN (PANO-88) : SOLO univoques (habitat / soin / races).
+    // EN variants (PANO-88): SOLO univocal (habitat / care / breeds).
     'timothy hay',
     'rabbit hutch',
     'house rabbit',
@@ -54,19 +54,19 @@ export const LAPINS_LEXICON: InterestLexicon = {
   ],
   anchored: [
     'lapin', // « poser un lapin » / « chaud lapin »
-    'belier', // zodiaque / bélier (animal)
-    'angora', // laine / chat angora
+    'belier', // zodiac / ram (animal)
+    'angora', // wool / angora cat
     'foin', // « faire du foin »
-    'terrier', // chien terrier / terrier (trou)
-    'nac', // sigle (nouveaux animaux de compagnie)
-    'garenne', // lieu-dit / lapin de garenne
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'rabbit', // « down the rabbit hole » — idiome massif (EN)
+    'terrier', // terrier dog / burrow
+    'nac', // acronym (exotic pets)
+    'garenne', // place name / warren rabbit
+    // EN variants (PANO-88): ANCHORED.
+    'rabbit', // « down the rabbit hole » — massive idiom (EN)
     'bunny', // Easter / Playboy / snow / gym bunny (EN)
-    'binky', // = tétine en EN courant vs saut de joie du lapin
+    'binky', // = pacifier in common EN vs the rabbit's joy hop
     'hay', // « hit the hay » / « make hay » (EN)
-    'hutch', // buffet / Starsky & Hutch (EN)
-    'zoomies', // partagé chats / chiens (EN)
+    'hutch', // sideboard / Starsky & Hutch (EN)
+    'zoomies', // shared cats / dogs (EN)
   ],
   selfDeclared: ['proprietaire de lapin'],
 };

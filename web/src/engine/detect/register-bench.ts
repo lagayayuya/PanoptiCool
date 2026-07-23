@@ -1,13 +1,13 @@
-// Vocabulaire partagé des bancs de registres (PANO-35) — les TYPES et la vérité-terrain, sans
-// aucune donnée de persona. Les voix vivent dans `en-registers.fixture.ts` et
-// `fr-registers.fixture.ts`, chacune scellée par son propre commit.
+// Shared vocabulary of the register benches (PANO-35) — the TYPES and the ground truth, without
+// any persona data. The voices live in `en-registers.fixture.ts` and
+// `fr-registers.fixture.ts`, each sealed by its own commit.
 //
-// Ce module est né de l'extraction des déclarations du banc EN, au moment d'ouvrir le banc FR :
-// aucune valeur de vérité-terrain n'a bougé, seules les déclarations ont changé de maison. Le
-// sceau EN garde donc son sens — ce qu'il figeait, ce sont des états, pas des interfaces.
+// This module was born from extracting the declarations of the EN bench, at the time of opening the FR bench:
+// no ground-truth value moved, only the declarations changed house. The
+// EN seal therefore keeps its meaning — what it froze are states, not interfaces.
 
-/** Les six labels sensibles (ADR-0003). Réécrits ici, sans dépendre de `lexicon/` : un banc qui
- *  importerait le module qu'il mesure serait un banc qui a regardé. */
+/** The six sensitive labels (ADR-0003). Rewritten here, without depending on `lexicon/`: a bench that
+ *  imported the module it measures would be a bench that has looked. */
 export type SensitiveLabel =
   | 'health_physical'
   | 'mental_health'
@@ -26,19 +26,19 @@ export const SENSITIVE_LABELS: readonly SensitiveLabel[] = [
 ];
 
 /**
- * Les trois états de vérité-terrain d'ADR-0003 (*L'incertitude*), et ce qu'ils imposent au compteur.
+ * The three ground-truth states of ADR-0003 (*L'incertitude*), and what they impose on the counter.
  *
- * - `lived` — la personne est concernée. Un tag est ATTENDU ; son absence est un défaut de rappel.
- * - `signalWithoutLived` — le signal est RÉEL mais ne porte pas sur la personne (le proche, le
- *   professionnel). Un tag est ATTENDU AUSSI, et **ce n'est pas un faux positif** : c'est
- *   exactement ce qu'une plateforme ferait, et le montrer est le propos du produit. Le tort ici
- *   n'est pas d'être tagué, c'est d'être **sur-classé** — un constat nommé, de haute confiance, là
- *   où seul un constat large est justifié.
- * - `nonCarrier` — aucun signal réel, seulement du texte qui en a la forme (hyperbole, métaphore,
- *   homographie). Un tag est un **tort**, et c'est le seul tort à compter.
+ * - `lived` — the person is concerned. A tag is EXPECTED; its absence is a recall defect.
+ * - `signalWithoutLived` — the signal is REAL but does not bear on the person (the relative, the
+ *   professional). A tag is EXPECTED TOO, and **it is not a false positive**: it is
+ *   exactly what a platform would do, and showing it is the product's purpose. The wrong here
+ *   is not to be tagged, it is to be **over-classified** — a named, high-confidence finding, where
+ *   only a broad finding is justified.
+ * - `nonCarrier` — no real signal, only text that has the form of it (hyperbole, metaphor,
+ *   homography). A tag is a **wrong**, and it is the only wrong to count.
  *
- * Les deux compteurs ne s'additionnent jamais : le volume `signalWithoutLived` est voulu HAUT, le
- * tort est voulu BAS.
+ * The two counters never add up together: the `signalWithoutLived` volume is meant HIGH, the
+ * wrong is meant LOW.
  */
 export type GroundTruth = 'lived' | 'signalWithoutLived' | 'nonCarrier';
 
@@ -48,20 +48,20 @@ export interface BenchItem {
 }
 
 export interface RegisterPersona {
-  /** Identifiant stable — sert de clé dans les attendus du banc. */
+  /** Stable identifier — serves as key in the bench expectations. */
   readonly id: string;
-  /** Le registre isolé par cette voix, en une ligne : ce que la persona fait VARIER. */
+  /** The register isolated by this voice, in one line: what the persona makes VARY. */
   readonly register: string;
-  /** Qui est cette personne. Prose, écrite à l'écriture — la part auditable par un tiers. */
+  /** Who this person is. Prose, written at writing time — the part auditable by a third party. */
   readonly who: string;
-  /** Vérité-terrain par label, écrite AVANT toute mesure. */
+  /** Ground truth per label, written BEFORE any measurement. */
   readonly truth: Readonly<Record<SensitiveLabel, GroundTruth>>;
-  /** Pourquoi ces états, y compris les appels contestables. Écrit à l'écriture, jamais après. */
+  /** Why these states, including the contestable calls. Written at writing time, never after. */
   readonly truthNotes: string;
   readonly items: readonly BenchItem[];
 }
 
-/** Raccourci : tout `nonCarrier`, puis surcharge des labels concernés. */
+/** Shortcut: all `nonCarrier`, then override the labels concerned. */
 export function allNonCarrier(
   overrides: Partial<Record<SensitiveLabel, GroundTruth>> = {},
 ): Record<SensitiveLabel, GroundTruth> {

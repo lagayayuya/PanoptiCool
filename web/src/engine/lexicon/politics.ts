@@ -1,236 +1,236 @@
-// Lexique `politics` (PANO-71 graine → PANO-36 enrichi) — TROIS registres distincts (décision yuya) :
-//   1. auto-déclaration (1ʳᵉ personne : « je vote », « je suis de gauche ») → explicit ;
-//   2. thématique (vocabulaire de la vie politique : « manif », « réforme ») → indirectCore ;
-//   3. opinion / jugement porté (catégories péjoratives : « facho », « gaucho », « corrompu ») →
-//      indirectCore. C'est le registre le plus courant en commentaires, et là que « fasciste »
-//      revit — correctement classé politics (avis / engagement), PAS conflictual.
+// `politics` lexicon (PANO-71 seed → PANO-36 enriched) — THREE distinct registers (yuya decision):
+//   1. self-declaration (1st person: « je vote », « je suis de gauche ») → explicit;
+//   2. thematic (vocabulary of political life: « manif », « réforme ») → indirectCore;
+//   3. opinion / borne judgment (pejorative categories: « facho », « gaucho », « corrompu ») →
+//      indirectCore. It is the most common register in comments, and where « fasciste »
+//      lives again — correctly classed politics (opinion / engagement), NOT conflictual.
 //
-// ── Justification de généricité (discipline PANO-70 §3, §2.5) ─────────────────────────────────
-// Vocabulaire civique et ARGOT POLITIQUE COURANT DU FR EN LIGNE, écrit à l'aveugle depuis l'usage
-// commun, jamais depuis un export :
-//   · soutenu : institutions et procédures (assemblée nationale, motion de censure, référendum) ;
-//   · courant : thèmes et acteurs génériques (manif, syndicat, député, pouvoir d'achat) ;
-//   · argot / péjoratif politique : insultes de CATÉGORIE ou de CAMP (gaucho, droitard, facho,
-//     bourge, beauf, woke, boomer, macroniste…) — GÉNÉRIQUES car elles visent des camps/catégories,
-//     JAMAIS des individus nommés (les noms propres sont exclus, décision yuya).
-// Frontière tenue : insulter une PERSONNE (cible 2ᵉ pers.) = conflictual ; juger une catégorie/idée
-// politique = politics. Chaque terme aurait été écrit à l'identique sans avoir vu aucun export.
+// ── Genericity justification (PANO-70 §3, §2.5 discipline) ────────────────────────────────────
+// Civic vocabulary and COMMON ONLINE FR POLITICAL SLANG, written blind from common
+// usage, never from an export:
+//   · formal: institutions and procedures (assemblée nationale, motion de censure, référendum);
+//   · everyday: generic themes and actors (manif, syndicat, député, pouvoir d'achat);
+//   · slang / political pejorative: CATEGORY or CAMP insults (gaucho, droitard, facho,
+//     bourge, beauf, woke, boomer, macroniste…) — GENERIC because they target camps/categories,
+//     NEVER named individuals (proper nouns are excluded, yuya decision).
+// Boundary held: insulting a PERSON (2nd-person target) = conflictual; judging a political
+// category/idea = politics. Each term would have been written identically without having seen any export.
 //
-// ── LA SYMÉTRIE — la contrainte propre à ce lexique, et elle n'est pas une précaution ──────────
-// Un lexique politique qui porte le vocabulaire d'un camp mieux que celui de l'autre fait du
-// produit un instrument ORIENTÉ, et le biais est invisible : une non-détection n'affiche rien.
-// Aucun des cinq autres labels ne court ce risque.
+// ── SYMMETRY — the constraint specific to this lexicon, and it is not a precaution ─────────────
+// A political lexicon that carries one camp's vocabulary better than the other's makes the
+// product a BIASED instrument, and the bias is invisible: a non-detection displays nothing.
+// None of the other five labels runs this risk.
 //
-// Ce lexique l'a couru, et il faut écrire le mécanisme plutôt que le corriger en silence — parce
-// que c'est le mécanisme, pas les termes, qui se reproduira. PERSONNE n'a écrit ce biais : chaque
-// terme est entré pour une raison localement défendable, et le défaut ne vivait dans AUCUN d'eux.
-// Il vivait dans la COMPOSITION de deux registres :
+// This lexicon ran it, and one must write the mechanism rather than fix it silently — because
+// it is the mechanism, not the terms, that will recur. NO ONE wrote this bias: each
+// term entered for a locally defensible reason, and the defect lived in NONE of them.
+// It lived in the COMPOSITION of two registers:
 //
-//   · le registre 1 (auto-déclaration) recueillait surtout des identités de GAUCHE — `anarchiste`,
-//     `communiste`, `marxiste`, `insoumis`, `feministe`… ;
-//   · le registre 3 (jugements portés) recueillait les étiquettes de DROITE — `nationaliste`,
-//     `populiste`, `complotiste`, `communautariste` — parce qu'elles y étaient entrées comme des
-//     ACCUSATIONS, ce qu'elles sont effectivement en commentaire.
+//   · register 1 (self-declaration) collected mostly LEFT identities — `anarchiste`,
+//     `communiste`, `marxiste`, `insoumis`, `feministe`…;
+//   · register 3 (borne judgments) collected the RIGHT labels — `nationaliste`,
+//     `populiste`, `complotiste`, `communautariste` — because they had entered there as
+//     ACCUSATIONS, which they effectively are in a comment.
 //
-// Résultat mesuré, un item chacune : « je suis anarchiste » posait un constat NOMMÉ, « je suis
-// nationaliste » n'en posait AUCUN (un seul hit indirect, sous le seuil 2). Le lexique entendait
-// l'identité de gauche quand elle se revendique, et celle de droite seulement quand un tiers la
-// dénonce. Une relecture terme à terme ne pouvait pas le voir : elle vérifie que chaque terme
-// PRÉSENT est légitime, jamais que les ABSENTS le sont symétriquement.
+// Measured result, one item each: « je suis anarchiste » set a NAMED finding, « je suis
+// nationaliste » set NONE (a single indirect hit, below threshold 2). The lexicon heard
+// the left identity when it claims itself, and the right's only when a third party
+// denounces it. A term-by-term rereading could not see it: it verifies that each term
+// PRESENT is legitimate, never that the ABSENT ones are symmetrically so.
 //
-// La règle qui en sort, et elle vaut pour toute entrée future :
-//   1. une étiquette d'identité entre au tier de l'IDENTITÉ (`selfDeclared`) pour les deux camps —
-//      y compris quand le même mot vit AUSSI en `indirectCore` comme accusation (précédent :
-//      `souverainiste`, `macroniste`) ;
-//   2. un thème saillant d'un camp n'entre qu'avec son PENDANT de l'autre ;
-//   3. on juge la SÉMANTIQUE de chaque terme, jamais l'équilibre du décompte. Une liste rendue
-//      symétrique par remplissage serait un défaut pire que celui qu'on répare : elle aurait l'air
-//      juste.
-// Le témoin qui empêche ce lexique de re-diverger est `detect/politics-symmetry.test.ts`.
+// The rule that comes out of it, and it holds for any future entry:
+//   1. an identity label enters the IDENTITY tier (`selfDeclared`) for both camps —
+//      including when the same word ALSO lives in `indirectCore` as an accusation (precedent:
+//      `souverainiste`, `macroniste`);
+//   2. a theme salient to one camp enters only with its COUNTERPART from the other;
+//   3. one judges the SEMANTICS of each term, never the balance of the count. A list made
+//      symmetric by padding would be a worse defect than the one being repaired: it would look
+//      right.
+// The witness that prevents this lexicon from re-diverging is `detect/politics-symmetry.test.ts`.
 //
-// EXCLUS, et par PAIRES quand la raison vaut des deux côtés — une exclusion se perd si rien ne la
-// tient :
-//   · `identitaire` ET `antifa` — tous deux nomment une famille de MOUVEMENT plus qu'une position ;
-//     un lexique doit survivre aux cycles, et citer les mouvements d'un camp est un acte éditorial
-//     permanent (même raison que l'exclusion des noms propres) ;
-//   · `securite` — « sécurité sociale / routière / au travail » noient l'emploi politique ;
-//     `insecurite`, lui, est admis : il n'a pas ces homographes ;
-//   · `immigration clandestine`, `grand remplacement` — le qualificatif EST l'objet du litige ;
-//     l'admettre inscrirait une position dans le lexique, pas un sujet.
-// NON AJOUTÉ mais propre, et nommé pour qu'on sache que ce n'est pas un oubli : `progressiste`.
-// Il aurait sa place ; il ne sert pas la réparation, et l'ajouter à un tier déjà bien pourvu à
-// gauche serait du remplissage à l'envers. Le prochain lot d'enrichissement le trouvera ici.
+// EXCLUDED, and by PAIRS when the reason holds on both sides — an exclusion is lost if nothing holds
+// it:
+//   · `identitaire` AND `antifa` — both name a MOVEMENT family more than a position;
+//     a lexicon must survive the cycles, and citing one camp's movements is a permanent editorial
+//     act (same reason as the exclusion of proper nouns);
+//   · `securite` — « sécurité sociale / routière / au travail » drown the political use;
+//     `insecurite`, for its part, is admitted: it does not have these homographs;
+//   · `immigration clandestine`, `grand remplacement` — the qualifier IS the object of the dispute;
+//     admitting it would inscribe a position in the lexicon, not a subject.
+// NOT ADDED but clean, and named so it is known this is not an oversight: `progressiste`.
+// It would have its place; it does not serve the repair, and adding it to a tier already well stocked on the
+// left would be reverse padding. The next enrichment batch will find it here.
 //
-// ── `liberal` : une exclusion PROPOSÉE, puis RENVERSÉE — et par quoi ───────────────────────────
-// La note de portabilité proposait d'exclure `liberal` / `liberale`, sur une collision réelle avec
-// la PROFESSION libérale (« je suis libérale » sous la plume d'une infirmière), et opposait le cas
-// à `communiste` / `marxiste`, qui n'ont pas de lecture non politique à la 1ʳᵉ personne.
+// ── `liberal`: an exclusion PROPOSED, then OVERTURNED — and by what ─────────────────────────────
+// The portability note proposed excluding `liberal` / `liberale`, on a real collision with
+// the LIBERAL PROFESSION (« je suis libérale » under a nurse's pen), and opposed the case
+// to `communiste` / `marxiste`, which have no non-political reading in the 1st person.
 //
-// L'argument tient toujours ; il ne suffisait pas. Le banc `politics`, scellé à l'aveugle par une
-// autre session, isole précisément cette paire comme la forme la plus pure de l'asymétrie : même
-// cadre, même longueur, même personne grammaticale, la seule variable étant le terme de courant —
-// « je suis socialiste » posait un constat nommé, « je suis libéral » n'en posait aucun. Maintenir
-// l'exclusion, c'était laisser debout le défaut exact que ce lot répare, et le laisser debout d'UN
-// SEUL CÔTÉ. La collision de profession est une POLYSÉMIE, la classe que la doctrine tolère
-// explicitement (le faux positif n'est pas un motif de retrait) — et non une hyperbole, la seule
-// classe que la règle d'admission écarte à la porte.
+// The argument still holds; it did not suffice. The `politics` bench, sealed blind by
+// another session, isolates precisely this pair as the purest form of the asymmetry: same
+// frame, same length, same grammatical person, the only variable being the register term —
+// « je suis socialiste » set a named finding, « je suis libéral » set none. Maintaining
+// the exclusion meant leaving standing the exact defect this batch repairs, and leaving it standing on ONE
+// SIDE ONLY. The profession collision is a POLYSEMY, the class the doctrine tolerates
+// explicitly (the false positive is not grounds for removal) — and not a hyperbole, the only
+// class the admission rule discards at the gate.
 //
-// CONTAMINATION DÉCLARÉE, parce qu'elle change ce que le banc prouve : `liberal`, `liberale` et
-// `redistribution` ont été écrits APRÈS lecture de la fixture scellée. Le banc reste un instrument
-// indépendant pour tout le reste du lexique — il a été écrit sans le voir — mais il ne peut pas
-// servir de validation à l'aveugle de CES trois entrées-là. Le prochain instrument qui les mesurera
-// devra être écrit sans elles en tête.
+// DECLARED CONTAMINATION, because it changes what the bench proves: `liberal`, `liberale` and
+// `redistribution` were written AFTER reading the sealed fixture. The bench remains an
+// independent instrument for all the rest of the lexicon — it was written without seeing it — but it cannot
+// serve as blind validation of THOSE three entries. The next instrument that measures them
+// will have to be written without them in mind.
 //
-// ── LE LOT ANGLAIS — ce qu'il est, et l'axe qu'il NE prend PAS ─────────────────────────────────
-// 23 entrées `// (EN)`, réparties en deux actes d'engagement, neuf institutions et procédures, huit
-// thèmes en PAIRES APPARIÉES et deux locutions transversales. Aucune identité, aucune épithète,
-// aucun nom de parti ou de mouvement, `selfDeclared` laissé VIDE.
+// ── THE ENGLISH BATCH — what it is, and the axis it does NOT take ──────────────────────────────
+// 23 `// (EN)` entries, split into two engagement acts, nine institutions and procedures, eight
+// themes in MATCHED PAIRS and two transversal phrases. No identity, no epithet,
+// no party or movement name, `selfDeclared` left EMPTY.
 //
-// **L'axe anglais n'est PAS l'axe français, et c'est la décision de fond du lot.** Le témoin FR
-// partitionne des identités en gauche / droite ; transporter cette partition en anglais serait
-// bâtir un filet sur une ligne que ce vocabulaire ne croise jamais, pour trois raisons mesurées ou
-// vérifiées :
-//   · le lot ne contient AUCUNE identité — il n'y a rien à partitionner ;
-//   · le mot dont le camp s'inverse selon le dialecte existe (`liberal` : gauche aux États-Unis,
-//     droite économique au Royaume-Uni), donc une partition anglaise dépendrait du lecteur ;
-//   · il n'existe AUCUNE paire opposée anglaise scellée — la fixture le déclare en toutes lettres.
-// L'axe retenu est donc celui des CHEMINS : combien de voies indépendantes mènent à un constat,
-// de chaque bord. C'est ce que mesure la section EN de `detect/politics-symmetry.test.ts`, et son
-// en-tête dit pourquoi cette mesure ne peut pas encore conclure.
+// **The English axis is NOT the French axis, and that is the batch's fundamental decision.** The FR witness
+// partitions identities into left / right; transporting that partition into English would be
+// building a net on a line that this vocabulary never crosses, for three measured or
+// verified reasons:
+//   · the batch contains NO identity — there is nothing to partition;
+//   · the word whose camp inverts by dialect exists (`liberal`: left in the United States,
+//     economic right in the United Kingdom), so an English partition would depend on the reader;
+//   · there is NO sealed English opposed pair — the fixture declares it in full.
+// The retained axis is therefore that of PATHS: how many independent ways lead to a finding,
+// on each side. That is what the EN section of `detect/politics-symmetry.test.ts` measures, and its
+// header says why that measurement cannot yet conclude.
 //
-// ── LA PORTE D'ADMISSION EN, ET LA RÈGLE PROPRE QUI EST BIAISÉE ────────────────────────────────
-// **À lire avant d'ajouter le moindre terme anglais à ce lexique.** C'est le piège le plus coûteux
-// de tout ce chantier, parce qu'il ne rougit nulle part : chaque pas se justifie, et le résultat est
-// un instrument orienté.
+// ── THE EN ADMISSION GATE, AND THE VERY RULE THAT IS BIASED ─────────────────────────────────────
+// **To read before adding the slightest English term to this lexicon.** It is the costliest trap
+// of this whole undertaking, because it reddens nowhere: each step is justified, and the result is
+// a biased instrument.
 //
-// La règle qui vient naturellement à l'esprit, et elle est bonne : **entre le NOM DOCTRINAL, reste
-// dehors l'ADJECTIF D'USAGE GÉNÉRAL.** `socialist`, `monarchist`, `libertarian` n'ont qu'un sens
-// lexicalisé — les employer d'un lave-vaisselle est une plaisanterie qui EMPRUNTE ce sens, et c'est
-// ce qui la rend drôle. `radical`, `moderate`, `independent`, `green`, `progressive` sont des
-// adjectifs anglais ANTÉRIEURS et EXTÉRIEURS au sens politique : « im pretty liberal with the
-// garlic » n'emprunte rien, c'est l'emploi ordinaire.
+// The rule that comes naturally to mind, and it is good: **the DOCTRINAL NOUN enters, the
+// GENERAL-USE ADJECTIVE stays out.** `socialist`, `monarchist`, `libertarian` have only one
+// lexicalized sense — using them of a dishwasher is a joke that BORROWS that sense, and that
+// is what makes it funny. `radical`, `moderate`, `independent`, `green`, `progressive` are English
+// adjectives PRIOR to and OUTSIDE the political sense: « im pretty liberal with the
+// garlic » borrows nothing, it is the ordinary use.
 //
-// **APPLIQUÉE MÉCANIQUEMENT, CETTE RÈGLE EST BIAISÉE, et voici par où :**
-//   · `conservative` est LE mot ordinaire par lequel la droite anglophone se décrit — et c'est un
-//     adjectif d'usage général (« i am conservative with my time estimates ») ;
-//   · `socialist` est LE mot ordinaire de la gauche — et c'est un nom doctrinal.
-// La règle admettrait donc le mot ordinaire d'un camp et exclurait celui de l'autre. C'est le défaut
-// français RECONSTITUÉ SOUS UN HABIT NEUF, par un raisonnement irréprochable à chaque étape — et
-// personne ne l'aurait écrit, exactement comme personne n'avait écrit le premier.
+// **APPLIED MECHANICALLY, THIS RULE IS BIASED, and here is where:**
+//   · `conservative` is THE ordinary word by which the anglophone right describes itself — and it is a
+//     general-use adjective (« i am conservative with my time estimates »);
+//   · `socialist` is THE ordinary word of the left — and it is a doctrinal noun.
+// The rule would therefore admit the ordinary word of one camp and exclude that of the other. It is the
+// French defect RECONSTITUTED IN NEW CLOTHES, by reasoning irreproachable at each step — and
+// no one would have written it, exactly as no one had written the first.
 //
-// La forme du danger est générale et ne tient pas à ces deux mots : **une règle d'admission qui
-// discrimine sur la FORME d'un terme (nom/adjectif, nu/syntagme, savant/courant) découpe le champ
-// politique de travers, parce que les deux camps ne nomment pas leur position dans la même forme
-// grammaticale.** Toute règle formelle proposée ici doit donc être éprouvée sur les DEUX mots
-// ordinaires des deux bords avant d'être adoptée. Aucun test ne peut le faire à la place de qui écrit.
+// The form of the danger is general and does not depend on these two words: **an admission rule that
+// discriminates on the FORM of a term (noun/adjective, bare/phrase, learned/everyday) cuts the political
+// field crosswise, because the two camps do not name their position in the same grammatical
+// form.** Any formal rule proposed here must therefore be tested on BOTH ordinary
+// words of both sides before being adopted. No test can do it in place of whoever writes.
 //
-// D'OÙ LA DÉCISION, et elle est écrite comme telle plutôt que passée en fraude sous une règle :
-// **`conservative` ET `liberal` entrent tous les deux, comme ACCEPTATIONS ASSUMÉES.** Assumées, pas
-// « mesurées » — l'instrument n'existe pas (voir plus bas), et écrire « mesurée » sans instrument est
-// la sur-citation que ce dépôt paie sept fois. La doctrine les autorise sans contorsion : tous deux
-// se déclenchent sur des porteurs ET des non-porteurs, donc ils discriminent MAL sans ne discriminer
-// PAS-DU-TOUT (ADR-0003, *le faux positif n'est pas un motif de retrait*), et le seuil 2 travaille
-// dessus comme sur toute polysémie. **Les exclure tous les deux serait défendable ; n'en exclure
-// qu'un ne l'est pas.**
+// HENCE THE DECISION, and it is written as such rather than smuggled in under a rule:
+// **`conservative` AND `liberal` both enter, as ASSUMED ACCEPTANCES.** Assumed, not
+// "measured" — the instrument does not exist (see below), and writing "measured" without an instrument is
+// the over-citation this repo pays seven times. The doctrine authorizes them without contortion: both
+// fire on bearers AND non-bearers, so they discriminate BADLY without discriminating
+// NOT-AT-ALL (ADR-0003, *the false positive is not grounds for removal*), and threshold 2 works
+// on them as on any polysemy. **Excluding both would be defensible; excluding
+// only one is not.**
 //
-// EXCLUS du tier EN, et à quel titre — une exclusion se perd si rien ne la tient :
-//   · `progressive`, `moderate`, `independent`, `green`, `radical`, `red`, `blue` — adjectifs
-//     d'usage général dont le sens non politique est CONVENTIONNEL et DOMINANT (règle d'admission,
-//     ADR-0003). Aucun n'est le mot ordinaire d'un camp : les exclure ne coûte de rappel à personne
-//     en particulier, et c'est ce qui les distingue de `conservative` ;
-//   · `activist`, `militant` — intensificateurs productifs (« im militant about recycling ») ;
-//     `militant` est DÉJÀ au registre de la porte de langue comme graphie non admise en EN, et
-//     l'admettre ici contredirait `selfdeclared-language-gate.test.ts` ;
-//   · `reactionary`, `populist` — ACCUSATIONS, pas des auto-descriptions. Les admettre au tier de
-//     l'identité referait le défaut français : la droite entendue seulement quand un tiers la dénonce ;
-//   · `patriot` — collisions de noms propres (équipes) et charge asymétrique selon le pays ;
-//   · **noms de partis et de mouvements** — la règle écrite (durabilité + symétrie) TIENT pour
-//     l'anglais, et l'anglais lui donne un TROISIÈME appui que le français n'avait pas : mesuré,
-//     `republican` signifie ANTI-MONARCHISTE en Irlande et au Royaume-Uni, `labour` collisionne avec
-//     « labour intensive » et l'accouchement, `green` avec la couleur. C'est une inversion dialectale
-//     PIRE que celle de `liberal`, puisqu'elle porte sur des chaînes qu'aucun syntagme ne désambiguïse ;
-//   · les mêmes termes en `indirectCore` — HORS PÉRIMÈTRE, décision distincte. La 3ᵉ personne et le
-//     syntagme nu restent muets, comme au lot des adjectifs : c'est la porte où `straight` a été
-//     mesuré à 1 → 4 torts ;
-//   · `fascist` et `nazi` EN — le FR porte `fasciste`, l'anglais les refuse : « grammar nazi »,
-//     « gym fascist » rendent l'usage conventionnellement HYPERBOLIQUE (règle d'admission,
-//     ADR-0003), et `nazi` vise en outre un tiers (frontière `conflictual`). Cas net où traduire
-//     l'entrée FR aurait été l'erreur ;
-//   · `welfare` nu (« animal welfare », « child welfare »), `free speech` (revendiqué par tous les
-//     camps, donc sans pouvoir discriminant), `culture war` (journalistique bien plus
-//     qu'auto-décrit), `illegal immigration` (le qualificatif EST l'objet du litige — pendant EN
-//     exact de l'exclusion `immigration clandestine` plus haut).
-// SOCIOLECTE (3ᵉ porte d'ADR-0003), vérifié terme à terme et non supposé de l'ensemble : les deux
-// registres politiques anglais qui MARQUENT un groupe — le vocabulaire de camp à charge de classe
-// (`gammon`, `little englander`, `sheeple`) et le registre patriotique marqué régionalement — n'ont
-// aucun candidat ici, les premiers étant des ÉPITHÈTES (exclues en bloc) et le second couvert par
-// l'exclusion de `patriot`. Les 25 admis sont des termes de DOCTRINE, non marqués socialement.
+// EXCLUDED from the EN tier, and on what grounds — an exclusion is lost if nothing holds it:
+//   · `progressive`, `moderate`, `independent`, `green`, `radical`, `red`, `blue` — general-use
+//     adjectives whose non-political sense is CONVENTIONAL and DOMINANT (admission rule,
+//     ADR-0003). None is the ordinary word of a camp: excluding them costs recall to no one
+//     in particular, and that is what distinguishes them from `conservative`;
+//   · `activist`, `militant` — productive intensifiers (« im militant about recycling »);
+//     `militant` is ALREADY in the language-gate registry as a spelling not admitted in EN, and
+//     admitting it here would contradict `selfdeclared-language-gate.test.ts`;
+//   · `reactionary`, `populist` — ACCUSATIONS, not self-descriptions. Admitting them to the
+//     identity tier would remake the French defect: the right heard only when a third party denounces it;
+//   · `patriot` — proper-noun collisions (teams) and asymmetric charge by country;
+//   · **party and movement names** — the written rule (durability + symmetry) HOLDS for
+//     English, and English gives it a THIRD support that French did not have: measured,
+//     `republican` means ANTI-MONARCHIST in Ireland and the United Kingdom, `labour` collides with
+//     « labour intensive » and childbirth, `green` with the color. It is a dialectal inversion
+//     WORSE than `liberal`'s, since it bears on strings that no phrase disambiguates;
+//   · the same terms in `indirectCore` — OUT OF SCOPE, a distinct decision. The 3rd person and the
+//     bare phrase stay silent, as in the adjectives batch: it is the gate where `straight` was
+//     measured at 1 → 4 wrongs;
+//   · EN `fascist` and `nazi` — FR carries `fasciste`, English refuses them: « grammar nazi »,
+//     « gym fascist » make the use conventionally HYPERBOLIC (admission rule,
+//     ADR-0003), and `nazi` moreover targets a third party (`conflictual` boundary). A clear case where translating
+//     the FR entry would have been the mistake;
+//   · bare `welfare` (« animal welfare », « child welfare »), `free speech` (claimed by all the
+//     camps, so without discriminating power), `culture war` (journalistic far more
+//     than self-described), `illegal immigration` (the qualifier IS the object of the dispute — exact EN
+//     counterpart of the `immigration clandestine` exclusion above).
+// SOCIOLECT (ADR-0003's 3rd gate), verified term by term and not assumed of the whole: the two
+// English political registers that MARK a group — the class-charged camp vocabulary
+// (`gammon`, `little englander`, `sheeple`) and the regionally-marked patriotic register — have
+// no candidate here, the former being EPITHETS (excluded en bloc) and the latter covered by
+// the exclusion of `patriot`. The 25 admitted are DOCTRINE terms, not socially marked.
 //
-// ── `liberal` EN : l'inversion dialectale casse un TÉMOIN, pas le PRODUIT ──────────────────────
-// La note de portabilité tenait `liberal` pour inadmissible en anglais, son camp s'inversant selon le
-// dialecte (gauche aux États-Unis, droite économique au Royaume-Uni). Le fait est exact ; la
-// conséquence qu'on en tirait visait la mauvaise cible.
+// ── EN `liberal`: the dialectal inversion breaks a WITNESS, not the PRODUCT ────────────────────
+// The portability note held `liberal` inadmissible in English, its camp inverting by
+// dialect (left in the United States, economic right in the United Kingdom). The fact is exact; the
+// consequence drawn from it aimed at the wrong target.
 //
-// `selfDeclaredEn` NE NOMME JAMAIS, et le constat produit dit `politics` — jamais « gauche », jamais
-// « droite ». Le produit n'affiche AUCUN camp, dans aucune langue. Le camp d'un terme n'existe que
-// dans le classeur d'un témoin, c'est-à-dire dans du bookkeeping de test. L'inversion casse donc la
-// PARTITION, pas la DÉTECTION — et le témoin la range dans un seau `ambiguous` dédié, exactement
-// comme le versant français s'est donné un seau `neutral` pour ne pas forcer un camp sur des termes
-// qui n'en portent pas.
-// Deux syntagmes désambiguïsent par ailleurs ce que le mot nu ne peut pas : `classical liberal`
-// (droite économique) et `social democrat` (gauche) entrent chacun de leur côté, sans dépendre du
-// lecteur.
+// `selfDeclaredEn` NEVER NAMES, and the produced finding says `politics` — never « gauche », never
+// « droite ». The product displays NO camp, in any language. A term's camp exists only
+// in a witness's ledger, i.e. in test bookkeeping. The inversion therefore breaks the
+// PARTITION, not the DETECTION — and the witness files it in a dedicated `ambiguous` bucket, exactly
+// as the French side gave itself a `neutral` bucket so as not to force a camp on terms
+// that carry none.
+// Two phrases moreover disambiguate what the bare word cannot: `classical liberal`
+// (economic right) and `social democrat` (left) each enter on their own side, without depending on the
+// reader.
 //
-// ── CE QUE LE TIER EN NE RATTRAPE PAS — l'écart de langue SUBSISTE, par décision ───────────────
-// À écrire avant que quiconque cite ce lot comme « la couverture politique anglaise est réparée » :
+// ── WHAT THE EN TIER DOES NOT MAKE UP — the language gap SUBSISTS, by decision ─────────────────
+// To write before anyone cites this batch as "the English political coverage is repaired":
 //     « je suis socialiste »  ×1 → politics[EXPLICIT]
-//     « i am a socialist »    ×1 → RIEN
+//     « i am a socialist »    ×1 → NOTHING
 //     « i am a socialist »    ×2 → politics[indirect]
-// L'anglais demande DEUX items là où le français en demande un, et il ne NOMME jamais. Ce n'est pas
-// un reste de trou : ce sont deux décisions déjà prises ailleurs — l'étage par `selfDeclaredEn` (qui
-// n'affirme jamais) et le seuil par le calibrage PANO-33. Ce lot répare l'auto-déclaration RÉPÉTÉE ;
-// l'énoncé isolé reste muet, la 3ᵉ personne et le syntagme nu aussi.
+// English requires TWO items where French requires one, and it NEVER NAMES. This is not
+// a leftover gap: these are two decisions already made elsewhere — the tier by `selfDeclaredEn` (which
+// never asserts) and the threshold by the PANO-33 calibration. This batch repairs REPEATED self-declaration;
+// the isolated utterance stays silent, the 3rd person and the bare phrase too.
 //
-// ── LA COPULE N'ANCRE RIEN, confirmé sur un SIXIÈME label ──────────────────────────────────────
-// Mesuré en écrivant ce lot, et le résultat rejoint celui de `filters-en.ts` : **« i am X about Y »
-// est une construction PRODUCTIVE de l'anglais, qui transforme n'importe quel nom d'identité en
-// intensificateur** — « i am socialist about splitting the bill », « i am monarchist about chess
-// openings ». Aucune charge de sûreté ne pèse donc sur le cadre, ici pas plus qu'ailleurs : ce qui
-// protège est l'ÉTAGE (ce tier n'affirme jamais) et le SEUIL, et rien d'autre.
+// ── THE COPULA ANCHORS NOTHING, confirmed on a SIXTH label ─────────────────────────────────────
+// Measured while writing this batch, and the result joins that of `filters-en.ts`: **« i am X about Y »
+// is a PRODUCTIVE construction of English, which turns any identity noun into an
+// intensifier** — « i am socialist about splitting the bill », « i am monarchist about chess
+// openings ». No safety load therefore weighs on the frame, here no more than elsewhere: what
+// protects is the TIER (this tier never asserts) and the THRESHOLD, and nothing else.
 //
-// *Le corollaire de méthode, et il a coûté un instrument :* un banc de faux positifs a été écrit pour
-// ce lot — deux phrases d'anglais ordinaire par terme — et il **rougit sur 32 termes sur 32**, y
-// compris ceux qu'il devait innocenter. Il s'est DISQUALIFIÉ, et son chiffre n'est pas publié : il
-// mesure la CONSTRUCTIBILITÉ d'une collision quand la règle d'ADR-0003 porte sur l'usage DOMINANT.
-// « im pretty liberal with the garlic » est un idiome réel ; « i am monarchist about chess openings »
-// est une phrase fabriquée pour l'occasion. Un instrument qui rend 32/32 ne sépare rien.
+// *The method corollary, and it cost an instrument:* a false-positive bench was written for
+// this batch — two ordinary-English sentences per term — and it **reddens on 32 terms out of 32**,
+// including those it was supposed to clear. It DISQUALIFIED itself, and its figure is not published: it
+// measures the CONSTRUCTIBILITY of a collision when ADR-0003's rule bears on DOMINANT use.
+// « im pretty liberal with the garlic » is a real idiom; « i am monarchist about chess openings »
+// is a sentence fabricated for the occasion. An instrument that returns 32/32 separates nothing.
 //
-// ── CE QUE CE LOT N'A PAS MESURÉ, et le zéro est une CÉCITÉ ────────────────────────────────────
-// Les deux voix-gardes anglaises scellées ne déclenchent RIEN, avant comme après ce lot. Ce n'est
-// PAS un brevet de sûreté : mesuré terme à terme, **aucune des 23 entrées n'apparaît dans le texte
-// de l'une ou l'autre garde**. Le zéro dit que les gardes ne contiennent pas ce vocabulaire, pas
-// que les gardes le trient bien. Les faux positifs de ce lot sont donc **non mesurés**, exactement
-// comme ceux du lot pilote — et la manière dont les termes ont été choisis (des SYNTAGMES, jamais
-// les noms nus `election`, `vote`, `taxes`, `political`, `council`, qui eux sont dans le texte des
-// gardes) est un raisonnement, pas une mesure.
+// ── WHAT THIS BATCH DID NOT MEASURE, and the zero is a BLINDNESS ────────────────────────────────
+// The two sealed English guard-voices fire NOTHING, before as after this batch. This is
+// NOT a certificate of safety: measured term by term, **none of the 23 entries appears in the text
+// of either guard**. The zero says the guards do not contain this vocabulary, not
+// that the guards sort it well. The false positives of this batch are therefore **unmeasured**, exactly
+// like those of the pilot batch — and the way the terms were chosen (PHRASES, never
+// the bare nouns `election`, `vote`, `taxes`, `political`, `council`, which are in the text of the
+// guards) is a reasoning, not a measurement.
 // ───────────────────────────────────────────────────────────────────────────────────────────────
 //
-// Entrées NORMALISÉES (minuscules, sans accents ; tiret = espace). Variantes mécaniques (pluriels,
-// allongements, auto-censure) couvertes par la machinerie. Calibrage PANO-33 : seuil 2, colloquial inclus.
+// NORMALIZED entries (lowercase, no accents; hyphen = space). Mechanical variants (plurals,
+// lengthenings, self-censoring) covered by the machinery. PANO-33 calibration: threshold 2, colloquial included.
 
 import type { TopicalLexicon } from './types';
 
 export const POLITICS_LEXICON: TopicalLexicon = {
   kind: 'topical',
   label: 'politics',
-  // Lectures du registre §5 : engagement / militantisme · avis personnel · curiosité / veille.
+  // Readings from registry §5: engagement / activism · personal opinion · curiosity / monitoring.
   readingTemplateIds: [
     'sensitive.politics.reading.engaged',
     'sensitive.politics.reading.irony',
     'sensitive.politics.reading.watch',
   ],
-  // Locutions/verbes d'engagement à soi, NON copulaires (le pattern d'auto-déclaration, PANO-72,
-  // ne couvre que « je suis X » ; ces formes-ci restent des marqueurs nus).
+  // Phrases/verbs of engagement to oneself, NON-copular (the self-declaration pattern, PANO-72,
+  // covers only « je suis X »; these forms stay bare markers).
   explicit: [
     'je vote',
     'je milite',
@@ -241,15 +241,15 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'mon parti',
     'ma famille politique',
     'je manifeste',
-    // (EN) Actes d'engagement, au PASSÉ et administratifs — les seules formes anglaises sans emploi
-    // figuré. `i vote` NU est exclu : « i vote we order pizza » est l'idiome de PROPOSITION, et
-    // c'est l'usage dominant du présent. `registered` nu exclu aussi (registered nurse, post).
+    // (EN) Engagement acts, in the PAST and administrative — the only English forms without figurative
+    // use. BARE `i vote` is excluded: « i vote we order pizza » is the PROPOSAL idiom, and
+    // it is the dominant use of the present. Bare `registered` excluded too (registered nurse, post).
     'i voted',
     'i registered to vote',
   ],
-  // Étiquettes politiques AUTO-DÉCLARÉES (« je suis de gauche », « chui plutôt anar ») — matchées
-  // via le pattern d'auto-déclaration (PANO-72), qui absorbe les variantes contractées et les
-  // modificateurs (« je suis un vrai militant ») sans les lister.
+  // SELF-DECLARED political labels (« je suis de gauche », « chui plutôt anar ») — matched
+  // via the self-declaration pattern (PANO-72), which absorbs the contracted variants and the
+  // modifiers (« je suis un vrai militant ») without listing them.
   selfDeclaredFr: [
     'de gauche',
     'de droite',
@@ -275,10 +275,10 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'gaulliste',
     'souverainiste',
     'feministe',
-    // Identités de DROITE au tier de l'IDENTITÉ — la réparation de symétrie décrite en tête. Les
-    // quatre premières vivent AUSSI en `indirectCore` comme accusations : c'est le point, pas une
-    // redondance. Un mot peut être une revendication et une insulte, et le lexique doit lire les
-    // deux (précédent posé par `souverainiste` et `macroniste`).
+    // RIGHT identities in the IDENTITY tier — the symmetry repair described in the header. The
+    // first four ALSO live in `indirectCore` as accusations: that is the point, not a
+    // redundancy. A word can be a claim and an insult, and the lexicon must read
+    // both (precedent set by `souverainiste` and `macroniste`).
     'nationaliste',
     'patriote',
     'reac',
@@ -289,18 +289,18 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'liberal',
     'liberale',
   ],
-  // Identités politiques ANGLAISES — matchées via `SELF_DECLARATION_HEADS_EN`, et ce tier
-  // n'AFFIRME JAMAIS (constat large ; `TopicalLexicon.selfDeclaredEn`). Justification de la porte
-  // d'admission, de `conservative`/`liberal` et de l'écart de langue : en tête de fichier.
+  // ENGLISH political identities — matched via `SELF_DECLARATION_HEADS_EN`, and this tier
+  // NEVER ASSERTS (broad finding; `TopicalLexicon.selfDeclaredEn`). Justification of the admission
+  // gate, of `conservative`/`liberal` and of the language gap: at the head of the file.
   //
-  // Les décomptes par camp sont FIGÉS dans `detect/politics-symmetry.test.ts`. L'égalité 10/10 est
-  // un CONSTAT, jamais une cible : une liste rendue symétrique par REMPLISSAGE serait un défaut pire
-  // que celui qu'on répare — elle aurait l'air juste. Deux arbitrages ont bougé les colonnes sur le
-  // fond, et ils se déclarent : `protectionist` ÉCARTÉ de la droite (c'est une accusation bien plus
-  // qu'une auto-description — l'y mettre aurait refait le registre 3 français), `classical liberal`
-  // ADMIS (auto-description réelle, et elle désambiguïse `liberal`).
+  // The per-camp counts are FROZEN in `detect/politics-symmetry.test.ts`. The 10/10 equality is
+  // a CONSTAT, never a target: a list made symmetric by PADDING would be a worse defect
+  // than the one being repaired — it would look right. Two arbitrations moved the columns on the
+  // substance, and they declare themselves: `protectionist` DISCARDED from the right (it is an accusation far more
+  // than a self-description — putting it there would have remade the French register 3), `classical liberal`
+  // ADMITTED (real self-description, and it disambiguates `liberal`).
   selfDeclaredEn: [
-    // — Gauche (10)
+    // — Left (10)
     'socialist',
     'communist',
     'marxist',
@@ -311,7 +311,7 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'trade unionist',
     'feminist',
     'environmentalist',
-    // — Droite (10)
+    // — Right (10)
     'conservative',
     'right wing',
     'traditionalist',
@@ -322,18 +322,18 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'fiscal conservative',
     'social conservative',
     'classical liberal',
-    // — Sans camp (4)
+    // — No camp (4)
     'centrist',
     'apolitical',
     'politically homeless',
     'swing voter',
-    // — Ambigu par DIALECTE (1) : gauche aux États-Unis, droite économique au Royaume-Uni. Admis
-    //   parce que l'inversion casse la partition d'un témoin, pas la détection — le produit
-    //   n'affiche aucun camp. Cf. l'en-tête.
+    // — Ambiguous by DIALECT (1): left in the United States, economic right in the United Kingdom. Admitted
+    //   because the inversion breaks a witness's partition, not the detection — the product
+    //   displays no camp. Cf. the header.
     'liberal',
   ],
   indirectCore: [
-    // Registre 2 — thématique (vocabulaire de la vie politique).
+    // Register 2 — thematic (vocabulary of political life).
     'manif',
     'elections',
     'greve',
@@ -361,11 +361,11 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'immigration',
     'aller voter',
     'allez voter',
-    // Répertoire THÉMATIQUE — la seconde moitié de la réparation. Le tier ne portait que le
-    // répertoire de MOBILISATION (manif, grève, syndicat, pétition), qui est celui d'un camp :
-    // mesuré, `securite`+`frontieres`, `impots`+`assistanat`, `ordre`+`laicite` ne taguaient rien
-    // quand `manif`+`greve` taguait. Chaque entrée est le mot par lequel un camp parle de SON
-    // sujet — jamais celui par lequel l'autre le disqualifie.
+    // THEMATIC repertoire — the second half of the repair. The tier carried only the
+    // MOBILIZATION repertoire (manif, grève, syndicat, pétition), which is one camp's:
+    // measured, `securite`+`frontieres`, `impots`+`assistanat`, `ordre`+`laicite` tagged nothing
+    // when `manif`+`greve` tagged. Each entry is the word by which one camp speaks of ITS
+    // subject — never the one by which the other disqualifies it.
     'insecurite',
     'assistanat',
     'matraquage fiscal',
@@ -375,17 +375,17 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'fiscalite',
     'redistribution',
     'depenses publiques',
-    // Les deux pendants restants : `laicite` est transversale aux camps (c'est un thème, pas un
-    // côté), `service public`/`services publics` répond à `depenses publiques`.
+    // The two remaining counterparts: `laicite` is transversal to the camps (it is a theme, not a
+    // side), `service public`/`services publics` answers `depenses publiques`.
     'laicite',
     'service public',
     'services publics',
-    // ── (EN) Institutions et procédures — sans camp par construction ─────────────────────────────
-    // Le vocabulaire du FONCTIONNEMENT politique n'appartient à personne et ne date pas : c'est ce
-    // qui le rend admissible dans un lot dont la contrainte est la symétrie. Chaque entrée est un
-    // SYNTAGME, jamais le nom nu — et ce n'est pas une préférence de style, c'est ce qui l'écarte du
-    // texte des deux voix-gardes scellées, qui portent `election`, `vote`, `taxes`, `political` et
-    // `council` NUS en parlant d'autre chose que d'un engagement.
+    // ── (EN) Institutions and procedures — no camp by construction ───────────────────────────────
+    // The vocabulary of political FUNCTIONING belongs to no one and does not date: that is what
+    // makes it admissible in a batch whose constraint is symmetry. Each entry is a
+    // PHRASE, never the bare noun — and this is not a style preference, it is what keeps it out of the
+    // text of the two sealed guard-voices, which carry BARE `election`, `vote`, `taxes`, `political` and
+    // `council` while speaking of something other than an engagement.
     'general election',
     'by election',
     'polling station',
@@ -395,11 +395,11 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'civil service',
     'public spending',
     'voter turnout',
-    // ── (EN) Thèmes, en PAIRES APPARIÉES ─────────────────────────────────────────────────────────
-    // Règle 2 de l'en-tête, appliquée à l'anglais. Les paires sont appariées sur l'IDIOMATICITÉ, pas
-    // sur le nombre : un tableau équilibré en colonnes peut rester asymétrique en CHEMINS si le
-    // terme d'un camp est celui qu'on écrit vraiment et celui de l'autre une traduction de bureau.
-    // `law and order` est la locution idiomatique de son bord ; `public services` l'est du sien.
+    // ── (EN) Themes, in MATCHED PAIRS ────────────────────────────────────────────────────────────
+    // Rule 2 of the header, applied to English. The pairs are matched on IDIOMATICITY, not
+    // on number: a table balanced in columns can stay asymmetric in PATHS if one
+    // camp's term is the one actually written and the other's a desk translation.
+    // `law and order` is its side's idiomatic phrase; `public services` is its side's.
     'minimum wage', //      ↔ tax burden
     'tax burden',
     'trade union', //       ↔ red tape
@@ -408,12 +408,12 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'border control',
     'public services', //   ↔ law and order
     'law and order',
-    'means test', //        ↔ red tape (second locution de procédure, l'autre bord)
+    'means test', //        ↔ red tape (second procedural phrase, the other side)
     'means tested',
     'public money',
-    // Transversal aux camps — un thème, pas un côté (même statut que `laicite` côté FR).
+    // Transversal to the camps — a theme, not a side (same status as `laicite` on the FR side).
     'cost of living',
-    // Registre 3 — opinion / jugement, catégories péjoratives (JAMAIS de personnes nommées).
+    // Register 3 — opinion / judgment, pejorative categories (NEVER named persons).
     'fasciste',
     'facho',
     'fascisme',
@@ -452,8 +452,8 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'antivax',
     'anti vax',
   ],
-  // Familier — polysémiques hors contexte politique (« vendu ma voiture », « film pourri ») : le
-  // seuil 2 + le voisinage font le tri.
+  // Colloquial — polysemous outside a political context (« vendu ma voiture », « film pourri »): the
+  // threshold 2 + the neighborhood do the sorting.
   indirectColloquial: [
     'ecologie',
     'on lache rien',
@@ -470,17 +470,17 @@ export const POLITICS_LEXICON: TopicalLexicon = {
     'assistes',
     'fake news',
     'retraites',
-    // Écrits au SINGULIER : la tolérance de pluriel AJOUTE un `s` au marqueur, elle n'en retire
-    // pas — « impots » n'aurait pas matché « impot ». Colloquiaux parce que tous deux ont un
-    // emploi administratif ordinaire (déclaration d'impôt, frontière d'un pays sur une carte) ;
-    // le seuil 2 et le voisinage font le tri.
+    // Written in the SINGULAR: the plural tolerance ADDS an `s` to the marker, it does not remove
+    // one — « impots » would not have matched « impot ». Colloquial because both have an
+    // ordinary administrative use (tax return, a country's border on a map);
+    // threshold 2 and the neighborhood do the sorting.
     'impot',
     'frontiere',
   ],
-  // Label de SUJET : la négation dégrade au lieu de supprimer (ADR-0003, *L'état et le sujet*).
-  // Sans ce drapeau, le produit n'entendait que celui qui ADHÈRE — mesuré : « ces fachos partout »
-  // taguait, « je supporte pas les fachos » ne taguait rien. L'opposition est le registre dominant
-  // du discours politique ; en être sourd n'est pas une prudence, c'est un silence orienté.
+  // SUBJECT label: negation degrades instead of suppressing (ADR-0003, *The state and the subject*).
+  // Without this flag, the product heard only whoever ADHERES — measured: « ces fachos partout »
+  // tagged, « je supporte pas les fachos » tagged nothing. Opposition is the dominant register
+  // of political discourse; being deaf to it is not a precaution, it is a biased silence.
   subjectNotState: true,
   includeColloquial: true,
   indirectThreshold: 2,

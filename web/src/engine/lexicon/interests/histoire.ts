@@ -1,31 +1,31 @@
-// Lexique d'intérêt `histoire` (D2, PANO-89 lot 4) — histoire (champ savoir).
+// Interest lexicon `histoire` (D2, PANO-89 batch 4) — history (knowledge field).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de l'histoire FR : périodes, figures, faits historiques. Entités = signal
-// public générique enrichi par recherche. Usage SOBRE (édition/edtech).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR history: periods, figures, historical facts. Entities = generic
+// public signal enriched by research. SOBER usage (publishing/edtech).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — périodes/figures univoques : « antiquite », « moyen age », « renaissance », « medieval »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal periods/figures: « antiquite », « moyen age », « renaissance », « medieval »,
 //     « napoleon », « jules cesar », « revolution francaise », « prehistoire », « empire romain »,
 //     « pharaon », « croisades », « seconde guerre mondiale ».
-//   · ANCRÉ — « histoire » (« une histoire » = récit), « empire », « guerre », « siecle », « roi »,
-//     « bataille », « epoque », « dynastie » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « histoire » (« une histoire » = story), « empire », « guerre », « siecle », « roi »,
+//     « bataille », « epoque », « dynastie »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-//   · SOLO — périodes / figures / faits nommés : « middle ages », « ancient rome », « roman empire »,
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+//   · SOLO — named periods / figures / facts: « middle ages », « ancient rome », « roman empire »,
 //     « ancient egypt », « pharaoh », « crusades », « prehistory », « french revolution »,
 //     « world war two », « ww2 », « julius caesar », « antiquity », « historian », « archaeology ».
-//   · ANCRÉ — « history » : LE PIÈGE MAJEUR de tout le lot. En EN, « history » est du vocabulaire de
-//     PLATEFORME avant d'être une discipline — « search history », « watch history », « browsing
-//     history », « clear my history », « my history with him ». Ancré, jamais solo. Aussi « war »
-//     (actualité), « king » (Stephen King / Burger King / roi des échecs), « battle » (DANCE battle,
-//     RAP battle — partagés `danse`/`rap`), « century », « dynasty » (la SÉRIE TV), « empire ».
+//   · ANCHORED — « history »: THE MAJOR TRAP of the whole batch. In EN, « history » is PLATFORM
+//     vocabulary before being a discipline — « search history », « watch history », « browsing
+//     history », « clear my history », « my history with him ». Anchored, never solo. Also « war »
+//     (news), « king » (Stephen King / Burger King / chess king), « battle » (DANCE battle,
+//     RAP battle — shared `danse`/`rap`), « century », « dynasty » (the TV SERIES), « empire ».
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Champ SAVOIR (périodes, figures, faits passés), JAMAIS l'ACTUALITÉ ni la POLITIQUE
-// partisane (→ `politics`, D1). Les guerres nommées sont des faits historiques ; « guerre » nu est
-// ancré (compagnon historique requis) pour ne pas capter l'actualité.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. KNOWLEDGE field (periods, figures, past facts), NEVER the NEWS nor partisan
+// POLITICS (→ `politics`, D1). The named wars are historical facts; bare « guerre » is
+// anchored (historical companion required) so as not to capture the news.
 
 import type { InterestLexicon } from '../types';
 
@@ -56,7 +56,7 @@ export const HISTOIRE_LEXICON: InterestLexicon = {
     'histoire de france',
     'gaulois',
     'archeologie',
-    // Variantes EN (PANO-88) : SOLO — périodes / figures / faits NOMMÉS (jamais l'actualité).
+    // EN variants (PANO-88): SOLO — NAMED periods / figures / facts (never the news).
     'middle ages',
     'ancient rome',
     'roman empire',
@@ -73,21 +73,21 @@ export const HISTOIRE_LEXICON: InterestLexicon = {
     'archaeology',
   ],
   anchored: [
-    'histoire', // « une histoire » (récit) / « histoires »
-    'empire', // Empire State / empire générique
-    'guerre', // actualité vs guerre historique
-    'siecle', // siècle générique
-    'roi', // roi générique / « roi de la fête »
-    'bataille', // bataille générique
+    'histoire', // « une histoire » (story) / « histoires »
+    'empire', // Empire State / generic empire
+    'guerre', // news vs historical war
+    'siecle', // generic century
+    'roi', // generic king / « roi de la fête »
+    'bataille', // generic battle
     'epoque', // « à l'époque »
-    'dynastie', // dynastie générique
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'history', // « search / watch / browsing history » — vocabulaire de PLATEFORME (EN) : piège majeur
-    'war', // actualité vs guerre historique (EN)
-    'king', // Stephen King / Burger King / roi des échecs (EN)
-    'battle', // dance battle / rap battle — partagés danse, rap (EN)
-    'century', // siècle générique (EN)
-    'dynasty', // la série TV (EN)
+    'dynastie', // generic dynasty
+    // EN variants (PANO-88): ANCHORED.
+    'history', // « search / watch / browsing history » — PLATFORM vocabulary (EN): major trap
+    'war', // news vs historical war (EN)
+    'king', // Stephen King / Burger King / chess king (EN)
+    'battle', // dance battle / rap battle — shared danse, rap (EN)
+    'century', // generic century (EN)
+    'dynasty', // the TV series (EN)
   ],
   selfDeclared: ['passionne d histoire'],
 };

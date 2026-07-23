@@ -1,18 +1,18 @@
-// Lexique d'intérêt `esport` (D2, PANO-78 lot 3) — sport électronique / compétition.
+// Interest lexicon `esport` (D2, PANO-78 batch 3) — esports / competition.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de l'esport FR : jeux compétitifs, ÉQUIPES, compétitions, jargon. Entités =
-// signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR esports: competitive games, TEAMS, competitions, jargon. Entities =
+// generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — « esport », « league of legends », « valorant », jeux, équipes (« karmine corp »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — « esport », « league of legends », « valorant », games, teams (« karmine corp »,
 //     « fnatic », « gentle mates »), « worlds », « scrim », « toplaner », « jungler ».
-//   · ANCRÉ — « g2 », « vitality » (énergie), « meta », « patch », « draft », « frag », « carry »,
-//     « gank », « support », « jungle », « clutch », « adc », « lec » (sigle) : co-occurrence.
-//   · EXCLU — « gg » (trop court/ambigu).
+//   · ANCHORED — « g2 », « vitality » (energy), « meta », « patch », « draft », « frag », « carry »,
+//     « gank », « support », « jungle », « clutch », « adc », « lec » (acronym): co-occurrence.
+//   · EXCLUDED — « gg » (too short/ambiguous).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. « esport » partagé avec `gaming` (assumé) ; ici la scène compétitive.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. « esport » shared with `gaming` (assumed); here the competitive scene.
 
 import type { InterestLexicon } from '../types';
 
@@ -45,7 +45,7 @@ export const ESPORT_LEXICON: InterestLexicon = {
     'esports world cup',
     'tournoi esport',
     'faker',
-    // Jeux & compétition (enrichi)
+    // Games & competition (enriched)
     'dota 2',
     'rainbow six',
     'mobile legends',
@@ -63,28 +63,28 @@ export const ESPORT_LEXICON: InterestLexicon = {
     'ligue francaise',
   ],
   anchored: [
-    'g2', // sigle générique
-    'vitality', // énergie / équipe
-    'meta', // méta générique
-    'patch', // correctif / patch
-    'draft', // brouillon / draft
-    'frag', // générique
-    'carry', // porter (anglais)
-    'gank', // jargon (gardé ancré par prudence courte)
-    'support', // soutien générique
-    'jungle', // jungle générique
-    'clutch', // embrayage
-    'adc', // sigle
-    'lec', // sigle
-    'roster', // liste générique
-    'smurf', // compte secondaire vs schtroumpf
-    'elo', // classement vs prénom
-    'ladder', // échelle (anglais)
-    'nerf', // pistolet jouet vs nerf (équilibrage)
-    'buff', // polir vs buff (bonus)
-    'ace', // as / réussite vs ace (esport)
-    'spike', // pic vs spike (Valorant)
-    'aim', // visée (EN) vs générique — ancré (PANO-88)
+    'g2', // generic acronym
+    'vitality', // energy / team
+    'meta', // generic meta
+    'patch', // fix / patch
+    'draft', // draft
+    'frag', // generic
+    'carry', // to carry (English)
+    'gank', // jargon (kept anchored out of short caution)
+    'support', // generic support
+    'jungle', // generic jungle
+    'clutch', // clutch (car)
+    'adc', // acronym
+    'lec', // acronym
+    'roster', // generic list
+    'smurf', // secondary account vs smurf (character)
+    'elo', // ranking vs first name
+    'ladder', // ladder (English)
+    'nerf', // toy gun vs nerf (balancing)
+    'buff', // to polish vs buff (bonus)
+    'ace', // ace / success vs ace (esport)
+    'spike', // spike vs spike (Valorant)
+    'aim', // aim (EN) vs generic — anchored (PANO-88)
   ],
   selfDeclared: ['joueur esport', 'joueuse esport'],
 };

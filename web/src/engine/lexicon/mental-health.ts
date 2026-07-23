@@ -1,69 +1,69 @@
-// Lexique `mental_health` (PANO-71 graine → PANO-36 enrichi). Enrichissement par champs lexicaux
-// structurés (variantes, registres, périphrases), incluant le champ « mal-être ado / registre
-// parent » nommé par PANO-36.
+// `mental_health` lexicon (PANO-71 seed → PANO-36 enriched). Enrichment by structured lexical
+// fields (variants, registers, periphrases), including the « mal-être ado / registre
+// parent » field named by PANO-36.
 //
-// ── Justification de généricité (discipline PANO-70 §3, §2.5) ─────────────────────────────────
-// Tous registres du FR courant de la santé mentale, écrits À L'AVEUGLE depuis l'usage commun,
-// JAMAIS depuis un export réel :
-//   · soutenu / clinique : vocabulaire diagnostique usuel (dépression, trouble anxieux, tdah) ;
-//   · courant : soin et suivi (psy, thérapeute, antidépresseurs), noms de médicaments répandus
-//     (générique : ce sont des produits du domaine public, pas des personnes) ;
-//   · familier / argot d'internet : mal-être exprimé sans terme clinique (« au fond du trou »,
+// ── Genericity justification (PANO-70 §3, §2.5 discipline) ────────────────────────────────────
+// All registers of everyday FR mental health, written BLIND from common usage,
+// NEVER from a real export:
+//   · formal / clinical: usual diagnostic vocabulary (dépression, trouble anxieux, tdah);
+//   · everyday: care and follow-up (psy, thérapeute, antidépresseurs), widespread medication names
+//     (generic: they are public-domain products, not people);
+//   · colloquial / internet slang: distress expressed without a clinical term (« au fond du trou »,
 //     « je craque », « en mode survie », « psychoter »).
-// Chaque terme est défendable pour un inconnu, justifiable par l'usage générique du français, et
-// aurait été écrit à l'identique sans avoir jamais vu aucun export.
+// Each term is defensible for a stranger, justifiable by the generic usage of French, and
+// would have been written identically without ever having seen any export.
 // ───────────────────────────────────────────────────────────────────────────────────────────────
 //
-// ── Variantes EN (PANO-35, lot pilote) — règle d'admission propre à l'EN ──────────────────────
-// Précédent de forme : les lexiques d'intérêt D2 (PANO-88) fusionnent leurs variantes EN EN LIGNE
-// dans les mêmes tableaux, annotées `// (EN)`. Même choix ici — pas de module séparé.
+// ── EN variants (PANO-35, pilot batch) — admission rule specific to EN ────────────────────────
+// Form precedent: the D2 interest lexicons (PANO-88) merge their EN variants INLINE
+// in the same arrays, annotated `// (EN)`. Same choice here — no separate module.
 //
-// L'ADMISSION suit la règle portée par ADR-0003 (« exclure l'hyperbole à la porte ») : un terme
-// n'entre que si son usage DOMINANT sur les réseaux est littéral. L'hyperbole n'est pas rétrogradée
-// en colloquial, elle est EXCLUE — parce que le seuil de répétition ne la filtre pas : trois « i'm
-// dying » sont trois éclats de rire, là où deux « déprime » réduisent la chance d'une bourse.
-// Les exclusions qui PORTENT la doctrine sont figées dans la batterie adverse
-// (`detect/lexicon-battery.test.ts`, section EN) ; les quasi-manqués locaux sont annotés sur
-// l'entrée qui les a écartés. Trois familles n'ont ni entrée voisine ni test, et se tiennent donc
-// ici — une exclusion se perd si rien ne la tient (ex-note de lot, condensée dans
-// `docs/methode-portabilite-en.md`) :
-//   · `stressed`, `tired`, `exhausted`, `drained` — états quotidiens universels : taguer ici,
-//     c'est taguer tout le monde ;
-//   · `i can't even`, `i'm done`, `dying inside` — hyperbole conventionnelle du désarroi ordinaire,
-//     même famille que « i'm dying » (figé au test) ;
-//   · `crazy`, `insane`, `psycho`, `mental` — intensificateurs génériques (« that's insane ») et,
-//     en usage personnel, argot validiste visant autrui (frontière `conflictual`).
+// ADMISSION follows the rule carried by ADR-0003 (« exclude hyperbole at the gate »): a term
+// enters only if its DOMINANT use on social media is literal. Hyperbole is not demoted
+// to colloquial, it is EXCLUDED — because the repetition threshold does not filter it: three « i'm
+// dying » are three bursts of laughter, where two « déprime » reduce the chance of a scholarship.
+// The exclusions that CARRY the doctrine are frozen in the adversarial battery
+// (`detect/lexicon-battery.test.ts`, EN section); the local near-misses are annotated on
+// the entry that discarded them. Three families have neither a neighboring entry nor a test, and so stand
+// here — an exclusion is lost if nothing holds it (ex-batch note, condensed in
+// `docs/methode-portabilite-en.md`):
+//   · `stressed`, `tired`, `exhausted`, `drained` — universal daily states: tagging here
+//     means tagging everyone;
+//   · `i can't even`, `i'm done`, `dying inside` — conventional hyperbole of ordinary dismay,
+//     same family as « i'm dying » (frozen at the test);
+//   · `crazy`, `insane`, `psycho`, `mental` — generic intensifiers (« that's insane ») and,
+//     in personal use, ableist slang targeting another (`conflictual` boundary).
 //
-// TROIS FORMES RETENUES HORS DE CE LOT (dette nommée, réouvrable — voir le doc et le catalogue §4) :
-// `suicidal`, `end my life`, `take my own life`. Écartées non parce qu'elles seraient mauvaises,
-// mais parce qu'elles portent le coût d'erreur MAXIMAL et que le taux de faux positifs EN n'est pas
-// mesuré. `mental_health` se démontre sans elles (soin, burnout, antidépresseurs).
+// THREE FORMS HELD OUT OF THIS BATCH (named debt, reopenable — see the doc and catalogue §4):
+// `suicidal`, `end my life`, `take my own life`. Discarded not because they would be bad,
+// but because they carry the MAXIMAL error cost and the EN false-positive rate is not
+// measured. `mental_health` demonstrates itself without them (care, burnout, antidepressants).
 //
-// Entrées en forme NORMALISÉE (minuscules, sans accents ; le tiret vaut espace, machinerie).
-// Les VARIANTES MÉCANIQUES ne se listent PAS : allongements (« déprimeee »), auto-censure et
-// pluriels sont couverts par la machinerie (detect.ts, PANO-36 phase 0). Ici, vocabulaire réel only.
-// Calibrage ratifié PANO-33 : seuil indirect 2, colloquial inclus (on ne masque pas le polysémique).
+// Entries in NORMALIZED form (lowercase, no accents; the hyphen is worth a space, machinery).
+// MECHANICAL VARIANTS are NOT listed: lengthenings (« déprimeee »), self-censoring and
+// plurals are covered by the machinery (detect.ts, PANO-36 phase 0). Here, real vocabulary only.
+// Calibration ratified PANO-33: indirect threshold 2, colloquial included (we do not mask the polysemous).
 
 import type { TopicalLexicon } from './types';
 
 export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
   kind: 'topical',
   label: 'mental_health',
-  // Lectures du registre §5 : vécu personnel · préoccupation pour un proche · curiosité.
+  // Readings from registry §5: personal lived experience · concern for a relative · curiosity.
   readingTemplateIds: [
     'sensitive.mental-health.reading.lived',
     'sensitive.mental-health.reading.relative',
     'sensitive.mental-health.reading.curiosity',
   ],
-  // Terme clinique / de détresse nommé, appliqué à soi → tag nommé (B2).
+  // Named clinical / distress term, applied to oneself → named tag (B2).
   explicit: [
-    // Homographes FR/EN : ces entrées matchaient DÉJÀ de l'anglais, sans qu'aucune décision ne
-    // l'ait voulu (mesuré — la persona EN écrit « burnout recovery stories » et le constat tombe).
-    // L'annotation ne change RIEN au comportement : elle rend intentionnel ce qui était accidentel,
-    // et empêche qu'un futur lot croie couvrir l'EN pour la première fois.
+    // FR/EN homographs: these entries ALREADY matched English, without any decision
+    // having wanted it (measured — the EN persona writes « burnout recovery stories » and the finding drops).
+    // The annotation changes NOTHING in the behavior: it makes intentional what was accidental,
+    // and prevents a future batch from believing it covers EN for the first time.
     'anxiete',
     'burn out',
-    'burnout', // (EN) identique
+    'burnout', // (EN) identical
     'idees noires',
     'depression nerveuse',
     'angoisse',
@@ -86,8 +86,8 @@ export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
     'boulimique',
     'tca',
     'depression post partum',
-    // Détresse vitale : LOCUTIONS littérales seulement (« me tuer » omis, décision yuya — trop de FP
-    // sur l'hyperbole « ça me tue » / « ce projet va me tuer »).
+    // Vital distress: literal PHRASES only (« me tuer » omitted, yuya decision — too many FP
+    // on the hyperbole « ça me tue » / « ce projet va me tuer »).
     'automutilation',
     'scarification',
     'idees suicidaires',
@@ -98,40 +98,40 @@ export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
     'me suicider',
     'mettre fin a mes jours',
     'en finir avec la vie',
-    // ── Variantes EN (PANO-35) : conditions NOMMÉES, sans emploi figuré conventionnel ───────────
+    // ── EN variants (PANO-35): NAMED conditions, without conventional figurative use ────────────
     'anxiety disorder',
     'generalized anxiety',
     'social anxiety',
-    'panic attack', // « panic » nu écarté : « don't panic », « panic buying »
+    'panic attack', // bare « panic » discarded: « don't panic », « panic buying »
     'agoraphobia',
-    'bipolar disorder', // le SYNTAGME COMPLET — « bipolar » nu est une hyperbole (météo, humeur)
-    'schizophrenia', // « schizo » écarté : argot péjoratif visant autrui (chevauche `conflictual`)
-    'adhd', // « add » écarté : collision totale avec le verbe « to add »
-    'post traumatic stress', // « trauma »/« traumatized » écartés : colloquialisés (« traumatized
-    // by that movie ») — phénomène documenté, même raison que « toc » plus bas
+    'bipolar disorder', // the FULL PHRASE — bare « bipolar » is a hyperbole (weather, mood)
+    'schizophrenia', // « schizo » discarded: pejorative slang targeting another (overlaps `conflictual`)
+    'adhd', // « add » discarded: total collision with the verb « to add »
+    'post traumatic stress', // « trauma »/« traumatized » discarded: colloquialized (« traumatized
+    // by that movie ») — documented phenomenon, same reason as « toc » below
     'anorexia',
-    // `anorexic` A ÉTÉ RETIRÉ D'ICI. L'adjectif a un idiome d'objet conventionnel en anglais — « an
-    // anorexic budget », « an anorexic profit margin » — et rien dans la machinerie ne vérifie à
-    // QUOI l'adjectif se rapporte : les deux posaient un constat NOMMÉ (mesuré). Il vit désormais au
-    // seul tier `selfDeclaredEn` plus bas, qui atterrit en LARGE. Le NOM `anorexia` reste ici, et
-    // c'est lui qui porte le rappel du porteur. `bulimic` RESTE aux deux tiers : son idiome d'objet
-    // n'est pas attesté — il a fallu l'inventer pour le tester, ce qui est la réponse.
+    // `anorexic` WAS REMOVED FROM HERE. The adjective has a conventional object idiom in English — « an
+    // anorexic budget », « an anorexic profit margin » — and nothing in the machinery verifies WHAT
+    // the adjective refers to: both set a NAMED finding (measured). It now lives in the
+    // sole tier `selfDeclaredEn` below, which lands as BROAD. The NOUN `anorexia` stays here, and
+    // it is it that carries the recall of the bearer. `bulimic` STAYS in both tiers: its object idiom
+    // is not attested — it had to be invented to test it, which is the answer.
     'bulimia',
     'bulimic',
     'eating disorder',
     'postpartum depression',
-    'self harm', // « cutting » écarté : polysémie massive (coiffure, montage, sport)
+    'self harm', // « cutting » discarded: massive polysemy (hairdressing, editing, sport)
     'selfharm',
     'self harming',
-    // NOTE — la détresse vitale EN s'arrête ici, volontairement. « i want to die » est le calque
-    // direct de « je veux mourir » (présent plus haut) et il est POURTANT exclu : en anglais c'est
-    // une réaction conventionnelle à l'embarras, même famille que « i'm dead » (= rire). Même
-    // écart pour « kill me », « kms », « i'm dying ». C'est le cas d'école du jugement qui ne
-    // survit PAS à la traduction, et la raison d'être de la règle d'admission en tête de fichier.
+    // NOTE — EN vital distress stops here, deliberately. « i want to die » is the direct
+    // calque of « je veux mourir » (present above) and it is NEVERTHELESS excluded: in English it is
+    // a conventional reaction to embarrassment, same family as « i'm dead » (= laughter). Same
+    // discarding for « kill me », « kms », « i'm dying ». It is the textbook case of a judgment that does NOT
+    // survive translation, and the reason for the admission rule at the head of the file.
   ],
-  // Étiquettes d'état AUTO-DÉCLARÉES (« je suis dépressif », « jsuis un pauvre anxieux ») — via le
-  // pattern d'auto-déclaration (PANO-72). Adjectifs trop polysémiques nus (« temps dépressif »,
-  // « film dépressif ») : la copule les rend fiables et capte le registre auto-dépréciatif.
+  // SELF-DECLARED state labels (« je suis dépressif », « jsuis un pauvre anxieux ») — via the
+  // self-declaration pattern (PANO-72). Adjectives too polysemous bare (« temps dépressif »,
+  // « film dépressif »): the copula makes them reliable and captures the self-deprecating register.
   selfDeclaredFr: [
     'depressif',
     'depressive',
@@ -141,32 +141,32 @@ export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
     'insomniaque',
     'en depression',
     'en burn out',
-    // AUCUNE variante EN ici, à dessein (PANO-35) : ce tier ne se matche QUE via
-    // `SELF_DECLARATION_HEADS`, qui reste FR-only tant que le lot 2 de PANO-35 n'a pas mesuré la
-    // copule EN. Y écrire « depressed » ou « anxious » produirait des données que rien ne lit.
-    // L'écart tombe du bon côté : ces étiquettes d'état sont les plus hyperbolisées de l'anglais.
+    // NO EN variant here, by design (PANO-35): this tier is matched ONLY via
+    // `SELF_DECLARATION_HEADS`, which stays FR-only as long as PANO-35 batch 2 has not measured the
+    // EN copula. Writing « depressed » or « anxious » here would produce data that nothing reads.
+    // The discarding falls on the right side: these state labels are the most hyperbolized in English.
   ],
-  // ── LES ÉTIQUETTES D'ÉTAT ANGLAISES — le terrain le plus figuré des quatre ────────────────────
-  // Pendant EN de `selfDeclaredFr` ci-dessus, dont la note disait « y écrire "depressed" ou
-  // "anxious" produirait des données que rien ne lit » : les têtes anglaises existent désormais, et
-  // ce tier atterrit en LARGE — il ne NOMME jamais (`TopicalLexicon.selfDeclaredEn`).
+  // ── THE ENGLISH STATE LABELS — the most figurative ground of the four ─────────────────────────
+  // EN counterpart of `selfDeclaredFr` above, whose note said « writing "depressed" or
+  // "anxious" here would produce data that nothing reads »: the English heads now exist, and
+  // this tier lands as BROAD — it NEVER NAMES (`TopicalLexicon.selfDeclaredEn`).
   //
-  // LA NOTE CI-DESSUS AJOUTAIT « l'écart tombe du bon côté : ces étiquettes sont les plus
-  // hyperbolisées de l'anglais ». C'EST VRAI, ET LE CADRE N'Y CHANGE RIEN — mesuré, contre
-  // l'intuition qui a fermé PANO-35 lot 2 deux fois : « im so ocd about my desk drawers », « im
+  // THE NOTE ABOVE ADDED « the discarding falls on the right side: these labels are the most
+  // hyperbolized in English ». THAT IS TRUE, AND THE FRAME CHANGES NOTHING — measured, against
+  // the intuition that closed PANO-35 batch 2 twice: « im so ocd about my desk drawers », « im
   // autistic about train timetables », « im depressed that the bakery closed early », « im dyslexic
-  // when it comes to left and right » PORTENT tous la copule. Ce qui rend l'admission tenable n'est
-  // donc pas le cadre, c'est l'ÉTAGE : aucune de ces phrases ne peut produire un constat nommé.
+  // when it comes to left and right » all CARRY the copula. What makes the admission tenable is
+  // therefore not the frame, it is the TIER: none of these sentences can produce a named finding.
   //
-  // N'ENTRENT PAS :
-  //   · `suicidal` — DETTE NOMMÉE EXISTANTE (en-tête de ce module), et elle reste fermée.
-  //     L'étagement par coût d'erreur ne se lève pas parce qu'un tier voisin s'ouvre.
-  //   · `traumatized` / `traumatised` — colloquialisés, exclusion déjà écrite en `explicit`.
-  //   · `manic`, `paranoid`, `obsessive`, `schizophrenic` — DEUXIÈME PORTE d'ADR-0003 : noms de
-  //     maladie devenus qualificatifs péjoratifs génériques, appliqués à un tiers ou à un objet
-  //     (« my laptop is being schizophrenic today »). Ils se trompent sur le SUJET, pas sur
-  //     l'intensité, et ils chevauchent `conflictual` où la même phrase serait mieux lue.
-  //   · `mentally ill`, `medicated`, `highly sensitive`, `overstimulated` — trop peu désignants.
+  // DO NOT ENTER:
+  //   · `suicidal` — EXISTING NAMED DEBT (this module's header), and it stays closed.
+  //     Tiering by error cost is not lifted because a neighboring tier opens.
+  //   · `traumatized` / `traumatised` — colloquialized, exclusion already written in `explicit`.
+  //   · `manic`, `paranoid`, `obsessive`, `schizophrenic` — ADR-0003's SECOND GATE: disease
+  //     names turned generic pejorative qualifiers, applied to a third party or an object
+  //     (« my laptop is being schizophrenic today »). They err on the SUBJECT, not on
+  //     the intensity, and they overlap `conflictual` where the same sentence would be better read.
+  //   · `mentally ill`, `medicated`, `highly sensitive`, `overstimulated` — too little designating.
   selfDeclaredEn: [
     'depressed',
     'depressive',
@@ -187,31 +187,31 @@ export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
     'in therapy',
     'on antidepressants',
   ],
-  // ── NOMS NUS DE TROUBLE — tag large à eux seuls, jamais nommé ────────────────────────────────
-  // Mesuré (banc EN de borne haute) puis livré en deux temps, et les deux temps comptent.
+  // ── BARE DISORDER NOUNS — broad tag on their own, never named ─────────────────────────────────
+  // Measured (upper-bound EN bench) then delivered in two steps, and both steps count.
   //
-  // Ces trois-là portaient un constat NOMMÉ, c'est-à-dire l'affirmation qu'une personne A cette
-  // condition. Faux sur « this heat is giving me actual depression », « i have ptsd from the ninth
-  // one », « my anxiety when the file was still rendering » : l'anglais courant les emploie comme
-  // intensificateurs, au même titre que « bipolar » pour la météo. Ils ne pouvaient pas rester.
+  // These three carried a NAMED finding, i.e. the assertion that a person HAS this
+  // condition. False on « this heat is giving me actual depression », « i have ptsd from the ninth
+  // one », « my anxiety when the file was still rendering »: everyday English uses them as
+  // intensifiers, just like « bipolar » for the weather. They could not stay.
   //
-  // Ils ne pouvaient pas non plus descendre en colloquial — première tentative, MESURÉE ET REFUSÉE
-  // (`en-demotion-ablation.test.ts`) : sous le seuil de 2, une personne qui écrit UNE fois qu'elle
-  // fait une dépression ne tombait pas en large, elle DISPARAISSAIT. Le tier solo existe pour ce
-  // trou-là, entre les deux.
+  // Nor could they descend to colloquial — first attempt, MEASURED AND REFUSED
+  // (`en-demotion-ablation.test.ts`): below the threshold of 2, a person who writes ONCE that they
+  // have depression did not fall to broad, they DISAPPEARED. The solo tier exists for that
+  // gap, between the two.
   //
-  // Ce que ça coûte, accepté en connaissance de cause : plus AUCUN nom nu de trouble ne produit de
-  // constat nommé, dans aucune des deux langues. Le nommé ne vient plus que des syntagmes
-  // diagnostiques (`anxiety disorder`, `depression nerveuse`, `post traumatic stress`…) et des
-  // termes sans emploi figuré. `depression` et `ptsd` sont des entrées UNIQUES servant les deux
-  // langues : le français change avec l'anglais, et c'est voulu — un mot ne se traite pas
-  // différemment selon la langue où il est écrit.
+  // What it costs, accepted knowingly: NO bare disorder noun any longer produces a
+  // named finding, in either language. The named now comes only from the diagnostic
+  // phrases (`anxiety disorder`, `depression nerveuse`, `post traumatic stress`…) and from
+  // terms without figurative use. `depression` and `ptsd` are SINGLE entries serving both
+  // languages: French changes with English, and that is intended — a word is not treated
+  // differently according to the language in which it is written.
   indirectSolo: [
     'anxiety',
-    'depression', // (EN/FR) entrée commune aux deux langues
-    'ptsd', // (EN/FR) sigle commun aux deux langues
+    'depression', // (EN/FR) entry common to both languages
+    'ptsd', // (EN/FR) acronym common to both languages
   ],
-  // Soin/suivi + mal-être sans condition nommée → signal fort mais tag LARGE (jamais nommé, B3).
+  // Care/follow-up + distress without a named condition → strong signal but BROAD tag (never named, B3).
   indirectCore: [
     'psy',
     'therapie',
@@ -230,11 +230,11 @@ export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
     'anxiolytique',
     'somniferes',
     'en hp',
-    // Médicaments nommés (décision yuya) : génériques (produits du domaine, pas des personnes),
-    // registre réel du soin. « xanax » est DESCENDU en colloquial (PANO-35) : son registre
-    // récréatif est bien plus installé en EN qu'en FR.
+    // Named medications (yuya decision): generic (domain products, not people),
+    // real register of care. « xanax » is MOVED DOWN to colloquial (PANO-35): its
+    // recreational register is far more established in EN than in FR.
     'lexomil',
-    'prozac', // (EN) identique — marque commune aux deux langues
+    'prozac', // (EN) identical — brand common to both languages
     'sante mentale',
     'a bout',
     'a bout de nerfs',
@@ -248,15 +248,15 @@ export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
     'insomnies',
     'nuits blanches',
     'crise de larmes',
-    // Champ « mal-être ado / registre parent » (PANO-36) — le filtre 3ᵉ personne le dégrade
-    // naturellement (chemin signal-sans-vécu, B3).
+    // « mal-être ado / registre parent » field (PANO-36) — the 3rd-person filter degrades it
+    // naturally (signal-without-lived-experience path, B3).
     'se renferme',
     'phobie scolaire',
     'ne veut plus sortir',
-    // ── Variantes EN (PANO-35) : soin et suivi ─────────────────────────────────────────────────
-    // Ce tier porte moins d'exclusions que les autres, et c'est structurel : l'hyperbole s'attaque
-    // aux ÉTATS, pas aux INSTITUTIONS. « therapist » ou « psych ward » n'ont pas d'emploi figuré.
-    'therapy', // réserve assumée : « retail therapy », « music is my therapy » — le seuil 2 filtre
+    // ── EN variants (PANO-35): care and follow-up ──────────────────────────────────────────────
+    // This tier carries fewer exclusions than the others, and it is structural: hyperbole attacks
+    // STATES, not INSTITUTIONS. « therapist » or « psych ward » have no figurative use.
+    'therapy', // assumed reservation: « retail therapy », « music is my therapy » — threshold 2 filters
     'therapist',
     'in therapy',
     'psychiatrist',
@@ -274,24 +274,24 @@ export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
     'crying spells',
     'psych ward',
     'inpatient',
-    // Médicaments EN courants — même justification qu'en FR (produits du domaine, pas des
-    // personnes). « xans » et « bars » sont écartés : argot purement récréatif, et « bars » est
-    // massivement polysémique.
+    // Common EN medications — same justification as in FR (domain products, not
+    // people). « xans » and « bars » are discarded: purely recreational slang, and « bars » is
+    // massively polysemous.
     'zoloft',
     'lexapro',
     'sertraline',
-    // Registre parent, pendant du champ « mal-être ado » FR ci-dessus. La 3ᵉ personne EN
-    // (`THIRD_PERSON_EN` : « my teen », « for my », « help my ») dégrade déjà ces items vers le
-    // chemin signal-sans-vécu (B3) — livrée au lot 1, rien à ajouter ici.
+    // Parent register, counterpart of the FR « mal-être ado » field above. The EN 3rd person
+    // (`THIRD_PERSON_EN`: « my teen », « for my », « help my ») already degrades these items toward the
+    // signal-without-lived-experience path (B3) — delivered in batch 1, nothing to add here.
     'school refusal',
     "won't leave his room",
-    'wont leave his room', // double graphie : l'usage d'internet omet l'apostrophe (cf. filters-en)
+    'wont leave his room', // dual spelling: internet usage omits the apostrophe (cf. filters-en)
   ],
-  // Familier / argot — polysémique assumé (le foyer recall/FP).
+  // Colloquial / slang — assumed polysemous (the recall/FP focus).
   indirectColloquial: [
-    // « toc » (TOC) : en colloquial et non explicit (vérifié empiriquement PANO-36 — « toc toc »,
-    // « du toc » taguaient une condition NOMMÉE à tort). Le seuil 2 exige la répétition ; le vrai
-    // signal TOC répété reste capté en large. Décision yuya.
+    // « toc » (OCD): in colloquial and not explicit (empirically verified PANO-36 — « toc toc »,
+    // « du toc » wrongly tagged a NAMED condition). Threshold 2 requires repetition; the real
+    // repeated OCD signal stays captured as broad. yuya decision.
     'toc',
     'deprime',
     'deprimee',
@@ -313,26 +313,26 @@ export const MENTAL_HEALTH_LEXICON: TopicalLexicon = {
     'je flippe',
     'psychoter',
     'je sature',
-    // ── Variantes EN (PANO-35) : registre bas LITTÉRAL et polysémique — jamais hyperbolique ─────
-    // Ce tier reste le foyer de la POLYSÉMIE (un sens parmi d'autres, que la répétition départage),
-    // pas de l'hyperbole (un sens conventionnel non littéral, que la répétition ne départage pas).
-    'ocd', // même chemin que « toc » ci-dessus : hors `explicit` malgré son statut clinique, parce
-    // que « i'm so OCD about my desk » est l'usage colloquialisé documenté. Le seuil 2 laisse
-    // passer le vrai signal répété, en large — jamais en nommé.
-    'burned out', // le PARTICIPE, largement figuré (« burned out on this show ») — d'où le tier
+    // ── EN variants (PANO-35): LITERAL low register and polysemous — never hyperbolic ──────────
+    // This tier stays the focus of POLYSEMY (one sense among others, which repetition arbitrates),
+    // not of hyperbole (a conventional non-literal sense, which repetition does not arbitrate).
+    'ocd', // same path as « toc » above: outside `explicit` despite its clinical status, because
+    // « i'm so OCD about my desk » is the documented colloquialized usage. Threshold 2 lets
+    // the real repeated signal through, as broad — never as named.
+    'burned out', // the PARTICIPLE, widely figurative (« burned out on this show ») — hence the tier
     'burnt out',
-    'xanax', // (EN/FR) descendu de `indirectCore` (voir la note là-haut)
-    // RETRAIT MESURÉ (banc FP EN) — cinq formulations ont été livrées ici puis retirées :
+    'xanax', // (EN/FR) moved down from `indirectCore` (see the note above)
+    // MEASURED REMOVAL (EN FP bench) — five formulations were delivered here then removed:
     // « falling apart », « rock bottom », « spiraling »/« spiralling », « running on empty »,
-    // « overwhelmed ». Elles taguaient une persona NON-PORTEUSE qui écrit par hyperbole (file
-    // d'attente, levain, finale de série) et n'apportaient AUCUN rappel sur la persona réellement
-    // en détresse : 100 % de leur signal du mauvais côté. Leur usage dominant dans le registre visé
-    // est conventionnellement hyperbolique — la règle d'admission d'ADR-0003 les exclut, et le tier
-    // colloquial n'est pas une zone de relégation. Ne pas les réintroduire sans mesure contraire.
+    // « overwhelmed ». They tagged a NON-BEARER persona who writes by hyperbole (queue,
+    // sourdough starter, series finale) and brought NO recall on the persona actually
+    // in distress: 100% of their signal on the wrong side. Their dominant use in the targeted register
+    // is conventionally hyperbolic — ADR-0003's admission rule excludes them, and the
+    // colloquial tier is not a relegation zone. Do not reintroduce them without a countervailing measurement.
     'no motivation',
     'low mood',
     'breaking point',
-    'numb', // polysémique littéral (froid, dentiste) — exactement le profil de ce tier
+    'numb', // literal polysemous (cold, dentist) — exactly this tier's profile
     'empty inside',
     "can't get out of bed",
     'cant get out of bed',

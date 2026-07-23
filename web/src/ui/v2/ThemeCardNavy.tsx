@@ -1,32 +1,32 @@
-// Carte de thème « navy » (maquette « ThemeCardNavy », refonte 2026-07-15 ; itération 2026-07-20) —
-// remplace `ThemeCard` (PANO-56) sur le nouveau parcours. Même sémantique qu'avant, nouvel
-// habillage :
-//   - en-tête FERMÉ : nom + badge « sensible » + « N sources » — et RIEN d'autre. Les 3 puces de
-//     confiance et leur libellé (« confiance moyenne / incertaine ») sont RETIRÉS (itération
-//     2026-07-20, tests utilisateurs) : le cadrage vit dans l'intro de la section 02
-//     (`UI_RESULTS.sec02Framing`), plus carte par carte. Le moteur GARDE `confidence` — le
-//     classement (`compareCards`, `themeLevel`) lit le même niveau qu'avant ;
-//   - ouvert : inférences (pastille + claim), preuves groupées par éventail (lectures
-//     principale/secondaire ou équivalentes), texte-source avec SURLIGNAGE des mots déclencheurs
-//     (`triggerTerms`, ADR-0003 — première consommation réelle du champ), ligne « aussi exploité
-//     par », bloc usage (orange).
+// « navy » theme card (« ThemeCardNavy » mockup, 2026-07-15 rework; 2026-07-20 iteration) —
+// replaces `ThemeCard` (PANO-56) on the new journey. Same semantics as before, new
+// styling:
+//   - CLOSED header: name + « sensible » badge + « N sources » — and NOTHING else. The 3 confidence
+//     bullets and their label (« confiance moyenne / incertaine ») are REMOVED (2026-07-20
+//     iteration, user tests): the framing lives in the intro of section 02
+//     (`UI_RESULTS.sec02Framing`), no longer card by card. The engine KEEPS `confidence` — the
+//     ranking (`compareCards`, `themeLevel`) reads the same level as before;
+//   - open: inferences (dot + claim), evidence grouped by fan (primary/secondary or
+//     equivalent readings), source text with HIGHLIGHTING of the trigger words
+//     (`triggerTerms`, ADR-0003 — first real consumption of the field), « aussi exploité
+//     par » line, usage block (orange).
 //
-// PAS de flou/« contenu masqué » (décision yuya, refonte 2026-07-15) : le badge « sensible » suffit
-// à signaler la nature du contenu ; le geste d'ouverture reste le même que pour les autres cartes.
+// NO blur/« contenu masqué » (yuya's decision, 2026-07-15 rework): the « sensible » badge is enough
+// to signal the nature of the content; the opening gesture stays the same as for the other cards.
 //
-// `SignalCardNavy` (décision yuya, refonte) : les constats sensibles isolés (D1) sont des cartes
-// DÉPLIABLES comme les thèmes, à en-tête « mot » (pas la phrase-claim) + badge « sensible ».
+// `SignalCardNavy` (yuya's decision, rework): the isolated sensitive findings (D1) are
+// COLLAPSIBLE cards like the themes, with a « mot » header (not the claim sentence) + « sensible » badge.
 //
-// LOT A1/A3 — CE QUE CE FICHIER NE FAIT PLUS. Il ne lit plus le moteur, il rend une valeur nommée :
-//   - le badge « sensible » lisait `theme.sensitive` (toujours `false`) sur les thèmes et
-//     `insight.sensitivity !== undefined` (toujours `3`) sur les signaux : DEUX axes dégénérés pour
-//     une distinction binaire. C'est désormais le discriminant `deduction.sensitive` (§2.1) ;
-//   - l'en-tête d'un signal était retrouvé en INVERSANT `D1_TEMPLATE_IDS` (templateId → label) : le
-//     moteur NOMME (`Signal.label`), il n'y a plus rien à inverser — ni le repli défensif qui allait
-//     avec (le type garantit le nom) ;
-//   - plus de `renderTemplate`/`actorLabel` : `Analysis` porte les TEXTES (lot A2) ;
-//   - plus de `resolved[index]` (tableau parallèle aligné sur `insights[]`) : chaque constat porte
-//     ses preuves ; seul « aussi exploité par » est recalculé (`reuse.ts`).
+// BATCH A1/A3 — WHAT THIS FILE NO LONGER DOES. It no longer reads the engine, it renders a named value:
+//   - the « sensible » badge read `theme.sensitive` (always `false`) on themes and
+//     `insight.sensitivity !== undefined` (always `3`) on signals: TWO degenerate axes for
+//     a binary distinction. It is now the discriminant `deduction.sensitive` (§2.1);
+//   - a signal's header was recovered by INVERTING `D1_TEMPLATE_IDS` (templateId → label): the
+//     engine NAMES (`Signal.label`), there is nothing left to invert — nor the defensive fallback that went
+//     with it (the type guarantees the name);
+//   - no more `renderTemplate`/`actorLabel`: `Analysis` carries the TEXTS (batch A2);
+//   - no more `resolved[index]` (parallel array aligned on `insights[]`): each finding carries
+//     its evidence; only « aussi exploité par » is recomputed (`reuse.ts`).
 
 import { Fragment } from 'preact';
 import { useState } from 'preact/hooks';
@@ -43,15 +43,15 @@ import { splitTriggerTerms } from './highlight';
 import { NAVY } from './palette';
 import { type Citation, evidenceKey, reuseLabel } from './reuse';
 
-/** L'union des niveaux reste définie ICI bien que plus aucun libellé ne l'affiche (itération
- * 2026-07-20) : `compareCards` et `themeLevel` classent toujours dessus — c'est une donnée de
- * tri, plus une donnée d'affichage. */
+/** The union of levels stays defined HERE even though no label displays it anymore (2026-07-20
+ * iteration): `compareCards` and `themeLevel` still rank on it — it is sorting data,
+ * no longer display data. */
 export type Level = 'low' | 'medium' | 'high';
 
-/** Catégorie de source affichée en tête de carte-preuve. Clé sur le CANAL de la preuve (`comment` /
- * `search`) — la preuve porte son canal en donnée, on ne dérive plus le libellé du dernier segment
- * d'un chemin de section (`SectionRef.path`, retiré avec le magasin). Union fermée ⇒ exhaustivité
- * tenue par le compilateur, et le repli sur le segment brut n'a plus lieu d'être. */
+/** Source category displayed at the top of an evidence card. Keyed on the CHANNEL of the evidence (`comment` /
+ * `search`) — the evidence carries its channel as data, we no longer derive the label from the last segment
+ * of a section path (`SectionRef.path`, removed with the store). Closed union ⇒ exhaustiveness
+ * held by the compiler, and the fallback to the raw segment no longer has a reason to be. */
 const SOURCE_KIND_LABEL: Record<Evidence['channel'], string> = {
   search: UI_CARD.channelSearch,
   comment: UI_CARD.channelComment,
@@ -61,22 +61,22 @@ function sourceKindLabel(channel: Evidence['channel']): string {
   return SOURCE_KIND_LABEL[channel];
 }
 
-// --- Éventail de lectures (au-dessus des sources qu'il interprète, maquette) ---------------------
+// --- Reading fan (above the sources it interprets, mockup) ---------------------------------------
 
 /**
- * L'éventail rend TOUTES les lectures qu'on lui donne, dans les deux modes.
+ * The fan renders ALL the readings it is given, in both modes.
  *
- * Le mode `equal` en rendait exactement DEUX — `readings[0]`, un séparateur, `readings[1]` — et
- * perdait la suite en silence. Les cinq lexiques topicaux en portent trois : la troisième
- * n'apparaissait jamais sur un constat large. Combien de lectures un label doit porter est une
- * décision de catalogue ; en rendre moins qu'on n'en reçoit n'en est pas une, c'est une perte de
- * données. Le séparateur `≡` est donc intercalé ENTRE les lectures plutôt que codé une fois, et le
- * rendu suit la longueur réelle du tableau.
+ * The `equal` mode rendered exactly TWO of them — `readings[0]`, a separator, `readings[1]` — and
+ * lost the rest silently. The five topical lexicons carry three: the third
+ * never appeared on a broad finding. How many readings a label should carry is a
+ * catalog decision; rendering fewer than one receives is not one, it is a loss of
+ * data. The `≡` separator is therefore interleaved BETWEEN the readings rather than coded once, and the
+ * render follows the array's real length.
  */
 function FanView({ fan }: { fan: ReadingFan }) {
-  // Plus de titre au-dessus de l'éventail (itération 2026-07-20) : l'intro de la section 02
-  // explique une fois pour toutes ce que sont ces lectures — le répéter sur chaque groupe était du
-  // bruit. Le mode `equal` se lit au `≡`, le mode `ranked` à ses étiquettes principale/secondaire.
+  // No more title above the fan (2026-07-20 iteration): the intro of section 02
+  // explains once and for all what these readings are — repeating it on each group was
+  // noise. The `equal` mode is read by the `≡`, the `ranked` mode by its primary/secondary labels.
   if (fan.mode === 'equal') {
     return (
       <div style={FAN}>
@@ -92,10 +92,10 @@ function FanView({ fan }: { fan: ReadingFan }) {
     );
   }
   const [main, ...rest] = fan.readings;
-  // `ranked` = « la 1ʳᵉ domine, les autres sont des alternatives de MÊME rang » : elles se répartissent
-  // donc sous UN seul libellé « secondaire », pas un par chip. Répéter « SECONDAIRE » au-dessus de
-  // chaque alternative laissait croire à une gradation entre elles qui n'existe pas (signalé par
-  // yuya : deux « SECONDARY » à la file). Toutes les lectures restent rendues (fan-readings.test).
+  // `ranked` = "the 1st dominates, the others are alternatives of the SAME rank": they thus spread
+  // under ONE single « secondaire » label, not one per chip. Repeating « SECONDAIRE » above
+  // each alternative suggested a gradation between them that does not exist (flagged by
+  // yuya: two « SECONDARY » in a row). All the readings stay rendered (fan-readings.test).
   return (
     <div style={FAN}>
       <div style={FAN_RANKED_ROW}>
@@ -122,7 +122,7 @@ function FanView({ fan }: { fan: ReadingFan }) {
   );
 }
 
-// --- Carte d'une source-preuve --------------------------------------------------------------------
+// --- Card of an evidence source -------------------------------------------------------------------
 
 function SourceCard({ ev, reuse }: { ev: Evidence; reuse: string | null }) {
   const parts = splitTriggerTerms(ev.text, ev.triggerTerms);
@@ -152,15 +152,15 @@ function SourceCard({ ev, reuse }: { ev: Evidence; reuse: string | null }) {
   );
 }
 
-// --- Groupement éventail + sources (même logique consécutive que `EvidenceDepli`, PANO-57) --------
+// --- Fan + sources grouping (same consecutive logic as `EvidenceDepli`, PANO-57) -----------------
 
 type RenderGroup =
   | { kind: 'fan'; fan: ReadingFan; items: Evidence[] }
   | { kind: 'plain'; item: Evidence };
 
-/** Deux éventails sont « le même » s'ils ordonnent pareil les mêmes lectures. La comparaison est
- *  désormais une égalité de CHAÎNES : une lecture était un `TemplateRef`, dont l'égalité demandait de
- *  comparer l'id ET les params via `JSON.stringify` — une lecture n'a jamais pris de param. */
+/** Two fans are "the same" if they order the same readings the same way. The comparison is
+ *  now a STRING equality: a reading used to be a `TemplateRef`, whose equality required
+ *  comparing the id AND the params via `JSON.stringify` — a reading never took a param. */
 function fansEqual(a: ReadingFan, b: ReadingFan): boolean {
   return (
     a.mode === b.mode &&
@@ -222,7 +222,7 @@ function EvidenceList({
   );
 }
 
-// --- Rendu d'une inférence (pastille + claim + niveau + preuves) ----------------------------------
+// --- Rendering of an inference (dot + claim + level + evidence) -----------------------------------
 
 function InferenceView({
   deduction,
@@ -233,10 +233,10 @@ function InferenceView({
   reuseMap: ReadonlyMap<string, Citation[]>;
   currentThemeLabel?: string | undefined;
 }) {
-  // Titre UNIFORMISÉ (retouche maquette 2026-07-20) : chaque inférence ouvre sur une ligne
-  // pastille + titre. Quand les preuves portent un éventail, le titre est « Lectures
-  // pertinentes. » — l'éventail EST la lecture, répéter le claim au-dessus doublonnait. Sans
-  // éventail, le claim ; et sans claim ni éventail, la ligne le dit plutôt que de disparaître.
+  // UNIFORMIZED title (2026-07-20 mockup retouch): each inference opens on a
+  // dot + title line. When the evidence carries a fan, the title is « Lectures
+  // pertinentes. » — the fan IS the reading, repeating the claim above was a duplicate. Without
+  // a fan, the claim; and without claim or fan, the line says so rather than disappearing.
   const hasFan = deduction.evidence.some((ev) => ev.readings !== undefined);
   const heading = hasFan
     ? UI_CARD.readingsHeading
@@ -258,7 +258,7 @@ function InferenceView({
   );
 }
 
-// --- Bloc usage (« ce qui peut en être fait ») ----------------------------------------------------
+// --- Usage block (« ce qui peut en être fait ») ---------------------------------------------------
 
 function UsageBlock({ usage }: { usage: readonly ThemeUsageLine[] }) {
   return (
@@ -279,17 +279,17 @@ function UsageBlock({ usage }: { usage: readonly ThemeUsageLine[] }) {
   );
 }
 
-// --- Carte de THÈME -------------------------------------------------------------------------------
+// --- THEME card -----------------------------------------------------------------------------------
 
 export const CONFIDENCE_RANK: Record<Level, number> = { low: 0, medium: 1, high: 2 };
 
-/** Niveau agrégé d'un thème (en-tête FERMÉ) : le MAX de ses constats — la lecture la plus affirmée
- * que la plateforme oserait pour ce thème. (Ex-`themeConfidenceLevel` de `grouping.ts` : plus de `state` à discriminer,
- * tout constat porte un niveau.)
+/** Aggregated level of a theme (CLOSED header): the MAX of its findings — the most asserted reading
+ * the platform would dare for this theme. (Ex-`themeConfidenceLevel` of `grouping.ts`: no more `state` to discriminate,
+ * every finding carries a level.)
  *
- * EXPORTÉ depuis la passe « hiérarchie » : `ResultsView` classe les cartes sur CE niveau — celui que
- * l'en-tête affiche. Le tri et les puces lisent le même nombre ; une carte ne peut pas être rangée
- * haut tout en s'affichant basse. */
+ * EXPORTED from the "hierarchy" pass: `ResultsView` ranks the cards on THIS level — the one the
+ * header displays. The sort and the bullets read the same number; a card cannot be ranked
+ * high while displaying low. */
 export function themeLevel(deductions: readonly Deduction[]): Level | undefined {
   let best: Level | undefined;
   for (const d of deductions) {
@@ -300,9 +300,9 @@ export function themeLevel(deductions: readonly Deduction[]): Level | undefined 
   return best;
 }
 
-/** Nombre de preuves DISTINCTES d'un thème (compte « src »), tous constats confondus — une même
- * miette partagée (C5) ne compte qu'une fois. Ex-`themeEvidenceCount`, clé sur la paire.
- * EXPORTÉ : c'est le « M src » de l'en-tête, et le départage du tri de `ResultsView` (même nombre). */
+/** Number of DISTINCT pieces of evidence of a theme (« src » count), all findings combined — a same
+ * shared crumb (C5) counts only once. Ex-`themeEvidenceCount`, keyed on the pair.
+ * EXPORTED: it is the « M src » of the header, and the tiebreaker of `ResultsView`'s sort (same number). */
 export function distinctEvidenceCount(deductions: readonly Deduction[]): number {
   const keys = new Set<string>();
   for (const d of deductions) {
@@ -328,9 +328,9 @@ export function ThemeCardNavy({
         <div style={HEAD_TOP}>
           <div style={HEAD_NAME_ROW}>
             <span style={NAME}>{theme.label}</span>
-            {/* Aucun badge « sensible » sur un thème : les deux populations sont disjointes par
-                construction (§2.1) — le badge vit sur `SignalCardNavy`. L'ex-`theme.sensitive`
-                n'était jamais `true` ; le type le dit désormais, plutôt qu'une condition morte. */}
+            {/* No « sensible » badge on a theme: the two populations are disjoint by
+                construction (§2.1) — the badge lives on `SignalCardNavy`. The ex-`theme.sensitive`
+                was never `true`; the type now says so, rather than a dead condition. */}
           </div>
           <span style={HEAD_META}>
             {UI_CARD.headSources(distinctEvidenceCount(theme.deductions))}
@@ -354,18 +354,18 @@ export function ThemeCardNavy({
   );
 }
 
-// --- Carte de SIGNAL sans thème (D1 sensible : PANO-71) -------------------------------------------
-// Refonte 2026-07-15 (décisions yuya) : rendues comme les cartes de thème — dépliables, en-tête à MOT
-// court (pas la phrase-claim, qui créait une dissonance avec les thèmes) + badge « sensible »,
-// phrase-claim révélée à l'ouverture. AUCUN flou : le badge « sensible » suffit.
+// --- SIGNAL card without a theme (sensitive D1: PANO-71) ------------------------------------------
+// 2026-07-15 rework (yuya's decisions): rendered like the theme cards — collapsible, header with a short
+// WORD (not the claim sentence, which created a dissonance with the themes) + « sensible » badge,
+// claim sentence revealed on opening. NO blur: the « sensible » badge is enough.
 //
-// Lot A1 : les 3 appareils que ce bloc portait ont disparu, sans qu'un seul pixel bouge —
-//   - `SENSITIVE_LABEL_WORD` (table de mots courts) → `wording.ts` : c'est de la prose, elle vit
-//     dans LE fichier de wording ;
-//   - `LABEL_BY_CLAIM_TEMPLATE_ID` (inverse de l'allowlist D1, reconstruit à chaque chargement pour
-//     retrouver le label depuis le claim) → le moteur NOMME : `signal.label` ;
-//   - le repli `word === null` → il couvrait le cas « claim non résolu en label » ; `Signal.label`
-//     étant requis, ce cas ne se représente plus. Un repli de moins, parce qu'un type de plus.
+// Batch A1: the 3 apparatuses this block carried have disappeared, without a single pixel moving —
+//   - `SENSITIVE_LABEL_WORD` (table of short words) → `wording.ts`: it is prose, it lives
+//     in THE wording file;
+//   - `LABEL_BY_CLAIM_TEMPLATE_ID` (inverse of the D1 allowlist, rebuilt at each load to
+//     recover the label from the claim) → the engine NAMES: `signal.label`;
+//   - the `word === null` fallback → it covered the "claim not resolved to a label" case; `Signal.label`
+//     being required, that case no longer arises. One fewer fallback, because one more type.
 
 export function SignalCardNavy({
   signal,
@@ -397,14 +397,14 @@ export function SignalCardNavy({
   );
 }
 
-// --- Styles (maquette « ThemeCardNavy ») ----------------------------------------------------------
-// Le padding NE VIT PLUS sur la carte mais sur ses enfants (bouton d'en-tête + corps). Raison : la
-// carte a le padding, mais le clic-toggle est sur le BOUTON qu'elle contient. Un clic dans l'anneau
-// de padding tombait donc sur l'`<article>` (sans `onClick`), pas sur le bouton. La tentative de
-// rattrapage par marges négatives + `calc(100% + 32px)` ÉCHOUAIT en flex-column (le layout flex
-// n'étend pas la boîte cliquable comme le ferait le modèle de bloc — mesuré, signalé par yuya). En
-// portant le padding sur le bouton lui-même, sa boîte RÉELLE — donc sa zone cliquable — couvre toute
-// la largeur et toute la hauteur de l'en-tête, anneau compris. Plus aucune astuce.
+// --- Styles (« ThemeCardNavy » mockup) ------------------------------------------------------------
+// The padding NO LONGER LIVES on the card but on its children (header button + body). Reason: the
+// card has the padding, but the toggle-click is on the BUTTON it contains. A click in the padding
+// ring therefore fell on the `<article>` (without `onClick`), not on the button. The
+// catch-up attempt via negative margins + `calc(100% + 32px)` FAILED in flex-column (the flex layout
+// does not extend the clickable box as the block model would — measured, flagged by yuya). By
+// carrying the padding on the button itself, its REAL box — thus its clickable area — covers the whole
+// width and the whole height of the header, ring included. No more trick.
 const CARD = {
   background: NAVY.bgThemeCard,
   border: `1px solid ${NAVY.borderInset}`,
@@ -461,9 +461,9 @@ const HEAD_META = {
   textAlign: 'right',
   whiteSpace: 'nowrap',
 } as const;
-// Le corps porte désormais son propre inset (la carte n'a plus de padding). Marge horizontale et
-// basse de 16px : le séparateur `borderTop` reste ainsi rentré comme avant (il longe la largeur du
-// corps, pas celle de la carte). L'écart en-tête → séparateur vient du padding-bas du bouton (16px).
+// The body now carries its own inset (the card no longer has padding). Horizontal and
+// bottom margin of 16px: the `borderTop` separator thus stays inset as before (it runs along the width of the
+// body, not that of the card). The header → separator gap comes from the button's bottom padding (16px).
 const BODY = {
   margin: '0 16px 16px',
   borderTop: `1px solid ${NAVY.borderInset}`,
@@ -506,7 +506,7 @@ const EV_FAN_SOURCES = {
 const FAN = { display: 'flex', flexDirection: 'column', gap: '7px' } as const;
 const FAN_RANKED_ROW = { display: 'flex', flexWrap: 'wrap', gap: '8px' } as const;
 const RANKED_COL = { display: 'flex', flexDirection: 'column', gap: '4px' } as const;
-// Les alternatives « secondaires » s'alignent en ligne sous leur libellé unique.
+// The « secondaires » alternatives align in a row under their single label.
 const SEC_CHIPS = { display: 'flex', flexWrap: 'wrap', gap: '6px' } as const;
 const RANKED_LABEL_MAIN = {
   fontSize: '7.5px',

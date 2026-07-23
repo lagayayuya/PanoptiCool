@@ -1,28 +1,28 @@
-// Lexique d'intérêt `cuisine_vege` (D2, PANO-78 lot 3) — cuisine végé / vegan.
+// Interest lexicon `cuisine_vege` (D2, PANO-78 batch 3) — veg / vegan cooking.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la cuisine végé FR : substituts, plats, mode de vie CULINAIRE. Entités =
-// signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR veg cooking: substitutes, dishes, CULINARY lifestyle. Entities =
+// generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « vegan », « vegetarien », « tofu », « tempeh », « seitan », « falafel », « houmous »,
 //     « buddha bowl », « lait vegetal », « steak vegetal », « happycow ».
-//   · ANCRÉ — « veggie », « vegetal » (nu), « soja » (générique), « bowl » (récipient) : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « veggie », « vegetal » (bare), « soja » (generic), « bowl » (container): co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN réel : substituts et plats. La frontière ci-dessous est tenue à l'identique en EN.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Real EN usage: substitutes and dishes. The boundary below is held identically in EN.
 //   · SOLO — « vegetarian », « plant based », « veganuary », « oat milk », « almond milk »,
 //     « soy milk », « plant milk », « meat free », « dairy free », « vegan cheese », « hummus »,
-//     « nutritional yeast », « aquafaba », « jackfruit » : univoques.
-//   · ANCRÉ — « chickpea » (ingrédient générique, ni végé ni vegan en soi) : compagnon requis.
-//   · EXCLU EN — « plant based DIET », « meat free MONDAY » écartés comme RÉGIME ; « cruelty free »,
-//     « go vegan », « animal rights » écartés comme CONVICTION. Symétrie stricte avec le FR.
+//     « nutritional yeast », « aquafaba », « jackfruit »: univocal.
+//   · ANCHORED — « chickpea » (generic ingredient, neither veg nor vegan in itself): companion required.
+//   · EN EXCLUDED — « plant based DIET », « meat free MONDAY » discarded as a DIET; « cruelty free »,
+//     « go vegan », « animal rights » discarded as CONVICTION. Strict symmetry with FR.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. CULINAIRE seulement (plats, substituts) — PAS le RÉGIME/nutrition-santé (perte de
-// poids, calories : hors-champ, frôle D1) ni la CONVICTION militante (antispécisme, cause animale :
-// hors-champ). Aucun marqueur d'éthique ni de minceur. Chevauche `cuisine`/`patisserie` (assumé).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. CULINARY only (dishes, substitutes) — NOT the DIET/health-nutrition (weight
+// loss, calories: out of scope, brushes D1) nor the militant CONVICTION (antispeciesism, animal cause:
+// out of scope). No ethics or slimming marker. Overlaps `cuisine`/`patisserie` (assumed).
 
 import type { InterestLexicon } from '../types';
 
@@ -53,7 +53,7 @@ export const CUISINE_VEGE_LEXICON: InterestLexicon = {
     'proteines vegetales',
     'fromage vegan',
     'cuisine vegetale',
-    // Variantes EN (PANO-88) : SOLO univoques — substituts et plats SEULEMENT (ni régime, ni cause).
+    // EN variants (PANO-88): SOLO univocal — substitutes and dishes ONLY (neither diet, nor cause).
     'vegetarian',
     'plant based',
     'veganuary',
@@ -70,13 +70,13 @@ export const CUISINE_VEGE_LEXICON: InterestLexicon = {
     'jackfruit',
   ],
   anchored: [
-    'veggie', // abréviation générique
-    'vegetal', // végétal nu (générique)
-    'soja', // soja générique
-    'bowl', // récipient / buddha bowl
-    'levure', // partagé pâtisserie
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'chickpea', // ingrédient générique, ni végé ni vegan en soi (EN)
+    'veggie', // generic abbreviation
+    'vegetal', // bare « vegetal » (generic)
+    'soja', // generic soy
+    'bowl', // container / buddha bowl
+    'levure', // shared with patisserie
+    // EN variants (PANO-88): ANCHORED.
+    'chickpea', // generic ingredient, neither veg nor vegan in itself (EN)
   ],
   selfDeclared: ['vegan', 'vegetarien', 'flexitarien'],
 };

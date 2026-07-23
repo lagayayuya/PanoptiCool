@@ -1,12 +1,12 @@
-// Détection mobile pour les variantes de mise en page (maquettes « … Mobile », refonte 2026-07-15).
-// Les composants v2 sont stylés inline (pas de feuille CSS par composant), donc pas de media query
-// possible au niveau des styles : on branche la mise en page en JS via `matchMedia`. Tous les
-// composants concernés sont des îlots `client:only` (ADR-0002) — `window` existe toujours au rendu.
+// Mobile detection for the layout variants (« … Mobile » mockups, 2026-07-15 rework).
+// The v2 components are styled inline (no per-component CSS sheet), so no media query is
+// possible at the style level: we switch the layout in JS via `matchMedia`. All the
+// components concerned are `client:only` islands (ADR-0002) — `window` always exists at render.
 
 import { useEffect, useState } from 'preact/hooks';
 
-/** Seuil unique : en dessous, les maquettes mobiles s'appliquent (conçues à 390 px, conteneur
- * max 480 px) ; au-dessus, les maquettes desktop. */
+/** Single threshold: below it, the mobile mockups apply (designed at 390 px, container
+ * max 480 px); above it, the desktop mockups. */
 export const MOBILE_QUERY = '(max-width: 720px)';
 
 export function useIsMobile(): boolean {

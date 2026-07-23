@@ -1,135 +1,135 @@
-// Listes EN GÉNÉRIQUES des filtres contextuels (PANO-35, lot 1) — pendant EXACT de `filters-fr.ts`.
-// Mêmes natures, même rôle : ce sont des DONNÉES transverses de la machinerie, pas du lexique de
-// label. La négation, le discours rapporté et la 3ᵉ personne sont de l'anglais courant, identiques
-// quel que soit le sujet détecté.
+// GENERIC EN lists of the contextual filters (PANO-35, batch 1) — EXACT counterpart of `filters-fr.ts`.
+// Same natures, same role: these are cross-cutting DATA of the machinery, not label
+// lexicon. Negation, reported speech and the 3rd person are everyday English, identical
+// whatever the subject detected.
 //
-// ── Justification de généricité (discipline PANO-70 §3, §2.5) ─────────────────────────────────
-// Chaque liste vient de la grammaire / l'usage courant de l'EN (négations canoniques et leurs
-// contractions, verbes de parole du discours rapporté, désignations usuelles de proches), écrites à
-// l'aveugle depuis l'usage commun. Aucun terme n'est issu ni inspiré d'un export d'une personne
-// réelle.
+// ── Genericity justification (PANO-70 §3, §2.5 discipline) ─────────────────────────────────
+// Each list comes from the grammar / everyday usage of EN (canonical negations and their
+// contractions, speech verbs of reported speech, usual designations of relatives), written
+// blind from common usage. No term is drawn from or inspired by a real person's
+// export.
 //
-// ── POURQUOI CE LOT EXISTE, ET POURQUOI IL VIENT EN PREMIER ───────────────────────────────────
-// Mesuré (`docs/portabilite-en-filtres.md`) : sur du texte EN, les filtres FR ne matchent rien.
-// Les trois filtres PROTECTEURS échouaient donc OUVERT — « i am NOT in depression », « SHE TOLD ME
-// her depression is hard » et « MY SISTER has depression » produisaient tous trois un tag NOMMÉ
-// `mental_health` sur le locuteur (violant SENS-B3 et SENS-C1/C2), par simple HOMOGRAPHIE FR/EN
-// (« depression », « burnout », « diabetes » via le pluriel `s?`) — sans qu'aucun marqueur EN n'ait
-// jamais été ajouté aux lexiques sensibles. Ce lot referme cette porte.
+// ── WHY THIS BATCH EXISTS, AND WHY IT COMES FIRST ───────────────────────────────────
+// Measured (`docs/portabilite-en-filtres.md`): on EN text, the FR filters match nothing.
+// The three PROTECTIVE filters therefore failed OPEN — « i am NOT in depression », « SHE TOLD ME
+// her depression is hard » and « MY SISTER has depression » all three produced a NAMED
+// `mental_health` tag on the speaker (violating SENS-B3 and SENS-C1/C2), by mere FR/EN HOMOGRAPHY
+// (« depression », « burnout », « diabetes » via the plural `s?`) — without any EN marker ever
+// having been added to the sensitive lexicons. This batch closes that door.
 //
-// ── SENS DE L'ÉCHEC : c'est ce qui rend ce lot SÛR à livrer seul ──────────────────────────────
-// Les trois listes ci-dessous ne peuvent que SUPPRIMER un hit (négation, citation) ou le DÉGRADER
-// en indirect (3ᵉ personne). Elles échouent donc CLOSED : appliquées à tort (un mot EN présent dans
-// un texte FR), elles coûtent du RAPPEL, jamais de la précision sur le sensible. C'est pourquoi
-// elles sont appliquées à TOUS les items sans détection de langue — le sur-filtrage est la
-// direction sûre, et il évite d'introduire un classifieur de langue (qui, lui, aurait ses propres
-// faux positifs). Le comportement FR est verrouillé par ses goldens, inchangés.
+// ── DIRECTION OF FAILURE: this is what makes this batch SAFE to ship alone ──────────────────────────
+// The three lists below can only SUPPRESS a hit (negation, citation) or DEGRADE it
+// to indirect (3rd person). They therefore fail CLOSED: applied wrongly (an EN word present in
+// an FR text), they cost RECALL, never precision on the sensitive. That is why
+// they are applied to ALL items without language detection — over-filtering is the
+// safe direction, and it avoids introducing a language classifier (which, in turn, would have its own
+// false positives). The FR behavior is locked by its goldens, unchanged.
 //
-// ── L'AUTO-DÉCLARATION EN EST LIVRÉE (lot des adjectifs d'appartenance) ───────────────────────
-// `SELF_DECLARATION_HEADS_EN` existe désormais, apparié à `TopicalLexicon.selfDeclaredEn`, et ce
-// tier ATTERRIT EN LARGE — il ne NOMME jamais. La justification complète vit sur les deux
-// déclarations (têtes ici, tier dans `lexicon/types.ts`).
+// ── EN SELF-DECLARATION IS SHIPPED (the belonging-adjectives batch) ───────────────────────
+// `SELF_DECLARATION_HEADS_EN` now exists, paired with `TopicalLexicon.selfDeclaredEn`, and this
+// tier LANDS BROAD — it NEVER names. The full justification lives on the two
+// declarations (heads here, tier in `lexicon/types.ts`).
 //
-// ── CE QUI A DÉBLOQUÉ LE LOT 2, ET CE N'ÉTAIT PAS L'INSTRUMENT QU'IL RÉCLAMAIT ────────────────
-// Ce fichier a longtemps porté que le blocage était la CÉCITÉ du banc EN : il ne pouvait pas
-// mesurer la copule, la fixture ayant évité les exclusions figées qui sont précisément les termes
-// candidats. Le diagnostic était juste sur le banc, et FAUX sur ce qu'il fallait en conclure —
-// la note de critères d'alors (ex-`docs/criteres-mesure-copule-en.md`, supprimée depuis)
-// spécifiait deux voix de plus pour mesurer un ancrage qui N'EXISTE PAS.
+// ── WHAT UNBLOCKED BATCH 2, AND IT WAS NOT THE INSTRUMENT IT DEMANDED ────────────────
+// This file long held that the blocker was the BLINDNESS of the EN bench: it could not
+// measure the copula, the fixture having avoided the frozen exclusions that are precisely the
+// candidate terms. The diagnosis was right about the bench, and FALSE about what to conclude from it —
+// the criteria note of the time (ex-`docs/criteres-mesure-copule-en.md`, since removed)
+// specified two more voices to measure an anchoring that DOES NOT EXIST.
 //
-// Ce qui manquait n'était pas un banc capable de mesurer la copule : c'était de savoir que **la
-// copule n'ancre rien en anglais**. La mesure est écrite sur `SELF_DECLARATION_HEADS_EN`, avec ses
-// phrases. Une fois le cadre déchargé de toute sûreté, le lot se livre sans les deux voix
-// réclamées — parce que ce qui protège n'est plus le cadre mais l'ÉTAGE, et un tier qui n'affirme
-// jamais n'a pas de taux de sur-affirmation à mesurer.
+// What was missing was not a bench able to measure the copula: it was to know that **the
+// copula anchors nothing in English**. The measurement is written on `SELF_DECLARATION_HEADS_EN`, with its
+// sentences. Once the frame was relieved of all safety, the batch ships without the two demanded
+// voices — because what protects is no longer the frame but the STOREY, and a tier that never
+// asserts has no over-assertion rate to measure.
 //
-// Reste vrai, et à ne pas relire de travers : le banc EN ne mesure toujours pas le rappel de ce
-// chemin. Ce qui le mesure est le banc `en_identity` (`en-identity-bench.test.ts`), dont les voix
-// portent l'appartenance en clair.
+// Still true, and not to be misread: the EN bench still does not measure the recall of this
+// path. What measures it is the `en_identity` bench (`en-identity-bench.test.ts`), whose voices
+// carry belonging in the clear.
 //
-// ── CORRECTION D'UN CONSTAT DE CE FICHIER, qui était FAUX ─────────────────────────────────────
-// Une version antérieure affirmait ici qu'il n'y a « pas de moitié sûre à livrer », au motif que le
-// passif diagnostique n'ouvrirait que les mêmes étiquettes d'état polysémiques que la copule nue.
-// **C'était vrai de `mental_health` seul, et faux du lot.** Le raisonnement portait sur un lexique
-// et a été généralisé aux six sans être revérifié.
+// ── CORRECTION OF A CLAIM IN THIS FILE, which was FALSE ─────────────────────────────────────
+// An earlier version claimed here that there is « pas de moitié sûre à livrer », on the grounds that the
+// diagnostic passive would only open the same polysemous state labels as the bare copula.
+// **This was true of `mental_health` alone, and false of the batch.** The reasoning bore on one lexicon
+// and was generalized to the six without being rechecked.
 //
-// Mesuré depuis : les têtes EN, à elles seules et SANS aucun terme ajouté, activent QUINZE graphies
-// anglaises déjà présentes dans les tiers d'auto-déclaration de `religion`, `sexuality` et
-// `politics` — « im ace at darts » posait un constat `sexuality[explicit]`. La charge utile d'une
-// tête EN n'est donc pas une poignée d'étiquettes d'état : c'est un tier entier de termes d'identité
-// que personne n'a jamais examinés pour l'anglais.
+// Measured since: the EN heads, by themselves and WITHOUT any term added, activate FIFTEEN English
+// spellings already present in the self-declaration tiers of `religion`, `sexuality` and
+// `politics` — « im ace at darts » placed a `sexuality[explicit]` finding. The payload of an
+// EN head is therefore not a handful of state labels: it is a whole tier of identity terms
+// that no one has ever examined for English.
 //
-// D'où la PORTE DE LANGUE, livrée séparément : `selfDeclaredFr` est apparié à ces têtes-ci, et une
-// tête anglaise devra naître avec son propre `selfDeclaredEn`. Témoin :
-// `selfdeclared-language-gate.test.ts`. Tant que la porte tient, ce fichier peut recevoir des têtes
-// EN sans activer quoi que ce soit par accident — mais il n'en reçoit toujours aucune, faute de la
-// mesure décrite ci-dessus.
+// Hence the LANGUAGE GATE, shipped separately: `selfDeclaredFr` is paired with these heads, and an
+// English head will have to be born with its own `selfDeclaredEn`. Witness:
+// `selfdeclared-language-gate.test.ts`. As long as the gate holds, this file can receive EN
+// heads without activating anything by accident — but it still receives none, for want of the
+// measurement described above.
 //
-// ── QUAND LES MODIFICATEURS EN ARRIVERONT : ils se choisissent sur la GRAMMAIRE ────────────────
-// Écrit ici parce que c'est la fausse bonne idée qui se re-proposera, et qu'elle a été examinée
-// puis ÉCARTÉE (arbitrage 2026-07-18). Omettre « so » et « literally » de la liste des
-// modificateurs pour écarter l'hyperbole ne filtre rien : ça bloque « im so depressed » en laissant
-// passer « im depressed » nu — l'inverse de l'effet cherché, et pas défendable dans l'autre sens
-// non plus. C'est l'erreur du SEUIL en costume neuf : régler la machinerie pour lui faire porter
-// une sûreté qu'elle ne porte pas (ADR-0003, *La porte, pas le seuil*).
-// Les modificateurs EN se choisiront donc sur la grammaire et le rappel, et ils ne portent AUCUNE
-// charge de sûreté. Celle-ci vit à la porte d'admission des termes, et nulle part ailleurs.
+// ── WHEN THE EN MODIFIERS ARRIVE: they are chosen on GRAMMAR ────────────────
+// Written here because it is the plausible-but-wrong idea that will re-propose itself, and it has been examined
+// then SET ASIDE (arbitration 2026-07-18). Omitting « so » and « literally » from the list of
+// modifiers to set aside hyperbole filters nothing: it blocks « im so depressed » while letting
+// bare « im depressed » through — the reverse of the intended effect, and not defensible in the other direction
+// either. It is the THRESHOLD error in a new suit: tuning the machinery to make it carry
+// a safety it does not carry (ADR-0003, *La porte, pas le seuil*).
+// The EN modifiers will therefore be chosen on grammar and recall, and they carry NO
+// safety load. That lives at the term-admission gate, and nowhere else.
 //
-// Toutes les entrées sont déjà en forme NORMALISÉE (minuscules, sans accents ; apostrophe droite —
-// `normalize-fr` unifie `’` → `'`, et le tiret vaut espace).
+// All entries are already in NORMALIZED form (lowercase, no accents; straight apostrophe —
+// `normalize-fr` unifies `’` → `'`, and the hyphen counts as space).
 
 /**
- * TÊTES DE COPULE EN — appariées à `TopicalLexicon.selfDeclaredEn`, et à lui seul.
+ * EN COPULA HEADS — paired with `TopicalLexicon.selfDeclaredEn`, and it alone.
  *
- * ══ LA COPULE NE DÉSAMBIGUÏSE PAS EN ANGLAIS ═════════════════════════════════════════════════════
- * C'est le résultat central du lot, il contredit la prémisse sur laquelle PANO-35 lot 2 a été fermé
- * DEUX FOIS, et il doit se lire avant toute proposition qui touche à ces têtes.
+ * ══ THE COPULA DOES NOT DISAMBIGUATE IN ENGLISH ═════════════════════════════════════════════════════
+ * This is the central result of the batch, it contradicts the premise on which PANO-35 batch 2 was closed
+ * TWICE, and it must be read before any proposal that touches these heads.
  *
- * La doctrine de la copule est écrite en français, dans `selfDeclaredFr` : « la copule ancre la
- * 1ʳᵉ personne », donc un terme trop ambigu nu (« dépressif », « lesbienne ») devient fiable une
- * fois cadré. **Ce jugement NE TRAVERSE PAS.** L'anglais courant écrit son hyperbole et sa figure à
- * la première personne, exactement dans le même cadre. Mesuré, et ce ne sont pas des cas limites :
+ * The copula doctrine is written in French, in `selfDeclaredFr`: « la copule ancre la
+ * 1ʳᵉ personne », so a term too ambiguous bare (« dépressif », « lesbienne ») becomes reliable once
+ * framed. **This judgment DOES NOT CARRY OVER.** Everyday English writes its hyperbole and its figure in
+ * the first person, in exactly the same frame. Measured, and these are not edge cases:
  *
  *     « im so ocd about my desk drawers »          « im autistic about train timetables »
  *     « im arthritic after that hike »             « im depressed that the bakery closed early »
  *     « im dyslexic when it comes to left and right »   « im an insomniac when there is a new season »
  *
- * Le cadre est là, entier, dans chacune. Un mécanisme qui compte sur lui pour séparer l'aveu de la
- * figure ne sépare rien.
+ * The frame is there, whole, in each. A mechanism that relies on it to separate the confession from the
+ * figure separates nothing.
  *
- * *Ce que ça invalide, et il vaut mieux l'écrire que de le laisser se re-dériver :* les deux
- * fermetures de PANO-35 lot 2 ont cherché ce qui manquait du côté des TÊTES et de la MESURE, sur la
- * prémisse que le cadre, une fois livré, ancrerait. Il n'ancre pas. Ce qui manquait n'était pas un
- * banc capable de mesurer la copule : c'était de savoir que la copule n'est pas un filtre.
+ * *What this invalidates, and it is better to write it than to let it re-derive itself:* the two
+ * closures of PANO-35 batch 2 looked for what was missing on the side of the HEADS and the MEASUREMENT, on the
+ * premise that the frame, once shipped, would anchor. It does not anchor. What was missing was not a
+ * bench able to measure the copula: it was to know that the copula is not a filter.
  *
- * **RÈGLE, et elle se cite pour refuser :** aucune charge de SÛRETÉ ne se pose sur le cadre. Ni sur
- * les têtes, ni sur les modificateurs (arbitrage 2026-07-18, déjà écrit plus haut dans ce fichier et
- * désormais mesuré plutôt que raisonné). Ce que le cadre achète est du RAPPEL, et rien d'autre : il
- * rend `straight` admissible là où le terme NU en `indirectCore` a été mesuré à 1 → 4 torts. La
- * sûreté vit à la porte d'admission des termes et à l'ÉTAGE — `selfDeclaredEn` n'affirme jamais.
+ * **RULE, and it is cited to refuse:** no SAFETY load is placed on the frame. Neither on
+ * the heads, nor on the modifiers (arbitration 2026-07-18, already written higher in this file and
+ * now measured rather than reasoned). What the frame buys is RECALL, and nothing else: it
+ * makes `straight` admissible where the BARE term in `indirectCore` was measured at 1 → 4 wrongs. The
+ * safety lives at the term-admission gate and at the STOREY — `selfDeclaredEn` never asserts.
  *
- * ── CE QUE CETTE LISTE NE COUVRE PAS ────────────────────────────────────────────────────────────
- * Les têtes non copulaires (« ive always been », « i grew up », « turns out im ») lui échappent —
- * même limite déclarée que le registre de la porte de langue. `i was raised` est admise parce que
- * c'est la tournure d'appartenance religieuse la plus ordinaire de l'anglais (« i was raised
- * catholic ») et qu'elle n'a pas d'équivalent lexical ailleurs.
+ * ── WHAT THIS LIST DOES NOT COVER ────────────────────────────────────────────────────────────
+ * Non-copular heads (« ive always been », « i grew up », « turns out im ») escape it —
+ * the same declared limit as the register of the language gate. `i was raised` is admitted because
+ * it is the most ordinary religious-belonging turn of phrase in English (« i was raised
+ * catholic ») and it has no lexical equivalent elsewhere.
  */
 export const SELF_DECLARATION_HEADS_EN: readonly string[] = [
   'i am',
   'im',
-  "i'm", // les deux graphies : `normalize-fr` conserve l'apostrophe, l'usage d'internet l'omet
+  "i'm", // both spellings: `normalize-fr` keeps the apostrophe, internet usage omits it
   'i identify as',
   'i was raised',
 ];
 
 /**
- * Modificateurs EN entre la copule et le terme — de la GRAMMAIRE, aucune charge de sûreté (règle
- * ci-dessus). Ils rendent « i am a lesbian » et « i am a trans woman » atteignables.
+ * EN modifiers between the copula and the term — GRAMMAR, no safety load (rule
+ * above). They make « i am a lesbian » and « i am a trans woman » reachable.
  *
- * Ils sont COMPOSÉS avec les modificateurs FR dans `filters.ts`, et non appariés par langue comme le
- * sont les têtes. Ce n'est pas un relâchement de la porte : un modificateur ne peut atteindre aucun
- * terme sans une TÊTE de sa propre langue, et le couple (têtes, termes) reste apparié au site
- * d'appel. Mesuré : la composition ne déplace aucun compteur des bancs français.
+ * They are COMPOSED with the FR modifiers in `filters.ts`, and not paired by language as the
+ * heads are. This is not a loosening of the gate: a modifier can reach no
+ * term without a HEAD of its own language, and the (heads, terms) pair stays paired at the call
+ * site. Measured: the composition moves no counter of the French benches.
  */
 export const SELF_DECLARATION_MODIFIERS_EN: readonly string[] = [
   'a',
@@ -143,50 +143,50 @@ export const SELF_DECLARATION_MODIFIERS_EN: readonly string[] = [
   'openly',
   'also',
   'still',
-  // Ajouté DÉLIBÉRÉMENT par le lot `politics` EN, pour crever un vert qu'on savait faux. Le
-  // raisonnement et sa mesure sont ci-dessous — ne pas le retirer sans les lire.
+  // Added DELIBERATELY by the EN `politics` batch, to burst a green we knew was false. The
+  // reasoning and its measurement are below — do not remove it without reading them.
   'extremely',
 ];
 
-// ── `extremely`, ET LE VERT QU'IL A CREVÉ — la mesure, pas l'intention ─────────────────────────
-// Le lot `politics` EN a trouvé que les deux voix-gardes anglaises scellées ne devaient leur zéro
-// de faux positif qu'à l'INCOMPLÉTUDE de deux listes — celle-ci et `SELF_DECLARATION_HEADS_EN` —
-// dont ce fichier déclare en toutes lettres qu'elles ne portent AUCUNE charge de sûreté et seront
-// étendues sur la grammaire et le rappel. `en_ironic` écrit « i am EXTREMELY radical about bin
-// collection day » : mesuré, « i am radical », « i am very radical », « i am pretty radical »
-// tagueraient tous, et seul le choix du mot `extremely` par l'autrice de la voix la protégeait.
+// ── `extremely`, AND THE GREEN IT BURST — the measurement, not the intention ─────────────────────────
+// The EN `politics` batch found that the two sealed English guard voices owed their zero
+// of false positives only to the INCOMPLETENESS of two lists — this one and `SELF_DECLARATION_HEADS_EN` —
+// which this file declares in so many words to carry NO safety load and will be
+// extended on grammar and recall. `en_ironic` writes « i am EXTREMELY radical about bin
+// collection day »: measured, « i am radical », « i am very radical », « i am pretty radical »
+// would all tag, and only the voice author's choice of the word `extremely` protected it.
 //
-// **Un plancher de faux positifs FICTIF est pire qu'un tort mesuré** : il se cite comme une sûreté,
-// et il tombe le jour où un lot sans rapport ajoute un modificateur pour du rappel — c'est-à-dire au
-// moment précis où plus personne ne relit ceci. Le mot est donc ajouté ICI, à découvert.
+// **A FICTITIOUS false-positive floor is worse than a measured wrong**: it is cited as a safety,
+// and it falls the day an unrelated batch adds a modifier for recall — that is, at the
+// precise moment when no one rereads this anymore. The word is therefore added HERE, in the open.
 //
-// CE QUE LA MESURE A RENDU, et ce n'est PAS ce que le lot attendait : **zéro tort**, sur les deux
-// gardes, item par item. Le tort annoncé n'existe pas, et il faut dire par quel CHEMIN ce zéro
-// arrive, sans quoi il vaudrait le vert qu'on vient de crever :
-//   · `radical` — le terme qui aurait tagué — est EXCLU du lexique par décision (adjectif d'usage
-//     général, règle d'admission ADR-0003). **C'est la porte d'admission qui protège, pas le
-//     modificateur** — et c'est le résultat qu'on voulait établir ;
-//   · anti-vacuité : `extremely` n'est pas inerte pour autant — « i am extremely socialist » ×2
-//     pose bien un constat large, là où il n'en posait aucun avant.
+// WHAT THE MEASUREMENT RETURNED, and it is NOT what the batch expected: **zero wrongs**, on the two
+// guards, item by item. The announced wrong does not exist, and one must say by what PATH this zero
+// arrives, without which it would be worth the green we just burst:
+//   · `radical` — the term that would have tagged — is EXCLUDED from the lexicon by decision (adjective of
+//     general use, ADR-0003 admission rule). **It is the admission gate that protects, not the
+//     modifier** — and that is the result we wanted to establish;
+//   · anti-vacuity: `extremely` is not inert for all that — « i am extremely socialist » ×2
+//     does place a broad finding, where it placed none before.
 //
-// ── LA DETTE QUI RESTE, et elle est PIRE que celle qu'on vient de solder ───────────────────────
-// La seconde liste n'a PAS été touchée, et le trou y est vivant. `en_ironic` écrit « I HAVE DECIDED
-// TO BECOME a centrist » — et `centrist` EST admis au lexique. MUTATION PASSÉE, résultat relevé :
-// ajouter `'i have decided to become'` aux têtes ci-dessus fait taguer cet item, sur une voix
-// scellée NON-PORTEUSE. Toute tête d'acquisition (« i became », « ive become », « i turned »)
-// produirait le même effet, et chacune est un ajout de rappel parfaitement légitime.
+// ── THE DEBT THAT REMAINS, and it is WORSE than the one we just settled ───────────────────────
+// The second list was NOT touched, and the hole is alive there. `en_ironic` writes « I HAVE DECIDED
+// TO BECOME a centrist » — and `centrist` IS admitted in the lexicon. PAST MUTATION, result recorded:
+// adding `'i have decided to become'` to the heads above makes this item tag, on a sealed
+// NON-BEARING voice. Any acquisition head (« i became », « ive become », « i turned »)
+// would produce the same effect, and each is a perfectly legitimate recall addition.
 //
-// **ET LE BANC NE LE VERRAIT PAS.** Mesuré aussi, et c'est le point le plus dur : avec la tête
-// ajoutée et le tort présent, la SUITE ENTIÈRE reste verte. `en_ironic` ne porte qu'UN item
-// déclencheur, `politics` est à seuil 2, donc la voix entière rend `RIEN` et le banc — qui mesure la
-// voix, pas l'item — ne rougit pas. Un tort à un item est INVISIBLE à cet instrument ; il en
-// faudrait deux.
+// **AND THE BENCH WOULD NOT SEE IT.** Also measured, and this is the hardest point: with the head
+// added and the wrong present, the WHOLE SUITE stays green. `en_ironic` carries only ONE triggering
+// item, `politics` is at threshold 2, so the whole voice returns `NOTHING` and the bench — which measures the
+// voice, not the item — does not go red. A wrong on one item is INVISIBLE to this instrument; it would
+// take two.
 //
-// Ce qui verrait ce tort est une assertion ITEM PAR ITEM sur les gardes, qui n'existe pas. Tant
-// qu'elle manque, le plancher de faux positifs des voix anglaises est une ACCEPTATION ASSUMÉE — le
-// mot est *assumée*, jamais *mesurée*, et le passage à *mesurée* serait un événement daté.
+// What would see this wrong is an ITEM-BY-ITEM assertion on the guards, which does not exist. As long
+// as it is missing, the false-positive floor of the English voices is an ASSUMED ACCEPTANCE — the
+// word is *assumed*, never *measured*, and the shift to *measured* would be a dated event.
 
-/** Mots de négation EN (fenêtre AVANT le marqueur — cf. `NEGATION_WINDOW`, partagée avec le FR). */
+/** EN negation words (window BEFORE the marker — cf. `NEGATION_WINDOW`, shared with FR). */
 export const NEGATIONS_EN: readonly string[] = [
   'not',
   'never',
@@ -199,8 +199,8 @@ export const NEGATIONS_EN: readonly string[] = [
   'nor',
   'neither',
   'cannot',
-  // Contractions — les DEUX graphies : `normalize-fr` conserve l'apostrophe (« don't »), mais
-  // l'usage d'internet écrit tout autant sans (« dont »). La comparaison est une égalité de token.
+  // Contractions — BOTH spellings: `normalize-fr` keeps the apostrophe (« don't »), but
+  // internet usage writes just as much without (« dont »). The comparison is a token equality.
   "don't",
   'dont',
   "doesn't",
@@ -236,13 +236,13 @@ export const NEGATIONS_EN: readonly string[] = [
 ];
 
 /**
- * Verbes d'OMISSION EN : omission + négation = double négation qui AFFIRME l'objet (« i never miss
- * mass » = pratique assidue). Pendant de `OMISSION_VERBS` (« je rate jamais la priere », mesuré
+ * EN OMISSION verbs: omission + negation = double negation that AFFIRMS the object (« i never miss
+ * mass » = diligent practice). Counterpart of `OMISSION_VERBS` (« je rate jamais la priere », measured
  * PANO-33).
  *
- * SEULE liste de ce module qui échoue OPEN (elle ANNULE une négation). Tenue volontairement COURTE
- * et sans ambiguïté FR : le seul homographe FR est « miss » (titre de concours), dont la
- * co-occurrence avec une négation ET un marqueur sensible dans la même fenêtre est inerte.
+ * The ONLY list of this module that fails OPEN (it CANCELS a negation). Kept deliberately SHORT
+ * and without FR ambiguity: the only FR homograph is « miss » (pageant title), whose
+ * co-occurrence with a negation AND a sensitive marker in the same window is inert.
  */
 export const OMISSION_VERBS_EN: readonly string[] = [
   'miss',
@@ -254,10 +254,10 @@ export const OMISSION_VERBS_EN: readonly string[] = [
 ];
 
 /**
- * Discours rapporté EN — formes AVEC verbe de parole seulement. Même piège que le FR (mesuré
- * PANO-33) : le PASSIF MÉDICAL n'est PAS une citation — « i was told i have… » / « i was diagnosed »
- * rapportent un diagnostic reçu, pas les propos d'un tiers sur un tiers. D'où l'absence volontaire
- * de « was told » et de « told me i » nus.
+ * EN reported speech — forms WITH a speech verb only. Same trap as FR (measured
+ * PANO-33): the MEDICAL PASSIVE is NOT a citation — « i was told i have… » / « i was diagnosed »
+ * report a received diagnosis, not a third party's words about a third party. Hence the deliberate absence
+ * of bare « was told » and « told me i ».
  */
 export const CITATION_MARKERS_EN: readonly string[] = [
   'told me',
@@ -273,32 +273,32 @@ export const CITATION_MARKERS_EN: readonly string[] = [
 ];
 
 /**
- * Marqueurs de 3ᵉ personne EN — l'axe « pour qui » (ADR-0003) : le signal existe mais concerne
- * un proche → DÉGRADÉ en indirect (chemin signal-sans-vécu), JAMAIS supprimé.
+ * EN 3rd-person markers — the « for whom » axis (ADR-0003): the signal exists but concerns
+ * a relative → DEGRADED to indirect (signal-without-lived-experience path), NEVER suppressed.
  *
- * ── CE QUE CETTE LISTE COUVRE, ET CE QU'ELLE A LONGTEMPS MANQUÉ ──────────────────────────────────
- * Livrée au lot 1 sur la famille nucléaire AMÉRICAINE, et l'angle mort n'était pas les
- * grands-parents seuls : « my mum » — la forme britannique la plus courante pour la mère — n'était
- * pas couverte non plus, ni aucune parenté élargie. Mesuré : « my nan has diabetes » posait un
- * constat NOMMÉ sur le locuteur.
+ * ── WHAT THIS LIST COVERS, AND WHAT IT LONG MISSED ──────────────────────────────────
+ * Shipped in batch 1 on the AMERICAN nuclear family, and the blind spot was not
+ * grandparents alone: « my mum » — the most common British form for mother — was not
+ * covered either, nor any extended kinship. Measured: « my nan has diabetes » placed a
+ * NAMED finding on the speaker.
  *
- * L'écart n'était pas visible sur `mental_health`, et il faut dire pourquoi, sinon il se
- * reproduira : ses noms de trouble les plus fréquents vivent au tier `indirectSolo` et ne peuvent
- * STRUCTURELLEMENT plus nommer. « my nan has depression » dégradait déjà — mais grâce au tier, pas
- * grâce à cette liste. Le défaut est apparu sur le premier label dont les noms de condition sont
- * restés en `explicit`.
+ * The gap was not visible on `mental_health`, and one must say why, otherwise it will
+ * recur: its most frequent disorder names live in the `indirectSolo` tier and can
+ * STRUCTURALLY no longer name. « my nan has depression » already degraded — but thanks to the tier, not
+ * thanks to this list. The defect appeared on the first label whose condition names
+ * stayed in `explicit`.
  *
- * La parenté élargie n'est pas un ornement sur un label de santé physique : le diabète, l'AVC, le
- * cancer sont ce dont on parle à propos d'un grand-parent.
+ * Extended kinship is not an ornament on a physical-health label: diabetes, stroke,
+ * cancer are what one talks about regarding a grandparent.
  *
- * NOTE (ex-écart FR) : cette liste a longtemps porté que le FR manquait « ma mere » / « mon pere ».
- * C'est RÉSOLU — `filters-fr.ts` porte désormais parents, grands-parents, oncles et cousins, et le
- * FR ne présente plus cet écart (vérifié plutôt que supposé : « le diabete de ma mamie » dégrade).
+ * NOTE (ex-FR gap): this list long held that FR was missing « ma mere » / « mon pere ».
+ * That is RESOLVED — `filters-fr.ts` now carries parents, grandparents, uncles and cousins, and
+ * FR no longer presents this gap (verified rather than supposed: « le diabete de ma mamie » degrades).
  *
- * EXCLUS À DESSEIN : les animaux (« my dog has diabetes » est une recherche massive et réelle). La
- * dégradation irait dans la direction sûre, mais un animal n'est pas une 3ᵉ personne — l'axe « pour
- * qui » suppose un « qui ». Les faire entrer ici changerait le sens de la liste sans le dire ; s'ils
- * doivent être couverts, c'est par une décision propre.
+ * EXCLUDED BY DESIGN: animals (« my dog has diabetes » is a massive, real search). The
+ * degradation would go in the safe direction, but an animal is not a 3rd person — the « for
+ * whom » axis assumes a « who ». Bringing them in here would change the meaning of the list without saying so; if they
+ * must be covered, it is by a decision of its own.
  */
 export const THIRD_PERSON_EN: readonly string[] = [
   'my sister',
@@ -310,7 +310,7 @@ export const THIRD_PERSON_EN: readonly string[] = [
   'my teen',
   'my teenager',
   'my mom',
-  'my mum', // (BrE) — absent du lot 1, et c'est la forme la plus courante hors Amérique du Nord
+  'my mum', // (BrE) — absent from batch 1, and it is the most common form outside North America
   'my mother',
   'my dad',
   'my father',
@@ -325,14 +325,14 @@ export const THIRD_PERSON_EN: readonly string[] = [
   'my roommate',
   'my coworker',
   'a friend of mine',
-  // Parenté ÉLARGIE — pendant de la liste FR (« ma mamie », « mon papy », « mon oncle »,
-  // « ma tante », « mon cousin »), qui la porte depuis son propre comblement.
+  // EXTENDED kinship — counterpart of the FR list (« ma mamie », « mon papy », « mon oncle »,
+  // « ma tante », « mon cousin »), which has carried it since its own fill.
   'my grandma',
   'my grandmother',
   'my grandpa',
   'my grandfather',
   'my grandparents',
-  'my nan', // (BrE) — « my grandmother » ne l'attrape pas, la frontière de mot les sépare
+  'my nan', // (BrE) — « my grandmother » does not catch it, the word boundary separates them
   'my nana',
   'my gran',
   'my granny',
@@ -344,7 +344,7 @@ export const THIRD_PERSON_EN: readonly string[] = [
   'my cousin',
   'my nephew',
   'my niece',
-  'my in laws', // le tiret vaut espace (normalize-fr) : couvre « my in-laws »
+  'my in laws', // the hyphen counts as space (normalize-fr): covers « my in-laws »
   'for my',
   'helping my',
   'help my',
@@ -353,19 +353,19 @@ export const THIRD_PERSON_EN: readonly string[] = [
 ];
 
 /**
- * REGISTRE INFORMATIONNEL (EN) — marqueurs de cadrage documentaire.
+ * INFORMATIONAL REGISTER (EN) — documentary-framing markers.
  *
- * Même rôle et même critère d'admission que la liste FR (`filters-fr.ts` en porte la justification
- * complète) : abaisser l'étage d'un constat, jamais le supprimer. Un marqueur entre s'il signale que
- * l'item **interroge, définit ou quantifie** une condition.
+ * Same role and same admission criterion as the FR list (`filters-fr.ts` carries the full
+ * justification): lower the storey of a finding, never suppress it. A marker enters if it signals that
+ * the item **questions, defines or quantifies** a condition.
  *
- * `symptoms of` plutôt que `symptoms` nu, contrairement au FR : l'anglais construit « my symptoms »
- * bien plus volontiers que le français ne construit « mes symptômes », et dégrader celui qui décrit
- * SES symptômes est exactement ce que cette règle ne doit pas faire. Le français paie l'inverse —
- * « symptomes depression ado » n'a pas de préposition à quoi s'accrocher.
+ * `symptoms of` rather than bare `symptoms`, unlike FR: English builds « my symptoms »
+ * far more readily than French builds « mes symptômes », and degrading the one who describes
+ * THEIR symptoms is exactly what this rule must not do. French pays the reverse —
+ * « symptomes depression ado » has no preposition to hang onto.
  */
 export const INFORMATIONAL_EN: readonly string[] = [
-  // Interroger.
+  // Question.
   'signs of',
   'sign of',
   'symptoms of',
@@ -381,20 +381,20 @@ export const INFORMATIONAL_EN: readonly string[] = [
   'how to tell if',
   'how to help',
   'how to support',
-  // Solliciter l'expérience d'AUTRUI (voir `filters-fr.ts` pour la justification de catégorie).
+  // Solicit ANOTHER'S experience (see `filters-fr.ts` for the category justification).
   'testimonial',
   'experiences with',
   'anyone else',
   'has anyone',
   'what is it like',
   'reviews of',
-  // Définir.
+  // Define.
   'difference between',
   'definition of',
   'meaning of',
   'types of',
   'explained',
-  // Quantifier.
+  // Quantify.
   'prevalence of',
   'rates of',
   'statistics',
@@ -404,71 +404,71 @@ export const INFORMATIONAL_EN: readonly string[] = [
 ];
 
 /**
- * LOCUTIONS COUVRANTES (EN) — un marqueur STRICTEMENT contenu dans l'une d'elles ne compte pas.
+ * COVERING PHRASES (EN) — a marker STRICTLY contained in one of them does not count.
  *
- * ── Le défaut mesuré, et pourquoi il n'est pas celui qu'on avait écrit ───────────────────────────
- * Le terme `therapy` de `mental_health` porte une réserve documentée depuis le lot pilote. Elle
- * vise l'emploi FIGURÉ (« retail therapy », « music is my therapy ») et s'en remet au seuil de 2,
- * justifié comme filtre de POLYSÉMIE.
+ * ── The measured defect, and why it is not the one we had written ───────────────────────────
+ * The `therapy` term of `mental_health` carries a caveat documented since the pilot batch. It
+ * targets the FIGURATIVE use (« retail therapy », « music is my therapy ») and relies on the threshold of 2,
+ * justified as a POLYSEMY filter.
  *
- * Le premier tour du banc du corps a trouvé autre chose. L'aidante d'une personne ayant fait un AVC
- * écrit « occupational therapy home assessment » et « aphasia speech therapy waiting list » : le
- * corps de sa mère, lu comme la santé MENTALE de la fille — mauvaise personne ET mauvais sujet. Ce
- * n'est pas de l'emploi figuré, c'est du vocabulaire clinique parfaitement littéral appartenant à un
- * AUTRE domaine médical. Et sur ce registre le seuil ne départage rien : une aidante d'AVC écrit
- * « therapy » plusieurs fois par nécessité, donc la répétition ACCUMULE au lieu de filtrer — le
- * raisonnement d'ADR-0003 sur l'hyperbole, dans un cas que personne n'avait classé là.
- * La réserve n'a donc pas cédé : elle CACHAIT une seconde faille.
+ * The first pass of the body bench found something else. The carer of a person who had a stroke
+ * writes « occupational therapy home assessment » and « aphasia speech therapy waiting list »: the
+ * mother's body, read as the daughter's MENTAL health — wrong person AND wrong subject. This
+ * is not figurative use, it is perfectly literal clinical vocabulary belonging to
+ * ANOTHER medical domain. And on this register the threshold decides nothing: a stroke carer writes
+ * « therapy » several times out of necessity, so the repetition ACCUMULATES instead of filtering — the
+ * reasoning of ADR-0003 on hyperbole, in a case no one had filed there.
+ * The caveat therefore did not give way: it HID a second flaw.
  *
- * ── Pourquoi cette forme, et pas un retrait ──────────────────────────────────────────────────────
- * `therapy` est un terme LIVRÉ : il ne se retire pas par doctrine (ADR-0003, *Admettre n'est pas
- * évincer*), et il porte un rappel réel — la voix en détresse du banc EN le déclenche. Le geste
- * juste n'est pas de lui retirer du signal, c'est de laisser le domaine voisin RÉCLAMER le sien :
- * `health_physical` porte désormais les syntagmes de rééducation, et la locution couvrante empêche
- * le marqueur court de les lire au passage.
+ * ── Why this form, and not a removal ──────────────────────────────────────────────────────
+ * `therapy` is a SHIPPED term: it is not removed by doctrine (ADR-0003, *Admettre n'est pas
+ * évincer*), and it carries real recall — the distress voice of the EN bench triggers it. The
+ * right move is not to remove signal from it, it is to let the neighboring domain CLAIM its own:
+ * `health_physical` now carries the rehabilitation phrases, and the covering phrase prevents
+ * the short marker from reading them in passing.
  *
- * La règle est donc « le plus long gagne », et la contenance est STRICTE : un syntagme ne se bloque
- * pas lui-même. `occupational therapy` matche pour `health_physical` ; c'est `therapy` seul, à
- * l'intérieur, qui tombe.
+ * The rule is therefore « the longest wins », and the containment is STRICT: a phrase does not block
+ * itself. `occupational therapy` matches for `health_physical`; it is `therapy` alone, on the
+ * inside, that falls.
  *
- * ── Ce que cette liste n'est PAS ─────────────────────────────────────────────────────────────────
- * Pas une liste d'exclusions de lexique — celles-là s'écrivent en n'admettant pas le terme. Elle
- * n'existe que pour les cas où un marqueur COURT et légitime est avalé par un syntagme qui veut
- * dire autre chose. Chaque entrée doit nommer le marqueur qu'elle protège, sinon elle ne tourne
- * pour personne.
+ * ── What this list is NOT ─────────────────────────────────────────────────────────────────
+ * Not a lexicon-exclusion list — those are written by not admitting the term. It
+ * exists only for the cases where a SHORT, legitimate marker is swallowed by a phrase that means
+ * something else. Each entry must name the marker it protects, otherwise it runs
+ * for no one.
  */
 export const COVERING_PHRASES_EN: readonly string[] = [
-  // Protègent `therapy` (`mental_health`) — rééducations PHYSIQUES, réclamées par `health_physical`.
+  // Protect `therapy` (`mental_health`) — PHYSICAL rehabilitations, claimed by `health_physical`.
   'occupational therapy',
   'speech therapy',
   'speech and language therapy',
   'physical therapy',
-  // Protège `therapy` aussi — mais ici rien ne réclame, et c'est voulu : l'emploi est FIGURÉ. Ce
-  // sont les deux tournures que la réserve écrite du lot pilote nommait sans pouvoir les écarter.
+  // Protect `therapy` too — but here nothing claims, and it is intended: the use is FIGURATIVE. These
+  // are the two turns of phrase the written caveat of the pilot batch named without being able to set them aside.
   'retail therapy',
   'music is my therapy',
-  // ── Écartent `woke` (`politics`) employé comme PASSÉ DE *WAKE* ─────────────────────────────────
-  // `woke` est une entrée FR qui traverse (le terme politique s'écrit à l'identique dans les deux
-  // langues) et qui matche l'anglais le plus ordinaire : mesuré, quatre items « i woke up… » posent
-  // un constat `politics[indirect]`.
+  // ── Set aside `woke` (`politics`) used as the PAST OF *WAKE* ─────────────────────────────────
+  // `woke` is an FR entry that carries over (the political term is written identically in both
+  // languages) and matches the most ordinary English: measured, four items « i woke up… » place
+  // a `politics[indirect]` finding.
   //
-  // Il ne s'ÉVINCE PAS : il se déclenche aussi sur des porteurs (« the woke crowd »), et ADR-0003
-  // (*Le faux positif n'est PAS un motif de retrait*) ne fait partir que le terme qui ne discrimine
-  // PAS DU TOUT. La ligne passe entre « discrimine mal » et « ne discrimine pas », et `woke` est du
-  // premier côté.
+  // It is NOT EVICTED: it also fires on bearers (« the woke crowd »), and ADR-0003
+  // (*Le faux positif n'est PAS un motif de retrait*) only removes the term that does NOT discriminate
+  // AT ALL. The line runs between « discriminates badly » and « does not discriminate », and `woke` is on the
+  // first side.
   //
-  // Les huit frames ci-dessous sont toutes du côté COMPLÉMENT (verbe + particule / objet /
-  // préposition), jamais du côté sujet. C'est ce qui les rend tenables : couvrir les frames sujet
-  // demanderait d'énumérer les pronoms anglais, ce qui est une grammaire déguisée en liste — et
-  // l'emploi politique est attributif ou prédicatif (« the woke X », « is woke »), donc il ne suit
-  // jamais l'un de ces huit mots.
+  // The eight frames below are all on the COMPLEMENT side (verb + particle / object /
+  // preposition), never the subject side. That is what makes them tenable: covering the subject frames
+  // would require enumerating the English pronouns, which is grammar disguised as a list — and
+  // the political use is attributive or predicative (« the woke X », « is woke »), so it never follows
+  // one of these eight words.
   //
-  // RÉSIDU DÉCLARÉ, et il est mesuré plutôt que supposé : ce qui reste tague, c'est `woke` suivi
-  // d'un mot HORS de cette liste — une conjonction, un adverbe, une préposition non listée. Mesuré :
+  // DECLARED RESIDUE, and it is measured rather than supposed: what still tags is `woke` followed
+  // by a word OUTSIDE this list — a conjunction, an adverb, an unlisted preposition. Measured:
   // « i woke and it was already dark », « she woke suddenly », « he woke before the alarm »,
-  // « i woke because of the storm » posent tous encore un constat. Les huit frames prennent le
-  // volume (la particule `up` et les objets pronominaux), pas la queue de distribution — et
-  // l'allonger mot à mot serait réécrire la grammaire anglaise dans une liste de locutions.
+  // « i woke because of the storm » all still place a finding. The eight frames take the
+  // volume (the particle `up` and the pronominal objects), not the distribution tail — and
+  // lengthening it word by word would be rewriting English grammar into a list of phrases.
   'woke up',
   'woke me',
   'woke him',
@@ -480,38 +480,38 @@ export const COVERING_PHRASES_EN: readonly string[] = [
 ];
 
 /**
- * REGISTRE INFORMATIONNEL (EN) — têtes de COMPOSÉ, qui ne comptent qu'APRÈS un terme du lexique.
+ * INFORMATIONAL REGISTER (EN) — COMPOUND heads, which count only AFTER a lexicon term.
  *
- * ── Le défaut que cette liste referme ────────────────────────────────────────────────────────────
- * La liste ci-dessus est ancrée sur des PRÉPOSITIONS (« symptoms of », « signs of »). Or l'anglais
- * construit sa requête de santé la plus fréquente en composé nom-nom ANTÉPOSÉ. Mesuré :
+ * ── The defect this list closes ────────────────────────────────────────────────────────────
+ * The list above is anchored on PREPOSITIONS (« symptoms of », « signs of »). Yet English
+ * builds its most frequent health query as a PREPOSED noun-noun compound. Measured:
  *
- *     « symptoms of diabetes » → constat large        « diabetes symptoms » → constat NOMMÉ
+ *     « symptoms of diabetes » → broad finding        « diabetes symptoms » → NAMED finding
  *
- * La règle d'étage était donc absente exactement là où l'anglais met son trafic. Ce n'est pas propre
- * à un label : « burnout symptoms » nommait aussi. Le français ne présente PAS ce défaut (vérifié) —
- * il porte « symptomes » NU, et ses deux ordres de mots dégradent déjà. D'où une liste EN seule.
+ * The storey rule was therefore absent exactly where English puts its traffic. This is not specific
+ * to one label: « burnout symptoms » named too. French does NOT present this defect (verified) —
+ * it carries BARE « symptomes », and its two word orders already degrade. Hence an EN-only list.
  *
- * ── Pourquoi une liste SÉPARÉE, et pas « symptoms » nu dans la liste du dessus ────────────────────
- * Parce que la liste du dessus a écarté « symptoms » nu DÉLIBÉRÉMENT, et que la raison tient
- * toujours : l'anglais construit « my symptoms » très volontiers, et dégrader celui qui décrit SES
- * symptômes est précisément ce que cette règle ne doit jamais faire. L'ancrage sur le terme est ce
- * qui sépare les deux cas — « diabetes symptoms » interroge une condition, « my symptoms have been
- * worse » décrit la sienne. Rouvrir la décision du dessus aurait échangé un défaut contre l'autre.
+ * ── Why a SEPARATE list, and not bare « symptoms » in the list above ────────────────────
+ * Because the list above set aside bare « symptoms » DELIBERATELY, and the reason still
+ * holds: English builds « my symptoms » very readily, and degrading the one who describes THEIR
+ * symptoms is precisely what this rule must never do. The anchoring on the term is what
+ * separates the two cases — « diabetes symptoms » questions a condition, « my symptoms have been
+ * worse » describes one's own. Reopening the decision above would have swapped one defect for the other.
  *
- * ── Critère d'admission — le même que la liste du dessus, et il exclut plus qu'on ne croit ────────
- * Une tête entre si le composé INTERROGE, DÉFINIT ou QUANTIFIE. Sont donc EXCLUS, et c'est mesuré
- * plutôt que supposé : `treatment`, `cure`, `diet`, `medication`. « diabetes treatment » ne
- * documente pas, il cherche un SOIN — et chercher un soin pour soi est un signal de vécu, pas son
- * contraire (ADR-0003, *« Pour qui », pas « quel mot »*). Le français traite « traitement du
- * diabete » en NOMMÉ pour la même raison, dans les deux ordres de mots : ce n'est pas un écart
- * entre langues à rattraper, c'est la règle qui refuse de s'étendre là où elle n'a rien à faire.
+ * ── Admission criterion — the same as the list above, and it excludes more than one thinks ────────
+ * A head enters if the compound QUESTIONS, DEFINES or QUANTIFIES. Thus EXCLUDED, and it is measured
+ * rather than supposed: `treatment`, `cure`, `diet`, `medication`. « diabetes treatment » does not
+ * document, it seeks CARE — and seeking care for oneself is a signal of lived experience, not its
+ * opposite (ADR-0003, *« Pour qui », pas « quel mot »*). French treats « traitement du
+ * diabete » as NAMED for the same reason, in both word orders: this is not a gap
+ * between languages to catch up, it is the rule refusing to extend where it has no business.
  *
- * Les têtes déjà couvertes NUES par la liste du dessus (« explained », « statistics ») ne sont pas
- * répétées ici : « diabetes explained » dégrade déjà.
+ * The heads already covered BARE by the list above (« explained », « statistics ») are not
+ * repeated here: « diabetes explained » already degrades.
  */
 export const INFORMATIONAL_SUFFIXES_EN: readonly string[] = [
-  // Interroger.
+  // Question.
   'symptoms',
   'symptom',
   'signs',
@@ -519,7 +519,7 @@ export const INFORMATIONAL_SUFFIXES_EN: readonly string[] = [
   'causes',
   'cause',
   'risk factors',
-  // Quantifier — les formes antéposées de « prevalence of » / « rates of ».
+  // Quantify — the preposed forms of « prevalence of » / « rates of ».
   'prevalence',
   'rates',
 ];

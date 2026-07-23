@@ -1,17 +1,18 @@
-// Batterie du CONTENU réel D2 (lexiques d'intérêt lot 1, PANO-76) — pendant de `lexicon-battery.test.ts`
-// (D1). Exerce les vrais lexiques (`INTEREST_LEXICONS`), pas des factices. Quatre familles de garde :
-//   1. détection intentionnelle — chaque thème du lot tire sur une phrase représentative ;
-//   2. adversité (sondage FP) — les termes ÉCARTÉS (polysémie) ne tirent PAS ;
-//   3. FRONTIÈRE sensible — AUCUN marqueur d'intérêt ne déclenche un des 6 lexiques D1 (garde dur) ;
-//   4. hygiène/structure — marqueurs normalisés ; thèmes câblés ⊆ catalogue ratifié.
-// + la CO-CITATION D1×D2 d'un commentaire multi-usage (cf. le dernier `describe`).
-// Phrases 100 % SYNTHÉTIQUES, jamais tirées d'un export réel (discipline PANO-70 §3).
+// Battery of the real D2 CONTENT (interest lexicons batch 1, PANO-76) — counterpart of
+// `lexicon-battery.test.ts` (D1). Exercises the real lexicons (`INTEREST_LEXICONS`), not fake ones.
+// Four families of guard:
+//   1. intentional detection — each theme of the batch fires on a representative sentence;
+//   2. adversity (FP probe) — the SET-ASIDE terms (polysemy) do NOT fire;
+//   3. sensitive BOUNDARY — NO interest marker triggers one of the 6 D1 lexicons (hard guard);
+//   4. hygiene/structure — normalized markers; wired themes ⊆ ratified catalog.
+// + the D1×D2 CO-CITATION of a multi-use comment (cf. the last `describe`).
+// 100% SYNTHETIC sentences, never drawn from a real export (PANO-70 §3 discipline).
 //
-// PORTÉ À LA REFONTE A. Les gardes 1 à 4 tapent sur `detect/` + `lexicon/` (INTOUCHABLES) et ne
-// bougent pas d'une ligne. Seul le dernier `describe` touchait le moteur, et il est INVERSÉ plutôt
-// que traduit — même bascule que les goldens D1, pour la même raison : le magasin de preuves est
-// supprimé, le verbatim est DUPLIQUÉ entre constats co-citants (arbitrage yuya, coût assumé). Ce que
-// « stocké UNE fois » protégeait n'a plus d'objet ; ce qui comptait vraiment survit et se dit mieux.
+// CARRIED TO REFONTE A. Guards 1 to 4 hit `detect/` + `lexicon/` (UNTOUCHABLE) and do not move a
+// line. Only the last `describe` touched the engine, and it is INVERTED rather than translated —
+// same swap as the D1 goldens, for the same reason: the evidence store is removed, the verbatim is
+// DUPLICATED between co-citing findings (yuya arbitration, assumed cost). What « stored ONCE »
+// protected has no object anymore; what really mattered survives and states itself better.
 
 import { describe, expect, it } from 'vitest';
 import type { Evidence } from '../analysis';
@@ -25,26 +26,26 @@ import { validTikTokExport } from '../valid-export.fixture';
 import { detectLabels } from './detect';
 import { normalizeFr } from './normalize-fr';
 
-/** Thèmes d'intérêt détectés (triés) sur une liste de commentaires synthétiques. */
+/** Detected interest themes (sorted) on a list of synthetic comments. */
 function themes(...texts: string[]): string[] {
   return detectLabels(texts, INTEREST_LEXICONS)
     .map((d) => d.label)
     .sort();
 }
 
-/** Labels sensibles (D1) détectés sur un texte — pour le garde de frontière. */
+/** Sensitive labels (D1) detected on a text — for the boundary guard. */
 function d1Labels(text: string): string[] {
   return detectLabels([text], WIRED_LEXICONS).map((d) => d.label);
 }
 
-/** Tous les termes d'un lexique d'intérêt (les 3 tiers) — pour les gardes de frontière/hygiène. */
+/** All the terms of an interest lexicon (the 3 tiers) — for the boundary/hygiene guards. */
 function allTerms(lexicon: (typeof INTEREST_LEXICONS)[number]): string[] {
   return [...lexicon.markers, ...(lexicon.anchored ?? []), ...(lexicon.selfDeclared ?? [])];
 }
 
-describe('interests — détection intentionnelle (chaque thème câblé tire)', () => {
+describe('interests — intentional detection (each wired theme fires)', () => {
   const CASES: Array<[string, string]> = [
-    // Lot 1 (PANO-76)
+    // Batch 1 (PANO-76)
     ['muscu', 'grosse seance de musculation ce matin'],
     ['running', 'petit footing tranquille avant le taf'],
     ['football', 'quel match de foot hier soir'],
@@ -57,7 +58,7 @@ describe('interests — détection intentionnelle (chaque thème câblé tire)',
     ['sneakers', 'les air max sont vraiment stylées'],
     ['kpop', 'la kpop me met de bonne humeur'],
     ['manga_anime', 'je lis un manga passionnant'],
-    // Lot 2 (PANO-77)
+    // Batch 2 (PANO-77)
     ['mode', 'grosse envie de streetwear et de friperie'],
     ['cinema_series', 'ce realisateur signe un long metrage culte'],
     ['chiens', 'mon chiot fait deja ses dents'],
@@ -70,7 +71,7 @@ describe('interests — détection intentionnelle (chaque thème câblé tire)',
     ['fitness', 'seance crossfit et burpees ce matin'],
     ['coiffure', 'un joli balayage chez le coiffeur'],
     ['tech', 'mon nouveau smartphone est ultra rapide'],
-    // Lot 3 (PANO-78)
+    // Batch 3 (PANO-78)
     ['basket', 'quel match de nba avec wembanyama hier'],
     ['cyclisme', 'grosse échappée dans le peloton du tour de france'],
     ['randonnee', 'super bivouac sur un sentier de gr20'],
@@ -85,7 +86,7 @@ describe('interests — détection intentionnelle (chaque thème câblé tire)',
     ['lecture', 'ma pile a lire booktok de dark romance'],
     ['expo_concert', 'un concert au hellfest avec setlist de folie'],
     ['motos', 'un roadster ducati et mon permis a2'],
-    // Lot 4 (PANO-89)
+    // Batch 4 (PANO-89)
     ['lapins', 'mon lapin nain adore son clapier et son foin'],
     ['dessin', 'un fanart sur procreate avec ma tablette graphique'],
     ['jardinage', 'gros semis au potager et un peu de permaculture'],
@@ -108,9 +109,9 @@ describe('interests — détection intentionnelle (chaque thème câblé tire)',
   }
 });
 
-describe('interests — adversité : ANCRÉ isolé (sans compagnon) ne tire PAS', () => {
-  // Méthode PANO-76 : ces 50/50 sont INCLUS (tier ancré), mais un ancré isolé est écarté par la
-  // co-occurrence — le sens non-domaine ne franchit pas la barre sans compagnon du domaine.
+describe('interests — adversity: ANCHORED isolated (without a companion) does NOT fire', () => {
+  // PANO-76 method: these 50/50 are INCLUDED (anchored tier), but an isolated anchored is set aside
+  // by co-occurrence — the non-domain sense does not cross the bar without a domain companion.
   const TRAPS: Array<[string, string]> = [
     ['football « but » (finalité)', 'je fais ça dans le but de progresser'],
     ['football « match » (allumette)', "j'allume le feu avec une seule match"],
@@ -123,7 +124,7 @@ describe('interests — adversité : ANCRÉ isolé (sans compagnon) ne tire PAS'
     ['gaming « console » (verbe)', 'je te console, ça va aller'],
     ['muscu « sèche » (météo)', 'le linge est déjà sec et la terre sèche'],
     ['skincare « masque » (sanitaire)', 'je remets mon masque dans le métro'],
-    // Lot 2 (PANO-77)
+    // Batch 2 (PANO-77)
     ['chats « chat » (messagerie)', "je t'écris sur le chat du serveur discord"],
     ['mode « mode » (mode d’emploi)', "regarde le mode d'emploi du grille-pain"],
     ['voyage « vol » (larcin)', "il y a eu un vol dans l'immeuble cette nuit"],
@@ -131,13 +132,13 @@ describe('interests — adversité : ANCRÉ isolé (sans compagnon) ne tire PAS'
     ['tech « apple » (fruit)', 'une belle part de apple pie maison'],
   ];
   for (const [why, phrase] of TRAPS) {
-    it(`${why} → aucun thème`, () => {
+    it(`${why} → no theme`, () => {
       expect(themes(phrase)).toEqual([]);
     });
   }
 });
 
-describe('interests — adversité : EXCLU (jamais listé, même ancré)', () => {
+describe('interests — adversity: EXCLUDED (never listed, even anchored)', () => {
   const TRAPS: Array<[string, string]> = [
     ['kpop « bts » (diplôme)', 'je prépare mon bts en informatique'],
     ['ia « claude » (prénom)', "j'adore le prénom claude"],
@@ -145,38 +146,38 @@ describe('interests — adversité : EXCLU (jamais listé, même ancré)', () =>
     ['ia « ia » nu (2 lettres)', 'la via appia est une route antique'],
   ];
   for (const [why, phrase] of TRAPS) {
-    it(`${why} → aucun thème`, () => {
+    it(`${why} → no theme`, () => {
       expect(themes(phrase)).toEqual([]);
     });
   }
 });
 
-describe('interests — co-occurrence sur lexiques RÉELS (ancré RÉCUPÉRÉ par un compagnon)', () => {
-  it('« but » + terme foot → football (l’ancré compte avec compagnon)', () => {
+describe('interests — co-occurrence on REAL lexicons (anchored RECOVERED by a companion)', () => {
+  it('« but » + foot term → football (the anchored counts with a companion)', () => {
     expect(themes('quel but magnifique en ligue 1')).toContain('football');
   });
-  it('« console » + terme gaming → gaming', () => {
+  it('« console » + gaming term → gaming', () => {
     expect(themes('je joue sur ma console avec une manette')).toContain('gaming');
   });
-  it('« defi » + terme crypto → crypto (récupération du 50/50)', () => {
+  it('« defi » + crypto term → crypto (recovery of the 50/50)', () => {
     expect(themes('je relève le défi bitcoin cette année')).toContain('crypto');
   });
-  it('« jordan » + terme sneakers → sneakers', () => {
+  it('« jordan » + sneakers term → sneakers', () => {
     expect(themes('mes air max et mes jordan préférées')).toContain('sneakers');
   });
-  // Lot 2 (PANO-77)
-  it('« chat » + terme chats → chats (récupération du 50/50 messagerie)', () => {
+  // Batch 2 (PANO-77)
+  it('« chat » + chats term → chats (recovery of the 50/50 messaging)', () => {
     expect(themes('mon chat et sa litière sont impeccables')).toContain('chats');
   });
-  it('« mode » + terme mode → mode', () => {
+  it('« mode » + mode term → mode', () => {
     expect(themes('la mode et le streetwear de cette saison')).toContain('mode');
   });
-  it('DEUX ancrés tech (« tablette » + « apple ») s’ancrent mutuellement → tech', () => {
+  it('TWO tech anchored (« tablette » + « apple ») anchor each other → tech', () => {
     expect(themes('la nouvelle tablette apple vient de sortir')).toContain('tech');
   });
 });
 
-describe('interests — ENTITÉS & jargon (lot 2 enrichi, PANO-77) : les marques/sigles tirent', () => {
+describe('interests — ENTITIES & jargon (batch 2 enriched, PANO-77): the brands/acronyms fire', () => {
   const CASES: Array<[string, string]> = [
     ['mode', 'total look balenciaga et un peu de jacquemus'],
     ['mode', 'mon ootd du jour est très streetwear'],
@@ -198,77 +199,77 @@ describe('interests — ENTITÉS & jargon (lot 2 enrichi, PANO-77) : les marques
     });
   }
 
-  it('« golf » (sport) isolé ne tire pas voitures ; « golf » + « jantes » → voitures', () => {
+  it('« golf » (sport) isolated does not fire voitures; « golf » + « jantes » → voitures', () => {
     expect(themes('une bonne partie de golf ce dimanche')).not.toContain('voitures');
     expect(themes('ma golf avec des jantes neuves')).toContain('voitures');
   });
 
-  it('« ram » (bélier) isolé ne tire pas tech ; « ram » + « cpu » → tech', () => {
+  it('« ram » (bélier) isolated does not fire tech; « ram » + « cpu » → tech', () => {
     expect(themes('un bélier de la race ram dans le champ')).not.toContain('tech');
     expect(themes("j'ai boosté ma ram et changé le cpu")).toContain('tech');
   });
 });
 
-describe('interests — co-occurrence & adversité lot 3 (PANO-78)', () => {
-  it('« panier » (courses) isolé ne tire pas basket ; « panier » + terme basket → basket', () => {
+describe('interests — co-occurrence & adversity batch 3 (PANO-78)', () => {
+  it('« panier » (courses) isolated does not fire basket; « panier » + basket term → basket', () => {
     expect(themes('je remplis mon panier au supermarché')).not.toContain('basket');
     expect(themes('un panier à trois points en nba')).toContain('basket');
   });
 
-  it('« café » (bar) isolé ne tire pas cafe ; « café » + « espresso » → cafe', () => {
+  it('« café » (bar) isolated does not fire cafe; « café » + « espresso » → cafe', () => {
     expect(themes('on se retrouve au café du coin à midi')).not.toContain('cafe');
     expect(themes('un café en grains pour un bon espresso')).toContain('cafe');
   });
 
-  it('« combat » (figuré) isolé ne tire pas sports_combat ; « combat » + « mma » → sports_combat', () => {
+  it('« combat » (figuré) isolated does not fire sports_combat; « combat » + « mma » → sports_combat', () => {
     expect(themes('le combat contre le réchauffement climatique')).not.toContain('sports_combat');
     expect(themes('un combat de mma dans la cage')).toContain('sports_combat');
   });
 
-  it('« house » (maison) isolé ne tire pas electro ; « house » + « techno » → electro', () => {
+  it('« house » (maison) isolated does not fire electro; « house » + « techno » → electro', () => {
     expect(themes('la house dans laquelle je vis est grande')).not.toContain('electro');
     expect(themes('un mix de house et de techno toute la nuit')).toContain('electro');
   });
 
-  it('« battle » isolé ne tire pas danse ; « battle » + « breakdance » → danse', () => {
+  it('« battle » isolated does not fire danse; « battle » + « breakdance » → danse', () => {
     expect(themes('une battle de rap improvisée')).not.toContain('danse');
     expect(themes('une battle de breakdance ce soir')).toContain('danse');
   });
 });
 
-describe('interests — co-occurrence & adversité lot 4 (PANO-89)', () => {
-  it('« histoire » (récit) isolé ne tire pas histoire ; « histoire » + « napoleon » → histoire', () => {
+describe('interests — co-occurrence & adversity batch 4 (PANO-89)', () => {
+  it('« histoire » (récit) isolated does not fire histoire; « histoire » + « napoleon » → histoire', () => {
     expect(themes('raconte-moi une histoire pour dormir')).not.toContain('histoire');
     expect(themes("une histoire sur napoleon et l'empire romain")).toContain('histoire');
   });
 
-  it('« espace » (client) isolé ne tire pas astronomie ; « espace » + « nasa » → astronomie', () => {
+  it('« espace » (client) isolated does not fire astronomie; « espace » + « nasa » → astronomie', () => {
     expect(themes('connecte-toi à ton espace client')).not.toContain('astronomie');
     expect(themes("la nasa explore l'espace avec le james webb")).toContain('astronomie');
   });
 
-  it('« jardin » (secret) isolé ne tire pas jardinage ; « jardin » + « potager » → jardinage', () => {
+  it('« jardin » (secret) isolated does not fire jardinage; « jardin » + « potager » → jardinage', () => {
     expect(themes('son jardin secret reste bien gardé')).not.toContain('jardinage');
     expect(themes('un potager au fond du jardin en permaculture')).toContain('jardinage');
   });
 });
 
-describe('interests — FRONTIÈRE psychologie ACADÉMIQUE vs CLINIQUE (PANO-89, renforcée)', () => {
-  it('terme ACADÉMIQUE → thème psychologie (D2), et aucun label sensible D1', () => {
+describe('interests — ACADEMIC vs CLINICAL psychology BOUNDARY (PANO-89, reinforced)', () => {
+  it('ACADEMIC term → psychologie theme (D2), and no D1 sensitive label', () => {
     const phrase = 'le conditionnement pavlovien et la psychanalyse de freud';
     expect(themes(phrase)).toContain('psychologie');
     expect(d1Labels(phrase)).toEqual([]);
   });
 
-  it('terme CLINIQUE → mental_health (D1), JAMAIS le thème psychologie (D2) — pas de fuite', () => {
-    // Le vécu/clinique appartient à D1 et ne fuit pas dans le thème d'intérêt académique.
+  it('CLINICAL term → mental_health (D1), NEVER the psychologie theme (D2) — no leak', () => {
+    // The lived/clinical belongs to D1 and does not leak into the academic interest theme.
     const phrase = 'je fais une grosse depression et je vois un psy chaque semaine';
     expect(themes(phrase)).not.toContain('psychologie');
     expect(d1Labels(phrase)).toContain('mental_health');
   });
 });
 
-describe('interests — ENTITÉS rétrofit lot 1 (PANO-90) : marques/jargon ajoutés tirent', () => {
+describe('interests — ENTITIES retrofit batch 1 (PANO-90): added brands/jargon fire', () => {
   const CASES: Array<[string, string]> = [
     ['muscu', 'gros drop set à la salle avec de la myprotein'],
     ['running', 'petit footing tracké sur strava avec ma garmin'],
@@ -289,18 +290,18 @@ describe('interests — ENTITÉS rétrofit lot 1 (PANO-90) : marques/jargon ajou
     });
   }
 
-  it('« real » (adjectif) isolé ne tire pas football ; « real » + « psg » → football', () => {
+  it('« real » (adjectif) isolated does not fire football; « real » + « psg » → football', () => {
     expect(themes('sois un peu plus real avec toi-même')).not.toContain('football');
     expect(themes('le real et le psg, quel choc ce soir')).toContain('football');
   });
 
-  it('« mac » (ordinateur) isolé ne tire pas maquillage ; « mac » + « rouge a levres » → maquillage', () => {
+  it('« mac » (ordinateur) isolated does not fire maquillage; « mac » + « rouge a levres » → maquillage', () => {
     expect(themes('mon nouveau mac est vraiment rapide')).not.toContain('maquillage');
     expect(themes('un rouge a levres mac magnifique')).toContain('maquillage');
   });
 });
 
-describe('interests — VARIANTES ANGLAISES (PANO-88) : formes EN en usage FR', () => {
+describe('interests — ENGLISH VARIANTS (PANO-88): EN forms in FR use', () => {
   const CASES: Array<[string, string]> = [
     ['muscu', 'gros push day à la salle avec de la whey'],
     ['fitness', 'un bon workout hiit ce matin'],
@@ -319,30 +320,30 @@ describe('interests — VARIANTES ANGLAISES (PANO-88) : formes EN en usage FR', 
     });
   }
 
-  it('« gym » (gymnastique) isolé ne tire pas muscu ; « gym » + « musculation » → muscu', () => {
+  it('« gym » (gymnastique) isolated does not fire muscu; « gym » + « musculation » → muscu', () => {
     expect(themes('un cours de gym au collège ce matin')).not.toContain('muscu');
     expect(themes('gym et musculation, ma routine du lundi')).toContain('muscu');
   });
 
-  it('« outfit » isolé ne tire pas mode ; « outfit » + « streetwear » → mode', () => {
+  it('« outfit » isolated does not fire mode; « outfit » + « streetwear » → mode', () => {
     expect(themes('joli outfit dis donc')).not.toContain('mode');
     expect(themes('un outfit streetwear parfait')).toContain('mode');
   });
 
-  it('« moon » (lune) isolé ne tire pas crypto ; « moon » + « bitcoin » → crypto', () => {
+  it('« moon » (lune) isolated does not fire crypto; « moon » + « bitcoin » → crypto', () => {
     expect(themes('la moon est magnifique ce soir')).not.toContain('crypto');
     expect(themes('le bitcoin va to the moon')).toContain('crypto');
   });
 
-  it('« cop » (flic) isolé ne tire pas sneakers ; « cop » + « jordan » → sneakers', () => {
+  it('« cop » (flic) isolated does not fire sneakers; « cop » + « jordan » → sneakers', () => {
     expect(themes('un cop de la police municipale')).not.toContain('sneakers');
     expect(themes('je vais cop ces air jordan direct')).toContain('sneakers');
   });
 });
 
-describe('interests — VARIANTES ANGLAISES, extension D2 restants (PANO-88) : détection EN', () => {
+describe('interests — ENGLISH VARIANTS, remaining D2 extension (PANO-88): EN detection', () => {
   const CASES: Array<[string, string]> = [
-    // Animaux / loisirs
+    // Animals / hobbies
     ['chats', 'my kitten wont stop meowing near the litter box'],
     ['chiens', 'my puppy loves the dog park, such a good doggo'],
     ['lapins', 'my house rabbit gets timothy hay every morning'],
@@ -369,9 +370,9 @@ describe('interests — VARIANTES ANGLAISES, extension D2 restants (PANO-88) : d
   }
 });
 
-describe('interests — ADVERSITÉ EN : le sens NON-domaine ne franchit pas la barre (PANO-88)', () => {
-  // Le foyer du couple recall/FP en EN : les mots courts EN sont massivement polysémiques. Chaque
-  // piège ci-dessous est un usage EN ORDINAIRE qui ne parle PAS du domaine.
+describe('interests — EN ADVERSITY: the NON-domain sense does not cross the bar (PANO-88)', () => {
+  // The hotbed of the recall/FP couple in EN: short EN words are massively polysemous. Each trap
+  // below is an ORDINARY EN use that does NOT speak of the domain.
   const TRAPS: Array<[string, string]> = [
     ['histoire « history » (historique de recherche)', 'let me clear my search history real quick'],
     ['histoire « history » (relationnel)', 'i have a long history with that guy'],
@@ -393,29 +394,29 @@ describe('interests — ADVERSITÉ EN : le sens NON-domaine ne franchit pas la b
     ['physique « mass » (messe)', 'we go to mass every sunday morning'],
   ];
   for (const [why, phrase] of TRAPS) {
-    it(`${why} → aucun thème`, () => {
+    it(`${why} → no theme`, () => {
       expect(themes(phrase)).toEqual([]);
     });
   }
 });
 
-describe('interests — EXCLUS EN : jamais listés, même en ancré (PANO-88)', () => {
+describe('interests — EN EXCLUDED: never listed, even anchored (PANO-88)', () => {
   const TRAPS: Array<[string, string]> = [
     ['jardinage « prop » (props to you)', 'big props to you for that one'],
     ['tricot « ufo » (soucoupe)', 'i swear i saw a ufo last night'],
     ['biologie « bio » (bio de profil)', 'the link is in my bio go check it'],
-    // NB : « dj set » est un marqueur `electro` LÉGITIME — le piège porte donc sur « set » nu.
+    // NB: « dj set » is a LEGITIMATE `electro` marker — the trap therefore bears on bare « set ».
     ['mathematiques « set » (verbe / objet)', 'we set the table before dinner'],
     ['dessin « oc » (2 lettres)', 'oc is my favorite abbreviation apparently'],
   ];
   for (const [why, phrase] of TRAPS) {
-    it(`${why} → aucun thème`, () => {
+    it(`${why} → no theme`, () => {
       expect(themes(phrase)).toEqual([]);
     });
   }
 });
 
-describe('interests — co-occurrence EN : l’ancré est RÉCUPÉRÉ par un compagnon (PANO-88)', () => {
+describe('interests — EN co-occurrence: the anchored is RECOVERED by a companion (PANO-88)', () => {
   it('« history » + « roman empire » → histoire', () => {
     expect(themes('the history of the roman empire is fascinating')).toContain('histoire');
   });
@@ -428,30 +429,30 @@ describe('interests — co-occurrence EN : l’ancré est RÉCUPÉRÉ par un com
   it('« succulent » + « houseplant » → jardinage', () => {
     expect(themes('my succulent and my houseplant are thriving')).toContain('jardinage');
   });
-  it('DEUX ancrés maths (« math » + « matrix ») s’ancrent mutuellement → mathematiques', () => {
+  it('TWO maths anchored (« math » + « matrix ») anchor each other → mathematiques', () => {
     expect(themes('the math behind a matrix is elegant')).toContain('mathematiques');
   });
 });
 
-describe('interests — FRONTIÈRE psychologie EN : académique vs clinique (PANO-88)', () => {
-  it('terme ACADÉMIQUE EN → psychologie (D2), et aucun label sensible D1', () => {
+describe('interests — EN psychology BOUNDARY: academic vs clinical (PANO-88)', () => {
+  it('ACADEMIC EN term → psychologie (D2), and no D1 sensitive label', () => {
     const phrase = 'cognitive bias and operant conditioning, classic psychoanalysis debate';
     expect(themes(phrase)).toContain('psychologie');
     expect(d1Labels(phrase)).toEqual([]);
   });
 
-  it('« reverse psychology » (idiome) n’est PAS un signal académique → aucun thème', () => {
-    // « psychology » nu est ANCRÉ (pas solo) : sans compagnon académique, l’idiome ne tire pas.
+  it('« reverse psychology » (idiom) is NOT an academic signal → no theme', () => {
+    // Bare « psychology » is ANCHORED (not solo): without an academic companion, the idiom does not fire.
     expect(themes('she is just using reverse psychology on you')).toEqual([]);
   });
 });
 
-describe('interests — recall SOLO absorbé par le plancher (méthode inversée)', () => {
-  it('« recette » (SOLO) tire au niveau detect, mais 1 hit isolé ne passe pas le plancher règle', () => {
-    // Au niveau détecteur, « recette » (haute valeur, solo) tire — recall assumé.
+describe('interests — SOLO recall absorbed by the floor (inverted method)', () => {
+  it('« recette » (SOLO) fires at the detect level, but 1 isolated hit does not pass the rule floor', () => {
+    // At the detector level, « recette » (high value, solo) fires — assumed recall.
     expect(themes('la recette du succès reste le travail')).toContain('cuisine');
-    // Au niveau RÈGLE, un seul hit isolé est sous le plancher (2) → aucun thème émis : le bruit
-    // résiduel du recall est noyé par le classement/plancher du socle, pas par l’exclusion.
+    // At the RULE level, a single isolated hit is below the floor (2) → no theme emitted: the
+    // residual noise of the recall is drowned by the base ranking/floor, not by exclusion.
     const out = d2Interests(
       withComments(['la recette du succès reste le travail', 'belle lumière ce soir']),
     );
@@ -459,10 +460,10 @@ describe('interests — recall SOLO absorbé par le plancher (méthode inversée
   });
 });
 
-describe('interests — FRONTIÈRE sensible (garde dur : aucun marqueur ne déclenche D1)', () => {
-  // Chaque marqueur (et terme auto-déclaré) est passé COMME UN TEXTE dans D1. Un hit ici n'est pas
-  // qu'un test rouge : c'est un marqueur d'intérêt qui frôle un sujet sensible → à remonter à yuya.
-  it('aucun marqueur (solo, ancré, selfDeclared) d’intérêt ne tague un label sensible', () => {
+describe('interests — sensitive BOUNDARY (hard guard: no marker triggers D1)', () => {
+  // Each marker (and self-declared term) is passed AS A TEXT through D1. A hit here is not just a
+  // red test: it is an interest marker that brushes a sensitive subject → to be raised to yuya.
+  it('no interest marker (solo, anchored, selfDeclared) tags a sensitive label', () => {
     const offenders: Array<{ term: string; theme: string; d1: string[] }> = [];
     for (const lexicon of INTEREST_LEXICONS) {
       for (const term of allTerms(lexicon)) {
@@ -476,8 +477,8 @@ describe('interests — FRONTIÈRE sensible (garde dur : aucun marqueur ne décl
   });
 });
 
-describe('interests — hygiène / structure', () => {
-  it('tous les marqueurs sont en forme normalisée (minuscules, sans accent, sans apostrophe brute)', () => {
+describe('interests — hygiene / structure', () => {
+  it('all markers are in normalized form (lowercase, no accent, no raw apostrophe)', () => {
     const malformed: string[] = [];
     for (const lexicon of INTEREST_LEXICONS) {
       for (const term of allTerms(lexicon)) {
@@ -489,7 +490,7 @@ describe('interests — hygiène / structure', () => {
     expect(malformed, `marqueurs non normalisés : ${malformed.join(', ')}`).toEqual([]);
   });
 
-  it('tout thème CÂBLÉ est déclaré au catalogue ratifié (câblé ⊆ canonique)', () => {
+  it('every WIRED theme is declared in the ratified catalog (wired ⊆ canonical)', () => {
     const orphans = INTEREST_LEXICONS.map((l) => l.label).filter(
       (id) => !CANONICAL_THEME_IDS.has(id),
     );
@@ -499,13 +500,13 @@ describe('interests — hygiène / structure', () => {
     ).toEqual([]);
   });
 
-  it('identités de thème uniques (aucun doublon de slug)', () => {
+  it('unique theme identities (no slug doublon)', () => {
     const ids = INTEREST_LEXICONS.map((l) => l.label);
     expect(new Set(ids).size).toBe(ids.length);
   });
 });
 
-// --- Dédup PARTAGÉE D1×D2 sur lexiques RÉELS -----------------------------------------------------
+// --- SHARED D1×D2 dedup on REAL lexicons ---------------------------------------------------------
 
 function withComments(texts: readonly string[]): ReturnType<typeof normalizeExport> {
   const base = validTikTokExport() as TikTokExport & {
@@ -523,20 +524,20 @@ function withComments(texts: readonly string[]): ReturnType<typeof normalizeExpo
   return normalizeExport(base);
 }
 
-describe('interests — CO-CITATION D1×D2 d’un même commentaire, sur lexiques réels', () => {
-  it('un commentaire prouvant un intérêt ET un constat sensible est cité par les deux, chacun avec SES surfaces', () => {
-    // Ex-« stocké UNE fois, référencé par les deux » : le magasin est supprimé, la dédup par
-    // `EvidenceId` avec lui, et le verbatim est DUPLIQUÉ (arbitrage yuya). Le verrou qui comptait
-    // survit intact — et c'est le seul qui comptait : deux constats citant la même source ne se
-    // prêtent JAMAIS leurs surfaces (« jeu video » côté intérêt, « dépression » côté sensible).
-    // C'est aussi ce que la duplication rend structurellement possible.
+describe('interests — D1×D2 CO-CITATION of the same comment, on real lexicons', () => {
+  it('a comment proving an interest AND a sensitive finding is cited by both, each with ITS surfaces', () => {
+    // Former « stored ONCE, referenced by both »: the store is removed, the dedup by `EvidenceId`
+    // with it, and the verbatim is DUPLICATED (yuya arbitration). The lock that mattered survives
+    // intact — and it is the only one that mattered: two findings citing the same source NEVER lend
+    // each other their surfaces (« jeu video » on the interest side, « dépression » on the sensitive
+    // side). It is also what the duplication makes structurally possible.
     const input = withComments([
       'un bon jeu video ce soir', // gaming 1
-      'encore ce jeu video, ma dépression me plombe', // gaming 2 + mental_health explicite
+      'encore ce jeu video, ma dépression me plombe', // gaming 2 + explicit mental_health
     ]);
     const out = analyze(input);
 
-    /** La citation du commentaire d'index 1 par ce constat, s'il le cite. */
+    /** The citation of the comment at index 1 by this finding, if it cites it. */
     const cite = (evidence: readonly Evidence[]): Evidence | undefined =>
       evidence.find((e) => e.channel === 'comment' && e.sourceIndex === 1);
 
@@ -550,12 +551,12 @@ describe('interests — CO-CITATION D1×D2 d’un même commentaire, sur lexique
     expect(parIntéret, 'comment:1 cité par le thème').toBeDefined();
     expect(parSensible, 'comment:1 cité par le signal').toBeDefined();
 
-    // Même source, verbatim dupliqué — le coût assumé...
+    // Same source, verbatim duplicated — the assumed cost...
     expect(parIntéret?.text).toBe(parSensible?.text);
-    // ... et surfaces DISTINCTES : le gain, et ce que le magasin partagé ne pouvait pas garantir.
+    // ... and DISTINCT surfaces: the gain, and what the shared store could not guarantee.
     expect(parIntéret?.triggerTerms).not.toEqual(parSensible?.triggerTerms);
 
-    // D2 n'émet jamais de constat sensible, même en partageant la preuve d'un constat qui l'est.
+    // D2 never emits a sensitive finding, even while sharing the evidence of one that is.
     for (const theme of out.themes) {
       for (const deduction of theme.deductions) {
         expect(deduction.sensitive).toBe(false);

@@ -1,31 +1,31 @@
-// Lexique d'intérêt `tricot` (D2, PANO-89 lot 4) — tricot / crochet.
+// Interest lexicon `tricot` (D2, PANO-89 batch 4) — knitting / crochet.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du tricot/crochet FR : techniques, matériel, marques. Entités = signal public
-// générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR knitting/crochet: techniques, gear, brands. Entities = generic public
+// signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « tricot », « amigurumi », « granny square », « point mousse », « aiguilles a tricoter »,
 //     « pelote de laine », « phildar », « bergere de france », « tricoter », « crocheter ».
-//   · ANCRÉ — « crochet » (partagé sports de combat / hameçon), « maille » (mesh / argot argent),
-//     « jersey » (île / maillot), « point » (point générique), « laine » (« laine de verre »),
-//     « pelote » (pelote basque), « torsade » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « crochet » (shared with combat sports / fishhook), « maille » (mesh / money slang),
+//     « jersey » (island / jersey), « point » (generic stitch/point), « laine » (« laine de verre »),
+//     « pelote » (Basque pelota), « torsade »: co-occurrence.
+//   · EXCLUDED — nothing hopeless.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN réel vérifié par recherche (glossaires knitting/crochet, argot communautaire).
-//   · SOLO — « knitting », « knitting needles », « crochet hook », « frogging » (défaire son
-//     ouvrage, « rip-it rip-it »), « purl », « skein », « stockinette », « yarnie » : univoques.
-//   · ANCRÉ — « yarn » (« spin a yarn » = raconter une histoire), « stash » (planque / réserve
-//     générique), « wip » (« work in progress » — partagé `dessin`, écriture, DIY), « cast on » :
-//     compagnon requis.
-//   · EXCLU — les SIGLES de la communauté, pourtant réels, sont tous écartés : « ufo » (« unfinished
-//     object » ↔ SOUCOUPE VOLANTE), « sable » (« stash accumulated beyond life expectancy » ↔ sable/
-//     zibeline, et déjà ancré en `patisserie`), « fo », « cal », « tink » (↔ Tinkerbell) → trop courts
-//     ou trop polysémiques pour un tier, même ancré.
+// ── EN variants (PANO-88) — FP probe ───────────────────────────────────────────────────────────
+// Real EN usage verified by research (knitting/crochet glossaries, community slang).
+//   · SOLO — « knitting », « knitting needles », « crochet hook », « frogging » (undoing your
+//     work, « rip-it rip-it »), « purl », « skein », « stockinette », « yarnie »: univocal.
+//   · ANCHORED — « yarn » (« spin a yarn » = tell a story), « stash » (hideout / generic
+//     reserve), « wip » (« work in progress » — shared with `dessin`, writing, DIY), « cast on »:
+//     companion required.
+//   · EXCLUDED — the community ABBREVIATIONS, though real, are all discarded: « ufo » (« unfinished
+//     object » ↔ FLYING SAUCER), « sable » (« stash accumulated beyond life expectancy » ↔ sand/
+//     sable, and already anchored in `patisserie`), « fo », « cal », « tink » (↔ Tinkerbell) → too short
+//     or too polysemous for a tier, even anchored.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive.
 
 import type { InterestLexicon } from '../types';
 
@@ -53,7 +53,7 @@ export const TRICOT_LEXICON: InterestLexicon = {
     'laine merinos',
     'jacquard tricot',
     'ouvrage tricot',
-    // Variantes EN (PANO-88) : SOLO univoques (techniques / matériel / argot communautaire).
+    // EN variants (PANO-88): univocal SOLO (techniques / gear / community slang).
     'knitting',
     'knitting needles',
     'crochet hook',
@@ -64,18 +64,18 @@ export const TRICOT_LEXICON: InterestLexicon = {
     'yarnie',
   ],
   anchored: [
-    'crochet', // partagé sports de combat / hameçon
-    'maille', // mesh / argot argent
-    'jersey', // île / maillot
-    'point', // point générique
+    'crochet', // shared with combat sports / fishhook
+    'maille', // mesh / money slang
+    'jersey', // island / jersey
+    'point', // generic stitch/point
     'laine', // « laine de verre »
-    'pelote', // pelote basque
-    'torsade', // torsade générique
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'yarn', // « spin a yarn » = raconter une histoire (EN)
-    'stash', // planque / réserve générique (EN)
-    'wip', // « work in progress » — partagé dessin / écriture / DIY (EN)
-    'cast on', // « cast » générique (EN)
+    'pelote', // Basque pelota
+    'torsade', // generic cable/twist
+    // EN variants (PANO-88): ANCHORED.
+    'yarn', // « spin a yarn » = tell a story (EN)
+    'stash', // hideout / generic reserve (EN)
+    'wip', // « work in progress » — shared with drawing / writing / DIY (EN)
+    'cast on', // generic « cast » (EN)
   ],
   selfDeclared: ['tricoteuse', 'tricoteur'],
 };

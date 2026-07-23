@@ -1,8 +1,8 @@
-// Registre des lexiques CÂBLÉS (PANO-70 §2.1) — le périmètre progressif rendu mécanique :
-// câbler un label = ajouter un module de données + une ligne ici. Le détecteur ne change pas.
+// Registry of WIRED lexicons (PANO-70 §2.1) — the progressive scope made mechanical:
+// wiring a label = adding a data module + one line here. The detector does not change.
 //
-// Passe 1 (PANO-71, décision C) : mental_health · politics · conflictual.
-// Extension (passe suivante) : health_physical · sexuality · religion.
+// Pass 1 (PANO-71, decision C): mental_health · politics · conflictual.
+// Extension (next pass): health_physical · sexuality · religion.
 
 import { CONFLICTUAL_LEXICON } from './conflictual';
 import { HEALTH_PHYSICAL_LEXICON } from './health-physical';
@@ -12,7 +12,7 @@ import { RELIGION_LEXICON } from './religion';
 import { SEXUALITY_LEXICON } from './sexuality';
 import type { LabelLexicon } from './types';
 
-/** Les lexiques actifs, dans l'ordre d'émission des insights D1. */
+/** The active lexicons, in the order the D1 insights are emitted. */
 export const WIRED_LEXICONS: readonly LabelLexicon[] = [
   MENTAL_HEALTH_LEXICON,
   POLITICS_LEXICON,

@@ -1,37 +1,37 @@
-// Lexique d'intérêt `voitures` (D2, PANO-77 lot 2 · enrichi entités) — voitures / tuning.
+// Interest lexicon `voitures` (D2, PANO-77 batch 2 · entities enriched) — cars / tuning.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de l'auto FR : mécanique, MARQUES, jargon TUNING/prépa. À l'aveugle ; marques
-// et jargon = signal public générique enrichi par recherche (constructeurs, divisions perf, argot).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR cars: mechanics, BRANDS, TUNING/mod jargon. Blind; brands
+// and jargon = generic public signal enriched by research (manufacturers, performance divisions, slang).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « tuning », « bagnole », « jantes », « echappement », « jdm », « cartographie
-//     moteur » ; marques (« renault », « peugeot », « bmw », « audi », « ferrari », « tesla »).
-//   · ANCRÉ — 50/50 : « moteur » (recherche), « chevaux » (animaux), « break » (pause), « coupe »,
-//     « golf » (sport), « m3 » (fichier), « stance », « swap », « alpine » (montagne), « seat » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « tuning », « bagnole », « jantes », « echappement », « jdm », « cartographie
+//     moteur »; brands (« renault », « peugeot », « bmw », « audi », « ferrari », « tesla »).
+//   · ANCHORED — 50/50: « moteur » (search), « chevaux » (animals), « break » (pause), « coupe »,
+//     « golf » (sport), « m3 » (file), « stance », « swap », « alpine » (mountain), « seat »: co-occurrence.
+//   · EXCLUDED — nothing hopeless.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// L'auto anglophone se dit par la PRÉPA : pièces et opérations nommées, très univoques.
+// ── EN variants (PANO-88) — FP probe ───────────────────────────────────────────────────────────
+// Anglophone cars are spoken through MODDING: named parts and operations, very univocal.
 //   · SOLO — « coilovers », « catback », « downpipe », « intercooler », « blow off valve »,
 //     « widebody », « ls swap », « vtec », « autocross », « daily driver », « project car », « dyno »,
 //     « naturally aspirated », « rev limiter », « drivetrain », « camber », « ceramic coating »,
 //     « limited slip », « ecu tune », « torque converter », « ricer », « cartok », « car meet ».
-//   · ANCRÉ — « donuts » (la pâtisserie), « rice » (le riz — seul
-//     « ricer » est sûr), « build » (le build du jeu ; la construction), « mods » (les mods de jeu, les
-//     modérateurs), « tune » (l'accordage d'une `guitare`, « a tune » = un morceau), « track » (le
-//     morceau de musique, la piste d'athlétisme), « headers » (les en-têtes HTTP), « cam » (la webcam),
-//     « boost », « lift », « slammed », « sleeper », « spec » : compagnon requis.
-//   · ÉCARTÉ — les modèles dont le nom est un mot courant (« focus », « golf » déjà ancré, « charger »,
-//     « civic », « soul », « note », « fit ») : ils tirent en permanence sur du texte sans rapport.
-//   · ÉCARTÉ, et la raison vaut d'être écrite — « burnout » (le burn dans un nuage de fumée). Le mot
-//     est un terme `mental_health` : le garde de frontière D1 d'`interests-battery` REFUSE qu'un
-//     marqueur d'intérêt coïncide avec un terme sensible, y compris ancré. La règle est catégorique,
-//     pas probabiliste — « il faudrait un compagnon » ne suffit pas, parce que ce qu'elle protège
-//     n'est pas le taux de FP mais l'absence de tout chemin d'un mot de détresse vers un thème.
+//   · ANCHORED — « donuts » (the pastry), « rice » (rice — only
+//     « ricer » is safe), « build » (a game build; construction), « mods » (game mods,
+//     moderators), « tune » (tuning a `guitar`, « a tune » = a track), « track » (a
+//     music track, an athletics track), « headers » (HTTP headers), « cam » (webcam),
+//     « boost », « lift », « slammed », « sleeper », « spec »: companion required.
+//   · DISCARDED — models whose name is a common word (« focus », « golf » already anchored, « charger »,
+//     « civic », « soul », « note », « fit »): they fire constantly on unrelated text.
+//   · DISCARDED, and the reason is worth writing — « burnout » (the burn in a cloud of smoke). The word
+//     is a `mental_health` term: the D1 boundary guard of `interests-battery` REFUSES an
+//     interest marker coinciding with a sensitive term, even anchored. The rule is categorical,
+//     not probabilistic — « a companion would do » is not enough, because what it protects
+//     is not the FP rate but the absence of any path from a distress word to a theme.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. « motos » = thème séparé du catalogue ; ici les 4-roues.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. « motos » = separate theme in the catalog; here the 4-wheelers.
 
 import type { InterestLexicon } from '../types';
 
@@ -44,7 +44,7 @@ export const VOITURES_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Vocabulaire générique
+    // Generic vocabulary
     'voiture',
     'bagnole',
     'tuning',
@@ -67,11 +67,11 @@ export const VOITURES_LEXICON: InterestLexicon = {
     'cartographie moteur',
     'admission directe',
     'kit carrosserie',
-    // Jargon tuning / prépa
+    // Tuning / mod jargon
     'jdm',
     'restomod',
     'launch control',
-    // Marques
+    // Brands
     'renault',
     'peugeot',
     'citroen',
@@ -90,7 +90,7 @@ export const VOITURES_LEXICON: InterestLexicon = {
     'nissan',
     'subaru',
     'amg',
-    // Variantes EN (PANO-88) : SOLO univoques (prépa / pièces / communauté).
+    // EN variants (PANO-88): univocal SOLO (modding / parts / community).
     'coilovers',
     'catback',
     'downpipe',
@@ -117,36 +117,36 @@ export const VOITURES_LEXICON: InterestLexicon = {
     'car meet',
   ],
   anchored: [
-    'moteur', // moteur de recherche
-    'chevaux', // animaux vs chevaux fiscaux
-    'break', // pause vs break (carrosserie)
-    'coupe', // coupe (carrosserie) / coupe du monde
-    'caisse', // cageot / caisse (argot voiture)
+    'moteur', // search engine
+    'chevaux', // animals vs tax horsepower
+    'break', // pause vs break (car body)
+    'coupe', // coupe (car body) / world cup
+    'caisse', // crate / caisse (car slang)
     'bolide',
-    'roue', // roue générique
-    'pneu', // fairly auto mais gardé ancré
-    'turbo', // boisson / suralimentation
-    'golf', // sport golf vs vw golf
-    'm3', // format de fichier vs bmw m3
-    'stance', // posture vs style stance
-    'swap', // échange vs swap moteur
-    'alpine', // montagne vs marque alpine
-    'seat', // siège (anglais) vs marque seat
-    'drift', // dérive vs drift
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'donuts', // la pâtisserie (EN)
-    'rice', // le riz — seul « ricer » est sûr (EN)
-    'build', // le build du jeu / la construction (EN)
-    'mods', // les mods de jeu / les modérateurs (EN)
-    'tune', // l'accordage d'une guitare / « a tune » = un morceau (EN)
-    'track', // le morceau de musique / la piste d'athlétisme (EN)
-    'headers', // = les en-têtes HTTP (EN)
-    'cam', // la webcam vs l'arbre à cames (EN)
-    'boost', // un coup de pouce / le boost du jeu (EN)
-    'lift', // l'ascenseur / soulever (EN)
-    'slammed', // « slammed with work » / critiqué (EN)
-    'sleeper', // « a sleeper hit » / gros dormeur (EN)
-    'spec', // spécification en général (EN)
+    'roue', // generic wheel
+    'pneu', // fairly auto but kept anchored
+    'turbo', // drink / forced induction
+    'golf', // golf sport vs vw golf
+    'm3', // file format vs bmw m3
+    'stance', // posture vs stance style
+    'swap', // exchange vs engine swap
+    'alpine', // mountain vs alpine brand
+    'seat', // seat (English) vs seat brand
+    'drift', // drift (motion) vs drift
+    // EN variants (PANO-88): ANCHORED.
+    'donuts', // the pastry (EN)
+    'rice', // rice — only « ricer » is safe (EN)
+    'build', // a game build / construction (EN)
+    'mods', // game mods / moderators (EN)
+    'tune', // tuning a guitar / « a tune » = a track (EN)
+    'track', // a music track / an athletics track (EN)
+    'headers', // = HTTP headers (EN)
+    'cam', // webcam vs camshaft (EN)
+    'boost', // a boost / a game boost (EN)
+    'lift', // elevator / to lift (EN)
+    'slammed', // « slammed with work » / criticized (EN)
+    'sleeper', // « a sleeper hit » / heavy sleeper (EN)
+    'spec', // specification in general (EN)
   ],
   selfDeclared: ['passionne d auto', 'mecano'],
 };

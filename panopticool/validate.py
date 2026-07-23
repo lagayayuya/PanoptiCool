@@ -1,16 +1,16 @@
-"""Validateur autonome — recharge un .zip produit et vérifie sa conformité au contrat.
+"""Standalone validator — reloads a produced .zip and checks its conformance to the contract.
 
-Usage : ``python -m panopticool.validate <export.zip> [<autre.zip> ...]``
+Usage: ``python -m panopticool.validate <export.zip> [<other.zip> ...]``
 
-Contrôles (dérivés du registre, *indépendants* de la config de génération) :
-catégories présentes et ordonnées (§0), présence de chaque section, encodage du vide
-par section (§1.2), casse des clés d'item (§1.3), format de date par champ (§1.1),
-siblings/types (§1.4), clé malformée verbatim (§1.7), map à clés opaques (§1.5),
-formes des champs à fort signal (§1.8). Tout écart est rapporté ; code de sortie non
-nul s'il en reste.
+Checks (derived from the registry, *independent* of the generation config):
+categories present and ordered (§0), presence of each section, empty encoding
+per section (§1.2), item-key case (§1.3), date format per field (§1.1),
+siblings/types (§1.4), verbatim malformed key (§1.7), opaque-key map (§1.5),
+high-signal field shapes (§1.8). Every deviation is reported; a non-zero exit
+code if any remain.
 
-Les sections *ads* (NON VÉRIFIÉES, §3) sont validées avec indulgence : vide attendu,
-ou liste reconstruite acceptée — leur forme peuplée n'est pas un fait du contrat.
+The *ads* sections (UNVERIFIED, §3) are validated leniently: empty expected,
+or reconstructed list accepted — their populated shape is not a fact of the contract.
 """
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ _RE_IPV6 = re.compile(r"^[0-9a-f]{1,4}(:[0-9a-f]{0,4}){2,7}$")
 _RE_OPAQUE = re.compile(r"^[1-9]\d{17,19}$")
 _RE_HEX16 = re.compile(r"^[0-9a-f]{16}$")
 
-# Chemins des sections ads (forme peuplée NON VÉRIFIÉE, §3) — validées avec indulgence.
+# Paths of the ads sections (populated shape UNVERIFIED, §3) — validated leniently.
 _ADS_PATHS = {
     ("Your Activity", "Ad Interests"),
     ("Your Activity", "Ad Interests", "AdInterestCategories"),
@@ -44,7 +44,7 @@ _ADS_PATHS = {
     ("Your Activity", "Off TikTok Activity"),
 }
 
-# Libellés de contrôle (ordre d'affichage). Un écart est étiqueté par l'un d'eux.
+# Check labels (display order). A deviation is tagged by one of them.
 LABELS = (
     "Archive (1 fichier, JSON valide)",
     "Catégories présentes et ordonnées (§0)",
@@ -60,7 +60,7 @@ LABELS = (
 
 
 def _find(root, path):
-    """Renvoie (trouvé, valeur) en suivant `path` clé à clé depuis la racine."""
+    """Returns (found, value) by following `path` key by key from the root."""
     cur = root
     for key in path:
         if not isinstance(cur, dict) or key not in cur:
@@ -86,13 +86,13 @@ def _is_empty(value):
 
 
 def validate(root: dict) -> list:
-    """Renvoie la liste des écarts `(label, localisation, détail)` (vide si conforme)."""
+    """Returns the list of deviations `(label, location, detail)` (empty if conformant)."""
     dev = []
 
     def flag(label, where, detail=""):
         dev.append((label, where, detail))
 
-    # Catégories présentes et ordonnées (§0).
+    # Categories present and ordered (§0).
     if tuple(root) != CATEGORIES:
         flag(LABELS[1], "racine", f"obtenu {list(root)}")
 
@@ -115,7 +115,7 @@ def validate(root: dict) -> list:
                 flag(LABELS[3], where, f"attendu {node.value!r}, obtenu {value!r}")
             continue
 
-        # Section : wrapper objet + clé de liste/map.
+        # Section: object wrapper + list/map key.
         if not isinstance(value, dict):
             flag(LABELS[2], where, "wrapper non-objet")
             continue
@@ -135,7 +135,7 @@ def validate(root: dict) -> list:
                      f"vide {inner!r}, attendu {node.empty.value}")
             continue
 
-        # Section peuplée — forme selon le conteneur.
+        # Populated section — shape according to the container.
         if node.container is Container.LIST:
             if not isinstance(inner, list):
                 flag(LABELS[2], where, "attendu une liste")
@@ -153,7 +153,7 @@ def validate(root: dict) -> list:
                 if bad:
                     flag(LABELS[8], where, f"clés non opaques : {bad[:3]}")
 
-        # Format de date par champ (§1.1).
+        # Date format per field (§1.1).
         if node.date_format:
             want_utc = "UTC" in node.date_format
             for d in _iter_dates(inner):
@@ -162,7 +162,7 @@ def validate(root: dict) -> list:
                          f"{'UTC attendu' if want_utc else 'UTC inattendu'} : {d}")
                     break
 
-    # Clé malformée verbatim (§1.7), si Settings est peuplé.
+    # Verbatim malformed key (§1.7), if Settings is populated.
     ok, settings = _find(root, ("Profile And Settings", "Settings"))
     if ok and isinstance(settings, dict):
         sm = settings.get("SettingsMap")
@@ -170,7 +170,7 @@ def validate(root: dict) -> list:
             flag(LABELS[7], "Profile And Settings/Settings/SettingsMap",
                  "clé malformée absente")
 
-    # Champs à fort signal (§1.8), si peuplés.
+    # High-signal fields (§1.8), if populated.
     ok, st = _find(root, ("Your Activity", "Status"))
     if ok and isinstance(st.get("Status List"), list):
         for s in st["Status List"]:
@@ -202,7 +202,7 @@ def validate(root: dict) -> list:
 
 
 def load_zip(path):
-    """Charge le .zip ; renvoie (root|None, écarts d'archive)."""
+    """Loads the .zip; returns (root|None, archive deviations)."""
     dev = []
     try:
         with zipfile.ZipFile(path) as zf:
@@ -220,7 +220,7 @@ def load_zip(path):
 
 
 def print_report(path, deviations) -> bool:
-    """Affiche un rapport par contrôle ; renvoie True si conforme."""
+    """Prints a report per check; returns True if conformant."""
     by_label = {}
     for label, where, detail in deviations:
         by_label.setdefault(label, []).append((where, detail))

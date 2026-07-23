@@ -1,19 +1,19 @@
-// Lexique d'intérêt `danse` (D2, PANO-78 lot 3) — danse (styles, pratique).
+// Interest lexicon `danse` (D2, PANO-78 batch 3) — dance (styles, practice).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la danse FR : styles, gestes, formats. Entités = signal public générique
-// enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR dance: styles, moves, formats. Entities = generic public signal
+// enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « danse », « choregraphie », « breakdance », « krump », « twerk », « voguing »,
 //     « kizomba », « bachata », « modern jazz », « danseur ».
-//   · ANCRÉ — « break » (pause), « battle » (combat / esport), « contemporain » (générique),
-//     « classique » (générique), « house » (maison / electro), « crew » (esport), « salsa » (sauce),
-//     « popping », « locking », « impro » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « break » (break/pause), « battle » (fight / esport), « contemporain » (generic),
+//     « classique » (generic), « house » (house/home / electro), « crew » (esport), « salsa » (sauce),
+//     « popping », « locking », « impro »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive.
 
 import type { InterestLexicon } from '../types';
 
@@ -43,22 +43,22 @@ export const DANSE_LEXICON: InterestLexicon = {
     'zumba',
     'cours de danse',
     'street dance',
-    // Variantes EN (PANO-88) : SOLO univoques.
+    // EN variants (PANO-88): SOLO univocal.
     'dance cover',
     'dance challenge',
   ],
   anchored: [
-    'break', // pause / break (cinéma, muscu)
-    'battle', // combat / esport
-    'contemporain', // générique
-    'classique', // générique
-    'house', // maison / house (electro)
-    'crew', // équipe / esport
-    'salsa', // sauce salsa
-    'popping', // fairly danse mais gardé ancré
+    'break', // pause / break (cinema, muscu)
+    'battle', // fight / esport
+    'contemporain', // generic
+    'classique', // generic
+    'house', // house/home / house (electro)
+    'crew', // team / esport
+    'salsa', // salsa sauce
+    'popping', // fairly dance but kept anchored
     'locking',
-    'impro', // improvisation générique
-    'chore', // abréviation courte
+    'impro', // generic improvisation
+    'chore', // short abbreviation
   ],
   selfDeclared: ['danseur', 'danseuse'],
 };

@@ -1,38 +1,38 @@
-// GOLDEN DE RENDU — L'ARBRE ANGLAIS. Le pendant de `render-golden.test.ts`, en anglais.
+// RENDER GOLDEN — THE ENGLISH TREE. The counterpart of `render-golden.test.ts`, in English.
 //
-// POURQUOI UN FICHIER SÉPARÉ, et non deux cas de plus dans le golden existant. `ui/copy.ts` et
-// `ui/format.ts` résolvent la langue UNE FOIS, à l'évaluation du module. Rendre de l'anglais exige
-// donc de poser `<html lang>` AVANT le premier import — `vi.resetModules()` + imports DYNAMIQUES.
-// Le golden français importe ses composants statiquement, en tête de fichier : y ajouter des cas
-// anglais aurait imposé de le réécrire en entier, donc de toucher au fichier dont la mission est
-// justement de ne pas bouger. Deux fichiers, deux langues, aucun risque sur le français.
+// WHY A SEPARATE FILE, and not two more cases in the existing golden. `ui/copy.ts` and
+// `ui/format.ts` resolve the language ONCE, at module evaluation. Rendering English therefore
+// requires setting `<html lang>` BEFORE the first import — `vi.resetModules()` + DYNAMIC imports.
+// The French golden imports its components statically, at the top of the file: adding English cases
+// there would have forced rewriting it entirely, hence touching the file whose mission is
+// precisely not to move. Two files, two languages, no risk on the French.
 //
-// ⚠ POURQUOI CE GOLDEN N'EXISTAIT PAS AVANT LE PÉRIMÈTRE n°2. Tant que `copy.ts` était français, un
-// arbre « anglais » rendait du FRANGLAIS : déductions anglaises dans une coquille française, avec
-// des nombres français (U+202F, « 0 comment » au singulier). Le figer alors aurait fait bouger le
-// snapshot DEUX fois — une fois pour le franglais, une fois pour l'anglais réel. Il attend donc que
-// les deux périmètres soient traduits, et ne fige qu'un arbre cohérent.
+// ⚠ WHY THIS GOLDEN DID NOT EXIST BEFORE PERIMETER n°2. As long as `copy.ts` was French, an
+// « English » tree rendered FRANGLAIS: English deductions in a French shell, with
+// French numbers (U+202F, « 0 comment » in the singular). Freezing it then would have moved the
+// snapshot TWICE — once for the franglais, once for the real English. It therefore waits until
+// both perimeters are translated, and freezes only a coherent tree.
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme de preuve déclare sa frontière. Celle-ci est LA MÊME que
-// celle du golden français, et il faut la relire plutôt que la supposer héritée :
-//   - LE SOUS-ARBRE `ResultsView` SEULEMENT, en DESKTOP. Ni `LandingPage`, ni `AnalysisPage`, ni
-//     `SiteHeader`/`SiteFooter`, ni `AiSection` — c'est-à-dire la plus grosse part de `copy.en.ts`.
-//     `ui-golden.test.ts` couvre ces surfaces EN FRANÇAIS ; leur pendant anglais n'existe pas ;
-//   - LES DÉPLIS SONT FORCÉS OUVERTS et l'horloge gelée, comme côté français ;
-//   - LE CSS EST RETIRÉ, donc aucune régression de style n'est visible ici ;
-//   - IL NE JUGE PAS LA TRADUCTION. Il fige ce qui est rendu, jamais si c'est bien écrit. Un
-//     contresens anglais passe ce golden au vert le jour où il y entre, et tous les jours suivants.
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+// CLAUDE.md obligation: a proof mechanism declares its border. This one is THE SAME as
+// that of the French golden, and it must be reread rather than assumed inherited:
+//   - THE `ResultsView` SUBTREE ONLY, in DESKTOP. Neither `LandingPage`, nor `AnalysisPage`, nor
+//     `SiteHeader`/`SiteFooter`, nor `AiSection` — that is the largest part of `copy.en.ts`.
+//     `ui-golden.test.ts` covers these surfaces IN FRENCH; their English counterpart does not exist;
+//   - THE DISCLOSURES ARE FORCED OPEN and the clock frozen, as on the French side;
+//   - THE CSS IS REMOVED, so no style regression is visible here;
+//   - IT DOES NOT JUDGE THE TRANSLATION. It freezes what is rendered, never whether it is well
+//     written. An English mistranslation passes this golden green the day it enters, and every day after.
 //
-// CE QU'IL PROUVE, et c'est précis : que la langue TRAVERSE toute la chaîne — zip → `processExport`
-// avec `locale: 'en'` → règles → `Analysis` → composants → DOM. C'est la seule mesure qui relie les
-// deux périmètres ratifiables à un écran.
+// WHAT IT PROVES, and it is precise: that the language CROSSES the whole chain — zip → `processExport`
+// with `locale: 'en'` → rules → `Analysis` → components → DOM. It is the only measure that links the
+// two ratifiable perimeters to a screen.
 
 import { readFileSync } from 'node:fs';
 import { beforeAll, expect, it, vi } from 'vitest';
 
-// Les déplis vivent derrière un `useState(false)` interne ; fermés, le golden ne verrait ni
-// verbatim, ni terme surligné (même précaution que le golden français).
+// The disclosures live behind an internal `useState(false)`; closed, the golden would see neither
+// verbatim, nor highlighted term (same precaution as the French golden).
 vi.mock('preact/hooks', async (importOriginal) => {
   const actual = await importOriginal<typeof import('preact/hooks')>();
   return {
@@ -57,10 +57,10 @@ function readable(html: string): string {
   return html.replace(/ style="[^"]*"/g, '').replace(/></g, '>\n<');
 }
 
-it('rendu v2 EN — la langue traverse toute la chaîne', async () => {
-  // ⚠ L'ORDRE EST LE SUJET DU FICHIER : la langue doit être posée AVANT le premier import de
-  // `copy.ts`/`format.ts`, sans quoi ils auront déjà figé le français. `resetModules` garantit que
-  // les imports dynamiques ci-dessous partent d'un cache vide.
+it('v2 EN render — the language crosses the whole chain', async () => {
+  // ⚠ THE ORDER IS THE SUBJECT OF THE FILE: the language must be set BEFORE the first import of
+  // `copy.ts`/`format.ts`, otherwise they will already have frozen the French. `resetModules` guarantees
+  // that the dynamic imports below start from an empty cache.
   vi.resetModules();
   vi.stubGlobal('document', { documentElement: { lang: 'en' } });
 
@@ -73,10 +73,10 @@ it('rendu v2 EN — la langue traverse toute la chaîne', async () => {
   const { ResultsView } = await import('./ResultsView');
 
   const cases: { name: string; zip: Uint8Array; demo: boolean }[] = [
-    // La persona EN est le cas PORTEUR : elle seule exerce le sensible, les intérêts et les preuves
-    // ancrées avec du texte anglais. La persona FR est incluse aussi, à dessein — elle montre
-    // l'interface anglaise par-dessus des DONNÉES françaises, c'est-à-dire ce que verrait quelqu'un
-    // qui bascule la langue sur son propre export.
+    // The EN persona is the BEARING case: it alone exercises the sensitive, the interests and the
+    // anchored evidence with English text. The FR persona is included too, by design — it shows
+    // the English interface over French DATA, that is what someone would see
+    // who switches the language on their own export.
     { name: 'persona-en@en', zip: buildSyntheticExportZipEn(undefined, FIXED_NOW), demo: true },
     { name: 'persona-fr@en', zip: buildSyntheticExportZip(undefined, FIXED_NOW), demo: true },
     { name: 'sample@en', zip: readSample('user_data_tiktok.sample.zip'), demo: false },
@@ -89,7 +89,7 @@ it('rendu v2 EN — la langue traverse toute la chaîne', async () => {
       parts.push(`### ${c.name}\nREFUSÉ — ${JSON.stringify(res)}`);
       continue;
     }
-    // biome-ignore lint/suspicious/noExplicitAny: la prop `output` suit le type de la refonte A.
+    // biome-ignore lint/suspicious/noExplicitAny: the `output` prop follows the type of rework A.
     const view = ResultsView as any;
     parts.push(`### ${c.name}\n${readable(render(h(view, { output: res.output, demo: c.demo })))}`);
   }

@@ -1,17 +1,18 @@
-// Échantillon synthétique bundlé — persona démo (PANO R&D, refonte session « démo honnête »).
-// Reconstruit en `TikTokExport` (via `validTikTokExport` + Comment/Searches/Watch History/Following/
-// Like List peuplés) pour exercer le PRÉ-TRAITEMENT RÉEL (`ingestExportStreaming` + `computeInsights`),
-// pas un raccourci qui saute le moteur : chaque thème affiché par la démo est ce que le moteur détecte
-// VRAIMENT sur ces items (D1/D2, `engine/detect/detect.ts`), verrouillé par `synthetic-export.test.ts`.
+// Bundled synthetic sample — demo persona (PANO R&D, "honest demo" session rework).
+// Reconstructed into a `TikTokExport` (via `validTikTokExport` + populated Comment/Searches/Watch
+// History/Following/Like List) to exercise the REAL PRE-PROCESSING (`ingestExportStreaming` +
+// `computeInsights`), not a shortcut that skips the engine: each theme displayed by the demo is what
+// the engine ACTUALLY detects on these items (D1/D2, `engine/detect/detect.ts`), locked by
+// `synthetic-export.test.ts`.
 //
-// Aucun contenu de vrai export : persona 100 % inventée, zéro PII (CLAUDE.md). Deux variantes,
-// MÊME persona et MÊMES chiffres agrégés (vues, likes, suivis, 14 commentaires, 24 recherches,
-// rythme) : à volume égal, l'écart de sortie entre les deux mesure la LANGUE et rien d'autre.
+// No content from a real export: a 100% invented persona, zero PII (CLAUDE.md). Two variants,
+// the SAME persona and the SAME aggregated numbers (views, likes, follows, 14 comments, 24 searches,
+// rhythm): at equal volume, the output gap between the two measures the LANGUAGE and nothing else.
 //
-// Les deux listes sont écrites comme des personnes, jamais comme des jeux de déclencheurs — ce que
-// le détecteur en tire est une MESURE, prise après coup, et elle vit dans `synthetic-export.test.ts`
-// (pipeline réel, D1 + D2). Aucun décompte de thèmes n'est annoncé ici : un en-tête qui prédit la
-// sortie du moteur devient faux au premier lot de lexique, sans que rien ne le signale.
+// Both lists are written as people, never as sets of triggers — what
+// the detector draws from them is a MEASUREMENT, taken after the fact, and it lives in
+// `synthetic-export.test.ts` (real pipeline, D1 + D2). No theme count is announced here: a header
+// that predicts the engine's output becomes false at the first lexicon batch, with nothing to signal it.
 
 import { strToU8, zipSync } from 'fflate';
 import { validTikTokExport } from '../engine/valid-export.fixture';
@@ -22,16 +23,16 @@ interface SyntheticItem {
   text: string;
 }
 
-// --- Items FR (38 : 14 commentaires + 24 recherches) — ordre = ordre d'apparition, filler d'abord ---
-// (le panneau « peu de données », `AnalysisPage.tsx`, tronque aux N PREMIERS items : les premiers
-// restent neutres à dessein, les items qui déclenchent un thème arrivent après).
+// --- FR items (38: 14 comments + 24 searches) — order = order of appearance, filler first ---
+// (the "low data" panel, `AnalysisPage.tsx`, truncates to the FIRST N items: the first ones
+// stay neutral on purpose, the items that trigger a theme come after).
 //
-// Vérifié par `synthetic-export.test.ts` en faisant tourner `detectLabels` (D1 + D2 réels) sur EXACTEMENT
-// ces textes : D1 → {mental_health, conflictual} ; D2 (après plancher PANO-75) → {chats (2 items),
-// cinema_series (3 items : « spin off », « kubrick »/« cinéma », et le « netflix » du commentaire
-// conflictual — un item PARTAGÉ entre les deux thèmes, cf. plus bas)}. Rien d'autre ne franchit le
-// plancher (`sneakers`/`voitures`/`coiffure` effleurent 1 item chacun, sous le plancher de 2 — un effet
-// de bord honnête du lexique réel, pas une fixture triée sur le volet).
+// Verified by `synthetic-export.test.ts` by running `detectLabels` (real D1 + D2) on EXACTLY
+// these texts: D1 → {mental_health, conflictual}; D2 (after the PANO-75 floor) → {chats (2 items),
+// cinema_series (3 items: « spin off », « kubrick »/« cinéma », and the « netflix » of the
+// conflictual comment — an item SHARED between the two themes, cf. below)}. Nothing else crosses the
+// floor (`sneakers`/`voitures`/`coiffure` graze 1 item each, below the floor of 2 — an honest side
+// effect of the real lexicon, not a hand-picked fixture).
 const SYNTHETIC_ITEMS_FR: readonly SyntheticItem[] = [
   { kind: 'search', text: 'horaires ouverture pharmacie dimanche' },
   { kind: 'search', text: 'météo demain matin' },
@@ -43,7 +44,7 @@ const SYNTHETIC_ITEMS_FR: readonly SyntheticItem[] = [
   { kind: 'search', text: 'comment nettoyer des baskets blanches' },
   { kind: 'comment', text: 'petit tour au marché ce matin, plein de monde' },
   { kind: 'search', text: 'adresse mairie plus proche' },
-  // --- chats (D2, plancher 2 items) ---
+  // --- chats (D2, floor 2 items) ---
   { kind: 'comment', text: 'miaou' },
   { kind: 'comment', text: 'quand le mien était encore chaton il était pareil' },
   { kind: 'search', text: 'heure ouverture supermarché dimanche' },
@@ -57,8 +58,8 @@ const SYNTHETIC_ITEMS_FR: readonly SyntheticItem[] = [
     text: 'si tu veux du vrai cinéma regarde un kubrick',
   },
   { kind: 'search', text: 'comment faire une capture écran' },
-  // --- conflictual (D1, item-level) + cinema_series (3ᵉ item, « netflix ») : insulte émise, cible 2ᵉ
-  // personne — le même commentaire nourrit les deux thèmes (magasin de preuves partagé, C5).
+  // --- conflictual (D1, item-level) + cinema_series (3rd item, « netflix »): insult emitted, targets
+  // 2nd person — the same comment feeds both themes (shared evidence store, C5).
 
   {
     kind: 'comment',
@@ -76,7 +77,7 @@ const SYNTHETIC_ITEMS_FR: readonly SyntheticItem[] = [
   { kind: 'comment', text: 'petite balade au parc cet après-midi, il faisait beau' },
   { kind: 'search', text: 'comment réinitialiser un mot de passe' },
   { kind: 'search', text: 'numéro service client la poste' },
-  // --- mental_health (D1, explicite) : recherche sur des témoignages de burnout ---
+  // --- mental_health (D1, explicit): search about burnout testimonials ---
   { kind: 'search', text: 'témoignages burn out' },
   { kind: 'search', text: 'comment enlever une tache de gras' },
   { kind: 'search', text: 'distance paris marseille en voiture' },
@@ -88,24 +89,24 @@ const SYNTHETIC_ITEMS_FR: readonly SyntheticItem[] = [
   { kind: 'search', text: 'comment changer la pile d’une télécommande' },
 ];
 
-// --- Items EN (38 : 14 commentaires + 24 recherches), MÊME agencement que FR ------------------------
-// MÊME personne que la liste FR, transposée dans une vie anglophone (registre US) : le chat, le goût
-// du cinéma, la fatigue de fond, un moment d'humeur, des corvées. Ce n'est PAS une traduction — les
-// corvées d'un francophone traduites en anglais ne décrivent personne (« city hall address » n'est
-// l'errand de personne aux États-Unis).
+// --- EN items (38: 14 comments + 24 searches), SAME layout as FR --------------------------------
+// The SAME person as the FR list, transposed into an English-speaking life (US register): the cat, the taste
+// for cinema, the background fatigue, a moment of mood, chores. This is NOT a translation — a
+// French speaker's chores translated into English describe nobody (« city hall address » is
+// nobody's errand in the United States).
 //
-// Trois règles d'écriture reprises de la liste FR, parce que ce sont elles qui font tenir la persona :
-//   1. un commentaire est la MOITIÉ d'une conversation — une réponse à une vidéo qu'on ne voit pas,
-//      jamais un avis autoportant. « mine does this exact thing at 4am » se lit ; une critique
-//      complète et ponctuée ne se lit pas comme un commentaire ;
-//   2. le sensible passe par une RECHERCHE et à distance (« burnout recovery stories » — le sujet
-//      des autres), tandis que la fatigue est diluée dans des commentaires qui ne diagnostiquent
-//      rien. C'est le propos du produit : la déduction naît de l'accumulation banale, pas d'un aveu ;
-//   3. plancher de bruit élevé et volontaire — l'écrasante majorité des items ne veut rien dire.
+// Three writing rules carried over from the FR list, because they are what holds the persona together:
+//   1. a comment is HALF a conversation — a reply to a video one does not see,
+//      never a self-standing opinion. « mine does this exact thing at 4am » reads; a full
+//      and punctuated review does not read as a comment;
+//   2. the sensitive goes through a SEARCH and at a distance (« burnout recovery stories » — other
+//      people's subject), while the fatigue is diluted into comments that diagnose
+//      nothing. This is the product's point: the deduction is born from banal accumulation, not from a confession;
+//   3. a high and deliberate noise floor — the overwhelming majority of items mean nothing.
 //
-// MÊMES agrégats que FR (14/24) : à volume identique, un écart de sortie FR↔EN mesure la langue et
-// rien d'autre. Ce que ces textes déclenchent RÉELLEMENT est mesuré par `synthetic-export.test.ts`,
-// qui fait tourner le vrai détecteur — jamais annoncé ici.
+// SAME aggregates as FR (14/24): at identical volume, a FR↔EN output gap measures the language and
+// nothing else. What these texts ACTUALLY trigger is measured by `synthetic-export.test.ts`,
+// which runs the real detector — never announced here.
 const SYNTHETIC_ITEMS_EN: readonly SyntheticItem[] = [
   { kind: 'search', text: 'pharmacy hours sunday' },
   { kind: 'search', text: 'weather tomorrow morning' },
@@ -125,7 +126,7 @@ const SYNTHETIC_ITEMS_EN: readonly SyntheticItem[] = [
   { kind: 'comment', text: 'still waiting on the spin off..' },
   { kind: 'comment', text: 'if you want actual cinema go watch a kubrick' },
   { kind: 'search', text: 'how to take a screenshot on windows' },
-  // --- humeur ciblée (2ᵉ personne) + « netflix » : un même item peut nourrir deux thèmes (C5) ---
+  // --- targeted mood (2nd person) + « netflix »: a single item can feed two themes (C5) ---
   { kind: 'comment', text: 'nah you’re just stupid, netflix shows aren’t worth the time' },
   { kind: 'search', text: 'thyme vs oregano difference' },
   { kind: 'comment', text: 'vacation cannot come soon enough, i need out of here' },
@@ -139,7 +140,7 @@ const SYNTHETIC_ITEMS_EN: readonly SyntheticItem[] = [
   { kind: 'comment', text: 'walked around the park all afternoon, actually nice out' },
   { kind: 'search', text: 'how to reset password' },
   { kind: 'search', text: 'usps customer service number' },
-  // --- fatigue, à distance : le sujet est celui des autres ---
+  // --- fatigue, at a distance: the subject is other people's ---
   { kind: 'search', text: 'burnout recovery stories' },
   { kind: 'search', text: 'how to get grease stain out' },
   { kind: 'search', text: 'chicago to detroit drive time' },
@@ -155,7 +156,7 @@ const DAY_MS = 86_400_000;
 const HOUR_MS = 3_600_000;
 const MINUTE_MS = 60_000;
 
-/** `YYYY-MM-DD HH:MM:SS` (UTC, contrat §1.1) depuis un epoch — jamais de fuseau machine. */
+/** `YYYY-MM-DD HH:MM:SS` (UTC, contract §1.1) from an epoch — never a machine timezone. */
 function fmtUtc(ms: number): string {
   const iso = new Date(ms).toISOString(); // 2026-07-16T10:20:30.000Z
   return `${iso.slice(0, 10)} ${iso.slice(11, 19)}`;
@@ -165,13 +166,13 @@ function fmtUtcSuffixed(ms: number): string {
   return `${fmtUtc(ms)} UTC`;
 }
 
-/** Minuit UTC du jour contenant `ms`. */
+/** UTC midnight of the day containing `ms`. */
 function dayFloor(ms: number): number {
   return Math.floor(ms / DAY_MS) * DAY_MS;
 }
 
-/** Comments/Searches : dates étalées sur les ~55 derniers jours avant `now`, dans l'ordre du tableau
- * (le plus ancien en premier — reflète un export où les items les plus récents ferment la liste). */
+/** Comments/Searches: dates spread over the last ~55 days before `now`, in the array's order
+ * (oldest first — reflects an export where the most recent items close the list). */
 function withDates(
   items: readonly SyntheticItem[],
   now: number,
@@ -182,15 +183,15 @@ function withDates(
 }
 
 /**
- * Rythme de visionnage (PANO-57/85, honnête cette fois : c'est `Watch History` réel qui nourrit le
- * graphe, pas un histogramme tapé à la main). UNE session/jour, biais nocturne (cycle d'heures à
- * majorité 23h–4h, la fenêtre « nuit » du produit — `activity-rhythm.ts`) :
- *   - 30 jours récents × 14 vidéos/jour = 420 (fenêtre 30 jours) ;
- *   - 335 jours plus anciens (31→365 j) totalisant 5680 (320 jours à 17, 15 jours à 16) ;
- *   - total = 6100 (fenêtre 12 mois, `videosWatched.last12Months`) ;
- *   - un écart de 16 s entre vidéos d'une même session (jamais deux sessions/jour → aucun risque de
- *     fusion inter-session, `SESSION_GAP_MS` = 5 min dans `activity-rhythm.ts`) donne une estimation
- *     d'environ 28-29 h de visionnage — calcul RÉEL fait par la règle, pas une valeur recopiée.
+ * Watching rhythm (PANO-57/85, honest this time: it is the real `Watch History` that feeds the
+ * graph, not a hand-typed histogram). ONE session/day, night bias (hour cycle
+ * mostly 23h–4h, the product's "night" window — `activity-rhythm.ts`):
+ *   - 30 recent days × 14 videos/day = 420 (30-day window);
+ *   - 335 older days (31→365 d) totaling 5680 (320 days at 17, 15 days at 16);
+ *   - total = 6100 (12-month window, `videosWatched.last12Months`);
+ *   - a 16 s gap between videos of a same session (never two sessions/day → no risk of
+ *     inter-session merging, `SESSION_GAP_MS` = 5 min in `activity-rhythm.ts`) gives an estimate
+ *     of about 28-29 h of watching — a REAL computation done by the rule, not a recopied value.
  */
 const NIGHT_BIASED_HOUR_CYCLE = [23, 0, 1, 2, 22, 3, 20, 21, 14, 10, 19, 4];
 const RECENT_DAYS = 30;
@@ -213,7 +214,7 @@ function watchSessionsFor(now: number, days: number, perDay: (dayIndex: number) 
 
 function buildWatchHistory(now: number): { Date: string; Link: string; Title: string }[] {
   const recent = watchSessionsFor(now, RECENT_DAYS, () => RECENT_PER_DAY);
-  // Décalage de 31 jours pour ouvrir la fenêtre « ancienne » (30 jours récents, jamais recouverts).
+  // 31-day offset to open the "older" window (30 recent days, never overlapped).
   const older = watchSessionsFor(now - 31 * DAY_MS, OLDER_DAYS, (d) =>
     d < OLDER_BONUS_DAYS ? OLDER_BASE_PER_DAY + 1 : OLDER_BASE_PER_DAY,
   );
@@ -232,7 +233,7 @@ function buildWatchHistory(now: number): { Date: string; Link: string; Title: st
   return items;
 }
 
-/** 300 comptes suivis synthétiques (R3, `comptes suivis`) — usernames inventés, zéro PII. */
+/** 300 synthetic followed accounts (R3, `comptes suivis`) — invented usernames, zero PII. */
 function buildFollowing(now: number): { Date: string; UserName: string }[] {
   const count = 300;
   return Array.from({ length: count }, (_, i) => ({
@@ -241,8 +242,8 @@ function buildFollowing(now: number): { Date: string; UserName: string }[] {
   }));
 }
 
-/** 2700 likes synthétiques (R5, « likes, favoris et republications » — favoris/republications à 0
- * ici, le compte affiché est donc exactement 2700). */
+/** 2700 synthetic likes (R5, « likes, favoris et republications » — favorites/reposts at 0
+ * here, so the displayed count is exactly 2700). */
 function buildLikes(now: number): { date: string; link: string }[] {
   const count = 2700;
   return Array.from({ length: count }, (_, i) => ({
@@ -272,14 +273,14 @@ function buildSearches(items: readonly (SyntheticItem & { ms: number })[]) {
 }
 
 /**
- * Construit un `.zip` d'export TikTok synthétique in-memory (jamais écrit sur disque), pour une
- * langue donnée (items déjà dans la bonne langue).
+ * Builds an in-memory synthetic TikTok export `.zip` (never written to disk), for a
+ * given language (items already in the right language).
  *
- * `maxItems` (optionnel, panneau de test des cas limites, `ui/v2/AnalysisPage.tsx`) : ne garde que les
- * N premiers items (commentaires + recherches confondus, ordre du tableau source) au lieu de la liste
- * complète. `now` (optionnel, testabilité) : horloge injectée, défaut = `Date.now()` — Watch
- * History/Following/Like List et les dates de commentaires/recherches sont TOUJOURS calculées relatives
- * à `now`, jamais des dates 2026 en dur : la démo reste correcte quelle que soit la date d'exécution.
+ * `maxItems` (optional, edge-case test panel, `ui/v2/AnalysisPage.tsx`): keeps only the
+ * first N items (comments + searches combined, source array order) instead of the full
+ * list. `now` (optional, testability): injected clock, default = `Date.now()` — Watch
+ * History/Following/Like List and the comment/search dates are ALWAYS computed relative
+ * to `now`, never hard-coded 2026 dates: the demo stays correct whatever the execution date.
  */
 function buildZip(
   sourceItems: readonly SyntheticItem[],
@@ -314,7 +315,7 @@ function buildZip(
           note: '',
           videosCommentedOnSinceAccountRegistration: comments.length,
           videosSharedSinceAccountRegistration: 0,
-          // ALL-TIME (vues jusqu'au bout depuis l'inscription) — chiffre cible de la démo.
+          // ALL-TIME (watched to the end since registration) — the demo's target number.
           videosWatchedToTheEndSinceAccountRegistration: 50_000,
         },
       },
@@ -327,28 +328,28 @@ function buildZip(
   return zipSync({ 'user_data_tiktok.json': strToU8(json) });
 }
 
-/** Variante FR (celle branchée sur le bouton « Analyser les données test »). */
+/** FR variant (the one wired to the « Analyser les données test » button). */
 export function buildSyntheticExportZip(maxItems?: number, now: number = Date.now()): Uint8Array {
   return buildZip(SYNTHETIC_ITEMS_FR, maxItems, now);
 }
 
 /**
- * Variante EN — mêmes chiffres agrégés, même persona, textes en anglais. À volume et persona
- * identiques, ce qui manque en anglais se lit dans l'ÉCART avec la sortie FR
- * (`synthetic-export.test.ts`) : c'est sa première raison d'être, et elle ne change pas.
+ * EN variant — same aggregated numbers, same persona, texts in English. At identical volume and
+ * persona, what is missing in English is read in the GAP with the FR output
+ * (`synthetic-export.test.ts`): that is its primary reason for being, and it does not change.
  */
 export function buildSyntheticExportZipEn(maxItems?: number, now: number = Date.now()): Uint8Array {
   return buildZip(SYNTHETIC_ITEMS_EN, maxItems, now);
 }
 
 /**
- * La persona de la DÉMO, dans la langue de la page.
+ * The DEMO's persona, in the page's language.
  *
- * ⚠ CE N'EST PAS UN CONFORT DE TRADUCTION. Les preuves affichées sont des VERBATIMS : la démo
- * dépliée montre le texte exact qui a déclenché chaque déduction, terme surligné compris. Servir la
- * persona française sous l'interface anglaise afficherait donc des commentaires FRANÇAIS comme
- * preuves — sur la page dont toute la fonction est de faire lire à la personne ce qui a été lu
- * d'elle. La langue de la démo n'est pas une étiquette, c'est la donnée elle-même.
+ * ⚠ THIS IS NOT A TRANSLATION CONVENIENCE. The displayed evidence is VERBATIM: the unfolded demo
+ * shows the exact text that triggered each deduction, highlighted term included. Serving the
+ * French persona under the English interface would therefore display FRENCH comments as
+ * evidence — on the page whose whole function is to make the person read what has been read
+ * of them. The demo's language is not a label, it is the data itself.
  */
 export function buildDemoExportZip(locale: Locale, maxItems?: number): Uint8Array {
   return locale === 'en' ? buildSyntheticExportZipEn(maxItems) : buildSyntheticExportZip(maxItems);

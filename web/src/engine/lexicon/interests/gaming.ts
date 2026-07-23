@@ -1,19 +1,19 @@
-// Lexique d'intérêt `gaming` (D2, PANO-76 lot 1, réécriture PROFONDE) — jeux vidéo.
+// Interest lexicon `gaming` (D2, PANO-76 batch 1, DEEP rewrite) — video games.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du jeu vidéo FR : plateformes, mécaniques, jargon compétitif et streaming.
-// À l'aveugle depuis l'usage commun.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR video games: platforms, mechanics, competitive and streaming jargon.
+// Blind from common usage.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « jeu video », « gaming », « manette », « speedrun », « matchmaking », « gameplay ».
-//   · ANCRÉ — 50/50 dont le sens courant NON-gaming domine : « console » (meuble / « je te
-//     console »), « switch » (interrupteur / verbe), « boss » (hiérarchie), « partie » (part),
-//     « niveau », « manche », « farm » : co-occurrence requise.
-//   · EXCLU — « jouer » / « jeu » nus (trop génériques même ancrés).
+//   · ANCHORED — 50/50 whose common NON-gaming sense dominates: « console » (furniture / « je te
+//     console »), « switch » (switch / verb), « boss » (hierarchy), « partie » (part),
+//     « niveau », « manche », « farm »: co-occurrence required.
+//   · EXCLUDED — bare « jouer » / « jeu » (too generic even anchored).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Jeux d'ARGENT HORS champ (PANO-74). « esport » gardé (un joueur qui en parle reste
-// dans le thème jeu) même si c'est un thème séparé du catalogue.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. GAMBLING out of scope (PANO-74). « esport » kept (a player who mentions it stays
+// in the game theme) even though it is a separate catalogue theme.
 
 import type { InterestLexicon } from '../types';
 
@@ -51,7 +51,7 @@ export const GAMING_LEXICON: InterestLexicon = {
     'joueur competitif',
     'jeu de combat',
     'jeu de gestion',
-    // Jeux & consoles (rétrofit PANO-90)
+    // Games & consoles (retrofit PANO-90)
     'fortnite',
     'minecraft',
     'elden ring',
@@ -64,7 +64,7 @@ export const GAMING_LEXICON: InterestLexicon = {
     'steam',
     'battle royale',
     'jeu de plateforme',
-    // Variantes EN (PANO-88) : SOLO univoques (jargon gaming).
+    // EN variants (PANO-88): SOLO univocal (gaming jargon).
     'loadout',
     'battle pass',
     'open world',
@@ -72,22 +72,22 @@ export const GAMING_LEXICON: InterestLexicon = {
     'lore',
   ],
   anchored: [
-    'console', // meuble / « je te console »
-    'switch', // interrupteur / verbe anglais
-    'boss', // supérieur hiérarchique
-    'partie', // part / soirée
-    'niveau', // niveau générique
-    'manche', // manche de vêtement
-    'farm', // farming vs ferme
-    'loot', // butin vs bruit
-    'ranked', // partie classée vs anglais
-    'quete', // quête de jeu vs quête générique
-    'gta', // Grand Theft Auto (sigle) vs générique
-    'zelda', // franchise vs prénom
-    'fps', // frames per second / genre vs générique
-    'rpg', // jeu de rôle vs lance-roquette
-    'build', // build de perso vs construction / muscu (EN, ancré)
-    'afk', // away from keyboard vs sigle (EN)
+    'console', // furniture / « je te console »
+    'switch', // switch / English verb
+    'boss', // hierarchical superior
+    'partie', // part / party
+    'niveau', // generic level
+    'manche', // garment sleeve
+    'farm', // farming vs farm
+    'loot', // loot vs noise
+    'ranked', // ranked match vs English
+    'quete', // game quest vs generic quest
+    'gta', // Grand Theft Auto (acronym) vs generic
+    'zelda', // franchise vs first name
+    'fps', // frames per second / genre vs generic
+    'rpg', // role-playing game vs rocket launcher
+    'build', // character build vs construction / muscu (EN, anchored)
+    'afk', // away from keyboard vs acronym (EN)
   ],
   selfDeclared: ['gamer', 'gameuse', 'joueur competitif'],
 };

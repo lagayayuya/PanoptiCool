@@ -1,28 +1,28 @@
-// Lexique d'intérêt `chiens` (D2, PANO-77 lot 2 · enrichi entités) — chiens.
+// Interest lexicon `chiens` (D2, PANO-77 batch 2 · entities enriched) — dogs.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du chien FR : soin, éducation, RACES répandues. À l'aveugle ; races = entités
-// publiques génériques enrichies par recherche (top races France).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR dogs: care, training, widespread BREEDS. Blind; breeds = generic
+// public entities enriched by research (top France breeds).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « chiot », « aboiement », « dressage canin », « toilettage chien » ; races
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « chiot », « aboiement », « dressage canin », « toilettage chien »; breeds
 //     (« berger australien », « golden retriever », « labrador », « husky », « beagle », « shiba inu »).
-//   · ANCRÉ — 50/50 : « chien » (idiomes), « laisse » (verbe), « spa » (jacuzzi), « niche » (marché),
-//     « maitre », « croquettes », « veterinaire », « boxer » (boxe), « berger » (métier) : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — 50/50: « chien » (idioms), « laisse » (verb), « spa » (jacuzzi), « niche » (market),
+//     « maitre », « croquettes », « veterinaire », « boxer » (boxing), « berger » (occupation): co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN réel vérifié par recherche (DogTok / vocabulaire propriétaire).
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Real EN usage verified by research (DogTok / owner vocabulary).
 //   · SOLO — « puppy », « doggo », « pupper », « dogtok », « puppuccino », « kennel », « dog park »,
-//     « crate training », « dog groomer » ; races EN (« poodle », « dachshund », « german shepherd »,
+//     « crate training », « dog groomer »; EN breeds (« poodle », « dachshund », « german shepherd »,
 //     « french bulldog », « pug »).
-//   · ANCRÉ — « barking » (« barking up the wrong tree », « barking mad »), « leash » (« on a short
-//     leash », figuré), « fetch » (fetch de DONNÉES — massif en tech), « frenchie » (surnom d'un
-//     FRANÇAIS avant d'être un bouledogue), « breeder », « zoomies » / « paw » (partagés chats).
-//   · EXCLU — « good boy » (locution courante hors chien) → ÉCARTÉ.
+//   · ANCHORED — « barking » (« barking up the wrong tree », « barking mad »), « leash » (« on a short
+//     leash », figurative), « fetch » (DATA fetch — massive in tech), « frenchie » (nickname for a
+//     FRENCH PERSON before being a bulldog), « breeder », « zoomies » / « paw » (shared with cats).
+//   · EXCLUDED — « good boy » (common phrase outside dogs) → DISCARDED.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. « veterinaire » / « croquettes » ANCRÉS (partagés avec `chats`) : compagnon d'espèce requis.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. « veterinaire » / « croquettes » ANCHORED (shared with `chats`): species companion required.
 
 import type { InterestLexicon } from '../types';
 
@@ -35,7 +35,7 @@ export const CHIENS_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Soin / éducation
+    // Care / training
     'chiot',
     'aboiement',
     'dressage canin',
@@ -47,7 +47,7 @@ export const CHIENS_LEXICON: InterestLexicon = {
     'pension canine',
     'museliere',
     'clicker training',
-    // Races (univoques)
+    // Breeds (univocal)
     'berger allemand',
     'berger australien',
     'golden retriever',
@@ -69,7 +69,7 @@ export const CHIENS_LEXICON: InterestLexicon = {
     'carlin',
     'dalmatien',
     'caniche',
-    // Variantes EN (PANO-88) : SOLO univoques (soin / éducation / communauté).
+    // EN variants (PANO-88): SOLO univocal (care / training / community).
     'puppy',
     'doggo',
     'pupper',
@@ -79,7 +79,7 @@ export const CHIENS_LEXICON: InterestLexicon = {
     'dog park',
     'crate training',
     'dog groomer',
-    // Races (graphies EN univoques)
+    // Breeds (univocal EN spellings)
     'poodle',
     'dachshund',
     'german shepherd',
@@ -89,25 +89,25 @@ export const CHIENS_LEXICON: InterestLexicon = {
   anchored: [
     'chien', // « temps de chien », « vie de chien »
     'chiens',
-    'laisse', // verbe laisser
-    'spa', // refuge animalier vs jacuzzi
-    'niche', // niche de marché
-    'maitre', // enseignant / maître
-    'gamelle', // générique / chute
-    'croquettes', // partagé avec chats
-    'veterinaire', // partagé avec chats
+    'laisse', // verb laisser
+    'spa', // animal shelter vs jacuzzi
+    'niche', // market niche
+    'maitre', // teacher / master
+    'gamelle', // generic / fall
+    'croquettes', // shared with cats
+    'veterinaire', // shared with cats
     'toutou',
-    'boxer', // boxe / boxeur vs race boxer
-    'berger', // métier vs race berger
-    'setter', // générique vs race setter
-    // Variantes EN (PANO-88) : ANCRÉS.
+    'boxer', // boxing / boxer vs boxer breed
+    'berger', // occupation vs shepherd breed
+    'setter', // generic vs setter breed
+    // EN variants (PANO-88): ANCHORED.
     'barking', // « barking up the wrong tree » / « barking mad » (EN)
-    'leash', // « on a short leash » (figuré, EN)
-    'fetch', // fetch de DONNÉES (tech) / « make fetch happen » (EN)
-    'frenchie', // surnom d'un FRANÇAIS vs bouledogue français (EN)
-    'breeder', // éleveur générique (EN)
-    'zoomies', // partagé chats / lapins (EN)
-    'paw', // partagé chats (EN)
+    'leash', // « on a short leash » (figurative, EN)
+    'fetch', // DATA fetch (tech) / « make fetch happen » (EN)
+    'frenchie', // nickname for a FRENCH PERSON vs french bulldog (EN)
+    'breeder', // generic breeder (EN)
+    'zoomies', // shared cats / rabbits (EN)
+    'paw', // shared cats (EN)
   ],
   selfDeclared: ['proprietaire de chien', 'maitre chien'],
 };

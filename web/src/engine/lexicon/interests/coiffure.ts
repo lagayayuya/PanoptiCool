@@ -1,18 +1,18 @@
-// Lexique d'intérêt `coiffure` (D2, PANO-77 lot 2 · enrichi entités) — coiffure / soin capillaire.
+// Interest lexicon `coiffure` (D2, PANO-77 batch 2 · entities enriched) — hairdressing / hair care.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la coiffure FR : coupes, TECHNIQUES de couleur, soins, MARQUES et outils.
-// À l'aveugle ; techniques/marques = signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR hairdressing: cuts, color TECHNIQUES, care, BRANDS and tools.
+// Blind; techniques/brands = generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « coiffure », « brushing », « balayage », « babylights », « ombre hair »,
-//     « lissage bresilien », « wolf cut », marques (« kerastase », « olaplex », « steampod »).
-//   · ANCRÉ — 50/50 : « coupe » (du monde), « boucles » (buckles), « racines » (origines), « volume »
-//     (chevauche muscu/photo), « frange », « coloration », « mulet » (poisson), « ghd », « loreal » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « coiffure », « brushing », « balayage », « babylights », « ombre hair »,
+//     « lissage bresilien », « wolf cut », brands (« kerastase », « olaplex », « steampod »).
+//   · ANCHORED — 50/50: « coupe » (World Cup), « boucles » (buckles), « racines » (roots/origins), « volume »
+//     (overlaps muscu/photo), « frange », « coloration », « mulet » (fish), « ghd », « loreal »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de `maquillage` et `skincare`.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from `maquillage` and `skincare`.
 
 import type { InterestLexicon } from '../types';
 
@@ -25,7 +25,7 @@ export const COIFFURE_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Coupes / techniques
+    // Cuts / techniques
     'coiffure',
     'coiffeur',
     'coiffeuse',
@@ -49,30 +49,30 @@ export const COIFFURE_LEXICON: InterestLexicon = {
     'wolf cut',
     'frange rideau',
     'keratine',
-    // Marques / outils
+    // Brands / tools
     'kerastase',
     'olaplex',
     'steampod',
     'franck provost',
     'schwarzkopf',
-    // Variantes EN (PANO-88) : SOLO univoques.
+    // EN variants (PANO-88): SOLO univocal.
     'curly girl method',
     'hair routine',
   ],
   anchored: [
-    'coupe', // coupe du monde / carrosserie
-    'boucles', // buckles / boucles
-    'racines', // origines / racines (cheveux)
-    'volume', // chevauche muscu (volume de cheveux)
-    'frange', // frange générique
-    'pointe', // pointe générique
-    'coloration', // coloration générique
-    'raie', // poisson vs raie (cheveux)
-    'mulet', // poisson vs coupe mulet
-    'ghd', // sigle marque (court)
-    'loreal', // marque large / générique
-    'patine', // patine (objet) vs patine (cheveux)
-    'blowout', // brushing (EN) vs « blow out » générique
+    'coupe', // World Cup / car body
+    'boucles', // buckles / curls
+    'racines', // origins / roots (hair)
+    'volume', // overlaps muscu (hair volume)
+    'frange', // generic fringe
+    'pointe', // generic tip
+    'coloration', // generic coloring
+    'raie', // fish (ray) vs parting (hair)
+    'mulet', // fish (mullet) vs mullet cut
+    'ghd', // brand acronym (short)
+    'loreal', // broad / generic brand
+    'patine', // patina (object) vs toning (hair)
+    'blowout', // blowout (EN) vs generic « blow out »
   ],
   selfDeclared: ['coiffeur', 'coiffeuse'],
 };

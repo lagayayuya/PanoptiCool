@@ -3,44 +3,44 @@ import { defineConfig } from 'astro/config';
 import { siteZip } from './integrations/site-zip';
 import { DEFAULT_LOCALE, LOCALES } from './src/i18n/locales';
 
-// PanoptiCool — coquille Astro + îlots Preact (ADR-0002).
-// `output` reste sur le défaut « static » : build statique servi par Caddy (ADR-0001),
-// parsing/insights 100 % côté client. Aucun rendu serveur.
+// PanoptiCool — Astro shell + Preact islands (ADR-0002).
+// `output` stays on the "static" default: static build served by Caddy (ADR-0001),
+// parsing/insights 100% client-side. No server rendering.
 //
-// EN `.ts` ET NON `.mjs` : pour importer `src/i18n/locales` plutôt que recopier la liste des
-// langues ici. Deux listes de langues qui divergent, c'est un routage et un sitemap qui cessent de
-// parler de la même chose — sans que rien ne le signale.
+// `.ts` AND NOT `.mjs`: so we can import `src/i18n/locales` rather than recopy the list of
+// languages here. Two language lists that drift apart mean a routing and a sitemap that stop
+// speaking about the same thing — with nothing to signal it.
 export default defineConfig({
-  // `siteZip` empaquette la sortie du build en `panopticool-site.zip` (route B de la section IA).
-  // C'est une INTÉGRATION et non un script `postbuild` parce qu'un hébergeur lance `astro build`
-  // directement, sans passer par `npm run build` — le zip manquait alors sur le site déployé.
+  // `siteZip` packages the build output into `panopticool-site.zip` (route B of the AI section).
+  // It is an INTEGRATION and not a `postbuild` script because a host runs `astro build`
+  // directly, without going through `npm run build` — the zip was then missing on the deployed site.
   integrations: [preact(), siteZip()],
 
-  // Le domaine de production, en UN endroit. Les URLs absolues qu'exigent Open Graph, le canonical,
-  // les hreflang et le sitemap se dérivent toutes de `Astro.site` — aucune ne le réécrit.
+  // The production domain, in ONE place. The absolute URLs required by Open Graph, the canonical,
+  // the hreflang tags and the sitemap all derive from `Astro.site` — none of them rewrites it.
   site: 'https://panopti.cool',
 
   i18n: {
     locales: [...LOCALES],
     defaultLocale: DEFAULT_LOCALE,
     routing: {
-      // URLs SYMÉTRIQUES : `/fr` et `/en`, aucune langue servie nue à la racine. La raison est
-      // positionnelle et non technique (décision yuya) — un arbre asymétrique encoderait que
-      // PanoptiCool EST français d'abord, ce qu'il n'est pas.
+      // SYMMETRIC URLs: `/fr` and `/en`, no language served bare at the root. The reason is
+      // positional and not technical (yuya's decision) — an asymmetric tree would encode that
+      // PanoptiCool IS French first, which it is not.
       prefixDefaultLocale: true,
-      // La racine est une page ÉCRITE (`src/pages/index.astro`) et non une redirection générée :
-      // elle doit porter les balises d'aperçu de partage, que les robots d'unfurl lisent sur la
-      // PREMIÈRE réponse sans suivre le `meta refresh`. Ce réglage (middleware SSR, sans effet sur
-      // un build statique) est mis à `false` pour l'écrire noir sur blanc : personne d'autre
-      // qu'elle ne décide de ce que rend `/`.
+      // The root is a WRITTEN page (`src/pages/index.astro`) and not a generated redirect:
+      // it must carry the share-preview tags that unfurl bots read on the FIRST response without
+      // following the `meta refresh`. This setting (SSR middleware, no effect on a static build)
+      // is set to `false` to spell it out in black and white: nobody other than the page itself
+      // decides what `/` renders.
       redirectToDefaultLocale: false,
     },
   },
 
-  // Les URLs d'avant la mise en langues, déjà partagées. Astro rend ici de petites pages de
-  // redirection : suffisant pour un humain et pour un moteur, insuffisant pour un aperçu de
-  // partage (pas de balises Open Graph). C'est assumé — ces deux chemins-là ne s'affichent pas en
-  // carte dans une conversation. La racine, elle, si : d'où la page écrite.
+  // The URLs from before the multi-language rollout, already shared. Astro renders small redirect
+  // pages here: enough for a human and for a search engine, not enough for a share preview
+  // (no Open Graph tags). This is deliberate — those two paths don't display as a card in a
+  // conversation. The root, however, does: hence the written page.
   redirects: {
     '/analyse': '/fr/analyse',
     '/mentions-legales': '/fr/mentions-legales',

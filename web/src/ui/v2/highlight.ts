@@ -1,26 +1,26 @@
-// Surlignage des mots déclencheurs dans un texte-source (ex-`evidence-v2.ts`).
+// Highlighting of trigger words in a source text (ex-`evidence-v2.ts`).
 //
-// Extrait tel quel de `evidence-v2.ts`, retiré au lot A1 : ce module ne résolvait plus rien une fois
-// le magasin de preuves supprimé (la preuve porte son verbatim), mais le SURLIGNAGE, lui, reste un
-// mécanisme de rendu à part entière — la maquette « ThemeCardNavy » souligne le mot repéré. Aucune
-// ligne de logique n'a changé.
+// Extracted as is from `evidence-v2.ts`, removed at batch A1: this module resolved nothing anymore once
+// the evidence store was removed (the evidence carries its verbatim), but the HIGHLIGHTING, for its part, stays a
+// rendering mechanism in its own right — the « ThemeCardNavy » mockup underlines the spotted word. No
+// line of logic has changed.
 
-/** Fragment de texte-source, marqué ou non (surlignage des mots déclencheurs). */
+/** Fragment of source text, marked or not (highlighting of trigger words). */
 export interface TextPart {
   text: string;
   marked: boolean;
 }
 
-/** Découpe `text` en fragments marqués/non marqués selon `terms` (insensible à la casse) — le
- * mécanisme de surlignage de la maquette. Sans terme : un seul fragment non marqué.
+/** Splits `text` into marked/unmarked fragments according to `terms` (case-insensitive) — the
+ * mockup's highlighting mechanism. Without a term: a single unmarked fragment.
  *
- * Frontières de mot UNICODE-SAFE (pas `\b`, ASCII-only en JS — casserait sur les accents : « série »,
- * « déjà »). Lookarounds `(?<![\p{L}\p{N}])…(?![\p{L}\p{N}])` avec `giu`, même logique de frontière que
- * le détecteur (`detect.ts` — `isAlnum`/frontières de mot). Sans ça, un marqueur matchait un MORCEAU
- * de mot voisin (« série » surligné à l'intérieur de « sérieux ») — un terme qui n'a jamais déclenché
- * se présentait comme preuve (bug d'affichage, le moteur lui-même ne renvoie que les vraies surfaces).
- * Termes triés du plus long au plus court : à position égale, la regex retient le PREMIER de
- * l'alternation — trier évite qu'un terme court masque un terme long qui le contient. */
+ * UNICODE-SAFE word boundaries (not `\b`, ASCII-only in JS — would break on accents: « série »,
+ * « déjà »). Lookarounds `(?<![\p{L}\p{N}])…(?![\p{L}\p{N}])` with `giu`, same boundary logic as
+ * the detector (`detect.ts` — `isAlnum`/word boundaries). Without it, a marker matched a PIECE
+ * of a neighboring word (« série » highlighted inside « sérieux ») — a term that never triggered
+ * presented itself as evidence (a display bug, the engine itself only returns the real surfaces).
+ * Terms sorted from longest to shortest: at equal position, the regex keeps the FIRST of
+ * the alternation — sorting avoids a short term masking a long term that contains it. */
 export function splitTriggerTerms(text: string, terms: readonly string[] | undefined): TextPart[] {
   if (terms === undefined || terms.length === 0) {
     return [{ text, marked: false }];

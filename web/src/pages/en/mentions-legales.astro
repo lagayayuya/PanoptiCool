@@ -1,18 +1,18 @@
 ---
-// Page légale ANGLAISE — jumelle de `fr/mentions-legales.astro`. Page de TEXTE : Astro pur, aucun
-// îlot, zéro JS, comme sa jumelle.
+// ENGLISH legal page — twin of `fr/mentions-legales.astro`. A TEXT page: pure Astro, no
+// island, zero JS, like its twin.
 //
-// ⚠ CE TEXTE N'EST PAS LE TEXTE QUI ENGAGE, et la page le dit elle-même en dernière ligne.
-// « Mentions légales » est une obligation du droit FRANÇAIS (LCEN art. 6-III) ; *legal notice* en
-// est l'étiquette la plus proche, pas le régime. Deux pages qui se prétendraient toutes deux
-// engageantes se disputeraient l'autorité dans deux droits différents — d'où le renvoi explicite
-// vers la version française, qui n'existe pas dans le français et n'est donc pas une traduction.
+// ⚠ THIS TEXT IS NOT THE BINDING TEXT, and the page says so itself in the last line.
+// « Mentions légales » is an obligation of FRENCH law (LCEN art. 6-III); *legal notice* is
+// its closest label, not the regime. Two pages both claiming to be
+// binding would contend for authority in two different bodies of law — hence the explicit reference
+// to the French version, which does not exist in the French and is therefore not a translation.
 //
-// Trois qualifications ne traversent PAS et sont rendues en sens ordinaire, jamais en équivalent
-// statutaire inventé : « édité à titre non professionnel et sans but lucratif » (régime de
-// divulgation allégé, propre au droit français), « hébergeur » (obligation française, gardée comme
-// simple information), et la portée de « au sens du RGPD » — exacte, mais muette sur le CCPA ou
-// tout autre régime que ce texte, lu hors UE, ne prétend pas couvrir.
+// Three qualifications do NOT cross over and are rendered in their ordinary sense, never in an invented
+// statutory equivalent: « édité à titre non professionnel et sans but lucratif » (a lightened
+// disclosure regime, specific to French law), « hébergeur » (a French obligation, kept as
+// mere information), and the scope of « au sens du RGPD » — exact, but silent on the CCPA or
+// any other regime this text, read outside the EU, does not claim to cover.
 
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
@@ -21,9 +21,9 @@ import '@fontsource/jetbrains-mono/latin-700.css';
 import { DEFAULT_LOCALE, HTML_LANG, type Locale, localePath } from '../../i18n/locales';
 import SiteHead from '../../ui/SiteHead.astro';
 
-// La langue vient du DOSSIER de la page, elle n'est pas écrite ici : c'est ce qui rend
-// `<html lang>` vrai par construction dans chaque arbre de langue — et `i18n/current.ts`,
-// qui lit cet attribut pour fabriquer les liens des îlots, en dépend entièrement.
+// The language comes from the page's FOLDER, it is not written here: it is what makes
+// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
+// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 ---
 

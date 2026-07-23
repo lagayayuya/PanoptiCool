@@ -1,65 +1,65 @@
-// GOLDEN DE RENDU — LES SURFACES QUE `render-golden` NE VOIT PAS.
+// RENDER GOLDEN — THE SURFACES `render-golden` DOES NOT SEE.
 //
-// POURQUOI CE FICHIER EXISTE. `render-golden.test.ts` monte `ResultsView` SANS `aiSource`. Il ne
-// rend donc NI `AiSection` (montée derrière `aiSource !== undefined`), NI `LandingPage`, NI
-// `AnalysisPage` — et pas davantage `SiteHeader`/`SiteFooter`, qu'aucune de ses vues n'inclut.
-// Or ce sont exactement les fichiers qui portent le PLUS de prose. L'obligation de CLAUDE.md
-// (« tout changement de comportement se prouve par un golden à diff nul ») ne couvrait donc en
-// pratique qu'une fraction de ce que le produit dit. Ce fichier étend le filet à ces surfaces
-// AVANT qu'on y déplace quoi que ce soit : un déplacement sous filet est une preuve, un
-// déplacement sans filet est une bonne intention.
+// WHY THIS FILE EXISTS. `render-golden.test.ts` mounts `ResultsView` WITHOUT `aiSource`. It therefore
+// renders NEITHER `AiSection` (mounted behind `aiSource !== undefined`), NOR `LandingPage`, NOR
+// `AnalysisPage` — nor `SiteHeader`/`SiteFooter`, which none of its views includes.
+// Yet these are exactly the files that carry the MOST prose. The CLAUDE.md obligation
+// (« every change of behavior is proven by a zero-diff golden ») therefore in
+// practice covered only a fraction of what the product says. This file extends the net to these surfaces
+// BEFORE anything is moved there: a move under a net is a proof, a
+// move without a net is a good intention.
 //
-// POURQUOI LES ÉTATS SONT SEMÉS, ET PAS PILOTÉS. `preact-render-to-string` est SYNCHRONE : il
-// n'exécute AUCUN `useEffect`. Monter `AiSection` avec une vraie `source` ne rendrait donc que
-// l'état INITIAL (`items: loading`, `probe: idle`, run vide) — c'est-à-dire presque aucune de ses
-// phrases. Mocker le worker ou le réseau n'y changerait rien : l'effet qui consomme la réponse ne
-// tourne pas. Les états qui portent la prose sont donc SEMÉS à l'initialisation du `useState`,
-// exactement comme `render-golden` force ses déplis à `true`.
+// WHY THE STATES ARE SEEDED, AND NOT DRIVEN. `preact-render-to-string` is SYNCHRONOUS: it
+// runs NO `useEffect`. Mounting `AiSection` with a real `source` would therefore render only
+// the INITIAL state (`items: loading`, `probe: idle`, empty run) — that is almost none of its
+// sentences. Mocking the worker or the network would change nothing: the effect that consumes the
+// response does not run. The states that carry the prose are therefore SEEDED at the `useState`
+// initialization, exactly as `render-golden` forces its disclosures to `true`.
 //
-// CE QUE CE MÉCANISME SUPPOSE, et pourquoi c'est tenable ICI : que l'ORDRE et la FORME des
-// `useState` ne bougent pas. Une extraction de prose remplace `'littéral'` par `UI.x` — elle
-// n'ajoute ni ne retire un hook. La graine n'a donc pas à survivre à une refonte de `AiSection` :
-// elle doit survivre à CE diff-là, et elle le fait. Si un jour un hook est ajouté, ce fichier
-// tombera bruyamment — ce qui est le comportement voulu, pas une fragilité subie.
+// WHAT THIS MECHANISM ASSUMES, and why it is tenable HERE: that the ORDER and the FORM of the
+// `useState` do not move. A prose extraction replaces `'literal'` with `UI.x` — it
+// neither adds nor removes a hook. The seed therefore need not survive a rework of `AiSection`:
+// it must survive THAT diff, and it does. If one day a hook is added, this file
+// will fall noisily — which is the intended behavior, not a fragility suffered.
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md. Ce fichier a été écrit POUR combler la frontière d'un autre golden : il
-// serait particulièrement malvenu qu'il taise la sienne.
-//   - LES ÉTATS NON ÉNUMÉRÉS. Les scénarios ci-dessous sèment un jeu d'états FINI. Restent hors
-//     champ : `items: error`, `probe: checking`, `verification: exact`/`checking`, un run EN COURS
-//     (`running: true`), un run INTERROMPU, et les messages d'erreur de lancement. Chacun porte de
-//     la prose que rien ne fige. `probe: error` en faisait partie et n'en fait PLUS : ses trois
-//     issues (`granted`/`blocked`/`unknown`) sont désormais semées, parce qu'elles instruisent
-//     quelqu'un sur sa propre machine et qu'une phrase fausse y coûte plus qu'ailleurs (ADR-0006) ;
-//   - LES COMBINAISONS D'ENVIRONNEMENT NON SEMÉES (itération 2026-07-20). Les cas ci-dessous fixent
-//     un point par discours — Firefox, Chromium, WebKit, inconnu, localhost abouti, route B — pas le
-//     produit cartésien : moteur × permission × route × localhost ferait des dizaines de rendus.
-//     Restent notamment hors champ : localhost avec serveur ÉTEINT, `probe: error` sous Firefox à
-//     permission LUE (`granted`/`blocked`), et les commandes Windows/Linux (l'OS semé est toujours
-//     le repli macOS — `localSiteCommand` par OS se fige dans `ai/items.test.ts`) ;
-//   - LES VOLUMES ATYPIQUES. Comme le golden voisin, les scénarios utilisent des volumes
-//     plausibles (3, 40, 4 000 items) — donc PLURIELS. Les accords au singulier et à zéro ne sont
-//     pas atteints ici : ils se fixent dans `ui/copy.test.ts` ;
-//   - LES CARTES SENSIBLES, DONC L'ÉVENTAIL DE LECTURES. Ce fichier monte l'accueil, le parcours
-//     d'analyse, la section IA et le chrome — jamais `ResultsView`. Les deux goldens réunis n'ont
-//     donc JAMAIS rendu d'éventail en mode `equal` : la persona de démo produit un constat NOMMÉ,
-//     donc `ranked`. La frontière est STRUCTURELLE — la persona est écrite à l'aveugle, comme une
-//     personne, si bien que ce qu'elle n'exerce pas n'est le choix de personne, et que ce que
-//     personne n'a décidé d'omettre, personne ne pense à l'écrire. Un défaut a vécu exactement là ;
-//     il est couvert par `fan-readings.test.ts` ;
-//   - LE COMPORTEMENT. C'est du rendu de chaîne : aucun clic, aucune saisie, aucun effet. Un
-//     bouton qui n'appelle plus rien passerait sans bruit ;
-//   - LE CSS, retiré par `readable()` comme dans le golden voisin ;
-//   - LA VÉRACITÉ DU TEXTE. Un filet fige ce qui est écrit, jamais si c'est vrai ou bien tourné —
-//     la relecture du wording reste humaine (cf. l'en-tête de `ui/copy.ts`).
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+// CLAUDE.md obligation. This file was written TO fill the border of another golden: it
+// would be particularly ill-advised for it to hush its own.
+//   - THE NON-ENUMERATED STATES. The scenarios below seed a FINITE set of states. Out of
+//     scope remain: `items: error`, `probe: checking`, `verification: exact`/`checking`, a run IN PROGRESS
+//     (`running: true`), an INTERRUPTED run, and the launch error messages. Each carries
+//     prose that nothing freezes. `probe: error` was part of it and is NO LONGER: its three
+//     outcomes (`granted`/`blocked`/`unknown`) are now seeded, because they instruct
+//     someone on their own machine and a false sentence costs more there than elsewhere (ADR-0006);
+//   - THE NON-SEEDED ENVIRONMENT COMBINATIONS (2026-07-20 iteration). The cases below fix
+//     one point per discourse — Firefox, Chromium, WebKit, unknown, successful localhost, route B — not the
+//     cartesian product: engine × permission × route × localhost would make dozens of renders.
+//     Notably out of scope remain: localhost with the server OFF, `probe: error` under Firefox with
+//     READ permission (`granted`/`blocked`), and the Windows/Linux commands (the seeded OS is always
+//     the macOS fallback — `localSiteCommand` per OS is frozen in `ai/items.test.ts`);
+//   - THE ATYPICAL VOLUMES. Like the neighboring golden, the scenarios use
+//     plausible volumes (3, 40, 4,000 items) — hence PLURAL. The singular and zero agreements are
+//     not reached here: they are fixed in `ui/copy.test.ts`;
+//   - THE SENSITIVE CARDS, HENCE THE FAN OF READINGS. This file mounts the home page, the analysis
+//     journey, the AI section and the chrome — never `ResultsView`. The two goldens combined have
+//     therefore NEVER rendered a fan in `equal` mode: the demo persona produces a NAMED finding,
+//     hence `ranked`. The border is STRUCTURAL — the persona is written blind, like a
+//     person, so that what it does not exercise is no one's choice, and what
+//     no one decided to omit, no one thinks to write down. A defect lived exactly there;
+//     it is covered by `fan-readings.test.ts`;
+//   - THE BEHAVIOR. This is string rendering: no click, no input, no effect. A
+//     button that calls nothing anymore would pass silently;
+//   - THE CSS, removed by `readable()` as in the neighboring golden;
+//   - THE TRUTHFULNESS OF THE TEXT. A net freezes what is written, never whether it is true or well
+//     turned — the rereading of the wording stays human (cf. the header of `ui/copy.ts`).
 
 import { h } from 'preact';
 import { render } from 'preact-render-to-string';
 import { beforeAll, expect, it, vi } from 'vitest';
 
-// --- Semis d'état ----------------------------------------------------------------------------
-// `SEED` est remplacé AVANT chaque rendu. Les initialiseurs PARESSEUX (`useState(() => …)`, dont
-// `useIsMobile`) passent intacts : les toucher casserait leur contrat.
+// --- State seeding ----------------------------------------------------------------------------
+// `SEED` is replaced BEFORE each render. The LAZY initializers (`useState(() => …)`, including
+// `useIsMobile`) pass through intact: touching them would break their contract.
 let SEED: (init: unknown) => unknown = (v) => v;
 
 vi.mock('preact/hooks', async (importOriginal) => {
@@ -71,8 +71,8 @@ vi.mock('preact/hooks', async (importOriginal) => {
   };
 });
 
-// `useIsMobile` lit `matchMedia`, absent en environnement Node — il rendrait TOUJOURS desktop.
-// On le pilote donc directement, pour figer AUSSI les variantes mobiles des maquettes.
+// `useIsMobile` reads `matchMedia`, absent in a Node environment — it would ALWAYS render desktop.
+// We therefore drive it directly, to freeze the mobile variants of the mockups AS WELL.
 let MOBILE = false;
 vi.mock('./useIsMobile', () => ({
   MOBILE_QUERY: '(max-width: 720px)',
@@ -92,13 +92,13 @@ beforeAll(() => {
   vi.setSystemTime(FIXED_NOW);
 });
 
-/** Même convention que `render-golden` : on garde structure et texte, on jette le CSS. */
+/** Same convention as `render-golden`: we keep structure and text, we drop the CSS. */
 function readable(html: string): string {
   return html.replace(/ style="[^"]*"/g, '').replace(/></g, '>\n<');
 }
 
-// --- Graines ----------------------------------------------------------------------------------
-// Textes SYNTHÉTIQUES (invariant du dépôt : aucune valeur d'un vrai export n'entre ici).
+// --- Seeds ----------------------------------------------------------------------------------
+// SYNTHETIC texts (repo invariant: no value from a real export enters here).
 function items(n: number) {
   return Array.from({ length: n }, (_, i) => ({
     index: i,
@@ -108,8 +108,9 @@ function items(n: number) {
   }));
 }
 
-/** Rendu avec `run` TERMINÉ : c'est le seul état qui affiche le pied de bloc portant les durées et
- * le débit (`tok/s`) — les sites de formatage décimal corrigés sans filet au lot précédent. */
+/** Render with `run` FINISHED: it is the only state that displays the block footer carrying the
+ * durations and the throughput (`tok/s`) — the decimal-formatting sites fixed without a net in the
+ * previous batch. */
 const DONE_RUN = {
   text: 'Sortie synthétique du modèle local.',
   running: false,
@@ -119,21 +120,21 @@ const DONE_RUN = {
   elapsedMs: 8900,
 };
 
-/** Le sondage joint, cas par défaut de la plupart des scénarios. */
+/** The reachable probe, the default case of most scenarios. */
 const PROBE_OK = { kind: 'ok', modelId: 'modele-local-test', contextWindow: 8192 };
 
 /**
- * `probe` est PARAMÉTRABLE parce que les phrases d'échec ne sont rendues par rien d'autre. Elles
- * vivent toutes derrière `probe.kind === 'error'`, que ce fichier a longtemps déclaré hors champ —
- * si bien qu'un changement de leur texte laissait le golden VERT. Mesuré : réécrire `step3WarnIdle`
- * et brancher trois messages d'échec n'a produit aucun diff tant que ces scénarios n'existaient pas.
+ * `probe` is PARAMETRIZABLE because the failure sentences are rendered by nothing else. They
+ * all live behind `probe.kind === 'error'`, which this file long declared out of scope —
+ * so that a change in their text left the golden GREEN. Measured: rewriting `step3WarnIdle`
+ * and wiring three failure messages produced no diff as long as these scenarios did not exist.
  *
- * `env` et `route` sont PARAMÉTRABLES pour la même raison (itération 2026-07-20) : la bannière
- * navigateur, les notes de permission et la route B ne se rendent que sur un environnement précis —
- * en Node, l'UA ne nomme aucun moteur et la page n'est pas sur localhost, donc sans semis ces
- * phrases n'existeraient sur le chemin d'aucun rendu. Les cibles se reconnaissent à la FORME de
- * leur initialiseur : l'état d'environnement porte une clé `browser`, celui de route une clé
- * `choice` — c'est le contrat que `AiSection` documente sur ses `useState`.
+ * `env` and `route` are PARAMETRIZABLE for the same reason (2026-07-20 iteration): the browser
+ * banner, the permission notes and route B are rendered only on a precise environment —
+ * in Node, the UA names no engine and the page is not on localhost, so without seeding these
+ * sentences would exist on the path of no render. The targets are recognized by the FORM of
+ * their initializer: the environment state carries a `browser` key, the route one a `choice`
+ * key — that is the contract `AiSection` documents on its `useState`.
  */
 function aiSeed(
   itemCount: number,
@@ -141,7 +142,7 @@ function aiSeed(
   opts: { env?: Record<string, unknown>; route?: 'site' | 'local' } = {},
 ) {
   return (init: unknown): unknown => {
-    if (init === false) return true; // déplis ouverts, comme dans `render-golden`
+    if (init === false) return true; // disclosures open, as in `render-golden`
     if (init !== null && typeof init === 'object') {
       const o = init as Record<string, unknown>;
       if (o.kind === 'loading') return { kind: 'ready', items: items(itemCount) };
@@ -181,8 +182,8 @@ const CASES: {
   },
   { name: 'footer', mobile: false, seed: (v) => v, node: () => h(SiteFooter, null) },
 
-  // `LandingPage` : le `false → true` ouvre la modale de consentement, qui porte l'essentiel de
-  // la prose juridique de la page. Fermée, le golden ne verrait que le héros.
+  // `LandingPage`: the `false → true` opens the consent modal, which carries most of
+  // the page's legal prose. Closed, the golden would see only the hero.
   {
     name: 'landing-desktop',
     mobile: false,
@@ -196,13 +197,13 @@ const CASES: {
     node: () => h(LandingPage, null),
   },
 
-  // `AnalysisPage` : l'état `output` est déjà couvert par `render-golden` (c'est `ResultsView`).
-  // Ce qui ne l'était pas, c'est la zone de dépôt et le message d'échec.
+  // `AnalysisPage`: the `output` state is already covered by `render-golden` (it is `ResultsView`).
+  // What was not covered is the drop zone and the failure message.
   { name: 'analyse-idle', mobile: false, seed: (v) => v, node: () => h(AnalysisPage, null) },
   { name: 'analyse-idle-mobile', mobile: true, seed: (v) => v, node: () => h(AnalysisPage, null) },
 
-  // `AiSection` : deux volumes, parce que la bannière « peu de données » et le compteur d'envoi
-  // sont sur des branches OPPOSÉES du même seuil (`LOW_DATA_THRESHOLD`).
+  // `AiSection`: two volumes, because the « peu de données » banner and the send counter
+  // are on OPPOSITE branches of the same threshold (`LOW_DATA_THRESHOLD`).
   {
     name: 'ai-section',
     mobile: false,
@@ -215,17 +216,17 @@ const CASES: {
     seed: aiSeed(3),
     node: () => h(AiSection, { source: async () => new Uint8Array() }),
   },
-  // Volume ÉLEVÉ : au-delà du budget de tokens, la sélection tronque et bascule de tier — c'est
-  // le seul chemin qui rend les phrases « priorité au plus récent » et leurs compteurs.
+  // HIGH volume: beyond the token budget, the selection truncates and switches tier — it is
+  // the only path that renders the « priorité au plus récent » sentences and their counters.
   {
     name: 'ai-section-truncated',
     mobile: false,
     seed: aiSeed(4000),
     node: () => h(AiSection, { source: async () => new Uint8Array() }),
   },
-  // Les QUATRE états du sondage qui portent une instruction. Chacun dit à quelqu'un quoi faire de sa
-  // propre machine ; c'est la surface où une phrase fausse coûte le plus cher (ADR-0006), et c'était
-  // la seule que rien ne figeait.
+  // The FOUR probe states that carry an instruction. Each tells someone what to do with their
+  // own machine; it is the surface where a false sentence costs the most (ADR-0006), and it was
+  // the only one nothing froze.
   {
     name: 'ai-section-probe-idle',
     mobile: false,
@@ -244,8 +245,8 @@ const CASES: {
     seed: aiSeed(40, { kind: 'error', gate: 'blocked' }),
     node: () => h(AiSection, { source: async () => new Uint8Array() }),
   },
-  // Permission illisible ET moteur non reconnu : le cas où l'aide ne nomme aucune cause et renvoie
-  // vers la route B (ADR-0006, décision 4).
+  // Unreadable permission AND unrecognized engine: the case where the help names no cause and refers
+  // to route B (ADR-0006, decision 4).
   {
     name: 'ai-section-probe-unknown',
     mobile: false,
@@ -253,9 +254,9 @@ const CASES: {
     node: () => h(AiSection, { source: async () => new Uint8Array() }),
   },
 
-  // Les TROIS discours de la bannière navigateur (ADR-0006 : deux marchent, un est un mur), plus le
-  // parcours de la route B et le mode localhost. Chaque cas rend des phrases qu'aucun autre chemin
-  // ne rend — bannière, note de permission, « indisponible avec Safari », « Tout est prêt ».
+  // The THREE discourses of the browser banner (ADR-0006: two work, one is a wall), plus the
+  // route B journey and the localhost mode. Each case renders sentences that no other path
+  // renders — banner, permission note, « indisponible avec Safari », « Tout est prêt ».
   {
     name: 'ai-section-firefox',
     mobile: false,
@@ -268,8 +269,8 @@ const CASES: {
     seed: aiSeed(40, PROBE_OK, { env: { browser: { name: 'Chrome', engine: 'chromium' } } }),
     node: () => h(AiSection, { source: async () => new Uint8Array() }),
   },
-  // Firefox reconnu + échec à permission illisible : la seule aide qui ose nommer la fenêtre
-  // spontanée (comportement mesuré, ADR-0006).
+  // Firefox recognized + failure with unreadable permission: the only help that dares name the
+  // spontaneous window (measured behavior, ADR-0006).
   {
     name: 'ai-section-firefox-down',
     mobile: false,
@@ -280,14 +281,14 @@ const CASES: {
     ),
     node: () => h(AiSection, { source: async () => new Uint8Array() }),
   },
-  // WebKit : option A désactivée, route forcée sur B, carte 2 en attente de la copie locale.
+  // WebKit: option A disabled, route forced to B, card 2 awaiting the local copy.
   {
     name: 'ai-section-safari',
     mobile: false,
     seed: aiSeed(40, { kind: 'idle' }, { env: { browser: { name: 'Safari', engine: 'webkit' } } }),
     node: () => h(AiSection, { source: async () => new Uint8Array() }),
   },
-  // Route B choisie depuis un navigateur compatible : mêmes étapes 4-5, carte 2 en attente.
+  // Route B chosen from a compatible browser: same steps 4-5, card 2 waiting.
   {
     name: 'ai-section-route-local',
     mobile: false,
@@ -298,7 +299,7 @@ const CASES: {
     ),
     node: () => h(AiSection, { source: async () => new Uint8Array() }),
   },
-  // Mode localhost abouti (route B, ou dev) : plus de bannière, « Tout est prêt », carte 2 active.
+  // Successful localhost mode (route B, or dev): no more banner, « Tout est prêt », card 2 active.
   {
     name: 'ai-section-localhost-ready',
     mobile: false,
@@ -314,20 +315,20 @@ const CASES: {
   { name: 'ai-mobile-notice', mobile: true, seed: (v) => v, node: () => h(AiMobileNotice, null) },
 ];
 
-it('rendu UI — golden des surfaces hors `render-golden`', async () => {
+it('UI render — golden of the surfaces outside `render-golden`', async () => {
   const parts: string[] = [];
   for (const c of CASES) {
     MOBILE = c.mobile;
     SEED = c.seed;
-    // biome-ignore lint/suspicious/noExplicitAny: chaque cas monte un composant de props différentes.
+    // biome-ignore lint/suspicious/noExplicitAny: each case mounts a component with different props.
     parts.push(`### ${c.name}\n${readable(render(c.node() as any))}`);
   }
   SEED = (v) => v;
   MOBILE = false;
 
-  // Les QUATRE messages d'échec de `AnalysisPage`. Ils ne s'affichent qu'après un échec moteur ;
-  // les appeler directement les fige tous, y compris le « Mo » décimal corrigé sans filet au lot
-  // précédent. Tailles choisies pour rendre une décimale NON nulle (donc la virgule française).
+  // The FOUR failure messages of `AnalysisPage`. They only appear after an engine failure;
+  // calling them directly freezes them all, including the decimal « Mo » fixed without a net in the
+  // previous batch. Sizes chosen to render a NON-zero decimal (hence the French comma).
   parts.push(
     `### analyse-messages-echec\n${[
       errorMessage({

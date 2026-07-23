@@ -12,8 +12,8 @@ import {
 } from './install-help';
 import { countAiItems, extractAiItems } from './items';
 
-/** Bout en bout sur la fixture synthétique de la démo — même chemin que la page : zip → ingestion →
- * items. Aucun vrai export n'entre ici (invariant de privacy, CLAUDE.md). */
+/** End to end on the demo's synthetic fixture — same path as the page: zip → ingestion →
+ * items. No real export enters here (privacy invariant, CLAUDE.md). */
 function itemsFromSyntheticExport() {
   const ingested = ingestExportStreaming(buildSyntheticExportZip());
   if (!ingested.ok) throw new Error(`ingestion du zip synthétique impossible : ${ingested.stage}`);
@@ -21,7 +21,7 @@ function itemsFromSyntheticExport() {
 }
 
 describe('extractAiItems', () => {
-  it('extrait les deux canaux du zip de démo, triés par date, index contigus', () => {
+  it('extracts the two channels of the demo zip, sorted by date, contiguous indexes', () => {
     const items = itemsFromSyntheticExport();
     const counts = countAiItems(items);
 
@@ -33,39 +33,39 @@ describe('extractAiItems', () => {
     expect([...epochs].sort((a, b) => a - b)).toEqual(epochs);
   });
 
-  it("n'émet que du texte non vide", () => {
+  it('emits only non-empty text', () => {
     expect(itemsFromSyntheticExport().every((i) => i.text.trim().length > 0)).toBe(true);
   });
 });
 
 describe('install-help', () => {
-  it("détecte l'OS pour présélectionner le bon bouton de système", () => {
+  it('detects the OS to preselect the right system button', () => {
     expect(detectOs('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)')).toBe('macos');
     expect(detectOs('Mozilla/5.0 (Windows NT 10.0; Win64; x64)')).toBe('windows');
     expect(detectOs('Mozilla/5.0 (X11; Linux x86_64)')).toBe('linux');
-    // UA muet → repli macOS (il faut bien présélectionner un bouton ; corrigeable d'un clic).
+    // Mute UA → macOS fallback (a button must be preselected; correctable with one click).
     expect(detectOs('Node.js/22')).toBe('macos');
   });
 
-  it('installe par winget sous Windows, par brew ailleurs (méthodes officielles vérifiées)', () => {
+  it('installs via winget on Windows, via brew elsewhere (verified official methods)', () => {
     expect(installCommand('windows')).toBe('winget install --id ggml.llamacpp --exact');
     expect(installCommand('macos')).toBe('brew install llama.cpp');
     expect(installCommand('linux')).toBe('brew install llama.cpp');
   });
 
-  it('la commande de lancement télécharge le modèle elle-même (-hf) et sert sur le port attendu', () => {
+  it('the launch command downloads the model itself (-hf) and serves on the expected port', () => {
     const command = serveCommand(MODEL_CHOICES[0] as ModelChoice);
     expect(command).toContain('-hf unsloth/Ministral-3-3B-Instruct-2512-GGUF:UD-Q4_K_XL');
     expect(command).toContain('--port 8080');
     expect(command).toContain('-c 8192');
   });
 
-  it('la commande route B décompresse le zip du build et sert le site avec le modèle (--path)', () => {
+  it('the route B command unzips the build zip and serves the site with the model (--path)', () => {
     const mac = localSiteCommand('macos', MODEL_CHOICES[0] as ModelChoice);
     expect(mac).toContain(`unzip -q ${SITE_ZIP_NAME}`);
     expect(mac).toContain('--path ~/Downloads/pano-local');
     expect(mac).toContain('--port 8080');
-    // Windows passe par PowerShell : Expand-Archive et des antislashs, pas unzip.
+    // Windows goes through PowerShell: Expand-Archive and backslashes, not unzip.
     const win = localSiteCommand('windows', MODEL_CHOICES[0] as ModelChoice);
     expect(win).toContain(`Expand-Archive ${SITE_ZIP_NAME}`);
     expect(win).toContain('--path ~\\Downloads\\pano-local');

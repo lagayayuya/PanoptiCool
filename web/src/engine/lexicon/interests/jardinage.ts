@@ -1,30 +1,30 @@
-// Lexique d'intérêt `jardinage` (D2, PANO-89 lot 4) — jardinage / potager.
+// Interest lexicon `jardinage` (D2, PANO-89 batch 4) — gardening / vegetable garden.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du jardinage FR : potager, techniques, enseignes. Entités = signal public
-// générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR gardening: vegetable garden, techniques, stores. Entities = generic public
+// signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « potager », « permaculture », « semis », « bouture », « compost », « paillage »,
 //     « repiquage », « terreau », « gamm vert », « succulente ».
-//   · ANCRÉ — « jardin » (« jardin secret »), « planter » (planter quelqu'un / bug), « taille »
-//     (dimension), « semer » (« semer quelqu'un »), « plante » (plante du pied), « pousse » (pouce) : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « jardin » (« jardin secret »), « planter » (to stand someone up / a crash), « taille »
+//     (size), « semer » (« semer quelqu'un »), « plante » (sole of the foot), « pousse » (thumb): co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN réel vérifié par recherche (PlantTok / vocabulaire jardinage).
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Real EN usage verified by research (PlantTok / gardening vocabulary).
 //   · SOLO — « gardening », « planttok », « houseplant », « monstera », « aroid », « seedling »,
 //     « repotting », « potting soil », « raised bed », « composting », « allotment »,
-//     « propagation station », « plant parent » : univoques.
-//   · ANCRÉ — « propagation » (propagation d'ONDE / d'ERREUR — massif en tech), « succulent »
-//     (= SAVOUREUX, adjectif courant), « greenhouse » (« greenhouse GAS » — climat), « perennial »
+//     « propagation station », « plant parent »: univocal.
+//   · ANCHORED — « propagation » (WAVE / ERROR propagation — massive in tech), « succulent »
+//     (= TASTY, a common adjective), « greenhouse » (« greenhouse GAS » — climate), « perennial »
 //     (« a perennial problem »), « garden » (« garden variety », « beer garden »), « pruning »
-//     (élagage d'ARBRE DE DÉCISION, tech) : compagnon requis.
-//   · EXCLU — « prop » (abréviation PlantTok RÉELLE mais « props to you » / accessoire de tournage
-//     dominent très largement) → ÉCARTÉ, même en ancré.
+//     (DECISION-TREE pruning, tech): companion required.
+//   · EXCLUDED — « prop » (a REAL PlantTok abbreviation but « props to you » / film prop
+//     dominate very widely) → DISCARDED, even as anchored.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive.
 
 import type { InterestLexicon } from '../types';
 
@@ -55,7 +55,7 @@ export const JARDINAGE_LEXICON: InterestLexicon = {
     'arrosoir',
     'humus',
     'lombricompost',
-    // Variantes EN (PANO-88) : SOLO univoques (potager / plantes d'intérieur / communauté).
+    // EN variants (PANO-88): SOLO univocal (vegetable garden / houseplants / community).
     'gardening',
     'planttok',
     'houseplant',
@@ -72,20 +72,20 @@ export const JARDINAGE_LEXICON: InterestLexicon = {
   ],
   anchored: [
     'jardin', // « jardin secret » / « jardin d'enfants »
-    'planter', // planter quelqu'un / bug informatique
-    'taille', // dimension / tailler
+    'planter', // to stand someone up / a software crash
+    'taille', // size / to prune
     'semer', // « semer quelqu'un »
-    'plante', // plante du pied / verbe
-    'pousse', // pouce / pousser
-    'arroser', // arroser (au figuré)
-    'engrais', // fairly jardin mais gardé ancré
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'propagation', // propagation d'onde / d'erreur — massif en tech (EN)
-    'succulent', // = savoureux (adjectif courant, EN)
-    'greenhouse', // « greenhouse gas » — climat (EN)
+    'plante', // sole of the foot / verb
+    'pousse', // thumb / to grow
+    'arroser', // to water (figurative)
+    'engrais', // fairly gardening but kept anchored
+    // EN variants (PANO-88): ANCHORED.
+    'propagation', // wave / error propagation — massive in tech (EN)
+    'succulent', // = tasty (common adjective, EN)
+    'greenhouse', // « greenhouse gas » — climate (EN)
     'perennial', // « a perennial problem » (EN)
     'garden', // « garden variety » / « beer garden » (EN)
-    'pruning', // élagage d'arbre de décision — tech (EN)
+    'pruning', // decision-tree pruning — tech (EN)
   ],
   selfDeclared: ['jardinier', 'jardiniere'],
 };

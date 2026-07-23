@@ -1,55 +1,55 @@
-// Témoin de SYMÉTRIE du lexique `politics` — le filet qui n'existait pas quand le biais est passé.
+// SYMMETRY witness of the `politics` lexicon — the net that did not exist when the bias got through.
 //
-// ── POURQUOI CE FICHIER EXISTE ───────────────────────────────────────────────────────────────────
-// Le lexique a livré, en français, un encodage asymétrique des deux camps : les identités de gauche
-// au tier de l'IDENTITÉ (`selfDeclared`, constat NOMMÉ), celles de droite au tier des ACCUSATIONS
-// (`indirectCore`, sous le seuil quand elles sont isolées). Mesuré : « je suis anarchiste » posait
-// un constat nommé, « je suis nationaliste » n'en posait aucun.
+// ── WHY THIS FILE EXISTS ───────────────────────────────────────────────────────────────────
+// The lexicon shipped, in French, an asymmetric encoding of the two camps: the left-wing identities
+// in the IDENTITY tier (`selfDeclared`, NAMED finding), the right-wing ones in the ACCUSATIONS tier
+// (`indirectCore`, below the threshold when isolated). Measured: « je suis anarchiste » placed
+// a named finding, « je suis nationaliste » placed none.
 //
-// Personne ne l'avait écrit : chaque terme était entré pour une raison localement défendable, et le
-// défaut vivait dans la COMPOSITION, pas dans un terme. Aucune relecture ne pouvait le voir — une
-// relecture vérifie que chaque terme PRÉSENT est légitime, jamais que les ABSENTS le sont
-// symétriquement. Et aucun test ne le tenait : avant ce fichier, le mot « symétrie » n'apparaissait
-// dans aucun test du moteur.
+// No one had written it: each term entered for a locally defensible reason, and the
+// defect lived in the COMPOSITION, not in a term. No review could see it — a
+// review checks that each PRESENT term is legitimate, never that the ABSENT ones are so
+// symmetrically. And no test held it: before this file, the word « symmetry » appeared
+// in no test of the engine.
 //
-// ── CE QUE CE TÉMOIN NE COUVRE PAS — à lire AVANT de le citer ────────────────────────────────────
-// Il ne mesure PAS « l'équilibre politique » du produit. Aucun test ne peut le faire, et croire le
-// contraire serait la sur-citation exacte que ce dépôt paie sept fois. Précisément :
+// ── WHAT THIS WITNESS DOES NOT COVER — to read BEFORE citing it ────────────────────────────────────
+// It does NOT measure « the political balance » of the product. No test can do it, and believing the
+// contrary would be the exact over-citation this repo pays for seven times. Precisely:
 //
-//   · **Il mesure l'axe que J'AI CHOISI** — une partition gauche / droite / sans-camp des étiquettes
-//     d'identité, plus deux répertoires thématiques. Cette partition est un JUGEMENT, écrit à la
-//     main ci-dessous, et discutable terme à terme. Un lecteur qui la conteste conteste le témoin.
-//   · **Il ne dit rien des ABSENTS.** Un camp dont le vocabulaire manque ENTIÈREMENT au lexique
-//     passerait ce test au vert : on ne peut classer que ce qui est là. C'est la moitié du défaut
-//     d'origine que ce filet ne rattrape pas, et c'est sa limite la plus dure.
-//   · **Ce versant-ci ne couvre que le FRANÇAIS**, et le fichier en porte DEUX AUTRES qui ne
-//     mesurent pas la même chose. Citer « le témoin de symétrie » sans dire lequel des trois ne veut
-//     rien dire :
-//       — IDENTITÉS FR (ici) : les deux camps produisent-ils un constat NOMMÉ ?
-//       — IDENTITÉS EN : les deux camps atteignent-ils le MÊME ÉTAGE, sans qu'aucun ne nomme ?
-//         La propriété diffère parce qu'en anglais rien ne nomme, par construction du tier.
-//       — CHEMINS EN : combien de voies indépendantes mènent à un constat depuis chaque bord ? Cette
-//         dernière ne conclut pas, et son en-tête dit pourquoi.
-//   · **Il ne couvre que deux tiers** — `selfDeclared` et le répertoire thématique. Le registre des
-//     ÉPITHÈTES (`gaucho`, `droitard`, `facho`…) n'est pas tenu : une épithète appartient à qui la
-//     lance, l'axer reviendrait à classer des locuteurs, et ce n'est pas la même question.
-//   · **Les décomptes comptent des ENTRÉES, pas des positions politiques distinctes.** Les paires
-//     genrées (`conservateur`/`conservatrice`) pèsent deux ; l'égalité 14/14 ci-dessous est donc une
-//     égalité d'entrées, et elle ne doit pas se lire comme un équilibre du champ.
+//   · **It measures the axis I CHOSE** — a left / right / no-camp partition of the identity
+//     labels, plus two thematic repertoires. This partition is a JUDGMENT, written by
+//     hand below, and debatable term by term. A reader who contests it contests the witness.
+//   · **It says nothing of the ABSENT ones.** A camp whose vocabulary is ENTIRELY missing from the lexicon
+//     would pass this test green: one can only classify what is there. It is the half of the original
+//     defect this net does not catch, and it is its hardest limit.
+//   · **This side covers only FRENCH**, and the file carries TWO OTHERS that do not
+//     measure the same thing. Citing « the symmetry witness » without saying which of the three means
+//     nothing:
+//       — FR IDENTITIES (here): do both camps produce a NAMED finding?
+//       — EN IDENTITIES: do both camps reach the SAME STOREY, without either naming?
+//         The property differs because in English nothing names, by construction of the tier.
+//       — EN PATHS: how many independent ways lead to a finding from each side? This
+//         last one does not conclude, and its header says why.
+//   · **It covers only two tiers** — `selfDeclared` and the thematic repertoire. The register of
+//     EPITHETS (`gaucho`, `droitard`, `facho`…) is not held: an epithet belongs to whoever
+//     throws it, axing it would amount to classifying speakers, and it is not the same question.
+//   · **The counts count ENTRIES, not distinct political positions.** The gendered
+//     pairs (`conservateur`/`conservatrice`) weigh two; the 14/14 equality below is therefore an
+//     equality of entries, and it must not be read as a balance of the field.
 //
-// Ce qu'il tient, en revanche, il le tient dur : il rougit si quelqu'un ajoute une identité à UN
-// SEUL camp, et il rougit si une identité présente cesse de produire un constat nommé.
+// What it holds, in contrast, it holds hard: it goes red if someone adds an identity to ONE
+// SINGLE camp, and it goes red if a present identity stops producing a named finding.
 //
-// ── COMMENT IL ROUGIT, en DEUX temps — vérifié par mutation, dans les deux sens ──────────────────
-// L'ajout d'une identité ne fait pas rougir le décompte tout de suite, et c'est voulu :
-//   1. le terme ajouté n'est pas classé → l'EXHAUSTIVITÉ rougit. L'auteur doit dire de quel côté il
-//      le range, ce qui est le geste qui manquait ;
-//   2. une fois classé, le DÉCOMPTE rougit en nommant le camp (`{ right: 15 }` contre `{ right: 14 }`).
-// Deux arrêts valent mieux qu'un : le premier force le jugement, le second force à regarder l'autre
-// camp. Un retrait, lui, rougit en un seul temps (exhaustivité inverse + décompte).
+// ── HOW IT GOES RED, in TWO steps — verified by mutation, in both directions ──────────────────
+// Adding an identity does not make the count go red right away, and it is intended:
+//   1. the added term is not classified → the EXHAUSTIVENESS goes red. The author must say which side
+//      they file it on, which is the gesture that was missing;
+//   2. once classified, the COUNT goes red by naming the camp (`{ right: 15 }` against `{ right: 14 }`).
+// Two stops are better than one: the first forces the judgment, the second forces looking at the other
+// camp. A removal, in turn, goes red in a single step (inverse exhaustiveness + count).
 //
-// Mutations vérifiées : ajout à droite · ajout à gauche · retrait à droite · retour d'une identité
-// de droite au seul tier des accusations, c'est-à-dire le défaut d'origine reproduit à l'identique.
+// Verified mutations: addition on the right · addition on the left · removal on the right · return of a right-wing
+// identity to the accusations tier alone, that is, the original defect reproduced identically.
 
 import { describe, expect, it } from 'vitest';
 import { WIRED_LEXICONS } from '../lexicon/index';
@@ -57,15 +57,15 @@ import { POLITICS_LEXICON } from '../lexicon/politics';
 import { detectLabels } from './detect';
 
 /**
- * La PARTITION — le jugement que ce témoin met par écrit, pour qu'il soit contestable.
+ * The PARTITION — the judgment this witness puts in writing, so it is contestable.
  *
- * Une étiquette est `neutral` quand elle ne désigne pas un camp : le registre de l'ENGAGEMENT
- * (`militant`), le centre, l'absence revendiquée de camp. Ce troisième seau existe pour que la
- * partition n'ait pas à forcer un camp sur des termes qui n'en portent pas — sans lui, on
- * fabriquerait de la symétrie en rangeant arbitrairement.
+ * A label is `neutral` when it does not designate a camp: the register of ENGAGEMENT
+ * (`militant`), the center, the claimed absence of a camp. This third bucket exists so the
+ * partition does not have to force a camp on terms that carry none — without it, one would
+ * fabricate symmetry by filing arbitrarily.
  */
 const AXIS: Readonly<Record<string, 'left' | 'right' | 'neutral'>> = {
-  // Gauche.
+  // Left.
   'de gauche': 'left',
   "d'extreme gauche": 'left',
   ecolo: 'left',
@@ -80,7 +80,7 @@ const AXIS: Readonly<Record<string, 'left' | 'right' | 'neutral'>> = {
   feministe: 'left',
   syndique: 'left',
   syndiquee: 'left',
-  // Droite.
+  // Right.
   'de droite': 'right',
   "d'extreme droite": 'right',
   royaliste: 'right',
@@ -95,7 +95,7 @@ const AXIS: Readonly<Record<string, 'left' | 'right' | 'neutral'>> = {
   conservatrice: 'right',
   liberal: 'right',
   liberale: 'right',
-  // Sans camp — engagement, centre, refus de camp.
+  // No camp — engagement, center, refusal of a camp.
   militant: 'neutral',
   militante: 'neutral',
   centriste: 'neutral',
@@ -107,37 +107,37 @@ const SELF_DECLARED = POLITICS_LEXICON.selfDeclaredFr ?? [];
 const sideOf = (side: 'left' | 'right' | 'neutral') =>
   SELF_DECLARED.filter((t) => AXIS[t] === side);
 
-/** L'étage rendu par une auto-déclaration isolée — le geste que le défaut d'origine rendait muet. */
+/** The storey returned by an isolated self-declaration — the gesture the original defect made mute. */
 const stageOfSelfDeclaration = (term: string): string => {
   const out = detectLabels([`je suis ${term} depuis toujours`], WIRED_LEXICONS);
   const politics = out.find((d) => d.label === 'politics');
   return politics === undefined ? 'RIEN' : politics.stage;
 };
 
-describe('symétrie politics — la partition est exhaustive', () => {
-  // PROPRIÉTÉ D'EXHAUSTIVITÉ, et c'est elle qui rend le témoin vivant plutôt que décoratif : une
-  // entrée ajoutée au lexique sans être classée fait rougir ici. L'auteur du prochain terme est
-  // donc OBLIGÉ de dire de quel côté il le range — c'est-à-dire de regarder l'autre côté.
-  it('chaque étiquette du lexique est classée (sinon le témoin serait aveugle aux ajouts)', () => {
+describe('politics symmetry — the partition is exhaustive', () => {
+  // EXHAUSTIVENESS PROPERTY, and it is what makes the witness alive rather than decorative: an
+  // entry added to the lexicon without being classified goes red here. The author of the next term is
+  // therefore OBLIGED to say which side they file it on — that is, to look at the other side.
+  it('each lexicon label is classified (otherwise the witness would be blind to additions)', () => {
     const nonClassees = SELF_DECLARED.filter((t) => AXIS[t] === undefined);
     expect(nonClassees).toEqual([]);
   });
 
-  // Le sens INVERSE de la même couverture (CLAUDE.md : elle se vérifie dans les deux sens). Sans
-  // lui, la partition garderait des termes fantômes après un retrait du lexique, et son décompte
-  // mesurerait une liste morte.
-  it('chaque étiquette classée existe encore dans le lexique', () => {
+  // The INVERSE direction of the same coverage (CLAUDE.md: it is verified in both directions). Without
+  // it, the partition would keep phantom terms after a lexicon removal, and its count
+  // would measure a dead list.
+  it('each classified label still exists in the lexicon', () => {
     const fantomes = Object.keys(AXIS).filter((t) => !SELF_DECLARED.includes(t));
     expect(fantomes).toEqual([]);
   });
 });
 
-describe('symétrie politics — les deux camps sont peuplés au MÊME tier', () => {
-  // LE DÉCOMPTE FIGÉ — le déclencheur qu'on veut : ajouter une identité à un seul camp change un
-  // de ces trois nombres, et le test rougit en nommant lequel. Ce ne sont pas des cibles, ce sont
-  // des valeurs RELEVÉES puis gelées ; les faire bouger est légitime, les faire bouger d'un seul
-  // côté sans le dire ne l'est pas.
-  it('le décompte par camp est celui qui a été relevé', () => {
+describe('politics symmetry — both camps are populated at the SAME tier', () => {
+  // THE FROZEN COUNT — the trigger we want: adding an identity to a single camp changes one of these
+  // three numbers, and the test goes red by naming which. These are not targets, they are RECORDED
+  // values then frozen; moving them is legitimate, moving them on one side only without saying so is
+  // not.
+  it('the per-camp count is the one that was recorded', () => {
     expect({
       left: sideOf('left').length,
       right: sideOf('right').length,
@@ -145,27 +145,27 @@ describe('symétrie politics — les deux camps sont peuplés au MÊME tier', ()
     }).toEqual({ left: 14, right: 14, neutral: 5 });
   });
 
-  // LA PROPRIÉTÉ DE FOND, et la seule qui parle de comportement plutôt que de liste : une identité
-  // isolée, dans le cadre le plus ordinaire, doit produire un constat NOMMÉ — des deux côtés.
-  // C'est exactement ce qui était faux avant réparation, et un décompte équilibré ne l'aurait pas
-  // révélé : `nationaliste` était DANS le lexique, au mauvais tier.
-  it('toute identité classée produit un constat NOMMÉ, quel que soit le camp', () => {
+  // THE SUBSTANTIVE PROPERTY, and the only one that speaks of behavior rather than of a list: an
+  // isolated identity, in the most ordinary frame, must produce a NAMED finding — on both sides.
+  // It is exactly what was false before repair, and a balanced count would not have revealed it:
+  // `nationaliste` was IN the lexicon, at the wrong tier.
+  it('any classified identity produces a NAMED finding, whatever the camp', () => {
     const muettes = SELF_DECLARED.filter((t) => stageOfSelfDeclaration(t) !== 'explicit');
     expect(muettes).toEqual([]);
   });
 
-  // Le contrôle NÉGATIF de l'assertion du dessus : sans lui, elle passerait au vert si tout le
-  // monde taguait, y compris ce qui ne devrait pas. Un mot hors lexique doit rester muet.
-  it('contrôle négatif — une étiquette hors lexique ne tague pas', () => {
+  // The NEGATIVE control of the assertion above: without it, it would go green if everyone tagged,
+  // including what should not. A word outside the lexicon must stay mute.
+  it('negative control — a label outside the lexicon does not tag', () => {
     expect(stageOfSelfDeclaration('boulanger')).toBe('RIEN');
-    expect(stageOfSelfDeclaration('identitaire')).toBe('RIEN'); // exclusion assumée, cf. le lexique
+    expect(stageOfSelfDeclaration('identitaire')).toBe('RIEN'); // assumed exclusion, cf. the lexicon
   });
 });
 
-describe('symétrie politics — le répertoire THÉMATIQUE, apparié', () => {
-  // Le second lieu du défaut : le tier thématique ne portait que le répertoire de MOBILISATION
-  // (manif, grève, syndicat, pétition), qui est celui d'un camp. Ces paires sont écrites CÔTE À
-  // CÔTE, à seuil égal (2 items), pour qu'un déséquilibre se lise sur une ligne.
+describe('politics symmetry — the THEMATIC repertoire, paired', () => {
+  // The second locus of the defect: the thematic tier carried only the MOBILIZATION repertoire
+  // (demo, strike, union, petition), which is that of one camp. These pairs are written SIDE BY
+  // SIDE, at equal threshold (2 items), so that an imbalance reads on one line.
   const PAIRES: readonly (readonly [string, [string, string], [string, string]])[] = [
     [
       'mobilisation / ordre',
@@ -185,7 +185,7 @@ describe('symétrie politics — le répertoire THÉMATIQUE, apparié', () => {
   ];
 
   for (const [nom, gauche, droite] of PAIRES) {
-    it(`« ${nom} » — les deux versants taguent`, () => {
+    it(`« ${nom} » — both sides tag`, () => {
       expect(detectLabels([...gauche], WIRED_LEXICONS).map((d) => d.label)).toEqual(['politics']);
       expect(detectLabels([...droite], WIRED_LEXICONS).map((d) => d.label)).toEqual(['politics']);
     });
@@ -193,123 +193,125 @@ describe('symétrie politics — le répertoire THÉMATIQUE, apparié', () => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════════════════════════
-// LE VERSANT ANGLAIS — et il ne se mesure PAS sur le même axe
+// THE ENGLISH SIDE — and it is NOT measured on the same axis
 // ═══════════════════════════════════════════════════════════════════════════════════════════════
 //
-// ── POURQUOI PAS LE MÊME AXE, et c'était la question la plus dure du lot ─────────────────────────
-// Le versant FR ci-dessus partitionne des IDENTITÉS en gauche / droite. Transporter cette partition
-// en anglais produirait un filet qui mesure l'équilibre sur une ligne que le vocabulaire anglais
-// livré ne croise jamais. Trois raisons, et chacune suffit :
-//   · le lot anglais ne contient AUCUNE identité — `selfDeclared` reste vide, il n'y a rien à
-//     partitionner ;
-//   · `liberal` inverse de camp selon le dialecte (gauche aux États-Unis, droite économique au
-//     Royaume-Uni) : une partition anglaise dépendrait du lecteur, pas du texte ;
-//   · il n'existe AUCUNE paire opposée anglaise scellée — `politics-registers.fixture.ts` le déclare
-//     en toutes lettres, ses deux voix EN étant des GARDES et non une paire.
+// ── WHY NOT THE SAME AXIS, and it was the hardest question of the batch ──────────────────────────
+// The FR side above partitions IDENTITIES into left / right. Transporting this partition into
+// English would produce a net that measures the balance on a line the delivered English vocabulary
+// never crosses. Three reasons, and each is enough:
+//   · the English batch contains NO identity — `selfDeclared` stays empty, there is nothing to
+//     partition;
+//   · `liberal` inverts camp depending on the dialect (left in the United States, economic right in
+//     the United Kingdom): an English partition would depend on the reader, not on the text;
+//   · there exists NO sealed English opposed pair — `politics-registers.fixture.ts` declares it in
+//     full, its two EN voices being GUARDS and not a pair.
 //
-// L'axe retenu est donc celui des CHEMINS : combien de voies indépendantes mènent à un constat, de
-// chaque bord. Un tableau équilibré en colonnes peut rester asymétrique en chemins, et c'est
-// exactement ce que le versant français a appris.
+// The axis retained is therefore that of PATHS: how many independent ways lead to a finding, from
+// each edge. A table balanced in columns can stay asymmetric in paths, and it is exactly what the
+// French side taught.
 //
-// ── CE QUE CETTE SECTION NE PEUT PAS CONCLURE — à lire avant de la citer ─────────────────────────
-// Les deux voix ci-dessous sont de MON écriture, et le vocabulaire aussi. Les compter l'une contre
-// l'autre est donc CIRCULAIRE : ça mesure la cohérence interne du lot, jamais sa symétrie réelle.
-// La démonstration en est directe, et elle est le vrai résultat de cette section : en cours de lot,
-// l'ajout de DEUX termes choisis sans regarder ces voix a fait passer le compte de 1–0 en faveur
-// d'un bord à 2–1 en faveur de l'autre. **Une paire de voix ne peut pas trancher une symétrie ; elle
-// oscille sur un terme.**
+// ── WHAT THIS SECTION CANNOT CONCLUDE — to be read before citing it ──────────────────────────────
+// The two voices below are of MY writing, and the vocabulary too. Counting one against the other is
+// therefore CIRCULAR: it measures the internal coherence of the batch, never its real symmetry.
+// The demonstration is direct, and it is the true result of this section: mid-batch, the addition of
+// TWO terms chosen without looking at these voices moved the count from 1–0 in favor of one edge to
+// 2–1 in favor of the other. **A pair of voices cannot settle a symmetry; it oscillates on one
+// term.**
 //
-// L'instrument qui trancherait est nommé, et il n'existe pas : une PAIRE OPPOSÉE ANGLAISE scellée à
-// l'aveugle, deux voix engagées de densité égale, écrites par quelqu'un qui n'a pas vu ce lexique.
-// Tant qu'elle manque, la symétrie du versant anglais est une ACCEPTATION ASSUMÉE, jamais mesurée.
+// The instrument that would settle it is named, and it does not exist: a SEALED ENGLISH OPPOSED PAIR
+// sealed blind, two engaged voices of equal density, written by someone who has not seen this
+// lexicon. As long as it is missing, the symmetry of the English side is an ASSUMED ACCEPTANCE,
+// never measured.
 
 // ═══════════════════════════════════════════════════════════════════════════════════════════════
-// LES IDENTITÉS ANGLAISES — l'axe TRANSPORTE, mais sa propriété CHANGE DE FORME
+// THE ENGLISH IDENTITIES — the axis TRANSPORTS, but its property CHANGES SHAPE
 // ═══════════════════════════════════════════════════════════════════════════════════════════════
 //
-// ── POURQUOI CETTE SECTION EXISTE, ET CE QU'ELLE CORRIGE ────────────────────────────────────────
-// Le versant CHEMINS ci-dessous écartait la partition gauche / droite pour trois raisons. Deux ont
-// EXPIRÉ avec le lot `selfDeclaredEn`, et la troisième visait la mauvaise cible :
-//   · « le lot anglais ne contient AUCUNE identité » — expirée : il y en a 25 ;
-//   · « aucune paire opposée anglaise scellée n'existe » — TOUJOURS VRAIE, et elle borne ce qu'on
-//     peut CONCLURE (cf. la section CHEMINS), pas ce qu'on peut CLASSER ;
-//   · « `liberal` inverse de camp selon le dialecte, donc la partition dépendrait du lecteur » —
-//     vraie, et SANS EFFET SUR LE PRODUIT. Voir la frontière ci-dessous.
+// ── WHY THIS SECTION EXISTS, AND WHAT IT CORRECTS ───────────────────────────────────────────────
+// The PATHS side below set aside the left / right partition for three reasons. Two EXPIRED with the
+// `selfDeclaredEn` batch, and the third aimed at the wrong target:
+//   · « the English batch contains NO identity » — expired: there are 25 of them;
+//   · « no sealed English opposed pair exists » — STILL TRUE, and it bounds what one can CONCLUDE
+//     (cf. the PATHS section), not what one can CLASSIFY;
+//   · « `liberal` inverts camp depending on the dialect, so the partition would depend on the
+//     reader » — true, and WITH NO EFFECT ON THE PRODUCT. See the boundary below.
 //
-// ── LA PROPRIÉTÉ N'EST PAS CELLE DU VERSANT FRANÇAIS, et la copier serait faux ──────────────────
-// Le défaut français était un défaut de TIER : la gauche à `selfDeclared` (constat NOMMÉ), la droite
-// à `indirectCore` (accusation, sous le seuil). Sa propriété de réparation — *toute identité classée
-// produit un constat NOMMÉ* — ne peut pas se transporter : en anglais, RIEN ne nomme, par
-// construction du tier.
+// ── THE PROPERTY IS NOT THAT OF THE FRENCH SIDE, and copying it would be false ───────────────────
+// The French defect was a TIER defect: the left at `selfDeclared` (NAMED finding), the right at
+// `indirectCore` (accusation, below the threshold). Its repair property — *any classified identity
+// produces a NAMED finding* — cannot transport: in English, NOTHING names, by construction of the
+// tier.
 //
-// Mais la question ne meurt pas, elle change de forme. Ce qui se vérifie ici est :
+// But the question does not die, it changes shape. What is verified here is:
 //
-//     toute identité classée atteint EXACTEMENT `indirect`, au MÊME volume, des deux côtés
-//     — et AUCUNE n'atteint `explicit`.
+//     any classified identity reaches EXACTLY `indirect`, at the SAME volume, on both sides
+//     — and NONE reaches `explicit`.
 //
-// Deux moitiés qui tiennent SÉPARÉMENT : l'égalité de PORTÉE (personne n'est muet) et l'égalité de
-// PLAFOND (personne ne nomme). C'est la même question que le français posait — *les deux camps
-// sont-ils encodés dans le même registre ?* — posée à la machinerie anglaise.
+// Two halves that hold SEPARATELY: the equality of REACH (no one is mute) and the equality of
+// CEILING (no one names). It is the same question the French posed — *are both camps encoded in the
+// same register?* — posed to the English machinery.
 //
-// ── CE QUE CETTE SECTION NE COUVRE PAS — à lire AVANT de la citer ───────────────────────────────
-//   · **Elle ne voit pas les ABSENTS**, et c'est sa limite la plus dure, héritée telle quelle du
-//     versant français : un camp dont le vocabulaire manquerait ENTIÈREMENT au lexique passerait au
-//     vert. On ne peut classer que ce qui est là. La moitié du défaut d'origine reste hors filet.
-//   · **`liberal` casse le BOOKKEEPING de ce fichier, pas le produit.** Son camp s'inverse selon le
-//     dialecte (gauche aux États-Unis, droite économique au Royaume-Uni). Comme le tier ne nomme
-//     jamais et que le constat produit dit `politics` — jamais « gauche », jamais « droite » —
-//     l'inversion n'atteint AUCUNE sortie vue par un utilisateur : elle n'existe que dans le
-//     classeur ci-dessous. D'où le quatrième seau `ambiguous`, qui est le même geste que le seau
-//     `neutral` du versant français : ne pas forcer un camp sur un terme qui n'en porte pas un seul.
-//     Un lot qui rangerait `liberal` à gauche ou à droite inscrirait un DIALECTE dans le dépôt.
-//   · **Elle ne mesure AUCUN faux positif.** Le banc écrit pour ce lot s'est disqualifié (32/32, cf.
-//     l'en-tête du lexique) : il mesurait la constructibilité d'une collision, pas l'usage dominant.
-//     `conservative` et `liberal` sont des ACCEPTATIONS ASSUMÉES — sans instrument, et le mot est
-//     *assumée*, jamais *mesurée*.
-//   · **La partition est un JUGEMENT**, comme celle du versant français, et discutable terme à
-//     terme : `feminist` et `environmentalist` à gauche reprennent ce que le français a déjà tranché
-//     (`feministe`, `ecolo`). Un lecteur qui la conteste conteste le témoin, et c'est voulu.
-//   · **Elle ne dit rien de la symétrie RÉELLE du champ anglais.** L'instrument qui trancherait est
-//     nommé et n'existe toujours pas : une paire opposée anglaise scellée à l'aveugle.
+// ── WHAT THIS SECTION DOES NOT COVER — to be read BEFORE citing it ───────────────────────────────
+//   · **It does not see the ABSENT ones**, and it is its hardest limit, inherited as is from the
+//     French side: a camp whose vocabulary were ENTIRELY missing from the lexicon would go green.
+//     One can only classify what is there. The half of the original defect stays outside the net.
+//   · **`liberal` breaks the BOOKKEEPING of this file, not the product.** Its camp inverts depending
+//     on the dialect (left in the United States, economic right in the United Kingdom). Since the
+//     tier never names and the produced finding says `politics` — never « left », never « right » —
+//     the inversion reaches NO output seen by a user: it exists only in the classifier below. Hence
+//     the fourth bucket `ambiguous`, which is the same gesture as the `neutral` bucket of the French
+//     side: not forcing a camp onto a term that carries not a single one.
+//     A batch that would file `liberal` on the left or the right would inscribe a DIALECT in the repo.
+//   · **It measures NO false positive.** The bench written for this batch disqualified itself (32/32,
+//     cf. the header of the lexicon): it measured the constructibility of a collision, not the
+//     dominant use. `conservative` and `liberal` are ASSUMED ACCEPTANCES — without an instrument,
+//     and the word is *assumed*, never *measured*.
+//   · **The partition is a JUDGMENT**, like that of the French side, and debatable term by term:
+//     `feminist` and `environmentalist` on the left take up what French has already settled
+//     (`feministe`, `ecolo`). A reader who contests it contests the witness, and it is intended.
+//   · **It says nothing of the REAL symmetry of the English field.** The instrument that would
+//     settle it is named and still does not exist: a sealed English opposed pair sealed blind.
 //
-// ── MUTATIONS RÉELLEMENT PASSÉES, et leur résultat RELEVÉ — pas « il rougirait » ────────────────
-// Décompte du fichier entier, baseline 20 verts / 0 rouge.
-//   1. `'ecosocialist'` ajouté au lexique, non classé      → 1 rouge : *chaque identité anglaise du
-//      lexique est classée*. L'auteur du terme suivant est donc OBLIGÉ de dire de quel côté il le
-//      range — c'est-à-dire de regarder l'autre côté, le geste qui manquait au français
-//   2. le même, une fois CLASSÉ à gauche                   → 1 rouge : *le décompte par camp*
-//      (`{left: 11}` contre `{left: 10}`). Deux arrêts valent mieux qu'un : le premier force le
-//      jugement, le second force à regarder l'autre camp
-//   3. `'conservative'` retiré du lexique                  → 2 rouges : exhaustivité inverse + décompte
-//   4. `'conservative'` déplacé vers `indirectCore` SEUL   → **3 rouges, un de PLUS que prévu**
-//   5. la partition vidée de ses entrées                   → **2 rouges, un de MOINS que prévu**
+// ── MUTATIONS ACTUALLY RUN, and their result RECORDED — not « it would go red » ─────────────────
+// Count of the whole file, baseline 20 greens / 0 red.
+//   1. `'ecosocialist'` added to the lexicon, not classified → 1 red: *each English identity of the
+//      lexicon is classified*. The author of the next term is therefore OBLIGED to say which side
+//      they file it on — that is, to look at the other side, the gesture that was missing in French
+//   2. the same, once CLASSIFIED on the left                → 1 red: *the per-camp count*
+//      (`{left: 11}` against `{left: 10}`). Two stops are better than one: the first forces the
+//      judgment, the second forces looking at the other camp
+//   3. `'conservative'` removed from the lexicon            → 2 reds: inverse exhaustiveness + count
+//   4. `'conservative'` moved to `indirectCore` ONLY        → **3 reds, one MORE than predicted**
+//   5. the partition emptied of its entries                 → **2 reds, one FEWER than predicted**
 //
-// LA 4 JUSTIFIE LA SECTION ENTIÈRE : c'est LE DÉFAUT FRANÇAIS REPRODUIT À L'IDENTIQUE — le terme
-// reste DANS le lexique, au tier des accusations, exactement comme `nationaliste` l'était. J'en
-// attendais 2 (exhaustivité inverse + décompte) ; la troisième est *aucune identité anglaise ne vit
-// en `indirectCore` sans être au tier de l'identité*, c'est-à-dire la propriété écrite POUR ce cas,
-// qui fait donc son office en plus des deux effets de bord. Le relever plutôt que de le prédire est
-// ce qui distingue une garantie d'une intention.
+// N°4 JUSTIFIES THE WHOLE SECTION: it is THE FRENCH DEFECT REPRODUCED IDENTICALLY — the term stays
+// IN the lexicon, at the accusations tier, exactly as `nationaliste` was. I expected 2 of them
+// (inverse exhaustiveness + count); the third is *no English identity lives in `indirectCore`
+// without being at the identity tier*, that is the property written FOR this case, which therefore
+// does its office in addition to the two side effects. Recording it rather than predicting it is
+// what distinguishes a guarantee from an intention.
 //
-// LA 5 A RENDU MOINS QUE PRÉVU, et c'est le résultat le plus instructif des cinq. J'annonçais 3
-// rouges ; il y en a **2** — *chaque identité du lexique est classée* et *le décompte*. Les trois
-// autres restent VERTES sur une partition VIDE, et il faut savoir pourquoi : l'exhaustivité inverse
-// itère sur la partition (vide → aucun fantôme → vert), l'anti-récidive aussi (vide → rien à
-// vérifier → vert), et les deux propriétés de comportement itèrent sur le LEXIQUE, pas sur la
-// partition — elles continuent donc de mesurer quelque chose de vrai.
-// **Trois des six propriétés de cette section sont donc vacueuses si la partition se vide**, et
-// seules les deux premières l'empêchent. Elles portent l'anti-vacuité de tout le bloc : les retirer
-// rendrait le vert des trois autres indistinguable d'un classeur mort.
+// N°5 RETURNED FEWER THAN PREDICTED, and it is the most instructive result of the five. I announced
+// 3 reds; there are **2** — *each identity of the lexicon is classified* and *the count*. The other
+// three stay GREEN on an EMPTY partition, and one must know why: the inverse exhaustiveness iterates
+// on the partition (empty → no phantom → green), the anti-recidivism too (empty → nothing to verify
+// → green), and the two behavior properties iterate on the LEXICON, not on the partition — they
+// therefore keep measuring something true.
+// **Three of the six properties of this section are therefore vacuous if the partition empties**, and
+// only the first two prevent it. They carry the anti-vacuity of the whole block: removing them would
+// make the green of the other three indistinguishable from a dead classifier.
 
 /**
- * LA PARTITION ANGLAISE — quatre seaux, et le quatrième n'est pas une commodité.
+ * THE ENGLISH PARTITION — four buckets, and the fourth is not a convenience.
  *
- * `ambiguous` existe pour `liberal` seul, dont le camp dépend du dialecte du lecteur. Le ranger de
- * force d'un côté inscrirait un dialecte dans le dépôt ; l'exclure du lexique n'en exclurait qu'un
- * des deux mots ordinaires des deux bords (cf. l'en-tête du lexique, la règle propre qui est biaisée).
+ * `ambiguous` exists for `liberal` alone, whose camp depends on the reader's dialect. Filing it
+ * forcibly on one side would inscribe a dialect in the repo; excluding it from the lexicon would
+ * exclude only one of the two ordinary words of both edges (cf. the header of the lexicon, the
+ * proper rule that is biased).
  */
 const AXIS_EN: Readonly<Record<string, 'left' | 'right' | 'neutral' | 'ambiguous'>> = {
-  // Gauche.
+  // Left.
   socialist: 'left',
   communist: 'left',
   marxist: 'left',
@@ -320,7 +322,7 @@ const AXIS_EN: Readonly<Record<string, 'left' | 'right' | 'neutral' | 'ambiguous
   'trade unionist': 'left',
   feminist: 'left',
   environmentalist: 'left',
-  // Droite.
+  // Right.
   conservative: 'right',
   'right wing': 'right',
   traditionalist: 'right',
@@ -331,12 +333,12 @@ const AXIS_EN: Readonly<Record<string, 'left' | 'right' | 'neutral' | 'ambiguous
   'fiscal conservative': 'right',
   'social conservative': 'right',
   'classical liberal': 'right',
-  // Sans camp.
+  // No camp.
   centrist: 'neutral',
   apolitical: 'neutral',
   'politically homeless': 'neutral',
   'swing voter': 'neutral',
-  // Ambigu par dialecte — un seau à lui seul, cf. l'en-tête de section.
+  // Ambiguous by dialect — a bucket of its own, cf. the section header.
   liberal: 'ambiguous',
 };
 
@@ -344,30 +346,30 @@ const SELF_DECLARED_EN = POLITICS_LEXICON.selfDeclaredEn ?? [];
 const sideOfEn = (side: 'left' | 'right' | 'neutral' | 'ambiguous') =>
   SELF_DECLARED_EN.filter((t) => AXIS_EN[t] === side);
 
-/** L'étage rendu par une auto-déclaration anglaise RÉPÉTÉE — le seuil vaut 2 sur ce label. */
+/** The storey returned by a REPEATED English self-declaration — the threshold is 2 on this label. */
 const stageOfEnSelfDeclaration = (term: string): string => {
   const out = detectLabels([`i am ${term}`, `i am ${term} and always have been`], WIRED_LEXICONS);
   const politics = out.find((d) => d.label === 'politics');
   return politics === undefined ? 'RIEN' : politics.stage;
 };
 
-describe('symétrie politics EN — la partition des identités est exhaustive', () => {
-  it('chaque identité anglaise du lexique est classée', () => {
+describe('politics symmetry EN — the identity partition is exhaustive', () => {
+  it('each English identity of the lexicon is classified', () => {
     expect(SELF_DECLARED_EN.filter((t) => AXIS_EN[t] === undefined)).toEqual([]);
   });
 
-  // Le sens INVERSE (CLAUDE.md : une couverture se vérifie dans les deux sens). Sans lui, la
-  // partition garderait des fantômes après un retrait et son décompte mesurerait une liste morte.
-  it('chaque identité classée existe encore dans le lexique', () => {
+  // The INVERSE direction (CLAUDE.md: a coverage is verified in both directions). Without it, the
+  // partition would keep phantoms after a removal and its count would measure a dead list.
+  it('each classified identity still exists in the lexicon', () => {
     expect(Object.keys(AXIS_EN).filter((t) => !SELF_DECLARED_EN.includes(t))).toEqual([]);
   });
 });
 
-describe('symétrie politics EN — les deux bords atteignent le MÊME étage', () => {
-  // DÉCOMPTE FIGÉ — valeurs RELEVÉES puis gelées, jamais des cibles. L'égalité 10/10 est un
-  // CONSTAT : une liste rendue symétrique par REMPLISSAGE serait un défaut pire que celui qu'on
-  // répare, elle aurait l'air juste. Ce que le chiffre attrape est l'ajout d'un SEUL côté.
-  it('le décompte par camp est celui qui a été relevé', () => {
+describe('politics symmetry EN — both edges reach the SAME storey', () => {
+  // FROZEN COUNT — RECORDED values then frozen, never targets. The 10/10 equality is a FINDING: a
+  // list made symmetric by FILLING would be a defect worse than the one being repaired, it would
+  // look right. What the number catches is the addition on ONE side only.
+  it('the per-camp count is the one that was recorded', () => {
     expect({
       left: sideOfEn('left').length,
       right: sideOfEn('right').length,
@@ -376,18 +378,18 @@ describe('symétrie politics EN — les deux bords atteignent le MÊME étage', 
     }).toEqual({ left: 10, right: 10, neutral: 4, ambiguous: 1 });
   });
 
-  // PREMIÈRE MOITIÉ — l'égalité de PORTÉE. C'est le transport de la propriété française : là-bas
-  // « je suis nationaliste » était muet quand « je suis anarchiste » nommait. Ici, aucune identité
-  // ne peut être muette pendant que celle d'en face déclenche.
-  it('toute identité classée atteint `indirect`, quel que soit le camp', () => {
+  // FIRST HALF — the equality of REACH. It is the transport of the French property: over there
+  // « je suis nationaliste » was mute when « je suis anarchiste » named. Here, no identity can be
+  // mute while the one facing it triggers.
+  it('any classified identity reaches `indirect`, whatever the camp', () => {
     const muettes = SELF_DECLARED_EN.filter((t) => stageOfEnSelfDeclaration(t) !== 'indirect');
     expect(muettes).toEqual([]);
   });
 
-  // SECONDE MOITIÉ — l'égalité de PLAFOND, et elle tient SÉPARÉMENT. Si cette ligne rougit, le tier
-  // a changé d'étage : dire LEQUEL avant de mettre à jour quoi que ce soit. Un `explicit` anglais
-  // signifierait que le produit s'est mis à NOMMER un camp sur une copule qui n'ancre rien.
-  it("AUCUNE identité anglaise n'atteint le constat NOMMÉ, à aucun volume", () => {
+  // SECOND HALF — the equality of CEILING, and it holds SEPARATELY. If this line goes red, the tier
+  // changed storey: say WHICH before updating anything at all. An English `explicit` would mean the
+  // product started to NAME a camp on a copula that anchors nothing.
+  it('NO English identity reaches the NAMED finding, at any volume', () => {
     const nommées = SELF_DECLARED_EN.filter((t) => {
       const p = `i am ${t}`;
       return detectLabels([p, p, p], WIRED_LEXICONS).some(
@@ -397,25 +399,25 @@ describe('symétrie politics EN — les deux bords atteignent le MÊME étage', 
     expect(nommées).toEqual([]);
   });
 
-  // ANTI-RÉCIDIVE DU DÉFAUT FRANÇAIS — la propriété que rien d'autre ne tient. Le défaut d'origine
-  // n'était pas une absence de terme : `nationaliste` ÉTAIT dans le lexique, au tier des
-  // ACCUSATIONS. Une identité anglaise qui vivrait en `indirectCore` sans être au tier de
-  // l'identité reproduirait exactement ça, et le décompte ci-dessus resterait vert.
-  it("aucune identité anglaise ne vit en `indirectCore` sans être au tier de l'identité", () => {
+  // ANTI-RECIDIVISM OF THE FRENCH DEFECT — the property nothing else holds. The original defect was
+  // not an absence of term: `nationaliste` WAS in the lexicon, at the ACCUSATIONS tier. An English
+  // identity that lived in `indirectCore` without being at the identity tier would reproduce exactly
+  // that, and the count above would stay green.
+  it('no English identity lives in `indirectCore` without being at the identity tier', () => {
     const auxAccusations = Object.keys(AXIS_EN).filter(
       (t) => POLITICS_LEXICON.indirectCore.includes(t) && !SELF_DECLARED_EN.includes(t),
     );
     expect(auxAccusations).toEqual([]);
   });
 
-  // Le contrôle NÉGATIF : sans lui, les assertions ci-dessus passeraient au vert si TOUT taguait.
-  it('contrôle négatif — un terme hors lexique reste muet', () => {
+  // The NEGATIVE control: without it, the assertions above would go green if EVERYTHING tagged.
+  it('negative control — a term outside the lexicon stays mute', () => {
     expect(stageOfEnSelfDeclaration('baker')).toBe('RIEN');
-    expect(stageOfEnSelfDeclaration('progressive')).toBe('RIEN'); // exclusion assumée, cf. le lexique
+    expect(stageOfEnSelfDeclaration('progressive')).toBe('RIEN'); // assumed exclusion, cf. the lexicon
   });
 });
 
-/** Les paires THÉMATIQUES anglaises — la règle 2 de l'en-tête du lexique, mise en bookkeeping. */
+/** The English THEMATIC pairs — rule 2 of the lexicon header, put into bookkeeping. */
 const EN_PAIRS: readonly (readonly [string, string])[] = [
   ['minimum wage', 'tax burden'],
   ['trade union', 'red tape'],
@@ -423,7 +425,7 @@ const EN_PAIRS: readonly (readonly [string, string])[] = [
   ['public services', 'law and order'],
 ];
 
-/** Les entrées anglaises SANS camp : actes, institutions, et procédures transversales. */
+/** The English entries WITHOUT a camp: acts, institutions, and cross-cutting procedures. */
 const EN_UNSIDED: readonly string[] = [
   'i voted',
   'i registered to vote',
@@ -436,9 +438,9 @@ const EN_UNSIDED: readonly string[] = [
   'civil service',
   'public spending',
   'voter turnout',
-  // Transversales : employées des deux bords, comme `laicite` côté FR. `means test` est une
-  // procédure que l'un dénonce et que l'autre réclame ; « waste of public money » est une ligne de
-  // droite autant que « public money built that » est une ligne de gauche.
+  // Cross-cutting: used by both edges, like `laicite` on the FR side. `means test` is a procedure
+  // one denounces and the other demands; « waste of public money » is a right-wing line as much as
+  // « public money built that » is a left-wing line.
   'means test',
   'means tested',
   'public money',
@@ -451,23 +453,23 @@ const ALL_MARKERS: readonly string[] = [
   ...POLITICS_LEXICON.indirectColloquial,
 ];
 
-describe('symétrie politics EN — les paires sont des paires', () => {
-  // LA PROPRIÉTÉ NON CIRCULAIRE de cette section, et la seule : un thème saillant n'entre qu'avec
-  // son pendant. Retirer un seul membre d'une paire rougit ici — c'est le geste qui, côté français,
-  // n'avait aucun lecteur.
-  it('les deux membres de chaque paire sont dans le lexique', () => {
+describe('politics symmetry EN — the pairs are pairs', () => {
+  // THE NON-CIRCULAR PROPERTY of this section, and the only one: a salient theme enters only with
+  // its counterpart. Removing a single member of a pair goes red here — it is the gesture that, on
+  // the French side, had no reader.
+  it('both members of each pair are in the lexicon', () => {
     const orphelins = EN_PAIRS.flatMap(([g, d]) => [g, d].filter((t) => !ALL_MARKERS.includes(t)));
     expect(orphelins).toEqual([]);
   });
 
-  it('les entrées sans camp sont toutes présentes', () => {
+  it('the entries without a camp are all present', () => {
     expect(EN_UNSIDED.filter((t) => !ALL_MARKERS.includes(t))).toEqual([]);
   });
 
-  // Chaque membre déclenche RÉELLEMENT, dans le cadre le plus dépouillé. Sans ça, une paire pourrait
-  // être « complète » dans la liste et morte dans la machinerie — le défaut exact de `nationaliste`,
-  // qui était DANS le lexique, au mauvais tier.
-  it('chaque membre de paire déclenche à seuil égal', () => {
+  // Each member triggers REALLY, in the barest frame. Without it, a pair could be « complete » in
+  // the list and dead in the machinery — the exact defect of `nationaliste`, which was IN the
+  // lexicon, at the wrong tier.
+  it('each pair member triggers at equal threshold', () => {
     for (const [gauche, droite] of EN_PAIRS) {
       for (const terme of [gauche, droite]) {
         const out = detectLabels(
@@ -480,10 +482,10 @@ describe('symétrie politics EN — les paires sont des paires', () => {
   });
 });
 
-describe('symétrie politics EN — les CHEMINS, et ce que deux voix ne prouvent pas', () => {
-  // Deux voix engagées écrites en miroir, densité égale (10 items d'enjeu chacune), rédigées comme
-  // des personnes et non comme des listes de déclencheurs. Elles sont de MON écriture : le compte
-  // ci-dessous est un indicateur, jamais une mesure (voir l'en-tête de section).
+describe('politics symmetry EN — the PATHS, and what two voices do not prove', () => {
+  // Two engaged voices written in mirror, equal density (10 stake items each), written as people and
+  // not as lists of triggers. They are of MY writing: the count below is an indicator, never a
+  // measurement (see the section header).
   const EN_LEFT = [
     'landlords are hoarding empty flats while people sleep outside',
     'the union got us more in one week than five years of asking nicely',
@@ -512,33 +514,32 @@ describe('symétrie politics EN — les CHEMINS, et ce que deux voix ne prouvent
   const paths = (voix: readonly string[]) =>
     detectLabels([...voix], WIRED_LEXICONS).find((d) => d.label === 'politics')?.items.length ?? 0;
 
-  // CHIFFRE RELEVÉ PUIS GELÉ, et il faut le lire tel qu'il est plutôt que tel qu'on l'espérait :
-  // **sur cette paire, seule la voix de GAUCHE atteint un constat.** La droite reste sous le seuil.
+  // NUMBER RECORDED THEN FROZEN, and it must be read as it is rather than as one hoped it: **on this
+  // pair, only the LEFT voice reaches a finding.** The right stays below the threshold.
   //
-  // Ce n'est PAS le constat « le lexique anglais penche à gauche », et confondre les deux serait
-  // refaire l'erreur que ce fichier existe pour empêcher. La cause est visible à l'œil : les deux
-  // voix parlent des mêmes registres, mais celle de gauche a écrit deux locutions sous leur forme
-  // CANONIQUE (« means test », « public money ») quand celle de droite a écrit les siennes sous une
-  // forme libre — « taxed to death » et non `tax burden`, « every form takes an hour » et non
-  // `red tape`, « the borders are a joke » et non `border control`. Le lexique porte les quatre
-  // termes ; c'est ma PROSE qui n'en a déclenché qu'un côté.
+  // It is NOT the finding « the English lexicon leans left », and confusing the two would be redoing
+  // the error this file exists to prevent. The cause is visible to the eye: both voices speak of the
+  // same registers, but the left one wrote two locutions in their CANONICAL form (« means test »,
+  // « public money ») when the right one wrote its own in a free form — « taxed to death » and not
+  // `tax burden`, « every form takes an hour » and not `red tape`, « the borders are a joke » and
+  // not `border control`. The lexicon carries the four terms; it is my PROSE that triggered only one
+  // side.
   //
-  // D'où le seul énoncé que ces deux voix autorisent : le lot ouvre des chemins TRÈS PEU nombreux,
-  // et lesquels s'ouvrent dépend de la forme exacte employée, pas du camp. Une paire ne tranche pas
-  // ça — il y faut une distribution.
-  it('les chemins ouverts par le lot sur deux voix engagées, en miroir', () => {
+  // Hence the only statement these two voices authorize: the batch opens VERY FEW paths, and which
+  // ones open depends on the exact form used, not on the camp. A pair does not settle that — it
+  // takes a distribution.
+  it('the paths opened by the batch on two engaged voices, in mirror', () => {
     expect({ gauche: paths(EN_LEFT), droite: paths(EN_RIGHT) }).toEqual({ gauche: 2, droite: 0 });
   });
 
-  // L'ÉQUIVALENT ANGLAIS DE L'ABLATION — en français, elle avait révélé que la voix de droite ne
-  // tenait qu'à UN terme, sa marge de redondance étant nulle. Ici il n'y a pas d'axe grossier à
-  // retirer (aucune identité anglaise n'est livrée), alors on retire un seul item porteur.
+  // THE ENGLISH EQUIVALENT OF THE ABLATION — in French, it had revealed that the right voice hung on
+  // ONLY ONE term, its redundancy margin being nil. Here there is no coarse axis to remove (no
+  // English identity is delivered), so we remove a single bearing item.
   //
-  // Résultat : la MARGE DE REDONDANCE EST NULLE DES DEUX CÔTÉS. Le constat de gauche repose sur
-  // exactement deux items, le minimum ; en retirer un le fait disparaître. Celui de droite n'existe
-  // pas. C'est une symétrie de PAUVRETÉ, pas d'équilibre — et le dire dans ce sens est la seule
-  // lecture honnête d'un vert.
-  it('la marge de redondance est NULLE des deux côtés', () => {
+  // Result: the REDUNDANCY MARGIN IS NIL ON BOTH SIDES. The left finding rests on exactly two items,
+  // the minimum; removing one makes it disappear. The right one does not exist. It is a symmetry of
+  // POVERTY, not of balance — and saying it that way is the only honest reading of a green.
+  it('the redundancy margin is NIL on both sides', () => {
     expect(paths(EN_LEFT.filter((t) => !t.includes('means test')))).toBe(0);
     expect(paths(EN_RIGHT.filter((t) => !t.includes('law and order')))).toBe(0);
   });

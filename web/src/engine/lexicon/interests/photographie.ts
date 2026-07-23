@@ -1,19 +1,19 @@
-// Lexique d'intérêt `photographie` (D2, PANO-77 lot 2 · enrichi entités) — photographie.
+// Interest lexicon `photographie` (D2, PANO-77 batch 2 · entities enriched) — photography.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la photo FR : matériel, techniques, LOGICIELS, MARQUES, ABRÉVIATIONS/jargon.
-// À l'aveugle ; marques et sigles = signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR photo: gear, techniques, SOFTWARE, BRANDS, ABBREVIATIONS/jargon.
+// Blind; brands and acronyms = generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « photographie », « appareil photo », « reflex », « argentique », « bokeh »,
-//     « dslr », « hybride », « lightroom » ; marques (« nikon », « fujifilm », « leica », « gopro »).
-//   · ANCRÉ — 50/50 : « photo » (générique), « objectif » (but), « canon » (arme/norme), « sony »,
-//     « sigma » (maths / slang), « iso » (norme org), « expo » (exposition), « macro », « pose »,
-//     « raw », « filtre », « zoom », « capteur » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « photographie », « appareil photo », « reflex », « argentique », « bokeh »,
+//     « dslr », « hybride », « lightroom »; brands (« nikon », « fujifilm », « leica », « gopro »).
+//   · ANCHORED — 50/50: « photo » (generic), « objectif » (aim/goal), « canon » (weapon/norm), « sony »,
+//     « sigma » (math / slang), « iso » (org norm), « expo » (exhibition), « macro », « pose »,
+//     « raw », « filtre », « zoom », « capteur »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « dessin/illustration » (thème séparé).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « dessin/illustration » (separate theme).
 
 import type { InterestLexicon } from '../types';
 
@@ -26,7 +26,7 @@ export const PHOTOGRAPHIE_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Vocabulaire / techniques
+    // Vocabulary / techniques
     'photographie',
     'appareil photo',
     'reflex',
@@ -47,7 +47,7 @@ export const PHOTOGRAPHIE_LEXICON: InterestLexicon = {
     'vitesse d obturation',
     'diaphragme',
     'teleobjectif',
-    // Marques / logiciels
+    // Brands / software
     'nikon',
     'fujifilm',
     'leica',
@@ -56,27 +56,27 @@ export const PHOTOGRAPHIE_LEXICON: InterestLexicon = {
     'capture one',
     'photoshop',
     'trepied',
-    // Variantes EN (PANO-88) : SOLO univoque.
+    // EN variants (PANO-88): SOLO univocal.
     'golden hour',
   ],
   anchored: [
-    'photo', // « photo de profil » générique
-    'objectif', // but vs objectif photo
-    'canon', // arme / norme / marque
-    'sony', // marque large
-    'sigma', // maths / « sigma » (slang) vs marque
-    'iso', // norme / organisation vs sensibilité
-    'expo', // exposition (concert) / exposition photo
-    'macro', // macro (tableur) vs macrophoto
+    'photo', // generic « photo de profil »
+    'objectif', // aim/goal vs camera lens
+    'canon', // weapon / norm / brand
+    'sony', // broad brand
+    'sigma', // math / « sigma » (slang) vs brand
+    'iso', // norm / organisation vs sensitivity
+    'expo', // exhibition (concert) / photo exhibition
+    'macro', // macro (spreadsheet) vs macro photo
     'pose', // posture
-    'cliche', // idée reçue
-    'raw', // cru (anglais) vs format brut
-    'filtre', // filtre générique
-    'zoom', // zoom générique / visio
-    'capteur', // capteur générique
+    'cliche', // received idea
+    'raw', // raw (English) vs raw format
+    'filtre', // generic filter
+    'zoom', // generic zoom / video call
+    'capteur', // generic sensor
     'focale',
-    'shooting', // séance photo vs anglais générique (EN, ancré)
-    'editing', // retouche vs montage/édition générique (EN)
+    'shooting', // photo shoot vs generic English (EN, anchored)
+    'editing', // retouching vs generic editing (EN)
   ],
   selfDeclared: ['photographe', 'passionne de photo'],
 };

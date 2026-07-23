@@ -1,28 +1,28 @@
-// Lexique d'intérêt `cafe` (D2, PANO-78 lot 3) — café de spécialité / méthodes.
+// Interest lexicon `cafe` (D2, PANO-78 batch 3) — specialty coffee / methods.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du café FR : méthodes d'extraction, variétés, boissons, jargon barista.
-// Entités = signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR coffee: extraction methods, varieties, drinks, barista jargon.
+// Entities = generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « espresso », « v60 », « chemex », « aeropress », « latte art », « cold brew »,
 //     « arabica », « robusta », « torrefaction », « barista », « cafe de specialite ».
-//   · ANCRÉ — « café » (boisson / bar / couleur / « café du commerce »), « filtre » (partagé photo),
-//     « extraction » (dentaire), « dose », « mouture », « moka » (prénom), « crema » : co-occurrence.
-//   · EXCLU — rien de désespéré ; « café » nu jamais solo (trop polysémique).
+//   · ANCHORED — « café » (drink / bar / color / « café du commerce »), « filtre » (shared with photo),
+//     « extraction » (dental), « dose », « mouture », « moka » (first name), « crema »: co-occurrence.
+//   · EXCLUDED — nothing desperate; bare « café » never solo (too polysemous).
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN vérifié par recherche (glossaires barista / troisième vague).
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// EN usage verified by research (barista / third-wave glossaries).
 //   · SOLO — « portafilter », « microfoam », « burr grinder », « channeling », « puck prep »,
-//     « pour over », « third wave », « degassing », « moka pot », « coffeetok » : univoques, et
-//     souvent COMPOSÉS — le domaine ne tient que par ses locutions.
-//   · ANCRÉ — le 50/50 EN : « grind » (= LE TURBIN, « the daily grind » ; et le grind du `skate` et
-//     du jeu), « brew » (la BIÈRE), « roast » (= SE MOQUER, sens dominant en ligne), « beans »
-//     (haricots), « tamper » (« tamper with » = falsifier), « cupping » (thérapie par ventouses) :
-//     compagnon requis. Aucun de ces mots ne porte le domaine seul.
+//     « pour over », « third wave », « degassing », « moka pot », « coffeetok »: univocal, and
+//     often COMPOUND — the domain holds only by its phrases.
+//   · ANCHORED — the EN 50/50: « grind » (= THE DAILY SLOG, « the daily grind »; and the grind of `skate` and
+//     of games), « brew » (BEER), « roast » (= TO MOCK, dominant sense online), « beans »
+//     (beans), « tamper » (« tamper with »), « cupping » (cupping therapy):
+//     companion required. None of these words carries the domain alone.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive.
 
 import type { InterestLexicon } from '../types';
 
@@ -54,7 +54,7 @@ export const CAFE_LEXICON: InterestLexicon = {
     'single origin',
     'cortado',
     'macchiato',
-    // Variantes EN (PANO-88) : SOLO univoques (matériel / méthodes / communauté).
+    // EN variants (PANO-88): SOLO univocal (equipment / methods / community).
     'portafilter',
     'microfoam',
     'burr grinder',
@@ -70,22 +70,22 @@ export const CAFE_LEXICON: InterestLexicon = {
     'lungo',
   ],
   anchored: [
-    'cafe', // boisson / bar / couleur / « café du commerce »
-    'filtre', // partagé photographie
-    'extraction', // dentaire / minière
-    'dose', // dose générique
-    'mouture', // générique
-    'moka', // prénom / gâteau
-    'crema', // générique
-    'grain', // grain générique
+    'cafe', // drink / bar / color / « café du commerce »
+    'filtre', // shared with photography
+    'extraction', // dental / mining
+    'dose', // generic dose
+    'mouture', // generic
+    'moka', // first name / cake
+    'crema', // generic
+    'grain', // generic grain
     'percolateur',
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'grind', // « the daily grind » / grind du skate et du jeu (EN)
-    'brew', // la bière / « brewing trouble » (EN)
-    'roast', // = se moquer, sens dominant en ligne (EN)
-    'beans', // haricots / « spill the beans » (EN)
-    'tamper', // « tamper with » = falsifier (EN)
-    'cupping', // thérapie par ventouses vs dégustation (EN)
+    // EN variants (PANO-88): ANCHORED.
+    'grind', // « the daily grind » / grind of skate and games (EN)
+    'brew', // beer / « brewing trouble » (EN)
+    'roast', // = to mock, dominant sense online (EN)
+    'beans', // beans / « spill the beans » (EN)
+    'tamper', // « tamper with » (EN)
+    'cupping', // cupping therapy vs tasting (EN)
   ],
   selfDeclared: ['barista', 'passionne de cafe'],
 };

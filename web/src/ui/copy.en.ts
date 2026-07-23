@@ -1,31 +1,31 @@
-// Copy EN de l'INTERFACE — la prose des composants, en anglais. Périmètre ratifiable n°2.
+// INTERFACE EN copy — the components' prose, in English. Ratifiable perimeter no. 2.
 //
 // ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-// │ TRADUCTION PROVISOIRE — À RELIRE PAR yuya, ligne à ligne, comme la moitié française.       │
+// │ PROVISIONAL TRANSLATION — TO BE REVIEWED BY yuya, line by line, like the French half.       │
 // └──────────────────────────────────────────────────────────────────────────────────────────┘
 //
-// LA FORME EST TENUE PAR `copy.fr.ts` : ce fichier s'annote `UiCopy` (= `typeof FR`), donc une
-// entrée oubliée, une clé en trop ou une signature qui diverge sont des erreurs de COMPILATION.
-// Ce qu'aucun compilateur ne voit : qu'une entrée soit réellement TRADUITE.
+// THE FORM IS HELD BY `copy.fr.ts`: this file annotates itself `UiCopy` (= `typeof FR`), so a
+// forgotten entry, an extra key or a diverging signature are COMPILATION errors.
+// What no compiler sees: whether an entry is actually TRANSLATED.
 //
-// ⚠ LES LONGUEURS DE TABLEAU NE SONT PAS TENUES PAR LE TYPE (`T[]`, pas un n-uplet) :
-// `copy-parity.test.ts` les compare au runtime. Un tableau anglais plus court compilerait.
+// ⚠ THE ARRAY LENGTHS ARE NOT HELD BY THE TYPE (`T[]`, not a tuple):
+// `copy-parity.test.ts` compares them at runtime. A shorter English array would compile.
 //
-// ─── LE REGISTRE, ET CE QUI LE DISTINGUE DU MOTEUR ──────────────────────────────────────────────
-// ICI, LA 2ᵉ PERSONNE EST LA NORME — c'est l'INTERFACE qui parle à la personne (« ton export »,
-// « tu peux »), et l'anglais dit « your export », « you can » sans détour. C'est l'exact inverse de
-// `engine/wording.en.ts`, où « you » est INTERDIT par doctrine (ADR-0003 : le moteur ne s'adresse
-// jamais à la personne). Les deux fichiers sont séparés pour cette raison précise.
+// ─── THE REGISTER, AND WHAT DISTINGUISHES IT FROM THE ENGINE ─────────────────────────────────────
+// HERE, THE 2nd PERSON IS THE NORM — it is the INTERFACE that speaks to the person (« ton export »,
+// « tu peux »), and English says « your export », « you can » plainly. It is the exact inverse of
+// `engine/wording.en.ts`, where « you » is FORBIDDEN by doctrine (ADR-0003: the engine never addresses
+// the person). The two files are separate for this precise reason.
 //
-// Le tutoiement français est direct et familier sans être relâché. L'anglais n'a pas le choix
-// tu/vous : le registre se joue ailleurs — contractions (« you're », « doesn't »), phrases courtes,
-// pas de vocabulaire administratif. « Your data stays with you », pas « User data is retained
+// French "tu" is direct and familiar without being sloppy. English has no
+// tu/vous choice: the register plays out elsewhere — contractions (« you're », « doesn't »), short sentences,
+// no administrative vocabulary. « Your data stays with you », not « User data is retained
 // locally ».
 //
-// ON TRADUIT LE SENS, PAS LES MOTS. Là où le français joue d'une tournure sans équivalent, on écrit
-// le meilleur anglais plutôt que le calque le plus proche — les écarts assumés sont commentés.
+// WE TRANSLATE THE MEANING, NOT THE WORDS. Where French plays on a turn of phrase without an equivalent, we write
+// the best English rather than the closest calque — the accepted gaps are commented.
 //
-// ORTHOGRAPHE : américaine (`OG_LOCALE.en = 'en_US'`), comme `wording.en.ts`.
+// SPELLING: American (`OG_LOCALE.en = 'en_US'`), like `wording.en.ts`.
 
 import type { UiCopy } from './copy';
 import { plural } from './format';
@@ -39,7 +39,7 @@ const UNITS = {
 export const EN: UiCopy = {
   UI_UNITS: UNITS,
 
-  // L'identité ne se traduit pas : un nom de produit, une adresse, une URL.
+  // Identity does not translate: a product name, an address, a URL.
   UI_BRAND: {
     name: 'PanoptiCool',
     contactMail: 'yuya@panopti.cool',
@@ -80,8 +80,8 @@ export const EN: UiCopy = {
   UI_ACTIVITY: {
     rhythmTitle: 'Activity rhythm',
     rhythmNote: 'your typical day · hour by hour',
-    // Graduations en format 12 h : « 0h » n'existe pas en anglais courant, et « 00:00 » sonne
-    // administratif sur un axe qu'on lit d'un coup d'œil.
+    // Tick marks in 12 h format: « 0h » does not exist in everyday English, and « 00:00 » sounds
+    // administrative on an axis one reads at a glance.
     hourMarks: ['12am', '6am', '12pm', '6pm', '11pm'],
     legendNight: 'night · risk window',
     legendDay: 'day',
@@ -117,10 +117,10 @@ export const EN: UiCopy = {
       `~${hours} ${hourWord} of your life ${spent} on TikTok this year.`,
     dayOne: 'day',
     dayMany: 'days',
-    // ⚠ L'ANGLAIS N'ACCORDE PAS LE PARTICIPE. Les quatre entrées `*Spent*` existent parce que le
-    // français distingue passé/passés/passée/passées ; en anglais c'est « spent » dans les quatre
-    // cas. Les garder identiques n'est PAS un oubli de traduction : c'est ce que la langue fait.
-    // Les fusionner casserait la parité de forme avec le français, pour rien.
+    // ⚠ ENGLISH DOES NOT AGREE THE PARTICIPLE. The four `*Spent*` entries exist because
+    // French distinguishes passé/passés/passée/passées; in English it is « spent » in all four
+    // cases. Keeping them identical is NOT a translation oversight: it is what the language does.
+    // Merging them would break form parity with the French, for nothing.
     daySpentOne: 'spent',
     daySpentMany: 'spent',
     hourOne: 'hour',
@@ -189,11 +189,11 @@ export const EN: UiCopy = {
     whyKicker: 'why “panopticool”?',
     whyTextBefore: 'The ',
     whyTextItalic: 'panopticon',
-    // ⚠ FRAGMENTS SUBIS (le mot est en italique au milieu de la phrase), et la coupe DIFFÈRE du
-    // français : « le panoptique (en anglais, panopticon) » gloses un mot que l'anglais n'a pas à
-    // gloser — le terme EST anglais. Le « before » se réduit donc à l'article, et la parenthèse
-    // disparaît. Traduire la glose mot à mot aurait produit « the panopticon (in English,
-    // panopticon) », ce qui est du charabia.
+    // ⚠ IMPOSED FRAGMENTS (the word is in italics in the middle of the sentence), and the cut DIFFERS from
+    // the French: « le panoptique (en anglais, panopticon) » glosses a word English does not have to
+    // gloss — the term IS English. The « before » therefore reduces to the article, and the parenthesis
+    // disappears. Translating the gloss word for word would have produced « the panopticon (in English,
+    // panopticon) », which is gibberish.
     whyTextAfter:
       ' is a prison where a single guard can watch everyone without being seen. Platforms work a little like that, except here you’re the one watching, from your own computer, and that’s... cool?',
     whyLink: 'See the demo with made-up data →',
@@ -364,8 +364,8 @@ export const EN: UiCopy = {
         },
         {
           title: 'With a score',
-          // Comme en français : la page n'affiche plus de niveaux — ce panneau ne renvoie donc
-          // plus à des mentions que le lecteur ne verra nulle part.
+          // As in French: the page no longer displays levels — this panel therefore no longer
+          // refers to mentions the reader will see nowhere.
           text: 'Every inference carries an internal confidence level: the more the signals line up, the higher the score.',
         },
         {
@@ -513,8 +513,8 @@ export const EN: UiCopy = {
       `${comments} ${UNITS.comment(comments)} · ${searches} ${UNITS.search(searches)} included · `,
     tokensExact: (n: string) => `${n} tokens (verified)`,
     tokensEstimated: (n: string) => `≈ ${n} tokens`,
-    // ⚠ L'ANGLAIS N'ACCORDE PAS LE PARTICIPE : « left out » ne varie pas. Le NOM, lui, s'accorde,
-    // et `UNITS.item` porte cette part — via `Intl.PluralRules`, donc 0 au PLURIEL.
+    // ⚠ ENGLISH DOES NOT AGREE THE PARTICIPLE: « left out » does not vary. The NOUN, for its part, agrees,
+    // and `UNITS.item` carries that part — via `Intl.PluralRules`, so 0 in the PLURAL.
     tokensDropped: (dropped: number, contextWindow: string) =>
       ` · ${dropped} ${UNITS.item(dropped)} left out (${contextWindow}-token window)`,
     payloadShow: 'see exactly what will be sent ▾',
@@ -606,9 +606,9 @@ export const EN: UiCopy = {
     dataColComments: 'comments',
     dataEmptySearches: 'no searches in the export',
     dataEmptyComments: 'no comments in the export',
-    // Guillemets ANGLAIS (« “ ” »), pas les chevrons français : c'est une convention typographique
-    // de langue, pas une décoration — la garder française sonnerait étranger autour d'un verbatim
-    // anglais.
+    // ENGLISH quotation marks (« “ ” »), not the French chevrons: it is a typographic convention
+    // of the language, not a decoration — keeping it French would sound foreign around an English
+    // verbatim.
     dataQuote: (text: string) => `“${text}”`,
     dataFoot: 'This is exactly the text our word lists went through without finding a match.',
 

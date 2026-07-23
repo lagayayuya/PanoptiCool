@@ -1,102 +1,102 @@
-// Banc de faux positifs `conflictual` — QUATRE voix, deux par langue, et leur VÉRITÉ-TERRAIN.
+// `conflictual` false-positive bench — FOUR voices, two per language, and their GROUND TRUTH.
 //
-// ── Ce fichier est scellé ────────────────────────────────────────────────────────────────────────
-// Écrit et commité AVANT toute lecture du lexique `conflictual` et AVANT le premier tour du
-// détecteur. C'est sa seule propriété qui compte : « faux positif » n'a pas de sens sans un état
-// attendu écrit d'avance, et juger après avoir vu la sortie revient à juger avec indulgence — une
-// détection plausible se rationalise toujours. Le sceau est le commit ; le relire dans l'historique
-// est la seule façon de vérifier que la vérité-terrain n'a pas été ajustée à la mesure.
-// ⚠ SCEAU ET HISTORIQUE PUBLIÉ. La recomposition d'avant publication (2026-07-21) a aplati
-// l'historique de travail : fixture et capteur y naissent dans le même commit. La preuve d'ORDRE
-// ne vit plus que dans le tag local `pre-squash-2026-07-21`, non publié — dans l'historique
-// publié, ce sceau se lit comme une déclaration de méthode, pas comme un fait vérifiable.
+// ── This file is sealed ────────────────────────────────────────────────────────────────────────
+// Written and committed BEFORE any reading of the `conflictual` lexicon and BEFORE the first pass of the
+// detector. It is its only property that counts: « false positive » has no meaning without a state
+// expected written in advance, and judging after seeing the output amounts to judging leniently — a
+// plausible detection always rationalizes itself. The seal is the commit; rereading it in the history
+// is the only way to check that the ground truth was not adjusted to the measurement.
+// ⚠ SEAL AND PUBLISHED HISTORY. The pre-publication recomposition (2026-07-21) flattened
+// the working history: fixture and sensor are born there in the same commit. The proof of ORDER
+// lives now only in the local tag `pre-squash-2026-07-21`, unpublished — in the published
+// history, this seal reads as a statement of method, not as a verifiable fact.
 //
-// ── Pourquoi ces voix existent ───────────────────────────────────────────────────────────────────
-// AUCUNE voix scellée d'aucun banc n'émet d'agressivité, dans AUCUNE des deux langues. Mesuré, pas
-// supposé : un tour complet du détecteur sur les 17 voix et 476 items déjà scellés rend zéro sur
-// `conflictual`. La détection d'agressivité du produit n'a donc jamais été mesurée — ni en rappel,
-// ni en faux positif — et ce trou-là est dans le produit FRANÇAIS livré, pas seulement en anglais.
+// ── Why these voices exist ───────────────────────────────────────────────────────────────────
+// NO sealed voice of any bench issues aggression, in EITHER language. Measured, not
+// supposed: a full detector pass over the 17 voices and 476 already-sealed items returns zero on
+// `conflictual`. The product's aggression detection has therefore never been measured — neither in recall,
+// nor in false positive — and that hole is in the shipped FRENCH product, not only in English.
 //
-// Un rapport « aucun faux positif sur `conflictual` » appuyé sur les bancs existants ne dirait rien
-// du tout : le détecteur n'a simplement jamais été mis devant le sujet. C'est le motif nommé par
-// CLAUDE.md (*Ce qu'un filet prouve*) — une assertion négative vérifie ce qu'elle ATTEINT, pas ce
-// qu'elle affirme.
+// A report « no false positive on `conflictual` » leaning on the existing benches would say nothing
+// at all: the detector was simply never put in front of the subject. It is the pattern named by
+// CLAUDE.md (*Ce qu'un filet prouve*) — a negative assertion verifies what it REACHES, not what
+// it affirms.
 //
-// ── La variable est la RELATION, et c'est pour ça que les mots se recouvrent ──────────────────────
-// Le banc EN de `mental_health` fait varier la façon d'écrire ; le banc du corps fait varier à qui
-// la maladie appartient. Ce banc-ci fait varier la RELATION entre celle qui écrit et celle à qui
-// elle écrit — une inconnue, ou une amie de dix ans.
+// ── The variable is the RELATION, and that is why the words overlap ──────────────────────
+// The EN `mental_health` bench varies the way of writing; the body bench varies who
+// the illness belongs to. This bench varies the RELATION between the one who writes and the one to whom
+// she writes — a stranger, or a friend of ten years.
 //
-// La littérature sociolinguistique offre deux séparateurs entre l'insulte hostile et l'insulte
-// rituelle : l'un tient au CONTENU (l'insulte rituelle avance des propositions absurdes, que
-// personne ne tient pour vraies ; l'insulte hostile avance des propositions plausibles), l'autre
-// tient au DESTINATAIRE (dans le groupe, les mêmes termes changent de valeur). Un seul des deux est
-// invisible à l'export, et c'est le second.
+// The sociolinguistic literature offers two separators between the hostile insult and the ritual
+// insult: one rests on the CONTENT (the ritual insult advances absurd propositions, that
+// no one holds true; the hostile insult advances plausible propositions), the other
+// rests on the ADDRESSEE (within the group, the same terms change value). Only one of the two is
+// invisible to the export, and it is the second.
 //
-// D'où la contrainte d'écriture, qui est le banc tout entier : DANS CHAQUE LANGUE, LES DEUX VOIX
-// PORTENT LE MÊME VOCABULAIRE D'INSULTE — nul, débile, abruti, incompétent, pitoyable ; useless,
-// idiot, moron, rubbish, pathetic. Pas des quasi-synonymes : les mêmes mots. L'hyperbole absurde est
-// délibérément MINIMISÉE chez la voix de vanne, parce qu'elle vit dans le texte et offrirait au
-// détecteur une porte de sortie — un vert obtenu parce que les MOTS diffèrent ne dirait rien de sa
-// capacité à distinguer, et serait exactement le faux filet que ce dépôt a observé sept fois.
+// Hence the writing constraint, which is the whole bench: IN EACH LANGUAGE, THE TWO VOICES
+// CARRY THE SAME INSULT VOCABULARY — nul, débile, abruti, incompétent, pitoyable; useless,
+// idiot, moron, rubbish, pathetic. Not near-synonyms: the same words. The absurd hyperbole is
+// deliberately MINIMIZED in the banter voice, because it lives in the text and would offer the
+// detector a way out — a green obtained because the WORDS differ would say nothing of its
+// ability to distinguish, and would be exactly the false net this repo has observed seven times.
 //
-// Ce que l'export ne porte pas, le harnais le confirme : `detectFor` ne transmet que
-// `items.map(i => i.text)`. Ni destinataire, ni fil, ni réciprocité. Le prénom d'une amie n'est
-// qu'un token de plus.
+// What the export does not carry, the harness confirms: `detectFor` transmits only
+// `items.map(i => i.text)`. Neither addressee, nor thread, nor reciprocity. A friend's first name is
+// just one more token.
 //
-// ── COMMENT LIRE UN ZÉRO SUR LES VOIX DE VANNE, ET C'EST LE POINT DU BANC ────────────────────────
-// Un zéro de tort sur `fr_banter` ou `en_banter` ne signifie « aucun faux positif » QUE SI la voix
-// d'agressivité de la même langue s'est déclenchée sur ces mêmes mots partagés. Sinon le zéro dit
-// seulement « ces mots ne sont pas au lexique », le recouvrement était illusoire, et les deux zéros
-// ont la même cause — celle du non-porteur n'est pas la sienne.
+// ── HOW TO READ A ZERO ON THE BANTER VOICES, AND IT IS THE POINT OF THE BENCH ────────────────────
+// A zero of wrong on `fr_banter` or `en_banter` means « no false positive » ONLY IF the aggression
+// voice of the same language fired on those same shared words. Otherwise the zero says
+// only « these words are not in the lexicon », the overlap was illusory, and the two zeros
+// have the same cause — the non-carrier's is not its own.
 //
-// C'est la même lecture que celle du banc du corps entre `living` et `worrier`, et c'est pourquoi la
-// PAIRE est la mesure. Les deux chiffres d'une paire répondent à des questions opposées et NE SE
-// FUSIONNENT JAMAIS dans un rapport.
+// It is the same reading as that of the body bench between `living` and `worrier`, and it is why the
+// PAIR is the measure. The two figures of a pair answer opposed questions and NEVER
+// MERGE in a report.
 //
-// ── CE QUE CE BANC NE COUVRE PAS ─────────────────────────────────────────────────────────────────
-// - **Les injures identitaires (racistes, homophobes, et toute autre visant une appartenance) sont
-//   ABSENTES de ce fichier, par décision du mainteneur.** Les quatre voix insultent la compétence,
-//   l'intelligence et le goût — c'est le registre écrit ici, et c'est le seul. Si le lexique
-//   `conflictual` couvre des injures identitaires, CE BANC NE LE MESURE PAS : ni leur rappel, ni
-//   leurs faux positifs. Un vert ici ne dit rien de ce périmètre-là, et l'écrire est le seul moyen
-//   d'empêcher que « `conflictual` est mesuré » se dise un jour en s'appuyant sur ces quatre voix.
-// - **Le registre n'est pas varié.** Les quatre voix écrivent court, en minuscules, sans
-//   ponctuation forte. Une agressivité soutenue, ironique ou administrative n'est pas éprouvée.
-// - **Les cinq autres labels ne sont pas éprouvés.** Ils sont scellés non-porteurs partout, et cette
-//   absence est un choix : voir `truthNotes` de `fr_contempt` pour l'item tenu au bord de
-//   `politics`, sciemment.
-// - **Aucune menace, aucun harcèlement dirigé, aucune violence.** L'agressivité écrite ici est du
-//   mépris ordinaire en commentaire public. Le haut de l'échelle n'est pas dans ce banc.
+// ── WHAT THIS BENCH DOES NOT COVER ─────────────────────────────────────────────────────────────
+// - **Identity slurs (racist, homophobic, and any other aiming at a belonging) are
+//   ABSENT from this file, by maintainer decision.** The four voices insult competence,
+//   intelligence and taste — it is the register written here, and it is the only one. If the
+//   `conflictual` lexicon covers identity slurs, THIS BENCH DOES NOT MEASURE IT: neither their recall, nor
+//   their false positives. A green here says nothing about that perimeter, and writing it is the only way
+//   to prevent « `conflictual` is measured » from being said one day leaning on these four voices.
+// - **The register is not varied.** The four voices write short, in lowercase, without
+//   strong punctuation. A sustained, ironic or administrative aggression is not tested.
+// - **The five other labels are not tested.** They are sealed non-carrier everywhere, and this
+//   absence is a choice: see `truthNotes` of `fr_contempt` for the item kept on the edge of
+//   `politics`, knowingly.
+// - **No threat, no directed harassment, no violence.** The aggression written here is
+//   ordinary contempt in a public comment. The high end of the scale is not in this bench.
 //
-// ── CE QUI A ÉTÉ LU, et c'est la garantie ────────────────────────────────────────────────────────
-// LU : `CLAUDE.md` ; `register-bench.ts` (types et vérité-terrain, sans données) ;
-// `register-bench.harness.ts` (la mécanique de comptage) ; `fr-registers.fixture.ts`,
-// `fr-fp-bench.test.ts`, l'en-tête de `en-body-fp-bench.test.ts`, et les seuls en-tête et bloc
-// d'export de `en-registers.fixture.ts` et `en-body-registers.fixture.ts` — POUR LEUR FORME,
-// c'est-à-dire comment une voix se déclare et comment sa vérité-terrain s'inscrit.
+// ── WHAT WAS READ, and it is the guarantee ────────────────────────────────────────────────────────
+// READ: `CLAUDE.md`; `register-bench.ts` (types and ground truth, without data);
+// `register-bench.harness.ts` (the counting mechanics); `fr-registers.fixture.ts`,
+// `fr-fp-bench.test.ts`, the header of `en-body-fp-bench.test.ts`, and only the header and export
+// block of `en-registers.fixture.ts` and `en-body-registers.fixture.ts` — FOR THEIR FORM,
+// that is, how a voice declares itself and how its ground truth is recorded.
 //
-// NON LU, à dessein : aucun module de `lexicon/`, aucune liste de termes, aucun fichier
-// `filters-*.ts`, aucune note de portabilité, aucun message d'historique portant sur le lexique ou
-// les filtres. La valeur de ce fichier tient à ce que son auteur ignore quels termes sont à l'étude.
+// NOT READ, by design: no module of `lexicon/`, no term list, no `filters-*.ts`
+// file, no portability note, no history message bearing on the lexicon or
+// the filters. The value of this file rests on its author not knowing which terms are under study.
 //
-// FUITE À DÉCLARER, et sa portée est ce qui compte ici : `fr-fp-bench.test.ts`, dont la lecture
-// était nécessaire à la forme, NOMME dans ses commentaires six formulations colloquiales du tier FR
-// et plusieurs surfaces de détection. Ce sont des termes de `mental_health`, pas de `conflictual`.
-// **Aucun fichier lu ne nomme un seul terme `conflictual`, ni ne décrit son lexique** — c'est cette
-// seconde affirmation, et non la première, qui donne son sens au sceau pour CE label.
+// LEAK TO DECLARE, and its scope is what counts here: `fr-fp-bench.test.ts`, whose reading
+// was necessary for the form, NAMES in its comments six colloquial formulations of the FR tier
+// and several detection surfaces. These are `mental_health` terms, not `conflictual`.
+// **No file read names a single `conflictual` term, nor describes its lexicon** — it is this
+// second statement, and not the first, that gives its meaning to the seal for THIS label.
 //
-// ── Aucune valeur réelle ─────────────────────────────────────────────────────────────────────────
-// Chaque chaîne est inventée (CLAUDE.md). La recherche externe a porté sur la FORME du registre —
-// ce qui sépare la vanne de l'hostilité, dans les deux langues — jamais sur des contenus repris.
-// Les prénoms (Léa, Karim, Priya, Tom) sont inventés et ne désignent personne : leur rôle est
-// d'être le marqueur d'appartenance que le détecteur ne peut PAS utiliser. Aucun message, pseudo,
-// date ou identifiant réel n'entre ici.
+// ── No real value ─────────────────────────────────────────────────────────────────────────
+// Each string is invented (CLAUDE.md). The external research bore on the FORM of the register —
+// what separates banter from hostility, in both languages — never on reused content.
+// The first names (Léa, Karim, Priya, Tom) are invented and designate no one: their role is
+// to be the belonging marker the detector CANNOT use. No real message, handle,
+// date or identifier enters here.
 
 import { allNonCarrier, type RegisterPersona } from './register-bench';
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 1. FR — LE MÉPRIS VÉCU : le contrôle positif que le produit n'a jamais eu
+// 1. FR — LIVED CONTEMPT: the positive control the product never had
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_CONTEMPT: RegisterPersona = {
@@ -141,7 +141,7 @@ const FR_CONTEMPT: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 2. FR — LA VANNE AFFECTUEUSE : le risque de faux positif, et le mot à mot du recouvrement
+// 2. FR — AFFECTIONATE BANTER: the false-positive risk, and the word-for-word of the overlap
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const FR_BANTER: RegisterPersona = {
@@ -186,7 +186,7 @@ const FR_BANTER: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 3. EN — LE MÉPRIS VÉCU
+// 3. EN — LIVED CONTEMPT
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_CONTEMPT: RegisterPersona = {
@@ -227,7 +227,7 @@ const EN_CONTEMPT: RegisterPersona = {
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
-// 4. EN — LA VANNE AFFECTUEUSE
+// 4. EN — AFFECTIONATE BANTER
 // ─────────────────────────────────────────────────────────────────────────────────────────────────
 
 const EN_BANTER: RegisterPersona = {
@@ -272,18 +272,18 @@ const EN_BANTER: RegisterPersona = {
 };
 
 /**
- * Les quatre voix, ordonnées en DEUX PAIRES et non par langue : c'est la paire qui mesure, et
- * l'ordre le dit.
+ * The four voices, ordered in TWO PAIRS and not by language: it is the pair that measures, and
+ * the order says so.
  *
- * Dans chaque paire, les deux voix partagent leur vocabulaire d'insulte et diffèrent par la seule
- * chose que l'export ne consigne pas — à qui elles parlent. La première répond au rappel (une
- * agressivité réelle est-elle vue ?), la seconde au faux positif (une amitié est-elle vue comme une
- * agressivité ?). Les deux chiffres NE SE FUSIONNENT JAMAIS : ils répondent à des questions
- * opposées, et une moyenne des deux n'aurait aucun référent.
+ * Within each pair, the two voices share their insult vocabulary and differ by the only
+ * thing the export does not record — whom they address. The first answers recall (is a
+ * real aggression seen?), the second the false positive (is a friendship seen as an
+ * aggression?). The two figures NEVER MERGE: they answer opposed
+ * questions, and an average of the two would have no referent.
  *
- * Quatre voix est le PLANCHER, pas le plafond. Trois ne suffiraient pas : sans la voix
- * d'agressivité de sa langue, un zéro de vanne ne se distingue pas d'un lexique qui ignore ces mots.
- * Et deux (une seule langue) laisserait non mesuré le côté où le trou est livré.
+ * Four voices is the FLOOR, not the ceiling. Three would not suffice: without the aggression
+ * voice of its language, a banter zero is indistinguishable from a lexicon that ignores those words.
+ * And two (a single language) would leave unmeasured the side where the hole is shipped.
  */
 export const CONFLICTUAL_REGISTER_PERSONAS: readonly RegisterPersona[] = [
   FR_CONTEMPT,

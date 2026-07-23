@@ -1,37 +1,37 @@
-// Batterie adverse sur le LEXIQUE RÉEL ENRICHI (PANO-36) — exercice des filtres contextuels et des
-// tolérances de variation avec les vrais lexiques câblés (`WIRED_LEXICONS`), pas des factices.
-// Chaque cas vérifie qu'un enrichissement dense ne fait PAS tagger faux. Phrases 100 %
-// SYNTHÉTIQUES, inventées ici, jamais tirées d'un export réel (discipline PANO-70 §3).
+// Adverse battery on the REAL ENRICHED LEXICON (PANO-36) — exercise of the contextual filters and
+// of the variation tolerances with the real wired lexicons (`WIRED_LEXICONS`), not the fake ones.
+// Each case verifies that a dense enrichment does NOT tag falsely. 100% SYNTHETIC sentences,
+// invented here, never drawn from a real export (PANO-70 §3 discipline).
 
 import { describe, expect, it } from 'vitest';
 import { WIRED_LEXICONS } from '../lexicon';
 import { detectLabels } from './detect';
 
-/** Labels détectés (triés) sur une liste de commentaires synthétiques. */
+/** Detected labels (sorted) on a list of synthetic comments. */
 function labels(...texts: string[]): string[] {
   return detectLabels(texts, WIRED_LEXICONS)
     .map((d) => d.label)
     .sort();
 }
 
-describe('batterie adverse — négation', () => {
-  it('« je fais pas de dépression » → mental_health NON tagué (négation avant le marqueur)', () => {
+describe('adverse battery — negation', () => {
+  it('« je fais pas de dépression » → mental_health NOT tagged (negation before the marker)', () => {
     expect(labels('je fais pas de depression en ce moment')).toEqual([]);
   });
 });
 
-// ── L'ÉTAT ET LE SUJET — ce que nier veut dire (ADR-0003) ───────────────────────────────────────
-// CE QUE CETTE SECTION NE COUVRE PAS, et il faut le lire avant de la citer :
-//   · elle tient le MÉCANISME sur des phrases que j'ai écrites en sachant ce que je cherchais. Ce
-//     n'est pas un banc : elle ne dit rien de la FRÉQUENCE de l'opposition, ni du tort que la règle
-//     pourrait créer sur une voix réelle. Le premier instrument qui pourra le dire est le banc de
-//     voix politiques, et il n'est pas scellé à ce jour ;
-//   · elle ne couvre QUE le français. La machinerie est bilingue (les négations EN sont dans la
-//     liste partagée) et un cas EN est tenu plus bas, mais aucun corpus anglais ne l'exerce ;
-//   · elle ne dit rien de la critique SANS vocabulaire du sujet — « tout ça c'est du vent » n'a
-//     aucun marqueur, et aucune règle d'étage ne rattrape le mur.
-describe('batterie adverse — labels de SUJET : la négation dégrade, elle ne supprime pas', () => {
-  it('OPPOSITION politique → taguée en LARGE (ex-défaut : elle ne taguait rien)', () => {
+// ── THE STATE AND THE SUBJECT — what negating means (ADR-0003) ───────────────────────────────────
+// WHAT THIS SECTION DOES NOT COVER, and it must be read before citing it:
+//   · it holds the MECHANISM on sentences I wrote knowing what I was looking for. It is not a bench:
+//     it says nothing of the FREQUENCY of opposition, nor of the wrong the rule could create on a
+//     real voice. The first instrument that will be able to say it is the political voices bench,
+//     and it is not sealed to this day;
+//   · it covers ONLY French. The machinery is bilingual (the EN negations are in the shared list)
+//     and one EN case is held below, but no English corpus exercises it;
+//   · it says nothing of criticism WITHOUT the subject's vocabulary — « tout ça c'est du vent » has
+//     no marker, and no storey rule catches the wall.
+describe('adverse battery — SUBJECT labels: negation degrades, it does not suppress', () => {
+  it('political OPPOSITION → tagged as BROAD (former defect: it tagged nothing)', () => {
     expect(labels('je supporte pas les fachos', 'je peux pas blairer les fachos')).toEqual([
       'politics',
     ]);
@@ -41,103 +41,103 @@ describe('batterie adverse — labels de SUJET : la négation dégrade, elle ne 
     expect(labels('jamais de manif pour moi', 'aucune manif ne sert a rien')).toEqual(['politics']);
   });
 
-  // Les DEUX camps, à dessein et côte à côte : c'est la propriété que ce lot existe pour tenir, et
-  // la tester d'un seul côté serait reproduire en test le défaut qu'on répare dans le lexique.
-  it('OPPOSITION en anglais aussi (les négations EN sont dans la liste partagée)', () => {
+  // BOTH camps, by design and side by side: it is the property this batch exists to hold, and
+  // testing it on one side only would reproduce in test the defect we repair in the lexicon.
+  it('OPPOSITION in English too (the EN negations are in the shared list)', () => {
     expect(labels('i cannot stand the woke crowd', 'i cannot stand this fake news')).toEqual([
       'politics',
     ]);
   });
 
-  it('l’étage reste LARGE — nier ne fabrique jamais un constat NOMMÉ', () => {
+  it('the storey stays BROAD — negating never fabricates a NAMED finding', () => {
     const out = detectLabels(['jamais de messe pour moi'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['religion']);
-    expect(out[0]?.stage).toBe('indirect'); // et surtout pas `explicit`
+    expect(out[0]?.stage).toBe('indirect'); // and above all not `explicit`
   });
 
-  it('religion — le côté CRITIQUE de l’axe ratifié cesse d’être muet', () => {
+  it('religion — the CRITICAL side of the ratified axis stops being mute', () => {
     expect(labels('jamais de messe pour moi')).toEqual(['religion']);
     expect(labels('je ne vais pas a la messe')).toEqual(['religion']);
   });
 
-  // CONTRE-ÉPREUVE, et c'est elle qui donne son sens aux quatre du dessus : les labels d'ÉTAT ne
-  // bougent pas d'un pouce. Si la règle avait fuité hors des labels de sujet, elle se verrait ici —
-  // et elle s'y verrait comme un constat de maladie posé sur quelqu'un qui dit ne pas l'avoir.
-  it('les labels d’ÉTAT sont INCHANGÉS — nier y retire toujours le signal', () => {
+  // COUNTER-PROOF, and it is what gives their meaning to the four above: the STATE labels do not
+  // move an inch. If the rule had leaked out of the subject labels, it would show here — and it
+  // would show as an illness finding posed on someone who says they do not have it.
+  it('the STATE labels are UNCHANGED — negating still removes the signal there', () => {
     expect(labels('je fais pas de depression en ce moment')).toEqual([]);
     expect(labels('je ne suis pas depressif', 'aucune depression chez moi')).toEqual([]);
     expect(labels('je n ai pas de diabete', 'aucun diabete dans la famille')).toEqual([]);
     expect(labels('je ne suis pas lesbienne')).toEqual([]);
   });
 
-  // FRONTIÈRE MÉCANIQUE, mesurée et figée — sans elle, un lecteur conclurait de ce qui précède que
-  // « je ne vote pas » tague désormais. Il ne tague pas, et la raison n'est PAS la négation : le
-  // français INFIXE sa négation (« je NE vote PAS »), ce qui casse le marqueur multi-mots dans le
-  // matcher, avant qu'aucun filtre ne soit consulté. La règle d'étage ne rattrape que ce que le
-  // repérage a trouvé. Elle atteint donc les marqueurs d'UN mot et les locutions non infixées.
-  it('FRONTIÈRE — la négation INFIXÉE casse le marqueur, et aucune règle d’étage ne le rattrape', () => {
+  // MECHANICAL BOUNDARY, measured and frozen — without it, a reader would conclude from the above
+  // that « je ne vote pas » now tags. It does not tag, and the reason is NOT the negation: French
+  // INFIXES its negation (« je NE vote PAS »), which breaks the multi-word marker in the matcher,
+  // before any filter is consulted. The storey rule catches only what the matching found. It
+  // therefore reaches ONE-word markers and non-infixed locutions.
+  it('BOUNDARY — the INFIXED negation breaks the marker, and no storey rule catches it', () => {
     expect(labels('je ne vote pas', 'je ne vote jamais')).toEqual([]);
     expect(labels('je ne crois pas en dieu')).toEqual([]);
   });
 });
 
-describe('batterie adverse — citation / discours rapporté', () => {
-  it('terme en discours rapporté → non tagué (attribué à autrui)', () => {
+describe('adverse battery — quotation / reported speech', () => {
+  it('term in reported speech → not tagged (attributed to another)', () => {
     expect(labels('il parait que la therapie et le psy ca aide vraiment')).toEqual([]);
   });
 
-  // ── Le PLURIEL entre guillemets — défaut TRANSVERSE, trouvé sur `politics` ─────────────────────
-  // `findMarker` tolère le pluriel, `occursInsideQuotes` ne le tolérait pas : un marqueur cité au
-  // pluriel matchait sans être reconnu comme cité, et le filtre échouait OUVERT. Le couple
-  // singulier/pluriel est ici PARCE QUE le singulier passait déjà — sans lui, ce test ne dirait pas
-  // par quel chemin son zéro arrive, et un jour où la citation cesserait de filtrer tout court, il
-  // resterait vert pour la mauvaise raison.
-  it('citation au SINGULIER → filtrée (le chemin qui marchait déjà)', () => {
+  // ── The PLURAL between quotes — CROSS-CUTTING defect, found on `politics` ───────────────────────
+  // `findMarker` tolerates the plural, `occursInsideQuotes` did not: a marker quoted in the plural
+  // matched without being recognized as quoted, and the filter failed OPEN. The singular/plural pair
+  // is here BECAUSE the singular already got through — without it, this test would not say by which
+  // path its zero arrives, and one day when quotation stopped filtering at all, it would stay green
+  // for the wrong reason.
+  it('SINGULAR quotation → filtered (the path that already worked)', () => {
     expect(labels('il a dit "le gauchiste au pouvoir"', 'elle a dit "encore ce facho"')).toEqual(
       [],
     );
   });
 
-  it('citation au PLURIEL → filtrée AUSSI (ex-défaut : la regex de guillemets ignorait le `s?`)', () => {
+  it('PLURAL quotation → filtered TOO (former defect: the quote regex ignored the `s?`)', () => {
     expect(
       labels('il a dit "les gauchistes au pouvoir"', 'elle a dit "encore ces fachos"'),
     ).toEqual([]);
   });
 
-  // Contrôle POSITIF : sans lui, les deux zéros ci-dessus seraient tenus par un lexique muet plutôt
-  // que par le filtre. Mêmes mots, mêmes pluriels, sans guillemets → le constat sort.
-  it('contrôle positif — les mêmes pluriels HORS guillemets taguent bien', () => {
+  // POSITIVE control: without it, the two zeros above would be held by a mute lexicon rather than by
+  // the filter. Same words, same plurals, without quotes → the finding comes out.
+  it('positive control — the same plurals OUTSIDE quotes do tag', () => {
     expect(labels('les gauchistes au pouvoir', 'encore ces fachos')).toEqual(['politics']);
   });
 
-  // FRONTIÈRE DÉCLARÉE de ces trois cas : ils tiennent la tolérance de PLURIEL, et elle seule.
-  // L'auto-censure symbolique reste divergente entre `findMarker` et `occursInsideQuotes` — une
-  // insulte masquée entre guillemets échappe encore au filtre. Ce test le FIGE plutôt que de le
-  // taire : le jour où le chemin devient positionnel, il rougit et se retourne en assertion inverse.
-  it('DIVERGENCE RESTANTE — l’auto-censure entre guillemets échappe encore au filtre', () => {
+  // DECLARED BOUNDARY of these three cases: they hold the PLURAL tolerance, and it alone.
+  // Symbolic self-censorship stays divergent between `findMarker` and `occursInsideQuotes` — an
+  // insult masked between quotes still escapes the filter. This test FREEZES it rather than staying
+  // silent: the day the path becomes positional, it goes red and turns into the inverse assertion.
+  it('REMAINING DIVERGENCE — self-censorship between quotes still escapes the filter', () => {
     expect(
       labels('il a dit "les g@uchistes au pouvoir"', 'elle a dit "encore ces f@chos"'),
     ).toEqual(['politics']);
   });
 });
 
-describe('batterie adverse — 3ᵉ personne (dégradation, jamais suppression)', () => {
-  it('détresse d’un proche, répétée → mental_health INDIRECT (signal-sans-vécu, tagué quand même)', () => {
+describe('adverse battery — 3rd person (degradation, never suppression)', () => {
+  it('distress of a relative, repeated → mental_health INDIRECT (signal-without-lived, tagged anyway)', () => {
     const out = detectLabels(
       ['la depression de mon fils m’inquiete', 'je cherche un psy pour mon fils'],
       WIRED_LEXICONS,
     );
     expect(out).toHaveLength(1);
     expect(out[0]?.label).toBe('mental_health');
-    expect(out[0]?.stage).toBe('indirect'); // jamais nommé sur autrui (B3)
+    expect(out[0]?.stage).toBe('indirect'); // never named on another (B3)
   });
 
-  // Faille comblée (« ma mère »/« mon père » absents de THIRD_PERSON) : sans le filtre, ce terme
-  // EXPLICITE appliqué à un tiers nommait l'utilisateur à la place de sa mère — B3 fuyait.
-  // Deux items dégradés (comme le golden « mon fils » ci-dessus) : un seul item dégradé en indirect
-  // reste sous `indirectThreshold` (2) et ne produit AUCUN insight — ce n'est pas la fuite testée ici
-  // (elle serait invisible, pas nommée à tort), donc deux items, comme le reste de la batterie.
-  it('« la dépression de ma mère » → mental_health INDIRECT, JAMAIS nommé (faille comblée)', () => {
+  // Gap filled (« ma mère »/« mon père » absent from THIRD_PERSON): without the filter, this
+  // EXPLICIT term applied to a third party named the user in place of their mother — B3 was leaking.
+  // Two degraded items (like the golden « mon fils » above): a single item degraded to indirect
+  // stays below `indirectThreshold` (2) and produces NO insight — it is not the leak tested here
+  // (it would be invisible, not wrongly named), hence two items, like the rest of the battery.
+  it('« la dépression de ma mère » → mental_health INDIRECT, NEVER named (gap filled)', () => {
     const out = detectLabels(
       ['la depression de ma mere m’inquiete beaucoup', 'je cherche un psy pour ma mere'],
       WIRED_LEXICONS,
@@ -147,39 +147,39 @@ describe('batterie adverse — 3ᵉ personne (dégradation, jamais suppression)'
     expect(out[0]?.stage).toBe('indirect');
   });
 
-  // SONDE CHANGÉE, et la raison est le cœur de ce contrôle. Ce `describe` prouve une DÉGRADATION :
-  // un terme qui nommerait à la 1ʳᵉ personne ne nomme pas à la 3ᵉ. Il lui faut donc une sonde qui
-  // NOMME encore. « dépression » nu a cessé de nommer (tier des noms nus) : gardée comme sonde, elle
-  // aurait laissé les trois cas ci-dessus au vert en `indirect` — non plus parce que la dégradation
-  // marche, mais parce qu'il n'y avait plus rien à dégrader. Un test qui passe pour une autre raison
-  // que la sienne est pire qu'un test rouge : il éteint la garde en silence.
-  it('contrôle : « j’ai fait une dépression nerveuse » (vécu propre) → EXPLICIT (rappel intact)', () => {
+  // PROBE CHANGED, and the reason is the heart of this control. This `describe` proves a
+  // DEGRADATION: a term that would name in the 1st person does not name in the 3rd. It therefore
+  // needs a probe that STILL NAMES. Bare « dépression » stopped naming (bare-nouns tier): kept as a
+  // probe, it would have left the three cases above green at `indirect` — no longer because the
+  // degradation works, but because there was nothing left to degrade. A test that passes for a
+  // reason other than its own is worse than a red test: it turns off the guard in silence.
+  it('control: « j’ai fait une dépression nerveuse » (own lived) → EXPLICIT (recall intact)', () => {
     const out = detectLabels(['j’ai fait une depression nerveuse cet hiver'], WIRED_LEXICONS);
     expect(out).toHaveLength(1);
     expect(out[0]?.label).toBe('mental_health');
     expect(out[0]?.stage).toBe('explicit');
   });
 
-  it('la même, à la 3ᵉ personne → INDIRECT : la dégradation est bien ce qui est mesuré', () => {
-    // Le pendant du contrôle ci-dessus, sur la MÊME sonde. Sans lui, « explicit à la 1ʳᵉ » et
-    // « indirect à la 3ᵉ » restent deux faits séparés ; ensemble, ils sont une dégradation.
+  it('the same, in the 3rd person → INDIRECT: the degradation is indeed what is measured', () => {
+    // The counterpart of the control above, on the SAME probe. Without it, « explicit in the 1st »
+    // and « indirect in the 3rd » stay two separate facts; together, they are a degradation.
     const out = detectLabels(['la depression nerveuse de mon fils m’inquiete'], WIRED_LEXICONS);
     expect(out).toHaveLength(1);
     expect(out[0]?.stage).toBe('indirect');
   });
 
-  it('le NOM NU, lui, ne nomme plus — et ne disparaît pas non plus (tier solo)', () => {
-    // Le plancher installé par le tier des noms nus, gardé ici parce que c'est la batterie qui
-    // porte la doctrine. Un énoncé UNIQUE, à la 1ʳᵉ personne, littéral : il ne produit plus de
-    // constat nommé (l'affirmation ne se justifie pas sur un mot que l'usage courant a colonisé),
-    // mais il produit bien un constat large — sans le tier solo, le seuil de 2 l'aurait effacé.
+  it('the BARE NOUN, itself, no longer names — and does not disappear either (solo tier)', () => {
+    // The floor installed by the bare-nouns tier, kept here because it is the battery that carries
+    // the doctrine. A SINGLE utterance, in the 1st person, literal: it no longer produces a named
+    // finding (the affirmation is not justified on a word everyday use has colonized), but it does
+    // produce a broad finding — without the solo tier, the threshold of 2 would have erased it.
     const out = detectLabels(['j’ai une depression en ce moment'], WIRED_LEXICONS);
     expect(out).toHaveLength(1);
     expect(out[0]?.label).toBe('mental_health');
     expect(out[0]?.stage).toBe('indirect');
   });
 
-  it('mêmes garanties sur le reste de la famille ajoutée (père, parents, grand-parents, oncle/tante, cousin·e, mec/meuf/ex)', () => {
+  it('same guarantees on the rest of the added family (father, parents, grandparents, uncle/aunt, cousin, partner/ex)', () => {
     const proches = [
       'mon pere',
       'mes parents',
@@ -206,50 +206,50 @@ describe('batterie adverse — 3ᵉ personne (dégradation, jamais suppression)'
   });
 });
 
-describe('batterie adverse — auto-censure et allongement (machinerie)', () => {
-  it('insulte auto-censurée ciblée → conflictual, surface = forme masquée tapée', () => {
+describe('adverse battery — self-censorship and elongation (machinery)', () => {
+  it('self-censored targeted insult → conflictual, surface = masked form typed', () => {
     const out = detectLabels(["t'es qu'une grosse c*nne"], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['conflictual']);
     expect(out[0]?.items[0]?.surfaces).toContain('c*nne');
   });
 
-  it('insulte allongée ciblée → conflictual, surface = forme allongée', () => {
+  it('elongated targeted insult → conflictual, surface = elongated form', () => {
     const out = detectLabels(["t'es vraiment un abruuuuti"], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['conflictual']);
     expect(out[0]?.items[0]?.surfaces).toContain('abruuuuti');
   });
 
-  it('pluriel : « fachos » / « gauchistes » comptent comme leurs singuliers (politics)', () => {
-    // Deux items de registre opinion → seuil indirect 2 atteint.
+  it('plural: « fachos » / « gauchistes » count as their singulars (politics)', () => {
+    // Two opinion-register items → indirect threshold 2 reached.
     expect(labels('encore ces fachos au pouvoir', 'et tous ces gauchistes')).toEqual(['politics']);
   });
 });
 
-describe('batterie adverse — polysémie (seuil protège)', () => {
-  it('« déprime » économique isolé → mental_health NON tagué (1 hit colloquial < seuil 2)', () => {
+describe('adverse battery — polysemy (the threshold protects)', () => {
+  it('economic « déprime » isolated → mental_health NOT tagged (1 colloquial hit < threshold 2)', () => {
     expect(labels('le marche est en pleine deprime ces temps-ci')).toEqual([]);
   });
 
-  it('« toc » polysémique isolé → mental_health NON tagué (colloquial, 1 hit < seuil 2)', () => {
-    // Anti-régression : « toc » a été descendu d'explicit en colloquial (PANO-36) — un « toc toc »
-    // ou « du toc » isolé ne doit plus jamais tagger une condition nommée.
+  it('polysemous « toc » isolated → mental_health NOT tagged (colloquial, 1 hit < threshold 2)', () => {
+    // Anti-regression: « toc » was lowered from explicit to colloquial (PANO-36) — an isolated
+    // « toc toc » or « du toc » must never again tag a named condition.
     expect(labels('toc toc qui est la derriere la porte')).toEqual([]);
     expect(labels("c'est du toc ce sac soi-disant en cuir")).toEqual([]);
   });
 });
 
-describe('batterie adverse — conflictual = agression de PERSONNES', () => {
-  it('juron sans cible → conflictual NON tagué', () => {
+describe('adverse battery — conflictual = aggression of PERSONS', () => {
+  it('swear word without a target → conflictual NOT tagged', () => {
     expect(labels('quel bouffon ce scenario de film')).toEqual([]);
   });
 
-  it('critique d’idée non politique (insulte sur une chose) → tagué NULLE PART', () => {
+  it('criticism of a non-political idea (insult on a thing) → tagged NOWHERE', () => {
     expect(labels('cette blague est vraiment debile')).toEqual([]);
   });
 });
 
-describe('batterie adverse — opinion politique va bien en POLITICS (pas conflictual)', () => {
-  it('jugement de catégorie répété → politics indirect, jamais conflictual', () => {
+describe('adverse battery — political opinion goes to POLITICS (not conflictual)', () => {
+  it('repeated category judgment → politics indirect, never conflictual', () => {
     const out = detectLabels(
       ['ce parti est un ramassis de fascistes', 'quelle bande de corrompus au sommet'],
       WIRED_LEXICONS,
@@ -258,35 +258,35 @@ describe('batterie adverse — opinion politique va bien en POLITICS (pas confli
     expect(out[0]?.stage).toBe('indirect');
   });
 
-  it('auto-déclaration 1ʳᵉ personne → politics EXPLICIT (via le pattern PANO-72)', () => {
+  it('1st-person self-declaration → politics EXPLICIT (via the PANO-72 pattern)', () => {
     const out = detectLabels(['perso je suis de gauche et je milite'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['politics']);
     expect(out[0]?.stage).toBe('explicit');
   });
 });
 
-// ─── Passe 2 : health_physical / sexuality / religion (PANO-72) ─────────────────────────────────
+// ─── Pass 2: health_physical / sexuality / religion (PANO-72) ───────────────────────────────────
 
-describe('batterie adverse — health_physical (piège des hyperboles de fatigue)', () => {
-  it('hyperboles « crevé / claqué / mort » → NON taguées (exclues du lexique)', () => {
+describe('adverse battery — health_physical (the fatigue-hyperbole trap)', () => {
+  it('hyperboles « crevé / claqué / mort » → NOT tagged (excluded from the lexicon)', () => {
     expect(
       labels('je suis mort de fatigue', 'chui claque apres le taf', 'trop creve ce soir'),
     ).toEqual([]);
   });
 
-  it('condition nommée à soi → health_physical explicit', () => {
+  it('condition named of oneself → health_physical explicit', () => {
     const out = detectLabels(['je vis avec mon diabete au quotidien'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['health_physical']);
     expect(out[0]?.stage).toBe('explicit');
   });
 
-  it('parcours de soin répété → health_physical indirect (seuil 2)', () => {
+  it('repeated care journey → health_physical indirect (threshold 2)', () => {
     expect(labels('rdv chez le cardiologue demain', 'encore une prise de sang ce matin')).toEqual([
       'health_physical',
     ]);
   });
 
-  it('condition d’un proche → indirect (signal-sans-vécu, jamais nommé) ', () => {
+  it('condition of a relative → indirect (signal-without-lived, never named) ', () => {
     const out = detectLabels(
       ['le diabete de mon fils me stresse', "j'accompagne mon fils a l'hopital"],
       WIRED_LEXICONS,
@@ -294,106 +294,106 @@ describe('batterie adverse — health_physical (piège des hyperboles de fatigue
     expect(out.find((d) => d.label === 'health_physical')?.stage).toBe('indirect');
   });
 
-  // ── LE NOM DE MALADIE DEVENU INSULTE (ADR-0003, *L'admission d'un terme*) ──────────────────────
-  // Le lexique porte `mon cancer`, `ma chimio`, `ma maladie` — et JAMAIS `cancer` nu. La règle a
-  // longtemps vécu sans être écrite ni relue ; elle est en doctrine depuis qu'une seconde langue
-  // l'a retrouvée seule, l'anglais faisant de « cancer »/« cancerous » une épithète générique.
+  // ── THE ILLNESS NAME TURNED INSULT (ADR-0003, *L'admission d'un terme*) ─────────────────────────
+  // The lexicon carries `mon cancer`, `ma chimio`, `ma maladie` — and NEVER bare `cancer`. The rule
+  // long lived without being written or re-read; it is in doctrine since a second language found it
+  // on its own, English making « cancer »/« cancerous » a generic epithet.
   //
-  // Ce que ce test tient, et pourquoi il est BEHAVIOURAL plutôt qu'une assertion sur la liste :
-  // « `cancer` n'est pas dans le tableau » passerait au vert même si un autre tier le rattrapait.
-  // On vérifie donc ce qui compte — qu'aucun constat ne se pose — et le contrôle positif juste
-  // en dessous prouve que la forme PORTÉE, elle, tague bien (sans quoi ce zéro ne dirait rien).
-  it('nom de maladie employé comme insulte → AUCUN constat, dans les deux langues', () => {
+  // What this test holds, and why it is BEHAVIOURAL rather than an assertion on the list:
+  // « `cancer` is not in the table » would go green even if another tier caught it.
+  // So we verify what matters — that no finding is posed — and the positive control just below
+  // proves that the CARRIED form does tag (without which this zero would say nothing).
+  it('illness name used as an insult → NO finding, in both languages', () => {
     expect(labels('cette meta est le cancer du jeu')).toEqual([]);
     expect(labels('this meme is cancer', 'that take is cancerous')).toEqual([]);
   });
 
-  it('CONTRÔLE — la forme PORTÉE tague, elle : le zéro du dessus est une exclusion, pas une panne', () => {
+  it('CONTROL — the CARRIED form tags: the zero above is an exclusion, not a breakdown', () => {
     const out = detectLabels(['mon cancer et ma chimio rythment mes semaines'], WIRED_LEXICONS);
     expect(out.find((d) => d.label === 'health_physical')?.stage).toBe('explicit');
   });
 });
 
-describe('batterie adverse — sexuality (seuil 1, coût outing)', () => {
-  it('auto-déclaration → sexuality explicit (nommé)', () => {
+describe('adverse battery — sexuality (threshold 1, outing cost)', () => {
+  it('self-declaration → sexuality explicit (named)', () => {
     const out = detectLabels(['je suis lesbienne et fière de l’être'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['sexuality']);
     expect(out[0]?.stage).toBe('explicit');
   });
 
-  it('identité NUE (3ᵉ personne) → indirect, jamais nommé (règle catalogue)', () => {
+  it('BARE identity (3rd person) → indirect, never named (catalog rule)', () => {
     const out = detectLabels(['cette actrice est ouvertement lesbienne'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['sexuality']);
     expect(out[0]?.stage).toBe('indirect');
   });
 
-  it('« arc-en-ciel » météo → non tagué (exclusion assumée, coût outing)', () => {
+  it('« arc-en-ciel » weather → not tagged (assumed exclusion, outing cost)', () => {
     expect(labels('quel bel arc-en-ciel après l’orage')).toEqual([]);
   });
 
-  it('collision hors-domaine « un pan de mur » → non tagué (sondage FP PANO-72)', () => {
+  it('out-of-domain collision « un pan de mur » → not tagged (FP probe PANO-72)', () => {
     expect(labels('je suis un pan de ce grand mur en ruine')).toEqual([]);
   });
 });
 
-describe('batterie adverse — religion (label de SUJET, décision D)', () => {
-  it('appartenance déclarée → religion explicit', () => {
+describe('adverse battery — religion (SUBJECT label, decision D)', () => {
+  it('declared membership → religion explicit', () => {
     const out = detectLabels(['je suis musulman et pratiquant'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['religion']);
     expect(out[0]?.stage).toBe('explicit');
   });
 
-  it('« église » culturelle → religion indirect (multi-interprétabilité, pas un bug)', () => {
+  it('cultural « église » → religion indirect (multi-interpretability, not a bug)', () => {
     const out = detectLabels(['magnifique église romane dans ce village'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['religion']);
-    expect(out[0]?.stage).toBe('indirect'); // l'éventail §5 porte la lecture « curiosité »
+    expect(out[0]?.stage).toBe('indirect'); // the §5 fan carries the « curiosity » reading
   });
 
-  it('interjection lexicalisée « wallah » → NON taguée (exclue : sociolecte, pas religion)', () => {
+  it('lexicalized interjection « wallah » → NOT tagged (excluded: sociolect, not religion)', () => {
     expect(labels('wallah je te jure c’est vrai')).toEqual([]);
   });
 
-  it('collisions hors-domaine → NON taguées (sondage FP PANO-72, anti-régression)', () => {
-    expect(labels('je fais de la voile ce week-end')).toEqual([]); // voile = bateau
-    expect(labels('jai mal aux temples ce matin')).toEqual([]); // temples = anatomie
-    expect(labels("visite de l'institut pasteur demain")).toEqual([]); // pasteur = toponyme
-    expect(labels("mon bapteme de l'air était génial")).toEqual([]); // baptême = première fois
+  it('out-of-domain collisions → NOT tagged (FP probe PANO-72, anti-regression)', () => {
+    expect(labels('je fais de la voile ce week-end')).toEqual([]); // voile = boat
+    expect(labels('jai mal aux temples ce matin')).toEqual([]); // temples = anatomy
+    expect(labels("visite de l'institut pasteur demain")).toEqual([]); // pasteur = toponym
+    expect(labels("mon bapteme de l'air était génial")).toEqual([]); // baptême = first time
   });
 
-  // La sonde disait « t'es qu'un bigot arriéré ». `bigot` (masculin) a été RETIRÉ du lexique à
-  // l'ouverture de l'EN — c'est un homographe du mot anglais courant, et il taguait « you are being
-  // a bigot about this policy ». La FRONTIÈRE que ce test garde n'a pas bougé d'un pouce ; seule sa
-  // sonde change, pour une surface que le retrait épargne. Ce test est d'ailleurs ce qui a rendu le
-  // coût du retrait visible : `bigot` portait une décision ratifiée, pas seulement du vocabulaire.
-  it('insulte anti-croyant ciblée → conflictual, jamais religion', () => {
+  // The probe said « t'es qu'un bigot arriéré ». `bigot` (masculine) was REMOVED from the lexicon at
+  // the EN opening — it is a homograph of the common English word, and it tagged « you are being a
+  // bigot about this policy ». The BOUNDARY this test guards has not moved an inch; only its probe
+  // changes, for a surface the removal spares. This test is moreover what made the cost of the
+  // removal visible: `bigot` carried a ratified decision, not only vocabulary.
+  it('targeted anti-believer insult → conflictual, never religion', () => {
     const out = detectLabels(["t'es qu'une bigote arriérée"], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['conflictual']);
   });
 });
 
-// ── Lot pilote EN (PANO-35) — la SEULE chose qui exerce les variantes EN ────────────────────────
-// La persona EN de démo n'en rencontre AUCUNE (mesuré : le golden ne bouge pas d'un octet après le
-// lot). Sans cette section, ~50 termes seraient livrés sans qu'aucun test ne les traverse. Les cas
-// d'HYPERBOLE sont les plus importants : ils figent des EXCLUSIONS, c'est-à-dire la doctrine.
-describe('batterie adverse — EN, condition nommée et soin', () => {
-  // Même changement de sonde qu'en français, même raison : « anxiety » nu ne nomme plus. Le syntagme
-  // diagnostique, lui, nomme toujours — et c'est exactement la ligne que le lexique trace désormais.
-  it('SYNTAGME diagnostique EN à soi → mental_health explicit (nommé)', () => {
+// ── EN pilot batch (PANO-35) — the ONLY thing that exercises the EN variants ─────────────────────
+// The demo EN persona meets NONE of them (measured: the golden does not move a byte after the
+// batch). Without this section, ~50 terms would be delivered without any test crossing them. The
+// HYPERBOLE cases are the most important: they freeze EXCLUSIONS, that is the doctrine.
+describe('adverse battery — EN, named condition and care', () => {
+  // Same probe change as in French, same reason: bare « anxiety » no longer names. The diagnostic
+  // phrase, itself, still names — and it is exactly the line the lexicon now traces.
+  it('EN diagnostic PHRASE of oneself → mental_health explicit (named)', () => {
     const out = detectLabels(['i was diagnosed with an anxiety disorder'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['mental_health']);
     expect(out[0]?.stage).toBe('explicit');
   });
 
-  it('NOM NU EN à soi → large, jamais nommé, et jamais absent', () => {
-    // Le pendant anglais du plancher : un seul énoncé suffit à taguer, aucun nombre ne suffit à
-    // nommer. Les deux moitiés comptent — c'est le trou dans lequel la première rétrogradation
-    // était tombée (mesurée dans `en-demotion-ablation.test.ts`).
+  it('EN BARE NOUN of oneself → broad, never named, and never absent', () => {
+    // The English counterpart of the floor: a single utterance is enough to tag, no number is enough
+    // to name. Both halves count — it is the hole the first demotion had fallen into (measured in
+    // `en-demotion-ablation.test.ts`).
     const out = detectLabels(['i have been dealing with anxiety for years'], WIRED_LEXICONS);
     expect(out.map((d) => d.label)).toEqual(['mental_health']);
     expect(out[0]?.stage).toBe('indirect');
   });
 
-  it('parcours de soin EN répété → indirect (le seuil 2 vaut aussi en anglais)', () => {
+  it('repeated EN care journey → indirect (the threshold 2 holds in English too)', () => {
     const out = detectLabels(
       ['i started therapy in march', 'my therapist suggested a break'],
       WIRED_LEXICONS,
@@ -402,11 +402,11 @@ describe('batterie adverse — EN, condition nommée et soin', () => {
     expect(out[0]?.stage).toBe('indirect');
   });
 
-  it('un seul marqueur indirect EN ne pose RIEN (seuil non contourné)', () => {
+  it('a single indirect EN marker poses NOTHING (threshold not bypassed)', () => {
     expect(labels('i started therapy in march')).toEqual([]);
   });
 
-  it('détresse EN d’un proche → indirect, jamais nommé (B3, filtres du lot 1 + termes du lot 2)', () => {
+  it('EN distress of a relative → indirect, never named (B3, batch-1 filters + batch-2 terms)', () => {
     const out = detectLabels(
       ['my sister has been in therapy', 'helping my teen with school refusal'],
       WIRED_LEXICONS,
@@ -414,23 +414,23 @@ describe('batterie adverse — EN, condition nommée et soin', () => {
     expect(out.find((d) => d.label === 'mental_health')?.stage).toBe('indirect');
   });
 
-  it('négation EN sur un terme du lot → non tagué', () => {
+  it('EN negation on a batch term → not tagged', () => {
     expect(labels("i don't have anxiety, i was just tired")).toEqual([]);
   });
 });
 
-// ── health_physical EN — et la ligne d'admission n'est PAS celle du pilote ───────────────────────
-// Le lot `mental_health` s'est défendu contre l'HYPERBOLE. Ici elle ne travaille presque pas :
-// personne n'écrit « i'm diabetic » pour rire. La ligne qui décide ce label est
+// ── health_physical EN — and the admission line is NOT that of the pilot ─────────────────────────
+// The `mental_health` batch defended itself against HYPERBOLE. Here it hardly works: no one writes
+// « i'm diabetic » for a laugh. The line that decides this label is
 //
-//     LE SYMPTÔME N'EST PAS LA CONDITION,
+//     THE SYMPTOM IS NOT THE CONDITION,
 //
-// et elle a été mesurée sur deux voix scellées : celle qui VIT une polyarthrite nomme sa maladie,
-// son traitement et sa spécialité ; celle qui n'a RIEN écrit un vocabulaire de symptômes dense et
-// parfaitement littéral. Les exclusions ci-dessous sont ce qui les sépare — et elles portent la
-// doctrine, parce qu'une inclusion se relit alors qu'une exclusion se perd si rien ne la tient.
-describe('batterie adverse — EN, health_physical (le symptôme n’est pas la condition)', () => {
-  it('condition nommée + traitement → health_physical, et le vécu est NOMMÉ', () => {
+// and it was measured on two sealed voices: the one who LIVES with polyarthritis names her illness,
+// her treatment and her specialty; the one who has NOTHING wrote a dense and perfectly literal
+// vocabulary of symptoms. The exclusions below are what separates them — and they carry the
+// doctrine, because an inclusion gets re-read whereas an exclusion is lost if nothing holds it.
+describe('adverse battery — EN, health_physical (the symptom is not the condition)', () => {
+  it('named condition + treatment → health_physical, and the lived is NAMED', () => {
     const out = detectLabels(
       ['rheumatoid arthritis flare how long do they last', 'methotrexate day is a saturday'],
       WIRED_LEXICONS,
@@ -439,11 +439,11 @@ describe('batterie adverse — EN, health_physical (le symptôme n’est pas la 
     expect(out[0]?.stage).toBe('explicit');
   });
 
-  it('LE CŒUR DU LOT — un vocabulaire de SYMPTÔMES, dense et littéral, ne tague RIEN', () => {
-    // Chacune de ces recherches est ce qu'écrit quelqu'un qui n'a rien et s'inquiète. Toutes
-    // décrivent une sensation RÉELLE : aucune n'est de l'hyperbole, et c'est ce qui rend le cas
-    // plus dur que celui du pilote. Le seuil ne protège pas non plus — qui s'inquiète cherche
-    // beaucoup, donc la répétition accumule (ADR-0003).
+  it('THE HEART OF THE BATCH — a vocabulary of SYMPTOMS, dense and literal, tags NOTHING', () => {
+    // Each of these searches is what someone who has nothing and worries writes. All describe a REAL
+    // sensation: none is hyperbole, and it is what makes the case harder than the pilot's. The
+    // threshold does not protect either — whoever worries searches a lot, so the repetition
+    // accumulates (ADR-0003).
     expect(
       labels(
         'small red bump on arm not itchy',
@@ -458,16 +458,16 @@ describe('batterie adverse — EN, health_physical (le symptôme n’est pas la 
     ).toEqual([]);
   });
 
-  it('les noms de maladie devenus insultes ou banalités → non tagués', () => {
+  it('illness names turned insults or banalities → not tagged', () => {
     expect(labels('this meme is cancer', 'that take is cancerous')).toEqual([]);
     expect(labels('you are giving me a migraine', 'this queue is a migraine')).toEqual([]);
     expect(labels('that beat is sick', 'im so sick of this weather')).toEqual([]);
     expect(labels('a stroke of luck honestly', 'my backstroke is terrible')).toEqual([]);
   });
 
-  it('CONTRÔLE — les formes PORTÉES des mêmes mots taguent, elles', () => {
-    // Sans ce contrôle, les zéros ci-dessus ne distingueraient pas une exclusion d'une absence de
-    // couverture. C'est le syntagme qui nomme, pas le mot nu.
+  it('CONTROL — the CARRIED forms of the same words do tag', () => {
+    // Without this control, the zeros above would not distinguish an exclusion from an absence of
+    // coverage. It is the phrase that names, not the bare word.
     const out = detectLabels(
       ['my cancer treatment starts on monday', 'my chemo schedule for next month'],
       WIRED_LEXICONS,
@@ -475,9 +475,9 @@ describe('batterie adverse — EN, health_physical (le symptôme n’est pas la 
     expect(out.find((d) => d.label === 'health_physical')?.stage).toBe('explicit');
   });
 
-  it('la rééducation PHYSIQUE va en health_physical, et plus en santé mentale', () => {
-    // Le tort trouvé par le banc du corps : « occupational therapy » lu comme de la santé mentale
-    // chez l'aidante d'une personne ayant fait un AVC. Mauvaise personne ET mauvais sujet.
+  it('PHYSICAL rehabilitation goes to health_physical, no longer to mental health', () => {
+    // The wrong found by the body bench: « occupational therapy » read as mental health for the
+    // carer of a person who had a stroke. Wrong person AND wrong subject.
     const out = detectLabels(
       ['occupational therapy home assessment', 'aphasia speech therapy waiting list'],
       WIRED_LEXICONS,
@@ -485,9 +485,9 @@ describe('batterie adverse — EN, health_physical (le symptôme n’est pas la 
     expect(out.map((d) => d.label)).toEqual(['health_physical']);
   });
 
-  it("ABLATION — `therapy` n'a rien perdu : les vrais positifs de santé mentale tiennent", () => {
-    // La contrepartie obligatoire de la ligne du dessus. `therapy` est un terme LIVRÉ qui porte un
-    // rappel réel ; le lot le laisse intact et ne lui retire que ce qui ne lui appartenait pas.
+  it('ABLATION — `therapy` lost nothing: the true positives of mental health hold', () => {
+    // The obligatory counterpart of the line above. `therapy` is a DELIVERED term that carries a
+    // real recall; the batch leaves it intact and removes from it only what did not belong to it.
     const out = detectLabels(
       ['therapy cost per session average', 'how to find a therapist without a referral'],
       WIRED_LEXICONS,
@@ -495,17 +495,17 @@ describe('batterie adverse — EN, health_physical (le symptôme n’est pas la 
     expect(out.map((d) => d.label)).toEqual(['mental_health']);
   });
 
-  it('« retail therapy » tombe aussi — la réserve écrite du lot pilote, enfin tenue', () => {
+  it('« retail therapy » falls too — the written reservation of the pilot batch, finally held', () => {
     expect(labels('retail therapy is my weakness', 'a bit of retail therapy today')).toEqual([]);
   });
 });
 
-describe('batterie adverse — EN, hyperbole (les exclusions QUI PORTENT la doctrine)', () => {
-  // « je veux mourir » est DANS le lexique FR ; « i want to die » en est exclu, à dessein — en
-  // anglais c'est une réaction conventionnelle à l'embarras (même famille que « i'm dying » = rire),
-  // pas une détresse. Le cas d'école du jugement qui ne survit pas à la traduction
-  // (cf. `docs/methode-portabilite-en.md`, les lignes de séparation).
-  it('hyperbole vitale EN → NON taguée, même accumulée', () => {
+describe('adverse battery — EN, hyperbole (the exclusions THAT CARRY the doctrine)', () => {
+  // « je veux mourir » is IN the FR lexicon; « i want to die » is excluded from it, by design — in
+  // English it is a conventional reaction to embarrassment (same family as « i'm dying » = laughing),
+  // not distress. The textbook case of the judgment that does not survive translation
+  // (cf. `docs/methode-portabilite-en.md`, the separation lines).
+  it('vital EN hyperbole → NOT tagged, even accumulated', () => {
     expect(
       labels(
         'that photo i am dying',
@@ -516,24 +516,24 @@ describe('batterie adverse — EN, hyperbole (les exclusions QUI PORTENT la doct
     ).toEqual([]);
   });
 
-  it('adjectif d’objet et faux-ami → NON tagués', () => {
-    expect(labels('this weather is so depressing')).toEqual([]); // état d'une CHOSE, pas du locuteur
-    expect(labels('so anxious to see you tomorrow')).toEqual([]); // « anxious » EN = impatient
+  it('object adjective and false friend → NOT tagged', () => {
+    expect(labels('this weather is so depressing')).toEqual([]); // state of a THING, not the speaker
+    expect(labels('so anxious to see you tomorrow')).toEqual([]); // « anxious » EN = eager
   });
 
-  it('vocabulaire clinique colloquialisé → jamais NOMMÉ (même chemin que « toc »)', () => {
-    expect(labels('i am so ocd about my desk')).toEqual([]); // isolé : sous le seuil
-    expect(labels('that movie traumatized me')).toEqual([]); // « trauma » exclu du lexique
-    expect(labels('he keeps gaslighting everyone')).toEqual([]); // reproche à AUTRUI, pas un état
+  it('colloquialized clinical vocabulary → never NAMED (same path as « toc »)', () => {
+    expect(labels('i am so ocd about my desk')).toEqual([]); // isolated: below the threshold
+    expect(labels('that movie traumatized me')).toEqual([]); // « trauma » excluded from the lexicon
+    expect(labels('he keeps gaslighting everyone')).toEqual([]); // reproach to ANOTHER, not a state
   });
 });
 
-// ── `woke`, passé de *wake* — l'homographe qui traverse depuis le FR ────────────────────────────
-// CE QUE CETTE SECTION NE COUVRE PAS : elle tient les huit frames verbales écartées par
-// `COVERING_PHRASES_EN`, et rien d'autre. Elle ne mesure NI la fréquence relative des deux emplois,
-// NI le reste de la queue verbale — dont le dernier cas ci-dessous fige précisément un morceau.
-describe('batterie adverse — EN, `woke` verbal vs `woke` politique', () => {
-  it('les frames verbales → NON taguées (particule et objets pronominaux)', () => {
+// ── `woke`, past of *wake* — the homograph that crosses over from FR ─────────────────────────────
+// WHAT THIS SECTION DOES NOT COVER: it holds the eight verbal frames set aside by
+// `COVERING_PHRASES_EN`, and nothing else. It measures NEITHER the relative frequency of the two
+// uses, NOR the rest of the verbal tail — of which the last case below freezes precisely one piece.
+describe('adverse battery — EN, verbal `woke` vs political `woke`', () => {
+  it('the verbal frames → NOT tagged (particle and pronominal objects)', () => {
     expect(labels('i woke up at five again', 'woke up with a migraine')).toEqual([]);
     expect(labels('the dog woke me at three', 'she woke us all up shouting')).toEqual([]);
     expect(labels('that noise woke him instantly', 'i woke at five and could not sleep')).toEqual(
@@ -541,39 +541,38 @@ describe('batterie adverse — EN, `woke` verbal vs `woke` politique', () => {
     );
   });
 
-  // CONTRÔLE POSITIF, et il porte tout le reste : sans lui, les zéros ci-dessus seraient tenus par
-  // un `woke` devenu muet — c'est-à-dire par une éviction déguisée, que la doctrine interdit
-  // (le terme se déclenche sur des porteurs, il RESTE).
-  it('contrôle positif — l’emploi POLITIQUE tague toujours', () => {
+  // POSITIVE CONTROL, and it carries all the rest: without it, the zeros above would be held by a
+  // `woke` gone mute — that is by a disguised eviction, which the doctrine forbids
+  // (the term triggers on bearers, it STAYS).
+  it('positive control — the POLITICAL use still tags', () => {
     expect(labels('the woke crowd again', 'everything is woke now')).toEqual(['politics']);
   });
 
-  // RÉSIDU FIGÉ plutôt que tu. Ce test dit « voici ce qui passe encore », et il se retournera en
-  // assertion inverse le jour où quelqu'un décidera de couvrir la queue verbale.
-  it('RÉSIDU DÉCLARÉ — `woke` + conjonction / adverbe tague encore', () => {
+  // RESIDUE FROZEN rather than kept silent. This test says « here is what still gets through », and
+  // it will turn into the inverse assertion the day someone decides to cover the verbal tail.
+  it('DECLARED RESIDUE — `woke` + conjunction / adverb still tags', () => {
     expect(labels('i woke and it was already dark', 'she woke suddenly in the night')).toEqual([
       'politics',
     ]);
   });
 });
 
-// ── Lot EN de `conflictual` (PANO-35) — la SEULE chose qui exerce ses variantes EN ──────────────
-// La persona EN de démo en rencontre EXACTEMENT UNE (« you’re just stupid »), figée séparément dans
-// `demo/synthetic-export.test.ts` ; les neuf autres formes ne sont traversées que par ici. Et sur
-// ce label, la colonne d'exclusions ne fait pas que porter la doctrine — elle porte TOUTE la
-// sûreté : `conflictual` est le seul label sans éventail de lectures (ADR-0003), donc un faux
-// positif n'y a aucun filet.
+// ── EN batch of `conflictual` (PANO-35) — the ONLY thing that exercises its EN variants ──────────
+// The demo EN persona meets EXACTLY ONE of them (« you’re just stupid »), frozen separately in
+// `demo/synthetic-export.test.ts`; the nine other forms are crossed only by here. And on this
+// label, the exclusions column does not only carry the doctrine — it carries ALL the safety:
+// `conflictual` is the only label without a fan of readings (ADR-0003), so a false positive there
+// has no net.
 //
-// ── CE QUE CETTE SECTION NE COUVRE PAS, et il faut le lire avant de la citer ────────────────────
-// Elle est écrite PAR l'auteur du lexique, sur des cas TYPIQUES qu'il a choisis. Elle prouve que
-// les formes admises se comportent comme prévu sur ces cas-là, et rien de plus. Elle ne mesure
-// AUCUN taux de faux positifs : aucune voix scellée d'aucun banc n'écrit d'agression, dans aucune
-// des deux langues (mesuré : 17 voix, 476 items, zéro constat `conflictual`). Le tort central du
-// lot — la vanne entre amis, taguée comme une agression parce que rien dans un export ne les
-// sépare — est ASSUMÉ, PAS MESURÉ, et son instrument (des voix scellées d'agression et de vanne)
-// n'existait pas à la livraison.
-describe('batterie adverse — EN, conflictual : la porte est insulte ET cible', () => {
-  it('insulte EN ciblée → conflictual, terme épinglé', () => {
+// ── WHAT THIS SECTION DOES NOT COVER, and it must be read before citing it ───────────────────────
+// It is written BY the author of the lexicon, on TYPICAL cases he chose. It proves that the admitted
+// forms behave as expected on those cases, and nothing more. It measures NO false-positive rate: no
+// sealed voice of any bench writes aggression, in either language (measured: 17 voices, 476 items,
+// zero `conflictual` finding). The central wrong of the batch — the joke between friends, tagged as
+// an aggression because nothing in an export separates them — is ASSUMED, NOT MEASURED, and its
+// instrument (sealed voices of aggression and of joking) did not exist at delivery.
+describe('adverse battery — EN, conflictual: the gate is insult AND target', () => {
+  it('targeted EN insult → conflictual, term pinned', () => {
     const out = detectLabels(
       ['you are a dumbass and everyone in the replies knows it'],
       WIRED_LEXICONS,
@@ -582,107 +581,108 @@ describe('batterie adverse — EN, conflictual : la porte est insulte ET cible',
     expect(out[0]?.items[0]?.surfaces).toContain('dumbass');
   });
 
-  it('impératif injurieux EN → tagué (il adresse par construction, comme « ta gueule »)', () => {
+  it('abusive EN imperative → tagged (it addresses by construction, like « ta gueule »)', () => {
     expect(labels('shut up nobody asked')).toEqual(['conflictual']);
   });
 
-  it('insulte EN visant une IDÉE → tagué NULLE PART (décision D, portée par la cible)', () => {
+  it('EN insult targeting an IDEA → tagged NOWHERE (decision D, carried by the target)', () => {
     expect(labels('this take is moronic')).toEqual([]);
     expect(labels('that stupid rule about parking near the school')).toEqual([]);
   });
 
-  it('insulte EN RAPPORTÉE → hors-champ (le filtre de citation est déjà bilingue)', () => {
+  it('REPORTED EN insult → out of scope (the quotation filter is already bilingual)', () => {
     expect(labels('he called me stupid and i just logged off')).toEqual([]);
   });
 
-  it('insulte EN NIÉE → non taguée', () => {
+  it('NEGATED EN insult → not tagged', () => {
     expect(labels('you are not stupid, dont let them tell you that')).toEqual([]);
   });
 });
 
-describe('batterie adverse — EN, conflictual : les EXCLUSIONS, et elles portent toute la sûreté', () => {
-  // L'exclusion la plus importante du lot. `you` nu n'est pas une adresse en anglais : c'est aussi
-  // l'impersonnel. Mesuré à l'écriture du lot, à termes identiques : avec `you` nu dans `targets`,
-  // 14 items anglais innocents sur 14 taguaient ; avec les seules constructions ancrées, 0 sur 14.
-  it('le pronom `you` nu N’EST PAS une cible — la phrase de conseil ne tague pas', () => {
+describe('adverse battery — EN, conflictual: the EXCLUSIONS, and they carry all the safety', () => {
+  // The most important exclusion of the batch. Bare `you` is not an address in English: it is also
+  // the impersonal. Measured at the writing of the batch, at identical terms: with bare `you` in
+  // `targets`, 14 innocent English items out of 14 tagged; with the anchored constructions only, 0
+  // out of 14.
+  it('the bare pronoun `you` IS NOT a target — the advice sentence does not tag', () => {
     expect(labels('you should get your thyroid gland checked out')).toEqual([]);
     expect(labels('you can take the trash out on tuesdays')).toEqual([]);
     expect(labels('i cope with the heat by staying inside, you should too')).toEqual([]);
   });
 
-  it('vocatifs d’AFFILIATION → jamais des cibles (ils marquent le lien, pas l’attaque)', () => {
+  it('AFFILIATION vocatives → never targets (they mark the bond, not the attack)', () => {
     expect(labels('bro is washed and he knows it')).toEqual([]);
     expect(labels('yall are not beating the allegations')).toEqual([]);
   });
 
-  it('argot d’ÉVALUATION (performance, objet) → hors lexique', () => {
+  it('EVALUATION slang (performance, object) → outside the lexicon', () => {
     expect(labels('that album is straight trash honestly')).toEqual([]);
-    expect(labels('you are such a sad excuse for a chef')).toEqual([]); // « sad » exclu
+    expect(labels('you are such a sad excuse for a chef')).toEqual([]); // « sad » excluded
   });
 
-  it('joute LUDIQUE en ligne → hors lexique (et c’est la porte que l’invective politique prendrait)', () => {
+  it('PLAYFUL online sparring → outside the lexicon (and it is the gate political invective would take)', () => {
     expect(labels('cope harder')).toEqual([]);
     expect(labels('you are so triggered by this')).toEqual([]);
   });
 
-  it('nom de trouble employé en insulte → n’entre nulle part (ADR-0003, F7)', () => {
+  it('name of a disorder used as an insult → enters nowhere (ADR-0003, F7)', () => {
     expect(labels('every politician in that debate was a narcissist')).toEqual([]);
     expect(labels('you are being such a schizo about this')).toEqual([]);
   });
 
-  it('reproche de COMPORTEMENT → pas une insulte, donc hors de ce label', () => {
+  it('reproach of BEHAVIOR → not an insult, therefore outside this label', () => {
     expect(labels('you are gaslighting me right now')).toEqual([]);
   });
 
-  it('insulte de GROUPE dans l’absolu → nulle part (futur label dédié, jamais tranché seul)', () => {
+  it('GROUP insult in the absolute → nowhere (future dedicated label, never settled alone)', () => {
     expect(labels('people like you are the problem with this country')).toEqual([]);
   });
 });
 
-// ── Les six entrées FR RETIRÉES à l'ouverture de l'EN (PANO-35) ─────────────────────────────────
-// Une exclusion se perd si rien ne la tient, et celles-ci se perdraient particulièrement vite : ce
-// sont des insultes françaises parfaitement légitimes, qu'un lecteur pressé rajouterait en croyant
-// combler un trou. Ce qui les a fait sortir n'est PAS leur sens français — c'est qu'elles sont
-// homographes de mots anglais ordinaires, et que l'ouverture des cibles EN les a rendues vivantes.
+// ── The six FR entries REMOVED at the EN opening (PANO-35) ────────────────────────────────────────
+// An exclusion is lost if nothing holds it, and these would be lost particularly fast: they are
+// perfectly legitimate French insults, that a hurried reader would re-add believing to fill a hole.
+// What made them leave is NOT their French sense — it is that they are homographs of ordinary
+// English words, and that the opening of the EN targets made them alive.
 //
-// CE QUE CE BLOC NE PROUVE PAS : que le retrait était sans coût. Il en a un, mesuré et inscrit dans
-// l'en-tête du lexique (« t'es vraiment con », « t'es qu'un clown », « t'es qu'un bigot » ne sont
-// plus lus). Il est TENU pour re-mesure dès que des voix scellées d'agression existeront — aucune
-// n'existe aujourd'hui, dans aucune des deux langues.
-describe('batterie adverse — les homographes FR/EN retirés ne taguent plus', () => {
-  it('collisions PURES : aucune agression en jeu, et elles taguaient', () => {
+// WHAT THIS BLOCK DOES NOT PROVE: that the removal was costless. It has one, measured and inscribed
+// in the header of the lexicon (« t'es vraiment con », « t'es qu'un clown », « t'es qu'un bigot »
+// are no longer read). It is HELD for re-measurement as soon as sealed voices of aggression exist —
+// none exists today, in either language.
+describe('adverse battery — the removed FR/EN homographs no longer tag', () => {
+  it('PURE collisions: no aggression at stake, and they tagged', () => {
     expect(labels('you are right that the pros and cons are worth weighing')).toEqual([]);
     expect(labels('youre going to want your thyroid gland checked')).toEqual([]);
     expect(labels('you are growing a tache i see')).toEqual([]);
     expect(labels('you are being a bigot about this policy')).toEqual([]);
   });
 
-  it('vraies insultes EN, mais dont l’usage dominant est la VANNE', () => {
+  it('real EN insults, but whose dominant use is the JOKE', () => {
     expect(labels('you are such a loser at mario kart lmao')).toEqual([]);
     expect(labels('you are the clown in that photo right')).toEqual([]);
   });
 
-  it('le registre FR reste couvert par le voisinage — ce qui est perdu est la SURFACE', () => {
-    // Le retrait ne laisse pas le français sans mots : le registre a ses synonymes au lexique.
+  it('the FR register stays covered by the neighborhood — what is lost is the SURFACE', () => {
+    // The removal does not leave French without words: the register has its synonyms in the lexicon.
     expect(labels("t'es qu'un connard")).toEqual(['conflictual']);
     expect(labels("t'es qu'un guignol")).toEqual(['conflictual']);
     expect(labels("t'es qu'un looser")).toEqual(['conflictual']);
-    // Mais ces surfaces-là ne sont plus lues, et c'est le prix inscrit — pas un oubli.
+    // But those surfaces are no longer read, and it is the inscribed price — not an omission.
     expect(labels("t'es vraiment con")).toEqual([]);
     expect(labels("t'es qu'un clown")).toEqual([]);
   });
 });
 
-describe('batterie adverse — `moron`, retiré sur mesure (banc `conflictual`)', () => {
-  // Une exclusion issue d'une MESURE, et non d'une doctrine : `moron` a été livré puis retiré dans
-  // la même semaine, parce que le premier banc de ce label l'a trouvé à zéro de rappel sur 26 items
-  // hostiles et à un tort NOMMÉ sur la voix affectueuse. C'est gelé ici pour que le prochain lot ne
-  // le rajoute pas en le prenant pour un oubli : c'en est l'inverse.
-  it('« moron » adressé ne tague plus', () => {
+describe('adverse battery — `moron`, removed on measurement (`conflictual` bench)', () => {
+  // An exclusion arising from a MEASUREMENT, and not from a doctrine: `moron` was delivered then
+  // removed in the same week, because the first bench of this label found it at zero recall over 26
+  // hostile items and at a NAMED wrong on the affectionate voice. It is frozen here so the next batch
+  // does not re-add it taking it for an omission: it is the opposite.
+  it('« moron » addressed no longer tags', () => {
     expect(labels('you are the official moron of this house')).toEqual([]);
   });
 
-  it('contrôle : `moronic` reste, et la garde de cible le tient sur une idée', () => {
+  it('control: `moronic` stays, and the target guard holds it on an idea', () => {
     expect(labels('you are being moronic about this')).toEqual(['conflictual']);
     expect(labels('this take is moronic')).toEqual([]);
   });

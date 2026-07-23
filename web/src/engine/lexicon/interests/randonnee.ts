@@ -1,31 +1,31 @@
-// Lexique d'intérêt `randonnee` (D2, PANO-78 lot 3) — randonnée / trek / outdoor.
+// Interest lexicon `randonnee` (D2, PANO-78 batch 3) — hiking / trekking / outdoor.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la rando FR : sentiers, matériel, MARQUES outdoor. Entités = signal public
-// générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR hiking: trails, gear, outdoor BRANDS. Entities = generic public
+// signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « randonnee », « bivouac », « sentier », « gr20 », « alpinisme », « batons de marche »,
-//     « chaussures de rando » ; marques (« quechua », « salomon », « scarpa »).
-//   · ANCRÉ — « rando », « trek » (marque / Star Trek), « col », « sommet » (G20 / apogée),
-//     « refuge » (asile), « topo », « millet » (graine), « decathlon », « boussole » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//     « chaussures de rando »; brands (« quechua », « salomon », « scarpa »).
+//   · ANCHORED — « rando », « trek » (brand / Star Trek), « col », « sommet » (G20 / peak),
+//     « refuge » (asylum), « topo », « millet » (grain), « decathlon », « boussole »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// La rando anglophone parle par CULTURE (thru-hiking) autant que par matériel.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Anglophone hiking speaks by CULTURE (thru-hiking) as much as by gear.
 //   · SOLO — « thru hike », « thruhiker », « trail angel », « trail magic », « hiker trash »,
 //     « cowboy camping », « base weight », « ultralight », « leave no trace », « trekking poles »,
 //     « switchback », « trailhead », « backcountry », « fourteener », « alpine start »,
 //     « bear canister », « gaiters », « resupply », « day hike », « backpacking », « hiketok ».
-//   · ANCRÉ — « summit » (le SOMMET politique ou d'affaires, sens dominant), « elevation » (l'élévation
-//     morale, le plan d'architecte), « scramble » (les ŒUFS BROUILLÉS), « pack » (un paquet, une meute),
-//     « peak » (« peak hours »), « blaze » (le feu ; fumer), « shelter » (un refuge pour animaux),
-//     « camp » (la colonie de vacances ; le camping du jeu), « zero day » (la FAILLE zero-day),
-//     « range » (la gamme ; la cuisinière), « cairn » (mot français à l'identique) : compagnon requis.
-//   · ÉCARTÉ — « pace » : appartient au `running`, pas à la rando.
+//   · ANCHORED — « summit » (the political or business SUMMIT, dominant sense), « elevation » (moral
+//     elevation, the architect's plan), « scramble » (SCRAMBLED EGGS), « pack » (a pack, a wolf pack),
+//     « peak » (« peak hours »), « blaze » (fire; to smoke), « shelter » (an animal shelter),
+//     « camp » (summer camp; the game camping), « zero day » (the zero-day EXPLOIT),
+//     « range » (the range; the stove), « cairn » (identical French word): companion required.
+//   · DISCARDED — « pace »: belongs to `running`, not hiking.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de `running`/`cyclisme` ; « bivouac »/« sac a dos » partagés avec `voyage`.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from `running`/`cyclisme`; « bivouac »/« sac a dos » shared with `voyage`.
 
 import type { InterestLexicon } from '../types';
 
@@ -55,7 +55,7 @@ export const RANDONNEE_LEXICON: InterestLexicon = {
     'scarpa',
     'la sportiva',
     'sentier balise',
-    // Variantes EN (PANO-88) : SOLO univoques (culture thru-hiking / matériel).
+    // EN variants (PANO-88): SOLO univocal (thru-hiking culture / gear).
     'thru hike',
     'thruhiker',
     'trail angel',
@@ -80,28 +80,28 @@ export const RANDONNEE_LEXICON: InterestLexicon = {
     'hikingtok',
   ],
   anchored: [
-    'rando', // abréviation (assez spécifique mais gardée ancrée)
-    'trek', // marque / Star Trek / trekking
-    'col', // montagne / cou / colle
-    'sommet', // apogée / sommet (G20)
-    'refuge', // asile / abri
-    'topo', // explication générique
-    'millet', // graine vs marque
-    'decathlon', // enseigne multi-sport
-    'boussole', // au figuré
-    'denivele', // partagé cyclisme/running
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'summit', // le sommet politique ou d'affaires, sens dominant (EN)
-    'elevation', // élévation morale / plan d'architecte (EN)
-    'scramble', // = les œufs brouillés / se dépêcher (EN)
-    'pack', // un paquet / une meute (EN)
+    'rando', // abbreviation (fairly specific but kept anchored)
+    'trek', // brand / Star Trek / trekking
+    'col', // mountain pass / neck / glue
+    'sommet', // peak / summit (G20)
+    'refuge', // asylum / shelter
+    'topo', // generic explanation
+    'millet', // grain vs brand
+    'decathlon', // multi-sport store
+    'boussole', // figurative
+    'denivele', // shared cyclisme/running
+    // EN variants (PANO-88): ANCHORED.
+    'summit', // the political or business summit, dominant sense (EN)
+    'elevation', // moral elevation / architect's plan (EN)
+    'scramble', // = scrambled eggs / to hurry (EN)
+    'pack', // a pack / a wolf pack (EN)
     'peak', // « peak hours » / « peak performance » (EN)
-    'blaze', // le feu / fumer (EN)
-    'shelter', // refuge pour animaux / sans-abri (EN)
-    'camp', // colonie de vacances / le camping du jeu (EN)
-    'zero day', // = la faille zero-day (EN)
-    'range', // la gamme / la cuisinière (EN)
-    'cairn', // mot français à l'identique (EN)
+    'blaze', // fire / to smoke (EN)
+    'shelter', // animal shelter / homeless (EN)
+    'camp', // summer camp / the game camping (EN)
+    'zero day', // = the zero-day exploit (EN)
+    'range', // the range / the stove (EN)
+    'cairn', // identical French word (EN)
   ],
   selfDeclared: ['randonneur', 'randonneuse', 'alpiniste'],
 };

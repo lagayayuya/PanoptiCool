@@ -1,30 +1,30 @@
-// Lexique d'intérêt `patisserie` (D2, PANO-77 lot 2 · enrichi entités) — pâtisserie / cake design.
+// Interest lexicon `patisserie` (D2, PANO-77 batch 2 · entities enriched) — pastry / cake design.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la pâtisserie FR : préparations, TECHNIQUES, CLASSIQUES nommés, CHEFS,
-// marques. À l'aveugle ; entités = signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR pastry: preparations, TECHNIQUES, named CLASSICS, CHEFS,
+// brands. Blind; entities = generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « patisserie », « macaron », « meringue », « chantilly », « genoise »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « patisserie », « macaron », « meringue », « chantilly », « genoise »,
 //     « ganache », « temperage », « entremets », « fraisier », « cedric grolet », « pierre herme ».
-//   · ANCRÉ — 50/50 : « financier » (finance), « madeleine » (prénom), « eclair » (foudre), « opera »
-//     (musique), « joconde » (Mona Lisa), « fondant », « glace », « moule », « creme », « sable » : co-occurrence.
-//   · EXCLU — « religieuse » (la pâtisserie) → frôle `religion` (D1), ÉCARTÉ par prudence.
+//   · ANCHORED — 50/50: « financier » (finance), « madeleine » (first name), « eclair » (lightning), « opera »
+//     (music), « joconde » (Mona Lisa), « fondant », « glace », « moule », « creme », « sable »: co-occurrence.
+//   · EXCLUDED — « religieuse » (the pastry) → brushes `religion` (D1), DISCARDED out of caution.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN réel vérifié par recherche (glossaires baking / sourdough).
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Real EN usage verified by research (baking / sourdough glossaries).
 //   · SOLO — « baking », « pastry », « sourdough », « buttercream », « royal icing », « piping bag »,
 //     « cake decorating », « banneton », « cheesecake », « frosting », « baketok ».
-//   · ANCRÉ — le 50/50 EN : « icing » (« the ICING ON THE CAKE » — figuré ; icing au hockey),
-//     « dough » (= ARGENT en argot), « proofing » (= relecture/vérification), « starter » (entrée /
-//     débutant / starter pack), « batter » (batteur de baseball), « whisk » (« whisk away »),
-//     « baker » (PATRONYME courant) : compagnon requis.
-//   · TRAP ASSUMÉ — « baking » matche « it's baking hot » (= caniculaire). Gardé SOLO par symétrie
-//     avec « patisserie » (solo en FR) : c'est LE mot-cœur du domaine, et un hit isolé reste noyé
-//     par le plancher + le classement (recall assumé, PANO-76).
+//   · ANCHORED — the EN 50/50: « icing » (« the ICING ON THE CAKE » — figurative; icing in hockey),
+//     « dough » (= MONEY in slang), « proofing » (= proofreading/checking), « starter » (appetizer /
+//     beginner / starter pack), « batter » (baseball batter), « whisk » (« whisk away »),
+//     « baker » (common SURNAME): companion required.
+//   · ASSUMED TRAP — « baking » matches « it's baking hot » (= scorching). Kept SOLO by symmetry
+//     with « patisserie » (solo in FR): it is THE core word of the domain, and an isolated hit stays drowned
+//     by the floor + the ranking (assumed recall, PANO-76).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Chevauche `cuisine` (assumé). RÉGIME hors-champ : aucun marqueur de calories.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. Overlaps `cuisine` (assumed). DIET out of scope: no calorie marker.
 
 import type { InterestLexicon } from '../types';
 
@@ -37,7 +37,7 @@ export const PATISSERIE_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Préparations / classiques
+    // Preparations / classics
     'patisserie',
     'patisser',
     'macaron',
@@ -58,16 +58,16 @@ export const PATISSERIE_LEXICON: InterestLexicon = {
     'cake design',
     'pate sablee',
     'praline',
-    // Techniques / ustensiles
+    // Techniques / utensils
     'temperage',
     'poche a douille',
     'moule a gateau',
     'chocolatier',
-    // Chefs (univoques)
+    // Chefs (univocal)
     'cedric grolet',
     'pierre herme',
     'valrhona',
-    // Variantes EN (PANO-88) : SOLO univoques (préparations / techniques / communauté).
+    // EN variants (PANO-88): SOLO univocal (preparations / techniques / community).
     'baking',
     'pastry',
     'sourdough',
@@ -81,26 +81,26 @@ export const PATISSERIE_LEXICON: InterestLexicon = {
     'baketok',
   ],
   anchored: [
-    'financier', // finance vs financier (gâteau)
-    'madeleine', // prénom / madeleine de Proust
-    'eclair', // foudre vs éclair (gâteau)
-    'opera', // musique / théâtre vs opéra (gâteau)
-    'joconde', // Mona Lisa vs biscuit joconde
-    'fondant', // adjectif (« regard fondant »)
-    'glace', // froid / miroir vs glaçage
-    'levure', // générique (bière)
-    'moule', // mollusque vs moule à gâteau
-    'creme', // chevauche cuisine/skincare
-    'sable', // sable (plage) vs sablé
+    'financier', // finance vs financier (cake)
+    'madeleine', // first name / madeleine de Proust
+    'eclair', // lightning vs éclair (pastry)
+    'opera', // music / theatre vs opéra (cake)
+    'joconde', // Mona Lisa vs joconde sponge
+    'fondant', // adjective (« regard fondant »)
+    'glace', // cold / mirror vs icing
+    'levure', // generic (beer)
+    'moule', // mussel vs cake mold
+    'creme', // overlaps cuisine/skincare
+    'sable', // sand (beach) vs shortbread
     'fouetter',
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'icing', // « the icing on the cake » (figuré) / icing au hockey (EN)
-    'dough', // = argent en argot (EN)
-    'proofing', // = relecture / vérification (EN)
-    'starter', // entrée / débutant / starter pack vs levain (EN)
-    'batter', // batteur de baseball vs pâte à frire (EN)
+    // EN variants (PANO-88): ANCHORED.
+    'icing', // « the icing on the cake » (figurative) / icing in hockey (EN)
+    'dough', // = money in slang (EN)
+    'proofing', // = proofreading / checking (EN)
+    'starter', // appetizer / beginner / starter pack vs starter culture (EN)
+    'batter', // baseball batter vs batter (EN)
     'whisk', // « whisk away » (EN)
-    'baker', // patronyme courant (EN)
+    'baker', // common surname (EN)
   ],
   selfDeclared: ['patissier', 'patissiere', 'cake designer'],
 };

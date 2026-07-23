@@ -1,23 +1,23 @@
-"""Populators — fabrique de **valeurs synthétiques** pour les sections à données.
+"""Populators — factory of **synthetic values** for the data sections.
 
-Invariant de privacy (cf. CLAUDE.md) : **toute valeur ici est inventée**, sans PII,
-sans lien avec une personne réelle. Choix « clairement faux mais de forme fidèle » :
-e-mails en `@example.com` (RFC 2606), IP en plages de documentation (RFC 5737/3849),
-identifiants opaques tirés de `random` (graine fixée par la CLI → reproductible).
+Privacy invariant (cf. CLAUDE.md): **every value here is invented**, with no PII,
+no link to a real person. "Clearly fake but faithful in shape" choices:
+emails at `@example.com` (RFC 2606), IPs in documentation ranges (RFC 5737/3849),
+opaque identifiers drawn from `random` (seed fixed by the CLI → reproducible).
 
-Un *populator* est `f(count) -> valeur` : il renvoie la valeur à placer sous la clé
-de liste/map d'une `Section` (ou la valeur de remplacement d'un `Scalar`). Il est
-branché par *chemin* (tuple de clés depuis la racine JSON) dans `DEFAULT_POPULATORS`.
-`count` vient de `volume.count_for` ; les populators d'objet scalaire l'ignorent.
+A *populator* is `f(count) -> value`: it returns the value to place under the
+list/map key of a `Section` (or the replacement value of a `Scalar`). It is
+wired by *path* (tuple of keys from the JSON root) in `DEFAULT_POPULATORS`.
+`count` comes from `volume.count_for`; scalar-object populators ignore it.
 
-Les quirks du contrat (§1) sont reproduits *ici* à la source :
-* casse des clés par section (§1.3) — minuscules pour `ItemFavoriteList` et
-  `CommentsList`, capitalisées ailleurs ;
-* deux formats de date par champ (§1.1) — variante `… UTC` pour Comments et Tako ;
-* champs à fort signal plausibles (§1.8) — IP, device, IDFA/IDFV, liens tiktok.
+The contract quirks (§1) are reproduced *here* at the source:
+* per-section key case (§1.3) — lowercase for `ItemFavoriteList` and
+  `CommentsList`, capitalized elsewhere;
+* two date formats per field (§1.1) — the `… UTC` variant for Comments and Tako;
+* plausible high-signal fields (§1.8) — IP, device, IDFA/IDFV, tiktok links.
 
-La reconstruction des sections *ads* (NON VÉRIFIÉE, §3) est tenue à part dans
-``ads_unverified.py`` et n'est jamais importée ici.
+The reconstruction of the *ads* sections (UNVERIFIED, §3) is kept apart in
+``ads_unverified.py`` and is never imported here.
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ from datetime import datetime, timedelta
 
 from .registry import DATE, DATE_UTC
 
-# --- Fenêtre temporelle synthétique -----------------------------------------
+# --- Synthetic time window ---------------------------------------------------
 _WINDOW_START = datetime(2025, 1, 1, 0, 0, 0)
 _WINDOW_END = datetime(2026, 6, 18, 0, 0, 0)
 _WINDOW_SECONDS = int((_WINDOW_END - _WINDOW_START).total_seconds())
@@ -38,16 +38,16 @@ def _dt() -> datetime:
 
 
 def _date(fmt: str = DATE) -> str:
-    """Horodatage synthétique dans la fenêtre, formaté selon `fmt` (§1.1)."""
+    """Synthetic timestamp within the window, formatted per `fmt` (§1.1)."""
     return _dt().strftime(fmt)
 
 
-# --- Identifiants opaques / UUID / IP (formes fidèles, valeurs fausses) ------
+# --- Opaque identifiers / UUID / IP (faithful shapes, fake values) ----------
 _HEX = "0123456789abcdef"
 
 
 def _opaque_id(digits: int = 19) -> str:
-    """Chaîne numérique opaque de `digits` chiffres (premier non nul) — §1.5."""
+    """Opaque numeric string of `digits` digits (first non-zero) — §1.5."""
     return str(random.randint(1, 9)) + "".join(
         random.choice("0123456789") for _ in range(digits - 1)
     )
@@ -58,14 +58,14 @@ def _hex4() -> str:
 
 
 def _uuid_like(upper: bool = True) -> str:
-    """UUID-shaped (8-4-4-4-12) tiré de `random` — IDFA/IDFV (§1.8)."""
+    """UUID-shaped (8-4-4-4-12) drawn from `random` — IDFA/IDFV (§1.8)."""
     groups = ["".join(random.choice(_HEX) for _ in range(n))
               for n in (8, 4, 4, 4, 12)]
     out = "-".join(groups)
     return out.upper() if upper else out
 
 
-# Plages de documentation : IPv4 RFC 5737, IPv6 RFC 3849 — sans ambiguïté fausses.
+# Documentation ranges: IPv4 RFC 5737, IPv6 RFC 3849 — unambiguously fake.
 _IPV4_NETS = ((192, 0, 2), (198, 51, 100), (203, 0, 113))
 
 
@@ -76,7 +76,7 @@ def _ip() -> str:
     return "2001:db8:" + ":".join(_hex4() for _ in range(6))
 
 
-# --- Liens « tiktok-shaped » avec identifiants synthétiques (§1.8) -----------
+# --- "tiktok-shaped" links with synthetic identifiers (§1.8) ----------------
 def _video_url() -> str:
     return f"https://www.tiktokv.com/share/video/{_opaque_id()}/"
 
@@ -113,7 +113,7 @@ def _ad_link() -> str:
     )
 
 
-# --- Pools fictifs et anodins (aucune PII) ----------------------------------
+# --- Fictional, harmless pools (no PII) -------------------------------------
 _SEARCH_TERMS = (
     "lo-fi beats to study", "ramen recipe quick", "golden retriever puppies",
     "synthwave playlist 2026", "how to fold a fitted sheet", "indoor plants low light",
@@ -166,7 +166,7 @@ def _handle() -> str:
 
 
 def _sorted_desc(items: list) -> list:
-    """Trie par la 1re valeur ressemblant à une date (plus récent d'abord)."""
+    """Sorts by the 1st date-looking value (most recent first)."""
     def keyfn(it):
         for v in it.values():
             if isinstance(v, str) and len(v) >= 19 and v[4] == "-" and v[7] == "-":
@@ -177,10 +177,10 @@ def _sorted_desc(items: list) -> list:
 
 
 # ===========================================================================
-#  Populators de listes — casse et format de date EXACTS par section
+#  List populators — EXACT case and date format per section
 # ===========================================================================
 def searches(count, persona=None):
-    """Your Activity → Searches → SearchList : {Date, SearchTerm} (thème persona)."""
+    """Your Activity → Searches → SearchList: {Date, SearchTerm} (persona theme)."""
     pool = persona.search_terms if persona and persona.search_terms else _SEARCH_TERMS
     items = [{"Date": _date(DATE), "SearchTerm": random.choice(pool)}
              for _ in range(count)]
@@ -188,13 +188,13 @@ def searches(count, persona=None):
 
 
 def following(count):
-    """Profile And Settings → Following → Following : {Date, UserName}."""
+    """Profile And Settings → Following → Following: {Date, UserName}."""
     items = [{"Date": _date(DATE), "UserName": _handle()} for _ in range(count)]
     return _sorted_desc(items)
 
 
 def comments(count, persona=None):
-    """Comment → Comments → CommentsList : clés MINUSCULES (§1.3), date UTC (§1.1)."""
+    """Comment → Comments → CommentsList: LOWERCASE keys (§1.3), UTC date (§1.1)."""
     pool = persona.comment_texts if persona and persona.comment_texts else _COMMENT_TEXTS
     items = []
     for _ in range(count):
@@ -212,7 +212,7 @@ def comments(count, persona=None):
 
 
 def coin_purchases(count):
-    """Income+ Wallet → Coin Purchase History : {Date, Type, CoinAmount}."""
+    """Income+ Wallet → Coin Purchase History: {Date, Type, CoinAmount}."""
     items = [{
         "Date": _date(DATE),
         "Type": random.choice(_COIN_TYPES),
@@ -222,44 +222,44 @@ def coin_purchases(count):
 
 
 def favorite_collections(count):
-    """Likes and Favorites → Favorite Collection : {Date, FavoriteCollection}."""
+    """Likes and Favorites → Favorite Collection: {Date, FavoriteCollection}."""
     items = [{"Date": _date(DATE), "FavoriteCollection": random.choice(_COLLECTIONS)}
              for _ in range(count)]
     return _sorted_desc(items)
 
 
 def favorite_effects(count):
-    """Likes and Favorites → Favorite Effects : {Date, EffectLink}."""
+    """Likes and Favorites → Favorite Effects: {Date, EffectLink}."""
     items = [{"Date": _date(DATE), "EffectLink": _effect_url()} for _ in range(count)]
     return _sorted_desc(items)
 
 
 def favorite_sounds(count):
-    """Likes and Favorites → Favorite Sounds : {Date, Link}."""
+    """Likes and Favorites → Favorite Sounds: {Date, Link}."""
     items = [{"Date": _date(DATE), "Link": _music_url()} for _ in range(count)]
     return _sorted_desc(items)
 
 
 def favorite_videos(count):
-    """Likes and Favorites → Favorite Videos : {Date, Link}."""
+    """Likes and Favorites → Favorite Videos: {Date, Link}."""
     items = [{"Date": _date(DATE), "Link": _video_url()} for _ in range(count)]
     return _sorted_desc(items)
 
 
 def like_list(count):
-    """Likes and Favorites → Like List → ItemFavoriteList : clés MINUSCULES (§1.3)."""
+    """Likes and Favorites → Like List → ItemFavoriteList: LOWERCASE keys (§1.3)."""
     items = [{"date": _date(DATE), "link": _video_url()} for _ in range(count)]
     return _sorted_desc(items)
 
 
 def reposts(count):
-    """Your Activity → Reposts → RepostList : {Date, Link}."""
+    """Your Activity → Reposts → RepostList: {Date, Link}."""
     items = [{"Date": _date(DATE), "Link": _video_url()} for _ in range(count)]
     return _sorted_desc(items)
 
 
 def watch_history(count):
-    """Your Activity → Watch History → VideoList : {Date, Link, Title} ; Title "" fréquent."""
+    """Your Activity → Watch History → VideoList: {Date, Link, Title}; Title "" frequent."""
     items = [{
         "Date": _date(DATE),
         "Link": _video_url(),
@@ -269,7 +269,7 @@ def watch_history(count):
 
 
 def ads_visit_history(count):
-    """Your Activity → Ads Visit History : {CreateTime, AdTitle, AdLink} (forme vérifiée, §3)."""
+    """Your Activity → Ads Visit History: {CreateTime, AdTitle, AdLink} (verified shape, §3)."""
     items = [{
         "CreateTime": _date(DATE),
         "AdTitle": random.choice(_AD_TITLES),
@@ -279,7 +279,7 @@ def ads_visit_history(count):
 
 
 def login_history(count):
-    """Your Activity → Login History : champs de tracking à fort signal (§1.8)."""
+    """Your Activity → Login History: high-signal tracking fields (§1.8)."""
     items = []
     for _ in range(count):
         model, system = random.choice(_DEVICES)
@@ -289,16 +289,16 @@ def login_history(count):
             "DeviceModel": model,
             "DeviceSystem": system,
             "NetworkType": random.choice(("WIFI", "4G", "5G", "Cellular")),
-            "Carrier": random.choice(_CARRIERS),  # "" fréquent
+            "Carrier": random.choice(_CARRIERS),  # "" frequent
         })
     return _sorted_desc(items)
 
 
 def statuses(count):
-    """Your Activity → Status → Status List : identifiants device/pub (§1.8)."""
+    """Your Activity → Status → Status List: device/ad identifiers (§1.8)."""
     items = []
     for _ in range(count):
-        # GAID / Android ID / Web ID souvent "" (compte iOS-dominant), §1.8.
+        # GAID / Android ID / Web ID often "" (iOS-dominant account), §1.8.
         gaid = "" if random.random() < 0.85 else _uuid_like(upper=False)
         android_id = "" if random.random() < 0.85 else "".join(
             random.choice(_HEX) for _ in range(16))
@@ -318,10 +318,10 @@ def statuses(count):
 
 
 # ===========================================================================
-#  Populators de maps / objets — clés fixes connues du contrat
+#  Map / object populators — fixed keys known from the contract
 # ===========================================================================
 def watch_live_history(count):
-    """TikTok Live → Watch Live History → WatchLiveMap : map à clés opaques (§1.5)."""
+    """TikTok Live → Watch Live History → WatchLiveMap: opaque-key map (§1.5)."""
     out = {}
     while len(out) < count:
         out[_opaque_id(19)] = {
@@ -338,12 +338,12 @@ def watch_live_history(count):
 
 
 def profile_info(count, persona=None):
-    """Profile And Settings → Profile Info → ProfileMap : PII à fort signal, TOUT FAUX (§1.8).
+    """Profile And Settings → Profile Info → ProfileMap: high-signal PII, ALL FAKE (§1.8).
 
-    Identité tirée du `persona` si fourni, sinon aléatoire. Valeurs de contenu
-    synthétisées (région, e-mail @example.com, pseudo…) ; sentinelles `"N/A"` / `"None"`
-    reproduites là où §4 les fixe ; liens cross-plateforme laissés `""` (non renseignés
-    à la source).
+    Identity drawn from the `persona` if provided, otherwise random. Content values
+    synthesized (region, @example.com email, handle…); sentinels `"N/A"` / `"None"`
+    reproduced where §4 fixes them; cross-platform links left `""` (not filled in
+    at the source).
     """
     if persona is not None:
         username = persona.user_name
@@ -393,7 +393,7 @@ def profile_info(count, persona=None):
 
 
 def settings_map(count):
-    """Profile And Settings → Settings → SettingsMap : 25 clés, ordre §4, clé MALFORMÉE (§1.7)."""
+    """Profile And Settings → Settings → SettingsMap: 25 keys, §4 order, MALFORMED key (§1.7)."""
     return {
         "Allow DownLoad": "On",
         "Allow Others to Find Me": "On",
@@ -407,10 +407,10 @@ def settings_map(count):
             "Video Languages Preferences": [],
         },
         "Family Content Preferences": {},
-        "FamilyPairing": [],  # liste vide : pas d'appairage familial (forme §4 ambiguë)
+        "FamilyPairing": [],  # empty list: no family pairing (ambiguous §4 shape)
         "Filter Comments": "Off",
         "Interests": "On",
-        "Personalized Ads": "Off",  # ads désactivées à la source (§3)
+        "Personalized Ads": "Off",  # ads disabled at the source (§3)
         "Private Account": "Off",
         "Push Notification": {
             "Desktop notification": "Off",
@@ -434,12 +434,12 @@ def settings_map(count):
         "Who Can Send Me Message": "Friends",
         "Who Can Stitch with your videos": "Everyone",
         "Who Can View Videos I Liked": "Only me",
-        "Who can see your following list::": "Everyone",  # clé malformée verbatim (§1.7)
+        "Who can see your following list::": "Everyone",  # verbatim malformed key (§1.7)
     }
 
 
 def activity_summary(count):
-    """Your Activity → Activity Summary → ActivitySummaryMap : {note, 3×int}."""
+    """Your Activity → Activity Summary → ActivitySummaryMap: {note, 3×int}."""
     return {
         "note": "Counts are estimates and may not be exact.",
         "videosCommentedOnSinceAccountRegistration": random.randint(20, 200),
@@ -449,10 +449,10 @@ def activity_summary(count):
 
 
 def tako_chat_history(count):
-    """Direct Message → Tako Chat History → TakoChatHistoryList : Messages[].Date en UTC (§1.1).
+    """Direct Message → Tako Chat History → TakoChatHistoryList: Messages[].Date in UTC (§1.1).
 
-    `Content` est un objet de forme non documentée au contrat : laissé `{}` plutôt
-    que d'inventer des clés.
+    `Content` is an object whose shape is undocumented in the contract: left `{}` rather
+    than inventing keys.
     """
     items = []
     for _ in range(count):
@@ -466,7 +466,7 @@ def tako_chat_history(count):
     return items
 
 
-# Branchement par chemin (tuple de clés depuis la racine JSON) — sections VÉRIFIÉES.
+# Wiring by path (tuple of keys from the JSON root) — VERIFIED sections.
 DEFAULT_POPULATORS = {
     ("Comment", "Comments"): comments,
     ("Direct Message", "Tako Chat History"): tako_chat_history,

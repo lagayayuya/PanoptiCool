@@ -1,35 +1,35 @@
-// Aide « Installer » (PANO-45) — pensée pour quelqu'un qui n'a JAMAIS ouvert un terminal.
-// Deux commandes, identiques sur les trois OS à la ligne d'installation près ; aucun PATH à
-// bricoler, aucun téléchargement manuel : `llama-server -hf <dépôt>:<quant>` va chercher le GGUF
-// sur Hugging Face tout seul.
+// "Install" help (PANO-45) — designed for someone who has NEVER opened a terminal.
+// Two commands, identical across the three OSes except for the install line; no PATH to
+// fiddle with, no manual download: `llama-server -hf <repo>:<quant>` fetches the GGUF
+// from Hugging Face on its own.
 //
-// Méthodes VÉRIFIÉES en source primaire (juillet 2026), pas devinées :
-//   - macOS / Linux : `brew install llama.cpp` — voie documentée par llama.cpp (`docs/install.md`).
-//   - Windows : `winget install --id ggml.llamacpp --exact` — package OFFICIEL (manifests publiés
-//     dans microsoft/winget-pkgs sous `manifests/g/ggml/llamacpp/`, éditeur `ggml`) ; winget est
-//     préinstallé sur Windows 11 et sur les Windows 10 à jour. Repli si le build winget pose
-//     problème : les binaires officiels des releases GitHub (`llama-<build>-bin-win-cpu-x64.zip`,
-//     ou la variante `vulkan` si le PC a un GPU) — plus manuel, donc pas la voie proposée par défaut.
-//   - `-hf` : flag documenté (tools/server/README.md), suffixe `:quant` insensible à la casse.
+// Methods VERIFIED against the primary source (July 2026), not guessed:
+//   - macOS / Linux: `brew install llama.cpp` — path documented by llama.cpp (`docs/install.md`).
+//   - Windows: `winget install --id ggml.llamacpp --exact` — OFFICIAL package (manifests published
+//     in microsoft/winget-pkgs under `manifests/g/ggml/llamacpp/`, publisher `ggml`); winget is
+//     preinstalled on Windows 11 and on up-to-date Windows 10. Fallback if the winget build causes
+//     trouble: the official binaries from the GitHub releases (`llama-<build>-bin-win-cpu-x64.zip`,
+//     or the `vulkan` variant if the PC has a GPU) — more manual, so not the default proposed path.
+//   - `-hf`: documented flag (tools/server/README.md), `:quant` suffix case-insensitive.
 //
-// Modèles recommandés (décision yuya, benchmark 12/07), du meilleur au plus léger. Le plus lourd tient
-// dans ~2,2 Go : le facteur limitant est la RAM/VRAM de la machine, pas le disque.
+// Recommended models (yuya's decision, benchmark 12/07), from best to lightest. The heaviest fits
+// in ~2.2 GB: the limiting factor is the machine's RAM/VRAM, not the disk.
 
 export type Os = 'macos' | 'windows' | 'linux';
 
 export interface ModelChoice {
-  /** Suffixe de quantification, tel qu'il s'écrit derrière `-hf <dépôt>:` */
+  /** Quantization suffix, as it is written after `-hf <repo>:` */
   quant: string;
-  /** Nom exact du fichier GGUF (téléchargement manuel — repli). */
+  /** Exact name of the GGUF file (manual download — fallback). */
   file: string;
-  /** Taille en Go, NOMBRE — jamais « 2,2 Go ». Une virgule décimale figée dans une table de
-   * données est un nombre déguisé en français : elle échappe au formatage centralisé, et se met
-   * donc à diverger de tous les autres nombres de l'écran. Le rendu passe par `ui/format.ts`. */
+  /** Size in GB, a NUMBER — never « 2,2 Go ». A decimal comma frozen into a data table
+   * is a number disguised as French: it escapes the centralized formatting, and thus starts
+   * to diverge from every other number on the screen. The rendering goes through `ui/format.ts`. */
   sizeGb: number;
-  /** CLÉ, pas la phrase : le texte affiché vit dans le catalogue d'interface (`ui/copy.ts`), qui
-   * est le fichier ratifiable. Ce module décrit des modèles, il ne parle pas à l'utilisateur.
-   * En prime, la couleur du badge se choisit désormais sur un identifiant et non sur une
-   * comparaison à de la prose française. */
+  /** A KEY, not the sentence: the displayed text lives in the interface catalog (`ui/copy.ts`), which
+   * is the ratifiable file. This module describes models, it does not speak to the user.
+   * As a bonus, the badge color is now chosen on an identifier and not on a
+   * comparison against French prose. */
   note?: 'recommended' | 'borderline';
 }
 
@@ -52,14 +52,14 @@ export const MODEL_CHOICES: ModelChoice[] = [
   },
 ];
 
-/** Fenêtre de contexte demandée au serveur — repli si `/props` ne la donne pas (voir llama-client),
- * et valeur de départ de `serveCommand`. Au runtime, `/props` fait toujours foi. */
+/** Context window requested from the server — fallback if `/props` does not give it (see llama-client),
+ * and the starting value of `serveCommand`. At runtime, `/props` always prevails. */
 export const DEFAULT_CONTEXT_WINDOW = 8192;
 const SERVER_PORT = 8080;
 
-/** Détection d'OS best-effort — sert UNIQUEMENT à présélectionner un des trois boutons de système
- * (maquette v4) ; la personne peut toujours corriger à la main. Repli `macos` quand l'UA ne dit
- * rien : il faut bien présélectionner quelque chose, et la commande `brew` vaut aussi pour Linux. */
+/** Best-effort OS detection — used ONLY to preselect one of the three system buttons
+ * (v4 mockup); the person can always correct it by hand. Fallback `macos` when the UA says
+ * nothing: something must be preselected, and the `brew` command also works for Linux. */
 export function detectOs(userAgent: string): Os {
   const ua = userAgent.toLowerCase();
   if (ua.includes('windows')) return 'windows';
@@ -67,12 +67,12 @@ export function detectOs(userAgent: string): Os {
   return 'macos';
 }
 
-/** Homebrew existe aussi sur Linux (voie documentée par llama.cpp) : même commande que macOS. */
+/** Homebrew also exists on Linux (path documented by llama.cpp): same command as macOS. */
 export function installCommand(os: Os): string {
   return os === 'windows' ? 'winget install --id ggml.llamacpp --exact' : 'brew install llama.cpp';
 }
 
-/** La commande qui lance le serveur : télécharge le modèle au premier appel, puis le sert en local. */
+/** The command that launches the server: downloads the model on the first call, then serves it locally. */
 export function serveCommand(
   choice: ModelChoice,
   contextWindow: number = DEFAULT_CONTEXT_WINDOW,
@@ -84,18 +84,18 @@ export function serverUrl(): string {
   return `http://localhost:${SERVER_PORT}`;
 }
 
-/** Nom de l'archive du site, générée à CHAQUE build depuis `dist/` (`scripts/build-site-zip.mjs`).
- * Le lien de la route B pointe dessus — un nom écrit deux fois divergerait. */
+/** Name of the site archive, generated at EACH build from `dist/` (`scripts/build-site-zip.mjs`).
+ * Route B's link points at it — a name written twice would drift. */
 export const SITE_ZIP_NAME = 'panopticool-site.zip';
 
 /**
- * Route B « Tout sur ta machine » (ADR-0006, décision 5) : servir le site depuis `localhost`
- * supprime l'écart origine/cible dans les trois moteurs — ce n'est pas un contournement, c'est la
- * suppression du problème. `llama-server --path` sert les fichiers statiques du site ET l'API du
- * modèle sur le même port : une seule commande, ni `git` ni Node.
+ * Route B "Everything on your machine" (ADR-0006, decision 5): serving the site from `localhost`
+ * removes the origin/target gap in all three engines — it is not a workaround, it is the
+ * removal of the problem. `llama-server --path` serves the site's static files AND the model's API
+ * on the same port: a single command, neither `git` nor Node.
  *
- * (L'objection historique contre une archive téléchargeable — un canal qui se périmerait face au
- * site en ligne — est levée depuis que le zip est un artefact de build : même build, même contenu.)
+ * (The historical objection against a downloadable archive — a channel that would go stale against
+ * the online site — is lifted since the zip is a build artifact: same build, same content.)
  */
 export function localSiteCommand(
   os: Os,

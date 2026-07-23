@@ -1,4 +1,4 @@
-// Test du lecteur factuel Activity Summary (PANO-84) — pure projection-source, pas de règle.
+// Test of the factual Activity Summary reader (PANO-84) — pure source-projection, not a rule.
 
 import { describe, expect, it } from 'vitest';
 import { readActivitySummary } from './activity-summary';
@@ -29,17 +29,17 @@ function exportWithActivitySummary(
 }
 
 describe('readActivitySummary', () => {
-  it('projette videosShared/videosWatchedToEnd verbatim depuis ActivitySummaryMap', () => {
+  it('projects videosShared/videosWatchedToEnd verbatim from ActivitySummaryMap', () => {
     const input = normalizeExport(exportWithActivitySummary(42, 9001));
     expect(readActivitySummary(input)).toEqual({ videosShared: 42, videosWatchedToEnd: 9001 });
   });
 
-  it('zéro partout (compte neuf) → totaux à zéro, jamais absent', () => {
+  it('zero everywhere (fresh account) → totals at zero, never absent', () => {
     const input = normalizeExport(exportWithActivitySummary(0, 0));
     expect(readActivitySummary(input)).toEqual({ videosShared: 0, videosWatchedToEnd: 0 });
   });
 
-  it('ignore videosCommentedOnSinceAccountRegistration (couvert par R2, autre fenêtre)', () => {
+  it('ignores videosCommentedOnSinceAccountRegistration (covered by R2, another window)', () => {
     const input = normalizeExport(exportWithActivitySummary(5, 5, 999));
     expect(readActivitySummary(input)).toEqual({ videosShared: 5, videosWatchedToEnd: 5 });
   });

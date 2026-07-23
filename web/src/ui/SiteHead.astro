@@ -1,27 +1,27 @@
 ---
-// Le <head> commun aux pages : favicon, canonical, alternates de langue, et les balises d'aperçu de
-// partage (Open Graph + Twitter Card) que lisent Slack, Discord, iMessage, Signal, Mastodon,
-// LinkedIn…
+// The <head> common to the pages: favicon, canonical, language alternates, and the share-preview
+// tags (Open Graph + Twitter Card) that Slack, Discord, iMessage, Signal, Mastodon,
+// LinkedIn… read.
 //
-// UNE maison : ces balises sont identiques d'une page à l'autre à trois valeurs près. Les recopier
-// dans chaque page fabriquerait la divergence du jour où le domaine ou l'image change.
+// ONE home: these tags are identical from one page to the next except for three values. Recopying
+// them in each page would fabricate the divergence of the day the domain or the image changes.
 //
-// LE DOMAINE VIENT DE `Astro.site` (astro.config.ts) et n'est plus écrit ici. Il l'était, et ça ne
-// pouvait pas survivre à deux arbres de langue : chaque URL absolue — canonical, alternates,
-// og:url, og:image — doit se dériver du MÊME domaine, et un domaine recopié finit par diverger.
+// THE DOMAIN COMES FROM `Astro.site` (astro.config.ts) and is no longer written here. It was, and it
+// could not survive two language trees: each absolute URL — canonical, alternates,
+// og:url, og:image — must derive from the SAME domain, and a recopied domain ends up diverging.
 //
-// `og:image` DOIT être une URL absolue : les robots d'aperçu ne résolvent pas les chemins relatifs.
+// `og:image` MUST be an absolute URL: preview bots do not resolve relative paths.
 //
-// LES ALTERNATES NE LISENT QUE LES LANGUES PUBLIÉES. C'est la règle centrale de `i18n/locales.ts`,
-// et c'est ici qu'elle se joue vraiment : un `<link rel="alternate">` est une INVITATION à indexer.
-// En nommer une langue non construite ferait crawler une coquille — l'erreur exacte que la liste
-// `PUBLISHED_LOCALES` existe pour rendre impossible.
+// THE ALTERNATES ONLY READ THE PUBLISHED LANGUAGES. It is the central rule of `i18n/locales.ts`,
+// and it is here that it truly plays out: a `<link rel="alternate">` is an INVITATION to index.
+// Naming an unbuilt language in one would make a shell crawled — the exact mistake the list
+// `PUBLISHED_LOCALES` exists to make impossible.
 //
-// Rendu à la compilation (Astro) : aucun JS n'atteint le navigateur. `mentions-legales` reste donc
-// la page zéro-JS qu'elle revendique.
+// Rendered at compile time (Astro): no JS reaches the browser. `mentions-legales` therefore stays
+// the zero-JS page it claims to be.
 
-// Le CSS des survols est global au site : une classe par famille d'éléments, importée ici pour que
-// chaque page l'ait sans la recopier. CSS pur — `mentions-legales` reste zéro-JS.
+// The hover CSS is global to the site: one class per family of elements, imported here so that
+// each page has it without recopying it. Pure CSS — `mentions-legales` stays zero-JS.
 import './hover.css';
 
 import {
@@ -37,22 +37,22 @@ interface Props {
   title: string;
   description: string;
   /**
-   * Chemin de CETTE page, SANS la langue (« / », « /analyse », …). La langue est ajoutée ici, pour
-   * que l'appelant n'ait pas à connaître la forme des URLs localisées.
+   * Path of THIS page, WITHOUT the language (« / », « /analyse », …). The language is added here, so
+   * that the caller does not have to know the shape of localized URLs.
    */
   path: string;
 }
 
 const { title, description, path } = Astro.props;
 
-// `Astro.currentLocale` se déduit du dossier de la page (`pages/fr/…`). Il est indéfini pour la
-// page de racine, qui n'est dans aucun dossier de langue : elle canonise vers la langue par défaut.
+// `Astro.currentLocale` is deduced from the page's folder (`pages/fr/…`). It is undefined for the
+// root page, which is in no language folder: it canonizes toward the default language.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 
 const site = Astro.site;
 if (site === undefined) {
-  // Sans `site`, toutes les URLs absolues de ce fichier seraient fausses en silence — un aperçu
-  // cassé et un canonical relatif ne se voient pas au build. Mieux vaut refuser de construire.
+  // Without `site`, all the absolute URLs of this file would be silently wrong — a broken
+  // preview and a relative canonical are not seen at build. Better to refuse to build.
   throw new Error('SiteHead : `site` doit être défini dans astro.config.ts.');
 }
 

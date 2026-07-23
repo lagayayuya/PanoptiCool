@@ -1,56 +1,56 @@
-// Ce que le navigateur laisse passer vers `localhost` — la question que `fetch` refuse de répondre.
+// What the browser lets through toward `localhost` — the question `fetch` refuses to answer.
 //
-// POURQUOI CE MODULE EXISTE. Un `fetch` vers le serveur local échoue avec `TypeError: Failed to
-// fetch`, et cette chaîne est RIGOUREUSEMENT LA MÊME que le serveur soit absent ou que le
-// navigateur ait bloqué la requête (mesuré : port mort, IP inaccessible et blocage réel rendent
-// des octets identiques). La console du navigateur, elle, sait exactement ce qui s'est passé — mais
-// rien de tout ça n'est lisible depuis le script. Le produit affirmait donc « serveur non détecté »
-// à quelqu'un dont le serveur tournait.
+// WHY THIS MODULE EXISTS. A `fetch` toward the local server fails with `TypeError: Failed to
+// fetch`, and this string is RIGOROUSLY THE SAME whether the server is absent or the
+// browser blocked the request (measured: a dead port, an unreachable IP and a real block return
+// identical bytes). The browser console, for its part, knows exactly what happened — but
+// none of that is readable from the script. The product thus asserted "server not detected"
+// to someone whose server was running.
 //
-// La permission, elle, se lit SANS toucher au réseau. C'est le seul angle par lequel un script
-// peut distinguer « pas de serveur » de « le navigateur a refusé » (ADR-0006).
+// The permission, however, is read WITHOUT touching the network. It is the only angle by which a
+// script can distinguish "no server" from "the browser refused" (ADR-0006).
 //
-// ─── CE QUE CE MODULE NE COUVRE PAS ─────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme de preuve déclare sa frontière.
-//   - IL NE SONDE PAS LE SERVEUR. Il dit ce que le navigateur autorise, jamais si quelque chose
-//     écoute au bout. Les deux se combinent chez l'appelant ;
-//   - `unknown` NE VEUT PAS DIRE « autorisé ». Il veut dire que ce navigateur ne connaît pas cette
-//     permission, donc qu'on ne peut RIEN conclure — ni dans un sens ni dans l'autre. Un navigateur
-//     qui bloque par une autre voie (contrôle de contenu mixte, sans permission à accorder) tombe
-//     ici, et l'interface doit alors proposer les deux issues plutôt que d'en deviner une ;
-//   - IL NE DIT PAS COMMENT DÉBLOQUER. Le chemin exact (réglage, menu, commande) dépend du
-//     navigateur et vit dans la copy, pas ici.
+// ─── WHAT THIS MODULE DOES NOT COVER ────────────────────────────────────────────────────────────
+// CLAUDE.md obligation: a proof mechanism declares its boundary.
+//   - IT DOES NOT PROBE THE SERVER. It says what the browser authorizes, never whether something
+//     is listening at the other end. The two combine at the caller;
+//   - `unknown` DOES NOT MEAN "authorized". It means this browser does not know this
+//     permission, so NOTHING can be concluded — neither one way nor the other. A browser
+//     that blocks by another route (mixed-content control, with no permission to grant) falls
+//     here, and the interface must then offer both outcomes rather than guess one;
+//   - IT DOES NOT SAY HOW TO UNBLOCK. The exact path (setting, menu, command) depends on the
+//     browser and lives in the copy, not here.
 
 /**
- * Ce que le navigateur autorise vers l'espace d'adressage local.
+ * What the browser authorizes toward the local address space.
  *
- * `blocked` réunit VOLONTAIREMENT les états `prompt` et `denied` de l'API. Ce n'est pas un
- * raccourci : sur les navigateurs Chromium mesurés, `prompt` ne se résout jamais de lui-même —
- * aucune fenêtre ne s'ouvre, même derrière un vrai clic, et la permission reste indéfiniment dans
- * cet état (ADR-0006). Un `prompt` qui n'aboutit pas est un blocage du point de vue de la personne
- * devant l'écran, et c'est ce point de vue que l'interface doit servir.
+ * `blocked` DELIBERATELY combines the API's `prompt` and `denied` states. It is not a
+ * shortcut: on the measured Chromium browsers, `prompt` never resolves on its own —
+ * no window opens, even behind a real click, and the permission stays indefinitely in
+ * that state (ADR-0006). A `prompt` that does not complete is a block from the point of view of the
+ * person in front of the screen, and it is that point of view the interface must serve.
  */
 export type LocalNetworkGate = 'granted' | 'blocked' | 'unknown';
 
-/** Nom de la permission (spécification Local Network Access). Absent des navigateurs qui
- * n'implémentent pas LNA — leur `query` rejette alors, ce qui est le chemin `unknown`. */
+/** Name of the permission (Local Network Access specification). Absent from browsers that
+ * do not implement LNA — their `query` then rejects, which is the `unknown` path. */
 const PERMISSION_NAME = 'local-network-access';
 
 /**
- * Lit la permission « réseau local » SANS émettre la moindre requête.
+ * Reads the "local network" permission WITHOUT emitting any request.
  *
- * Ne lève jamais : tout ce qui n'est pas une réponse exploitable devient `unknown`, parce qu'un
- * appelant qui doit choisir une phrase à afficher n'a rien à faire d'une exception.
+ * Never throws: anything that is not a usable response becomes `unknown`, because a
+ * caller that must choose a sentence to display has no use for an exception.
  */
 export async function localNetworkGate(): Promise<LocalNetworkGate> {
-  // `navigator.permissions` manque à des contextes entiers (navigateurs anciens, certains Workers) —
-  // l'accès optionnel évite d'en faire une exception à rattraper.
+  // `navigator.permissions` is missing from entire contexts (old browsers, some Workers) —
+  // optional access avoids turning it into an exception to catch.
   const permissions = globalThis.navigator?.permissions;
   if (permissions === undefined) return 'unknown';
   try {
-    // Le nom n'est pas dans le `PermissionName` de la lib TS : la spec LNA est plus récente que les
-    // types embarqués. Le cast porte sur le NOM SEUL, et le `catch` couvre précisément le cas où le
-    // navigateur ne le reconnaît pas.
+    // The name is not in the TS lib's `PermissionName`: the LNA spec is more recent than the
+    // bundled types. The cast bears on the NAME ONLY, and the `catch` covers precisely the case where
+    // the browser does not recognize it.
     const status = await permissions.query({ name: PERMISSION_NAME as PermissionName });
     return status.state === 'granted' ? 'granted' : 'blocked';
   } catch {

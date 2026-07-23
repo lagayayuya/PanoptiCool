@@ -1,28 +1,28 @@
-// Lexique d'intérêt `sociologie` (D2, PANO-89 lot 4) — sociologie (champ savoir).
+// Interest lexicon `sociologie` (D2, PANO-89 batch 4) — sociology (knowledge field).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la sociologie FR : penseurs, concepts, sous-champs. Entités = signal public
-// générique enrichi par recherche. Usage SOBRE (édition/edtech).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR sociology: thinkers, concepts, sub-fields. Entities = generic public
+// signal enriched by research. SOBER usage (publishing/edtech).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « sociologie », « sociologue », « bourdieu », « durkheim », « habitus », « capital
 //     social », « capital culturel », « fait social », « anomie », « stratification sociale ».
-//   · ANCRÉ — « weber » (unité de mesure / nom), « classe », « norme », « role » (partagé cinéma),
-//     « structure », « domination », « reproduction » (biologie) : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « weber » (unit of measure / name), « classe », « norme », « role » (shared cinema),
+//     « structure », « domination », « reproduction » (biology): co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
 //   · SOLO — « sociology », « sociologist », « social capital », « cultural capital », « social
 //     fact », « social stratification », « social mobility », « socialization », « social sciences »,
-//     « ethnography », « social class », « social norms » : les LOCUTIONS EN sont peu ambiguës.
-//   · ANCRÉ — le nu reste ambigu : « class » (cours / classe scolaire — le 50/50 majeur), « norm »
-//     (prénom Norm !), « structure », « domination », « reproduction » (biologie) : compagnon requis.
-//   · EXCLU — « social » nu (trop générique : réseaux sociaux, sortie entre amis) ; « woke »,
-//     « privilege », « patriarchy » écartés comme MILITANTS (frôlent `politics`, D1) — symétrie avec
-//     l'exclusion des « -ismes » côté `economie`.
+//     « ethnography », « social class », « social norms »: the EN PHRASES are little ambiguous.
+//   · ANCHORED — the bare word stays ambiguous: « class » (course / school class — the major 50/50), « norm »
+//     (the name Norm!), « structure », « domination », « reproduction » (biology): companion required.
+//   · EXCLUDED — bare « social » (too generic: social networks, an outing with friends); « woke »,
+//     « privilege », « patriarchy » discarded as MILITANT (brush `politics`, D1) — symmetry with
+//     the exclusion of « -isms » on the `economie` side.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Champ SAVOIR (concepts, penseurs), jamais l'opinion politique partisane ni l'actualité.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. KNOWLEDGE field (concepts, thinkers), never partisan political opinion nor the news.
 
 import type { InterestLexicon } from '../types';
 
@@ -50,7 +50,7 @@ export const SOCIOLOGIE_LEXICON: InterestLexicon = {
     'socialisation',
     'sciences sociales',
     'ethnographie',
-    // Variantes EN (PANO-88) : SOLO univoques — les locutions EN sont peu ambiguës.
+    // EN variants (PANO-88): SOLO univocal — the EN phrases are little ambiguous.
     'sociology',
     'sociologist',
     'social capital',
@@ -65,16 +65,16 @@ export const SOCIOLOGIE_LEXICON: InterestLexicon = {
     'social norms',
   ],
   anchored: [
-    'weber', // unité (weber) / patronyme
-    'classe', // classe (école) / classe sociale
-    'norme', // norme générique
-    'role', // partagé cinéma
-    'structure', // structure générique
-    'domination', // domination générique
-    'reproduction', // biologie / reproduction sociale
-    // Variantes EN (PANO-88) : ANCRÉS — le nu EN reste ambigu.
-    'class', // cours / classe scolaire — le 50/50 majeur (EN)
-    'norm', // prénom (Norm) vs norme (EN)
+    'weber', // unit (weber) / surname
+    'classe', // class (school) / social class
+    'norme', // generic norm
+    'role', // shared cinema
+    'structure', // generic structure
+    'domination', // generic domination
+    'reproduction', // biology / social reproduction
+    // EN variants (PANO-88): ANCHORED — the bare EN word stays ambiguous.
+    'class', // course / school class — the major 50/50 (EN)
+    'norm', // name (Norm) vs norm (EN)
   ],
   selfDeclared: ['etudiant en sociologie'],
 };

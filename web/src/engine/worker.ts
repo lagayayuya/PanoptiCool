@@ -1,18 +1,19 @@
-// Adaptateur Web Worker du moteur (PANO-27, ADR-0002).
+// Web Worker adapter of the engine (PANO-27, ADR-0002).
 //
-// Reçoit l'entrée (octets du `.zip`, transférée par le client) ET LA LANGUE, exécute le pipeline
-// DANS le worker, et ne `postMessage` QUE le `EngineResult` réduit — jamais le graphe parsé (qui
-// doublerait la mémoire via structured-clone). Globals **WebWorker** (`onmessage`/`postMessage`),
-// AUCUN DOM : la frontière moteur PANO-19 tient ici aussi (vérifié par la 2ᵉ passe `tsc` no-DOM).
+// Receives the input (`.zip` bytes, transferred by the client) AND THE LANGUAGE, runs the pipeline
+// INSIDE the worker, and `postMessage`s ONLY the reduced `EngineResult` — never the parsed graph
+// (which would double the memory via structured-clone). **WebWorker** globals
+// (`onmessage`/`postMessage`), NO DOM: the PANO-19 engine boundary holds here too (verified by the
+// 2nd no-DOM `tsc` pass).
 //
-// POURQUOI LA LANGUE TRAVERSE LE MESSAGE. Le moteur émet de la PROSE (`Analysis` porte `claim` et
-// `label`, ADR-0004) et n'a pas de `document` où lire `<html lang>` — c'est justement ce qui le
-// rend pur. La langue est donc une DONNÉE D'ENTRÉE, au même titre que les octets : c'est l'UI qui
-// la connaît, le worker ne la devine pas.
+// WHY THE LANGUAGE CROSSES THE MESSAGE. The engine emits PROSE (`Analysis` carries `claim` and
+// `label`, ADR-0004) and has no `document` from which to read `<html lang>` — which is precisely
+// what makes it pure. The language is therefore an INPUT DATUM, on the same footing as the bytes:
+// the UI knows it, the worker does not guess it.
 //
-// ⚠ LE TYPE NE SURVIT PAS À `postMessage` (structured-clone ne porte pas `Locale`). Une langue
-// inconnue n'est donc pas impossible ici, seulement improbable ; `wording.ts` retombe sur le
-// français plutôt que de planter. Ne pas s'en remettre au type seul.
+// ⚠ THE TYPE DOES NOT SURVIVE `postMessage` (structured-clone does not carry `Locale`). An unknown
+// language is therefore not impossible here, only improbable; `wording.ts` falls back to French
+// rather than crash. Do not rely on the type alone.
 
 import type { EngineRequest } from '../lib/engine-client';
 import { processExport } from './pipeline';

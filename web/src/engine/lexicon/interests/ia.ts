@@ -1,20 +1,20 @@
-// Lexique d'intérêt `ia` (D2, PANO-76 lot 1, réécriture PROFONDE) — intelligence artificielle.
+// Interest lexicon `ia` (D2, PANO-76 batch 1, DEEP rewrite) — artificial intelligence.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de l'IA FR : concepts, sous-domaines, outils grand public nommés. FR-first
-// (dette PANO-35) ; anglicismes gardés seulement s'ils sont LEXICALISÉS. À l'aveugle.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR AI: concepts, sub-domains, named consumer tools. FR-first
+// (PANO-35 debt); anglicisms kept only if LEXICALIZED. Blind.
 //
-// ── Méthode recall — tiers (le cœur du risque, PANO-74) ────────────────────────────────────────
-//   · SOLO — non équivoques : « intelligence artificielle », « chatgpt », « midjourney »,
+// ── Recall method — tiers (the heart of the risk, PANO-74) ─────────────────────────────────────
+//   · SOLO — unequivocal: « intelligence artificielle », « chatgpt », « midjourney »,
 //     « machine learning », « reseau de neurones », « modele de langage ».
-//   · ANCRÉ — « prompt » (rapide), « modele » (mannequin), « gpt » (nu), « llm », « agent » :
-//     comptent près d'un compagnon IA. La co-occurrence RÉCUPÈRE ces 50/50 au lieu de les jeter.
-//   · EXCLU sans exception — noms de modèles qui sont des mots/​prénoms courants : « claude »,
-//     « opus », « fable », « gemini », « mistral », et « ia » nu (2 lettres). Même ancrés, trop de
-//     bruit (un prénom + un mot courant co-occurrent trop facilement).
+//   · ANCHORED — « prompt » (prompt/quick), « modele » (fashion model), « gpt » (bare), « llm », « agent »:
+//     count near an AI companion. Co-occurrence RECOVERS these 50/50 instead of discarding them.
+//   · EXCLUDED without exception — model names that are common words/first names: « claude »,
+//     « opus », « fable », « gemini », « mistral », and bare « ia » (2 letters). Even anchored, too much
+//     noise (a first name + a common word co-occur too easily).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT de « tech » (thème séparé, plus large).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from « tech » (separate, broader theme).
 
 import type { InterestLexicon } from '../types';
 
@@ -46,8 +46,8 @@ export const IA_LEXICON: InterestLexicon = {
     'assistant ia',
     'modele generatif',
     'reseau antagoniste',
-    // Outils & jargon (rétrofit PANO-90) — « claude »/« opus »/« fable » restent EXCLUS (prénoms/mots
-    // courants, cf. lot 1) ; « hallucination » reste RETIRÉ (frôlait le psychiatrique).
+    // Tools & jargon (retrofit PANO-90) — « claude »/« opus »/« fable » stay EXCLUDED (first names/common
+    // words, cf. batch 1); « hallucination » stays REMOVED (brushed the psychiatric).
     'dall e',
     'perplexity ai',
     'hugging face',
@@ -57,17 +57,17 @@ export const IA_LEXICON: InterestLexicon = {
     'ia open source',
   ],
   anchored: [
-    'prompt', // « prompt » (rapide) vs invite IA
-    'modele', // mannequin / modèle réduit vs modèle IA
-    'gpt', // nu vs chatgpt
-    'llm', // abréviation
-    'agent', // agent IA vs agent (personne)
-    'entrainement', // entraînement de modèle vs sport
-    'inference', // inférence IA vs logique générale
-    'gemini', // outil IA vs signe astrologique
-    'copilot', // outil IA vs copilote
-    'rag', // technique IA vs chiffon
-    'token', // jeton IA vs jeton générique
-    'dataset', // jeu de données (EN) vs générique — ancré (PANO-88)
+    'prompt', // « prompt » (quick) vs AI prompt
+    'modele', // fashion model / scale model vs AI model
+    'gpt', // bare vs chatgpt
+    'llm', // abbreviation
+    'agent', // AI agent vs agent (person)
+    'entrainement', // model training vs sport
+    'inference', // AI inference vs general logic
+    'gemini', // AI tool vs astrological sign
+    'copilot', // AI tool vs copilot
+    'rag', // AI technique vs rag
+    'token', // AI token vs generic token
+    'dataset', // dataset (EN) vs generic — anchored (PANO-88)
   ],
 };

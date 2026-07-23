@@ -1,17 +1,17 @@
-"""Volume — combien d'items par section, à l'échelle (§2 du contrat).
+"""Volume — how many items per section, to scale (§2 of the contract).
 
-`--volume N` fixe la section dominante `Watch History` à ≈ N et met les autres à
-l'échelle selon les ratios observés sur un compte réel (§2). Les sections « 1–4 »
-gardent un petit volume fixe. C'est une préoccupation de *population*, séparée de la
-structure (registre) et de la fabrication de valeurs (populators).
+`--volume N` sets the dominant section `Watch History` to ≈ N and scales the
+others according to the ratios observed on a real account (§2). The "1–4"
+sections keep a small fixed volume. This is a *population* concern, separate from
+structure (registry) and from value fabrication (populators).
 """
 
 from __future__ import annotations
 
-# Compte de référence de la section dominante (§2). Sert d'ancre aux ratios.
+# Reference count of the dominant section (§2). Serves as anchor for the ratios.
 _ANCHOR = 9339
 
-# Ratios relatifs à Watch History, dérivés de la table §2 (count_réel / 9339).
+# Ratios relative to Watch History, derived from the §2 table (real_count / 9339).
 RATIO = {
     ("Your Activity", "Watch History"): 9339 / _ANCHOR,
     ("Likes and Favorites", "Like List"): 3491 / _ANCHOR,
@@ -25,7 +25,7 @@ RATIO = {
     ("Your Activity", "Reposts"): 12 / _ANCHOR,
 }
 
-# Sections à petit volume (≈ 1–4), non mises à l'échelle (§2, dernière ligne).
+# Small-volume sections (≈ 1–4), not scaled (§2, last row).
 FIXED = {
     ("Income+ Wallet", "Coin Purchase History"): 2,
     ("Likes and Favorites", "Favorite Collection"): 4,
@@ -37,11 +37,11 @@ FIXED = {
 
 
 def count_for(path: tuple, volume: int) -> int:
-    """Nombre d'items à générer pour `path` à `--volume` donné.
+    """Number of items to generate for `path` at the given `--volume`.
 
-    Plancher à 1 pour toute section à ratio, afin que chaque quirk reste visible
-    même à volume modeste. Les sections objet/scalaire (ProfileMap, SettingsMap…)
-    ne sont pas listées : elles renvoient 1, ignoré par leur populator.
+    Floors at 1 for any ratio section, so that each quirk stays visible even at a
+    modest volume. Object/scalar sections (ProfileMap, SettingsMap…) are not
+    listed: they return 1, ignored by their populator.
     """
     if path in RATIO:
         return max(1, round(volume * RATIO[path]))

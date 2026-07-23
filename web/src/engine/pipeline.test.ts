@@ -3,17 +3,17 @@ import { describe, expect, it } from 'vitest';
 import { processExport } from './pipeline';
 import { validTikTokExport } from './valid-export.fixture';
 
-/** `.zip` en mémoire contenant `user_data_tiktok.json` = `json` sérialisé. */
+/** In-memory `.zip` containing `user_data_tiktok.json` = serialized `json`. */
 function zipOf(json: unknown): Uint8Array {
   return zipSync({ 'user_data_tiktok.json': strToU8(JSON.stringify(json)) });
 }
 
 describe('processExport', () => {
-  // Refonte A : plus de `schemaVersion` (le golden de rendu attrape la dérive mieux qu'un champ de
-  // version) ni d'`assertInsight` (filet dev-only sur une union que le type tient désormais seul).
-  // Ce qui reste vérifiable ICI est la FORME, pas un compte : les champs REQUIS d'`Analysis` sont
-  // toujours là, même quand la fixture minimale ne produit ni thème ni signal.
-  it('export valide → ok, Analysis de forme stable (champs requis présents, même vides)', () => {
+  // Refonte A: no more `schemaVersion` (the render golden catches drift better than a version field)
+  // nor `assertInsight` (a dev-only net on a union the type now holds on its own). What stays
+  // checkable HERE is the SHAPE, not a count: the REQUIRED fields of `Analysis` are always there,
+  // even when the minimal fixture produces neither theme nor signal.
+  it('valid export → ok, Analysis of stable shape (required fields present, even if empty)', () => {
     const res = processExport(zipOf(validTikTokExport()));
     expect(res.ok).toBe(true);
     if (res.ok) {
@@ -23,7 +23,7 @@ describe('processExport', () => {
     }
   });
 
-  it('archive illisible → stage parse (invalid_zip)', () => {
+  it('unreadable archive → stage parse (invalid_zip)', () => {
     const res = processExport(new Uint8Array([1, 2, 3, 4, 5]));
     expect(res.ok).toBe(false);
     if (!res.ok && res.stage === 'parse') {
@@ -33,7 +33,7 @@ describe('processExport', () => {
     }
   });
 
-  it('JSON valide mais hors-contrat → stage validate, issues non vides', () => {
+  it('valid but out-of-contract JSON → stage validate, non-empty issues', () => {
     const res = processExport(zipOf({ not: 'a tiktok export' }));
     expect(res.ok).toBe(false);
     if (!res.ok && res.stage === 'validate') {
@@ -43,7 +43,7 @@ describe('processExport', () => {
     }
   });
 
-  it('au-dessus du seuil → stage too_large distinct (pas aplati sous parse)', () => {
+  it('above the threshold → distinct stage too_large (not flattened under parse)', () => {
     const res = processExport(zipOf(validTikTokExport()), { sizeLimitBytes: 10 });
     expect(res.ok).toBe(false);
     if (!res.ok && res.stage === 'too_large') {
@@ -54,7 +54,7 @@ describe('processExport', () => {
     }
   });
 
-  it('erreur parse non-too_large → code spécifique préservé par le mapping', () => {
+  it('non-too_large parse error → specific code preserved by the mapping', () => {
     const json = strToU8(JSON.stringify(validTikTokExport()));
     const ambiguous = zipSync({
       'a/user_data_tiktok.json': json,

@@ -1,25 +1,25 @@
-// Golden tests de forme (PANO-28) : de VRAIS zips synthétiques (sortie du générateur PANO-11,
-// committés sous samples/, reproductibles, zéro-PII) passés dans le pipeline réel (PANO-27).
+// Shape golden tests (PANO-28): REAL synthetic zips (output of the PANO-11 generator, committed
+// under samples/, reproducible, zero-PII) run through the real pipeline (PANO-27).
 //
-// But : prouver que la PLOMBERIE (parse → validate → analyse → `Analysis`) tient sur des entrées
-// réalistes, conformes ET adverses (`--empty` / `--absent`). C'est le test qui confronte le schéma
-// valibot (PANO-26) à la vraie sortie générateur : un schéma trop strict (la non-garantie nommée du
-// pont PANO-26) se révèle ICI.
+// Goal: prove that the PLUMBING (parse → validate → analyze → `Analysis`) holds on realistic inputs,
+// conformant AND adverse (`--empty` / `--absent`). It is the test that confronts the valibot schema
+// (PANO-26) with the real generator output: a too-strict schema (the named non-guarantee of the
+// PANO-26 bridge) reveals itself HERE.
 //
-// PORTÉ À LA REFONTE A. Ce fichier est le golden du MOTEUR — à ne pas confondre avec le golden de
-// RENDU de bout en bout (zip → ingestion → règles → rendu, persona incluse), qui est un autre
-// fichier et qui, lui, exerce D1/D2. Trois verrous sont SUPPRIMÉS, un est CORRIGÉ :
-//   - `schemaVersion` et le magasin `evidence: []` partent avec `EngineOutput` : le moteur rend
-//     `Analysis`, une valeur nommée, et une preuve est référencée directement (ADR-0004) ;
-//   - « toute sortie passe `assertInsight` » est SANS OBJET : ce filet dev-only vérifiait à
-//     l'exécution la forme d'une union `Insight` hétérogène. Chaque champ ayant désormais un type
-//     propre, le compilateur tient ce qu'`assertInsight` rattrapait. `assert.ts` a disparu ;
-//   - le golden de dérive `themes: undefined` (« pas encore câblé ; doit devenir un `toEqual`
-//     non-vide quand S2 aura couru ») est CORRIGÉ, et sa prédiction était FAUSSE : S2 a couru, et
-//     ces zips ne produisent TOUJOURS aucun thème ni signal. Pas faute de câblage — faute de texte :
-//     le générateur ne fabrique pas de commentaires qui touchent les lexiques réels. Le verrou est
-//     donc traduit en ce qu'il mesure VRAIMENT (cf. le `it` dédié ci-dessous) : ces samples testent
-//     la PLOMBERIE, et le cœur n'est exercé que par la persona du golden de rendu.
+// MOVED TO REFONTE A. This file is the ENGINE golden — not to be confused with the end-to-end RENDER
+// golden (zip → ingestion → rules → render, persona included), which is another file and which does
+// exercise D1/D2. Three locks are REMOVED, one is CORRECTED:
+//   - `schemaVersion` and the `evidence: []` store leave with `EngineOutput`: the engine returns
+//     `Analysis`, a named value, and a piece of evidence is referenced directly (ADR-0004);
+//   - "every output passes `assertInsight`" is MOOT: that dev-only net checked at runtime the shape
+//     of a heterogeneous `Insight` union. Each field now having its own type, the compiler holds
+//     what `assertInsight` caught. `assert.ts` disappeared;
+//   - the drift golden `themes: undefined` ("not wired yet; must become a non-empty `toEqual` once
+//     S2 has run") is CORRECTED, and its prediction was WRONG: S2 ran, and these zips STILL produce
+//     no theme or signal. Not for lack of wiring — for lack of text: the generator does not
+//     fabricate comments that touch the real lexicons. The lock is therefore translated into what it
+//     REALLY measures (cf. the dedicated `it` below): these samples test the PLUMBING, and the core
+//     is exercised only by the render golden's persona.
 
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
@@ -30,32 +30,31 @@ import { validateTikTokExport } from './validate';
 
 const BASELINE = 'user_data_tiktok.sample.zip';
 const EMPTY = 'user_data_tiktok.empty.zip'; // --empty 'Your Activity/Searches' (SearchList → null)
-const ABSENT = 'user_data_tiktok.absent.zip'; // --absent 'Your Activity/Searches' (clé omise)
+const ABSENT = 'user_data_tiktok.absent.zip'; // --absent 'Your Activity/Searches' (key omitted)
 
-/** Lit un zip golden de `samples/` (racine du dépôt, hors web/). */
+/** Reads a golden zip from `samples/` (repo root, outside web/). */
 function readSample(name: string): Uint8Array {
   return new Uint8Array(readFileSync(new URL(`../../../samples/${name}`, import.meta.url)));
 }
 
-/** Cast utilitaire pour lire/muter une donnée `unknown` dans les tests, sans `any`. */
+/** Utility cast to read/mutate an `unknown` datum in the tests, without `any`. */
 function obj(x: unknown): Record<string, unknown> {
   return x as Record<string, unknown>;
 }
 
-describe('golden — pipeline sur la sortie générateur (PANO-11)', () => {
-  it('baseline réaliste → ok, et une Analysis réellement peuplée (≠ stub moteur-vide)', () => {
+describe('golden — pipeline on the generator output (PANO-11)', () => {
+  it('realistic baseline → ok, and a genuinely populated Analysis (≠ empty-engine stub)', () => {
     const res = processExport(readSample(BASELINE));
     expect(res.ok).toBe(true);
     if (res.ok) {
-      // Les producteurs qui lisent des COMPTES tournent sur ce zip : il porte de l'activité.
+      // The producers that read COUNTS run on this zip: it carries activity.
       expect(res.output.rhythm).toBeDefined();
       expect(res.output.opacity).toBeDefined();
       expect(Object.keys(res.output.volumes).length).toBeGreaterThan(0);
 
-      // Rythme : FORME time-INDÉPENDANTE seulement (le baseline tourne sur `Date.now()` — une
-      // assertion sur une fenêtre glissante pourrirait avec l'horloge). Invariant : 24 compteurs
-      // horaires, et chaque vidéo datée bucketée une fois (somme = taille de VideoList — les dates
-      // du sample committé parsent toutes).
+      // Rhythm: time-INDEPENDENT SHAPE only (the baseline runs on `Date.now()` — an assertion on a
+      // sliding window would rot with the clock). Invariant: 24 hourly counters, and each dated video
+      // bucketed once (sum = VideoList size — the committed sample's dates all parse).
       const parsedBaseline = parseTikTokExport(readSample(BASELINE));
       const videoCount =
         parsedBaseline.ok &&
@@ -72,16 +71,16 @@ describe('golden — pipeline sur la sortie générateur (PANO-11)', () => {
     }
   });
 
-  it('golden de dérive : ces samples n’exercent NI D1 NI D2 — la plomberie, pas le cœur', () => {
-    // Ce qui remplace `themes: undefined` (« pas encore câblé »). D1/D2 sont câblés depuis, et ces
-    // zips restent muets : le générateur PANO-11 fabrique des STRUCTURES réalistes, pas des textes
-    // qui touchent les lexiques. Le nommer plutôt que le laisser croire couvert est le point :
-    //   - le CŒUR (détection, éventails, termes-déclencheurs, C5) n'est exercé que par la persona du
-    //     GOLDEN DE RENDU de bout en bout — d'où sa présence à dessein dans ce golden-là ;
-    //   - l'exhaustivité des ~110 clés de lexique est tenue par `d1/d2-wording-coverage.test.ts`,
-    //     et par rien d'autre.
-    // Si ce test vire au rouge, ce n'est pas une régression : c'est que les samples se sont mis à
-    // porter du texte porteur — bonne nouvelle à constater, pas à masquer.
+  it('drift golden: these samples exercise NEITHER D1 NOR D2 — the plumbing, not the core', () => {
+    // What replaces `themes: undefined` ("not wired yet"). D1/D2 have been wired since, and these
+    // zips stay mute: the PANO-11 generator fabricates realistic STRUCTURES, not texts that touch
+    // the lexicons. Naming it rather than letting it be believed covered is the point:
+    //   - the CORE (detection, fans, trigger terms, C5) is exercised only by the persona of the
+    //     end-to-end RENDER GOLDEN — hence its deliberate presence in that golden;
+    //   - the exhaustiveness of the ~110 lexicon keys is held by `d1/d2-wording-coverage.test.ts`,
+    //     and by nothing else.
+    // If this test turns red, it is not a regression: it means the samples have started to carry
+    // meaningful text — good news to note, not to mask.
     const res = processExport(readSample(BASELINE));
     expect(res.ok).toBe(true);
     if (res.ok) {
@@ -90,10 +89,10 @@ describe('golden — pipeline sur la sortie générateur (PANO-11)', () => {
     }
   });
 
-  it('--empty (section peuplée forcée à vide) → ok, et la section porte son encodage `null`', () => {
+  it('--empty (populated section forced to empty) → ok, and the section carries its `null` encoding', () => {
     const res = processExport(readSample(EMPTY));
     expect(res.ok).toBe(true);
-    // Assertion d'ENCODAGE (pas juste ok) : Searches/SearchList a son encodage de vide `null` (§4).
+    // ENCODING assertion (not just ok): Searches/SearchList has its `null` empty encoding (§4).
     const parsed = parseTikTokExport(readSample(EMPTY));
     expect(parsed.ok).toBe(true);
     if (parsed.ok) {
@@ -102,21 +101,21 @@ describe('golden — pipeline sur la sortie générateur (PANO-11)', () => {
     }
   });
 
-  it('--absent (clé de section omise) → ok:false, stage validate (vide ≠ absent), pas un crash', () => {
+  it('--absent (section key omitted) → ok:false, stage validate (empty ≠ absent), not a crash', () => {
     const res = processExport(readSample(ABSENT));
     expect(res.ok).toBe(false);
     if (!res.ok) expect(res.stage).toBe('validate');
   });
 
-  it('baseline trop gros (seuil minuscule) → stage too_large distinct de parse (boucle PANO-25/27)', () => {
+  it('baseline too large (tiny threshold) → stage too_large distinct from parse (PANO-25/27 loop)', () => {
     const res = processExport(readSample(BASELINE), { sizeLimitBytes: 10 });
     expect(res.ok).toBe(false);
     if (!res.ok) expect(res.stage).toBe('too_large');
   });
 });
 
-describe('golden — couverture des trois encodages de vide (§1.2) sur le baseline', () => {
-  it('le baseline porte les trois encodages null / [] / {} (et valide)', () => {
+describe('golden — coverage of the three empty encodings (§1.2) on the baseline', () => {
+  it('the baseline carries the three encodings null / [] / {} (and validates)', () => {
     const parsed = parseTikTokExport(readSample(BASELINE));
     expect(parsed.ok).toBe(true);
     if (!parsed.ok) return;
@@ -128,31 +127,31 @@ describe('golden — couverture des trois encodages de vide (§1.2) sur le basel
     expect(obj(lf['Favorite Comment']).FavoriteCommentList).toEqual([]);
     // {} : Likes and Favorites → Collection
     expect(lf.Collection).toEqual({});
-    // Section CHANGÉE (NullableList<SearchItem>) : peuplée (array) sur le baseline ; la branche
-    // vide (null) est couverte par le test --empty → les deux branches exercées sur de vrais zips.
+    // CHANGED section (NullableList<SearchItem>): populated (array) on the baseline; the empty branch
+    // (null) is covered by the --empty test → both branches exercised on real zips.
     expect(Array.isArray(obj(obj(data['Your Activity']).Searches).SearchList)).toBe(true);
   });
 });
 
-describe('golden — négatifs : le schéma DISTINGUE les encodages (non-vacuité)', () => {
-  // NB : pour les sections « Unverified » à encodage `null` (typées `unknown[] | null`), le schéma
-  // accepte à la fois `null` ET `[]` — looseness `valibot ⊇ contrat` assumée (PANO-26). Les négatifs
-  // ci-dessous testent donc les distinctions RÉELLES (array vs object vs null là où le type est précis),
-  // pas la distinction null↔[] (acceptée par design).
+describe('golden — negatives: the schema DISTINGUISHES the encodings (non-vacuity)', () => {
+  // NB: for the "Unverified" sections with `null` encoding (typed `unknown[] | null`), the schema
+  // accepts both `null` AND `[]` — assumed `valibot ⊇ contract` looseness (PANO-26). The negatives
+  // below therefore test the REAL distinctions (array vs object vs null where the type is precise),
+  // not the null↔[] distinction (accepted by design).
 
-  it('section `[]` reçoit `null` → rejet', () => {
+  it('section `[]` receives `null` → reject', () => {
     const data = obj(validTikTokExport());
     obj(obj(data['Likes and Favorites'])['Favorite Comment']).FavoriteCommentList = null;
     expect(validateTikTokExport(data).ok).toBe(false);
   });
 
-  it('section liste précise reçoit `{}` → rejet', () => {
+  it('precise list section receives `{}` → reject', () => {
     const data = obj(validTikTokExport());
     obj(obj(data.Comment).Comments).CommentsList = {};
     expect(validateTikTokExport(data).ok).toBe(false);
   });
 
-  it('section `null` reçoit `{}` → rejet', () => {
+  it('section `null` receives `{}` → reject', () => {
     const data = obj(validTikTokExport());
     obj(obj(data['Income+ Wallet'])['Transaction History']).TransactionsList = {};
     expect(validateTikTokExport(data).ok).toBe(false);

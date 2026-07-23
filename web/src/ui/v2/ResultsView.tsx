@@ -1,14 +1,14 @@
-// Vue de résultats « parcours guidé » (maquette « PanoptiCool v4 », refonte 2026-07-15) — remplace
-// `ResultsPage` (qui reste servie telle quelle sur /temp). Quatre étapes, du plus factuel au plus
-// interprété : 01 activité (rythme + volumes + mur sémantique), 02 déductions par thème
-// (`ThemeCardNavy` ; les constats sans thème deviennent des cartes NORMALES, `SignalCardNavy`),
-// 03 en résumé (contenu statique de la maquette), 04 IA locale (`AiSection`, bande pleine largeur).
+// « parcours guidé » results view (« PanoptiCool v4 » mockup, 2026-07-15 rework) — replaces
+// `ResultsPage` (which stays served as is on /temp). Four steps, from most factual to most
+// interpreted: 01 activity (rhythm + volumes + semantic wall), 02 deductions by theme
+// (`ThemeCardNavy`; the findings without a theme become NORMAL cards, `SignalCardNavy`),
+// 03 in summary (static mockup content), 04 local AI (`AiSection`, full-width band).
 //
-// Sections de l'ancienne page ABSENTES de la maquette, donc RETIRÉES d'ici (décision yuya, refonte) :
-// carte « ciblage publicitaire » (adPrivacyGroup), carte appareil/réseau (deviceNetworkGroup),
-// cadre générique `exposedGroup`, cartes `absence`/`exposed` isolées. Les données du panneau
-// Activité (PANO-84) et du mur sémantique (opacity) sont REVENTILÉES dans la section 01 plutôt que
-// supprimées. Le bloc « rester informé » du sommaire de la maquette (newsletter) n'est PAS repris.
+// Sections of the old page ABSENT from the mockup, thus REMOVED from here (yuya's decision, rework):
+// « ciblage publicitaire » card (adPrivacyGroup), device/network card (deviceNetworkGroup),
+// generic `exposedGroup` frame, isolated `absence`/`exposed` cards. The data of the Activity
+// panel (PANO-84) and of the semantic wall (opacity) are RE-DISTRIBUTED into section 01 rather than
+// removed. The « rester informé » block of the mockup's table of contents (newsletter) is NOT taken.
 
 import type { VNode } from 'preact';
 import { useState } from 'preact/hooks';
@@ -32,53 +32,53 @@ import {
 } from './ThemeCardNavy';
 import { useIsMobile } from './useIsMobile';
 
-// L'AFFICHAGE de la confiance (légende du sommaire + légende inline mobile) est RETIRÉ (itération
-// 2026-07-20 du design v4, tests utilisateurs) : les niveaux n'apparaissent plus nulle part sur la
-// page, et le cadrage « hypothèses, pas un verdict » vit dans l'intro de la section 02
-// (`sec02Framing`). Le moteur GARDE `confidence`, et le CLASSEMENT des cartes le lit toujours
-// (`compareCards` ci-dessous) — c'est l'axe d'affichage qui disparaît, pas la donnée ni la doctrine.
+// The DISPLAY of confidence (table-of-contents legend + mobile inline legend) is REMOVED (2026-07-20
+// iteration of design v4, user tests): the levels no longer appear anywhere on the
+// page, and the « hypothèses, pas un verdict » framing lives in the intro of section 02
+// (`sec02Framing`). The engine KEEPS `confidence`, and the RANKING of the cards still reads it
+// (`compareCards` below) — it is the display axis that disappears, not the data nor the doctrine.
 
-// Le DÉPLI lead/rest (FORK 1, option (d)) est RETIRÉ (décision yuya, retouches 2026-07-20) : toutes
-// les cartes s'affichent à la suite, classées par `compareCards`. Ce que le dépli protégeait — onze
-// en-têtes alignés qui se neutralisent — est aujourd'hui porté par les cartes FERMÉES par défaut :
-// un en-tête d'une ligne par carte, pas onze blocs ouverts.
+// The lead/rest DISCLOSURE (FORK 1, option (d)) is REMOVED (yuya's decision, 2026-07-20 retouches): all
+// the cards display in sequence, sorted by `compareCards`. What the disclosure protected — eleven
+// aligned headers that neutralize each other — is today carried by the cards CLOSED by default:
+// a one-line header per card, not eleven open blocks.
 
-/** Une carte de la section 02, prête à rendre, avec les seuls nombres qui la classent.
- *  (Pas de champ `key` : la clé vit sur le `node`, là où Preact la lit — un champ de plus ici serait
- *  un champ que personne ne lit, exactement ce que l'audit reproche au moteur d'avant.) */
+/** A card of section 02, ready to render, with the only numbers that rank it.
+ *  (No `key` field: the key lives on the `node`, where Preact reads it — one more field here would be
+ *  a field nobody reads, exactly what the audit reproaches the old engine for.) */
 export interface RankedCard {
-  /** `true` = constat D1 (santé mentale, politique…). Cf. `compareCards` : c'est le 1ᵉʳ critère. */
+  /** `true` = D1 finding (mental health, politics…). Cf. `compareCards`: it is the 1st criterion. */
   sensitive: boolean;
-  /** Niveau affiché par l'en-tête fermé (thème : le MAX de ses constats). */
+  /** Level displayed by the closed header (theme: the MAX of its findings). */
   level: Level;
-  /** Preuves DISTINCTES — le « M src » de l'en-tête. */
+  /** DISTINCT evidence — the « M src » of the header. */
   src: number;
   node: VNode;
 }
 
 /**
- * L'ORDRE, et l'argument qui le tient. Trois critères, du plus décisif au départage :
+ * THE ORDER, and the argument that holds it. Three criteria, from most decisive to the tiebreak:
  *
- *  1. LE SENSIBLE D'ABORD — ⚠ FORK OUVERT, c'est la porte de yuya (doctrine), pas la mienne. Retenu
- *     ici parce que `Analysis` a DÉJÀ tranché un cran plus bas : `signals` et `themes` sont deux
- *     champs séparés, et le type le motive — « un sujet sensible n'est pas un centre d'intérêt parmi
- *     d'autres — les mélanger les aplatirait ». Classer sur la seule confiance RE-FUSIONNERAIT les
- *     deux populations que le schéma tient disjointes, en contredisant cette décision depuis l'UI.
- *     Ce que ça coûte est réel et se dit : la page peut s'ouvrir sur « Santé mentale ».
- *  2. CONFIANCE DÉCROISSANTE — un axe désormais INTERNE (les niveaux ne s'affichent plus,
- *     itération 2026-07-20) mais qui reste le bon ordre de lecture : ce qui est en haut est ce que
- *     la plateforme oserait le plus. Et il DISCRIMINE vraiment — D1 comme D2 émettent `low` ET
- *     `medium` (`d1Level` : explicite ⇒ medium ; `d2Level` : auto-déclaré ou volumineux ⇒ medium).
- *  3. VOLUME DE PREUVES — départage SEULEMENT. Il ne peut pas être le critère principal : D2 s'en
- *     sert déjà pour son top-5 interne (`rankInterests`), le reprendre ici compterait deux fois la
- *     même chose ; et il mesure de quoi l'utilisateur PARLE le plus, quand la page traite de ce qui
- *     est déductible SUR lui — un sujet lâché une fois peut être le constat qui compte.
+ *  1. THE SENSITIVE FIRST — ⚠ OPEN FORK, it is yuya's gate (doctrine), not mine. Kept
+ *     here because `Analysis` has ALREADY decided one notch below: `signals` and `themes` are two
+ *     separate fields, and the type motivates it — "a sensitive subject is not one interest among
+ *     others — mixing them would flatten them". Sorting on confidence alone would RE-MERGE the
+ *     two populations the schema keeps disjoint, contradicting that decision from the UI.
+ *     What it costs is real and is said: the page can open on « Santé mentale ».
+ *  2. DECREASING CONFIDENCE — an axis now INTERNAL (the levels no longer display,
+ *     2026-07-20 iteration) but which stays the right reading order: what is at the top is what
+ *     the platform would dare the most. And it TRULY discriminates — D1 as D2 emit `low` AND
+ *     `medium` (`d1Level`: explicit ⇒ medium; `d2Level`: self-declared or voluminous ⇒ medium).
+ *  3. VOLUME OF EVIDENCE — tiebreak ONLY. It cannot be the main criterion: D2 already
+ *     uses it for its internal top-5 (`rankInterests`), reusing it here would count the
+ *     same thing twice; and it measures what the user TALKS about most, when the page deals with what
+ *     is deducible ABOUT them — a subject dropped once can be the finding that matters.
  *
- * À égalité complète, le tri STABLE (ES2019+) garde l'ordre du moteur — déterministe, testable.
+ * At complete equality, the STABLE sort (ES2019+) keeps the engine's order — deterministic, testable.
  *
- * EXPORTÉ pour `ranking.test.ts` : ces trois critères sont de la DOCTRINE, et le golden de rendu ne
- * les atteint pas (la persona ne produit que 4 cartes, sur lesquelles le critère reproduit l'ordre
- * antérieur — il passerait à l'identique avec un comparateur faux). Le témoin est donc unitaire.
+ * EXPORTED for `ranking.test.ts`: these three criteria are DOCTRINE, and the render golden does
+ * not reach them (the persona only produces 4 cards, on which the criterion reproduces the prior
+ * order — it would pass identically with a wrong comparator). The witness is therefore a unit test.
  */
 export function compareCards(a: RankedCard, b: RankedCard): number {
   if (a.sensitive !== b.sensitive) {
@@ -90,7 +90,7 @@ export function compareCards(a: RankedCard, b: RankedCard): number {
   return b.src - a.src;
 }
 
-/** Les cartes de la section 02, classées. Les deux populations entrent, l'ordre les range. */
+/** The cards of section 02, ranked. Both populations enter, the order arranges them. */
 function rankedCards(output: Analysis, reuseMap: ReadonlyMap<string, Citation[]>): RankedCard[] {
   const cards: RankedCard[] = output.signals.map((signal, i) => ({
     sensitive: signal.sensitive,
@@ -102,9 +102,9 @@ function rankedCards(output: Analysis, reuseMap: ReadonlyMap<string, Citation[]>
   }));
   for (const theme of output.themes) {
     cards.push({
-      // Aucun thème n'est sensible : les deux populations sont disjointes par construction (§2.1).
+      // No theme is sensitive: the two populations are disjoint by construction (§2.1).
       sensitive: false,
-      // Un thème sans constat n'a pas de niveau ; il ne peut alors rien affirmer — donc le plus bas.
+      // A theme without a finding has no level; it can then assert nothing — so the lowest.
       level: themeLevel(theme.deductions) ?? 'low',
       src: distinctEvidenceCount(theme.deductions),
       node: <ThemeCardNavy key={theme.id} theme={theme} reuseMap={reuseMap} />,
@@ -120,8 +120,8 @@ const TOC = [
   { n: '04', label: UI_RESULTS.tocAi, href: '#sec-ia' },
 ] as const;
 
-// Les contenus pédagogiques et les listes du résumé vivent dans le catalogue d'interface
-// (`ui/copy.ts`) — cette vue les rend, elle ne les écrit plus.
+// The educational contents and the summary lists live in the interface catalog
+// (`ui/copy.ts`) — this view renders them, it no longer writes them.
 
 function SectionHead({
   id,
@@ -136,14 +136,14 @@ function SectionHead({
   n: string;
   title: string;
   sub?: string;
-  /** Cadrage optionnel sous le sous-titre — DANS l'en-tête (gap resserré de la maquette), pas
-   * dans le flux de la section : entre les deux il y aurait l'espacement inter-blocs, trop grand. */
+  /** Optional framing under the subtitle — IN the header (the mockup's tightened gap), not
+   * in the section's flow: between the two there would be the inter-block spacing, too large. */
   framing?: VNode;
   learn?: { open: boolean; label: string; onToggle: () => void };
   isMobile?: boolean;
 }) {
-  // Mobile (maquette « v4 Mobile ») : pas de filet, sous-titre sans retrait, bouton « comprendre »
-  // SOUS le titre (align-self flex-start) plutôt qu'à droite.
+  // Mobile (« v4 Mobile » mockup): no rule, subtitle without indent, « comprendre » button
+  // UNDER the title (align-self flex-start) rather than on the right.
   return (
     <div id={id} style={SEC_HEAD_WRAP}>
       <div style={SEC_HEAD_ROW}>
@@ -172,33 +172,33 @@ export function ResultsView({
 }: {
   output: Analysis;
   aiSource?: AiSource;
-  /** Mode démo (mobile : le badge de header n'a pas la place — l'info passe dans le kicker). */
+  /** Demo mode (mobile: the header badge has no room — the info moves into the kicker). */
   demo?: boolean;
 }) {
   const [learn, setLearn] = useState<Record<string, boolean>>({});
   const toggleLearn = (key: string) => setLearn((l) => ({ ...l, [key]: !l[key] }));
   const isMobile = useIsMobile();
 
-  // Ventilation par section — lot A1 : il n'y a plus rien à ventiler. Cette vue faisait TROIS
-  // passes pour retrouver ce que le moteur savait déjà : `find(kind === 'aggregate')`,
-  // `find(kind === 'opacity')`, et `buildPageBlocks` (144 lignes de regroupement par thème, de
-  // dispatch sur un `Set` de `ruleId` et de filtrage des natures hors maquette). Le moteur nomme :
-  // `output.rhythm`, `output.opacity`, `output.themes`, `output.signals` — le tri est lu, plus fait.
+  // Distribution by section — batch A1: there is nothing left to distribute. This view made THREE
+  // passes to recover what the engine already knew: `find(kind === 'aggregate')`,
+  // `find(kind === 'opacity')`, and `buildPageBlocks` (144 lines of grouping by theme, of
+  // dispatch on a `Set` of `ruleId` and of filtering out natures off the mockup). The engine names:
+  // `output.rhythm`, `output.opacity`, `output.themes`, `output.signals` — the sort is read, no longer done.
   //
-  // Seul « aussi exploité par » demande encore un calcul, parce que c'est une relation ENTRE constats
-  // qu'aucun d'eux ne porte seul : recalculée ici, plus stockée (C5, §5.4).
+  // Only « aussi exploité par » still requires a computation, because it is a relation BETWEEN findings
+  // that none of them carries alone: recomputed here, no longer stored (C5, §5.4).
   const reuseMap = buildReuseMap(output);
   const hasDeductions = output.signals.length > 0 || output.themes.length > 0;
 
-  // Toutes les cartes, classées (`compareCards`), à la suite — plus de coupe lead/rest (retouches
-  // 2026-07-20).
+  // All the cards, ranked (`compareCards`), in sequence — no more lead/rest cut (2026-07-20
+  // retouches).
   const cards = rankedCards(output, reuseMap);
 
-  // Mobile (maquette « v4 Mobile ») : pas de sidebar (le sommaire vit en chips dans le header,
-  // cf. SiteHeader/AnalysisPage), héros en colonne SANS l'œil, légende de confiance INLINE sous le
-  // héros, kicker portant la mention démo.
-  // Le suffixe démo ne vit dans le kicker QUE sur mobile — sur desktop, le badge du header porte
-  // déjà l'information (pas de doublon).
+  // Mobile (« v4 Mobile » mockup): no sidebar (the table of contents lives as chips in the header,
+  // cf. SiteHeader/AnalysisPage), hero in a column WITHOUT the eye, confidence legend INLINE under the
+  // hero, kicker carrying the demo mention.
+  // The demo suffix lives in the kicker ONLY on mobile — on desktop, the header badge already carries
+  // the information (no duplicate).
   const kicker = demo && isMobile ? UI_RESULTS.kickerDemo : UI_RESULTS.kicker;
 
   return (
@@ -217,7 +217,7 @@ export function ResultsView({
         )}
 
         <div style={isMobile ? M_CONTENT : CONTENT}>
-          {/* --- Héros ------------------------------------------------------------------------ */}
+          {/* --- Hero -------------------------------------------------------------------------- */}
           <div style={isMobile ? M_HERO : HERO}>
             <div style={HERO_COL}>
               <span style={isMobile ? M_KICKER : KICKER}>{kicker}</span>
@@ -237,7 +237,7 @@ export function ResultsView({
             )}
           </div>
 
-          {/* --- 01 · Ton activité ---------------------------------------------------------------- */}
+          {/* --- 01 · Your activity --------------------------------------------------------------- */}
           <SectionHead
             id="sec-activite"
             isMobile={isMobile}
@@ -265,7 +265,7 @@ export function ResultsView({
             {output.opacity !== undefined && <AnalyzableShareCard opacity={output.opacity} />}
           </div>
 
-          {/* --- 02 · Déductions par thème -------------------------------------------------------- */}
+          {/* --- 02 · Deductions by theme --------------------------------------------------------- */}
           <SectionHead
             id="sec-deductions"
             isMobile={isMobile}
@@ -275,10 +275,10 @@ export function ResultsView({
               isMobile ? UI_RESULTS.sec02TapVerbMobile : UI_RESULTS.sec02TapVerbDesktop,
             )}
             framing={
-              /* Le CADRAGE de la section : une fois, en intro, « hypothèses, jamais un verdict » —
-                 à la place de l'appareil de confiance que chaque carte répétait. Les deux
-                 mots-exemples portent le style de ce qu'ils nomment (maquette) : « surlignage »
-                 est surligné, « principale » a la teinte de la lecture principale. */
+              /* The section's FRAMING: once, in the intro, « hypothèses, jamais un verdict » —
+                 in place of the confidence apparatus each card repeated. The two
+                 example-words carry the style of what they name (mockup): « surlignage »
+                 is highlighted, « principale » has the tint of the main reading. */
               <>
                 {UI_RESULTS.sec02FramingLead}
                 <span style={FRAMING_HIGHLIGHT}>{UI_RESULTS.sec02FramingHighlightWord}</span>
@@ -300,20 +300,20 @@ export function ResultsView({
               footnote={UI_LEARN_PANELS.deductions.footnote}
             />
           )}
-          {/* L'ordre de la page est une décision de MISE EN SCÈNE : elle vit ici (`compareCards`),
-              plus dans l'ordre d'un registre moteur. Il ne suit plus « les signaux, puis les
-              thèmes » — ce qui n'était que l'ordre de composition d'`insights[]` hérité de
-              `buildPageBlocks`, jamais un choix. Le sensible reste en tête, mais parce qu'un critère
-              le dit, et à confiance égale une carte mieux étayée passe devant. */}
+          {/* The page's order is a STAGING decision: it lives here (`compareCards`),
+              no longer in the order of an engine registry. It no longer follows "the signals, then the
+              themes" — which was only the composition order of `insights[]` inherited from
+              `buildPageBlocks`, never a choice. The sensitive stays at the top, but because a criterion
+              says so, and at equal confidence a better-substantiated card comes first. */}
           <div style={THEME_LIST}>
             {cards.map((c) => c.node)}
-            {/* Cas limite « aucune déduction » (maquettes CasAucuneDeduction) : carte complète —
-                raison probable, rappel d'asymétrie, dépli des textes bruts, enrichissement des
-                lexiques, conseils — à la place de l'ancien paragraphe sec. */}
+            {/* « aucune déduction » edge case (CasAucuneDeduction mockups): full card —
+                probable reason, asymmetry reminder, raw-text disclosure, lexicon
+                enrichment, advice — in place of the old dry paragraph. */}
             {!hasDeductions && <NoDeductionCard aiSource={aiSource} isMobile={isMobile} />}
           </div>
 
-          {/* --- 03 · En résumé ------------------------------------------------------------------- */}
+          {/* --- 03 · In summary ------------------------------------------------------------------ */}
           <SectionHead
             id="sec-resume"
             isMobile={isMobile}
@@ -360,10 +360,10 @@ export function ResultsView({
         </div>
       </div>
 
-      {/* --- 04 · IA locale (bande pleine largeur) -------------------------------------------------- */}
-      {/* Mobile : l'IA locale demande un ordinateur (llama.cpp) — encart explicatif + aperçu
-          décoratif à la place de la section interactive (maquette « v4 Mobile »). L'encart vit DANS
-          le flux de contenu (pas de bande pleine largeur). */}
+      {/* --- 04 · Local AI (full-width band) ------------------------------------------------------- */}
+      {/* Mobile: local AI requires a computer (llama.cpp) — explanatory callout + decorative
+          preview in place of the interactive section (« v4 Mobile » mockup). The callout lives IN
+          the content flow (no full-width band). */}
       {aiSource !== undefined &&
         (isMobile ? (
           <div style={M_SHELL_TAIL}>
@@ -376,7 +376,7 @@ export function ResultsView({
   );
 }
 
-// --- Styles (maquette « parcours guidé ») ----------------------------------------------------------
+// --- Styles (« parcours guidé » mockup) ------------------------------------------------------------
 const PAGE = { display: 'flex', flexDirection: 'column' } as const;
 const GRID = {
   maxWidth: '1280px',
@@ -490,7 +490,7 @@ const SEC_SUB = {
   color: NAVY.textMuted,
   paddingLeft: '44px',
 } as const;
-// Cadrage de la section 02 — même retrait que le sous-titre, un ton plus discret (maquette).
+// Section 02 framing — same indent as the subtitle, a more discreet tone (mockup).
 const SEC_FRAMING = {
   fontSize: '11px',
   lineHeight: 1.7,
@@ -499,8 +499,8 @@ const SEC_FRAMING = {
   maxWidth: '720px',
 } as const;
 const M_SEC_FRAMING = { fontSize: '12px', lineHeight: 1.7, color: NAVY.textFaint } as const;
-// Les deux mots-exemples du cadrage — mêmes styles que ce qu'ils désignent (maquette) :
-// le surlignage des sources (`highlight`), la teinte de la lecture principale.
+// The two example-words of the framing — same styles as what they designate (mockup):
+// the source highlighting (`highlight`), the tint of the main reading.
 const FRAMING_HIGHLIGHT = {
   color: NAVY.textBright,
   borderBottom: '1px solid rgba(255,255,255,.45)',
@@ -570,7 +570,7 @@ const TAKEAWAYS = {
 } as const;
 const TAKEAWAY_ROW = { display: 'flex', gap: '10px' } as const;
 
-// --- Styles MOBILE (maquette « PanoptiCool v4 Mobile ») --------------------------------------------
+// --- MOBILE styles (« PanoptiCool v4 Mobile » mockup) ----------------------------------------------
 const M_SHELL = {
   maxWidth: '480px',
   margin: '0 auto',
@@ -578,7 +578,7 @@ const M_SHELL = {
   width: '100%',
   boxSizing: 'border-box',
 } as const;
-// L'encart IA mobile vit dans la même colonne que le reste (pas de bande pleine largeur).
+// The mobile AI callout lives in the same column as the rest (no full-width band).
 const M_SHELL_TAIL = {
   maxWidth: '480px',
   margin: '0 auto',

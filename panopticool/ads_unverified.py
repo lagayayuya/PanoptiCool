@@ -1,20 +1,20 @@
-"""ads_unverified — reconstruction NON VÉRIFIÉE des sections « ads » (§3).
+"""ads_unverified — UNVERIFIED reconstruction of the "ads" sections (§3).
 
-⚠️  TOUT CE MODULE EST « UNVERIFIED ».  Le compte source avait les publicités
-**désactivées** : ces sections sont vides/null dans l'oracle, donc leur **forme
-peuplée n'est PAS vérifiée par le contrat**. On reconstruit ici une forme
-*plausible* pour `--ads on`, **physiquement séparée** du reste, de sorte qu'elle
-soit triviale à corriger dès qu'un vrai export « ads on » sera disponible.
+⚠️  THIS WHOLE MODULE IS "UNVERIFIED".  The source account had ads
+**disabled**: these sections are empty/null in the oracle, so their **populated
+shape is NOT verified by the contract**. We reconstruct here a *plausible* shape
+for `--ads on`, **physically separated** from the rest, so that it is trivial to
+correct as soon as a real "ads on" export becomes available.
 
-Sections concernées (§3) :
-* `Your Activity → Ad Interests → AdInterestCategories` — `""` quand vide ;
-  forme peuplée supposée : liste de chaînes de catégories.
-* `Your Activity → Instant Form Ads Responses → ResponsesList` — `null` quand vide.
-* `Off TikTok Activity → OffTikTokActivityDataList` — `null` (sous ses DEUX parents,
-  §1.6).
+Sections concerned (§3):
+* `Your Activity → Ad Interests → AdInterestCategories` — `""` when empty;
+  assumed populated shape: list of category strings.
+* `Your Activity → Instant Form Ads Responses → ResponsesList` — `null` when empty.
+* `Off TikTok Activity → OffTikTokActivityDataList` — `null` (under BOTH of its
+  parents, §1.6).
 
-`--ads off` (défaut) n'importe jamais ce module : les sections restent à leur
-encodage du vide, strictement fidèles à l'oracle.
+`--ads off` (default) never imports this module: the sections stay at their
+empty encoding, strictly faithful to the oracle.
 """
 
 from __future__ import annotations
@@ -24,16 +24,16 @@ import random
 from .populators import _date, _opaque_id, _uuid_like
 from .registry import DATE
 
-# Marqueur explicite : ces formes sont des hypothèses, pas des faits du contrat.
+# Explicit marker: these shapes are hypotheses, not facts from the contract.
 UNVERIFIED = True
 
-# Catégories d'intérêt plausibles (hypothèse : liste de chaînes — §3).
+# Plausible interest categories (hypothesis: list of strings — §3).
 _AD_INTEREST_CATEGORIES = (
     "Cooking", "Travel", "Fitness", "Gaming", "Beauty", "Technology",
     "Music", "Pets", "Outdoors", "Fashion", "Finance", "DIY",
 )
 
-# Sources plausibles d'« Off TikTok Activity » (hypothèse de forme — NON VÉRIFIÉE).
+# Plausible "Off TikTok Activity" sources (shape hypothesis — UNVERIFIED).
 _OFF_TIKTOK_SOURCES = (
     "example-shop.com", "demo-news.example", "sample-game.example", "fixture-store.example",
 )
@@ -41,13 +41,13 @@ _OFF_TIKTOK_EVENTS = ("PageView", "AddToCart", "Purchase", "Search", "ViewConten
 
 
 def ad_interest_categories(count):
-    """AdInterestCategories peuplé — hypothèse : liste de chaînes (UNVERIFIED §3)."""
+    """AdInterestCategories populated — hypothesis: list of strings (UNVERIFIED §3)."""
     k = random.randint(3, 8)
     return random.sample(_AD_INTEREST_CATEGORIES, k=k)
 
 
 def instant_form_responses(count):
-    """ResponsesList peuplé — forme reconstruite, NON VÉRIFIÉE (§3)."""
+    """ResponsesList populated — reconstructed shape, UNVERIFIED (§3)."""
     return [{
         "FormName": random.choice(("Newsletter", "Demo Request", "Giveaway")),
         "SubmittedTime": _date(DATE),
@@ -56,7 +56,7 @@ def instant_form_responses(count):
 
 
 def off_tiktok_activity(count):
-    """OffTikTokActivityDataList peuplé — forme reconstruite, NON VÉRIFIÉE (§1.6/§3)."""
+    """OffTikTokActivityDataList populated — reconstructed shape, UNVERIFIED (§1.6/§3)."""
     return [{
         "Source": random.choice(_OFF_TIKTOK_SOURCES),
         "Event": random.choice(_OFF_TIKTOK_EVENTS),
@@ -65,7 +65,7 @@ def off_tiktok_activity(count):
     } for _ in range(random.randint(2, 6))]
 
 
-# Branchement par chemin — fusionné dans les populators seulement si `--ads on`.
+# Wiring by path — merged into the populators only if `--ads on`.
 ADS_POPULATORS = {
     ("Your Activity", "Ad Interests", "AdInterestCategories"): ad_interest_categories,
     ("Your Activity", "Instant Form Ads Responses"): instant_form_responses,

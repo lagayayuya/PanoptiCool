@@ -1,10 +1,10 @@
-// Ambient minimal pour le strip dev-only (PANO-23) — aujourd'hui le seul lecteur est le diagnostic
-// d'ingest de `validate.ts` (l'assertion dev-only sur la sortie du moteur, elle, est retirée).
-// On ne référence PAS `vite/client` : il tire la lib DOM et la réinjecterait dans le moteur, ce qui
-// DÉFERAIT la frontière que le tsconfig sans `lib: DOM` enforce (même piège qu'en PANO-19 avec
-// preact/jsx-runtime). On ne type donc que `DEV`.
+// Minimal ambient for the dev-only strip (PANO-23) — today the only reader is the ingest diagnostic
+// of `validate.ts` (the dev-only assertion on the engine's output has itself been removed).
+// We do NOT reference `vite/client`: it pulls in the DOM lib and would re-inject it into the engine,
+// which would UNDO the boundary the tsconfig without `lib: DOM` enforces (same trap as in PANO-19
+// with preact/jsx-runtime). We therefore only type `DEV`.
 interface ImportMetaEnv {
-  /** Vrai en dev/test, `false` en prod (Vite remplace la valeur au build → strip du filet). */
+  /** True in dev/test, `false` in prod (Vite replaces the value at build → strip of the net). */
   readonly DEV: boolean;
 }
 interface ImportMeta {

@@ -1,49 +1,49 @@
-// Matcher lexical — la MÉCANIQUE de repérage, extraite de `detect.ts` (PANO-87 ; fork 5 de l'audit
-// d'architecture). Ce module répond à UNE seule question, positionnelle :
+// Lexical matcher — the locating MECHANICS, extracted from `detect.ts` (PANO-87; fork 5 of the
+// architecture audit). This module answers ONE single, positional question:
 //
-//     « où ce marqueur apparaît-il dans ce texte normalisé ? »  →  un `Span`, ou `null`.
+//     « where does this marker appear in this normalized text? »  →  a `Span`, or `null`.
 //
-// Il ne porte AUCUNE doctrine : ni négation, ni citation, ni 3ᵉ personne, ni étage, ni confiance.
-// Il ne sait pas ce qu'un hit VEUT DIRE — c'est le métier de `detect.ts`, qui compose ce matcher
-// avec les filtres du soin. La séparation est le but : le fichier de doctrine ne doit pas se lire
-// comme un moteur de regex.
+// It carries NO doctrine: no negation, no citation, no 3rd person, no storey, no confidence.
+// It does not know what a hit MEANS — that is the job of `detect.ts`, which composes this matcher
+// with the care filters. The separation is the goal: the doctrine file must not read
+// like a regex engine.
 //
-// POURQUOI ce code est difficile (et pourquoi ce n'est PAS de la sur-ingénierie) : le coût du
-// matching venait d'UNE regex mask-tolérante COMPILÉE PAR MARQUEUR × PAR TEXTE (~milliers de
-// marqueurs × ~centaines d'items → ~1 s, le gel du Worker mesuré en PANO-87). Tout ce fichier est la
-// suppression de cette compilation — une ré-implémentation à la main de la sémantique opératoire du
-// moteur de regex, à l'identique. C'est de la complexité de PERFORMANCE, mesurée, et elle est
-// désormais confinée ici.
+// WHY this code is hard (and why it is NOT over-engineering): the cost of
+// matching came from ONE mask-tolerant regex COMPILED PER MARKER × PER TEXT (~thousands of
+// markers × ~hundreds of items → ~1 s, the Worker freeze measured in PANO-87). This whole file is the
+// removal of that compilation — a hand re-implementation of the operational semantics of the
+// regex engine, identically. It is PERFORMANCE complexity, measured, and it is
+// now confined here.
 //
-// Deux tolérances de VARIATION par pattern (PANO-36) vivent ici, parce qu'elles sont du repérage :
-//   - AUTO-CENSURE symbolique : un marqueur matche aussi ses formes masquées (première et dernière
-//     lettres de chaque mot intactes, lettres intérieures remplaçables par `* @ # .`) — « c*nne »
-//     matche « conne ». Sûr par construction : un mot innocent ne contient pas de symbole de
-//     masquage, et l'auto-censure est un aveu. Appliqué uniformément, jamais par label ;
-//   - pluriel `s?` et frontières de mot `[a-z0-9]`.
-// (Le tiret↔espace vit dans `normalize-fr` ; la garde d'ALLONGEMENT est un choix de doctrine et
-// reste dans `detect.ts`.)
+// Two VARIATION tolerances per pattern (PANO-36) live here, because they are locating:
+//   - symbolic SELF-CENSORSHIP: a marker also matches its masked forms (first and last
+//     letters of each word intact, inner letters replaceable by `* @ # .`) — « c*nne »
+//     matches « conne ». Safe by construction: an innocent word contains no masking
+//     symbol, and self-censorship is a confession. Applied uniformly, never per label;
+//   - plural `s?` and word boundaries `[a-z0-9]`.
+// (The hyphen↔space lives in `normalize-fr`; the ELONGATION guard is a doctrine choice and
+// stays in `detect.ts`.)
 //
-// ÉQUIVALENCE : chaque chemin ci-dessous rend le MÊME `{start,end}` (leftmost) que l'ancienne regex
-// `(?<![a-z0-9])${markerBody}s?(?![a-z0-9])` — donc mêmes filtres et mêmes formes de surface.
+// EQUIVALENCE: each path below returns the SAME `{start,end}` (leftmost) as the old regex
+// `(?<![a-z0-9])${markerBody}s?(?![a-z0-9])` — hence same filters and same surface forms.
 
 import { SELF_DECLARATION_MODIFIERS } from './filters';
 import { type NormalizedText, normalizeFr } from './normalize-fr';
 
-/** Position d'un match dans le normalisé : `[start, end)`, comme `m.index` / `m.index + m[0].length`. */
+/** Position of a match in the normalized text: `[start, end)`, like `m.index` / `m.index + m[0].length`. */
 export interface Span {
   start: number;
   end: number;
 }
 
-// --- Mémoïsation des constantes de lexique -----------------------------------------------------
+// --- Memoization of lexicon constants -----------------------------------------------------
 
 /**
- * `normalizeFr(s).norm` MÉMOÏSÉ (PANO-87). Les marqueurs/termes sont des CONSTANTES de lexique
- * re-normalisées défensivement à chaque hit — soit marqueurs × textes appels (~10⁵ sur le vrai
- * export), chacun allouant les cartes d'offsets de `normalizeFr` pour n'en garder que `.norm`. Le
- * résultat ne dépend que de la chaîne → cache global. (Les TEXTES, eux, ont besoin des cartes
- * d'offsets et gardent `normalizeFr` plein, hors de ce cache.)
+ * `normalizeFr(s).norm` MEMOIZED (PANO-87). Markers/terms are lexicon CONSTANTS
+ * defensively re-normalized on each hit — i.e. markers × texts calls (~10⁵ on the real
+ * export), each allocating the offset maps of `normalizeFr` only to keep `.norm`. The
+ * result depends only on the string → global cache. (The TEXTS, in turn, need the offset
+ * maps and keep the full `normalizeFr`, outside this cache.)
  */
 const normStringCache = new Map<string, string>();
 export function normString(s: string): string {
@@ -55,24 +55,24 @@ export function normString(s: string): string {
   return cached;
 }
 
-// --- Primitives de caractère -------------------------------------------------------------------
+// --- Character primitives -------------------------------------------------------------------
 
-/** `c` est-il alphanumérique `[a-z0-9]` (la classe des frontières de mot du matcher) ? */
+/** Is `c` alphanumeric `[a-z0-9]` (the matcher's word-boundary class)? */
 function isAlnum(code: number): boolean {
   return (code >= 97 && code <= 122) || (code >= 48 && code <= 57);
 }
 
-/** `c` est-il un symbole de masquage d'auto-censure `[*@#.]` (lettre intérieure de `markerBody`) ? */
+/** Is `c` a self-censorship masking symbol `[*@#.]` (inner letter of `markerBody`)? */
 function isMaskChar(ch: string): boolean {
   return ch === '*' || ch === '@' || ch === '#' || ch === '.';
 }
 
 /**
- * SPEC de masquage d'un marqueur (mémoïsé) : `maskable[k] = true` si le caractère `k` du marqueur est
- * une lettre INTÉRIEURE d'un mot ≥ 3 (donc remplaçable par `[*@#.]`) ; `false` pour les
- * premières/dernières lettres, les mots < 3, et les espaces (littéraux). Réplique la structure de
- * `markerBody` sans compiler de regex. Un marqueur multi-mots est une suite de mots séparés par un
- * espace unique (comme `markerBody` les joint).
+ * Masking SPEC of a marker (memoized): `maskable[k] = true` if character `k` of the marker is
+ * an INNER letter of a word ≥ 3 (hence replaceable by `[*@#.]`); `false` for the
+ * first/last letters, words < 3, and spaces (literal). Replicates the structure of
+ * `markerBody` without compiling a regex. A multi-word marker is a sequence of words separated by a
+ * single space (as `markerBody` joins them).
  */
 const markerSpecCache = new Map<string, readonly boolean[]>();
 function markerSpec(marker: string): readonly boolean[] {
@@ -88,38 +88,38 @@ function markerSpec(marker: string): readonly boolean[] {
         maskable[offset + k] = true;
       }
     }
-    offset += word.length + 1; // +1 pour l'espace séparateur
+    offset += word.length + 1; // +1 for the separating space
   }
   markerSpecCache.set(marker, maskable);
   return maskable;
 }
 
-// --- FAST-PATH de repérage (PANO-87) -----------------------------------------------------------
-// Dans le cas COURANT, la regex est inutile : un marqueur mono-mot en `[a-z0-9]` matche, en frontière
-// de mot, EXACTEMENT un « run » maximal `[a-z0-9]+` du texte égal au marqueur ou au marqueur + `s`
-// (pluriel `s?`). Comme `normalizeFr` retire les accents, les runs coïncident avec les frontières
-// `(?<![a-z0-9])` de la regex — l'équivalence est EXACTE (même `{start,end}`). On réserve le scan
-// char-par-char aux cas qui SEULS peuvent diverger : marqueur multi-mot ou non `[a-z0-9]`
-// (apostrophe…), OU texte portant un masque INTRA-mot (`c*nne` — alnum·masque·alnum ; un point de fin
-// de phrase n'y touche pas).
+// --- Locating FAST-PATH (PANO-87) -----------------------------------------------------------
+// In the COMMON case, the regex is useless: a single-word marker in `[a-z0-9]` matches, at a word
+// boundary, EXACTLY a maximal `[a-z0-9]+` « run » of the text equal to the marker or to the marker + `s`
+// (plural `s?`). Since `normalizeFr` strips accents, the runs coincide with the regex's
+// `(?<![a-z0-9])` boundaries — the equivalence is EXACT (same `{start,end}`). We reserve the
+// char-by-char scan for the cases that ALONE can diverge: multi-word or non-`[a-z0-9]` marker
+// (apostrophe…), OR a text carrying an INTRA-word mask (`c*nne` — alnum·mask·alnum; a sentence-final
+// period does not touch it).
 
-/** Index de repérage O(1) d'un texte normalisé (construit une fois, mémoïsé par `NormalizedText`). */
+/** O(1) locating index of a normalized text (built once, memoized by `NormalizedText`). */
 interface TokenIndex {
-  /** Run `[a-z0-9]+` → offset (dans `norm`) de sa PREMIÈRE occurrence (= 1er match regex = leftmost). */
+  /** Run `[a-z0-9]+` → offset (in `norm`) of its FIRST occurrence (= 1st regex match = leftmost). */
   firstStart: Map<string, number>;
-  /** `norm` porte-t-il un masque INTRA-mot (`alnum·[*@#.]+·alnum`) ? Si oui, seul le scan est fidèle. */
+  /** Does `norm` carry an INTRA-word mask (`alnum·[*@#.]+·alnum`)? If so, only the scan is faithful. */
   hasIntraMask: boolean;
 }
 
 const WORD_RUN = /[a-z0-9]+/g;
-/** Masque d'auto-censure en position INTÉRIEURE (« c*nne », « co.ol ») — pas un point de fin de phrase. */
+/** Self-censorship mask in an INNER position (« c*nne », « co.ol ») — not a sentence-final period. */
 const INTRA_MASK = /[a-z0-9][*@#.]+[a-z0-9]/;
 const SIMPLE_MARKER = /^[a-z0-9]+$/;
 
 const tokenIndexCache = new WeakMap<NormalizedText, TokenIndex>();
 const simpleMarkerCache = new Map<string, boolean>();
 
-/** Le marqueur est-il éligible au fast-path (mono-mot, uniquement `[a-z0-9]`) ? Mémoïsé. */
+/** Is the marker eligible for the fast-path (single-word, only `[a-z0-9]`)? Memoized. */
 function isSimpleMarker(marker: string): boolean {
   let simple = simpleMarkerCache.get(marker);
   if (simple === undefined) {
@@ -129,7 +129,7 @@ function isSimpleMarker(marker: string): boolean {
   return simple;
 }
 
-/** Index de repérage d'un texte (mémoïsé) : offsets des runs + présence d'un masque intra-mot. */
+/** Locating index of a text (memoized): run offsets + presence of an intra-word mask. */
 function tokenIndex(text: NormalizedText): TokenIndex {
   const cached = tokenIndexCache.get(text);
   if (cached !== undefined) {
@@ -147,8 +147,8 @@ function tokenIndex(text: NormalizedText): TokenIndex {
 }
 
 /**
- * Repérage O(1) d'un marqueur SIMPLE dans un texte SANS masque intra-mot : le run leftmost égal à
- * `marker` (base) ou `marker + s` (pluriel). Rend le MÊME `{start,end}` que la regex mask-tolérante.
+ * O(1) locating of a SIMPLE marker in a text WITHOUT an intra-word mask: the leftmost run equal to
+ * `marker` (base) or `marker + s` (plural). Returns the SAME `{start,end}` as the mask-tolerant regex.
  */
 function tokenFind(index: TokenIndex, marker: string): Span | null {
   const base = index.firstStart.get(marker);
@@ -163,12 +163,12 @@ function tokenFind(index: TokenIndex, marker: string): Span | null {
 }
 
 /**
- * Repérage d'un marqueur SANS regex : réplique EXACTEMENT
- * `(?<![a-z0-9])${markerBody}s?(?![a-z0-9])` (PANO-36) char par char — première/dernière lettres de
- * CHAQUE mot littérales, lettres intérieures (mot ≥ 3) masquables `[*@#.]`, espaces littéraux,
- * pluriel `s?`, frontières de mot `[a-z0-9]`. Rend le MÊME `{start,end}` (leftmost) que la regex.
- * C'est ce qui ÉVITE la COMPILATION d'un motif par marqueur (le vrai coût à froid, PANO-87) —
- * auto-censure et multi-mots inclus, à l'identique.
+ * Locating a marker WITHOUT a regex: replicates EXACTLY
+ * `(?<![a-z0-9])${markerBody}s?(?![a-z0-9])` (PANO-36) char by char — first/last letters of
+ * EACH word literal, inner letters (word ≥ 3) maskable `[*@#.]`, literal spaces,
+ * plural `s?`, word boundaries `[a-z0-9]`. Returns the SAME `{start,end}` (leftmost) as the regex.
+ * This is what AVOIDS COMPILING a pattern per marker (the real cold cost, PANO-87) —
+ * self-censorship and multi-word included, identically.
  */
 function specFind(norm: string, marker: string): Span | null {
   const maskable = markerSpec(marker);
@@ -176,7 +176,7 @@ function specFind(norm: string, marker: string): Span | null {
   const limit = norm.length - len;
   for (let pos = 0; pos <= limit; pos++) {
     if (pos > 0 && isAlnum(norm.charCodeAt(pos - 1))) {
-      continue; // frontière gauche
+      continue; // left boundary
     }
     let ok = true;
     for (let k = 0; k < len; k++) {
@@ -190,12 +190,12 @@ function specFind(norm: string, marker: string): Span | null {
       continue;
     }
     const end = pos + len;
-    // `s?(?![a-z0-9])` : le pluriel est tenté d'abord (gourmand), puis la frontière droite.
+    // `s?(?![a-z0-9])`: the plural is tried first (greedy), then the right boundary.
     if (norm[end] === 's') {
       if (end + 1 >= norm.length || !isAlnum(norm.charCodeAt(end + 1))) {
         return { start: pos, end: end + 1 };
       }
-      continue; // « s » suivi d'alnum : ni pluriel ni base ne ferment la frontière → pas de hit ici
+      continue; // « s » followed by alnum: neither plural nor base closes the boundary → no hit here
     }
     if (end >= norm.length || !isAlnum(norm.charCodeAt(end))) {
       return { start: pos, end };
@@ -205,30 +205,30 @@ function specFind(norm: string, marker: string): Span | null {
 }
 
 /**
- * Première occurrence du marqueur en FRONTIÈRE DE MOT dans le normalisé (tout minuscules) : pas de
- * caractère alphanumérique collé de part et d'autre. L'apostrophe compte comme frontière
- * (« l'anxiete » matche « anxiete ») ; les tirets sont déjà des espaces (normalize-fr). Le repérage
- * tolère les formes auto-censurées (cf. `specFind`).
+ * First occurrence of the marker at a WORD BOUNDARY in the normalized text (all lowercase): no
+ * alphanumeric character stuck on either side. The apostrophe counts as a boundary
+ * (« l'anxiete » matches « anxiete »); hyphens are already spaces (normalize-fr). Locating
+ * tolerates the self-censored forms (cf. `specFind`).
  *
- * FAST-PATH (PANO-87) : marqueur simple + texte sans masque intra-mot → lookup O(1) sur les runs.
- * Sinon (multi-mot / apostrophe / masque) → `specFind` (scan char-par-char, sans regex). Les deux
- * sont bit-pour-bit équivalents à l'ancienne regex. Prend un `NormalizedText` (et non le seul `norm`)
- * pour porter l'index mémoïsé.
+ * FAST-PATH (PANO-87): simple marker + text without intra-word mask → O(1) lookup on the runs.
+ * Otherwise (multi-word / apostrophe / mask) → `specFind` (char-by-char scan, no regex). Both
+ * are bit-for-bit equivalent to the old regex. Takes a `NormalizedText` (and not just `norm`)
+ * to carry the memoized index.
  */
 export function findMarker(text: NormalizedText, marker: string): Span | null {
   if (isSimpleMarker(marker)) {
     const index = tokenIndex(text);
-    // Cas COURANT (marqueur mono-mot, texte sans masque intra-mot) → lookup O(1).
+    // COMMON case (single-word marker, text without intra-word mask) → O(1) lookup.
     if (!index.hasIntraMask) {
       return tokenFind(index, marker);
     }
   }
-  // Tout le reste (multi-mots, apostrophe, ou texte masqué) → scan char-par-char, SANS regex :
-  // c'est ce qui supprime la compilation d'un motif par marqueur, le vrai coût à froid (PANO-87).
+  // Everything else (multi-word, apostrophe, or masked text) → char-by-char scan, NO regex:
+  // this is what removes compiling a pattern per marker, the real cold cost (PANO-87).
   return specFind(text.norm, marker);
 }
 
-// --- Guillemets ---------------------------------------------------------------------------------
+// --- Quotes ---------------------------------------------------------------------------------
 
 const REGEX_SPECIALS = /[.*+?^${}()|[\]\\]/g;
 
@@ -237,30 +237,30 @@ function escapeRegex(s: string): string {
 }
 
 /**
- * Le marqueur apparaît-il À L'INTÉRIEUR d'un segment entre guillemets ? Question purement
- * positionnelle — ce qu'on en CONCLUT (discours rapporté → attribué à autrui) est de la doctrine et
- * vit dans `detect.ts`. Seul chemin du matcher où une regex reste compilée : elle porte sur le
- * TEXTE (une par appel), pas sur le catalogue de marqueurs — ce n'était jamais le coût de PANO-87.
+ * Does the marker appear INSIDE a quoted segment? A purely
+ * positional question — what one CONCLUDES from it (reported speech → attributed to someone else) is doctrine and
+ * lives in `detect.ts`. The only matcher path where a regex stays compiled: it bears on the
+ * TEXT (one per call), not on the marker catalog — that was never the PANO-87 cost.
  *
- * ── CE QUE CE CHEMIN COUVRE, ET CE QU'IL NE COUVRE TOUJOURS PAS ─────────────────────────────────
- * `findMarker` porte DEUX tolérances de variation ; cette regex n'en portait AUCUNE, et la
- * divergence fait échouer le filtre de citation OUVERT — le seul sens dangereux. Mesuré :
+ * ── WHAT THIS PATH COVERS, AND WHAT IT STILL DOES NOT COVER ─────────────────────────────────
+ * `findMarker` carries TWO variation tolerances; this regex carried NONE, and the
+ * divergence makes the citation filter fail OPEN — the only dangerous direction. Measured:
  *
- *     il a dit "le gauchiste au pouvoir"   → filtré        (singulier : les deux chemins d'accord)
- *     il a dit "les gauchistes au pouvoir" → TAGUÉ         (pluriel : `findMarker` matche, pas la regex)
+ *     il a dit "le gauchiste au pouvoir"   → filtered      (singular: the two paths agree)
+ *     il a dit "les gauchistes au pouvoir" → TAGGED        (plural: `findMarker` matches, not the regex)
  *
- * Le `s?` ci-dessous referme la tolérance de PLURIEL, pour les six labels d'un coup. Il a été
- * trouvé sur `politics` parce que l'épithète politique s'écrit au pluriel (« les fachos », « les
- * gauchistes »), mais rien dans le défaut n'était propre à ce label.
+ * The `s?` below closes the PLURAL tolerance, for the six labels at once. It was
+ * found on `politics` because the political epithet is written in the plural (« les fachos », « les
+ * gauchistes »), but nothing in the defect was specific to this label.
  *
- * **L'AUTRE tolérance reste divergente, et il faut le dire plutôt que laisser croire au comblement :**
- * l'AUTO-CENSURE symbolique (`c*nne` matche `conne`, cf. `specFind`) n'est pas répliquée ici. Une
- * insulte masquée ENTRE GUILLEMETS échappe donc encore au filtre de citation. Le comblement propre
- * n'est pas un troisième motif à écrire — c'est de rendre ce test POSITIONNEL (repérer les segments
- * cités, puis demander si le span rendu par `findMarker` tombe dedans), ce qui hériterait de toutes
- * les tolérances présentes et futures au lieu de les recopier. Ce n'est pas fait ici : ça change la
- * sémantique sur les textes à occurrences MULTIPLES (aujourd'hui « une occurrence citée quelque part
- * suffit », demain « CETTE occurrence-ci est-elle citée »), et ce n'est pas une question de pluriel.
+ * **The OTHER tolerance stays divergent, and it must be said rather than letting one believe it is filled:**
+ * symbolic SELF-CENSORSHIP (`c*nne` matches `conne`, cf. `specFind`) is not replicated here. A
+ * masked insult IN QUOTES therefore still escapes the citation filter. The proper fill
+ * is not a third pattern to write — it is to make this test POSITIONAL (locate the quoted
+ * segments, then ask whether the span returned by `findMarker` falls inside), which would inherit all
+ * present and future tolerances instead of copying them. This is not done here: it changes the
+ * semantics on texts with MULTIPLE occurrences (today « one occurrence quoted somewhere
+ * suffices », tomorrow « is THIS occurrence quoted »), and it is not a matter of plural.
  */
 export function occursInsideQuotes(text: NormalizedText, marker: string): boolean {
   const quoted = new RegExp(
@@ -269,15 +269,15 @@ export function occursInsideQuotes(text: NormalizedText, marker: string): boolea
   return quoted.test(text.norm);
 }
 
-// --- Auto-déclaration SANS regex (PANO-87) -----------------------------------------------------
-// L'ancien `selfDeclarationPattern` compilait, PAR terme d'identité, une regex ÉNORME (têtes × modifs,
-// chacune mask-tolérante, quantifieur `{0,3}`) — le coût dominant À FROID (profil : ce seul motif =
-// ~90 % du temps de la 1ʳᵉ règle). On le remplace par un matcher récursif qui réplique EXACTEMENT la
-// sémantique opératoire du moteur regex : quantifieur GOURMAND (consomme un modif avant d'essayer le
-// terme) + alternation ORDONNÉE + BACKTRACKING (indispensable pour « un peu » : si s'engager sur « un »
-// mène à l'échec, on ré-essaie « un peu »). Bit-pour-bit identique, zéro compilation.
+// --- Self-declaration WITHOUT regex (PANO-87) -----------------------------------------------------
+// The old `selfDeclarationPattern` compiled, PER identity term, a HUGE regex (heads × modifiers,
+// each mask-tolerant, quantifier `{0,3}`) — the dominant COLD cost (profile: this one pattern =
+// ~90% of the 1st rule's time). We replace it with a recursive matcher that replicates EXACTLY the
+// operational semantics of the regex engine: GREEDY quantifier (consumes a modifier before trying the
+// term) + ORDERED alternation + BACKTRACKING (indispensable for « un peu »: if committing to « un »
+// leads to failure, we retry « un peu »). Bit-for-bit identical, zero compilation.
 
-/** `markerBody(phrase)` matché char par char à `pos` (sans frontière ni pluriel) → index de fin, ou -1. */
+/** `markerBody(phrase)` matched char by char at `pos` (no boundary or plural) → end index, or -1. */
 function bodyMatchAt(norm: string, pos: number, phrase: string): number {
   const spec = markerSpec(phrase);
   const len = phrase.length;
@@ -293,7 +293,7 @@ function bodyMatchAt(norm: string, pos: number, phrase: string): number {
   return pos + len;
 }
 
-/** Terme d'identité à `pos` : `markerBody(term)` + pluriel `s?` + frontière droite → index de fin, ou -1. */
+/** Identity term at `pos`: `markerBody(term)` + plural `s?` + right boundary → end index, or -1. */
 function termMatchEnd(norm: string, pos: number, term: string): number {
   const e = bodyMatchAt(norm, pos, term);
   if (e < 0) {
@@ -306,10 +306,10 @@ function termMatchEnd(norm: string, pos: number, term: string): number {
 }
 
 /**
- * `(?:(?:mods) ){0,3} term` à partir de `r`, GOURMAND puis backtrack (réplique le moteur regex) :
- * on tente d'abord de consommer un modif (chaque modif dans l'ordre de la liste, avec backtracking
- * par la récursion), et SEULEMENT sinon on tente le terme à la position courante. Rend l'index de fin
- * du terme (pluriel inclus), ou -1.
+ * `(?:(?:mods) ){0,3} term` starting from `r`, GREEDY then backtrack (replicates the regex engine):
+ * we first try to consume a modifier (each modifier in list order, with backtracking
+ * via the recursion), and ONLY otherwise do we try the term at the current position. Returns the end index
+ * of the term (plural included), or -1.
  */
 function matchModsThenTerm(norm: string, r: number, budget: number, term: string): number {
   if (budget > 0) {
@@ -327,11 +327,11 @@ function matchModsThenTerm(norm: string, r: number, budget: number, term: string
 }
 
 /**
- * Le texte peut-il PORTER une auto-déclaration ? Le pattern EXIGE une copule de tête (« je suis »…) :
- * sans masque intra-mot, chaque tête ne matche que sa forme exacte → si AUCUNE n'apparaît en
- * sous-chaîne, le pattern ne peut pas matcher. Court-circuit (PANO-87) évalué UNE fois par texte, en
- * amont de la boucle sur les termes : la plupart des textes n'ont pas de copule → gros gain à froid.
- * Sur texte masqué (rare), on ne court-circuite pas (seul le scan complet est fidèle).
+ * Can the text CARRY a self-declaration? The pattern REQUIRES a head copula (« je suis »…):
+ * without an intra-word mask, each head matches only its exact form → if NONE appears as a
+ * substring, the pattern cannot match. Short-circuit (PANO-87) evaluated ONCE per text,
+ * ahead of the loop over terms: most texts have no copula → big cold-start gain.
+ * On masked text (rare), we do not short-circuit (only the full scan is faithful).
  */
 export function canSelfDeclare(text: NormalizedText, heads: readonly string[]): boolean {
   if (tokenIndex(text).hasIntraMask) {
@@ -341,9 +341,9 @@ export function canSelfDeclare(text: NormalizedText, heads: readonly string[]): 
 }
 
 /**
- * Première AUTO-DÉCLARATION d'un terme : `(?<![a-z0-9]) tête ␣ (modif ␣){0,3} terme s? (?![a-z0-9])`,
- * leftmost, chaque brique mask-tolérante. Même `{start,end}` que l'ancienne regex. La copule ancre la
- * 1ʳᵉ personne. Sans regex → aucune compilation.
+ * First SELF-DECLARATION of a term: `(?<![a-z0-9]) head ␣ (modifier ␣){0,3} term s? (?![a-z0-9])`,
+ * leftmost, each brick mask-tolerant. Same `{start,end}` as the old regex. The copula anchors the
+ * 1st person. Without regex → no compilation.
  */
 export function findSelfDeclaration(
   text: NormalizedText,
@@ -353,12 +353,12 @@ export function findSelfDeclaration(
   const norm = text.norm;
   for (let pos = 0; pos < norm.length; pos++) {
     if (pos > 0 && isAlnum(norm.charCodeAt(pos - 1))) {
-      continue; // frontière gauche
+      continue; // left boundary
     }
     for (const head of heads) {
       const q = bodyMatchAt(norm, pos, head);
       if (q < 0 || norm[q] !== ' ') {
-        continue; // tête absente, ou pas d'espace après la copule
+        continue; // head absent, or no space after the copula
       }
       const end = matchModsThenTerm(norm, q + 1, 3, term);
       if (end >= 0) {

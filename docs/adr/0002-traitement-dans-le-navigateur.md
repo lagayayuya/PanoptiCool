@@ -1,104 +1,103 @@
-# ADR-0002 : Le traitement vit dans le navigateur — moteur TS en Worker, coquille Astro + îlot
+# ADR-0002: Processing lives in the browser — TS engine in a Worker, Astro shell + island
 
-**Statut :** Accepté
-**Date :** 2026-06-19
-**Décideur :** yuya
+**Status:** Accepted
+**Date:** 2026-06-19
+**Decider:** yuya
 
-## Contexte
+## Context
 
-L'invariant du produit est que **rien ne quitte l'appareil** : décompression, lecture de l'export et
-analyse tournent dans le navigateur. Cet ADR décide **comment** — le modèle d'exécution du moteur, la
-coquille qui l'héberge, et les conventions du dépôt.
+The product's invariant is that **nothing leaves the device**: decompression, reading the export and
+analysis all run in the browser. This ADR decides **how** — the engine's execution model, the shell
+that hosts it, and the repository's conventions.
 
-Deux faits contraignent le moteur, et ils ont été **mesurés, pas supposés** (banc sur fixtures
-synthétiques, 1 k → 100 k entrées) :
+Two facts constrain the engine, and they were **measured, not assumed** (benchmark on synthetic
+fixtures, 1k → 100k entries):
 
-- **Le facteur limitant est la mémoire, pas la vitesse.** Lire le JSON n'est pas le goulot (27 Mo →
-  ~50 ms desktop). Matérialiser le graphe, si : l'export d'un compte réel est écrasé par un tableau
-  de visionnage de 10⁴–10⁵ items, et le pic d'allocation qu'il provoque est ce qui tue l'onglet.
-- **Un traitement synchrone fige l'UI.** Au-delà de 16 ms, le thread principal saccade. Le Worker
-  n'est pas un confort, c'est une conséquence.
+- **The limiting factor is memory, not speed.** Reading the JSON is not the bottleneck (27 MB →
+  ~50 ms desktop). Materializing the graph is: a real account's export is dominated by a viewing
+  array of 10⁴–10⁵ items, and the allocation peak it causes is what kills the tab.
+- **Synchronous processing freezes the UI.** Beyond 16 ms, the main thread stutters. The Worker is
+  not a comfort, it is a consequence.
 
-## Décision
+## Decision
 
-### Le moteur
+### The engine
 
-1. **TypeScript pur, agnostique du framework**, importable par n'importe quelle coquille.
-2. **Exécution en Web Worker.** La chaîne `décompression → lecture → analyse` ne touche jamais le
-   thread principal.
-3. **Ingestion en flux.** On tokenise l'export en repliant le tableau de visionnage à la volée vers
-   ce que les règles lisent réellement (des dates), **sans jamais ériger le graphe géant**. La
-   frontière de confiance est préservée : le flux valide par le même contrat que le reste.
-   Un plafond anti-archive-pathologique subsiste et se **refuse gracieusement** (`too_large`), distinct
-   d'un export corrompu — refuser calmement est un comportement, pas un plantage.
-4. **Le Worker ne rend qu'une valeur réduite** — jamais le graphe lu. Le transfert entre Worker et
-   page est une copie : y faire passer le graphe doublerait la mémoire qu'on vient d'économiser. Ce
-   que le moteur rend est décidé par ADR-0004.
+1. **Pure TypeScript, framework-agnostic**, importable by any shell.
+2. **Execution in a Web Worker.** The `decompression → reading → analysis` chain never touches the
+   main thread.
+3. **Streaming ingestion.** We tokenize the export by folding the viewing array on the fly toward
+   what the rules actually read (dates), **without ever erecting the giant graph**. The trust
+   boundary is preserved: the stream validates against the same contract as the rest. An
+   anti-pathological-archive ceiling remains and **refuses gracefully** (`too_large`), distinct from a
+   corrupted export — refusing calmly is a behavior, not a crash.
+4. **The Worker returns only a reduced value** — never the read graph. The transfer between Worker
+   and page is a copy: passing the graph through it would double the memory we just saved. What the
+   engine returns is decided by ADR-0004.
 
-### La coquille et les conventions
+### The shell and the conventions
 
-5. **Astro, build statique**, servi par Caddy (ADR-0001).
-6. **Toute l'app interactive vit dans un unique îlot `client:only`** : une seule frontière client
-   nette, où le Worker s'instancie. Pas d'hydratation partielle.
-7. **Framework d'îlot : Preact** (`.tsx`) — runtime minuscule (~4 Ko, *on-message* pour un outil qui
-   critique le bloat), mental model ubiquitaire, intégration officielle.
-8. **Lint et format : Biome.** Binaire unique, rapide, config minimale. Le choix est **couplé à
-   celui de l'îlot** : la couverture Biome est native et complète en `.tsx`, mais ne parse pas le
-   control-flow de template d'autres frameworks. Preact dénoue ce couplage — un seul outil sur toute
-   la surface TS.
-9. **TypeScript strict++** : `strict` + `noUncheckedIndexedAccess` + `exactOptionalPropertyTypes`.
-   Justifié par le **parsing défensif d'une entrée non fiable** : un accès indexé non garanti est un
-   bug réel, le type system doit le forcer.
-10. **Un seul package TS** dans `web/`, pas de workspace. Le générateur de fixtures Python vit à la
-    racine avec ses propres conventions.
-11. **La frontière moteur/UI est une frontière de module, *enforced*, pas un package.** Le moteur vit
-    dans `web/src/engine/` et ne dépend d'aucune API DOM ni UI. Double garde-fou : **tsconfig du
-    moteur sans `lib: DOM`** (les globals DOM ne typechequent pas), et une règle d'imports restreints
-    interdisant l'UI dans `engine/`. Non négociable : une frontière non *enforced* pourrit en silence.
-12. **Tests : Vitest**, le poids sur le moteur — goldens consommant les fixtures synthétiques, et les
-    modes dégradés du générateur comme **entrées adverses**.
-13. **Commits : Conventional Commits**, résumé en français, **+ trailer `Co-Authored-By` sur tout
-    commit assisté par IA** — convention de gouvernance, qui prolonge la transparence d'`AI_USAGE.md`.
-    Pas de hook d'enforcement : en solo, la convention écrite suffit et un hook serait de la magie.
-14. **CI : GitHub Actions** — lint → typecheck → tests → build, **+ smoke Python** (générer une
-    fixture, la valider). Souverain (ADR-0001) porte sur l'hébergement de l'app et de la PII, **pas
-    sur l'hébergement du code** : le dépôt est sur GitHub pour sa visibilité.
+5. **Astro, static build**, served by Caddy (ADR-0001).
+6. **The entire interactive app lives in a single `client:only` island**: one clean client boundary,
+   where the Worker is instantiated. No partial hydration.
+7. **Island framework: Preact** (`.tsx`) — tiny runtime (~4 KB, *on message* for a tool that
+   criticizes bloat), ubiquitous mental model, official integration.
+8. **Lint and format: Biome.** Single binary, fast, minimal config. The choice is **coupled to the
+   island's**: Biome's coverage is native and complete in `.tsx`, but it does not parse other
+   frameworks' template control-flow. Preact unties that coupling — a single tool over the whole TS
+   surface.
+9. **TypeScript strict++**: `strict` + `noUncheckedIndexedAccess` + `exactOptionalPropertyTypes`.
+   Justified by the **defensive parsing of an untrusted input**: an unguaranteed indexed access is a
+   real bug, the type system must force it.
+10. **A single TS package** in `web/`, no workspace. The Python fixture generator lives at the root
+    with its own conventions.
+11. **The engine/UI boundary is a module boundary, *enforced*, not a package.** The engine lives in
+    `web/src/engine/` and depends on no DOM or UI API. Double safeguard: **engine tsconfig without
+    `lib: DOM`** (DOM globals do not typecheck), and a restricted-imports rule forbidding the UI in
+    `engine/`. Non-negotiable: a boundary that is not *enforced* rots silently.
+12. **Tests: Vitest**, the weight on the engine — goldens consuming the synthetic fixtures, and the
+    generator's degraded modes as **adversarial inputs**.
+13. **Commits: Conventional Commits**, summary in French, **+ `Co-Authored-By` trailer on every
+    AI-assisted commit** — a governance convention, which extends the transparency of `AI_USAGE.md`.
+    No enforcement hook: solo, the written convention suffices and a hook would be magic.
+14. **CI: GitHub Actions** — lint → typecheck → tests → build, **+ Python smoke** (generate a
+    fixture, validate it). Sovereign (ADR-0001) is about hosting the app and the PII, **not about
+    hosting the code**: the repository is on GitHub for its visibility.
 
-> **Note — la raison qui a fait pencher vers Astro n'est pas exercée.** Astro a été retenu pour son
-> contenu pédagogique en SSG zéro-JS (Markdown/MDX, content collections), face à une SPA jugée moins
-> alignée parce qu'elle aurait rendu du texte en JS. Ce contenu n'existe pas : zéro content
-> collection, zéro `.md`, et les trois pages sont des îlots `client:only`. La décision **est donc
-> rouvrable, dans les deux sens** — si le contenu pédagogique arrive, la raison redevient vraie ;
-> s'il n'arrive pas, le choix mérite d'être repesé. Ce qui tient aujourd'hui, et qui tient seul :
-> build statique + une frontière client unique.
+> **Note — the reason that tipped toward Astro is not exercised.** Astro was chosen for its
+> educational content as zero-JS SSG (Markdown/MDX, content collections), against a SPA judged less
+> aligned because it would have rendered text in JS. That content does not exist: zero content
+> collections, zero `.md`, and the three pages are `client:only` islands. The decision is **therefore
+> reopenable, in both directions** — if the educational content arrives, the reason becomes true
+> again; if it does not, the choice deserves to be reweighed. What holds today, and holds on its own:
+> static build + a single client boundary.
 
-## Options écartées
+## Options discarded
 
-**WASM (simdjson) pour la lecture.** O(n) très rapide — mais la mesure dit que la vitesse de lecture
-n'est pas le facteur limitant, la mémoire l'est. Complexité gratuite.
+**WASM (simdjson) for reading.** Very fast O(n) — but the measurement says reading speed is not the
+limiting factor, memory is. Gratuitous complexity.
 
-**Tout charger en mémoire (`JSON.parse` du graphe entier).** Simple, et suffisant tant que l'export
-est petit. Écarté par la mesure : le pic d'allocation du graphe est précisément ce qui tue l'onglet
-sur un compte réel. Le flux borne l'empreinte quel que soit le volume utile.
+**Loading everything into memory (`JSON.parse` of the whole graph).** Simple, and sufficient as long
+as the export is small. Discarded by measurement: the graph's allocation peak is precisely what kills
+the tab on a real account. Streaming bounds the footprint whatever the useful volume.
 
-**Un monorepo / des workspaces** pour signaler le découplage moteur/UI. Écarté : le monorepo ne se
-justifie que par des cycles de vie indépendants (publication, versioning, build séparés), absents
-ici. Le signal « découplage » s'obtient à bien moindre coût par une frontière *enforced* (§11), et le
-moteur reste extractible plus tard — il n'a aucune dépendance vers la coquille.
+**A monorepo / workspaces** to signal the engine/UI decoupling. Discarded: a monorepo is only
+justified by independent lifecycles (separate publishing, versioning, builds), absent here. The
+"decoupling" signal is obtained at far lower cost by an *enforced* boundary (§11), and the engine
+stays extractable later — it has no dependency on the shell.
 
-**ESLint + Prettier + Svelte.** Couverture lint mature sur plus de formats, et le JS shippé le plus
-petit. Écarté : plus de dépendances, plus lent, et contradiction avec « un seul outil » — pour un
-gain de poids marginal face à Preact, contre un pari sur une compétence moins ubiquitaire.
+**ESLint + Prettier + Svelte.** Mature lint coverage over more formats, and the smallest shipped JS.
+Discarded: more dependencies, slower, and a contradiction with "a single tool" — for a marginal weight
+gain over Preact, against a bet on a less ubiquitous skill.
 
-**Vanilla TS, sans framework d'îlot.** Dépendances minimales absolues, mais la réactivité du
-dashboard repasse à la main : fausse économie pour une surface interactive riche.
+**Vanilla TS, no island framework.** Absolute minimal dependencies, but the dashboard's reactivity
+goes back to being done by hand: a false economy for a rich interactive surface.
 
-## Conséquences
+## Consequences
 
-**Ferme :** le SSR et le serveur dynamique ; WASM ; le transfert du graphe hors du Worker ; les
-workspaces ; les hooks de commit. On accepte deux paradigmes (`.astro` + `.tsx`) et un lock-in Astro
-mince.
+**Closes:** SSR and the dynamic server; WASM; transferring the graph out of the Worker; workspaces;
+commit hooks. We accept two paradigms (`.astro` + `.tsx`) and a thin Astro lock-in.
 
-**Ouvre :** un moteur portable, donc une coquille remplaçable — le vrai actif est le moteur, et
-Astro n'engage que la présentation ; une empreinte mémoire bornée par construction ; un outil de lint
-unique sur toute la surface TS ; une CI polyglotte simple.
+**Opens:** a portable engine, hence a replaceable shell — the real asset is the engine, and Astro
+commits only the presentation; a memory footprint bounded by construction; a single lint tool over
+the whole TS surface; a simple polyglot CI.

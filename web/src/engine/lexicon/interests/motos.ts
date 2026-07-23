@@ -1,32 +1,32 @@
-// Lexique d'intérêt `motos` (D2, PANO-78 lot 3) — motos / deux-roues.
+// Interest lexicon `motos` (D2, PANO-78 batch 3) — motorcycles / two-wheelers.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la moto FR : types, MARQUES, jargon motard, permis. Entités = signal
-// public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR motorcycling: types, BRANDS, biker jargon, licenses. Entities = generic
+// public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « moto », « motard », « roadster », « cafe racer », « wheeling », « permis a2 »,
-//     « supermotard », « enduro », « becane » ; marques (« ducati », « ktm », « harley davidson »).
-//   · ANCRÉ — « honda »/« bmw » (partagés voitures), « yamaha » (partagé guitare), « suzuki » (méthode
-//     violon), « kawasaki » (maladie), « triumph » (victoire), « ninja », « trail » (partagé),
-//     « custom », « cruiser » (navire), « guidon » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//     « supermotard », « enduro », « becane »; brands (« ducati », « ktm », « harley davidson »).
+//   · ANCHORED — « honda »/« bmw » (shared voitures), « yamaha » (shared guitare), « suzuki » (violin
+//     method), « kawasaki » (disease), « triumph » (victory), « ninja », « trail » (shared),
+//     « custom », « cruiser » (ship), « guidon »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// La moto anglophone a des COINAGES qui n'existent nulle part ailleurs — c'est son point fort.
-//   · SOLO — « motovlog » (le mot le plus sûr du domaine), « atgatt », « chicken strips »,
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Anglophone motorcycling has COINAGES that exist nowhere else — that is its strength.
+//   · SOLO — « motovlog » (the safest word of the domain), « atgatt », « chicken strips »,
 //     « countersteering », « knee dragger », « highside », « lowside », « stoppie », « bobber »,
 //     « supermoto », « dual sport », « naked bike », « lane splitting », « lane filtering »,
 //     « quickshifter », « slipper clutch », « swingarm », « clip ons », « rearsets », « twisties »,
 //     « pillion », « motorcycle », « bikersoftiktok ».
-//   · ANCRÉ — « squid » (le CALAMAR, malgré un argot motard de premier ordre), « wheelie » (le vélo et
-//     le BMX en font autant), « throttle » (la limitation de débit réseau), « rider » (un cavalier ; la
-//     clause d'un contrat), « clutch » (le sac à main ; le clutch du jeu), « chain » (la chaîne de
-//     magasins, la blockchain, le bijou du `rap`), « bikelife » (culture VÉLO/BMX, communauté
-//     distincte), « rev » : compagnon requis.
+//   · ANCHORED — « squid » (the SQUID/CALAMARI, despite first-rate biker slang), « wheelie » (bikes and
+//     BMX do it too), « throttle » (network throttling), « rider » (a horse rider; the
+//     clause of a contract), « clutch » (the handbag; the game clutch), « chain » (the store
+//     chain, the blockchain, the `rap` jewelry), « bikelife » (BICYCLE/BMX culture, a distinct
+//     community), « rev »: companion required.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. « voitures » est un thème séparé ; ici les deux-roues motorisés.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. « voitures » is a separate theme; here motorized two-wheelers.
 
 import type { InterestLexicon } from '../types';
 
@@ -57,7 +57,7 @@ export const MOTOS_LEXICON: InterestLexicon = {
     'panigale',
     'moto sportive',
     'moto custom',
-    // Marques / modèles / jargon (enrichi)
+    // Brands / models / jargon (enriched)
     'mv agusta',
     'moto guzzi',
     'royal enfield',
@@ -73,7 +73,7 @@ export const MOTOS_LEXICON: InterestLexicon = {
     'carenage moto',
     'gomme moto',
     'permis moto',
-    // Variantes EN (PANO-88) : SOLO univoques (jargon motard / châssis — beaucoup de coinages).
+    // EN variants (PANO-88): SOLO univocal (biker jargon / chassis — many coinages).
     'motovlog',
     'atgatt',
     'chicken strips',
@@ -99,29 +99,29 @@ export const MOTOS_LEXICON: InterestLexicon = {
     'bikersoftiktok',
   ],
   anchored: [
-    'honda', // partagé voitures
-    'bmw', // partagé voitures
-    'yamaha', // partagé guitare
-    'suzuki', // méthode de violon / prénom
-    'kawasaki', // maladie de Kawasaki
-    'triumph', // victoire (anglais)
-    'ninja', // ninja générique
-    'trail', // partagé running/randonnee
-    'custom', // personnaliser
-    'cruiser', // navire
-    'guidon', // guidon générique
-    'angle', // angle générique vs prise d'angle
-    'fourche', // fourche (outil) vs fourche (moto)
-    'gomme', // gomme (crayon) vs pneu
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'squid', // = le calamar, malgré un argot motard de premier ordre (EN)
-    'wheelie', // le vélo et le BMX en font autant (EN)
-    'throttle', // limitation de débit réseau (EN)
-    'rider', // un cavalier / la clause d'un contrat (EN)
-    'clutch', // le sac à main / le clutch du jeu (EN)
-    'chain', // chaîne de magasins / blockchain / le bijou du rap (EN)
-    'bikelife', // culture vélo/BMX — communauté distincte (EN)
-    'rev', // « rev up » au figuré (EN)
+    'honda', // shared voitures
+    'bmw', // shared voitures
+    'yamaha', // shared guitare
+    'suzuki', // violin method / first name
+    'kawasaki', // Kawasaki disease
+    'triumph', // victory (English)
+    'ninja', // generic ninja
+    'trail', // shared running/randonnee
+    'custom', // to customize
+    'cruiser', // ship
+    'guidon', // generic handlebar
+    'angle', // generic angle vs leaning angle
+    'fourche', // fork (tool) vs fork (motorcycle)
+    'gomme', // eraser (pencil) vs tire
+    // EN variants (PANO-88): ANCHORED.
+    'squid', // = the squid/calamari, despite first-rate biker slang (EN)
+    'wheelie', // bikes and BMX do it too (EN)
+    'throttle', // network throttling (EN)
+    'rider', // a horse rider / the clause of a contract (EN)
+    'clutch', // the handbag / the game clutch (EN)
+    'chain', // store chain / blockchain / the rap jewelry (EN)
+    'bikelife', // bicycle/BMX culture — a distinct community (EN)
+    'rev', // « rev up » figurative (EN)
   ],
   selfDeclared: ['motard', 'motarde'],
 };

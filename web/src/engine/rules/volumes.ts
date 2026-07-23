@@ -1,26 +1,26 @@
-// Volumes de l'export — les 4 compteurs + les 2 totaux all-time (→ `VolumesCard`).
+// Export volumes — the 4 counters + the 2 all-time totals (→ `VolumesCard`).
 //
-// REMPLACE R1/R2/R3/R5 (Refonte A, lot A1). Ces 4 « règles » émettaient chacune un `Insight`
-// `inferred` complet : `ruleId`, `claim`, `framing`, `confidence` scorée, `sampleSignals` verbatim.
-// Mesuré sur l'écran (méthode ADR-0004) : la carte de volumes ne lit QUE `signalCount`
-// — elle porte ses propres libellés (« recherches tapées »…) et son propre ordre d'affichage. Le
-// claim, le framing, la confiance et l'échantillon verbatim n'avaient AUCUN lecteur. Ce qui restait
-// de chaque règle, une fois retiré ce que personne ne lit, est un `.length`.
+// REPLACES R1/R2/R3/R5 (Refonte A, batch A1). These 4 "rules" each emitted a complete `inferred`
+// `Insight`: `ruleId`, `claim`, `framing`, scored `confidence`, verbatim `sampleSignals`. Measured
+// on the screen (ADR-0004 method): the volumes card reads ONLY `signalCount` — it carries its own
+// labels ("typed searches"…) and its own display order. The claim, the framing, the confidence and
+// the verbatim sample had NO reader. What remained of each rule, once what no one reads was removed,
+// is a `.length`.
 //
-// C'est §2.3 rendu concret : `ACTIVITY_PANEL_RULE_IDS = {R1, R2, R3, R5}` — le `Set` par lequel l'UI
-// re-devinait quelles règles alimentaient le panneau — disparaît, parce que le champ EST le nom.
-// Quatre fichiers de règle + quatre registres + un dispatch, remplacés par quatre champs nommés.
+// This is §2.3 made concrete: `ACTIVITY_PANEL_RULE_IDS = {R1, R2, R3, R5}` — the `Set` by which the
+// UI re-guessed which rules fed the panel — disappears, because the field IS the name. Four rule
+// files + four registries + one dispatch, replaced by four named fields.
 //
-// Le seuil de confiance par volume (`*_MEDIUM_VOLUME_THRESHOLD = 10`) part avec la confiance : il ne
-// gradue plus rien qui s'affiche. Il n'est pas jugé sans valeur — il a perdu son lecteur ; s'il
-// revient, il reviendra CONÇU ET RENDU (même doctrine que E8/E9/E10 au LOT B2).
+// The per-volume confidence threshold (`*_MEDIUM_VOLUME_THRESHOLD = 10`) leaves with the confidence:
+// it no longer grades anything that displays. It is not judged worthless — it lost its reader; if it
+// returns, it will return DESIGNED AND RENDERED (same doctrine as E8/E9/E10 in BATCH B2).
 
 import { readActivitySummary } from '../activity-summary';
 import type { Volumes } from '../analysis';
 import type { NormalizedExport } from '../normalize';
 
-/** Sections sources des volumes (contrat §4) — conservées : elles documentent d'où vient chaque
- *  compteur, seule information de provenance que portaient les ex-`R*_SECTION_PATH`. */
+/** Source sections of the volumes (contract §4) — kept: they document where each counter comes from,
+ *  the only provenance information the ex-`R*_SECTION_PATH` carried. */
 export const VOLUME_SECTION_PATHS = {
   searches: 'Your Activity/Searches',
   comments: 'Comment/Comments',
@@ -34,13 +34,13 @@ export const VOLUME_SECTION_PATHS = {
 } as const;
 
 /**
- * Compte les volumes de l'export. Chaque champ est OMIS quand sa source est vide — même sémantique
- * que le `[]` des ex-règles (« rien à montrer » ≠ « zéro »), et c'est ce que la carte attend pour ne
- * pas afficher une tuile à 0.
+ * Counts the export's volumes. Each field is OMITTED when its source is empty — same semantics as
+ * the ex-rules' `[]` ("nothing to show" ≠ "zero"), and it is what the card expects so as not to
+ * display a tile at 0.
  *
- * `endorsements` agrège likes + favoris + reposts en UN compteur (comme R5) : la carte n'affiche
- * qu'une tuile « likes, favoris et republications ». Fenêtre ≈ 1 an pour les 4 compteurs, ALL-TIME
- * pour `allTime` — JAMAIS mélangées (PANO-84).
+ * `endorsements` aggregates likes + favorites + reposts into ONE counter (like R5): the card shows
+ * only a "likes, favorites and reposts" tile. Window ≈ 1 year for the 4 counters, ALL-TIME for
+ * `allTime` — NEVER mixed (PANO-84).
  */
 export function readVolumes(input: NormalizedExport): Volumes {
   const searches = input['Your Activity'].Searches.SearchList.length;
@@ -56,7 +56,7 @@ export function readVolumes(input: NormalizedExport): Volumes {
     ...(comments > 0 ? { comments } : {}),
     ...(follows > 0 ? { follows } : {}),
     ...(endorsements > 0 ? { endorsements } : {}),
-    // Totaux FACTUELS ALL-TIME : lecteur à part, jamais une « règle » (aucune inférence).
+    // FACTUAL ALL-TIME totals: a reader apart, never a "rule" (no inference).
     allTime: readActivitySummary(input),
   };
 }

@@ -1,17 +1,17 @@
-// Listes FR GÉNÉRIQUES des filtres contextuels (PANO-71) — données transverses de la machinerie,
-// PAS du lexique de label : la négation, le discours rapporté et la 3ᵉ personne sont du français
-// courant, identiques quel que soit le sujet détecté.
+// GENERIC FR lists of the contextual filters (PANO-71) — cross-cutting data of the machinery,
+// NOT label lexicon: negation, reported speech and the 3rd person are everyday
+// French, identical whatever the subject detected.
 //
-// ── Justification de généricité (discipline PANO-70 §3, §2.5) ─────────────────────────────────
-// Chaque liste vient de la grammaire/l'usage courant du FR (mots de négation canoniques, verbes
-// de parole du discours rapporté, désignations usuelles de proches), construites à l'aveugle de
-// tout export réel. Aucun terme n'est issu ni inspiré d'un export d'une personne réelle.
+// ── Genericity justification (PANO-70 §3, §2.5 discipline) ─────────────────────────────────
+// Each list comes from the grammar/everyday usage of FR (canonical negation words, speech
+// verbs of reported speech, usual designations of relatives), built blind to
+// any real export. No term is drawn from or inspired by a real person's export.
 // ───────────────────────────────────────────────────────────────────────────────────────────────
 //
-// Toutes les entrées sont déjà en forme NORMALISÉE (minuscules, sans accents) — elles matchent
-// le `norm` de `normalize-fr.ts` sans re-normalisation.
+// All entries are already in NORMALIZED form (lowercase, no accents) — they match
+// the `norm` of `normalize-fr.ts` without re-normalization.
 
-/** Mots de négation (fenêtre AVANT le marqueur — cf. `NEGATION_WINDOW`). */
+/** Negation words (window BEFORE the marker — cf. `NEGATION_WINDOW`). */
 export const NEGATIONS: readonly string[] = [
   'pas',
   'jamais',
@@ -23,12 +23,12 @@ export const NEGATIONS: readonly string[] = [
   'rien',
 ];
 
-/** Taille de la fenêtre de négation, en tokens avant le marqueur (mesure PANO-33). */
+/** Size of the negation window, in tokens before the marker (PANO-33 measurement). */
 export const NEGATION_WINDOW = 3;
 
 /**
- * Verbes d'OMISSION : omission + négation = double négation qui AFFIRME l'objet
- * (« je rate jamais la priere » = pratique assidue, pas une négation). Mesuré PANO-33.
+ * OMISSION verbs: omission + negation = double negation that AFFIRMS the object
+ * (« je rate jamais la priere » = diligent practice, not a negation). Measured PANO-33.
  */
 export const OMISSION_VERBS: readonly string[] = [
   'rate',
@@ -47,8 +47,8 @@ export const OMISSION_VERBS: readonly string[] = [
 ];
 
 /**
- * Discours rapporté — formes AVEC verbe de parole seulement : « on m'a diagnostique » (passif
- * médical) n'est PAS une citation, donc pas de « on m'a » / « il m'a » nus (piège mesuré PANO-33).
+ * Reported speech — forms WITH a speech verb only: « on m'a diagnostique » (medical
+ * passive) is NOT a citation, hence no bare « on m'a » / « il m'a » (trap measured PANO-33).
  */
 export const CITATION_MARKERS: readonly string[] = [
   "m'a dit",
@@ -65,14 +65,14 @@ export const CITATION_MARKERS: readonly string[] = [
 ];
 
 /**
- * Marqueurs de 3ᵉ personne — l'axe « pour qui » (ADR-0003) : le signal existe mais concerne
- * un proche → DÉGRADÉ en indirect (chemin signal-sans-vécu), JAMAIS supprimé.
+ * 3rd-person markers — the « for whom » axis (ADR-0003): the signal exists but concerns
+ * a relative → DEGRADED to indirect (signal-without-lived-experience path), NEVER suppressed.
  *
- * Ce filtre échoue CLOSED (au pire on perd du rappel, jamais on ne nomme à tort) : la liste doit
- * donc être GÉNÉREUSE — un proche manquant ici est une faille de sûreté (« la dépression de ma
- * mère » nommerait l'utilisateur à la place du tiers dont il parle), pas un détail de complétude.
- * Famille proche + élargie ET registre familier (« mec »/« meuf »/« ex »), écrits à l'aveugle,
- * comme le reste du fichier.
+ * This filter fails CLOSED (at worst we lose recall, we never name wrongly): the list must
+ * therefore be GENEROUS — a relative missing here is a safety flaw (« la dépression de ma
+ * mère » would name the user in place of the third party they are talking about), not a completeness detail.
+ * Close + extended family AND colloquial register (« mec »/« meuf »/« ex »), written blind,
+ * like the rest of the file.
  */
 export const THIRD_PERSON: readonly string[] = [
   'mon ado',
@@ -95,11 +95,11 @@ export const THIRD_PERSON: readonly string[] = [
   'pour mon',
   'pour son',
   'pour sa',
-  // Famille proche (comblement de la faille — mère/père absents à tort).
+  // Close family (flaw fill — mother/father wrongly absent).
   'ma mere',
   'mon pere',
   'mes parents',
-  // Famille élargie.
+  // Extended family.
   'ma grand mere',
   'mon grand pere',
   'ma mamie',
@@ -108,35 +108,35 @@ export const THIRD_PERSON: readonly string[] = [
   'ma tante',
   'mon cousin',
   'ma cousine',
-  // Registre familier (partenaire/ex).
+  // Colloquial register (partner/ex).
   'mon mec',
   'ma meuf',
   'mon ex',
 ];
 
-// --- Pattern d'auto-déclaration (PANO-72, transverse aux 6 labels) ----------------------------
-// Structure générique [tête de copule] + [modificateurs optionnels] + [terme d'identité] : capte
-// « je suis un vrai catho », « jsuis une grosse dépressive », « chui plutôt de droite » sans
-// lister ces variantes (la structure est un pattern → machinerie ; le terme d'identité reste une
-// donnée de label, cf. `TopicalLexicon.selfDeclared`). La copule ANCRE l'auto-désignation à la
-// personne : un match d'auto-déclaration est toujours EXPLICITE (1ʳᵉ pers.), jamais dégradé en
-// 3ᵉ personne. Bénéfice éthique en prime : le registre auto-dépréciatif (« un pauvre dépressif »)
-// est capté sans être listé.
+// --- Self-declaration pattern (PANO-72, cross-cutting the 6 labels) ----------------------------
+// Generic structure [copula head] + [optional modifiers] + [identity term]: captures
+// « je suis un vrai catho », « jsuis une grosse dépressive », « chui plutôt de droite » without
+// listing these variants (the structure is a pattern → machinery; the identity term stays a
+// label datum, cf. `TopicalLexicon.selfDeclared`). The copula ANCHORS the self-designation to the
+// person: a self-declaration match is always EXPLICIT (1st pers.), never degraded to
+// 3rd person. Ethical benefit as a bonus: the self-deprecating register (« un pauvre dépressif »)
+// is captured without being listed.
 
 /**
- * Verbes qui RAPPORTENT une question — la copule qui les suit, subordonnée par « si », n'affirme
- * rien (« on me demande si je suis X »). Transverses aux six labels : c'est de la grammaire, pas du
- * vocabulaire de sujet, et la même phrase se construit sur n'importe quelle identité.
+ * Verbs that REPORT a question — the copula that follows them, subordinated by « si », affirms
+ * nothing (« on me demande si je suis X »). Cross-cutting the six labels: it is grammar, not
+ * subject vocabulary, and the same sentence is built on any identity.
  *
- * *Pourquoi une liste de VERBES et non de frames complètes.* « on me demande si », « on me demande
- * souvent si », « il m'a demandé hier si » sont la même construction avec un adverbe glissé au
- * milieu. Lister les frames aurait fait dépendre la règle d'un accident d'insertion ; c'est le
- * couple (verbe de question, subordonnant « si ») qui porte le sens, et le vérifier laisse passer
- * l'adverbe sans l'énumérer.
+ * *Why a list of VERBS and not of complete frames.* « on me demande si », « on me demande
+ * souvent si », « il m'a demandé hier si » are the same construction with an adverb slipped in the
+ * middle. Listing the frames would have made the rule depend on an insertion accident; it is the
+ * (question verb, subordinating « si ») pair that carries the meaning, and checking it lets
+ * the adverb through without enumerating it.
  *
- * *Ce que la liste ne contient pas, et c'est délibéré.* Aucun verbe de parole générique
- * (« dire », « raconter ») : ceux-là vivent déjà dans `CITATION_MARKERS`, où ils FILTRENT. Ici on
- * dégrade, et confondre les deux ferait basculer du discours rapporté vers l'effacement.
+ * *What the list does not contain, and deliberately so.* No generic speech verb
+ * (« dire », « raconter »): those already live in `CITATION_MARKERS`, where they FILTER. Here we
+ * degrade, and confusing the two would tip from reported speech toward erasure.
  */
 export const REPORTED_QUESTION_VERBS: readonly string[] = [
   'demande',
@@ -149,7 +149,7 @@ export const REPORTED_QUESTION_VERBS: readonly string[] = [
   'savoir',
 ];
 
-/** Têtes de copule d'auto-déclaration (« je suis X »). Formes contractées d'internet incluses. */
+/** Copula heads of self-declaration (« je suis X »). Contracted internet forms included. */
 export const SELF_DECLARATION_HEADS_FR: readonly string[] = [
   'je suis',
   'jsuis',
@@ -160,10 +160,10 @@ export const SELF_DECLARATION_HEADS_FR: readonly string[] = [
 ];
 
 /**
- * Modificateurs génériques optionnels entre la copule et le terme (« un vrai », « une grosse »,
- * « plutôt »…). Transverses : ni vocabulaire de label, ni marqueurs sensibles — de la grammaire.
- * La négation (« pas », « jamais »…) n'y figure PAS : elle brise le pattern par construction
- * (« je suis pas croyant » n'a pas le terme collé à la copule), donc la négation reste gérée.
+ * Optional generic modifiers between the copula and the term (« un vrai », « une grosse »,
+ * « plutôt »…). Cross-cutting: neither label vocabulary nor sensitive markers — grammar.
+ * Negation (« pas », « jamais »…) is NOT here: it breaks the pattern by construction
+ * (« je suis pas croyant » does not have the term stuck to the copula), so negation stays handled.
  */
 export const SELF_DECLARATION_MODIFIERS: readonly string[] = [
   'un',
@@ -183,15 +183,15 @@ export const SELF_DECLARATION_MODIFIERS: readonly string[] = [
   'plutot',
   'vraiment',
   'tres',
-  // NOMS DE PERSONNE — « je suis une femme trans », « je suis un mec bi », « je suis une personne
-  // non binaire ». Ce sont des modificateurs au même titre que « un vrai » : la tête sémantique
-  // reste le terme d'identité qui suit, et le nom de personne ne fait que le porter.
+  // PERSON NOUNS — « je suis une femme trans », « je suis un mec bi », « je suis une personne
+  // non binaire ». These are modifiers just like « un vrai »: the semantic head
+  // stays the identity term that follows, and the person noun merely carries it.
   //
-  // Ils sont ici, dans la GRAMMAIRE, plutôt qu'en syntagmes dans chaque lexique, et c'est le point :
-  // « femme trans », « homme trans », « personne trans », « mec trans » sont la même construction
-  // répétée. Les lister par label aurait multiplié les entrées sans jamais couvrir la suivante, et
-  // le trou mesuré n'était pas lexical — le terme nu était déjà admis, c'est le nom de personne
-  // intercalé qui cassait le pattern.
+  // They are here, in the GRAMMAR, rather than as phrases in each lexicon, and that is the point:
+  // « femme trans », « homme trans », « personne trans », « mec trans » are the same construction
+  // repeated. Listing them per label would have multiplied the entries without ever covering the next, and
+  // the measured gap was not lexical — the bare term was already admitted, it is the interposed
+  // person noun that broke the pattern.
   'homme',
   'femme',
   'personne',
@@ -209,24 +209,24 @@ export const SELF_DECLARATION_MODIFIERS: readonly string[] = [
 ];
 
 /**
- * REGISTRE INFORMATIONNEL (FR) — marqueurs de cadrage documentaire.
+ * INFORMATIONAL REGISTER (FR) — documentary-framing markers.
  *
- * Ce n'est PAS un filtre : ces marqueurs ne suppriment jamais un constat, ils en **abaissent
- * l'étage** (nommé → large). Chercher un symptôme EST un signal — une plateforme le lit, et le
- * produit doit le montrer — mais ce n'est pas la preuve d'une condition vécue, et le produit ne doit
- * donc pas en affirmer une. Doctrine : ADR-0003, *Le registre informationnel*.
+ * This is NOT a filter: these markers never suppress a finding, they **lower its
+ * storey** (named → broad). Searching a symptom IS a signal — a platform reads it, and the
+ * product must show it — but it is not proof of a lived condition, and the product must
+ * therefore not assert one. Doctrine: ADR-0003, *Le registre informationnel*.
  *
- * Critère d'admission, et il vaut la peine d'être tenu : un marqueur entre s'il signale que l'item
- * **interroge, définit ou quantifie** une condition, au lieu de la décrire chez quelqu'un. Aucune
- * entrée n'a été tirée d'un item de banc — sans quoi la règle ne serait qu'un miroir de ce qu'on
- * voulait lui voir rattraper.
+ * Admission criterion, and it is worth holding: a marker enters if it signals that the item
+ * **questions, defines or quantifies** a condition, instead of describing it in someone. No
+ * entry was drawn from a bench item — without which the rule would be nothing but a mirror of what we
+ * wanted to see it catch.
  *
- * Ce qui n'y entre PAS : les tournures qui distinguent « X est Y » de « j'ai X ». Les couvrir
- * reviendrait à exiger un ancrage 1ʳᵉ personne, ce qui dégraderait aussi la personne qui vit la
- * condition — mesuré, et écarté pour cette raison.
+ * What does NOT enter: the turns of phrase that distinguish « X est Y » from « j'ai X ». Covering them
+ * would amount to requiring a 1st-person anchoring, which would also degrade the person living the
+ * condition — measured, and set aside for that reason.
  */
 export const INFORMATIONAL: readonly string[] = [
-  // Interroger — la forme la plus courante de la recherche d'un proche inquiet.
+  // Question — the most common form of a worried relative's search.
   'signes de',
   'signe de',
   'symptomes',
@@ -244,28 +244,28 @@ export const INFORMATIONAL: readonly string[] = [
   'comment reconnaitre',
   'comment savoir',
   'comment detecter',
-  // Solliciter l'expérience d'AUTRUI — quatrième mode du registre informationnel, ajouté après le
-  // premier lot. Interroger, définir et quantifier posaient l'item en question SUR une condition ;
-  // celui-ci le pose en demande de RÉCITS. Un témoignage est par définition l'expérience de
-  // quelqu'un d'autre : le demander situe l'auteur en lecteur, pas en porteur.
+  // Solicit ANOTHER'S experience — fourth mode of the informational register, added after the
+  // first batch. Questioning, defining and quantifying placed the item ON a condition;
+  // this one places it as a request for ACCOUNTS. A testimonial is by definition someone
+  // else's experience: asking for it situates the author as a reader, not a bearer.
   //
-  // Il couvre aussi, et légitimement, le porteur qui interroge — « quelqu'un a déjà eu ça ? » écrit
-  // par quelqu'un de concerné. La phrase contient le terme mais n'affirme rien sur son auteur, donc
-  // l'étage nommé n'y est pas justifié : la dégradation est correcte au sens de la doctrine (le fin
-  // n'existe que s'il est ÉCRIT), pas un dommage collatéral qu'on tolère.
+  // It also covers, and legitimately, the bearer who questions — « quelqu'un a déjà eu ça ? » written
+  // by someone concerned. The sentence contains the term but affirms nothing about its author, so
+  // the named storey is not justified there: the degradation is correct in the sense of doctrine (the fine-grained
+  // exists only if it is WRITTEN), not a collateral damage we tolerate.
   'temoignage',
   'avis sur',
   "retour d'experience",
   'retour d experience',
   "quelqu'un a deja",
   'quelquun a deja',
-  // Définir.
+  // Define.
   'difference entre',
   'definition',
   'signification',
   'types de',
   'explication',
-  // Quantifier — le registre de la documentation et de l'étude.
+  // Quantify — the register of documentation and study.
   'prevalence',
   'statistiques',
   'meta analyse',

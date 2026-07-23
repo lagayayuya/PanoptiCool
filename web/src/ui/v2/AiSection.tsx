@@ -1,28 +1,28 @@
-// Section 04 « Analyser avec une IA locale » (maquette « parcours guidé », itération 2026-07-20) —
-// deux cartes : « 1 · Installer » (système, terminal, modèle, choix de route) et « 2 · Prompt &
-// lancement » (fusion des ex-cartes 2 et 3).
+// Section 04 « Analyser avec une IA locale » (« guided journey » mockup, 2026-07-20 iteration) —
+// two cards: « 1 · Installer » (system, terminal, model, route choice) and « 2 · Prompt &
+// lancement » (merge of the ex-cards 2 and 3).
 //
-// Trois invariants tiennent cette section (PANO-45) :
-//   - OPT-IN : rien ne part au modèle avant un clic explicite sur « Lancer l'analyse ».
-//   - LOCAL : l'unique destinataire est le serveur `llama.cpp` que l'utilisateur fait tourner sur SA
-//     machine (localhost par défaut). Aucun appel réseau ailleurs — l'invariant du dépôt tient.
-//   - ÉPURE (décision yuya, benchmark 12/07) : le modèle reçoit les items bruts, rien d'autre. Pas de
-//     sélection de canaux, pas d'agrégats, pas de thèmes D2 dans le prompt — chacun de ces ajouts a
-//     DÉGRADÉ la qualité en benchmark. Ne pas les réintroduire sans nouveau benchmark.
+// Three invariants hold this section (PANO-45):
+//   - OPT-IN: nothing goes to the model before an explicit click on « Lancer l'analyse ».
+//   - LOCAL: the only recipient is the `llama.cpp` server the user runs on THEIR
+//     machine (localhost by default). No network call elsewhere — the repo's invariant holds.
+//   - MINIMALISM (yuya's decision, benchmark 12/07): the model receives the raw items, nothing else. No
+//     channel selection, no aggregates, no D2 themes in the prompt — each of these additions
+//     DEGRADED the quality in the benchmark. Do not reintroduce them without a new benchmark.
 //
-// L'itération 2026-07-20 ajoute trois discriminations, toutes au service d'ADR-0006 :
-//   - le NAVIGATEUR est nommé (UA, `ai/browser.ts`) : la bannière d'entrée dit à l'avance ce que
-//     son moteur permet — Firefox demandera, Chromium exige le cadenas, WebKit ne peut pas. L'ex-
-//     pastille « bloqué par le navigateur » disparaît : elle s'affichait aussi sans certitude ;
-//   - DEUX ROUTES : A « Depuis ce site » (l'ex-parcours, indisponible sous WebKit) et B « Tout sur
-//     ta machine » (zip du site + `llama-server --path`, ADR-0006 décision 5) ;
-//   - le MODE LOCALHOST : si la page est servie depuis la boucle locale et que le serveur répond,
-//     l'installation n'a plus rien à dire — « Tout est prêt » et la carte 2 est active.
+// The 2026-07-20 iteration adds three discriminations, all in service of ADR-0006:
+//   - the BROWSER is named (UA, `ai/browser.ts`): the entry banner says in advance what
+//     its engine allows — Firefox will ask, Chromium requires the padlock, WebKit cannot. The ex-
+//     pill « bloqué par le navigateur » disappears: it also showed without certainty;
+//   - TWO ROUTES: A « Depuis ce site » (the ex-journey, unavailable under WebKit) and B « Tout sur
+//     ta machine » (site zip + `llama-server --path`, ADR-0006 decision 5);
+//   - the LOCALHOST MODE: if the page is served from the local loop and the server responds,
+//     the installation has nothing left to say — « Tout est prêt » and card 2 is active.
 //
-// Deux choix de la refonte 2026-07-15 (décisions yuya), inchangés :
-//   - PLUS de sélecteur de RAM : la commande de lancement propose TOUJOURS `-c 32768`
-//     (`SUGGESTED_CONTEXT`). Au runtime, `/props` (fenêtre réelle du serveur) fait foi.
-//   - bouton ⟳ « revérifier » explicite (maquette).
+// Two choices of the 2026-07-15 rework (yuya's decisions), unchanged:
+//   - NO MORE RAM selector: the launch command ALWAYS proposes `-c 32768`
+//     (`SUGGESTED_CONTEXT`). At runtime, `/props` (the server's real window) prevails.
+//   - an explicit ⟳ « revérifier » button (mockup).
 
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { type BrowserInfo, detectBrowser } from '../../ai/browser';
@@ -69,11 +69,11 @@ import { LearnPanel, LearnToggle } from './LearnPanel';
 import { LOW_DATA_THRESHOLD } from './NoDeductionCard';
 import { NAVY } from './palette';
 
-/** Fenêtre de contexte SUGGÉRÉE dans la commande copiable (décision yuya, refonte 2026-07-15).
- * `/props` fait toujours foi au runtime une fois le serveur joint. */
+/** Context window SUGGESTED in the copyable command (yuya's decision, 2026-07-15 rework).
+ * `/props` always prevails at runtime once the server is reached. */
 const SUGGESTED_CONTEXT = 32768;
 
-/** Où s'installe Homebrew — une URL n'est pas de la prose, elle vit avec le composant. */
+/** Where Homebrew installs — a URL is not prose, it lives with the component. */
 const BREW_URL = 'https://brew.sh';
 
 type ItemsStatus =
@@ -85,10 +85,10 @@ type ProbeStatus =
   | { kind: 'idle' }
   | { kind: 'checking' }
   | { kind: 'ok'; modelId: string | null; contextWindow: number | null }
-  /** L'échec ne porte QUE `gate`, et c'est une décision. Le message de `fetch` était conservé ici
-   * sans qu'aucun rendu ne le lise — or il vaut « Failed to fetch » quelle que soit la cause
-   * (ADR-0006, mesuré). Une chaîne constante ne distingue rien : la garder revenait à stocker du
-   * bruit et à croire qu'on gardait une preuve. Ce qui informe, c'est la permission. */
+  /** The failure carries ONLY `gate`, and that is a decision. The `fetch` message was kept here
+   * without any render reading it — yet it equals « Failed to fetch » whatever the cause
+   * (ADR-0006, measured). A constant string distinguishes nothing: keeping it amounted to storing
+   * noise and believing one kept evidence. What informs is the permission. */
   | { kind: 'error'; gate: LocalNetworkGate };
 
 type Verification =
@@ -97,17 +97,17 @@ type Verification =
   | { kind: 'exact'; selection: ExactSelection }
   | { kind: 'unavailable' };
 
-/** Ce que la page sait de son ENVIRONNEMENT — détecté une fois au premier rendu, corrigeable à la
- * main pour l'OS (boutons « ton système »). Un OBJET d'état plutôt que trois lectures directes de
- * `navigator` : le golden d'interface sème ses états par la forme de l'initialiseur, et un objet à
- * clé `browser` se remplace sans toucher aux autres. */
+/** What the page knows of its ENVIRONMENT — detected once at first render, correctable by
+ * hand for the OS (« ton système » buttons). A state OBJECT rather than three direct reads of
+ * `navigator`: the interface golden seeds its states by the shape of the initializer, and an object
+ * with a `browser` key is replaced without touching the others. */
 interface AiEnv {
   os: Os;
   browser: BrowserInfo;
-  /** La page est servie depuis la boucle locale (route B aboutie, ou dev). Les murs d'ADR-0006
-   * n'existent alors PAS : même origine ou loopback → loopback, exempté par les trois moteurs. */
+  /** The page is served from the local loop (route B completed, or dev). ADR-0006's walls
+   * then do NOT exist: same origin or loopback → loopback, exempted by the three engines. */
   localhost: boolean;
-  /** L'origine à sonder quand `localhost` — le serveur qui vient de servir la page. */
+  /** The origin to probe when `localhost` — the server that just served the page. */
   origin: string | null;
 }
 
@@ -143,10 +143,10 @@ const EMPTY_RUN: RunState = {
   elapsedMs: 0,
 };
 
-// TOUTE la zone de commande copie au clic (demande yuya) : la rangée est un `<button>`, et
-// l'étiquette « copier / copié ✓ » n'est plus qu'un `<span>` — plus de bouton dans le bouton, plus
-// d'effet de survol sur cette étiquette. Le survol reste sur la rangée entière (`hv-bd`), qui EST
-// la cible cliquable.
+// The WHOLE command zone copies on click (yuya's request): the row is a `<button>`, and
+// the « copier / copié ✓ » label is now only a `<span>` — no more button inside the button, no
+// more hover effect on this label. The hover stays on the whole row (`hv-bd`), which IS
+// the clickable target.
 function CommandLine({ command }: { command: string }) {
   const [copied, setCopied] = useState(false);
   return (
@@ -180,21 +180,21 @@ function StepTitle({ n, label }: { n: string; label: string }) {
 }
 
 export function AiSection({ source }: { source: AiSource }) {
-  // La langue de la page, lue UNE fois : elle décide le prompt système, donc la langue de la
-  // réponse du modèle — rien d'autre ne la fixe côté serveur (cf. `ai/prompt.ts`).
+  // The page's language, read ONCE: it decides the system prompt, thus the language of the
+  // model's response — nothing else fixes it server-side (cf. `ai/prompt.ts`).
   const locale = currentLocale();
   const [items, setItems] = useState<ItemsStatus>({ kind: 'loading' });
   const [env] = useState<AiEnv>(detectAiEnv());
   const [osSel, setOsSel] = useState<Os | null>(null);
-  // Objet à clé `choice` (pas une chaîne nue) : le semis du golden reconnaît ses cibles à la FORME
-  // de l'initialiseur, et `null` est la forme d'autres états de cette section.
+  // An object with a `choice` key (not a bare string): the golden's seeding recognizes its targets by the
+  // SHAPE of the initializer, and `null` is the shape of other states of this section.
   const [route, setRoute] = useState<{ choice: RouteChoice | null }>({ choice: null });
   const [url, setUrl] = useState(env.origin ?? serverUrl());
   const [probe, setProbe] = useState<ProbeStatus>({ kind: 'idle' });
-  // En mode localhost, le sondage part TOUT SEUL (nonce initial 1) : le serveur sondé est celui qui
-  // vient de servir la page — le contact ne précède pas l'intention, il la suit (la personne a
-  // lancé ce serveur et tapé son adresse). Hors localhost, rien ne part avant le clic (ADR-0006 :
-  // sonder au chargement y a été écarté, et la raison tient toujours).
+  // In localhost mode, the probe goes off ON ITS OWN (initial nonce 1): the probed server is the one that
+  // just served the page — the contact does not precede the intention, it follows it (the person
+  // launched this server and typed its address). Outside localhost, nothing goes out before the click (ADR-0006:
+  // probing at load was discarded there, and the reason still holds).
   const [probeNonce, setProbeNonce] = useState(env.localhost ? 1 : 0);
   const [mode, setMode] = useState<PromptMode>('default');
   const [editedPrompt, setEditedPrompt] = useState<string | null>(null);
@@ -210,7 +210,7 @@ export function AiSection({ source }: { source: AiSource }) {
   const interruptFlag = useRef<InterruptFlag>({ interrupted: false });
   const abortRef = useRef<AbortController | null>(null);
 
-  // Extraction des items dès l'affichage (worker local, rien ne sort — l'opt-in porte sur l'ENVOI).
+  // Item extraction as soon as the section shows (local worker, nothing goes out — the opt-in bears on the SEND).
   useEffect(() => {
     let cancelled = false;
     void (async () => {
@@ -233,17 +233,17 @@ export function AiSection({ source }: { source: AiSource }) {
     };
   }, [source]);
 
-  // Sondage du serveur — JAMAIS au montage : uniquement sur demande explicite (`probeNonce > 0`),
-  // puis à chaque changement d'adresse. Sonder à l'affichage enverrait un `fetch` vers localhost
-  // sans que personne l'ait demandé. Rien ne fuite (localhost ne quitte pas l'appareil), mais un
-  // outil qui montre la surveillance ne peut pas contacter une machine sans qu'on le lui demande.
+  // Server probe — NEVER on mount: only on explicit request (`probeNonce > 0`),
+  // then at each address change. Probing on display would send a `fetch` toward localhost
+  // without anyone asking for it. Nothing leaks (localhost does not leave the device), but a
+  // tool that shows surveillance cannot contact a machine without being asked to.
   //
-  // Ce report NE GARANTIT AUCUNE FENÊTRE DE PERMISSION. Il l'a longtemps promis, et c'est faux :
-  // le navigateur décide seul s'il demande quoi que ce soit, et certains ne demandent jamais
-  // (ADR-0006). Ce que le report tient, lui, est intact — le premier contact suit une intention,
-  // et c'est à cet endroit que l'interface explique quoi faire quand le navigateur, lui, se tait.
+  // This deferral GUARANTEES NO PERMISSION WINDOW. It promised so for a long time, and it is false:
+  // the browser alone decides whether it asks anything, and some never ask
+  // (ADR-0006). What the deferral holds, for its part, is intact — the first contact follows an intention,
+  // and it is at this spot that the interface explains what to do when the browser, for its part, stays silent.
   useEffect(() => {
-    if (probeNonce === 0) return; // pas encore demandé — on ne touche à rien
+    if (probeNonce === 0) return; // not yet requested — we touch nothing
     let cancelled = false;
     setProbe({ kind: 'checking' });
     void (async () => {
@@ -253,8 +253,8 @@ export function AiSection({ source }: { source: AiSource }) {
         setProbe({ kind: 'ok', modelId: result.modelId, contextWindow: result.contextWindow });
         return;
       }
-      // La permission ne se lit qu'en cas d'ÉCHEC : quand le serveur répond, il n'y a rien à
-      // expliquer, et une lecture inutile est une lecture de trop.
+      // The permission is only read on FAILURE: when the server responds, there is nothing to
+      // explain, and a useless read is one read too many.
       const gate = await localNetworkGate();
       if (!cancelled) setProbe({ kind: 'error', gate });
     })();
@@ -263,7 +263,7 @@ export function AiSection({ source }: { source: AiSource }) {
     };
   }, [url, probeNonce]);
 
-  // Contexte RÉEL du serveur (`/props`) — jamais une supposition une fois le serveur joint.
+  // The server's REAL context (`/props`) — never a guess once the server is reached.
   const contextWindow =
     (probe.kind === 'ok' ? probe.contextWindow : null) ?? DEFAULT_CONTEXT_WINDOW;
   const allItems = items.kind === 'ready' ? items.items : [];
@@ -273,7 +273,7 @@ export function AiSection({ source }: { source: AiSource }) {
     return selectItemsForBudget(allItems, budget, charsPerToken);
   }, [allItems, contextWindow, mode, charsPerToken, locale]);
 
-  // Sélection EXACTE vérifiée par le serveur (/apply-template + /tokenize).
+  // EXACT selection verified by the server (/apply-template + /tokenize).
   useEffect(() => {
     if (probe.kind !== 'ok' || allItems.length === 0) {
       setVerification({ kind: 'unchecked' });
@@ -310,9 +310,9 @@ export function AiSection({ source }: { source: AiSource }) {
   const tokensAreExact = verification.kind === 'exact';
   const counts = countAiItems(allItems);
   const sentCounts = countAiItems(selection.items);
-  // Cas limite « peu de données » (maquette CasPeuDeDonnees) : sous LOW_DATA_THRESHOLD items,
-  // chaque phrase pèse trop lourd — le modèle sur-interprète. On PRÉVIENT (bannière + compteur
-  // teinté + rappel à l'étape 3) sans jamais bloquer le lancement : hypothèse, pas portrait.
+  // « peu de données » edge case (CasPeuDeDonnees mockup): below LOW_DATA_THRESHOLD items,
+  // each sentence weighs too heavily — the model over-interprets. We WARN (banner + tinted
+  // counter + reminder at step 3) without ever blocking the launch: hypothesis, not portrait.
   const lowData = items.kind === 'ready' && allItems.length < LOW_DATA_THRESHOLD;
   const canRun =
     probe.kind === 'ok' &&
@@ -364,15 +364,15 @@ export function AiSection({ source }: { source: AiSource }) {
     abortRef.current?.abort();
   }
 
-  // --- Environnement : OS (corrigeable), navigateur, mode localhost --------------------------------
+  // --- Environment: OS (correctable), browser, localhost mode --------------------------------------
   const os = osSel ?? env.os;
   const osLabel: Record<Os, string> = { macos: 'macOS', windows: 'Windows', linux: 'Linux' };
   const browser = env.browser;
   const browserName = browser.name ?? UI_AI.browserFallbackName;
-  // Sur la boucle locale, les murs d'ADR-0006 n'existent PAS (origine = cible = localhost, exemptée
-  // par les trois moteurs) : tout navigateur y est compatible, et la bannière rouge/verte — qui ne
-  // parle que des origines HTTPS distantes — n'a rien à y dire. yuya a vérifié le comportement, on
-  // re-masque donc la bannière quand le hostname est localhost.
+  // On the local loop, ADR-0006's walls do NOT exist (origin = target = localhost, exempted
+  // by the three engines): every browser is compatible there, and the red/green banner — which
+  // only speaks of remote HTTPS origins — has nothing to say. yuya verified the behavior, so we
+  // re-hide the banner when the hostname is localhost.
   const compat = env.localhost || browser.engine !== 'webkit';
   const effRoute: RouteChoice = compat ? (route.choice ?? 'site') : 'local';
   const localMode = env.localhost && probe.kind === 'ok';
@@ -382,8 +382,8 @@ export function AiSection({ source }: { source: AiSource }) {
   const serve = serveCommand(choice, SUGGESTED_CONTEXT);
   const localCmd = localSiteCommand(os, choice, SUGGESTED_CONTEXT);
 
-  /** La bannière d'entrée — le discours par MOTEUR (ADR-0006) : deux marchent, un est un mur, et
-   * l'inconnu ne se voit attribuer aucune cause. `null` sur localhost : aucun mur, rien à prévenir. */
+  /** The entry banner — the discourse per ENGINE (ADR-0006): two work, one is a wall, and
+   * the unknown is assigned no cause. `null` on localhost: no wall, nothing to warn about. */
   const banner = env.localhost
     ? null
     : browser.engine === 'firefox'
@@ -398,8 +398,8 @@ export function AiSection({ source }: { source: AiSource }) {
             }
           : { ok: false, title: UI_AI.bwUnknownTitle, text: UI_AI.bwUnknownText };
 
-  /** La note de permission AVANT le premier clic (route A) — Firefox ouvrira une fenêtre, Chromium
-   * jamais, et localhost n'a aucune permission à demander (`null`). */
+  /** The permission note BEFORE the first click (route A) — Firefox will open a window, Chromium
+   * never, and localhost has no permission to ask (`null`). */
   const permNote = env.localhost
     ? null
     : browser.engine === 'firefox'
@@ -408,18 +408,18 @@ export function AiSection({ source }: { source: AiSource }) {
         ? UI_AI.permNoteChromium(browserName)
         : UI_AI.permNoteGeneric;
 
-  /** L'aide d'échec, choisie sur ce qu'on SAIT (ADR-0006, décisions 2-4) : la permission lue
-   * d'abord, le moteur reconnu ensuite — jamais une cause affirmée sans preuve. Sur localhost,
-   * aucun mur n'est possible : un échec est une absence. */
+  /** The failure help, chosen on what we KNOW (ADR-0006, decisions 2-4): the read permission
+   * first, the recognized engine next — never a cause asserted without evidence. On localhost,
+   * no wall is possible: a failure is an absence. */
   const probeFailureHelp = (gate: LocalNetworkGate): string => {
     if (env.localhost || gate === 'granted') return UI_AI.step3WarnAbsent;
     if (gate === 'blocked') return UI_AI.step3WarnBlocked;
     return browser.engine === 'firefox' ? UI_AI.step3WarnFirefox : UI_AI.step3WarnUnknown;
   };
 
-  /** La pastille ne dit plus que ce qu'on SAIT : « non détecté » quand le réseau a vraiment été
-   * atteint (permission accordée, ou boucle locale), « connexion impossible » sinon. Le diagnostic
-   * détaillé vit dans `probeFailureHelp`. */
+  /** The pill now says only what we KNOW: « non détecté » when the network was really
+   * reached (permission granted, or local loop), « connexion impossible » otherwise. The detailed
+   * diagnosis lives in `probeFailureHelp`. */
   const serverStatus =
     probe.kind === 'ok'
       ? { color: NAVY.ok, label: UI_AI.probeOk }
@@ -452,7 +452,7 @@ export function AiSection({ source }: { source: AiSource }) {
           <p style={LEDE}>{UI_AI.lede}</p>
         </div>
 
-        {/* Bannière « peu de données » (maquette CasPeuDeDonnees) — avant les 3 étapes. */}
+        {/* « peu de données » banner (CasPeuDeDonnees mockup) — before the 3 steps. */}
         {lowData && (
           <div style={LOW_DATA_BANNER} role="status">
             <span style={LOW_DATA_ICON} aria-hidden="true">
@@ -469,8 +469,8 @@ export function AiSection({ source }: { source: AiSource }) {
 
         {learnOpen && <LearnPanel question={UI_AI_LEARN.question} columns={UI_AI_LEARN.columns} />}
 
-        {/* --- Bannière navigateur (ADR-0006 : le discours par moteur, AVANT toute installation).
-            `null` sur localhost — pas de mur à prévenir. -- */}
+        {/* --- Browser banner (ADR-0006: the discourse per engine, BEFORE any installation).
+            `null` on localhost — no wall to warn about. -- */}
         {banner !== null && (
           <div style={banner.ok ? BANNER_OK : BANNER_WARN} role="status">
             <span
@@ -490,7 +490,7 @@ export function AiSection({ source }: { source: AiSource }) {
           </div>
         )}
 
-        {/* --- Carte 1 : installer ---------------------------------------------------------------- */}
+        {/* --- Card 1: install -------------------------------------------------------------------- */}
         <div style={STEP_CARD}>
           <div style={STEP_HEAD}>
             <StepTitle n="1" label={UI_AI.step1Label} />
@@ -512,8 +512,8 @@ export function AiSection({ source }: { source: AiSource }) {
           </div>
 
           {localMode ? (
-            /* Route B aboutie (ou dev) : la page ET le modèle sont servis depuis la machine — il
-               n'y a littéralement rien à installer. */
+            /* Route B completed (or dev): the page AND the model are served from the machine — there
+               is literally nothing to install. */
             <div style={READY_BOX} role="status">
               <span style={{ ...BANNER_ICON, color: NAVY.ok }} aria-hidden="true">
                 ✓
@@ -685,9 +685,9 @@ export function AiSection({ source }: { source: AiSource }) {
                             ? UI_AI.probeModelSuffix(probe.modelId)
                             : ''}
                         </span>
-                        {/* L'action porte son nom en toutes lettres, avant COMME après le
-                            premier sondage (retouche 2026-07-20 : plus de glyphe ⟳) — c'est elle
-                            qui déclenche tout contact avec localhost. */}
+                        {/* The action spells out its name in full, before AS WELL AS after the
+                            first probe (2026-07-20 retouch: no more ⟳ glyph) — it is it
+                            that triggers any contact with localhost. */}
                         <button
                           type="button"
                           class="hv-cy"
@@ -747,7 +747,7 @@ export function AiSection({ source }: { source: AiSource }) {
           )}
         </div>
 
-        {/* --- Carte 2 : prompt & lancement (fusion des ex-cartes 2 et 3) -------------------------- */}
+        {/* --- Card 2: prompt & launch (merge of the ex-cards 2 and 3) ---------------------------- */}
         <div style={STEP_CARD}>
           <div style={STEP_HEAD}>
             <StepTitle n="2" label={UI_AI.step2MergedLabel} />
@@ -775,8 +775,8 @@ export function AiSection({ source }: { source: AiSource }) {
           </div>
 
           {!promptActive ? (
-            /* Route B choisie, page encore servie depuis l'origine distante : la suite se passe sur
-               la copie locale du site — cette carte le dit, et n'offre rien d'actionnable ici. */
+            /* Route B chosen, page still served from the remote origin: the rest happens on
+               the local copy of the site — this card says so, and offers nothing actionable here. */
             <div style={NOTE_BOX}>
               {UI_AI.step2WaitingBefore}
               <a href={serverUrl()} class="hv-a" style={LOCAL_URL_LINK}>
@@ -801,7 +801,7 @@ export function AiSection({ source }: { source: AiSource }) {
               {items.kind === 'ready' && (
                 <>
                   <div style={COUNT_ROW}>
-                    {/* Compteur teinté + suffixe en cas de peu de données (maquette CasPeuDeDonnees). */}
+                    {/* Tinted counter + suffix in case of little data (CasPeuDeDonnees mockup). */}
                     <span style={{ ...COUNT_TEXT, ...(lowData ? { color: '#e8a184' } : {}) }}>
                       {UI_AI.includedCounts(sentCounts.comments, sentCounts.searches)}
                       {tokensAreExact
@@ -847,8 +847,8 @@ export function AiSection({ source }: { source: AiSource }) {
 
               <div style={RUN_ROW}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  {/* L'aide d'échec se choisit sur ce qu'on SAIT (permission lue + moteur reconnu,
-                      `probeFailureHelp`) — jamais une cause affirmée sans preuve (ADR-0006). */}
+                  {/* The failure help is chosen on what we KNOW (read permission + recognized engine,
+                      `probeFailureHelp`) — never a cause asserted without evidence (ADR-0006). */}
                   {!run.running && probe.kind === 'idle' && (
                     <div style={WARN_TEXT}>{UI_AI.step3WarnIdle}</div>
                   )}
@@ -874,7 +874,7 @@ export function AiSection({ source }: { source: AiSource }) {
                   {run.running ? UI_AI.step3Running : UI_AI.step3Run}
                 </button>
               </div>
-              {/* Rappel « peu de données » au lancement (maquette CasPeuDeDonnees) — jamais bloquant. */}
+              {/* « peu de données » reminder at launch (CasPeuDeDonnees mockup) — never blocking. */}
               {lowData && <div style={LOW_DATA_HINT}>{UI_AI.lowDataHint}</div>}
               {error !== null && <div style={ERROR_BOX}>{error}</div>}
               {(run.running || run.text !== '') && (
@@ -906,7 +906,7 @@ export function AiSection({ source }: { source: AiSource }) {
   );
 }
 
-// --- Styles (maquette « parcours guidé », section 04) ----------------------------------------------
+// --- Styles (« guided journey » mockup, section 04) ------------------------------------------------
 const BAND = {
   marginTop: '20px',
   background: 'linear-gradient(180deg, #0e1836, #0a1024)',
@@ -935,9 +935,9 @@ const TITLE = {
   letterSpacing: '-0.01em',
   color: NAVY.textBright,
 } as const;
-// Aligné en hauteur avec le bouton « comprendre » voisin (`LearnToggle`, tous deux lineHeight 1) :
-// même boîte de 28,5 px (police 9,5 + 2×8,5 padding + 2 bordure = 10,5 + 2×8 + 2 pour le bouton).
-// yuya : les deux doivent partager haut et bas dans la rangée de titre.
+// Height-aligned with the neighboring « comprendre » button (`LearnToggle`, both lineHeight 1):
+// same 28.5 px box (font 9.5 + 2×8.5 padding + 2 border = 10.5 + 2×8 + 2 for the button).
+// yuya: the two must share top and bottom in the title row.
 const LOCAL_BADGE = {
   fontSize: '9.5px',
   lineHeight: 1,
@@ -985,8 +985,8 @@ const STEP_LABEL = {
   textTransform: 'uppercase',
   color: NAVY.textHeading,
 } as const;
-// Sélecteur de système (maquette v4) — remplace l'ex-badge « OS détecté » : la détection reste
-// best-effort, mais la personne peut désormais corriger d'un clic.
+// System selector (v4 mockup) — replaces the ex-badge « OS détecté »: the detection stays
+// best-effort, but the person can now correct it with one click.
 const OS_PICK_ROW = {
   display: 'flex',
   alignItems: 'center',
@@ -1019,7 +1019,7 @@ const OS_BTN_ON = {
   border: `1px solid ${NAVY.accent}`,
 } as const;
 const FIELD_COL = { display: 'flex', flexDirection: 'column', gap: '8px' } as const;
-// Bannière navigateur / encart « tout est prêt » — les teintes vert/orange de la maquette.
+// Browser banner / « tout est prêt » callout — the green/orange tints of the mockup.
 const BANNER_BASE = {
   display: 'flex',
   gap: '12px',
@@ -1046,8 +1046,8 @@ const READY_BOX = {
 const BANNER_ICON = { fontSize: '13px', lineHeight: 1.5, flex: 'none' } as const;
 const BANNER_TITLE = { fontSize: '12.5px', fontWeight: 600, lineHeight: 1.5 } as const;
 const BANNER_TEXT = { fontSize: '11.5px', lineHeight: 1.7, maxWidth: '760px' } as const;
-// Dépli « jamais ouvert de terminal ? » (maquette) — pointillé, même famille que les panneaux
-// pédagogiques.
+// « jamais ouvert de terminal ? » disclosure (mockup) — dotted, same family as the educational
+// panels.
 const TERM_BOX = {
   display: 'flex',
   flexDirection: 'column',
@@ -1075,7 +1075,7 @@ const TERM_BODY = {
   padding: '0 15px 14px',
 } as const;
 const TERM_TEXT = { fontSize: '11.5px', lineHeight: 1.75, color: NAVY.textBody } as const;
-// Sous-étapes numérotées de la carte 1 (petits carrés cyan, maquette).
+// Numbered sub-steps of card 1 (small cyan squares, mockup).
 const SUB_ROW = { display: 'flex', gap: '14px', alignItems: 'flex-start' } as const;
 const SUB_N = {
   display: 'flex',
@@ -1097,7 +1097,7 @@ const SUB_BODY = {
   flexDirection: 'column',
   gap: '9px',
 } as const;
-// Les deux routes (A / B).
+// The two routes (A / B).
 const ROUTE_GRID = {
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -1138,7 +1138,7 @@ const ROUTE_UNAVAIL = {
   textTransform: 'uppercase',
   color: '#e8a184',
 } as const;
-// Encart indigo — note de permission, note « ouvre localhost », carte 2 en attente de la route B.
+// Indigo callout — permission note, « ouvre localhost » note, card 2 awaiting route B.
 const NOTE_BOX = {
   fontSize: '11.5px',
   lineHeight: 1.75,
@@ -1155,7 +1155,7 @@ const ADDR_BLOCK = {
   borderTop: `1px solid ${NAVY.borderCard}`,
   paddingTop: '14px',
 } as const;
-// Route B : téléchargement du site.
+// Route B: site download.
 const ZIP_ROW = { display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' } as const;
 const ZIP_BTN = {
   display: 'flex',
@@ -1184,7 +1184,7 @@ const GH_LINK = {
   textDecoration: 'none',
 } as const;
 const FOOT_LINK = { color: NAVY.accent, textDecoration: 'none' } as const;
-// Rangée de lancement (carte 2) : l'aide à gauche, les boutons à droite.
+// Launch row (card 2): the help on the left, the buttons on the right.
 const RUN_ROW = {
   display: 'flex',
   alignItems: 'center',
@@ -1194,7 +1194,7 @@ const RUN_ROW = {
 } as const;
 const STEP_TEXT = { fontSize: '12px', lineHeight: 1.6, color: NAVY.textBody } as const;
 const STEP_FOOT = { fontSize: '11px', lineHeight: 1.65, color: NAVY.textMuted } as const;
-// Rangée de commande — c'est un `<button>` : cible cliquable pleine largeur, texte aligné à gauche.
+// Command row — it is a `<button>`: full-width clickable target, text aligned left.
 const CMD_ROW = {
   display: 'flex',
   alignItems: 'center',
@@ -1216,8 +1216,8 @@ const CMD_TEXT = {
   color: NAVY.accentBright,
   overflowWrap: 'anywhere',
 } as const;
-// L'étiquette « copier / copié ✓ » — un simple repère visuel désormais (la rangée entière copie),
-// donc SANS survol propre.
+// The « copier / copié ✓ » label — a simple visual marker now (the whole row copies),
+// therefore WITHOUT its own hover.
 const COPY_BTN = {
   flex: 'none',
   fontSize: '10px',
@@ -1304,7 +1304,7 @@ const RECHECK_BTN = {
   borderRadius: '6px',
   padding: '8px 12px',
 } as const;
-/** Le lien vers la copie locale du site — cliquable (retouche 2026-07-20). */
+/** The link to the local copy of the site — clickable (2026-07-20 retouch). */
 const LOCAL_URL_LINK = { color: NAVY.accentBright, textDecoration: 'none' } as const;
 const PRESET = {
   cursor: 'pointer',
@@ -1388,7 +1388,7 @@ const STOP_BTN = {
   color: NAVY.textBright,
 } as const;
 const WARN_TEXT = { fontSize: '11.5px', lineHeight: 1.65, color: NAVY.riskText } as const;
-// Cas limite « peu de données » (maquette CasPeuDeDonnees).
+// « peu de données » edge case (CasPeuDeDonnees mockup).
 const LOW_DATA_BANNER = {
   display: 'flex',
   gap: '12px',
@@ -1439,10 +1439,10 @@ const RESULT_BOX = {
   overflowY: 'auto',
 } as const;
 
-// --- Variante MOBILE (maquette « PanoptiCool v4 Mobile ») ------------------------------------------
-// L'IA locale demande un ordinateur (llama.cpp) : sur mobile on n'affiche PAS la section
-// interactive, mais un encart explicatif + un APERÇU DÉCORATIF flouté des 3 étapes (aria-hidden,
-// non interactif) — l'utilisateur voit qu'une étape existe et où la faire, sans faux boutons.
+// --- MOBILE variant (« PanoptiCool v4 Mobile » mockup) ---------------------------------------------
+// Local AI requires a computer (llama.cpp): on mobile we do NOT display the interactive
+// section, but an explanatory callout + a blurred DECORATIVE PREVIEW of the 3 steps (aria-hidden,
+// non-interactive) — the user sees that a step exists and where to do it, without fake buttons.
 
 export function AiMobileNotice() {
   return (

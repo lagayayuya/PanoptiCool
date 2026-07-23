@@ -1,77 +1,76 @@
-// Type d'entrée du moteur — donnée TikTok parsée (PANO-24, ADR-0004).
+// Engine input type — parsed TikTok data (PANO-24, ADR-0004).
 //
-// = sortie du parser (unzip + JSON.parse, PANO-25) = entrée du moteur. Frontière d'ingest.
-// La validation runtime de cette frontière (valibot) est une AUTRE pièce, PANO-26 : ce fichier
-// ne fait QUE typer la forme. Il ne valide rien, ne normalise rien.
+// = parser output (unzip + JSON.parse, PANO-25) = engine input. Ingest boundary.
+// The runtime validation of this boundary (valibot) is ANOTHER piece, PANO-26: this file ONLY types
+// the shape. It validates nothing, normalizes nothing.
 //
-// POSTURE : miroir fidèle (option A, tranchée en session PANO-24). Le type transcrit le contrat
-// de structure `docs/tiktok-export-schema.md` tel quel — 10 catégories, casse réelle des clés,
-// encodages du vide (`""` / `null` / `{}` / `[]`) — et RIEN d'autre. Raisons :
-//   - la validation vit à l'ingest (PANO-26) : un type fidèle = valibot a un seul job
-//     (« l'export réel correspond-il au contrat ? »), sans valider ET transformer ;
-//   - un type normalisé ferait fuiter des concepts de sortie (classification d'absence,
-//     ADR-0004) dans l'entrée. La normalisation que le moteur voudra (dates parsées, etc.) est
-//     une étape INTERNE explicite du moteur, jamais cuite dans ce type de frontière.
-//   - le désordre laissé au moteur est couvert par strict++ (`noUncheckedIndexedAccess`,
-//     accès défensif, ADR-0002) — pas de charge ajoutée.
+// STANCE: faithful mirror (option A, settled in the PANO-24 session). The type transcribes the
+// structure contract `docs/tiktok-export-schema.md` as-is — 10 categories, real key casing, empty
+// encodings (`""` / `null` / `{}` / `[]`) — and NOTHING else. Reasons:
+//   - validation lives at ingest (PANO-26): a faithful type = valibot has a single job
+//     ("does the real export match the contract?"), without validating AND transforming;
+//   - a normalized type would leak output concepts (absence classification, ADR-0004) into the
+//     input. The normalization the engine will want (parsed dates, etc.) is an explicit INTERNAL
+//     step of the engine, never baked into this boundary type.
+//   - the disorder left to the engine is covered by strict++ (`noUncheckedIndexedAccess`, defensive
+//     access, ADR-0002) — no added burden.
 //
-// READONLY : l'entrée n'est pas au moteur de la muter — tout le type est `readonly` (profond).
+// READONLY: it is not the engine's place to mutate the input — the whole type is `readonly` (deep).
 //
-// FIDÉLITÉ vs INVENTION (CLAUDE.md : « on n'invente aucun champ hors du contrat »). Le contrat
-// ne vérifie pas tout : certaines sections ne sont observées que VIDES (boutique, ads-on, maps
-// `{}`), leur forme peuplée est non vérifiée (§3). On NE l'invente pas — on la type via le
-// vocabulaire `Unverified*` ci-dessous, jamais un nom de champ supposé. Invariant : chaque
-// section non vérifiée porte son **encodage de vide précis** de §4 (`null` / `[]` / `{}`), jamais
-// un `unknown` générique — c'est le signal par section que la validation d'ingest (PANO-26)
-// consommera. Quand un vrai export révélera la forme peuplée, on étend contrat + type ; entre-temps
-// valibot signale la divergence — son job.
+// FIDELITY vs INVENTION (CLAUDE.md: "we invent no field outside the contract"). The contract does
+// not verify everything: some sections are only observed EMPTY (shop, ads-on, `{}` maps), their
+// populated shape is unverified (§3). We do NOT invent it — we type it via the `Unverified*`
+// vocabulary below, never a presumed field name. Invariant: each unverified section carries its
+// **precise empty encoding** from §4 (`null` / `[]` / `{}`), never a generic `unknown` — it is the
+// per-section signal the ingest validation (PANO-26) will consume. When a real export reveals the
+// populated shape, we extend contract + type; in the meantime valibot flags the divergence — its job.
 //
-// Clés REQUISES (non optionnelles) : le contrat §1.2 pose qu'une section sans donnée est
-// *présente* (encodée vide), jamais omise. La sûreté face à une vraie déviation (section absente
-// d'une autre version d'export) est du ressort de la validation d'ingest (PANO-26), pas du type.
+// REQUIRED keys (non-optional): contract §1.2 posits that a section without data is *present*
+// (empty-encoded), never omitted. Safety against a real deviation (a section absent from another
+// export version) is the ingest validation's responsibility (PANO-26), not the type's.
 
-// --- Primitives & encodages (contrat §1.1–§1.2) ----------------------------------------------
+// --- Primitives & encodings (contract §1.1–§1.2) ---------------------------------------------
 
 /**
- * Date brute, format dominant `YYYY-MM-DD HH:MM:SS` (contrat §1.1). Reste une `string` ici :
- * le parsing en `Date` est une étape interne du moteur, jamais à la frontière (garde-fou A).
+ * Raw date, dominant format `YYYY-MM-DD HH:MM:SS` (contract §1.1). Stays a `string` here: parsing
+ * into a `Date` is an internal step of the engine, never at the boundary (guardrail A).
  */
 export type RawDate = string;
 
 /**
- * Date brute, variante suffixée `… UTC` (contrat §1.1) — `Comment → CommentsList[].date` et
- * `Tako Chat History`. Distincte de `RawDate` par documentation seule (les deux sont `string`).
+ * Raw date, `… UTC`-suffixed variant (contract §1.1) — `Comment → CommentsList[].date` and
+ * `Tako Chat History`. Distinct from `RawDate` by documentation alone (both are `string`).
  */
 export type RawDateUtc = string;
 
 /**
- * Conteneur observé `null` à vide (§1.2/§4) ; encodage de vide = `null` (membre explicite, signal
- * PANO-26). Forme peuplée non vérifiée mais admise (§3), typée liste (cas dominant) — à raffiner
- * par section si un vrai export révèle un autre conteneur.
+ * Container observed `null` when empty (§1.2/§4); empty encoding = `null` (explicit member, PANO-26
+ * signal). Populated shape unverified but admitted (§3), typed as a list (dominant case) — to be
+ * refined per section if a real export reveals another container.
  */
 export type UnverifiedNullableList = readonly unknown[] | null;
 
-/** Conteneur de liste observé `[]` à vide (§1.2) ; encodage de vide = `[]`. Item non vérifié. */
+/** List container observed `[]` when empty (§1.2); empty encoding = `[]`. Item unverified. */
 export type UnverifiedList = readonly unknown[];
 
-/** Conteneur objet observé `{}` à vide (§1.2) ; encodage de vide = `{}`. Clés non vérifiées si peuplé. */
+/** Object container observed `{}` when empty (§1.2); empty encoding = `{}`. Keys unverified if populated. */
 export type UnverifiedObject = Readonly<Record<string, unknown>>;
 
 /**
- * Liste à items CONNUS dont l'encodage de vide est `null` (registre PANO-11 ; §1.2 « la plupart
- * des sections → null »). Le contrat `docs/tiktok-export-schema.md` §4 montre ces sections
- * **peuplées** et reste **MUET sur leur encodage de vide** — PANO-24 avait typé l'état peuplé comme
- * total (oubli du vide), complété ici (PANO-28, golden `--empty` qui force `null`). `T[]` inclut
- * déjà `[]` ; `| null` ajoute l'encodage de vide réel de ces sections. Parallèle à items connus de
- * `UnverifiedNullableList`. **Ne PAS l'appliquer** aux sections qui vident en `[]`/`{}`
- * (cf. `UnverifiedList`/`UnverifiedObject`) : ce silence du §4 a déjà fait diverger PANO-11/PANO-24
- * — erratum au contrat à classer (apprentissage→contrat).
+ * List with KNOWN items whose empty encoding is `null` (PANO-11 registry; §1.2 "most sections →
+ * null"). The contract `docs/tiktok-export-schema.md` §4 shows these sections **populated** and
+ * stays **SILENT on their empty encoding** — PANO-24 had typed the populated state as total
+ * (forgetting the empty), completed here (PANO-28, `--empty` golden that forces `null`). `T[]`
+ * already includes `[]`; `| null` adds the real empty encoding of these sections. Parallel to the
+ * known-items `UnverifiedNullableList`. **Do NOT apply it** to the sections that empty as `[]`/`{}`
+ * (cf. `UnverifiedList`/`UnverifiedObject`): this §4 silence already made PANO-11/PANO-24 diverge —
+ * a contract erratum to be filed (learning→contract).
  */
 export type NullableList<T> = readonly T[] | null;
 
 // --- Comment ---------------------------------------------------------------------------------
 
-/** §1.3 : clés en minuscules (`date`/`comment`/…) — piège de casse. `date` au format `… UTC` (§1.1). */
+/** §1.3: lowercase keys (`date`/`comment`/…) — a casing trap. `date` in the `… UTC` format (§1.1). */
 export interface CommentItem {
   readonly date: RawDateUtc;
   readonly comment: string;
@@ -84,7 +83,7 @@ export interface CommentItem {
 
 export interface CommentCategory {
   readonly Comments: {
-    /** Sibling de métadonnée (§1.4). */
+    /** Metadata sibling (§1.4). */
     readonly App: number;
     readonly CommentsList: NullableList<CommentItem>;
   };
@@ -92,7 +91,7 @@ export interface CommentCategory {
 
 // --- Direct Message --------------------------------------------------------------------------
 
-/** `Content` : objet de forme non documentée au contrat → non vérifié. */
+/** `Content`: object of a shape not documented in the contract → unverified. */
 export interface TakoMessage {
   readonly Date: RawDateUtc;
   readonly Content: UnverifiedObject;
@@ -104,9 +103,9 @@ export interface TakoChatHistoryItem {
 }
 
 export interface DirectMessageCategory {
-  /** `ChatHistory: {}` dans la source ; map (par interlocuteur) probable si peuplée — non vérifiée. */
+  /** `ChatHistory: {}` in the source; a map (keyed by interlocutor) is likely if populated — unverified. */
   readonly 'Direct Messages': { readonly ChatHistory: UnverifiedObject };
-  /** `GroupChat: {}` dans la source — non vérifié si peuplé. */
+  /** `GroupChat: {}` in the source — unverified if populated. */
   readonly 'Group Chat': { readonly GroupChat: UnverifiedObject };
   readonly 'Tako Chat History': { readonly TakoChatHistoryList: NullableList<TakoChatHistoryItem> };
 }
@@ -123,7 +122,7 @@ export interface IncomeWalletCategory {
   readonly 'Coin Purchase History': {
     readonly CoinPurchaseHistoryList: NullableList<CoinPurchaseItem>;
   };
-  /** `TransactionsList: null` dans la source — encodage de vide `null` ; item non vérifié. */
+  /** `TransactionsList: null` in the source — empty encoding `null`; item unverified. */
   readonly 'Transaction History': { readonly TransactionsList: UnverifiedNullableList };
 }
 
@@ -149,30 +148,30 @@ export interface FavoriteVideoItem {
   readonly Link: string;
 }
 
-/** §1.3 : clés en minuscules (`date`/`link`) — un parser keyé sur `Date` rate silencieusement les likes. */
+/** §1.3: lowercase keys (`date`/`link`) — a parser keyed on `Date` silently misses the likes. */
 export interface LikeItem {
   readonly date: RawDate;
   readonly link: string;
 }
 
 export interface LikesAndFavoritesCategory {
-  /** `{}` dans la source — non vérifié si peuplé. */
+  /** `{}` in the source — unverified if populated. */
   readonly Collection: UnverifiedObject;
   readonly 'Favorite Collection': {
     readonly FavoriteCollectionList: NullableList<FavoriteCollectionItem>;
   };
-  /** `[]` dans la source — encodage de vide `[]` ; item non vérifié. */
+  /** `[]` in the source — empty encoding `[]`; item unverified. */
   readonly 'Favorite Comment': { readonly FavoriteCommentList: UnverifiedList };
-  /** `{}` dans la source — non vérifié si peuplé. */
+  /** `{}` in the source — unverified if populated. */
   readonly 'Favorite Drama': UnverifiedObject;
   readonly 'Favorite Effects': { readonly FavoriteEffectsList: NullableList<FavoriteEffectItem> };
-  /** `[]` dans la source — encodage de vide `[]` ; item non vérifié. */
+  /** `[]` in the source — empty encoding `[]`; item unverified. */
   readonly 'Favorite Hashtags': { readonly FavoriteHashtagList: UnverifiedList };
-  /** `[]` dans la source — encodage de vide `[]` ; item non vérifié. */
+  /** `[]` in the source — empty encoding `[]`; item unverified. */
   readonly 'Favorite Location': { readonly FavoriteLocationList: UnverifiedList };
-  /** `[]` dans la source — encodage de vide `[]` ; item non vérifié. */
+  /** `[]` in the source — empty encoding `[]`; item unverified. */
   readonly 'Favorite Movies and TV': { readonly FavoriteMoviesAndTVList: UnverifiedList };
-  /** `[]` dans la source — encodage de vide `[]` ; item non vérifié. */
+  /** `[]` in the source — empty encoding `[]`; item unverified. */
   readonly 'Favorite Playlists': { readonly FavoritePlaylistList: UnverifiedList };
   readonly 'Favorite Sounds': { readonly FavoriteSoundList: NullableList<FavoriteSoundItem> };
   readonly 'Favorite Videos': {
@@ -188,7 +187,7 @@ export interface LikesAndFavoritesCategory {
 // --- Location Review -------------------------------------------------------------------------
 
 export interface LocationReviewCategory {
-  /** `ReviewsList: null` dans la source — encodage de vide `null` ; item non vérifié. */
+  /** `ReviewsList: null` in the source — empty encoding `null`; item unverified. */
   readonly 'Location Reviews': { readonly ReviewsList: UnverifiedNullableList };
 }
 
@@ -196,20 +195,20 @@ export interface LocationReviewCategory {
 
 export interface PostCategory {
   /**
-   * `VideoList: null` dans la source ; les vidéos publiées vivent ici (contrat §0) mais leur
-   * forme d'item n'est PAS documentée au §4 → non vérifiée. À ne pas confondre avec
-   * `Your Activity → Watch History → VideoList` (forme connue, distincte).
+   * `VideoList: null` in the source; the published videos live here (contract §0) but their item
+   * shape is NOT documented in §4 → unverified. Not to be confused with
+   * `Your Activity → Watch History → VideoList` (known, distinct shape).
    */
   readonly Posts: { readonly VideoList: UnverifiedNullableList };
-  /** `PostList: []` dans la source — encodage de vide `[]` ; item non vérifié. */
+  /** `PostList: []` in the source — empty encoding `[]`; item unverified. */
   readonly 'Recently Deleted Posts': { readonly PostList: UnverifiedList };
-  /** `{}` dans la source — non vérifié si peuplé. */
+  /** `{}` in the source — unverified if populated. */
   readonly Story: UnverifiedObject;
 }
 
 // --- Profile And Settings --------------------------------------------------------------------
 
-/** `PlatformInfo` : items de liens cross-plateforme. `"Profile Photo"` = clé à espace (§1.3). */
+/** `PlatformInfo`: cross-platform link items. `"Profile Photo"` = a spaced key (§1.3). */
 export interface PlatformInfoItem {
   readonly Description: string;
   readonly Name: string;
@@ -218,9 +217,9 @@ export interface PlatformInfoItem {
 }
 
 /**
- * `ProfileMap` : champs de profil à fort signal (§1.8) — matière brute du miroir satirique.
- * Tout `string` au niveau type ; les sentinelles `"N/A"`/`"None"`/`""` sont des *valeurs*
- * (le moteur les interprète), pas des variantes de type. `followerCount`/`followingCount` = int.
+ * `ProfileMap`: high-signal profile fields (§1.8) — raw material of the satirical mirror.
+ * All `string` at the type level; the sentinels `"N/A"`/`"None"`/`""` are *values* (the engine
+ * interprets them), not type variants. `followerCount`/`followingCount` = int.
  */
 export interface ProfileMap {
   readonly PlatformInfo: readonly PlatformInfoItem[];
@@ -250,19 +249,19 @@ export interface FollowingItem {
 }
 
 /**
- * `Off TikTok Activity` est DUPLIQUÉE (§1.6) : présente sous `Profile And Settings` ET
- * `Your Activity`. Foyer de type unique, référencé aux deux endroits. `…DataList: null` à vide.
+ * `Off TikTok Activity` is DUPLICATED (§1.6): present under `Profile And Settings` AND
+ * `Your Activity`. Single type home, referenced in both places. `…DataList: null` when empty.
  */
 export interface OffTikTokActivitySection {
   readonly OffTikTokActivityDataList: UnverifiedNullableList;
 }
 
 export interface ProfileAndSettingsCategory {
-  /** `AIMojiList: null` à vide — encodage `null` ; item non vérifié. `CreateDate` = `string` (peut être `""`). */
+  /** `AIMojiList: null` when empty — encoding `null`; item unverified. `CreateDate` = `string` (can be `""`). */
   readonly 'AI-Moji': { readonly CreateDate: string; readonly AIMojiList: UnverifiedNullableList };
-  /** `{}` dans la source — non vérifié si peuplé. */
+  /** `{}` in the source — unverified if populated. */
   readonly AISelfImage: UnverifiedObject;
-  /** Champs `string` (chacun `"N/A"` à vide). */
+  /** `string` fields (each `"N/A"` when empty). */
   readonly Autofill: {
     readonly PhoneNumber: string;
     readonly Email: string;
@@ -275,9 +274,9 @@ export interface ProfileAndSettingsCategory {
     readonly State: string;
     readonly Country: string;
   };
-  /** `BlockList: null` à vide — encodage `null` ; item non vérifié. */
+  /** `BlockList: null` when empty — encoding `null`; item unverified. */
   readonly 'Block List': { readonly App: number; readonly BlockList: UnverifiedNullableList };
-  /** `FansList: []` à vide — encodage `[]` ; item non vérifié. `IsFastLane` sibling (§1.4). */
+  /** `FansList: []` when empty — encoding `[]`; item unverified. `IsFastLane` sibling (§1.4). */
   readonly Follower: {
     readonly App: number;
     readonly IsFastLane: boolean;
@@ -290,16 +289,16 @@ export interface ProfileAndSettingsCategory {
   };
   readonly 'Off TikTok Activity': OffTikTokActivitySection;
   readonly 'Profile Info': { readonly App: number; readonly ProfileMap: ProfileMap };
-  /** `ProfileViewList: null` à vide — encodage `null` ; item non vérifié. */
+  /** `ProfileViewList: null` when empty — encoding `null`; item unverified. */
   readonly ProfileViews: { readonly ProfileViewList: UnverifiedNullableList };
   /**
-   * `SettingsMap` (25 clés) : opaque `Record<string, unknown>` = **périmètre différé conscient
-   * (YAGNI), PAS un manque de fidélité**. Le contrat §4 spécifie bien ce sous-arbre (clés plates +
-   * `Content Preferences`/`Push Notification`/`ScreenTime`/`FamilyPairing`, encodages, et la clé
-   * malformée `"Who can see your following list::"` §1.7). On ne le type pas car aucun réglage
-   * n'est lu en v1 : typer+valider l'arbre = bloat + sur-rejet valibot (clés variables par
-   * région/version). **Repère §1.7 à préserver** : la clé malformée vit ICI ; un `Record<string,
-   * unknown>` ne normalise aucune clé (le piège est donc respecté). À typer si un réglage devient lu.
+   * `SettingsMap` (25 keys): opaque `Record<string, unknown>` = **a conscious deferred scope
+   * (YAGNI), NOT a lack of fidelity**. Contract §4 does specify this subtree (flat keys +
+   * `Content Preferences`/`Push Notification`/`ScreenTime`/`FamilyPairing`, encodings, and the
+   * malformed key `"Who can see your following list::"` §1.7). We do not type it because no setting
+   * is read in v1: typing+validating the tree = bloat + valibot over-rejection (keys vary by
+   * region/version). **§1.7 landmark to preserve**: the malformed key lives HERE; a `Record<string,
+   * unknown>` normalizes no key (so the trap is respected). To be typed if a setting becomes read.
    */
   readonly Settings: {
     readonly App: number;
@@ -309,7 +308,7 @@ export interface ProfileAndSettingsCategory {
 
 // --- TikTok Live -----------------------------------------------------------------------------
 
-/** §1.5 : entrée de `WatchLiveMap`. `CommentTime` date, `RawTime` int. `Questions: null` à vide. */
+/** §1.5: `WatchLiveMap` entry. `CommentTime` a date, `RawTime` int. `Questions: null` when empty. */
 export interface WatchLiveComment {
   readonly CommentTime: RawDate;
   readonly CommentContent: string;
@@ -324,16 +323,16 @@ export interface WatchLiveEntry {
 }
 
 export interface TikTokLiveCategory {
-  /** `GoLiveList: null` à vide — encodage `null` ; item non vérifié. */
+  /** `GoLiveList: null` when empty — encoding `null`; item unverified. */
   readonly 'Go Live History': { readonly GoLiveList: UnverifiedNullableList };
   /**
-   * `SettingsMap` : 11 clés NON nommées au contrat (§4) → opaque `Record<string, unknown>` (on
-   * n'invente pas de noms ; périmètre différé, réglages non lus en v1).
+   * `SettingsMap`: 11 keys NOT named in the contract (§4) → opaque `Record<string, unknown>` (we
+   * do not invent names; deferred scope, settings not read in v1).
    */
   readonly 'Go Live Settings': { readonly SettingsMap: Readonly<Record<string, unknown>> };
   /**
-   * §1.5 : MAP keyée par ID opaque numérique-string (19 chiffres), pas une liste.
-   * `Record<string, …>` admet le `{}` vide.
+   * §1.5: a MAP keyed by an opaque numeric-string ID (19 digits), not a list.
+   * `Record<string, …>` admits the empty `{}`.
    */
   readonly 'Watch Live History': {
     readonly WatchLiveMap: Readonly<Record<string, WatchLiveEntry>>;
@@ -348,10 +347,9 @@ export interface TikTokLiveCategory {
 // --- TikTok Shop -----------------------------------------------------------------------------
 
 /**
- * Toutes les sections sont `null` dans la source (boutique inutilisée) et leur forme peuplée
- * n'est PAS vérifiée (§3-like). Clés conteneur transcrites verbatim ; valeur =
- * `UnverifiedNullableList` (encodage de vide `null` explicite, signal PANO-26 ; populée = liste,
- * à raffiner si un vrai export boutique apparaît).
+ * All sections are `null` in the source (shop unused) and their populated shape is NOT verified
+ * (§3-like). Container keys transcribed verbatim; value = `UnverifiedNullableList` (explicit `null`
+ * empty encoding, PANO-26 signal; populated = a list, to be refined if a real shop export appears).
  */
 export interface TikTokShopCategory {
   readonly 'Communication With Shops': { readonly CommunicationHistories: UnverifiedNullableList };
@@ -388,11 +386,11 @@ export interface ActivitySummaryMap {
 export interface AdsVisitItem {
   readonly CreateTime: RawDate;
   readonly AdTitle: string;
-  /** URL de tracking longue (§1.8). */
+  /** Long tracking URL (§1.8). */
   readonly AdLink: string;
 }
 
-/** §1.8 : champs à fort signal (réseau / appareil). `Carrier` peut être `""`. */
+/** §1.8: high-signal fields (network / device). `Carrier` can be `""`. */
 export interface LoginHistoryItem {
   readonly Date: RawDate;
   readonly IP: string;
@@ -413,8 +411,9 @@ export interface SearchItem {
 }
 
 /**
- * §1.8 : identifiants appareil/publicité. `UID` = int distinct du `DID` (string « 19-digit-ish »).
- * `GAID`/`Android ID`/`Web ID` souvent `""`. `IDFA`/`IDFV` en forme UUID (mais `string` au type).
+ * §1.8: device/advertising identifiers. `UID` = an int distinct from `DID` (a "19-digit-ish"
+ * string). `GAID`/`Android ID`/`Web ID` often `""`. `IDFA`/`IDFV` in UUID form (but `string` at the
+ * type level).
  */
 export interface StatusItem {
   readonly Resolution: string;
@@ -431,54 +430,54 @@ export interface StatusItem {
 export interface WatchHistoryItem {
   readonly Date: RawDate;
   readonly Link: string;
-  /** Souvent `""` (lien opaque sans titre) — cf. le mur sémantique, README.md. */
+  /** Often `""` (opaque link with no title) — cf. the semantic wall, README.md. */
   readonly Title: string;
 }
 
 export interface YourActivityCategory {
   readonly 'Activity Summary': { readonly ActivitySummaryMap: ActivitySummaryMap };
   /**
-   * `AdInterestCategories` : `""` à vide (encodage de vide = sentinelle scalaire `""`, §1.8) ;
-   * forme peuplée UNVERIFIED (§3, vraisemblablement une liste de catégories) — admise via
-   * `readonly unknown[]`, sans inventer la forme d'item.
+   * `AdInterestCategories`: `""` when empty (empty encoding = the scalar sentinel `""`, §1.8);
+   * populated shape UNVERIFIED (§3, presumably a list of categories) — admitted via
+   * `readonly unknown[]`, without inventing the item shape.
    */
   readonly 'Ad Interests': { readonly AdInterestCategories: string | readonly unknown[] };
   readonly 'Ads Visit History': { readonly AdsVisitHistoryList: NullableList<AdsVisitItem> };
-  /** `DonationList: null` à vide — encodage `null` ; item non vérifié. */
+  /** `DonationList: null` when empty — encoding `null`; item unverified. */
   readonly Donation: { readonly DonationList: UnverifiedNullableList };
-  /** `FundraiserList: null` à vide — encodage `null` ; item non vérifié. */
+  /** `FundraiserList: null` when empty — encoding `null`; item unverified. */
   readonly Fundraiser: { readonly FundraiserList: UnverifiedNullableList };
-  /** `HashtagList: null` à vide — encodage `null` ; item non vérifié. */
+  /** `HashtagList: null` when empty — encoding `null`; item unverified. */
   readonly Hashtag: { readonly HashtagList: UnverifiedNullableList };
-  /** `ResponsesList: null` à vide — encodage `null` ; UNVERIFIED si peuplé (§3). */
+  /** `ResponsesList: null` when empty — encoding `null`; UNVERIFIED if populated (§3). */
   readonly 'Instant Form Ads Responses': { readonly ResponsesList: UnverifiedNullableList };
   readonly 'Login History': { readonly LoginHistoryList: NullableList<LoginHistoryItem> };
-  /** `{}` dans la source — non vérifié si peuplé. */
+  /** `{}` in the source — unverified if populated. */
   readonly 'Mini Drama Watch History': UnverifiedObject;
-  /** Dupliquée (§1.6) — même type que sous `Profile And Settings`. */
+  /** Duplicated (§1.6) — same type as under `Profile And Settings`. */
   readonly 'Off TikTok Activity': OffTikTokActivitySection;
-  /** `{ SendGifts: null }` / `{ BuyGifts: null }` — encodage `null` ; formes peuplées non vérifiées. */
+  /** `{ SendGifts: null }` / `{ BuyGifts: null }` — encoding `null`; populated shapes unverified. */
   readonly Purchases: {
     readonly SendGifts: { readonly SendGifts: UnverifiedNullableList };
     readonly BuyGifts: { readonly BuyGifts: UnverifiedNullableList };
   };
   readonly Reposts: { readonly RepostList: NullableList<RepostItem> };
   readonly Searches: { readonly SearchList: NullableList<SearchItem> };
-  /** `ShareHistoryList: null` à vide — encodage `null` ; item non vérifié. */
+  /** `ShareHistoryList: null` when empty — encoding `null`; item unverified. */
   readonly 'Share History': { readonly ShareHistoryList: UnverifiedNullableList };
   readonly Status: { readonly 'Status List': NullableList<StatusItem> };
-  /** `StickerList: null` à vide — encodage `null` ; item non vérifié. */
+  /** `StickerList: null` when empty — encoding `null`; item unverified. */
   readonly Stickers: { readonly StickerList: UnverifiedNullableList };
-  /** La plus grosse section (pilote `--volume`). `Title` souvent `""`. */
+  /** The largest section (drives `--volume`). `Title` often `""`. */
   readonly 'Watch History': { readonly VideoList: NullableList<WatchHistoryItem> };
 }
 
-// --- Racine ----------------------------------------------------------------------------------
+// --- Root ------------------------------------------------------------------------------------
 
 /**
- * Export TikTok parsé — racine du JSON (`user_data_tiktok.json`). 10 catégories top-level
- * exactes (§0). Pas de `Ads and data` ni de `Video` au top-level (§0) : les pubs sont éparpillées
- * dans `Your Activity`, les vidéos sous `Post → Posts → VideoList`.
+ * Parsed TikTok export — the JSON root (`user_data_tiktok.json`). Exactly 10 top-level categories
+ * (§0). No `Ads and data` nor `Video` at the top level (§0): the ads are scattered across
+ * `Your Activity`, the videos under `Post → Posts → VideoList`.
  */
 export interface TikTokExport {
   readonly Comment: CommentCategory;

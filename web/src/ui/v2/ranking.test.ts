@@ -1,84 +1,84 @@
-// TÉMOIN DU CLASSEMENT DES CARTES (`compareCards`, section 02).
+// WITNESS OF THE CARD RANKING (`compareCards`, section 02).
 //
-// POURQUOI CE TEST EXISTE — et pourquoi le golden de rendu ne le remplace pas. `compareCards` porte
-// trois critères de DOCTRINE (le sensible d'abord ; puis la confiance ; le volume ne départage que).
-// Le golden (`render-golden.test.ts`) rend la persona de bout en bout, mais elle ne produit que
-// QUATRE cartes, et sur ces quatre le critère REPRODUIT l'ordre d'émission du moteur : le golden
-// passerait à l'identique avec un comparateur qui ne classe rien. Il fige un rendu, il ne prouve pas
-// un tri. Le plafond réel de la section est ~11 cartes (≤ 6 signaux D1 + ≤ 5 thèmes D2), avec des
-// croisements que la persona n'atteint jamais.
+// WHY THIS TEST EXISTS — and why the render golden does not replace it. `compareCards` carries
+// three DOCTRINE criteria (the sensitive first; then the confidence; the volume only breaks ties).
+// The golden (`render-golden.test.ts`) renders the persona end to end, but it produces only
+// FOUR cards, and on those four the criterion REPRODUCES the engine's emission order: the golden
+// would pass identically with a comparator that ranks nothing. It freezes a render, it does not prove
+// a sort. The section's real ceiling is ~11 cards (≤ 6 D1 signals + ≤ 5 D2 themes), with
+// crossings the persona never reaches.
 //
-// D'où des cartes SYNTHÉTIQUES : on choisit les croisements au lieu de les subir. Chaque cas est
-// construit pour ÉCHOUER si la branche qu'il vise est cassée — un cas qui passe des deux côtés
-// n'est pas un témoin, c'est exactement le défaut du golden.
+// Hence SYNTHETIC cards: we choose the crossings instead of suffering them. Each case is
+// built to FAIL if the branch it targets is broken — a case that passes on both sides
+// is not a witness, it is exactly the golden's defect.
 //
-// `node` n'est jamais lu par le comparateur : un VNode nu suffit, et il sert d'ÉTIQUETTE pour
-// distinguer deux cartes que les trois critères jugent égales (sans quoi « ordre stable » serait
-// intestable — on ne pourrait pas lire la différence entre « préservé » et « permuté »).
+// `node` is never read by the comparator: a bare VNode suffices, and it serves as a LABEL to
+// distinguish two cards that the three criteria judge equal (otherwise « stable order » would be
+// untestable — one could not read the difference between « preserved » and « permuted »).
 
 import { h } from 'preact';
 import { describe, expect, it } from 'vitest';
 import { compareCards, type RankedCard } from './ResultsView';
 
-/** Une carte synthétique : les trois nombres qui la classent, plus une étiquette que le tri IGNORE. */
+/** A synthetic card: the three numbers that rank it, plus a label the sort IGNORES. */
 function card(tag: string, fields: Omit<RankedCard, 'node'>): RankedCard {
   return { ...fields, node: h('div', null, tag) };
 }
 
-/** Les étiquettes, dans l'ordre où le tri les rend. */
+/** The labels, in the order the sort returns them. */
 function order(cards: RankedCard[]): string[] {
   return [...cards].sort(compareCards).map((c) => String(c.node.props.children));
 }
 
-describe('compareCards — critère 1 : le sensible passe devant', () => {
-  // LE croisement qui prouve une PRÉSÉANCE et pas un départage : le sensible est le PLUS BAS des
-  // deux en confiance. S'il passe quand même devant, c'est que `sensitive` est bien lu en premier —
-  // à niveau égal, le cas ne prouverait rien.
+describe('compareCards — criterion 1: the sensitive goes first', () => {
+  // THE crossing that proves a PRECEDENCE and not a tiebreak: the sensitive is the LOWEST of the
+  // two in confidence. If it still goes first, it means `sensitive` is indeed read first —
+  // at equal level, the case would prove nothing.
   const sensitiveLow = card('sensible', { sensitive: true, level: 'low', src: 1 });
   const interestMedium = card('intérêt', { sensitive: false, level: 'medium', src: 9 });
 
-  it('un constat sensible « incertaine » devance un thème « moyenne » mieux étayé', () => {
+  it('a sensitive « incertaine » finding leads a better-backed « moyenne » theme', () => {
     expect(order([sensitiveLow, interestMedium])).toEqual(['sensible', 'intérêt']);
   });
 
-  it("…quel que soit l'ordre d'entrée (c'est le critère qui range, pas le moteur)", () => {
+  it('…whatever the input order (it is the criterion that ranks, not the engine)', () => {
     expect(order([interestMedium, sensitiveLow])).toEqual(['sensible', 'intérêt']);
   });
 });
 
-describe('compareCards — critère 2 : la confiance décroissante, avant le volume', () => {
-  it('« moyenne » devance « incertaine » entre deux thèmes', () => {
+describe('compareCards — criterion 2: the decreasing confidence, before the volume', () => {
+  it('« moyenne » leads « incertaine » between two themes', () => {
     const low = card('incertaine', { sensitive: false, level: 'low', src: 3 });
     const medium = card('moyenne', { sensitive: false, level: 'medium', src: 3 });
     expect(order([low, medium])).toEqual(['moyenne', 'incertaine']);
   });
 
-  it('la confiance prime le volume : « moyenne / 1 src » devance « incertaine / 50 src »', () => {
-    // Le volume ne peut pas remonter une carte moins affirmée : il DÉPARTAGE, il ne classe pas.
+  it('the confidence outranks the volume: « moyenne / 1 src » leads « incertaine / 50 src »', () => {
+    // The volume cannot lift a less-asserted card: it BREAKS TIES, it does not rank.
     const lowMany = card('incertaine', { sensitive: false, level: 'low', src: 50 });
     const mediumFew = card('moyenne', { sensitive: false, level: 'medium', src: 1 });
     expect(order([lowMany, mediumFew])).toEqual(['moyenne', 'incertaine']);
   });
 });
 
-describe('compareCards — critère 3 : à confiance égale, le volume départage', () => {
-  it('entre deux thèmes « moyenne », le mieux étayé passe devant', () => {
+describe('compareCards — criterion 3: at equal confidence, the volume breaks the tie', () => {
+  it('between two « moyenne » themes, the better-backed goes first', () => {
     const few = card('2 src', { sensitive: false, level: 'medium', src: 2 });
     const many = card('7 src', { sensitive: false, level: 'medium', src: 7 });
     expect(order([few, many])).toEqual(['7 src', '2 src']);
   });
 
-  it('le départage vaut aussi entre deux constats sensibles', () => {
+  it('the tiebreak also holds between two sensitive findings', () => {
     const few = card('1 src', { sensitive: true, level: 'low', src: 1 });
     const many = card('4 src', { sensitive: true, level: 'low', src: 4 });
     expect(order([few, many])).toEqual(['4 src', '1 src']);
   });
 });
 
-describe('compareCards — égalité totale : le tri stable garde l’ordre du moteur', () => {
-  it('deux cartes que les trois critères jugent égales sortent dans leur ordre d’entrée', () => {
-    // Les deux ne diffèrent QUE par l'étiquette — un champ que `compareCards` ne lit pas. C'est ce
-    // qui rend la stabilité observable : le tri n'a aucun moyen de les départager.
+describe('compareCards — total equality: the stable sort keeps the engine order', () => {
+  it('two cards the three criteria judge equal come out in their input order', () => {
+    // The two differ ONLY by the label — a field `compareCards` does not read. That is what
+    // makes the stability observable: the sort has no way to tell them apart.
     const first = card('première', { sensitive: false, level: 'medium', src: 4 });
     const second = card('seconde', { sensitive: false, level: 'medium', src: 4 });
     expect(order([first, second])).toEqual(['première', 'seconde']);
@@ -86,10 +86,10 @@ describe('compareCards — égalité totale : le tri stable garde l’ordre du m
   });
 });
 
-describe('compareCards — les trois critères ensemble, sur une section pleine', () => {
-  it('classe onze cartes (le plafond mesuré : 6 signaux D1 + 5 thèmes D2)', () => {
-    // Le cas que le golden ne verra jamais : la persona plafonne à 4 cartes. Ici les trois critères
-    // se croisent — un comparateur qui en oublierait un rendrait un ordre différent.
+describe('compareCards — the three criteria together, on a full section', () => {
+  it('ranks eleven cards (the measured ceiling: 6 D1 signals + 5 D2 themes)', () => {
+    // The case the golden will never see: the persona caps at 4 cards. Here the three criteria
+    // cross — a comparator that forgot one would give a different order.
     const cards = [
       card('t-med-2', { sensitive: false, level: 'medium', src: 2 }),
       card('s-low-1', { sensitive: true, level: 'low', src: 1 }),
@@ -104,15 +104,15 @@ describe('compareCards — les trois critères ensemble, sur une section pleine'
       card('t-med-7', { sensitive: false, level: 'medium', src: 7 }),
     ];
     expect(order(cards)).toEqual([
-      // Les six sensibles d'abord, « moyenne » avant « incertaine », volume en départage.
+      // The six sensitive first, « moyenne » before « incertaine », volume as tiebreak.
       's-med-8',
       's-med-3',
       's-low-6',
       's-low-4',
       's-low-2',
       's-low-1',
-      // Puis les thèmes, même hiérarchie. `high` n'a aucun producteur aujourd'hui mais le TYPE
-      // l'autorise (FORK 3) : si une règle en émet un jour, le tri le place déjà en tête.
+      // Then the themes, same hierarchy. `high` has no producer today but the TYPE
+      // allows it (FORK 3): if a rule emits one someday, the sort already places it at the top.
       't-high-1',
       't-med-7',
       't-med-5',

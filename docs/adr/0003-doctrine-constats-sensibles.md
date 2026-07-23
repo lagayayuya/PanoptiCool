@@ -1,577 +1,565 @@
-# ADR-0003 : Doctrine des constats sensibles
+# ADR-0003: Doctrine of sensitive findings
 
-**Statut :** Accepté
-**Date :** 2026-06-26
-**Décideur :** yuya
+**Status:** Accepted
+**Date:** 2026-06-26
+**Decider:** yuya
 
-Les autres ADR décident comment le produit est bâti. Celui-ci décide **ce que l'outil ose affirmer, et
-ce qu'il refuse d'affirmer**. C'est la raison d'être.
+The other ADRs decide how the product is built. This one decides **what the tool dares to assert, and
+what it refuses to assert**. This is the raison d'être.
 
-Le catalogue des labels, des **lectures reconnues** et des **exigences testables** vit dans
-[`docs/constats-sensibles.md`](../constats-sensibles.md), qui tient aussi le journal des mesures, des
-précédents et des dettes. Ici vit le **raisonnement** : un ADR est le seul endroit où une décision et
-sa raison se figent ensemble.
+The catalog of labels, of **recognized readings** and of **testable requirements** lives in
+[`docs/constats-sensibles.md`](../constats-sensibles.md), which also keeps the journal of
+measurements, precedents and debts. Here lives the **reasoning**: an ADR is the only place where a
+decision and its reason freeze together.
 
-> Ce document se réécrit : ses sections n'ont pas de numéro. On y renvoie **par leur nom** — le code
-> le fait, en commentaire, et un renvoi mort n'y rougit pas.
+> This document rewrites itself: its sections have no number. We refer to them **by their name** — the
+> code does so, in comments, and a dead reference does not turn red there.
 
-## Ce que le produit affirme, et ce qu'il a vérifié
+## What the product asserts, and what it has verified
 
-- **« Une plateforme »** désigne la **thèse**. Elle vaut pour n'importe laquelle : le propos est
-  systémique. TikTok est le premier connecteur, pas le sujet.
-- **« Mesuré »** désigne ce qu'on a **vérifié**. Ça s'arrête à **TikTok, en français**, sur la part de
-  texte auto-décrit d'un export.
+- **"A platform"** designates the **thesis**. It holds for any platform whatsoever: the point is
+  systemic. TikTok is the first connector, not the subject.
+- **"Measured"** designates what we have **verified**. It stops at **TikTok, in French**, on the
+  self-described text portion of an export.
 
-Écrire la mesure au niveau du système promettrait une portée qu'on n'a pas ; borner la thèse à TikTok
-ferait un outil anti-TikTok. Le lecteur doit pouvoir faire la différence.
+Writing the measurement at the level of the system would promise a scope we do not have; bounding the
+thesis to TikTok would make an anti-TikTok tool. The reader must be able to tell the difference.
 
-## Contexte
+## Context
 
-Une petite part d'un export TikTok est du texte auto-décrit lisible hors-ligne : recherches et
-commentaires, **moins de X % du volume**. Un classifieur local peut-il y lire des **labels sensibles**
-(santé physique, santé mentale, orientation, politique, religion, conflictuel) avec assez peu
-d'erreurs pour l'afficher, et **où échoue-t-il systématiquement** ? Mesuré sur un banc jetable — 8
-personas synthétiques, corpus inventé, *réaliste ≠ réel*. Deux résultats fondent le reste.
+A small part of a TikTok export is self-described text readable offline: searches and comments,
+**less than X% of the volume**. Can a local classifier read **sensitive labels** there (physical
+health, mental health, orientation, politics, religion, conflictual) with few enough errors to display
+it, and **where does it systematically fail**? Measured on a throwaway benchmark — 8 synthetic
+personas, invented corpus, *realistic ≠ real*. Two results found the rest.
 
-**Ce que le lexique capte** *(TikTok, en français)* — l'explicite et le canonique, faux positifs
-cantonnés aux mots à double sens ordinaires. Ce résultat repart à zéro dans une autre langue.
+**What the lexicon captures** *(TikTok, in French)* — the explicit and the canonical, false positives
+confined to ordinary double-meaning words. This result starts over from scratch in another language.
 
-**Ce qu'aucun lexique ne captera — le mur.** Une fois rebouchés tous les trous comblables, il reste des
-phrases dont le sens tient à la tournure, sans mot à repérer : « no futur on finira tous cramés ».
-C'est du **sens sans mot pour l'attraper** : ça ne tient ni à TikTok ni au français, et changer de
-plateforme ou de langue déplacerait les exemples, pas le mur. **Ce n'est pas un échec : c'est la
-démonstration** — une plateforme franchit cette marche, avec ses serveurs, ses modèles et ses
-**croisements** de données rachetées ; un outil local et sous-dimensionné ne la franchit pas.
+**What no lexicon will capture — the wall.** Once all the fillable holes are filled, there remain
+phrases whose meaning rests on the turn of phrase, with no word to spot: « no futur on finira tous
+cramés ». This is **meaning with no word to catch it**: it depends neither on TikTok nor on French,
+and changing platform or language would move the examples, not the wall. **This is not a failure: it
+is the demonstration** — a platform crosses this step, with its servers, its models and its
+**cross-referencing** of purchased data; a local, undersized tool does not cross it.
 
-## La posture — décision-cadre
+## The stance — framing decision
 
-- **La limite fait partie du propos.** Qu'un outil aux moyens dérisoires lise déjà certaines choses
-  intimes dans si peu de données, c'est la démonstration. Ce qu'il ne lit pas rappelle qu'une
-  plateforme, elle, le lit.
-- **Mieux détecter est un objectif, pas une tolérance.** La thèse n'est pas « regardez ce qu'on
-  rate », mais « regardez ce qu'on parvient à savoir sans avoir leurs moyens ». Démontrer et mieux
-  détecter sont **alignés**, pas opposés.
+- **The limit is part of the point.** That a tool with derisory means already reads certain intimate
+  things in so little data — that is the demonstration. What it does not read is a reminder that a
+  platform, itself, reads it.
+- **Detecting better is an objective, not a tolerance.** The thesis is not "look at what we miss", but
+  "look at what we manage to know without having their means". To demonstrate and to detect better are
+  **aligned**, not opposed.
 
-**La ligne rouge**, et il n'y en a qu'une : améliorer la détection en **cachant la pauvreté des
-moyens** — croiser des données externes rachetées, ou revendiquer une précision qu'on n'a pas. Le
-contraste qui porte le propos, c'est *le peu qu'on a / ce qu'on en tire quand même* : le dissimuler
-retire au produit ce qu'il a à montrer. Tant que l'amélioration se fait **à moyens constants** et que
-la limite reste **visible quelque part**, elle sert le propos.
+**The red line**, and there is only one: improving detection by **hiding the poverty of the means** —
+cross-referencing external purchased data, or claiming a precision we do not have. The contrast that
+carries the point is *the little we have / what we nonetheless extract from it*: concealing it takes
+away from the product what it has to show. As long as the improvement is made **at constant means**
+and the limit stays **visible somewhere**, it serves the point.
 
-**Le socle est le lexique à deux étages** : solide sur l'explicite *(en français)*, **erreurs
-cartographiées et bornées**, déterministe, sans poids ni hébergement, hors-ligne. Destiné à être
-enrichi, chaque pas soumis à la ligne rouge.
+**The base is the two-tier lexicon**: solid on the explicit *(in French)*, **errors mapped and
+bounded**, deterministic, without weight or hosting, offline. Meant to be enriched, each step subject
+to the red line.
 
-## Le cadrage — une plateforme est l'auteur du constat
+## The framing — a platform is the author of the finding
 
-**L'auteur du constat est toujours une plateforme.** Tout constat sensible se lit *« une plateforme
-tenterait d'inférer X »*, jamais *« tu es X »* — à aucun niveau de confiance. La confiance module la
-**force de la tentative**, jamais l'**identité** : « tu es X » change de sujet et coûte cher quand
-c'est faux — pathologiser quelqu'un, l'outer. Le constat s'énonce donc en **syntagme, sans sujet**, et
-ce qui protège n'est pas la brièveté du libellé mais son **sujet**. Pas de 2ᵉ personne, pas de
-verdict, pas de label sensible nu sans marqueur d'inférence. *Propriétés (a) et (c) de
+**The author of the finding is always a platform.** Every sensitive finding reads *"a platform would
+attempt to infer X"*, never *"you are X"* — at no confidence level. Confidence modulates the **force
+of the attempt**, never the **identity**: "you are X" changes the subject and costs dearly when it is
+false — pathologizing someone, outing them. The finding is therefore stated as a **phrase, without a
+subject**, and what protects is not the brevity of the label but its **subject**. No 2nd person, no
+verdict, no bare sensitive label without an inference marker. *Properties (a) and (c) of
 `engine/wording.test.ts`.*
 
-**L'honnêteté est déclarée, pas structurelle.** L'UI *peut* classer les lectures et afficher une
-confiance ; la retenue vit dans un avertissement — « ce sont des suppositions, pas des certitudes » —
-**dans la zone de résultats elle-même**, et pas seulement au seuil du site, parce qu'une carte sortie
-en capture se lit comme un verdict. **L'avertissement est load-bearing** : sans lui, l'outil affiche
-des verdicts confiants sans contrepartie.
+**Honesty is declared, not structural.** The UI *may* classify readings and display a confidence; the
+restraint lives in a warning — "these are suppositions, not certainties" — **in the results area
+itself**, and not only at the site's threshold, because a card taken out in a screenshot reads as a
+verdict. **The warning is load-bearing**: without it, the tool displays confident verdicts with no
+counterpart.
 
-**Le discours « avec si peu » est centralisé, pas répété sur chaque carte.** Ses deux faces — *« voilà
-ce qu'on déduit du peu qu'on a »* et *« voilà le cran qu'on ne franchit pas, mais qu'une plateforme
-franchirait »* — se présentent **ensemble**, dans un moment pédagogique dédié. Tamponnée sur chaque
-carte, la mention devient du bruit ; dite une fois, elle est lue.
+**The "with so little" discourse is centralized, not repeated on each card.** Its two faces — *"here
+is what we deduce from the little we have"* and *"here is the notch we do not cross, but that a
+platform would cross"* — are presented **together**, in a dedicated pedagogical moment. Stamped on
+each card, the mention becomes noise; said once, it is read.
 
-**Cette preuve du mur ne se retire jamais**, et elle se **re-cible** à chaque palier : aujourd'hui
-l'oblique textuel ; demain, même avec un modèle, **le contenu des vidéos regardées**, que l'export ne
-porte jamais.
+**This proof of the wall is never removed**, and it is **re-aimed** at each level: today the textual
+oblique; tomorrow, even with a model, **the content of the videos watched**, which the export never
+carries.
 
-## Le mécanisme — deux étages, et ce qui n'est jamais deviné
+## The mechanism — two tiers, and what is never guessed
 
-**Deux étages, pour les six labels.** Un signal se classe selon sa **forme**, pas seulement sa
-présence : **explicite** — la personne emploie le terme qui désigne le label — → constat **nommé**,
-confiance plus haute ; **indirect** — recherches ou commentaires répétés, **aucun terme explicite** →
-constat **large**, confiance basse.
+**Two tiers, for the six labels.** A signal is classified according to its **form**, not only its
+presence: **explicit** — the person uses the term that designates the label — → **named** finding,
+higher confidence; **indirect** — repeated searches or comments, **no explicit term** → **broad**
+finding, low confidence.
 
-**Règle dure : un constat précis n'apparaît QUE si le terme précis est présent.** Jamais de condition
-nommée *devinée* par recoupement — le fin n'existe que s'il est écrit. La règle **dissout la question
-de la granularité** : la précision vient des **données**, pas du classifieur. Le terme déclencheur est
-**montré en surbrillance** dans la preuve — montré, pas deviné. *`rules/d1-sensitive-topics.test.ts`
-(B2) et `ui/v2/highlight.test.ts`.*
+**Hard rule: a precise finding appears ONLY if the precise term is present.** Never a named condition
+*guessed* by cross-referencing — the fine-grained exists only if it is written. The rule **dissolves
+the question of granularity**: precision comes from the **data**, not from the classifier. The
+triggering term is **shown highlighted** in the evidence — shown, not guessed.
+*`rules/d1-sensitive-topics.test.ts` (B2) and `ui/v2/highlight.test.ts`.*
 
-**« Pour qui », pas « quel mot ».** Ce qui distingue un signal *vécu* d'un signal qui *ne concerne pas
-la personne* n'est pas la présence d'un mot clinique, c'est **pour qui le signal vaut** : chercher un
-soin **pour soi** est un signal fort de vécu, même sans terme clinique ; chercher **pour autrui** est
-un signal-sans-vécu. L'erreur naturelle est de juger la *force* d'un signal sur la présence d'un mot.
-**Deux axes qu'on ne fond pas** — nommé/large décide *comment taguer*, pour-qui décide *à qui le
-signal se rapporte* — et **un signal peut être fort *et* large**.
+**"For whom", not "which word".** What distinguishes a *lived* signal from a signal that *does not
+concern the person* is not the presence of a clinical word, it is **for whom the signal holds**:
+seeking care **for oneself** is a strong signal of lived experience, even without a clinical term;
+seeking **for someone else** is a signal-without-lived-experience. The natural mistake is to judge the
+*force* of a signal on the presence of a word. **Two axes we do not merge** — named/broad decides *how
+to tag*, for-whom decides *to whom the signal relates* — and **a signal can be strong *and* broad**.
 
-**La bio est un signal fort.** Ce qui est **revendiqué** — drapeau, badge, auto-étiquette affichée —
-est une auto-désignation assumée : explicite, jamais « indirect ». On ne sous-classe pas un signal
-fort faute de formulation en toutes lettres.
+**The bio is a strong signal.** What is **claimed** — flag, badge, displayed self-label — is an
+assumed self-designation: explicit, never "indirect". We do not under-classify a strong signal for
+lack of a spelled-out phrasing.
 
-**Exception `conflictual` : pas d'étage indirect.** Les insultes **émises** *sont* le signal explicite.
-La porte reste « émis ≠ cité » **et** « visant un autre utilisateur » (un juron sans cible ne compte
-pas). `conflictual` est **item-level** : un trait porté par des messages précis, pas un état diffus —
-lui forcer un étage indirect reviendrait à juger un caractère par accumulation d'indices.
+**`conflictual` exception: no indirect tier.** Insults **emitted** *are* the explicit signal. The
+door stays "emitted ≠ quoted" **and** "targeting another user" (a curse with no target does not
+count). `conflictual` is **item-level**: a trait carried by precise messages, not a diffuse state —
+forcing an indirect tier on it would amount to judging a character by accumulation of clues.
 *`detect/detect.test.ts`, `rules/d1-sensitive-topics.test.ts`.*
 
-## L'admission d'un terme — l'hyperbole s'écarte à la porte
+## The admission of a term — hyperbole steps aside at the door
 
-Un lexique encode une phrase dangereuse : *« cette formulation justifie de nommer quelqu'un »*. Ce
-jugement **ne survit pas à la traduction**. Quatre mouvements distincts s'y jouent, et la moitié des
-re-tranchages de ce dépôt vient de les avoir confondus : **admettre** (un terme qu'on n'a pas),
-**évincer** (un rappel qui existe), **rétrograder** (garder le signal, retirer l'affirmation),
-**annoter** (enregistrer une couverture qu'on n'a pas décidée).
+A lexicon encodes a dangerous sentence: *"this phrasing justifies naming someone"*. That judgment
+**does not survive translation**. Four distinct movements play out here, and half the re-decisions of
+this repository come from having confused them: **admitting** (a term we do not have), **evicting** (a
+reminder that exists), **demoting** (keeping the signal, removing the assertion), **annotating**
+(recording a coverage we did not decide).
 
-### Admettre — l'usage dominant décide
+### Admitting — dominant usage decides
 
-**Règle, pour les six labels et toute langue :** un terme n'entre que si son **usage dominant dans le
-registre visé** — celui des réseaux sociaux, pas celui du dictionnaire — est **littéral**. Un terme
-dont l'usage dominant est conventionnellement **hyperbolique** est **exclu**, jamais rétrogradé vers
-le tier colloquial.
+**Rule, for the six labels and any language:** a term enters only if its **dominant usage in the
+target register** — that of social networks, not that of the dictionary — is **literal**. A term whose
+dominant usage is conventionally **hyperbolic** is **excluded**, never demoted to the colloquial tier.
 
-*Raison, et c'est ce qui rend la règle non négociable :* la rétrogradation repose sur le seuil de
-répétition, et **le seuil ne filtre pas l'hyperbole**. Un terme **polysémique** a plusieurs sens dont
-l'un est le bon, et sa répétition **est** un signal — le seuil travaille. Un terme **hyperbolique** a
-un sens conventionnel qui n'est **pas** le sens littéral : quelqu'un qui écrit « i'm dying » trois
-fois a ri trois fois. **Le seuil n'écarte pas — il accumule**, et il transforme les locuteurs les plus
-expressifs en porteurs présumés. *`detect/en-fp-bench.test.ts`, dont l'allowlist `hyperbolic` est
-vide : si elle se repeuple, un terme hyperbolique est revenu.*
+*Reason, and this is what makes the rule non-negotiable:* demotion rests on the repetition threshold,
+and **the threshold does not filter hyperbole**. A **polysemous** term has several meanings, one of
+which is the right one, and its repetition **is** a signal — the threshold works. A **hyperbolic** term
+has a conventional meaning that is **not** the literal meaning: someone who writes "i'm dying" three
+times has laughed three times. **The threshold does not exclude — it accumulates**, and it turns the
+most expressive speakers into presumed carriers. *`detect/en-fp-bench.test.ts`, whose `hyperbolic`
+allowlist is empty: if it repopulates, a hyperbolic term has come back.*
 
-**Le tier colloquial reste le foyer de la polysémie et du registre bas littéral. Ce n'est pas une zone
-de relégation pour les termes douteux.**
+**The colloquial tier stays the home of polysemy and of literal low register. It is not a relegation
+zone for dubious terms.**
 
-**Corollaire — l'étagement par coût d'erreur.** Quand un lot ouvre un terrain dont le taux de faux
-positifs n'est **pas mesuré**, les formes au **coût d'erreur maximal** — la détresse vitale au premier
-chef — se livrent **séparément et plus tard**, jamais dans le même lot que le vocabulaire ordinaire du
-label. Un label se démontre très bien sans elles : la retenue coûte peu de pédagogie et retire le seul
-mode de défaillance irrattrapable. Ce report est une **dette nommée**, inscrite là où les dettes se
-lisent — pas une omission silencieuse, qui se rouvrirait par accident.
+**Corollary — tiering by cost of error.** When a batch opens a terrain whose false-positive rate is
+**not measured**, the forms with **maximal cost of error** — vital distress first and foremost — are
+delivered **separately and later**, never in the same batch as the label's ordinary vocabulary. A
+label demonstrates itself very well without them: restraint costs little pedagogy and removes the only
+irrecoverable failure mode. This deferral is a **named debt**, recorded where debts are read — not a
+silent omission, which would reopen by accident.
 
-**Le nom de maladie devenu insulte — deuxième porte, et ce n'est pas l'hyperbole.** Un nom de maladie
-grave dont le registre visé fait un **qualificatif péjoratif générique** n'entre pas **nu** : seules
-ses formes **portées** entrent — le possessif, la locution qui rattache la condition à quelqu'un.
-L'hyperbole **gonfle l'état du locuteur** (« i'm dying » parle de celui qui l'écrit, et se trompe sur
-son intensité) ; l'insulte **applique la maladie à un tiers ou à un objet** (« this meme is cancer »
-ne parle pas du locuteur, et se trompe sur le **sujet**). La première produit un faux porteur trop
-expressif ; la seconde tague quelqu'un qui n'a rien dit de lui-même, et elle **chevauche
-`conflictual`**, où la même phrase serait correctement lue. **Portée : les six labels.**
-*`detect/lexicon-battery.test.ts`, avec son contrôle d'anti-vacuité — la forme portée, elle, tague.*
+**The disease name turned insult — second door, and it is not hyperbole.** A serious disease name that
+the target register makes into a **generic pejorative qualifier** does not enter **bare**: only its
+**carried** forms enter — the possessive, the phrase that attaches the condition to someone. Hyperbole
+**inflates the speaker's state** ("i'm dying" speaks of the one who writes it, and is wrong about their
+intensity); the insult **applies the disease to a third party or an object** ("this meme is cancer"
+does not speak of the speaker, and is wrong about the **subject**). The first produces a false, overly
+expressive carrier; the second tags someone who said nothing about themselves, and it **overlaps
+`conflictual`**, where the same sentence would be correctly read. **Scope: the six labels.**
+*`detect/lexicon-battery.test.ts`, with its anti-vacuity control — the carried form, itself, tags.*
 
-**Le marqueur de sociolecte — troisième porte, et c'est celle qui reviendra à chaque langue.** Une
-formule dont l'usage dominant est **phatique** — elle accomplit un acte social (condoléance, emphase,
-gratitude, accord, salutation) au lieu de **désigner** quoi que ce soit du domaine — n'entre pas, si
-marqué que soit son étymologie. Le test est celui du **référent** : *ce terme pointe-t-il vers une
-chose du domaine ?* « thoughts and prayers » ne nomme aucune prière ; elle accomplit une sympathie.
+**The sociolect marker — third door, and it is the one that will return with each language.** A phrase
+whose dominant usage is **phatic** — it performs a social act (condolence, emphasis, gratitude,
+agreement, greeting) instead of **designating** anything of the domain — does not enter, however marked
+its etymology. The test is that of the **referent**: *does this term point to a thing of the domain?*
+"thoughts and prayers" names no prayer; it performs a sympathy.
 
-*Première raison, et elle dérive du principe de démonstration plutôt que de le contredire.* Le
-principe protège le terme qui se déclenche sur des porteurs ET des non-porteurs. Sa clause-limite
-tient l'autre bout : la ligne passe entre **un terme qui discrimine mal et un terme qui ne discrimine
-pas du tout**. Une formule phatique est le cas-limite exact — tout le monde l'écrit, porteurs et
-non-porteurs à parts égales. Elle ne discrimine pas mal : elle ne discrimine pas. Et la barre qui la
-retient est celle de l'**admission**, jamais celle de l'éviction : refuser d'ajouter n'est pas
-retirer.
+*First reason, and it derives from the demonstration principle rather than contradicting it.* The
+principle protects the term that triggers on carriers AND non-carriers. Its limit-clause holds the
+other end: the line passes between **a term that discriminates poorly and a term that does not
+discriminate at all**. A phatic phrase is the exact limit case — everyone writes it, carriers and
+non-carriers in equal parts. It does not discriminate poorly: it does not discriminate. And the bar
+that holds it back is that of **admission**, never that of eviction: refusing to add is not removing.
 
-*Seconde raison, indépendante, et c'est la plus forte des deux.* Ces formules sont massivement des
-**marqueurs de sociolecte**, et les admettre reviendrait à taguer une population sur sa manière de
-parler plutôt que sur ce qu'elle dit. La décision est déjà prise en français — `wallah / inchallah /
-machallah` exclus de `religion`, *« ne pas taguer une population sur son sociolecte »* — et l'anglais
-en fournit une couche bien plus large : `bless you`, `blessed`, `praying for you`, `preach`, `amen`
-sont saillants dans l'anglais afro-américain et celui du Sud des États-Unis. Les deux raisons
-convergent sur la même exclusion ; **la seconde vaut seule**, et c'est elle qui doit être citée quand
-un terme phatique est aussi un marqueur de groupe.
+*Second reason, independent, and the stronger of the two.* These phrases are massively **sociolect
+markers**, and admitting them would amount to tagging a population on its way of speaking rather than
+on what it says. The decision is already made in French — `wallah / inchallah / machallah` excluded
+from `religion`, *"do not tag a population on its sociolect"* — and English provides a far broader
+layer of it: `bless you`, `blessed`, `praying for you`, `preach`, `amen` are salient in African
+American and Southern US English. The two reasons converge on the same exclusion; **the second holds
+on its own**, and it is the one that must be cited when a phatic term is also a group marker.
 
-*Le coût, et il se déclare.* Certaines de ces formules sont écrites par des porteurs réels. Les
-exclure coûte du rappel **sur des porteurs**, et c'est assumé : le prix d'une formule qui ne
-discrimine pas n'est pas un rappel, c'est un constat posé sur tout le monde.
+*The cost, and it declares itself.* Some of these phrases are written by real carriers. Excluding them
+costs recall **on carriers**, and that is assumed: the price of a phrase that does not discriminate is
+not a recall, it is a finding laid on everyone.
 
-**Portée : les six labels, et toute langue.** Un corollaire de tier en découle et il ne s'hérite pas
-d'une langue à l'autre — le tier colloquial est le foyer des formules **marquées**, donc désignantes.
-Là où une langue porte l'essentiel de sa couche religieuse ou identitaire en formules **non
-marquées**, le tier y change de sens et **ne se transporte pas** : c'est le cas de l'anglais sur
-`religion`, qui n'a donc aucune entrée colloquiale.
-*`detect/religion-symmetry.test.ts`, garde de phaticité — qui vérifie en outre par quel CHEMIN le
-zéro arrive.*
+**Scope: the six labels, and any language.** A tier corollary follows from it and does not inherit from
+one language to another — the colloquial tier is the home of **marked** phrases, hence designating.
+Where a language carries the essential of its religious or identity layer in **unmarked** phrases, the
+tier changes meaning there and **does not transport**: this is the case of English on `religion`,
+which therefore has no colloquial entry.
+*`detect/religion-symmetry.test.ts`, phaticity guard — which further verifies by which PATH the zero
+arrives.*
 
-> Ces règles portent sur **ce qui entre**. Elles ne touchent ni au seuil (qui n'est pas un levier de
-> sûreté — voir *La porte, pas le seuil*), ni au mur : elles ne rattrapent aucun oblique.
+> These rules bear on **what enters**. They touch neither the threshold (which is not a safety lever —
+> see *The door, not the threshold*), nor the wall: they catch no oblique.
 
-### Admettre n'est pas évincer
+### Admitting is not evicting
 
-La barre n'est pas la même aux deux portes. Refuser un terme à l'entrée ne coûte **aucun rappel** : on
-n'a jamais eu le sien. Évincer un terme **déjà ratifié** coûte un rappel qui **existe**, sur des gens
-que le produit détecte aujourd'hui. Exiger la même chose des deux côtés est une erreur de catégorie.
+The bar is not the same at the two doors. Refusing a term at the entrance costs **no recall**: we
+never had its own. Evicting a term **already ratified** costs a recall that **exists**, on people the
+product detects today. Requiring the same thing on both sides is a category error.
 
-**Un terme en place ne se retire pas par doctrine ; il se retire sur mesure.** Et la mesure n'est pas
-« ce terme apparaît-il chez des gens concernés ? » — formulée ainsi, elle trouve toujours oui. La
-question qui décide est : **ce terme porte-t-il un rappel que rien d'autre ne porte ?** Elle se répond
-par **ablation** — retirer le terme, regarder qui disparaît. **La voix qui tranche est celle qui n'a
-que lui**, jamais celle qui a d'autres filets. Quand l'ablation montre un rappel unique, le terme
-**reste**, et son faux positif devient une **acceptation mesurée** : inscrite comme telle, **avec son
-instrument**, jamais laissée en silence. *`detect/fr-colloquial-ablation.test.ts` ; précédents au
-catalogue.*
+**A term in place is not removed by doctrine; it is removed by measurement.** And the measurement is
+not "does this term appear among concerned people?" — phrased that way, it always finds yes. The
+question that decides is: **does this term carry a recall that nothing else carries?** It is answered
+by **ablation** — remove the term, look at who disappears. **The voice that decides is the one that has
+only it**, never the one that has other nets. When the ablation shows a unique recall, the term
+**stays**, and its false positive becomes a **measured acceptance**: recorded as such, **with its
+instrument**, never left in silence. *`detect/fr-colloquial-ablation.test.ts`; precedents in the
+catalog.*
 
-**Le faux positif n'est PAS un motif de retrait.** Un terme qui se déclenche sur des porteurs **et**
-sur des non-porteurs **reste**. Son erreur n'est pas un défaut du produit : elle **est** le produit —
-l'outil ne prétend pas dire le vrai sur quelqu'un, il montre ce qu'un algorithme déduirait, et un
-algorithme qui se trompe est précisément le sujet. Masquer ces erreurs rendrait la démonstration moins
-fidèle, et poursuivre les faux positifs coûterait tellement de rappel qu'il ne resterait rien à
-démontrer. **Vaut pour les six labels.**
+**The false positive is NOT a ground for removal.** A term that triggers on carriers **and** on
+non-carriers **stays**. Its error is not a defect of the product: it **is** the product — the tool does
+not claim to say the truth about someone, it shows what an algorithm would deduce, and an algorithm
+that is wrong is precisely the subject. Masking these errors would make the demonstration less
+faithful, and chasing false positives would cost so much recall that nothing would be left to
+demonstrate. **Holds for the six labels.**
 
-*La limite, et elle est nette :* un terme qui ne se déclenche que sur des **non-porteurs** s'en va.
-Celui-là ne démontre rien — « the pros and **cons** » tagué conflictuel n'apprend rien sur l'inférence
-algorithmique, il exhibe un artefact de sous-chaîne. **La ligne ne passe pas entre « peu » et
-« beaucoup » de faux positifs : elle passe entre un terme qui discrimine mal et un terme qui ne
-discrimine pas du tout.**
+*The limit, and it is sharp:* a term that triggers only on **non-carriers** goes away. That one
+demonstrates nothing — "the pros and **cons**" tagged conflictual teaches nothing about algorithmic
+inference, it exhibits a substring artifact. **The line does not pass between "few" and "many" false
+positives: it passes between a term that discriminates poorly and a term that does not discriminate at
+all.**
 
-*Et ce jugement porte sur la SÉMANTIQUE du terme, jamais sur le décompte d'un banc* — quelques voix
-rendent des zéros de circonstance, et lire le tableau au lieu du terme retire des formes saines. Cas
-d'école et candidats au catalogue.
+*And this judgment bears on the SEMANTICS of the term, never on the count of a benchmark* — a few
+voices return circumstantial zeros, and reading the table instead of the term removes healthy forms.
+A textbook case and candidates for the catalog.
 
-*Corollaire, et il évite un contresens :* **la tolérance au faux positif ne varie pas d'un label à
-l'autre.** Ce qui varie est le droit d'**affirmer**, que porte l'étage nommé et que l'étage large n'a
-pas. Un label « plus sensible » ne mérite pas un lexique plus étroit — il mérite, le cas échéant, de
-**moins affirmer**.
+*Corollary, and it avoids a misreading:* **tolerance to the false positive does not vary from one label
+to another.** What varies is the right to **assert**, which the named tier carries and the broad tier
+does not have. A "more sensitive" label does not deserve a narrower lexicon — it deserves, where
+appropriate, to **assert less**.
 
-### La rétrogradation — ni admission, ni éviction
+### Demotion — neither admission nor eviction
 
-Un terme livré peut changer d'**étage** sans quitter le lexique : la rétrogradation **garde le signal
-et retire l'affirmation**. Sa barre est donc **plus basse que celle de l'éviction** — rien n'est
-perdu, seule la force de ce qui est dit change. Un terme rétrogradé **affiche toujours son
-déclenchement** : la démonstration survit entière, et une rétrogradation **ne se rouvre pas** au titre
-de la règle du faux positif, n'ayant rien retiré. **C'est donc le bon outil quand la gêne porte sur
-l'AFFIRMATION, et le retrait ne l'est pas.**
+A delivered term can change **tier** without leaving the lexicon: demotion **keeps the signal and
+removes the assertion**. Its bar is therefore **lower than that of eviction** — nothing is lost, only
+the force of what is said changes. A demoted term **still displays its triggering**: the demonstration
+survives whole, and a demotion **does not reopen** under the false-positive rule, having removed
+nothing. **It is therefore the right tool when the discomfort bears on the ASSERTION, and removal is
+not.**
 
-*Ce qu'elle vise :* les termes dont l'usage littéral est **réel et courant**, mais dont l'usage
-courant a colonisé la forme au point que l'**affirmation** ne se justifie plus — un nom nu de trouble
-en est le cas type. **Distinct de la règle d'admission** : ici l'usage littéral n'a pas disparu, c'est
-le droit de **nommer quelqu'un** qui a disparu. L'une décide si un terme entre, l'autre ce qu'il a le
-droit d'affirmer une fois entré.
+*What it targets:* the terms whose literal usage is **real and common**, but whose common usage has
+colonized the form to the point that the **assertion** is no longer justified — a bare disorder name is
+the textbook case. **Distinct from the admission rule**: here the literal usage has not disappeared, it
+is the right to **name someone** that has disappeared. One decides whether a term enters, the other
+what it is allowed to assert once it has entered.
 
-*Ce qui l'ouvre :* une **mesure** — une voix non porteuse recevant un constat nommé suffit.
-*Ce qui la livre :* une **ablation**.
+*What opens it:* a **measurement** — one non-carrier voice receiving a named finding suffices.
+*What delivers it:* an **ablation**.
 
-*Le cas d'arrêt, et il faut l'écrire plutôt que le supposer :* rétrograder ne veut pas dire « le
-constat devient large ». Il devient large **si le reste du texte franchit encore le seuil d'items
-indirects** — seuil qui vaut **2** pour les lexiques ratifiés. Sous ce seuil, un énoncé **isolé** ne
-devient pas large, il **disparaît** : une personne qui écrit une seule fois, littéralement, ce qu'elle
-vit. Si elle perd son constat, la rétrogradation se rouvre — ou se livre dans un **tier qui dispense
-du seuil sans permettre de nommer**. *Soupçon opératoire sur l'instrument :* une ablation menée sur
-des **personas** rend des feux verts **faux**, le voisinage rattrapant la chute d'un terme — d'où
-l'ordre imposé, **mesurer l'énoncé isolé AVANT les voix**. *Les deux tenus par
-`detect/en-demotion-ablation.test.ts`, qui fige aussi le faux vert.*
+*The stopping case, and it must be written rather than assumed:* to demote does not mean "the finding
+becomes broad". It becomes broad **if the rest of the text still crosses the indirect-items threshold**
+— a threshold that equals **2** for ratified lexicons. Below that threshold, an **isolated** utterance
+does not become broad, it **disappears**: a person who writes, once, literally, what they live. If they
+lose their finding, the demotion reopens — or is delivered in a **tier that dispenses with the
+threshold without allowing naming**. *Operational suspicion on the instrument:* an ablation conducted
+on **personas** returns **false** green lights, the neighborhood catching the fall of a term — hence
+the imposed order, **measure the isolated utterance BEFORE the voices**. *Both held by
+`detect/en-demotion-ablation.test.ts`, which also freezes the false green.*
 
-### Annoter une couverture accidentelle — gratuit sous condition seulement
+### Annotating accidental coverage — free only under condition
 
-Un lexique écrit pour une langue en couvre une autre par homographie, sans qu'aucune décision l'ait
-voulu. Le geste qui suit est devenu un réflexe : **annoter** les entrées qui traversent, « sans
-changer une ligne de comportement ».
+A lexicon written for one language covers another by homography, without any decision having willed it.
+The gesture that follows has become a reflex: **annotate** the entries that cross over, "without
+changing a line of behavior".
 
-*« Zéro changement de comportement » est vrai de l'état COURANT du détecteur, pas de l'état d'après.*
-Quand un label exige **deux** conditions pour taguer — `conflictual` demande une insulte ET une cible
-de 2ᵉ personne — la couverture accidentelle peut être **complète d'un côté et nulle de l'autre**. Elle
-est alors **latente, pas vivante** : des entrées FR y matchaient de l'anglais ordinaire (« the pros
-and **cons** ») sans qu'aucune tague, la seconde liste étant restée française. Annoter n'y coûtait
-rien **tant que la porte restait fermée**, et coûtait des faux positifs **le jour où le lot suivant
-l'ouvre** — c'est-à-dire au moment précis où plus personne ne relit l'annotation.
+*"Zero change of behavior" is true of the CURRENT state of the detector, not of the state afterward.*
+When a label requires **two** conditions to tag — `conflictual` demands an insult AND a 2nd-person
+target — the accidental coverage can be **complete on one side and null on the other**. It is then
+**latent, not live**: FR entries matched ordinary English there ("the pros and **cons**") without any
+tagging, the second list having stayed French. Annotating cost nothing there **as long as the door
+stayed closed**, and cost false positives **the day the next batch opens it** — that is, at the precise
+moment when no one re-reads the annotation anymore.
 
-**Avant d'annoter, regarder par quelle conjonction le label tague**, et distinguer une couverture
-*vivante* (elle produit des constats aujourd'hui : l'annoter enregistre un **état**) d'une couverture
-*latente* (elle en produirait : l'annoter enregistre une **dette**). La seconde ne s'annote pas comme
-la première — elle se **nomme, avec ce qui l'activera**. **Portée :** les six labels, et toute forme
-d'agrégation qui exige plus d'une condition.
+**Before annotating, look by which conjunction the label tags**, and distinguish a *live* coverage (it
+produces findings today: annotating it records a **state**) from a *latent* coverage (it would produce
+them: annotating it records a **debt**). The second is not annotated like the first — it is **named,
+with what will activate it**. **Scope:** the six labels, and any form of aggregation that requires more
+than one condition.
 
-## La limite que la donnée ne lève pas — et pourquoi elle ne se traite pas au filtre
+## The limit the data does not lift — and why it is not handled with a filter
 
-Les règles ci-dessus décident **ce qui entre** et **à quel étage**. Celle-ci nomme un cas où aucune ne
-peut trancher, parce que **ce qui déciderait n'est pas dans l'export** : « you're such an idiot »
-entre amis et les mêmes mots visant un inconnu sont **le même texte**. Ce qui les sépare est la
-**relation** — et un commentaire d'export est la moitié d'une conversation.
+The rules above decide **what enters** and **at which tier**. This one names a case where none can
+decide, because **what would decide is not in the export**: "you're such an idiot" between friends and
+the same words aimed at a stranger are **the same text**. What separates them is the **relationship** —
+and an export comment is half of a conversation.
 
-**Ce n'est pas le mur, et les confondre ferait chercher au mauvais endroit.** Le mur est du *sens sans
-mot pour l'attraper*. Ici le mot est là, écrit en toutes lettres, correctement repéré : ce qui manque
-est le **contexte qui lui donne sa valeur**. Un lexique plus riche ne rattrape pas le mur ; ici il
-**aggrave**, chaque terme ajouté ajoutant sa part d'ambiguïté sans rien apporter pour la lever.
+**This is not the wall, and confusing them would make one search in the wrong place.** The wall is
+*meaning with no word to catch it*. Here the word is there, spelled out, correctly spotted: what is
+missing is the **context that gives it its value**. A richer lexicon does not catch the wall; here it
+**worsens** it, each added term adding its share of ambiguity without bringing anything to lift it.
 
-**La règle, valable pour les six labels :** quand le discriminant d'un signal n'est **pas** dans
-l'export, il ne se traite **ni par un filtre ni par un seuil** — les deux travaillent sur le texte, et
-le texte ne le porte pas. Il se traite par le **volume admis** : le lexique se restreint au registre
-dont la lecture visée est l'usage dominant, et le tort résiduel s'inscrit comme **acceptation
-assumée**.
+**The rule, valid for the six labels:** when the discriminant of a signal is **not** in the export, it
+is handled **neither by a filter nor by a threshold** — both work on the text, and the text does not
+carry it. It is handled by the **admitted volume**: the lexicon restricts itself to the register whose
+intended reading is the dominant usage, and the residual harm is recorded as **assumed acceptance**.
 
-*Et il faut tenir la distinction entre deux mots que tout pousse à confondre :* une acceptation
-**mesurée** vient avec son instrument ; une acceptation **assumée** n'en a pas encore. Écrire
-« mesurée » quand l'instrument n'existe pas est exactement la sur-citation que ce dépôt paie sept fois
-— le mot referme la discussion en promettant un chiffre que personne n'a. **Tant que l'instrument
-manque, le mot est *assumée*, et le passage à *mesurée* est un événement daté.**
+*And the distinction between two words that everything pushes to confuse must be held:* a **measured**
+acceptance comes with its instrument; an **assumed** acceptance does not have one yet. Writing
+"measured" when the instrument does not exist is exactly the over-citation this repository pays for
+seven times — the word closes the discussion by promising a figure no one has. **As long as the
+instrument is missing, the word is *assumed*, and the passage to *measured* is a dated event.**
 
-## Le registre informationnel — interroger n'est pas vivre
+## The informational register — to inquire is not to live
 
-La règle précédente décide ce qui entre. Celle-ci décide **à quel étage** un terme admis a le droit de
-se poser.
+The previous rule decides what enters. This one decides **at which tier** an admitted term is allowed
+to settle.
 
-**La règle, valable pour les six labels et toute langue :** un item écrit en **registre
-informationnel** — il *interroge*, *définit* ou *quantifie* une condition, au lieu de la décrire chez
-quelqu'un — peut produire un constat **large**, jamais un constat **nommé**. Chercher un symptôme
-**est** un signal, qu'une plateforme lit et que le produit doit donc montrer ; ce n'est **pas la
-preuve d'une condition vécue**, et le produit n'a pas le droit d'en affirmer une. D'où un abaissement,
-et non un retrait.
+**The rule, valid for the six labels and any language:** an item written in **informational register**
+— it *inquires about*, *defines* or *quantifies* a condition, instead of describing it in someone — can
+produce a **broad** finding, never a **named** finding. Searching for a symptom **is** a signal, which
+a platform reads and which the product must therefore show; it is **not proof of a lived condition**,
+and the product has no right to assert one. Hence a lowering, not a removal.
 
-**Ce n'est pas un filtre, et l'implémenter comme un troisième filtre est interdit.** Un filtre répond
-« ce constat existe-t-il ? » et, quand il se trompe, **retire du signal réel** : il fabrique un faux
-négatif aveugle, que rien ne signale ensuite. Une règle d'étage répond « à quel étage ? » et, quand
-elle se trompe, **sous-affirme**. Les deux échouent dans des directions opposées, et **une seule est
-rattrapable**. *`detect/detect.test.ts` et `detect/health-physical-storey.test.ts` vérifient que
-l'item **survit** — la moitié « pas un filtre » est mesurée, pas commentée.*
+**This is not a filter, and implementing it as a third filter is forbidden.** A filter answers "does
+this finding exist?" and, when it is wrong, **removes real signal**: it fabricates a blind false
+negative, which nothing signals afterward. A tier rule answers "at which tier?" and, when it is wrong,
+**under-asserts**. The two fail in opposite directions, and **only one is recoverable**.
+*`detect/detect.test.ts` and `detect/health-physical-storey.test.ts` verify that the item **survives**
+— the "not a filter" half is measured, not commented.*
 
-**Pourquoi pas l'ancrage 1ʳᵉ personne, qui semble plus propre.** Exiger une copule (« je suis X ») a
-été **mesuré, et écarté** : quelqu'un qui vit la condition tape les mêmes tournures documentaires
-qu'un proche. L'ancrage dégraderait donc **aussi** la personne concernée, et échangerait une
-sur-affirmation contre une sous-affirmation silencieuse sur celle qui a le plus à perdre.
+**Why not first-person anchoring, which seems cleaner.** Requiring a copula ("I am X") was **measured,
+and discarded**: someone living the condition types the same documentary turns of phrase as a relative.
+The anchoring would therefore degrade **the concerned person too**, and would trade an over-assertion
+for a silent under-assertion on the one who has the most to lose.
 
-**Cette règle est distincte de l'axe *pour qui*, et les deux ne se remplacent pas.** La 3ᵉ personne dit
-**pour qui** vaut le signal ; le registre informationnel dit **sous quelle forme** il est écrit. Un
-item peut porter les deux, ou l'un sans l'autre — et c'est le second cas qui a rendu la règle
-nécessaire. Son origine dit sa portée : une mesure faite en anglais a trouvé un défaut vérifié ensuite
-en français, en production. **La règle est écrite pour la machinerie, pas pour une langue.**
+**This rule is distinct from the *for-whom* axis, and the two do not replace each other.** The 3rd
+person says **for whom** the signal holds; the informational register says **in what form** it is
+written. An item can carry both, or one without the other — and it is the second case that made the
+rule necessary. Its origin says its scope: a measurement made in English found a defect verified
+afterward in French, in production. **The rule is written for the machinery, not for a language.**
 
-> **Ce que la règle ne referme pas**, et qui doit rester visible : le registre **assertif** (« le
-> burnout est un phénomène lié au travail ») et le registre **technique** (un nom d'échelle clinique)
-> ne sont ni interrogatifs ni possessifs. Ils continuent de produire des constats nommés sur des voix
-> professionnelles. Les couvrir suppose l'ancrage 1ʳᵉ personne écarté ci-dessus. Le résidu est nommé
-> plutôt que refermé de travers.
+> **What the rule does not close**, and which must stay visible: the **assertive** register ("le
+> burnout est un phénomène lié au travail") and the **technical** register (a clinical scale name) are
+> neither interrogative nor possessive. They continue to produce named findings on professional voices.
+> Covering them supposes the first-person anchoring discarded above. The residue is named rather than
+> closed off crookedly.
 
-## L'état et le sujet — ce que nier veut dire
+## State and subject — what negating means
 
-Les deux règles précédentes décident ce qui entre et à quel étage. Celle-ci nomme une distinction
-entre **labels** que rien n'obligeait à voir tant qu'on ne regardait que des conditions — et qui,
-non vue, a produit un silence orienté dans le produit livré.
+The two previous rules decide what enters and at which tier. This one names a distinction between
+**labels** that nothing forced us to see as long as we were only looking at conditions — and which,
+unseen, produced a directed silence in the delivered product.
 
-**Quatre des six labels décrivent un ÉTAT** — une condition, un corps, une orientation, un
-comportement. **Deux décrivent un SUJET qu'on fréquente** : `politics` et `religion`. La différence
-n'est pas philosophique, elle décide de ce que la négation veut dire.
+**Four of the six labels describe a STATE** — a condition, a body, an orientation, a behavior. **Two
+describe a SUBJECT one frequents**: `politics` and `religion`. The difference is not philosophical, it
+decides what negation means.
 
-- Sur un label d'**état**, nier le prédicat **retire le signal**. « je ne suis pas déprimé » ne
-  décrit aucune dépression : le filtre de négation a raison, et il protège exactement ce que cette
-  doctrine existe pour protéger.
-- Sur un label de **sujet**, nier le prédicat **ne retire pas le sujet**. « je supporte pas les
-  fachos », « jamais de manif pour moi », « je ne vais pas à la messe » sont **sur le sujet**, et la
-  négation en dit la **polarité**. Une plateforme les lit comme tels — c'est même le matériau le plus
-  abondant qu'elle ait.
+- On a **state** label, negating the predicate **removes the signal**. « je ne suis pas déprimé »
+  describes no depression: the negation filter is right, and it protects exactly what this doctrine
+  exists to protect.
+- On a **subject** label, negating the predicate **does not remove the subject**. « je supporte pas
+  les fachos », « jamais de manif pour moi », « je ne vais pas à la messe » are **about the subject**,
+  and negation gives its **polarity**. A platform reads them as such — it is even the most abundant
+  material it has.
 
-**La règle :** sur un label de sujet, une négation devant un marqueur **dégrade** le hit en constat
-large au lieu de le supprimer. **C'est une règle d'étage, pas un filtre de moins** — et la
-distinction est celle, déjà posée, du registre informationnel : laisser la négation intacte poserait
-un constat **nommé** sur « je ne suis pas socialiste », c'est-à-dire affirmerait précisément ce que
-la phrase nie. Dégrader garde le sujet et retire l'affirmation ; au pire, la règle **sous-affirme**,
-ce qui se rattrape.
+**The rule:** on a subject label, a negation before a marker **degrades** the hit to a broad finding
+instead of suppressing it. **It is a tier rule, not one filter fewer** — and the distinction is the one
+already laid down, that of the informational register: leaving the negation intact would lay a
+**named** finding on « je ne suis pas socialiste », that is, would assert precisely what the sentence
+negates. Degrading keeps the subject and removes the assertion; at worst, the rule **under-asserts**,
+which is recoverable.
 
-**Pourquoi c'est une question de neutralité, et pas de rappel.** L'**opposition est le registre
-dominant** du discours politique et religieux : on écrit rarement pour dire son camp, constamment
-pour dire contre quoi on est. Un détecteur sourd à l'opposition n'entend donc que **celui qui
-adhère** — et c'est le silence sélectif que cette doctrine condamne ailleurs en toutes lettres
-(*L'incertitude*, neutralité). Il était livré : mesuré, « ces fachos partout » taguait quand « je
-supporte pas les fachos » ne taguait rien, et l'axe **pratique ↔ critique** de `religion`, pourtant
-ratifié bidirectionnel, était muet du côté critique.
+**Why it is a question of neutrality, and not of recall.** **Opposition is the dominant register** of
+political and religious discourse: one rarely writes to say one's camp, constantly to say what one is
+against. A detector deaf to opposition therefore hears only **the one who adheres** — and that is the
+selective silence this doctrine condemns elsewhere in so many words (*Uncertainty*, neutrality). It was
+delivered: measured, « ces fachos partout » tagged while « je supporte pas les fachos » tagged nothing,
+and the **practicing ↔ critical** axis of `religion`, though ratified bidirectional, was mute on the
+critical side.
 
-**Ce que la règle ne rattrape pas**, et qui doit rester visible : le français **infixe** sa négation
-(« je NE vote PAS »), ce qui casse les marqueurs multi-mots dans le **repérage**, avant qu'aucune
-règle d'étage ne soit consultée. La règle atteint les marqueurs d'un mot et les locutions non
-infixées ; elle ne fabrique aucun rappel là où le matcher n'a rien trouvé. Et elle ne touche pas au
-mur : une critique sans vocabulaire du sujet n'a aucun marqueur à dégrader.
+**What the rule does not catch**, and which must stay visible: French **infixes** its negation (« je NE
+vote PAS »), which breaks multi-word markers in the **spotting**, before any tier rule is consulted.
+The rule reaches one-word markers and non-infixed phrases; it fabricates no recall where the matcher
+found nothing. And it does not touch the wall: a critique without vocabulary of the subject has no
+marker to degrade.
 
-> **Portée : les deux labels de sujet, jamais les quatre autres.** Un lot qui étendrait la règle à un
-> label d'état poserait des constats de condition sur des gens qui écrivent ne pas l'avoir — le mode
-> de défaillance exact que le filtre de négation existe pour empêcher. *`detect/lexicon-battery.test.ts`
-> tient les deux moitiés, la règle **et** sa contre-épreuve sur les labels d'état.*
+> **Scope: the two subject labels, never the four others.** A batch that extended the rule to a state
+> label would lay condition findings on people who write that they do not have it — the exact failure
+> mode the negation filter exists to prevent. *`detect/lexicon-battery.test.ts` holds both halves, the
+> rule **and** its counter-proof on the state labels.*
 
-## La symétrie d'un axe — et les labels qui n'en ont pas
+## The symmetry of an axis — and the labels that have none
 
-La règle précédente distingue les labels par ce que la négation y veut dire. Celle-ci nomme une
-distinction **entre axes**, rendue nécessaire par un lot de symétrie qui a failli l'appliquer
-mécaniquement aux six labels.
+The previous rule distinguishes the labels by what negation means in them. This one names a distinction
+**between axes**, made necessary by a symmetry batch that nearly applied it mechanically to the six
+labels.
 
-**La règle, ratifiée :** un lexique d'appartenance se vérifie **sur les DEUX versants de son axe**,
-jamais en comptant les termes d'un seul. Une auto-déclaration majoritaire — « je suis hétéro », « je
-suis cis » — doit **déclencher exactement autant** que son pendant minoritaire. *Le fondement :* un
-lexique qui n'attrape que les identités minoritaires est un **détecteur de minorités**, pas un
-détecteur d'orientation, et sa démonstration **s'inverse** — il prétend montrer ce qu'une plateforme
-déduit de tout le monde en ne déduisant que sur certains. C'est le défaut `politics` (la gauche
-encodée en identité, la droite en accusation) dans sa forme la plus pure.
+**The rule, ratified:** a belonging lexicon is verified **on BOTH sides of its axis**, never by
+counting the terms of only one. A majority self-declaration — « je suis hétéro », « je suis cis » —
+must **trigger exactly as much** as its minority counterpart. *The foundation:* a lexicon that catches
+only minority identities is a **minority detector**, not an orientation detector, and its demonstration
+**inverts** — it claims to show what a platform deduces about everyone while deducing only about some.
+It is the `politics` defect (the left encoded as identity, the right as accusation) in its purest form.
 
-**Mais la règle ne s'applique pas là où l'axe n'existe pas, et l'appliquer quand même FABRIQUE le
-défaut qu'elle existe pour empêcher.** Le test tient en une question : **le terme majoritaire nomme-t-il
-une appartenance, ou l'ABSENCE de la chose détectée ?**
+**But the rule does not apply where the axis does not exist, and applying it anyway FABRICATES the
+defect it exists to prevent.** The test holds in one question: **does the majority term name a
+belonging, or the ABSENCE of the thing detected?**
 
-- `sexuality` — `hétéro` nomme une **orientation réelle**, `cis` une **identité réelle**. Axe. La
-  règle s'applique.
-- `politics`, `religion` — labels de **sujet** : les deux bords, les deux pôles de la croyance
-  tiennent une **position** sur le sujet détecté. Axe. La règle s'applique.
-- `mental_health`, `health_physical` — **aucun axe, et il ne faut pas en forcer un.** `valide`,
-  `neurotypique`, `entendant`, `en bonne santé` ne nomment pas une appartenance : ils nomment
-  l'**absence de la condition détectée**. Les admettre poserait un constat de condition sur quelqu'un
-  qui écrit n'en avoir aucune — très exactement le mode de défaillance que le filtre de négation
-  existe pour empêcher, et que la règle de portée ci-dessus interdit déjà.
-- `conflictual` — sans objet : sa porte est l'insulte émise, qui n'est pas une identité.
+- `sexuality` — `hétéro` names a **real orientation**, `cis` a **real identity**. Axis. The rule
+  applies.
+- `politics`, `religion` — **subject** labels: both sides, both poles of belief hold a **position** on
+  the detected subject. Axis. The rule applies.
+- `mental_health`, `health_physical` — **no axis, and one must not force one.** `valide`,
+  `neurotypique`, `entendant`, `en bonne santé` do not name a belonging: they name the **absence of
+  the detected condition**. Admitting them would lay a condition finding on someone who writes they
+  have none — very exactly the failure mode the negation filter exists to prevent, and which the scope
+  rule above already forbids.
+- `conflictual` — moot: its door is the emitted insult, which is not an identity.
 
-*Pourquoi l'écrire ici plutôt que dans un lexique :* la règle de symétrie est **séduisante à
-appliquer mécaniquement**, et le geste mécanique produit un défaut plus grave que celui qu'il
-corrige — poser une condition sur un non-porteur coûte plus cher que de ne pas détecter une
-non-appartenance que personne n'écrit. Le lot qui a ratifié la règle a failli le commettre ; le
-prochain le fera si rien ne l'arrête ici.
+*Why write it here rather than in a lexicon:* the symmetry rule is **seductive to apply mechanically**,
+and the mechanical gesture produces a defect more serious than the one it corrects — laying a condition
+on a non-carrier costs more than not detecting a non-belonging that no one writes. The batch that
+ratified the rule nearly committed it; the next one will if nothing stops it here.
 
-*Et le corollaire qui décide de la FORME d'une réparation :* ce qui se vérifie n'est pas le
-**décompte** mais la **marge de redondance** — combien de chemins indépendants mènent à un constat
-depuis chaque versant. Une table équilibrée en colonnes peut rester asymétrique en chemins ; c'est ce
-que le lot `politics` a mesuré, et son axe grossier symétrique a sauvé une voix tout en cachant le
-défaut à tous les compteurs verts. Une symétrie ne se déclare donc **jamais globalement** : elle se
-déclare **par chemin**, et les chemins qui restent inégaux se publient à côté du vert.
+*And the corollary that decides the FORM of a repair:* what is verified is not the **count** but the
+**redundancy margin** — how many independent paths lead to a finding from each side. A table balanced
+in columns can stay asymmetric in paths; that is what the `politics` batch measured, and its coarse
+symmetric axis saved one voice while hiding the defect from all the green counters. A symmetry is
+therefore **never declared globally**: it is declared **per path**, and the paths that stay unequal are
+published next to the green.
 *`detect/sexuality-symmetry.test.ts`, `detect/religion-symmetry.test.ts`,
-`detect/politics-symmetry.test.ts` — chacun déclarant le chemin qu'il tient et ceux qu'il ne tient
-pas.*
+`detect/politics-symmetry.test.ts` — each declaring the path it holds and those it does not hold.*
 
-> **Ce que la règle ne promet pas :** un versant peut être **admis et ne jamais se déclencher**.
-> Mesuré sur `sexuality` en français — les quatre termes majoritaires n'ajoutent aucun constat sur
-> aucune voix scellée, parce que **personne ne déclare son hétérosexualité**. La règle porte sur ce
-> que le lexique **peut** lire, jamais sur ce que le corpus **écrit** : la rareté d'usage est une
-> raison de n'attendre aucun gain, jamais une raison de ne pas réparer. Un témoin qui laisserait
-> croire à une parité d'**effet** mentirait.
+> **What the rule does not promise:** a side can be **admitted and never trigger**. Measured on
+> `sexuality` in French — the four majority terms add no finding on any sealed voice, because **no one
+> declares their heterosexuality**. The rule bears on what the lexicon **can** read, never on what the
+> corpus **writes**: rarity of usage is a reason to expect no gain, never a reason not to repair. A
+> witness that let one believe in a parity of **effect** would lie.
 
-## L'incertitude, et la pluralité des lectures
+## Uncertainty, and the plurality of readings
 
-**Trois états de vérité-terrain, pas deux.** Pour chaque (personne × label) : **vécu** (tag attendu) ·
-**signal-sans-vécu**, signal réel mais ne concernant pas la personne (**tag attendu aussi**) ·
-**non-porteur réel**, aucun vrai signal, juste du texte qui en a la forme → **aucun tag**.
+**Three states of ground truth, not two.** For each (person × label): **lived** (tag expected) ·
+**signal-without-lived-experience**, a real signal but not concerning the person (**tag also
+expected**) · **real non-carrier**, no real signal, just text that has the form of one → **no tag**.
 
-**Le signal-sans-vécu tagué n'est pas un faux positif — c'est la démonstration.** Quand l'outil tague
-« intérêt santé mentale » sur quelqu'un qui cherche pour son adolescent, il ne se trompe pas : **la
-plateforme ne sait pas « pour qui » vaut le signal, et elle tague quand même**, et cette indistinction
-est précisément ce qu'on montre. Le seul tort à compter est le **non-porteur réel tagué**, d'où **deux
-compteurs séparés, jamais additionnés** : le volume signal-sans-vécu (attendu **haut** — voulu) et le
-tort (voulu **bas**). *`detect/register-bench.harness.ts`, en trois assertions distinctes.*
+**A tagged signal-without-lived-experience is not a false positive — it is the demonstration.** When
+the tool tags "mental-health interest" on someone searching for their teenager, it is not wrong: **the
+platform does not know "for whom" the signal holds, and it tags anyway**, and that indistinction is
+precisely what we show. The only harm to count is the **tagged real non-carrier**, hence **two separate
+counters, never added together**: the signal-without-lived-experience volume (expected **high** —
+wanted) and the harm (wanted **low**). *`detect/register-bench.harness.ts`, in three distinct
+assertions.*
 
-**Un constat sensible n'a pas une seule lecture valide, et c'est l'axe, pas l'exception.** Quand le
-classifieur tague « religion » sur « le calme d'une vieille église m'apaise », il n'a pas commis une
-erreur technique : il a **tranché une ambiguïté réelle** qu'aucune donnée ne permettait de trancher.
-**Le tort n'est donc pas toujours d'avoir *vu* un signal absent ; c'est parfois d'avoir choisi une
-lecture là où plusieurs coexistaient.** Religion n'est pas « pratiquant » seulement : c'est l'axe
-**pratiquant ↔ critique**. *Le rôle de l'outil est de montrer cette pluralité, pas de la résoudre à
-la place de la personne.*
+**A sensitive finding does not have a single valid reading, and it is the axis, not the exception.**
+When the classifier tags "religion" on « le calme d'une vieille église m'apaise », it did not commit a
+technical error: it **decided a real ambiguity** that no data allowed to decide. **The harm is
+therefore not always to have *seen* an absent signal; it is sometimes to have chosen one reading where
+several coexisted.** Religion is not "practicing" only: it is the **practicing ↔ critical** axis. *The
+tool's role is to show this plurality, not to resolve it in the person's stead.*
 
-**Éventail de lectures, ordonné ou à égalité — jamais chiffré.** Une preuve peut porter les lectures
-possibles du même signal, avec un **mode explicite** : `ranked` (une lecture domine) ou `equal`
-(aucune privilégiée). L'éventail s'attache à **une preuve au sein d'un constat**, pas au constat
-global : deux preuves d'un même constat peuvent porter des éventails différents. Un constat explicite
-**à haute confiance** n'a **pas** d'éventail.
+**A fan of readings, ordered or tied — never quantified.** A piece of evidence can carry the possible
+readings of the same signal, with an **explicit mode**: `ranked` (one reading dominates) or `equal`
+(none privileged). The fan attaches to **one piece of evidence within a finding**, not to the global
+finding: two pieces of evidence of the same finding can carry different fans. An explicit finding **at
+high confidence** does **not** have a fan.
 
-**Le constat nommé porte un éventail `ranked`.** Ne pas lui en donner supposerait que l'étage nommé
-**résout** l'ambiguïté ; il n'en résout qu'une, la **lexicale** — *quel* sujet est en jeu — et ne dit
-rien du **pourquoi** : « témoignages burn out » écrit le terme en toutes lettres et reste une
-recherche de témoignages, où vécu, proche et curiosité restent tous ouverts. **Chercher n'est pas
-déclarer.** `ranked` exprime exactement cela — écrire le terme à son propre sujet **déplace** la
-vraisemblance sans **fermer** le reste ; `equal` y serait faux.
+**The named finding carries a `ranked` fan.** Not giving it one would suppose that the named tier
+**resolves** the ambiguity; it resolves only one, the **lexical** one — *which* subject is at stake —
+and says nothing of the **why**: « témoignages burn out » spells out the term and remains a search for
+testimonies, where lived experience, relative and curiosity all stay open. **To search is not to
+declare.** `ranked` expresses exactly that — writing the term about oneself **shifts** the likelihood
+without **closing** the rest; `equal` would be false there.
 
-**Le verrou, non négociable :** la confiance vit sur le **constat**, **jamais par lecture**. Aucune
-pondération, aucun pourcentage, aucune couleur par lecture : `ranked` **ordonne, il ne chiffre pas**.
-Pondérer un motif reviendrait à **classer l'intention**, ce que la machine ne sait pas faire.
-*`engine/readings-invariant.test.ts`, au runtime et au type ; attachement à la preuve par
-`engine/claim-fan-invariant.test.ts`.*
+**The lock, non-negotiable:** confidence lives on the **finding**, **never per reading**. No weighting,
+no percentage, no color per reading: `ranked` **orders, it does not quantify**. Weighting a motive
+would amount to **classifying the intention**, which the machine cannot do. *`engine/readings-invariant.test.ts`,
+at runtime and at type; attachment to evidence by `engine/claim-fan-invariant.test.ts`.*
 
-**Neutralité : ne pas inscrire de biais moral dans le silence.** Un outil qui détecterait « croyant »
-mais refuserait pudiquement de détecter « critique virulent de la religion » prendrait **position** —
-il traiterait la foi comme une donnée et l'anti-cléricalisme comme un tabou. Une plateforme infère
-aussi bien l'un que l'autre. **Le silence sélectif est un jugement déguisé.**
+**Neutrality: do not inscribe a moral bias in the silence.** A tool that detected "believer" but
+prudishly refused to detect "virulent critic of religion" would take a **position** — it would treat
+faith as data and anti-clericalism as a taboo. A platform infers one as well as the other. **Selective
+silence is a disguised judgment.**
 
-**L'éventail est pour ce que la donnée porte en double, jamais pour ce qu'elle ne porte pas.** Il est
-légitime quand **plusieurs lectures coexistent réellement dans la personne** : « le calme d'une
-vieille église m'apaise » *est* une appréciation culturelle et *peut* être une pratique — la donnée
-porte les deux. Il est illégitime quand le discriminant est **absent de l'export** : celui qui écrit
-« t'es qu'un abruti » *sait* s'il s'adresse à une amie ; ce n'est pas ambigu pour lui, c'est absent
-pour nous. **Habiller « nous ne pouvons pas savoir » en « voici les lectures légitimes » fabrique une
-fausse pluralité** et donne à une **incapacité** l'apparence de la nuance. *Le test, en une
-question :* la seconde lecture est-elle **dans la donnée**, ou dans ce qui lui manque ? Éventail dans
-le premier cas ; dans le second, la réponse est le **volume admis** et le tort inscrit, jamais un
-éventail.
+**The fan is for what the data carries in double, never for what it does not carry.** It is legitimate
+when **several readings really coexist in the person**: « le calme d'une vieille église m'apaise » *is*
+a cultural appreciation and *may* be a practice — the data carries both. It is illegitimate when the
+discriminant is **absent from the export**: the one who writes « t'es qu'un abruti » *knows* whether
+they are addressing a friend; it is not ambiguous for them, it is absent for us. **Dressing "we cannot
+know" up as "here are the legitimate readings" fabricates a false plurality** and gives an
+**inability** the appearance of nuance. *The test, in one question:* is the second reading **in the
+data**, or in what it lacks? A fan in the first case; in the second, the answer is the **admitted
+volume** and the harm recorded, never a fan.
 
-**« Plusieurs lectures » n'est pas « tout se vaut ».** Une lecture purement métaphorique — « marché
-déprimé » — n'est pas une interprétation à respecter : c'est le non-porteur réel, et il reste un tort
-à compter. La pluralité ne dilue pas le tort, et elle s'affiche sans se pondérer.
+**"Several readings" is not "everything is equal".** A purely metaphorical reading — « marché déprimé »
+— is not an interpretation to respect: it is the real non-carrier, and it stays a harm to count.
+Plurality does not dilute the harm, and it displays itself without weighting.
 
-**Le registre des lectures vit dans le catalogue**, label par label : l'ADR fige le **principe**, le
-catalogue tient le **journal** — parce que la pluralité dépend du thème, et que l'axe de religion
-n'est pas celui de la santé mentale.
+**The register of readings lives in the catalog**, label by label: the ADR freezes the **principle**,
+the catalog keeps the **journal** — because plurality depends on the theme, and the axis of religion is
+not that of mental health.
 
-## La preuve est citée, et sa réutilisation est montrée
+## Evidence is cited, and its reuse is shown
 
-Chaque constat porte ses **items-source dépliables**, et la page montre quand un même item nourrit
-**plusieurs** constats (« aussi exploité par… »). *Raison :* c'est l'argument le plus concret du
-produit — voir une phrase anodine alimenter à la fois un constat de santé et un constat de rythme de
-vie montre, sans rien avoir à expliquer, comment une plateforme presse chaque miette dans plusieurs
-directions. La réutilisation visible n'est pas une optimisation d'affichage : c'est ce qui rend
-l'extraction tangible.
+Each finding carries its **expandable source items**, and the page shows when the same item feeds
+**several** findings ("also exploited by…"). *Reason:* it is the product's most concrete argument —
+seeing an innocuous phrase feed both a health finding and a life-rhythm finding shows, without anything
+to explain, how a platform presses each crumb in several directions. Visible reuse is not a display
+optimization: it is what makes the extraction tangible.
 
-**Borne mémoire :** ne transitent moteur→UI que les items **effectivement cités par un constat**. Le
-volume est borné par le **nombre de constats**, pas par la taille de l'export — l'invariant d'ADR-0002
-tient. *`rules/d1-sensitive-topics.test.ts` : le non-porteur n'apparaît jamais.*
+**Memory bound:** only the items **actually cited by a finding** transit engine→UI. The volume is
+bounded by the **number of findings**, not by the size of the export — ADR-0002's invariant holds.
+*`rules/d1-sensitive-topics.test.ts`: the non-carrier never appears.*
 
-## Ce qui porte la sécurité : la porte, pas le seuil
+## What carries safety: the door, not the threshold
 
-Un constat sensible **démarre replié**, derrière un en-tête qui porte un badge **« sensible »**.
-Ouvrir est un geste. **Le repli est la porte du consentement ; le badge dit ce qu'il y a derrière.**
+A sensitive finding **starts folded**, behind a header carrying a **"sensitive"** badge. Opening is a
+gesture. **The fold is the door of consent; the badge says what is behind it.**
 
-La protection vient de là — du repli, du badge, de l'éventail de lectures et de la confiance visible —
-et **pas du seuil de détection**. L'énoncé a deux moitiés, qui tiennent séparément :
+Protection comes from there — from the fold, the badge, the fan of readings and the visible confidence
+— and **not from the detection threshold**. The statement has two halves, which hold separately:
 
-- **La porte protège du coup d'œil non consenti** — carte vue par-dessus l'épaule, capture, démo. Le
-  repli remplit cette fonction, le badge la rend informée.
-- **Monter un seuil rendrait l'affichage du sensible *plus lourd* — réservé aux cas les plus nets —
-  sans le rendre plus sûr.** Sous le repli, le seuil ne décide que **combien de cartes apparaissent** ;
-  chacune est déjà derrière une porte. Moins-mais-plus-net n'ajoute aucune sécurité, et retire de la
-  démonstration.
+- **The door protects against the unconsented glance** — a card seen over the shoulder, a screenshot, a
+  demo. The fold fills this function, the badge makes it informed.
+- **Raising a threshold would make the display of the sensitive *heavier* — reserved for the sharpest
+  cases — without making it safer.** Under the fold, the threshold only decides **how many cards
+  appear**; each is already behind a door. Fewer-but-sharper adds no safety, and removes from the
+  demonstration.
 
-**Traitement plat sur les six labels, `mental_health` compris.** Pas de graduation : les six sont
-derrière la même porte. Un traitement gradué se rouvrira avec le **cadrage abus / VSS**, différé en
-R&D et non tranché à ce jour. **D'ici là**, un cran de protection réservé à un label serait une
-décision arbitraire, et cette doctrine existe pour ne pas en porter.
+**Flat treatment on the six labels, `mental_health` included.** No gradation: the six are behind the
+same door. A graded treatment will reopen with the **abuse / sexual-violence framing**, deferred to R&D
+and not decided to this day. **Until then**, a notch of protection reserved for one label would be an
+arbitrary decision, and this doctrine exists so as not to carry one.
 
-## Options écartées
+## Options discarded
 
-Chacune a été considérée ; le raisonnement vit dans la section citée.
+Each has been considered; the reasoning lives in the cited section.
 
-- **Le sensible en phrase, ou en verdict d'identité**, à n'importe quel niveau de confiance. *(Le cadrage)*
-- **Tout faux positif traité comme un déchet** — le signal-sans-vécu tagué *est* la démonstration, et certains faux positifs sont des **lectures alternatives, pas des bugs**. *(L'incertitude)*
-- **Retirer un terme parce qu'il produit des faux positifs** — seul s'en va celui qui ne se déclenche QUE sur des non-porteurs, et sur la sémantique, pas sur un décompte. Quand la gêne porte sur l'affirmation, l'outil est la rétrogradation. *(L'admission d'un terme)*
-- **Donner un éventail à une incapacité** — discriminant absent de l'export : le dire est la seule réponse honnête. *(L'incertitude)*
-- **Le seuil de détection comme levier de sécurité** — coûte de la démonstration sans acheter de sûreté. *(La porte, pas le seuil)*
-- **Le silence sélectif comme posture neutre** — ne détecter qu'une face d'un axe est un biais moral. *(L'incertitude)*
-- **Une amélioration qui cacherait la pauvreté des moyens** — la ligne rouge. *(La posture)*
-- **Rétrograder un terme hyperbolique en colloquial** — le seuil accumule l'hyperbole au lieu de la filtrer. *(L'admission d'un terme)*
-- **Appliquer la règle d'admission à l'éviction** — un terme en place se retire sur ablation, pas sur doctrine. *(L'admission d'un terme)*
-- **Livrer la détresse vitale dans un lot non mesuré** — le coût d'erreur maximal se livre séparément, son report s'inscrit comme dette. *(L'admission d'un terme)*
-- **Le nom de maladie devenu insulte traité comme une hyperbole** — l'insulte applique la maladie à un tiers et relève d'un autre label. *(L'admission d'un terme)*
-- **Annoter une couverture LATENTE comme une vivante** — sous une conjonction, l'annotation enregistre une dette, pas un état. *(L'admission d'un terme)*
-- **Traiter par un filtre un discriminant absent de l'export** — le texte ne porte pas la relation ; la réponse est le volume admis. *(La limite que la donnée ne lève pas)*
-- **Le registre informationnel comme un filtre de plus** — un filtre fabrique un faux négatif aveugle ; une règle d'étage sous-affirme, ce qui se rattrape. *(Le registre informationnel)*
-- **Traiter la négation de la même façon sur les six labels** — sur un label de SUJET elle porte la polarité, pas l'absence de sujet, et la supprimer rend le produit sourd à l'opposition, donc au seul camp qui n'adhère pas. *(L'état et le sujet)*
-- **Exempter la négation au lieu de dégrader, sur un label de sujet** — poserait un constat NOMMÉ sur une phrase qui nie. *(L'état et le sujet)*
-- **Appliquer la règle de symétrie à un label sans axe** — `valide` / `neurotypique` nomment l'ABSENCE de la condition détectée, et les admettre poserait un constat sur qui écrit ne rien avoir. *(La symétrie d'un axe)*
-- **Vérifier une symétrie au DÉCOMPTE** — une table équilibrée en colonnes reste asymétrique en chemins ; ce qui se mesure est la marge de redondance, par chemin. *(La symétrie d'un axe)*
-- **Exiger un ancrage 1ʳᵉ personne** — mesuré : il dégraderait aussi la personne concernée. *(Le registre informationnel)*
-- **Croire qu'un meilleur lexique résoudra l'oblique.** Celle-ci mérite ses lignes, parce qu'elle se
-  représentera : enrichir le lexique **repousse la frontière de l'explicite** mais **ne résoudra
-  jamais l'oblique pur** — « no futur… » n'a aucun mot à ajouter. Le jour où quelqu'un proposera un
-  lexique de plus pour combler le mur, c'est ici qu'il faut revenir.
+- **The sensitive as a sentence, or as an identity verdict**, at any confidence level. *(The framing)*
+- **Every false positive treated as waste** — the tagged signal-without-lived-experience *is* the demonstration, and some false positives are **alternative readings, not bugs**. *(Uncertainty)*
+- **Removing a term because it produces false positives** — only the one that triggers ONLY on non-carriers goes away, and on semantics, not on a count. When the discomfort bears on the assertion, the tool is demotion. *(The admission of a term)*
+- **Giving a fan to an inability** — discriminant absent from the export: saying so is the only honest answer. *(Uncertainty)*
+- **The detection threshold as a safety lever** — costs demonstration without buying safety. *(The door, not the threshold)*
+- **Selective silence as a neutral stance** — detecting only one face of an axis is a moral bias. *(Uncertainty)*
+- **An improvement that would hide the poverty of the means** — the red line. *(The stance)*
+- **Demoting a hyperbolic term to colloquial** — the threshold accumulates hyperbole instead of filtering it. *(The admission of a term)*
+- **Applying the admission rule to eviction** — a term in place is removed on ablation, not on doctrine. *(The admission of a term)*
+- **Delivering vital distress in an unmeasured batch** — maximal cost of error is delivered separately, its deferral recorded as debt. *(The admission of a term)*
+- **The disease name turned insult treated as a hyperbole** — the insult applies the disease to a third party and belongs to another label. *(The admission of a term)*
+- **Annotating a LATENT coverage as a live one** — under a conjunction, the annotation records a debt, not a state. *(The admission of a term)*
+- **Handling with a filter a discriminant absent from the export** — the text does not carry the relationship; the answer is the admitted volume. *(The limit the data does not lift)*
+- **The informational register as one more filter** — a filter fabricates a blind false negative; a tier rule under-asserts, which is recoverable. *(The informational register)*
+- **Treating negation the same way on the six labels** — on a SUBJECT label it carries polarity, not the absence of subject, and suppressing it makes the product deaf to opposition, hence to the only camp that does not adhere. *(State and subject)*
+- **Exempting the negation instead of degrading, on a subject label** — would lay a NAMED finding on a sentence that negates. *(State and subject)*
+- **Applying the symmetry rule to a label without an axis** — `valide` / `neurotypique` name the ABSENCE of the detected condition, and admitting them would lay a finding on whoever writes they have none. *(The symmetry of an axis)*
+- **Verifying a symmetry by the COUNT** — a table balanced in columns stays asymmetric in paths; what is measured is the redundancy margin, per path. *(The symmetry of an axis)*
+- **Requiring first-person anchoring** — measured: it would degrade the concerned person too. *(The informational register)*
+- **Believing that a better lexicon will resolve the oblique.** This one deserves its lines, because it
+  will present itself again: enriching the lexicon **pushes back the frontier of the explicit** but
+  **will never resolve the pure oblique** — « no futur… » has no word to add. The day someone proposes
+  one more lexicon to fill the wall, this is where to come back.
 
-## Conséquences
+## Consequences
 
-**Ouvre :** un socle shippable — le lexique deux étages, borné, déterministe, sans poids ni
-hébergement ; une doctrine d'affichage **testable**, traduite en propriétés vérifiables dans
-[`docs/constats-sensibles.md`](../constats-sensibles.md) ; une pluralité des lectures extensible label
-par label **sans rouvrir cet ADR** ; une preuve du mur re-ciblable à chaque palier.
+**Opens:** a shippable base — the two-tier lexicon, bounded, deterministic, without weight or hosting;
+a **testable** display doctrine, translated into verifiable properties in
+[`docs/constats-sensibles.md`](../constats-sensibles.md); a plurality of readings extensible label by
+label **without reopening this ADR**; a proof of the wall re-aimable at each level.
 
-**Coûte :** la posture repose sur deux pièces d'UI, et chacune peut tomber sans bruit.
-L'**avertissement** est load-bearing — sans lui, l'outil est un afficheur de verdicts confiants. Le
-**repli** l'est autant : le jour où une carte sensible s'afficherait dépliée par défaut, ce n'est pas
-un détail d'affichage qui saute, c'est la porte du consentement.
+**Costs:** the stance rests on two pieces of UI, and each can fall silently. The **warning** is
+load-bearing — without it, the tool is a displayer of confident verdicts. The **fold** is just as much:
+the day a sensitive card were to display unfolded by default, it is not a display detail that gives
+way, it is the door of consent.

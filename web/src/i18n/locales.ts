@@ -1,89 +1,89 @@
-// LES LANGUES DU SITE — et l'interrupteur qui décide lesquelles sont ALLUMÉES.
+// THE SITE'S LANGUAGES — and the switch that decides which ones are ON.
 //
-// DEUX LISTES, ET C'EST LE POINT DE CE FICHIER. Elles ne disent pas la même chose, et les
-// confondre est l'erreur exacte que ce lot devait éviter :
+// TWO LISTS, AND THAT IS THE POINT OF THIS FILE. They do not say the same thing, and
+// confusing them is the exact mistake this batch had to avoid:
 //
-//   - `LOCALES` — les langues DÉCLARÉES. C'est la SYMÉTRIE : le routage, `Astro.currentLocale`,
-//     la présence du sélecteur de langue. Rien ici ne se lit sur le web.
-//   - `PUBLISHED_LOCALES` — les langues CONSTRUITES et ASSUMÉES. C'est l'INTERRUPTEUR : hreflang,
-//     canonical, alternates, sitemap, et l'état actif du sélecteur.
+//   - `LOCALES` — the DECLARED languages. This is SYMMETRY: routing, `Astro.currentLocale`,
+//     the presence of the language selector. Nothing here is read on the web.
+//   - `PUBLISHED_LOCALES` — the BUILT and OWNED languages. This is the SWITCH: hreflang,
+//     canonical, alternates, sitemap, and the active state of the selector.
 //
-// La règle qui en découle, et qui doit tenir sans qu'on y pense : **tout ce qui est indexable lit
-// `PUBLISHED_LOCALES`, tout ce qui est structurel lit `LOCALES`**. Un hreflang ou une entrée de
-// sitemap qui nommerait une langue non publiée inviterait l'indexation d'une coquille — c'est
-// précisément ce qu'un `<link rel="alternate">` sait provoquer tout seul.
+// The rule that follows, and that must hold without thinking about it: **everything indexable reads
+// `PUBLISHED_LOCALES`, everything structural reads `LOCALES`**. An hreflang or a sitemap entry
+// naming an unpublished language would invite the indexing of a shell — which is
+// precisely what a `<link rel="alternate">` can trigger on its own.
 //
-// L'ANGLAIS A ÉTÉ ÉTEINT, PUIS ALLUMÉ (éteint le 2026-07-18, allumé le 2026-07-20). Il l'était
-// pour une raison de fond et non par travail inachevé : l'analyse anglaise était DÉGRADÉE, et un
-// site anglais dont l'analyse ne rend presque rien ne se lit pas « version en cours » — il se lit
-// « il n'y a rien à voir ici », soit l'inverse exact de la thèse du produit, démontrée par le
-// produit lui-même.
+// ENGLISH WAS TURNED OFF, THEN ON (off on 2026-07-18, on on 2026-07-20). It was off
+// for a substantive reason and not out of unfinished work: the English analysis was DEGRADED, and an
+// English site whose analysis returns almost nothing does not read as "work in progress" — it reads
+// as "there is nothing to see here", the exact opposite of the product's thesis, demonstrated by the
+// product itself.
 //
-// CE QUI A CHANGÉ : les six lexiques sensibles portent désormais du vocabulaire anglais, et les
-// deux périmètres ratifiables (`engine/wording.*`, `ui/copy.*`) ont leur versant EN complet.
+// WHAT CHANGED: the six sensitive lexicons now carry English vocabulary, and the
+// two ratifiable perimeters (`engine/wording.*`, `ui/copy.*`) have their complete EN side.
 //
-// ⚠ CE QUI RESTE VRAI, MESURÉ À L'ALLUMAGE et non supposé : la parité de sortie n'est PAS acquise.
-// Sur les deux personas de démo, à volume égal (38 items chacune), le français rend 2 constats
-// sensibles + 2 thèmes, l'anglais 2 constats sensibles + 1 thème. L'écart tient à la fixture et non
-// au lexique anglais — un des deux items « chats » de la persona EN ne porte aucun mot de chat, si
-// bien que le plancher de répétition (2) n'est pas franchi ; le terme `kitten` du second, lui,
-// matche bel et bien. La distinction compte : le zéro vient du PLANCHER, pas d'un trou de
-// vocabulaire, et confondre les deux ferait chercher la correction au mauvais endroit.
+// ⚠ WHAT REMAINS TRUE, MEASURED AT SWITCH-ON and not assumed: output parity is NOT achieved.
+// On the two demo personas, at equal volume (38 items each), French returns 2 sensitive
+// findings + 2 themes, English 2 sensitive findings + 1 theme. The gap is due to the fixture and not
+// to the English lexicon — one of the two "cats" items of the EN persona carries no cat word, so
+// that the repetition floor (2) is not crossed; the term `kitten` of the second, for its part,
+// does match. The distinction matters: the zero comes from the FLOOR, not from a vocabulary
+// hole, and confusing the two would send the fix to the wrong place.
 //
-// L'ORDRE DES DEUX GESTES, gardé ici parce qu'il vaut pour la PROCHAINE langue :
-//   1. créer `src/pages/<langue>/` (les pages jumelles) ;
-//   2. ajouter la langue à `PUBLISHED_LOCALES` ci-dessous.
-// Le filet de cohérence (`locales.test.ts`) refuse l'ordre inverse : publier une langue sans
-// pages, ou construire des pages non publiées, échoue bruyamment. C'est voulu — l'oubli qu'on
-// veut rendre impossible, c'est un sitemap qui annonce une langue que personne n'a écrite.
+// THE ORDER OF THE TWO GESTURES, kept here because it holds for the NEXT language:
+//   1. create `src/pages/<language>/` (the twin pages);
+//   2. add the language to `PUBLISHED_LOCALES` below.
+// The consistency net (`locales.test.ts`) refuses the reverse order: publishing a language without
+// pages, or building unpublished pages, fails loudly. This is intended — the oversight we
+// want to make impossible is a sitemap announcing a language nobody has written.
 
-/** Les langues DÉCLARÉES — routage et symétrie. La configuration Astro LIT cette liste ; elle ne la
- * recopie pas, et c'est pour ça qu'elles ne peuvent pas diverger. */
+/** The DECLARED languages — routing and symmetry. The Astro configuration READS this list; it does
+ * not recopy it, and that is why they cannot diverge. */
 export const LOCALES = ['fr', 'en'] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
-/** La langue servie à la racine, et celle vers laquelle `/` redirige. */
+/** The language served at the root, and the one `/` redirects to. */
 export const DEFAULT_LOCALE: Locale = 'fr';
 
 /**
- * Les langues CONSTRUITES et indexables — l'interrupteur.
- * Tout ce qui s'adresse à un robot (hreflang, canonical, sitemap) se lit ICI, jamais dans `LOCALES`.
+ * The BUILT and indexable languages — the switch.
+ * Everything that addresses a bot (hreflang, canonical, sitemap) is read HERE, never in `LOCALES`.
  */
 export const PUBLISHED_LOCALES: readonly Locale[] = ['fr', 'en'];
 
-/** `true` si la langue a des pages construites et assumées. */
+/** `true` if the language has built and owned pages. */
 export function isPublished(locale: Locale): boolean {
   return PUBLISHED_LOCALES.includes(locale);
 }
 
 /**
- * Le chemin d'une page DANS une langue : `('fr', '/analyse')` → `/fr/analyse`.
+ * The path of a page IN a language: `('fr', '/analyse')` → `/fr/analyse`.
  *
- * `path` est le chemin SANS langue, tel qu'il s'écrivait avant ce lot (« / », « /analyse »,
- * « /analyse?demo »). La racine rend `/fr` et non `/fr/` — une seule forme d'URL, donc un seul
- * canonical possible.
+ * `path` is the path WITHOUT language, as it was written before this batch (« / », « /analyse »,
+ * « /analyse?demo »). The root renders `/fr` and not `/fr/` — a single URL form, thus a single
+ * possible canonical.
  *
- * NE PAS lui passer une ancre (`#sec-activite`) ni un chemin d'asset (`/logo.png`) : ces deux-là
- * n'ont pas de langue, et les préfixer casserait respectivement la navigation interne et le
- * chargement des images.
+ * DO NOT pass it an anchor (`#sec-activite`) nor an asset path (`/logo.png`): those two
+ * have no language, and prefixing them would break, respectively, internal navigation and image
+ * loading.
  */
 export function localePath(locale: Locale, path: string): string {
   return path === '/' ? `/${locale}` : `/${locale}${path}`;
 }
 
 /**
- * Les pages du site, en chemins SANS langue. L'espace d'URL du site est le produit de cette liste
- * par `PUBLISHED_LOCALES` — c'est ce que le sitemap déclare, et ce que le filet de cohérence
- * vérifie contre les fichiers réellement présents dans `src/pages/`.
+ * The site's pages, as paths WITHOUT language. The site's URL space is the product of this list
+ * by `PUBLISHED_LOCALES` — it is what the sitemap declares, and what the consistency net
+ * verifies against the files actually present in `src/pages/`.
  *
- * N'y entre que ce qui se VISITE et s'indexe : ni la racine (qui redirige et se canonise vers la
- * langue par défaut), ni les redirections des anciennes URLs.
+ * Only what is VISITED and indexed enters here: neither the root (which redirects and canonizes to
+ * the default language), nor the redirects of the old URLs.
  */
 export const PAGE_PATHS = ['/', '/analyse', '/mentions-legales'] as const;
 
-/** Le code BCP 47 attendu par `<html lang>` et `hreflang`. */
+/** The BCP 47 code expected by `<html lang>` and `hreflang`. */
 export const HTML_LANG: Record<Locale, string> = { fr: 'fr', en: 'en' };
 
-/** Le code attendu par `og:locale`, qui exige la forme `langue_PAYS`. */
+/** The code expected by `og:locale`, which requires the `language_COUNTRY` form. */
 export const OG_LOCALE: Record<Locale, string> = { fr: 'fr_FR', en: 'en_US' };

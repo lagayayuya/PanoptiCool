@@ -1,51 +1,51 @@
-// Formatage des NOMBRES — LE seul endroit qui décide d'un séparateur, dans la langue de la page.
+// NUMBER formatting — THE only place that decides on a separator, in the page's language.
 //
-// POURQUOI CE FICHIER EXISTE. Le groupement des milliers était écrit À LA MAIN, deux fois, avec la
-// MÊME regex — et deux séparateurs DIFFÉRENTS : `ActivitySection` posait une espace ASCII,
-// `time-estimate` une fine insécable (U+202F). Le golden le montrait sans que personne le lise :
-// « 50 000 » y était rendu à l'espace ASCII, et pas un seul U+202F n'y figurait. La divergence était
-// LATENTE — l'estimation de temps ne dépasse jamais 1 000 h dans la persona, donc son séparateur
-// n'était jamais rendu. Une duplication ne se contente pas de se répéter : elle se met à mentir, et
-// le témoin ne le voit pas.
+// WHY THIS FILE EXISTS. The thousands grouping was written BY HAND, twice, with the
+// SAME regex — and two DIFFERENT separators: `ActivitySection` placed an ASCII space,
+// `time-estimate` a narrow no-break space (U+202F). The golden showed it without anyone reading it:
+// « 50 000 » was rendered there with the ASCII space, and not a single U+202F appeared in it. The divergence was
+// LATENT — the time estimate never exceeds 1,000 h in the persona, so its separator
+// was never rendered. A duplication does not merely repeat itself: it starts to lie, and
+// the witness does not see it.
 //
-// La typographie FR distingue DEUX espaces, et c'est plus fin que ce qu'on écrit de mémoire :
-// FINE insécable (U+202F) pour les milliers, mais insécable ORDINAIRE (U+00A0) devant « % ».
-// Le code à la main ne posait ni l'une ni l'autre. `Intl.NumberFormat` suit CLDR et pose les deux au
-// bon endroit — raison principale de ne plus les écrire soi-même.
+// FR typography distinguishes TWO spaces, and it is subtler than what one writes from memory:
+// a NARROW no-break space (U+202F) for thousands, but an ORDINARY no-break space (U+00A0) before « % ».
+// The hand-written code placed neither. `Intl.NumberFormat` follows CLDR and places both in the
+// right spot — the main reason not to write them oneself anymore.
 //
-// ─── CE FICHIER ÉTAIT ÉPINGLÉ SUR `fr-FR`, ET LES NOMS LE DISAIENT (lot i18n-EN) ────────────────
-// Les six formateurs construisaient `Intl.NumberFormat('fr-FR')` EN DUR. En anglais, cela aurait
-// rendu — mesuré, pas supposé :
-//   « 50 000 » avec un U+202F là où l'anglais écrit « 50,000» ;
-//   « 42 % » avec un U+00A0 là où l'anglais écrit « 42% » ;
-//   « 0 comment » AU SINGULIER, parce que le français met zéro au singulier et l'anglais au pluriel.
-// Le préfixe `fr` des noms (`frInt`, `frPercent`…) serait alors devenu un mensonge — d'où le
-// renommage, qui n'est pas cosmétique : un nom qui ment coûte plus cher qu'un renommage mécanique.
+// ─── THIS FILE WAS PINNED TO `fr-FR`, AND THE NAMES SAID SO (i18n-EN batch) ─────────────────────
+// The six formatters built `Intl.NumberFormat('fr-FR')` HARD-CODED. In English, that would have
+// rendered — measured, not assumed:
+//   « 50 000 » with a U+202F where English writes « 50,000» ;
+//   « 42 % » with a U+00A0 where English writes « 42% » ;
+//   « 0 comment » IN THE SINGULAR, because French puts zero in the singular and English in the plural.
+// The `fr` prefix of the names (`frInt`, `frPercent`…) would then have become a lie — hence the
+// rename, which is not cosmetic: a name that lies costs more than a mechanical rename.
 //
-// LA LANGUE SE RÉSOUT UNE FOIS, AU CHARGEMENT DU MODULE, comme dans `ui/copy.ts` et pour la même
-// raison : elle est constante pour la vie de la page (`<html lang>`, cf. `i18n/current.ts`), et la
-// passer en paramètre aurait réécrit 57 sites d'appel sans rien apprendre à personne.
+// THE LANGUAGE RESOLVES ONCE, AT MODULE LOAD, as in `ui/copy.ts` and for the same
+// reason: it is constant for the life of the page (`<html lang>`, cf. `i18n/current.ts`), and
+// passing it as a parameter would have rewritten 57 call sites without teaching anyone anything.
 //
-// ⚠ CONSÉQUENCE POUR LES TESTS, et elle vaut aussi pour `ui/copy.ts` : rendre de l'anglais en Node
-// suppose de poser `document.documentElement.lang` AVANT l'import du module, donc `vi.resetModules()`
-// + import dynamique. En oublier UN des deux fichiers rendrait un arbre anglais avec des nombres
-// français — un défaut invisible à l'œil, qu'un golden figerait sans que personne le lise.
+// ⚠ CONSEQUENCE FOR THE TESTS, and it also holds for `ui/copy.ts`: rendering English in Node
+// requires setting `document.documentElement.lang` BEFORE the module's import, so `vi.resetModules()`
+// + a dynamic import. Forgetting ONE of the two files would render an English tree with French
+// numbers — a defect invisible to the eye, that a golden would freeze without anyone reading it.
 //
-// ⚠ CE QUE LE COUPLAGE À `Intl` COÛTE, et qui doit rester visible : la sortie dépend de la version
-// d'ICU embarquée par Node. fr-FR n'émet U+202F qu'à partir d'ICU 72 (Node ≥ 18.1) ; avant, c'était
-// U+00A0. Le golden de rendu fige donc, indirectement, une version d'ICU. Si la CI vire au rouge sur
-// un séparateur invisible, c'est ICI qu'il faut regarder — le repli est un helper écrit à la main
-// qui pose U+202F sans passer par `Intl`, déterministe et sans couplage.
+// ⚠ WHAT THE COUPLING TO `Intl` COSTS, and what must stay visible: the output depends on the version
+// of ICU bundled by Node. fr-FR only emits U+202F from ICU 72 (Node ≥ 18.1); before, it was
+// U+00A0. The render golden therefore freezes, indirectly, an ICU version. If CI turns red on
+// an invisible separator, it is HERE one must look — the fallback is a hand-written helper
+// that places U+202F without going through `Intl`, deterministic and without coupling.
 //
-// PAS ICI : les valeurs CSS (`EyeLogo` écrit `${ang.toFixed(1)}deg`). Le CSS exige le point
-// décimal — le formater « à la française » produirait une déclaration invalide.
+// NOT HERE: CSS values (`EyeLogo` writes `${ang.toFixed(1)}deg`). CSS requires the decimal
+// point — formatting it "the French way" would produce an invalid declaration.
 
 import { currentLocale } from '../i18n/current';
 import type { Locale } from '../i18n/locales';
 
-/** Le tag BCP 47 complet qu'`Intl` attend. `<html lang>` porte « fr »/« en » ; CLDR veut la RÉGION
- *  pour trancher les séparateurs (`en-US` groupe à la virgule, `en-IN` par lakhs). Aligné sur
- *  `OG_LOCALE`, qui déclare déjà `en_US` pour ce site. */
+/** The full BCP 47 tag that `Intl` expects. `<html lang>` carries « fr »/« en »; CLDR wants the REGION
+ *  to decide the separators (`en-US` groups with the comma, `en-IN` by lakhs). Aligned on
+ *  `OG_LOCALE`, which already declares `en_US` for this site. */
 const INTL_TAG: Record<Locale, string> = { fr: 'fr-FR', en: 'en-US' };
 
 const TAG = INTL_TAG[currentLocale()];
@@ -54,15 +54,15 @@ const INT = new Intl.NumberFormat(TAG, { maximumFractionDigits: 0 });
 const ONE_DECIMAL = new Intl.NumberFormat(TAG, { maximumFractionDigits: 1 });
 const PERCENT = new Intl.NumberFormat(TAG, { style: 'percent', maximumFractionDigits: 0 });
 
-/** Entier groupé par milliers (« 50 000 » / « 50,000 »). Arrondi, comme les compteurs l'étaient. */
+/** Integer grouped by thousands (« 50 000 » / « 50,000 »). Rounded, as the counters were. */
 export function formatInt(n: number): string {
   return INT.format(Math.round(n));
 }
 
 /**
- * Nombre à UNE décimale au plus — entier quand il tombe rond.
- * Le « au plus » est le point : il évite « 1,0 jour » là où le singulier attend « 1 jour »
- * (`Number.isInteger` + `toFixed(1)` faisaient ce travail à la main, au point décimal près).
+ * Number with AT MOST one decimal — an integer when it comes out round.
+ * The "at most" is the point: it avoids « 1,0 jour » where the singular expects « 1 jour »
+ * (`Number.isInteger` + `toFixed(1)` did this work by hand, up to the decimal point).
  */
 export function formatDecimal(n: number): string {
   return ONE_DECIMAL.format(n);
@@ -74,23 +74,23 @@ const FIXED_ONE_DECIMAL = new Intl.NumberFormat(TAG, {
 });
 
 /**
- * Nombre à EXACTEMENT une décimale — « 2,0 » et non « 2 ».
+ * Number with EXACTLY one decimal — « 2,0 » and not « 2 ».
  *
- * ⚠ NE PAS CONFONDRE AVEC `formatDecimal`, dont c'est l'exact opposé, et les deux sont voulus :
- *   - `formatDecimal` laisse tomber la décimale nulle, parce que « 1 jour » se lit et « 1,0 jour » non ;
- *   - celle-ci la GARDE, pour une COLONNE de valeurs comparables (les tailles de modèles) où « 2 Go »
- *     au milieu de « 2,2 / 1,9 / 1,5 » casse l'alignement et suggère une précision différente.
- * La règle n'est donc pas « une décimale » mais « une décimale À CÔTÉ DE QUOI ».
+ * ⚠ DO NOT CONFUSE WITH `formatDecimal`, of which it is the exact opposite, and both are intended:
+ *   - `formatDecimal` drops the null decimal, because « 1 jour » reads and « 1,0 jour » does not;
+ *   - this one KEEPS it, for a COLUMN of comparable values (the model sizes) where « 2 Go »
+ *     in the middle of « 2,2 / 1,9 / 1,5 » breaks the alignment and suggests a different precision.
+ * The rule is therefore not "one decimal" but "one decimal NEXT TO WHAT".
  */
 export function formatFixedDecimal(n: number): string {
   return FIXED_ONE_DECIMAL.format(n);
 }
 
 /**
- * Pourcentage à partir d'un RATIO (0–1). Insécable ordinaire (U+00A0) devant « % » en français,
- * rien du tout en anglais — c'est CLDR qui tranche, pas ce fichier.
- * ⚠ Prend un ratio, pas une valeur 0–100 : c'est la convention d'`Intl`, et la respecter évite
- * l'erreur de facteur 100 qu'une signature « percent(n: number) » invite.
+ * Percentage from a RATIO (0–1). An ordinary no-break space (U+00A0) before « % » in French,
+ * nothing at all in English — CLDR decides, not this file.
+ * ⚠ Takes a ratio, not a 0–100 value: it is `Intl`'s convention, and respecting it avoids
+ * the factor-100 error that a « percent(n: number) » signature invites.
  */
 export function formatPercent(ratio: number): string {
   return PERCENT.format(ratio);
@@ -99,13 +99,13 @@ export function formatPercent(ratio: number): string {
 const PLURAL = new Intl.PluralRules(TAG);
 
 /**
- * Accord en nombre — ⚠ LE FRANÇAIS MET 0 AU SINGULIER (« 0 commentaire »), L'ANGLAIS AU PLURIEL
- * (« 0 comments »). C'est exactement la raison d'utiliser `Intl.PluralRules` plutôt qu'un `n > 1`
- * écrit à la main : la règle est portée par CLDR, pas par la mémoire de qui écrit la ligne — et
- * elle CHANGE d'une langue à l'autre, sur le cas que personne ne teste.
+ * Number agreement — ⚠ FRENCH PUTS 0 IN THE SINGULAR (« 0 commentaire »), ENGLISH IN THE PLURAL
+ * (« 0 comments »). This is exactly the reason to use `Intl.PluralRules` rather than a hand-written
+ * `n > 1`: the rule is carried by CLDR, not by the memory of whoever writes the line — and
+ * it CHANGES from one language to another, on the case nobody tests.
  *
- * Remplace les esquives « commentaire(s) » — une parenthèse n'est pas un accord, c'est l'aveu de
- * ne pas l'avoir fait, et elle se lit à voix haute aussi mal qu'elle s'écrit.
+ * Replaces the « commentaire(s) » dodges — a parenthesis is not an agreement, it is the admission of
+ * not having made it, and it reads aloud as badly as it is written.
  */
 export function plural(n: number, one: string, many: string): string {
   return PLURAL.select(n) === 'one' ? one : many;

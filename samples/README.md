@@ -1,40 +1,40 @@
-# Échantillon — export TikTok synthétique
+# Sample — synthetic TikTok export
 
-`user_data_tiktok.sample.zip` est un **faux export TikTok 100 % synthétique** (petit
-volume), structurellement conforme au contrat `docs/tiktok-export-schema.md`. Aucune
-valeur n'est réelle ; aucune ne désigne une personne réelle (voir l'invariant de
-privacy dans `CLAUDE.md`).
+`user_data_tiktok.sample.zip` is a **100% synthetic fake TikTok export** (small
+volume), structurally conforming to the contract `docs/tiktok-export-schema.md`. No
+value is real; none designates a real person (see the privacy invariant in
+`CLAUDE.md`).
 
-## Contenu
-- `user_data_tiktok.json` — les 10 catégories top-level ; `Watch History` ≈ 300 entrées,
-  les autres sections à l'échelle des poids réels (§2). ~64 Ko décompressé.
+## Contents
+- `user_data_tiktok.json` — the 10 top-level categories; `Watch History` ≈ 300 entries,
+  the other sections at the scale of the real weights (§2). ~64 KB uncompressed.
 
-## Reproduire à l'identique
-L'archive est déterministe (graine fixe, date ZIP figée) :
+## Reproduce identically
+The archive is deterministic (fixed seed, frozen ZIP date):
 
 ```sh
 python -m panopticool -v 300 -s 1337 -o samples/user_data_tiktok.sample.zip
 ```
 
-## Variantes — golden tests (PANO-28)
-Deux entrées **adverses** consommées par les golden tests du moteur (`web/src/engine/golden.test.ts`),
-toutes deux synthétiques et déterministes. **Volume 60** (≠ baseline 300) — à respecter pour reproduire
-à l'identique :
+## Variants — golden tests (PANO-28)
+Two **adversarial** entries consumed by the engine's golden tests (`web/src/engine/golden.test.ts`),
+both synthetic and deterministic. **Volume 60** (≠ baseline 300) — to be respected to reproduce
+identically:
 
-- `user_data_tiktok.empty.zip` — `Your Activity/Searches` forcée à son **encodage de vide** :
-  `SearchList → null` (registre PANO-11, §1.2). Cas conforme (« l'absence comme signal »), doit valider.
-- `user_data_tiktok.absent.zip` — la clé `Your Activity/Searches` **entièrement omise** (déviation) :
-  le validateur d'ingest doit la rejeter (`stage: validate`), pas planter.
+- `user_data_tiktok.empty.zip` — `Your Activity/Searches` forced to its **empty encoding**:
+  `SearchList → null` (registry PANO-11, §1.2). Conforming case ("absence as a signal"), must validate.
+- `user_data_tiktok.absent.zip` — the key `Your Activity/Searches` **entirely omitted** (deviation):
+  the ingest validator must reject it (`stage: validate`), not crash.
 
 ```sh
 python -m panopticool -v 60 -s 1337 --empty  'Your Activity/Searches' -o samples/user_data_tiktok.empty.zip
 python -m panopticool -v 60 -s 1337 --absent 'Your Activity/Searches' -o samples/user_data_tiktok.absent.zip
 ```
 
-## Inspecter / valider
+## Inspect / validate
 ```sh
-unzip -p samples/user_data_tiktok.sample.zip user_data_tiktok.json | less   # lire le JSON
-python -m panopticool.validate samples/user_data_tiktok.sample.zip          # vérifier la conformité
+unzip -p samples/user_data_tiktok.sample.zip user_data_tiktok.json | less   # read the JSON
+python -m panopticool.validate samples/user_data_tiktok.sample.zip          # check conformance
 ```
 
-Le validateur doit rapporter **CONFORME** (aucun écart).
+The validator must report **CONFORME** (no deviation).

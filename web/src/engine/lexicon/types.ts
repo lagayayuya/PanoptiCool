@@ -1,40 +1,40 @@
-// Types du lexique par label (PANO-70 §2.2) — la STRUCTURE, séparée strictement de la mécanique
-// (`engine/detect/`) et des données (un module par label, `engine/lexicon/<label>.ts`).
+// Per-label lexicon types (PANO-70 §2.2) — the STRUCTURE, strictly separated from the machinery
+// (`engine/detect/`) and the data (one module per label, `engine/lexicon/<label>.ts`).
 //
-// Union discriminée `kind` :
-//   - `topical` — labels sensibles à deux étages (B1) : explicite → tag nommé ; topical répété →
-//     tag large.
-//   - `item-level` — `conflictual` uniquement (B5) : l'insulte ÉMISE visant un autre utilisateur
-//     EST le signal explicite ; pas d'étage indirect, jamais de tag vague par accumulation.
-//   - `interest` — INTÉRÊT non sensible (D2, PANO-75) : forme SIMPLIFIÉE du topical (cf. plus bas).
+// Discriminated union on `kind`:
+//   - `topical` — two-tier sensitive labels (B1): explicit → named tag; repeated topical →
+//     broad tag.
+//   - `item-level` — `conflictual` only (B5): the EMITTED insult aimed at another user
+//     IS the explicit signal; no indirect tier, never a vague tag by accumulation.
+//   - `interest` — non-sensitive INTEREST (D2, PANO-75): SIMPLIFIED form of the topical (see below).
 //
-// Les entrées de marqueurs sont écrites en forme NORMALISÉE (minuscules, sans accents — le format
-// que matche `detect.ts`). Termes simples et locutions acceptés. Chaque module de données porte en
-// tête sa JUSTIFICATION DE GÉNÉRICITÉ (discipline PANO-70 §2.5/§3) : un terme sans justification
-// générique ne passe pas la revue.
+// Marker entries are written in NORMALIZED form (lowercase, no accents — the format
+// `detect.ts` matches against). Simple terms and phrases accepted. Each data module carries at its
+// head its GENERICITY JUSTIFICATION (PANO-70 §2.5/§3 discipline): a term without a generic
+// justification does not pass review.
 
 /**
- * Une ligne d'usage telle que le LEXIQUE la porte (ADR-0003). Définie ici depuis la Refonte A
- * (lot A2) : `schema.ts` d'où elle venait est retiré, et `Analysis` porte désormais des TEXTES
- * (`ThemeUsageLine`), pas des clés — le lexique, lui, garde ses clés (il est INTOUCHABLE, et
- * l'obligation « wording ratifiable en UN fichier » veut que les textes vivent dans `wording.ts`,
- * pas dans les 57 modules de lexique). C'est donc D2 qui résout ces clés en texte.
- * Seul le PLOMBAGE de type change ici ; ni la doctrine ni les données du lexique ne bougent.
+ * A usage line as the LEXICON carries it (ADR-0003). Defined here since Refonte A
+ * (batch A2): the `schema.ts` it used to live in is removed, and `Analysis` now carries TEXTS
+ * (`ThemeUsageLine`), not keys — the lexicon, for its part, keeps its keys (it is UNTOUCHABLE, and
+ * the "wording ratifiable in ONE file" obligation wants the texts to live in `wording.ts`,
+ * not in the 57 lexicon modules). It is therefore D2 that resolves these keys into text.
+ * Only the type PLUMBING changes here; neither the doctrine nor the lexicon data move.
  */
 export interface ThemeUsage {
-  /** Clé de catégorie d'acteur (`advertiser`, `insurer_employer`…), résolue par `wording.ts`. */
+  /** Actor-category key (`advertiser`, `insurer_employer`…), resolved by `wording.ts`. */
   actor: string;
   /**
-   * Clé de gabarit d'usage, résolue par `wording.ts`. `params` est conservé OPTIONNEL et inutilisé :
-   * les 57 modules de lexique l'écrivent (`params: {}`) et sont intouchables — sans lui, le contrôle
-   * de propriété excédentaire de TS rejetterait leurs littéraux. Aucun usage n'a jamais pris de
-   * paramètre ; le champ ne sert donc qu'à ne pas toucher aux données.
+   * Usage-template key, resolved by `wording.ts`. `params` is kept OPTIONAL and unused:
+   * the 57 lexicon modules write it (`params: {}`) and are untouchable — without it, TS's
+   * excess-property check would reject their literals. No usage has ever taken a
+   * parameter; the field therefore serves only to avoid touching the data.
    */
   usage: { templateId: string; params?: Record<string, string | number> };
 }
 
-/** Les 6 labels sensibles bénis par ADR-0003 (catalogue : `docs/constats-sensibles.md`). Passe 1 :
- *  3 câblés. */
+/** The 6 sensitive labels blessed by ADR-0003 (catalogue: `docs/constats-sensibles.md`). Pass 1:
+ *  3 wired. */
 export type SensitiveLabel =
   | 'health_physical'
   | 'mental_health'
@@ -43,229 +43,228 @@ export type SensitiveLabel =
   | 'religion'
   | 'conflictual';
 
-/** Lexique d'un label à deux étages (B1). */
+/** Lexicon of a two-tier label (B1). */
 export interface TopicalLexicon {
   kind: 'topical';
   label: Exclude<SensitiveLabel, 'conflictual'>;
   /**
-   * Lectures de l'éventail (`Evidence.readings`) du constat INDIRECT — clés reprises du registre
-   * des lectures de `docs/constats-sensibles.md`, JAMAIS inventées ici : ajouter une lecture, c'est
-   * amender le registre d'abord (porte de yuya). Mode toujours `equal` — les lectures s'affichent à
-   * plat ; la confiance vit sur le constat, jamais sur une lecture (ADR-0003).
+   * Readings of the fan (`Evidence.readings`) of the INDIRECT finding — keys taken from the
+   * readings registry in `docs/constats-sensibles.md`, NEVER invented here: adding a reading means
+   * amending the registry first (yuya's gate). Mode always `equal` — readings are displayed
+   * flat; confidence lives on the finding, never on a reading (ADR-0003).
    */
   readingTemplateIds: readonly string[];
-  /** Termes précis qui, appliqués à soi, justifient un tag NOMMÉ (B2 : le fin n'existe que s'il est écrit). */
+  /** Precise terms that, applied to oneself, justify a NAMED tag (B2: the fine-grained exists only if it is written). */
   explicit: readonly string[];
   /**
-   * Termes d'identité NUS matchés UNIQUEMENT via le pattern d'auto-déclaration (« je suis X »,
-   * PANO-72) — jamais en frontière de mot seule. Différence avec `explicit` : ces termes sont trop
-   * ambigus nus (« lesbienne », « de gauche », « dépressif ») pour un tag nommé sans copule ; la
-   * copule les ancre à la 1ʳᵉ personne. Un match d'auto-déclaration est toujours explicite (jamais
-   * dégradé en 3ᵉ personne). Le même terme peut vivre AUSSI dans `indirectCore` (nu → tag large,
-   * B1 : « cette actrice est lesbienne » reste indirect, jamais nommé). Optionnel.
+   * BARE identity terms matched ONLY via the self-declaration pattern (« je suis X »,
+   * PANO-72) — never on a word boundary alone. Difference with `explicit`: these terms are too
+   * ambiguous bare (« lesbienne », « de gauche », « dépressif ») for a named tag without a copula; the
+   * copula anchors them to the 1st person. A self-declaration match is always explicit (never
+   * degraded to 3rd person). The same term may ALSO live in `indirectCore` (bare → broad tag,
+   * B1: « cette actrice est lesbienne » stays indirect, never named). Optional.
    *
-   * ── LE SUFFIXE `Fr` EST UNE PORTE, PAS UN ÉTIQUETAGE (PANO-35) ────────────────────────────────
-   * **N'écrire ici que des termes admis pour le FRANÇAIS.** Ce tier ne se matche QUE via les têtes
-   * de copule, et `detect.ts` l'apparie explicitement à `SELF_DECLARATION_HEADS_FR`. Une langue de
-   * plus = une liste de termes de plus (`selfDeclaredEn`) appariée à ses propres têtes, jamais un
-   * terme anglais glissé dans cette liste-ci.
+   * ── THE `Fr` SUFFIX IS A GATE, NOT A LABELLING (PANO-35) ──────────────────────────────────────
+   * **Write here only terms admitted for FRENCH.** This tier is matched ONLY via the copula
+   * heads, and `detect.ts` pairs it explicitly with `SELF_DECLARATION_HEADS_FR`. One more language
+   * = one more term list (`selfDeclaredEn`) paired with its own heads, never an English
+   * term slipped into this list.
    *
-   * *Pourquoi la porte existe, et c'est une mesure, pas une précaution.* Avant ce lot, il n'y avait
-   * qu'UNE liste et qu'UN jeu de têtes. Les têtes étant FR-only, elles formaient une **porte de
-   * langue non déclarée** : les entrées de graphie anglaise présentes ici — `muslim`, `gay`, `ace`,
-   * `trans`, `militant`, `liberal`… — étaient inatteignables en anglais **par accident**, et non
-   * par décision. Mesuré : ajouter une seule tête anglaise les activait TOUTES d'un coup, en constat
-   * NOMMÉ, sans qu'aucune n'ait jamais été examinée pour l'anglais — « im ace at darts » désignait
-   * quelqu'un comme asexuel. Ajouter des têtes EN n'ajoute donc pas une fonctionnalité : ça RETIRE
-   * une protection que personne n'avait écrite.
+   * *Why the gate exists, and it is a measure, not a precaution.* Before this batch, there was
+   * only ONE list and ONE set of heads. The heads being FR-only, they formed an **undeclared
+   * language gate**: the English-spelling entries present here — `muslim`, `gay`, `ace`,
+   * `trans`, `militant`, `liberal`… — were unreachable in English **by accident**, not
+   * by decision. Measured: adding a single English head activated them ALL at once, as a
+   * NAMED finding, without any of them ever having been examined for English — « im ace at darts » designated
+   * someone as asexual. Adding EN heads therefore does not add a feature: it REMOVES
+   * a protection that no one had written.
    *
-   * Le témoin `selfdeclared-language-gate.test.ts` tient cette porte et porte le registre des
-   * graphies anglaises **non admises pour l'anglais** — explicitement, plutôt qu'inatteignables.
+   * The witness `selfdeclared-language-gate.test.ts` holds this gate and carries the registry of
+   * English spellings **not admitted for English** — explicitly, rather than unreachable.
    */
   selfDeclaredFr?: readonly string[];
   /**
-   * Termes d'identité ANGLAIS matchés via le pattern d'auto-déclaration (« i am X »), appariés à
-   * `SELF_DECLARATION_HEADS_EN`. Optionnel.
+   * ENGLISH identity terms matched via the self-declaration pattern (« i am X »), paired with
+   * `SELF_DECLARATION_HEADS_EN`. Optional.
    *
-   * ── CE TIER N'AFFIRME JAMAIS, ET C'EST SA RAISON D'ÊTRE ───────────────────────────────────────
-   * **Un hit atterrit en INDIRECT, jamais en `explicit`** — contrairement à `selfDeclaredFr`, qui
-   * NOMME. Ce n'est pas une prudence de plus : c'est la forme même de ce tier, et elle est nommée
-   * par ADR-0003 (*La rétrogradation*) — « un tier qui dispense du seuil sans permettre de nommer »,
-   * ici sans la dispense (voir plus bas).
+   * ── THIS TIER NEVER ASSERTS, AND THAT IS ITS REASON FOR BEING ─────────────────────────────────
+   * **A hit lands as INDIRECT, never as `explicit`** — unlike `selfDeclaredFr`, which
+   * NAMES. This is not one more caution: it is the very form of this tier, and it is named
+   * by ADR-0003 (*The demotion*) — "a tier that waives the threshold without allowing naming",
+   * here without the waiver (see below).
    *
-   * *Pourquoi un calque de `selfDeclaredFr` était le mauvais geste.* Le calque aurait fait NOMMER
-   * « i am gay » en anglais, c'est-à-dire ouvert en grand le coût d'erreur que la porte de langue
-   * existe pour tenir fermé. Et il aurait INVERSÉ la règle de symétrie au lieu de la réparer : la
-   * réparation demande que « i am straight » déclenche AUTANT que « i am gay », pas que les deux
-   * montent d'un étage que personne n'a mesuré pour l'anglais. En atterrissant en large, les deux
-   * versants se déclenchent à égalité, et aucun ne se fait nommer. La symétrie est satisfaite **par
-   * construction**, pas par un décompte de termes qu'il faudrait re-vérifier à chaque ajout.
+   * *Why a copy of `selfDeclaredFr` was the wrong move.* The copy would have NAMED
+   * « i am gay » in English, i.e. flung open the error cost that the language gate
+   * exists to keep shut. And it would have INVERTED the symmetry rule instead of repairing it: the
+   * repair requires that « i am straight » fire AS MUCH as « i am gay », not that both
+   * rise a tier that no one measured for English. By landing broad, both
+   * sides fire equally, and neither gets named. Symmetry is satisfied **by
+   * construction**, not by a term count that would need re-verifying at each addition.
    *
-   * ── LA COPULE NE DÉSAMBIGUÏSE PAS EN ANGLAIS — mesure, et elle décide de tout ─────────────────
-   * **Ne jamais faire porter de charge de sûreté au cadre.** La doctrine de la copule (« la copule
-   * ancre la 1ʳᵉ personne », `selfDeclaredFr`) est FRANÇAISE et ne traverse pas : l'idiome anglais
-   * s'écrit massivement à la première personne. Mesuré, et ce ne sont pas des cas limites —
+   * ── THE COPULA DOES NOT DISAMBIGUATE IN ENGLISH — measure, and it decides everything ──────────
+   * **Never make the frame carry a safety load.** The copula doctrine (« la copule
+   * ancre la 1ʳᵉ personne », `selfDeclaredFr`) is FRENCH and does not carry over: the English idiom
+   * is written massively in the first person. Measured, and these are not edge cases —
    * « im so ocd about my desk drawers », « im autistic about train timetables », « im arthritic
-   * after that hike », « im depressed that the bakery closed early » portent tous le cadre.
+   * after that hike », « im depressed that the bakery closed early » all carry the frame.
    *
-   * D'où la conséquence sur ce qui protège : ici la sûreté ne vient PAS du cadre, elle vient de
-   * l'ÉTAGE — et de la porte d'admission des termes, comme partout ailleurs. Le cadre n'achète que
-   * du RAPPEL (il rend `straight` admissible, là où le terme nu en `indirectCore` a été mesuré à
-   * 1 → 4 torts). Justification longue et surface de mesure : `filters-en.ts`.
+   * Hence the consequence for what protects: here safety does NOT come from the frame, it comes from
+   * the TIER — and from the term-admission gate, as everywhere else. The frame buys only
+   * RECALL (it makes `straight` admissible, where the bare term in `indirectCore` was measured at
+   * 1 → 4 wrongs). Long justification and measurement surface: `filters-en.ts`.
    *
-   * ── PAS DE FRANCHISSEMENT SOLO, et c'est une décision chiffrée ────────────────────────────────
-   * Un hit de ce tier compte au seuil **comme n'importe quel indirect**. La variante qui lui donnait
-   * la dispense de seuil a été mesurée et REFUSÉE : elle faisait passer l'idiome de 8 à 16
-   * déclenchements (jeu de 43 phrases) et ajoutait un tort sur `en_idiomatic` — « i am so ocd about
-   * the label alignment on the jars ». Le terme `ocd` était DÉJÀ au lexique ; seule la dispense le
-   * faisait passer. **Le coût n'était pas le vocabulaire, c'était le franchissement.**
+   * ── NO SOLO CROSSING, and it is a quantified decision ─────────────────────────────────────────
+   * A hit of this tier counts toward the threshold **like any indirect**. The variant that gave it
+   * the threshold waiver was measured and REFUSED: it took the idiom from 8 to 16
+   * firings (43-phrase set) and added a wrong on `en_idiomatic` — « i am so ocd about
+   * the label alignment on the jars ». The term `ocd` was ALREADY in the lexicon; only the waiver
+   * let it through. **The cost was not the vocabulary, it was the crossing.**
    *
-   * *Ce que ça coûte, et c'est accepté explicitement :* sur les deux labels à seuil 2
-   * (`mental_health`, `health_physical`), « i am diabetic » écrit UNE fois ne rend RIEN. C'est ce
-   * que le seuil fait déjà partout ailleurs. Sur les labels à seuil 1 (`religion`, `sexuality`),
-   * l'absence de dispense ne coûte rien du tout.
+   * *What it costs, and it is accepted explicitly:* on the two threshold-2 labels
+   * (`mental_health`, `health_physical`), « i am diabetic » written ONCE yields NOTHING. That is what
+   * the threshold already does everywhere else. On the threshold-1 labels (`religion`, `sexuality`),
+   * the absence of a waiver costs nothing at all.
    */
   selfDeclaredEn?: readonly string[];
   /**
-   * Marqueurs qui posent le tag LARGE **à eux seuls** — un hit suffit, le seuil ne s'applique pas —
-   * et qui ne le NOMMENT jamais, quel qu'en soit le nombre. Optionnel.
+   * Markers that set the BROAD tag **on their own** — one hit suffices, the threshold does not apply —
+   * and that NEVER name it, however many there are. Optional.
    *
-   * Le tier des NOMS NUS de trouble (« depression », « anxiety », « ptsd »). Ils tombent entre les
-   * deux tiers existants, et c'est pour ça qu'aucun ne leur allait :
-   *   - `explicit` affirme une condition. Sur « this heat is giving me depression », c'est faux —
-   *     l'anglais courant emploie ces noms comme intensificateurs (mesuré, banc de borne haute).
-   *   - le seuil indirect exige la répétition. Or une personne qui écrit UNE fois, littéralement,
-   *     qu'elle fait une dépression ne disparaît pas du champ : elle disparaîtrait du détecteur
-   *     (mesuré aussi — c'est ce qui a fait échouer la première tentative de rétrogradation).
+   * The tier of BARE disorder NOUNS (« depression », « anxiety », « ptsd »). They fall between the
+   * two existing tiers, and that is why neither fit them:
+   *   - `explicit` asserts a condition. On « this heat is giving me depression », that is false —
+   *     everyday English uses these nouns as intensifiers (measured, upper-bound bench).
+   *   - the indirect threshold requires repetition. But a person who writes ONCE, literally,
+   *     that they have depression does not vanish from the field: they would vanish from the detector
+   *     (measured too — that is what made the first demotion attempt fail).
    *
-   * Le nom reprend celui de `InterestLexicon.markers` (« marqueurs SOLO : ils rentrent SEULS ») :
-   * même propriété, même mot. Le seuil de `indirectThreshold` n'est PAS touché — ce tier passe à
-   * côté, il ne le redéfinit pas.
+   * The name is taken from `InterestLexicon.markers` (« SOLO markers: they enter ON THEIR OWN »):
+   * same property, same word. The `indirectThreshold` is NOT touched — this tier goes
+   * around it, it does not redefine it.
    *
-   * La règle qu'il applique n'est pas neuve : ce lexique tient déjà « le syntagme complet nomme, le
-   * nom nu ne le fait pas » (`bipolar disorder` vs `bipolar`, `panic attack` vs `panic`). Ce tier
-   * est l'endroit où atterrissent les noms nus qui y avaient échappé.
+   * The rule it applies is not new: this lexicon already holds "the full phrase names, the
+   * bare noun does not" (`bipolar disorder` vs `bipolar`, `panic attack` vs `panic`). This tier
+   * is where the bare nouns that had slipped through land.
    */
   indirectSolo?: readonly string[];
   /**
-   * Ce label décrit-il un SUJET qu'on fréquente, plutôt qu'un ÉTAT qu'on est ? (ADR-0003, *L'état et
-   * le sujet*.) Défaut : `false` — l'état est le cas des quatre labels de condition.
+   * Does this label describe a SUBJECT one frequents, rather than a STATE one is? (ADR-0003, *The state and
+   * the subject*.) Default: `false` — the state is the case of the four condition labels.
    *
-   * Ce que le drapeau change, et il ne change que ça : une négation devant un marqueur **dégrade**
-   * le hit en indirect au lieu de le **supprimer**.
+   * What the flag changes, and it changes only that: a negation before a marker **degrades**
+   * the hit to indirect instead of **suppressing** it.
    *
-   * *Pourquoi il faut un drapeau plutôt qu'une règle unique.* Sur un label d'ÉTAT, « je ne suis pas
-   * déprimé » ne décrit aucune dépression : la négation retire le signal, et le filtre a raison.
-   * Sur un label de SUJET, « je supporte pas les fachos » ne retire pas la politique — la négation
-   * porte la POLARITÉ, pas l'absence de sujet. Appliquer le comportement d'état à un label de sujet
-   * rend le produit sourd à l'OPPOSITION, qui est le registre dominant du discours politique et
-   * religieux : mesuré, le lexique n'entendait que celui qui adhère.
+   * *Why a flag rather than a single rule.* On a STATE label, « je ne suis pas
+   * déprimé » describes no depression: the negation removes the signal, and the filter is right.
+   * On a SUBJECT label, « je supporte pas les fachos » does not remove the politics — the negation
+   * carries the POLARITY, not the absence of subject. Applying the state behavior to a subject label
+   * makes the product deaf to OPPOSITION, which is the dominant register of political and
+   * religious discourse: measured, the lexicon heard only the adherent.
    *
-   * *Et pourquoi une dégradation, pas une exemption.* Laisser la négation intacte ferait poser un
-   * constat NOMMÉ sur « je ne suis pas socialiste » — affirmer précisément ce que la phrase nie. La
-   * dégradation garde le sujet et retire l'affirmation : même forme que la règle du registre
-   * informationnel, et même sens d'échec — au pire elle sous-affirme, ce qui se rattrape.
+   * *And why a degradation, not an exemption.* Leaving the negation intact would set a
+   * NAMED finding on « je ne suis pas socialiste » — asserting precisely what the sentence denies. The
+   * degradation keeps the subject and removes the assertion: same form as the informational-register
+   * rule, and same failure sense — at worst it under-asserts, which is recoverable.
    *
-   * Un hit ainsi dégradé ne confère JAMAIS le franchissement solo : il compte au seuil comme
-   * n'importe quel indirect, et rien de plus.
+   * A hit degraded this way NEVER confers solo crossing: it counts toward the threshold like
+   * any indirect, and nothing more.
    */
   subjectNotState?: boolean;
   /**
-   * Termes d'ADHÉSION dont la NÉGATION contredit une auto-déclaration — labels de SUJET seulement,
-   * et sans effet si le label n'en déclare pas. Optionnel.
+   * ADHERENCE terms whose NEGATION contradicts a self-declaration — SUBJECT labels only,
+   * and with no effect if the label declares none. Optional.
    *
-   * *Ce que ça fait, et rien d'autre.* Quand un item porte À LA FOIS une auto-déclaration
-   * (« je suis catholique ») et l'un de ces termes SOUS NÉGATION (« je ne crois pas »), le hit
-   * d'auto-déclaration est **plafonné en indirect** au lieu de nommer. Le tag survit, l'affirmation
-   * tombe.
+   * *What it does, and nothing else.* When an item carries BOTH a self-declaration
+   * (« je suis catholique ») and one of these terms UNDER NEGATION (« je ne crois pas »), the
+   * self-declaration hit is **capped at indirect** instead of naming. The tag survives, the assertion
+   * falls.
    *
-   * *Pourquoi plafonner et non filtrer.* Effacer serait faux : quelqu'un qui écrit « catholique
-   * mais je ne crois pas » A une relation à cette tradition — c'est le SUJET de sa phrase. Et
-   * filtrer n'aurait pas de fin, chaque tournure d'éloignement (« sans vraiment y croire », « plus
-   * depuis longtemps ») demandant sa propre exception. Le plafonnement échoue en sous-affirmant,
-   * ce qui se rattrape ; le filtre échoue en effaçant, ce qui ne se rattrape pas.
+   * *Why cap and not filter.* Erasing would be false: someone who writes « catholique
+   * mais je ne crois pas » HAS a relationship to that tradition — it is the SUBJECT of their sentence. And
+   * filtering would have no end, each distancing turn (« sans vraiment y croire », « plus
+   * depuis longtemps ») demanding its own exception. Capping fails by under-asserting,
+   * which is recoverable; the filter fails by erasing, which is not.
    *
-   * *Pourquoi la négation ne suffisait pas.* La fenêtre de négation regarde AVANT le marqueur, dans
-   * la même proposition. « je suis catholique mais je ne crois pas » nie la CROYANCE dans une
-   * proposition SUIVANTE, hors de portée — mesuré : la phrase posait un constat nommé. Cette liste
-   * donne à la contradiction un marqueur qu'elle puisse nier, sans élargir la fenêtre pour tout le
-   * monde.
+   * *Why negation did not suffice.* The negation window looks BEFORE the marker, in
+   * the same clause. « je suis catholique mais je ne crois pas » denies the BELIEF in a
+   * FOLLOWING clause, out of reach — measured: the sentence set a named finding. This list
+   * gives the contradiction a marker it can deny, without widening the window for everyone.
    */
   adherence?: readonly string[];
-  /** Marqueurs topicaux peu ambigus → étage indirect. */
+  /** Low-ambiguity topical markers → indirect tier. */
   indirectCore: readonly string[];
-  /** Marqueurs colloquiaux/polysémiques — le foyer du couple recall/FP (calibrage identifiable). */
+  /** Colloquial/polysemous markers — the focus of the recall/FP pair (identifiable calibration). */
   indirectColloquial: readonly string[];
-  /** Inclure les colloquiaux dans l'indirect ? (calibrage ratifié PANO-33 : ON — on ne masque pas.) */
+  /** Include the colloquials in the indirect? (calibration ratified PANO-33: ON — we do not mask.) */
   includeColloquial: boolean;
-  /** Nb de hits indirects requis pour POSER le tag large (calibrage ratifié PANO-33). */
+  /** Number of indirect hits required to SET the broad tag (calibration ratified PANO-33). */
   indirectThreshold: number;
 }
 
-/** Lexique item-level de `conflictual` (B5) : insulte émise + cible 2ᵉ personne, un seul étage. */
+/** Item-level lexicon of `conflictual` (B5): emitted insult + 2nd-person target, a single tier. */
 export interface ItemLevelLexicon {
   kind: 'item-level';
   label: 'conflictual';
-  /** Lexèmes injurieux. */
+  /** Insulting lexemes. */
   insults: readonly string[];
-  /** Marqueurs de cible 2ᵉ personne / impératif injurieux — sans cible = juron de frustration, exclu. */
+  /** 2nd-person target markers / insulting imperative — without a target = frustration curse, excluded. */
   targets: readonly string[];
 }
 
 export type LabelLexicon = TopicalLexicon | ItemLevelLexicon;
 
 /**
- * Lexique d'un INTÉRÊT non sensible (D2, PANO-75) — forme SIMPLIFIÉE du topical sensible. Un intérêt
- * n'est pas un sujet sensible : il ne porte donc NI `sensitivity`, NI éventail de lectures
- * (`readingTemplateIds`), NI distinction d'étages nommé/large, NI dégradation 3ᵉ personne (un
- * intérêt reste un intérêt même parlé d'autrui — « je parle beaucoup de cuisine » comme « ma sœur
- * adore cuisiner » signalent tous deux un même thème pour l'annonceur). GARDÉS de la machinerie
- * `detect.ts` : les filtres de bruit (négation, citation, frontières de mot, tolérances
- * masquage/allongement/pluriel) — un intérêt nié ou cité ne compte pas plus qu'un sujet sensible nié.
+ * Lexicon of a non-sensitive INTEREST (D2, PANO-75) — SIMPLIFIED form of the sensitive topical. An interest
+ * is not a sensitive subject: it therefore carries NEITHER `sensitivity`, NOR a fan of readings
+ * (`readingTemplateIds`), NOR a named/broad tier distinction, NOR 3rd-person degradation (an
+ * interest stays an interest even when spoken of another — « je parle beaucoup de cuisine » as « ma sœur
+ * adore cuisiner » both signal one same theme for the advertiser). KEPT from the `detect.ts`
+ * machinery: the noise filters (negation, quotation, word boundaries,
+ * masking/lengthening/plural tolerances) — a negated or quoted interest counts no more than a negated sensitive subject.
  *
- * `selfDeclared` reste un simple BONUS de confiance (pas un tag séparé, contrairement aux sensibles
- * où l'auto-déclaration ancre un tag nommé) : « je suis un vrai gamer » vaut plus qu'une mention
- * isolée, mais reste le même thème.
+ * `selfDeclared` stays a simple confidence BONUS (not a separate tag, unlike the sensitives
+ * where self-declaration anchors a named tag): « je suis un vrai gamer » is worth more than an isolated
+ * mention, but stays the same theme.
  *
- * Le lexique co-porte le THÈME qu'il produit (`themeId`, `themeLabel`, `usage`) : une graine
- * d'intérêt = un module = un thème. Éviter la dérive entre « ce qui est détecté » et « ce qui est
- * affiché » (le nom + le bloc usage) en les tenant au même endroit — même discipline que
- * `readingTemplateIds` co-porté par les lexiques sensibles.
+ * The lexicon co-carries the THEME it produces (`themeId`, `themeLabel`, `usage`): one interest
+ * seed = one module = one theme. Avoid the drift between "what is detected" and "what is
+ * displayed" (the name + the usage block) by keeping them in the same place — same discipline as
+ * `readingTemplateIds` co-carried by the sensitive lexicons.
  */
 export interface InterestLexicon {
   kind: 'interest';
-  /** Identité du thème produit (`Theme.id` / `InsightBase.themeId`), pas un label sensible fermé —
-   * string OUVERTE : la taxonomie d'intérêts n'est pas encore ratifiée (graine jetable, PANO-75). */
+  /** Identity of the produced theme (`Theme.id` / `InsightBase.themeId`), not a closed sensitive label —
+   * OPEN string: the interest taxonomy is not yet ratified (throwaway seed, PANO-75). */
   label: string;
-  /** `templateId` BRUT du nom de thème affiché (comme `Theme.label`, résolu en présentation). */
+  /** RAW `templateId` of the displayed theme name (like `Theme.label`, resolved at presentation). */
   themeLabel: string;
-  /** Bloc « ce qui peut en être fait — selon qui y accède » (ADR-0003) : STRUCTURE actée ici, le
-   * WORDING est brouillon (PANO-45) et le CONTENU sourcé relève de PANO-55. Peut être vide. */
+  /** Block "what can be done with it — depending on who accesses it" (ADR-0003): STRUCTURE settled here, the
+   * WORDING is draft (PANO-45) and the sourced CONTENT falls under PANO-55. May be empty. */
   usage: readonly ThemeUsage[];
   /**
-   * Marqueurs SOLO : quasi-univoques, ils rentrent SEULS (un hit hors négation/citation EST une
-   * preuve du thème). Tier de recall — on inclut riche, le plancher + le classement du socle noient
-   * le bruit résiduel (méthode PANO-76 reprise : recall assumé, pas pureté FP maximale).
+   * SOLO markers: near-univocal, they enter ON THEIR OWN (a hit outside negation/quotation IS
+   * evidence of the theme). Recall tier — we include richly, the floor + the base ranking drown
+   * the residual noise (PANO-76 method reused: recall assumed, not maximal FP purity).
    */
   markers: readonly string[];
   /**
-   * Marqueurs ANCRÉS : ambigus (≈ 50/50), ils ne rentrent QUE si un COMPAGNON du domaine co-occurre
-   * dans le MÊME item — un `markers`/`selfDeclared` (signal fort), ou un AUTRE ancré (deux 50/50
-   * ensemble valent le domaine). C'est l'outil de désambiguïsation par co-occurrence (PANO-76) :
-   * « match »/« but » ne comptent que près d'un terme foot ; « console »/« boss » près d'un terme
-   * gaming. Isolés, ils sont écartés (bruit). Optionnel.
+   * ANCHORED markers: ambiguous (≈ 50/50), they enter ONLY if a domain COMPANION co-occurs
+   * in the SAME item — a `markers`/`selfDeclared` (strong signal), or ANOTHER anchored (two 50/50
+   * together are worth the domain). This is the co-occurrence disambiguation tool (PANO-76):
+   * « match »/« but » count only near a foot term; « console »/« boss » near a
+   * gaming term. Isolated, they are discarded (noise). Optional.
    */
   anchored?: readonly string[];
-  /** Termes d'identité auto-déclarés (« je suis un vrai X », via le pattern PANO-72) — simple BONUS
-   * de confiance : leur présence pousse le niveau volume-dérivé de `low` vers `medium`. Compte aussi
-   * comme COMPAGNON fort pour ancrer un marqueur ambigu. Optionnel. */
+  /** Self-declared identity terms (« je suis un vrai X », via the PANO-72 pattern) — a simple confidence
+   * BONUS: their presence pushes the volume-derived level from `low` toward `medium`. Also counts
+   * as a strong COMPANION to anchor an ambiguous marker. Optional. */
   selfDeclared?: readonly string[];
 }
 
 /**
- * Ce que la machinerie `detectLabels` sait détecter : les lexiques sensibles (D1) ET les lexiques
- * d'intérêt (D2). Union utilisée UNIQUEMENT par la signature du détecteur — jamais par les registres
- * de règles (`WIRED_LEXICONS` reste `LabelLexicon[]`, un registre d'intérêts reste `InterestLexicon[]`)
- * pour qu'un intérêt ne puisse pas fuiter dans D1 ni l'inverse.
+ * What the `detectLabels` machinery can detect: the sensitive lexicons (D1) AND the interest
+ * lexicons (D2). Union used ONLY by the detector's signature — never by the rule registries
+ * (`WIRED_LEXICONS` stays `LabelLexicon[]`, an interest registry stays `InterestLexicon[]`)
+ * so that an interest cannot leak into D1 nor vice versa.
  */
 export type DetectableLexicon = LabelLexicon | InterestLexicon;

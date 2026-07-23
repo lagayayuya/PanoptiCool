@@ -1,39 +1,39 @@
-// Cœur de détection lexicale (PANO-71) — GÉNÉRIQUE : `(textes + lexiques câblés) → détections
-// par label`. Aucune donnée de label ici (elles vivent dans `engine/lexicon/`), aucun insight
-// (la règle D1 est l'adaptateur Comments ; Searches sera un autre adaptateur, PANO-70 §1.6).
+// Lexical detection core (PANO-71) — GENERIC: `(texts + wired lexicons) → detections
+// per label`. No label data here (it lives in `engine/lexicon/`), no insight
+// (the D1 rule is the Comments adapter; Searches will be another adapter, PANO-70 §1.6).
 //
-// C'EST LE FICHIER DE DOCTRINE. Il ne contient que les règles de SOIN — ce qui empêche de nommer
-// quelqu'un à tort. La mécanique de repérage (« où ce marqueur est-il dans ce texte ? ») est
-// extraite dans `matcher.ts` : elle est optimisée, mesurée (PANO-87), et sans opinion. Ici, on ne
-// décide que d'une chose : ce qu'un hit VEUT DIRE.
+// THIS IS THE DOCTRINE FILE. It contains only the CARE rules — what prevents naming
+// someone wrongly. The locating mechanics (« where is this marker in this text? ») are
+// extracted into `matcher.ts`: optimized, measured (PANO-87), and opinion-free. Here we decide
+// one thing only: what a hit MEANS.
 //
-// Les quatre comportements MESURÉS — c'est ici que vit la valeur (et le risque) du
-// classifieur, pas dans les listes de mots :
-//   1. frontières de mots (« malade » ⊄ « maladie », « psy » ⊄ « psychologie » inverse) ;
-//   2. fenêtre de négation AVANT le marqueur, avec l'exception double-négation (verbe d'omission
-//      + négation = AFFIRMATION : « je rate jamais la priere ») — et, sur les labels de SUJET
-//      (`subjectNotState`), une négation DÉGRADE au lieu de supprimer : « je supporte pas les
-//      fachos » reste de la politique. Doctrine : ADR-0003, *L'état et le sujet* ;
-//   3. citation / discours rapporté → attribué à autrui → hit supprimé ;
-//   4. 3ᵉ personne (« mon ado », « pour ma soeur ») → DÉGRADÉ en indirect, JAMAIS supprimé —
-//      c'est le chemin signal-sans-vécu (B3 : taguer quand même EST la démonstration, C2) ;
-//   5. registre INFORMATIONNEL (« signes de X », « prevalence of X ») → DÉGRADÉ de la même façon.
-//      Ce n'est pas un filtre de plus : c'est une règle d'ÉTAGE, et elle échoue en sous-affirmant
-//      là où un filtre échouerait en retirant du signal réel. Elle existe parce que la 3ᵉ personne
-//      est item-locale et cherche un possessif — « signes de dépression chez l'adolescent », tapé
-//      par un parent inquiet, n'en porte aucun et posait un constat NOMMÉ sur lui (mesuré, banc de
-//      registres). Doctrine : ADR-0003, *Le registre informationnel*.
+// The four MEASURED behaviors — this is where the value (and the risk) of the
+// classifier lives, not in the word lists:
+//   1. word boundaries (« malade » ⊄ « maladie », « psy » ⊄ « psychologie » inverse);
+//   2. negation window BEFORE the marker, with the double-negation exception (omission verb
+//      + negation = AFFIRMATION: « je rate jamais la priere ») — and, on SUBJECT labels
+//      (`subjectNotState`), a negation DEGRADES instead of suppressing: « je supporte pas les
+//      fachos » stays politics. Doctrine: ADR-0003, *L'état et le sujet*;
+//   3. citation / reported speech → attributed to someone else → hit suppressed;
+//   4. 3rd person (« mon ado », « pour ma soeur ») → DEGRADED to indirect, NEVER suppressed —
+//      this is the signal-without-lived-experience path (B3: tagging anyway IS the demonstration, C2);
+//   5. INFORMATIONAL register (« signes de X », « prevalence of X ») → DEGRADED the same way.
+//      This is not one more filter: it is a STOREY rule, and it fails by under-asserting
+//      where a filter would fail by removing real signal. It exists because the 3rd person
+//      is item-local and looks for a possessive — « signes de dépression chez l'adolescent », typed
+//      by a worried parent, carries none and used to place a NAMED finding on them (measured, register
+//      bench). Doctrine: ADR-0003, *Le registre informationnel*.
 //
-// L'ALLONGEMENT expressif (PANO-36) est traité ici parce que sa garde est un choix de doctrine : si
-// le matching direct échoue, on re-tente dans l'espace SQUELETTISÉ, CONDITIONNÉ à un allongement
-// ≥ 3 visible dans la surface matchée — « connnnard » matche « connard », mais « cône » (sans
-// allongement) ne matchera jamais « conne ». C'est un problème de RAPPEL, pas un signal émotionnel :
-// aucun effet sur la confiance (lire l'énervement serait classer l'intention, hors doctrine).
-// Les autres tolérances de variation (tiret↔espace, auto-censure, pluriel) sont du repérage pur :
-// `normalize-fr.ts` et `matcher.ts`.
+// Expressive ELONGATION (PANO-36) is handled here because its guard is a doctrine choice: if
+// direct matching fails, we retry in the SKELETONIZED space, CONDITIONED on an elongation
+// ≥ 3 visible in the matched surface — « connnnard » matches « connard », but « cône » (without
+// elongation) will never match « conne ». This is a RECALL problem, not an emotional signal:
+// no effect on confidence (reading anger would be classifying intent, out of doctrine).
+// The other variation tolerances (hyphen↔space, self-censorship, plural) are pure locating:
+// `normalize-fr.ts` and `matcher.ts`.
 //
-// `conflictual` (item-level, B5) : insulte ÉMISE + cible 2ᵉ personne, hors citation ; juron de
-// frustration sans cible exclu ; un seul étage, jamais d'indirect.
+// `conflictual` (item-level, B5): insult ISSUED + 2nd-person target, outside citation; frustration
+// swear-word without a target excluded; a single storey, never indirect.
 
 import type {
   DetectableLexicon,
@@ -74,56 +74,56 @@ import {
 
 export type DetectionStage = 'explicit' | 'indirect';
 
-/** Contribution d'UN item (un commentaire) à UN label : son étage et ses formes de surface. */
+/** Contribution of ONE item (one comment) to ONE label: its storey and its surface forms. */
 export interface ItemHit {
-  /** Index de l'item dans la liste d'entrée (clé de l'`EvidenceId` déterministe côté adaptateur). */
+  /** Index of the item in the input list (key of the deterministic `EvidenceId` on the adapter side). */
   itemIndex: number;
-  /** Étage de CE hit d'item (un explicite en 3ᵉ personne arrive ici déjà dégradé en `indirect` ;
-   * un hit d'intérêt est toujours `explicit`, D2 n'ayant qu'un étage). */
+  /** Storey of THIS item hit (an explicit in the 3rd person arrives here already degraded to `indirect`;
+   * an interest hit is always `explicit`, D2 having a single storey). */
   stage: DetectionStage;
-  /** Formes de surface matchées dans le texte ORIGINAL (→ `triggerTerms`, ⊂ texte au caractère près). */
+  /** Surface forms matched in the ORIGINAL text (→ `triggerTerms`, ⊂ text down to the character). */
   surfaces: string[];
-  /** Ce hit vient-il d'une AUTO-DÉCLARATION (« je suis un vrai X ») ? Peuplé par les INTÉRÊTS (D2) où
-   * il alimente le bonus de confiance ; laissé absent par les classifieurs sensibles (D1). */
+  /** Does this hit come from a SELF-DECLARATION (« je suis un vrai X »)? Populated by INTERESTS (D2) where
+   * it feeds the confidence bonus; left absent by the sensitive classifiers (D1). */
   selfDeclared?: boolean;
   /**
-   * Ce hit porte-t-il un marqueur SOLO (`TopicalLexicon.indirectSolo`), qui dispense du seuil ?
+   * Does this hit carry a SOLO marker (`TopicalLexicon.indirectSolo`), which waives the threshold?
    *
-   * Porté ICI plutôt que redéduit à l'agrégation, et ce n'est pas un raffinement : `surfaces` contient
-   * les formes du texte ORIGINAL (cf. juste au-dessus), pas les entrées du lexique. Les recouper avec
-   * la liste des marqueurs rate donc tout ce que la normalisation avait rapproché — « dépression »
-   * accentué ne se retrouve pas dans une liste écrite sans accents. Mesuré : le tier solo ne s'armait
-   * pas en français. Seul le classifieur sait quelle liste a matché ; il le dit.
+   * Carried HERE rather than re-derived at aggregation, and this is not a refinement: `surfaces` contains
+   * the forms of the ORIGINAL text (cf. just above), not the lexicon entries. Cross-referencing them with
+   * the marker list therefore misses everything normalization had brought together — accented « dépression »
+   * is not found in a list written without accents. Measured: the solo tier did not arm
+   * in French. Only the classifier knows which list matched; it says so.
    */
   solo?: boolean;
 }
 
 /**
- * Détection agrégée d'un label : l'étage du tag et les items qui le portent (les preuves).
- * Générique sur le type de label (PANO-75, MÉCANIQUE UNIQUEMENT) : `SensitiveLabel` côté D1,
- * `string` (identité de thème) côté D2 — la machinerie ne fait que recopier `lexicon.label`, elle
- * n'interprète jamais sa valeur. Le défaut `string` couvre les usages qui ne lisent que `stage`/`items`.
+ * Aggregated detection of a label: the tag's storey and the items that carry it (the evidence).
+ * Generic over the label type (PANO-75, MECHANICS ONLY): `SensitiveLabel` on the D1 side,
+ * `string` (theme identity) on the D2 side — the machinery merely copies `lexicon.label`, it
+ * never interprets its value. The `string` default covers the uses that only read `stage`/`items`.
  */
 export interface LabelDetection<L extends string = string> {
   label: L;
-  /** Étage AGRÉGÉ : `explicit` (≥ 1 item explicite) ou `indirect` (seuil d'items indirects atteint). */
+  /** AGGREGATED storey: `explicit` (≥ 1 explicit item) or `indirect` (indirect-item threshold reached). */
   stage: DetectionStage;
   items: ItemHit[];
 }
 
-// --- Les filtres du soin -------------------------------------------------------------------------
+// --- The care filters ----------------------------------------------------------------------------
 
 function tokens(norm: string): string[] {
   return norm.match(/[\w'-]+/g) ?? [];
 }
 
-/** Fenêtre de négation APRÈS un marqueur d'adhésion — cf. `hasTrailingNegation` pour le pourquoi du
- *  sens et de la brièveté. Distincte de `NEGATION_WINDOW`, qu'elle ne remplace ni n'élargit. */
+/** Negation window AFTER an adherence marker — cf. `hasTrailingNegation` for why the
+ *  direction and the brevity. Distinct from `NEGATION_WINDOW`, which it neither replaces nor widens. */
 const ADHERENCE_NEGATION_WINDOW = 2;
 
 /**
- * Négation dans la fenêtre AVANT le marqueur — SAUF double négation « rate/manque jamais X »
- * (verbe d'omission + négation = AFFIRME X, mesuré PANO-33).
+ * Negation in the window BEFORE the marker — EXCEPT double negation « rate/manque jamais X »
+ * (omission verb + negation = AFFIRMS X, measured PANO-33).
  */
 function isNegated(norm: string, start: number): boolean {
   const before = tokens(norm.slice(0, start));
@@ -135,7 +135,7 @@ function isNegated(norm: string, start: number): boolean {
   return !widened.some((t) => OMISSION_VERBS.includes(t));
 }
 
-/** Discours rapporté (marqueur de citation présent) OU marqueur entre guillemets → attribué à autrui. */
+/** Reported speech (citation marker present) OR marker inside quotes → attributed to someone else. */
 function isCited(text: NormalizedText, marker: string): boolean {
   if (CITATION_MARKERS.some((c) => findMarker(text, c) !== null)) {
     return true;
@@ -148,25 +148,25 @@ function hasThirdPerson(text: NormalizedText): boolean {
 }
 
 /**
- * Registre INFORMATIONNEL : l'item interroge, définit ou quantifie une condition au lieu de la
- * décrire chez quelqu'un (« signes de X », « prevalence of X », « qu'est ce que X »).
+ * INFORMATIONAL register: the item questions, defines or quantifies a condition instead of
+ * describing it in someone (« signes de X », « prevalence of X », « qu'est ce que X »).
  */
 function isInformational(text: NormalizedText): boolean {
   return INFORMATIONAL.some((marker) => findMarker(text, marker) !== null);
 }
 
 /**
- * Registre informationnel en COMPOSÉ : un terme du lexique suivi d'une tête documentaire
- * (« diabetes symptoms », « burnout signs »). Même règle que `isInformational`, seconde forme.
+ * Informational register in COMPOUND form: a lexicon term followed by a documentary head
+ * (« diabetes symptoms », « burnout signs »). Same rule as `isInformational`, second form.
  *
- * Elle existe parce que la liste par préposition manquait l'ordre de mots DOMINANT de l'anglais :
- * « symptoms of diabetes » dégradait, « diabetes symptoms » nommait. La tête n'est reconnue
- * qu'ACCOLÉE À UN TERME — c'est ce qui permet de ne pas admettre « symptoms » nu, dont l'exclusion
- * de la liste principale est délibérée (« my symptoms have been worse » décrit un vécu et ne doit
- * pas dégrader).
+ * It exists because the by-preposition list missed the DOMINANT word order of English:
+ * « symptoms of diabetes » degraded, « diabetes symptoms » named. The head is recognized
+ * only ADJACENT TO A TERM — this is what lets us not admit bare « symptoms », whose exclusion
+ * from the main list is deliberate (« my symptoms have been worse » describes lived experience and must
+ * not degrade).
  *
- * L'ancre est le terme EXPLICITE seul : un terme indirect produit déjà un étage large, il n'y a
- * rien à abaisser.
+ * The anchor is the EXPLICIT term alone: an indirect term already produces a broad storey, there is
+ * nothing to lower.
  */
 function hasInformationalCompound(text: NormalizedText, explicitTerms: readonly string[]): boolean {
   for (const term of explicitTerms) {
@@ -174,9 +174,9 @@ function hasInformationalCompound(text: NormalizedText, explicitTerms: readonly 
     if (pos === null) {
       continue;
     }
-    // Fin du MOT, pas fin du marqueur : la tolérance de pluriel fait matcher « diabete » dans
-    // « diabetes », et le span peut s'arrêter avant le « s ». Sans ce rattrapage, la tête suivante
-    // ne serait jamais adjacente.
+    // End of the WORD, not end of the marker: the plural tolerance makes « diabete » match in
+    // « diabetes », and the span can stop before the « s ». Without this catch-up, the following head
+    // would never be adjacent.
     let end = pos.end;
     while (end < text.norm.length && /[a-z0-9]/.test(text.norm[end] ?? '')) {
       end += 1;
@@ -194,35 +194,35 @@ function hasInformationalCompound(text: NormalizedText, explicitTerms: readonly 
   return false;
 }
 
-// --- Espaces de matching --------------------------------------------------------------------------
+// --- Matching spaces --------------------------------------------------------------------------
 
-/** Les deux espaces de matching d'un item : direct, et squelettisé (allongements, PANO-36). */
+/** The two matching spaces of an item: direct, and skeletonized (elongations, PANO-36). */
 interface TextSpaces {
   full: NormalizedText;
   skeleton: NormalizedText;
 }
 
-/** Construit les espaces de matching d'un texte (une fois par item). */
+/** Builds the matching spaces of a text (once per item). */
 function buildSpaces(text: string): TextSpaces {
   const full = normalizeFr(text);
   return { full, skeleton: skeletonize(full) };
 }
 
-/** Allongement expressif visible : ≥ 3 fois le même caractère d'affilée. */
+/** Visible expressive elongation: ≥ 3 times the same character in a row. */
 const ELONGATION = /(.)\1\1/;
 
 /**
- * Hit d'un marqueur DANS UN ESPACE : présent (frontière de mot), ni nié, ni cité. Retourne la
- * FORME DE SURFACE (découpée dans l'original via la carte d'offsets), ou `null`.
- * `requireElongation` = la garde du fallback squelette : la surface matchée doit porter un
- * allongement visible, sinon le squelette pourrait faire matcher « cône » sur « conne ».
+ * Hit of a marker WITHIN A SPACE: present (word boundary), neither negated nor cited. Returns the
+ * SURFACE FORM (sliced from the original via the offset map), or `null`.
+ * `requireElongation` = the guard of the skeleton fallback: the matched surface must carry a
+ * visible elongation, otherwise the skeleton could make « cône » match « conne ».
  */
 /**
- * Le marqueur est-il AVALÉ par une locution couvrante ? « therapy » dans « occupational therapy ».
+ * Is the marker SWALLOWED by a covering phrase? « therapy » in « occupational therapy ».
  *
- * La contenance est STRICTE, et c'est ce qui rend la règle utilisable : sans ça, un syntagme
- * couvrant se bloquerait lui-même, et `health_physical` perdrait le signal qu'on veut justement lui
- * laisser réclamer. Seul le marqueur plus COURT tombe.
+ * The containment is STRICT, and that is what makes the rule usable: without it, a covering
+ * phrase would block itself, and `health_physical` would lose the signal we precisely want to let
+ * it claim. Only the SHORTER marker falls.
  */
 function isSwallowed(text: NormalizedText, pos: Span): boolean {
   const longueur = pos.end - pos.start;
@@ -257,9 +257,9 @@ function hitIn(text: NormalizedText, marker: string, requireElongation: boolean)
   return surface;
 }
 
-/** Hit d'un marqueur : espace direct d'abord, fallback squelettisé (gardé) ensuite. */
+/** Hit of a marker: direct space first, then skeletonized (guarded) fallback. */
 function hitSurface(spaces: TextSpaces, rawMarker: string): string | null {
-  const marker = normString(rawMarker); // défensif : les données sont déjà normalisées (mémoïsé)
+  const marker = normString(rawMarker); // defensive: the data is already normalized (memoized)
   const direct = hitIn(spaces.full, marker, false);
   if (direct !== null) {
     return direct;
@@ -268,17 +268,17 @@ function hitSurface(spaces: TextSpaces, rawMarker: string): string | null {
 }
 
 /**
- * Surfaces des marqueurs PRÉSENTS MAIS NIÉS — le miroir exact de `hitSurfaces`, et il n'existe que
- * pour les labels de SUJET (`TopicalLexicon.subjectNotState`). Mêmes portes que `hitIn` (citation,
- * locution couvrante) : seule la négation change de sens, de suppression vers dégradation.
+ * Surfaces of markers PRESENT BUT NEGATED — the exact mirror of `hitSurfaces`, and it exists only
+ * for SUBJECT labels (`TopicalLexicon.subjectNotState`). Same gates as `hitIn` (citation,
+ * covering phrase): only negation changes meaning, from suppression toward degradation.
  *
- * Écrit à côté de `hitIn` plutôt que dedans, et c'est délibéré : le chemin des cinq autres labels
- * n'est pas touché d'une ligne. Une refonte de `hitIn` aurait déplacé le repli vers l'espace
- * squelettisé (aujourd'hui un hit nié y retombe), et un lot dont la doctrine porte sur `politics` et
- * `religion` n'a pas à bouger le comportement de `mental_health` par effet de bord.
+ * Written alongside `hitIn` rather than inside it, and deliberately so: the path of the five other labels
+ * is not touched by a single line. A rework of `hitIn` would have moved the fallback into the
+ * skeletonized space (today a negated hit falls back there), and a batch whose doctrine bears on `politics` and
+ * `religion` has no business shifting the behavior of `mental_health` by side effect.
  *
- * ESPACE DIRECT SEUL — pas de repli squelettisé : la négation est un fait de MOTS-FONCTION, que
- * l'allongement expressif ne déforme pas. Même raison que le plafonnement d'étage juste en dessous.
+ * DIRECT SPACE ONLY — no skeletonized fallback: negation is a fact of FUNCTION WORDS, which
+ * expressive elongation does not distort. Same reason as the storey capping just below.
  */
 function negatedHitSurfaces(spaces: TextSpaces, markers: readonly string[]): string[] {
   const text = spaces.full;
@@ -303,21 +303,21 @@ function negatedHitSurfaces(spaces: TextSpaces, markers: readonly string[]): str
 }
 
 /**
- * Un marqueur d'ADHÉSION est-il suivi d'une négation ? La moitié manquante de `isNegated`, et elle
- * n'existe que pour la contradiction d'auto-déclaration (`TopicalLexicon.adherence`).
+ * Is an ADHERENCE marker followed by a negation? The missing half of `isNegated`, and it
+ * exists only for the self-declaration contradiction (`TopicalLexicon.adherence`).
  *
- * POURQUOI UNE FENÊTRE APRÈS, alors que tout le reste du fichier regarde AVANT. La négation
- * française est DISCONTINUE (« ne … pas »), et le premier élément n'est pas un marqueur de négation
- * utilisable : `ne` est trop fréquent hors négation pour entrer dans `NEGATIONS`, si bien que la
- * fenêtre avant ne voit RIEN sur « je ne crois pas » — le poids porte sur `pas`, qui SUIT le verbe.
- * Mesuré : sans cette fenêtre, la règle de contradiction ne se déclenchait jamais.
+ * WHY A WINDOW AFTER, when the entire rest of the file looks BEFORE. French negation
+ * is DISCONTINUOUS (« ne … pas »), and the first element is not a usable negation
+ * marker: `ne` is too frequent outside negation to enter `NEGATIONS`, so the
+ * before-window sees NOTHING on « je ne crois pas » — the weight is on `pas`, which FOLLOWS the verb.
+ * Measured: without this window, the contradiction rule never fired.
  *
- * FENÊTRE COURTE (2 tokens), et c'est ce qui la sépare d'un « il y a une négation quelque part ».
- * Mesuré aussi : une fenêtre large plafonnait « je pratique, je ne m'en cache pas » — une phrase
- * qui AFFIRME, dont le `pas` appartient à une tout autre proposition. Deux tokens couvrent la
- * négation attachée au verbe et rien de plus.
+ * SHORT WINDOW (2 tokens), and that is what separates it from a « there is a negation somewhere ».
+ * Also measured: a wide window capped « je pratique, je ne m'en cache pas » — a sentence
+ * that AFFIRMS, whose `pas` belongs to an altogether different clause. Two tokens cover the
+ * negation attached to the verb and nothing more.
  *
- * Portée strictement locale : `isNegated` n'est pas touché, donc aucun autre label ne bouge.
+ * Strictly local scope: `isNegated` is not touched, so no other label moves.
  */
 function hasTrailingNegation(text: NormalizedText, markers: readonly string[]): boolean {
   for (const rawMarker of markers) {
@@ -334,28 +334,28 @@ function hasTrailingNegation(text: NormalizedText, markers: readonly string[]): 
 }
 
 /**
- * L'auto-déclaration est-elle SUBORDONNÉE à une question rapportée ? (« on me demande si je suis X »)
+ * Is the self-declaration SUBORDINATED to a reported question? (« on me demande si je suis X »)
  *
- * LE MÊME MÉCANISME QUE LA CONTRADICTION D'ADHÉSION, VU DE L'AUTRE CÔTÉ. Le pattern
- * d'auto-déclaration lit une COPULE et rien d'autre : il ne distingue pas « je suis X », qui
- * affirme, de « on me demande si je suis X », qui rapporte la question d'un tiers. Mesuré, et sur
- * les trois labels qui déclarent des termes auto-déclarés — pas seulement celui qui l'a trouvé.
+ * THE SAME MECHANISM AS THE ADHERENCE CONTRADICTION, SEEN FROM THE OTHER SIDE. The
+ * self-declaration pattern reads a COPULA and nothing else: it does not distinguish « je suis X », which
+ * affirms, from « on me demande si je suis X », which reports a third party's question. Measured, and across
+ * the three labels that declare self-declared terms — not just the one that found it.
  *
- * POURQUOI DÉGRADER ET NON FILTRER, et c'est la même raison qu'ailleurs dans ce fichier : effacer
- * serait faux. Quelqu'un à qui on pose la question EST en relation avec le sujet — c'est le sujet
- * même de sa phrase. Le tag reste, l'affirmation tombe.
+ * WHY DEGRADE AND NOT FILTER, and it is the same reason as elsewhere in this file: erasing
+ * would be false. Someone who is asked the question IS in relation with the subject — it is the very
+ * subject of their sentence. The tag stays, the assertion falls.
  *
- * LA STRUCTURE VÉRIFIÉE, et pas seulement la présence des mots : le verbe de question doit précéder
- * la copule, et « si » doit se trouver ENTRE les deux. C'est « si » qui subordonne, et l'exiger au
- * bon endroit sépare « on me demande si je suis X » (rapporté) de « je suis X, et si on me le
- * demande je le dis » (affirmé) — deux phrases qui portent exactement les mêmes mots.
+ * THE STRUCTURE IS VERIFIED, and not just the presence of the words: the question verb must precede
+ * the copula, and « si » must sit BETWEEN the two. It is « si » that subordinates, and requiring it in
+ * the right place separates « on me demande si je suis X » (reported) from « je suis X, et si on me le
+ * demande je le dis » (affirmed) — two sentences that carry exactly the same words.
  *
- * CE QUE CETTE RÈGLE NE COUVRE PAS, et le dire évite qu'on la cite trop large : la question posée
- * SANS « si » (« tu es X ? — oui »), la question rapportée en anglais, et le DÉMENTI qui suit une
- * affirmation (« je suis X, je réponds non »). Ce dernier a été examiné et écarté, mesuré : le
- * français emploie « non mais » comme marqueur d'insistance AFFIRMATIVE (« je suis X, non mais
- * vraiment »), si bien qu'une négation traînante ne distingue pas le démenti de l'emphase. C'est le
- * mode d'échec qui avait déjà imposé une fenêtre courte à `hasTrailingNegation`.
+ * WHAT THIS RULE DOES NOT COVER, and saying so keeps it from being over-cited: the question asked
+ * WITHOUT « si » (« tu es X ? — oui »), the reported question in English, and the DENIAL that follows an
+ * affirmation (« je suis X, je réponds non »). This last one was examined and set aside, measured: French
+ * uses « non mais » as an AFFIRMATIVE emphasis marker (« je suis X, non mais
+ * vraiment »), so a trailing negation does not distinguish denial from emphasis. It is the
+ * failure mode that had already imposed a short window on `hasTrailingNegation`.
  */
 function hasReportedSelfQuestion(text: NormalizedText, heads: readonly string[]): boolean {
   const head = heads
@@ -377,7 +377,7 @@ function hasReportedSelfQuestion(text: NormalizedText, heads: readonly string[])
   return false;
 }
 
-/** Surfaces des marqueurs qui hittent, dédupliquées, ordre des marqueurs préservé. */
+/** Surfaces of the markers that hit, deduplicated, marker order preserved. */
 function hitSurfaces(spaces: TextSpaces, markers: readonly string[]): string[] {
   const out: string[] = [];
   for (const marker of markers) {
@@ -390,14 +390,14 @@ function hitSurfaces(spaces: TextSpaces, markers: readonly string[]): string[] {
 }
 
 /**
- * Surfaces des termes d'identité AUTO-DÉCLARÉS (PANO-72) : « je suis (un vrai) X ». Le span entier
- * (copule + modificateurs + terme) est la forme de surface, surlignable tel quel. Ni nié (la
- * négation brise le pattern), ni cité. Toujours explicite (la copule ancre la 1ʳᵉ personne).
+ * Surfaces of SELF-DECLARED identity terms (PANO-72): « je suis (un vrai) X ». The whole span
+ * (copula + modifiers + term) is the surface form, highlightable as is. Neither negated (
+ * negation breaks the pattern), nor cited. Always explicit (the copula anchors the 1st person).
  *
- * `heads` est un PARAMÈTRE, et c'est la porte de langue (PANO-35) : une liste de têtes ne lit que
- * les termes admis pour SA langue. Le couple (têtes, termes) est donc visible au site d'appel, là
- * où un lecteur peut vérifier qu'il est bien apparié — et non enfoui dans un import global qui
- * lisait tout ce qui traînait.
+ * `heads` is a PARAMETER, and it is the language gate (PANO-35): a head list reads only
+ * the terms admitted for ITS language. The (heads, terms) pair is therefore visible at the call site, where
+ * a reader can check it is properly paired — and not buried in a global import that
+ * read everything lying around.
  */
 function hitSelfDeclared(
   spaces: TextSpaces,
@@ -405,7 +405,7 @@ function hitSelfDeclared(
   heads: readonly string[],
 ): string[] {
   if (!canSelfDeclare(spaces.full, heads)) {
-    return []; // aucune copule de tête → le pattern ne peut pas matcher (court-circuit PANO-87)
+    return []; // no head copula → the pattern cannot match (short-circuit PANO-87)
   }
   const out: string[] = [];
   for (const rawTerm of terms) {
@@ -422,76 +422,76 @@ function hitSelfDeclared(
   return out;
 }
 
-// --- Classification par item ---------------------------------------------------------------------
+// --- Per-item classification ---------------------------------------------------------------------
 
-/** Item → hit topical (B1/B3) : explicite à soi, sinon dégradé/indirect, sinon rien. */
+/** Item → topical hit (B1/B3): explicit about oneself, else degraded/indirect, else nothing. */
 function classifyTopicalItem(
   spaces: TextSpaces,
   lexicon: TopicalLexicon,
 ): Omit<ItemHit, 'itemIndex'> | null {
-  // Auto-déclaration (« je suis X ») : toujours explicite, JAMAIS dégradée par la 3ᵉ personne —
-  // la copule ancre la 1ʳᵉ personne (PANO-72). Un « je suis dépressif, comme ma fille » reste un
-  // vécu explicite du locuteur.
+  // Self-declaration (« je suis X »): always explicit, NEVER degraded by the 3rd person —
+  // the copula anchors the 1st person (PANO-72). A « je suis dépressif, comme ma fille » stays an
+  // explicit lived experience of the speaker.
   const selfDeclaredSurfaces = hitSelfDeclared(
     spaces,
     lexicon.selfDeclaredFr ?? [],
     SELF_DECLARATION_HEADS_FR,
   );
-  // AUTO-DÉCLARATION ANGLAISE — même mécanisme, ÉTAGE OPPOSÉ. Elle n'entre PAS dans
-  // `explicitSurfaces` : elle rejoint le bloc indirect plus bas, et elle n'y confère aucun
-  // franchissement solo. Les deux propriétés sont la doctrine du tier, pas une prudence de plus —
-  // `TopicalLexicon.selfDeclaredEn` les porte avec leurs mesures.
+  // ENGLISH SELF-DECLARATION — same mechanism, OPPOSITE STOREY. It does NOT enter
+  // `explicitSurfaces`: it joins the indirect block below, and confers no solo
+  // crossing there. Both properties are the doctrine of the tier, not one more caution —
+  // `TopicalLexicon.selfDeclaredEn` carries them with their measurements.
   //
-  // Le couple (têtes, termes) est visible ICI pour les deux langues, et c'est la porte de langue :
-  // chaque liste de termes ne se lit qu'avec les têtes de SA langue. Un lecteur vérifie
-  // l'appariement d'un coup d'œil, sans remonter dans un import.
+  // The (heads, terms) pair is visible HERE for both languages, and this is the language gate:
+  // each term list is read only with the heads of ITS language. A reader checks
+  // the pairing at a glance, without going back up into an import.
   const selfDeclaredEnSurfaces = hitSelfDeclared(
     spaces,
     lexicon.selfDeclaredEn ?? [],
     SELF_DECLARATION_HEADS_EN,
   );
   const explicitNudeSurfaces = hitSurfaces(spaces, lexicon.explicit);
-  // Plafonnement d'étage (3ᵉ personne, registre informationnel) : espace direct seul — pas de
-  // tolérance d'allongement sur les mots-fonction, le gain serait nul et la surface de FP
-  // inutilement élargie.
-  // PLAFONNEMENT D'ÉTAGE — ce n'est pas un filtre, et la distinction est la chose à ne pas perdre :
-  // un filtre répond « ce constat existe-t-il », par oui ou par non, et se trompe en RETIRANT du
-  // signal réel ; ceci répond « à quel étage », et se trompe au pire en sous-affirmant.
+  // Storey capping (3rd person, informational register): direct space only — no
+  // elongation tolerance on function words, the gain would be nil and the FP surface
+  // needlessly widened.
+  // STOREY CAPPING — this is not a filter, and the distinction is the thing not to lose:
+  // a filter answers « does this finding exist », by yes or no, and errs by REMOVING
+  // real signal; this answers « at which storey », and at worst errs by under-asserting.
   //
-  // Les DEUX raisons produisent le même étage et sont tenues SÉPARÉES, parce qu'elles ne disent pas
-  // la même chose et n'ouvrent pas les mêmes droits :
-  //   - la 3ᵉ personne dit POUR QUI vaut le signal (B3) ;
-  //   - le registre informationnel dit SOUS QUELLE FORME il est écrit.
-  // Seule la seconde confère le franchissement SOLO (voir plus bas).
+  // The TWO reasons produce the same storey and are kept SEPARATE, because they do not say
+  // the same thing and do not open the same rights:
+  //   - the 3rd person says FOR WHOM the signal holds (B3);
+  //   - the informational register says IN WHAT FORM it is written.
+  // Only the second confers the SOLO crossing (see below).
   const third = hasThirdPerson(spaces.full);
-  // Les DEUX formes du registre informationnel — par préposition (« symptoms of X ») et par
-  // composé (« X symptoms ») — produisent le même plafonnement et ouvrent les mêmes droits. C'est
-  // délibéré : ce sont deux ordres de mots pour un seul registre, pas deux règles. Les distinguer
-  // en aval ferait dépendre l'étage d'un fait de syntaxe, ce qu'aucune doctrine ne demande.
+  // The TWO forms of the informational register — by preposition (« symptoms of X ») and by
+  // compound (« X symptoms ») — produce the same capping and open the same rights. This is
+  // deliberate: they are two word orders for a single register, not two rules. Distinguishing them
+  // downstream would make the storey depend on a fact of syntax, which no doctrine requires.
   const informational =
     isInformational(spaces.full) || hasInformationalCompound(spaces.full, lexicon.explicit);
   const capped = third || informational;
-  // Les termes nus explicites sont plafonnés (B3) ; l'auto-déclaration ne l'est JAMAIS — la copule
-  // ancre la 1ʳᵉ personne, et « je suis en dépression, comme dans les signes de dépression que j'ai
-  // lus » reste un vécu déclaré.
-  // AUTO-DÉCLARATION CONTREDITE — labels de SUJET seulement (`TopicalLexicon.adherence`). Un item
-  // qui déclare une appartenance ET nie l'adhésion dans la foulée (« je suis catholique mais je ne
-  // crois pas ») ne peut pas NOMMER : la copule ancre bien la 1ʳᵉ personne, mais la phrase retire
-  // l'affirmation que l'étage nommé porterait.
+  // Bare explicit terms are capped (B3); self-declaration NEVER is — the copula
+  // anchors the 1st person, and « je suis en dépression, comme dans les signes de dépression que j'ai
+  // lus » stays a declared lived experience.
+  // CONTRADICTED SELF-DECLARATION — SUBJECT labels only (`TopicalLexicon.adherence`). An item
+  // that declares a belonging AND denies adherence in the same breath (« je suis catholique mais je ne
+  // crois pas ») cannot NAME: the copula does anchor the 1st person, but the sentence removes
+  // the assertion the named storey would carry.
   //
-  // C'est un PLAFONNEMENT, pas un filtre, et la distinction est tout le sujet : effacer serait faux
-  // — cette personne a une relation à cette tradition, c'est le sujet même de sa phrase. Le tag
-  // reste, l'affirmation tombe. Doctrine et raison d'être : `TopicalLexicon.adherence`.
+  // It is a CAPPING, not a filter, and the distinction is the whole point: erasing would be false
+  // — this person has a relation to this tradition, it is the very subject of their sentence. The tag
+  // stays, the assertion falls. Doctrine and rationale: `TopicalLexicon.adherence`.
   const contradicted =
     lexicon.subjectNotState === true &&
     selfDeclaredSurfaces.length > 0 &&
     hasTrailingNegation(spaces.full, lexicon.adherence ?? []);
-  // QUESTION RAPPORTÉE — l'autre versant du même mécanisme, et il n'est PAS réservé aux labels de
-  // sujet. La contradiction d'adhésion suppose qu'on puisse adhérer ou non à ce qu'on déclare, ce
-  // qui n'a de sens que pour un SUJET ; une question rapportée, elle, retire l'affirmation quel que
-  // soit le label — « on me demande si je suis dépressif » n'affirme pas plus une dépression qu'une
-  // appartenance. D'où l'absence de garde `subjectNotState` ici, qui serait une recopie de forme
-  // sans sa raison.
+  // REPORTED QUESTION — the other side of the same mechanism, and it is NOT reserved to subject
+  // labels. The adherence contradiction assumes one can adhere or not to what one declares, which
+  // only makes sense for a SUBJECT; a reported question, in contrast, removes the assertion whatever
+  // the label — « on me demande si je suis dépressif » no more affirms a depression than a
+  // belonging. Hence the absence of a `subjectNotState` guard here, which would be a copy of form
+  // without its reason.
   const reported =
     selfDeclaredSurfaces.length > 0 &&
     hasReportedSelfQuestion(spaces.full, SELF_DECLARATION_HEADS_FR);
@@ -505,34 +505,34 @@ function classifyTopicalItem(
   if (explicitSurfaces.length > 0) {
     return { stage: 'explicit', surfaces: explicitSurfaces };
   }
-  // Les marqueurs SOLO sont des marqueurs indirects comme les autres AU NIVEAU DE L'ITEM : ce qui
-  // les distingue est l'AGRÉGATION (ils dispensent du seuil). Ils sont matchés à part uniquement
-  // pour pouvoir le SIGNALER — pas parce que leur classification différerait.
+  // SOLO markers are indirect markers like the others AT THE ITEM LEVEL: what
+  // distinguishes them is AGGREGATION (they waive the threshold). They are matched separately only
+  // so it can be SIGNALED — not because their classification would differ.
   const soloSurfaces = hitSurfaces(spaces, lexicon.indirectSolo ?? []);
   const indirectMarkers = lexicon.includeColloquial
     ? [...lexicon.indirectCore, ...lexicon.indirectColloquial]
     : lexicon.indirectCore;
   const indirectSurfaces = hitSurfaces(spaces, indirectMarkers);
-  // POLARITÉ — labels de SUJET seulement (ADR-0003, *L'état et le sujet*). Un marqueur NIÉ n'est pas
-  // supprimé, il est dégradé : « je supporte pas les fachos » et « je ne crois pas en dieu » sont
-  // sur le sujet, et la négation en dit la polarité, pas l'absence. L'étage nommé leur reste fermé —
-  // affirmer sur une phrase qui nie serait exactement l'erreur que le filtre évitait.
+  // POLARITY — SUBJECT labels only (ADR-0003, *L'état et le sujet*). A NEGATED marker is not
+  // suppressed, it is degraded: « je supporte pas les fachos » and « je ne crois pas en dieu » are
+  // on the subject, and negation tells its polarity, not its absence. The named storey stays closed to them —
+  // asserting on a sentence that denies would be exactly the error the filter avoided.
   const negatedSurfaces =
     lexicon.subjectNotState === true
       ? negatedHitSurfaces(spaces, [...lexicon.explicit, ...indirectMarkers])
       : [];
-  // Terme nu explicite plafonné → DÉGRADÉ en indirect (jamais nommé, jamais supprimé — B3).
+  // Bare explicit term, capped → DEGRADED to indirect (never named, never suppressed — B3).
   const degraded = capped ? explicitNudeSurfaces : [];
-  // L'auto-déclaration NON ASSERTÉE retombe ici — contredite par une négation d'adhésion, ou
-  // subordonnée à une question rapportée. C'est le geste qui distingue ces deux règles d'un filtre :
-  // la surface est conservée comme preuve indirecte. Sans cette ligne, le plafonnement effacerait le
-  // hit au lieu de l'abaisser — exactement ce que la doctrine refuse. Les deux causes partagent ce
-  // slot parce qu'elles produisent le MÊME résultat ; elles restent deux booléens distincts parce
-  // qu'elles ne se déclenchent pas sur les mêmes labels.
+  // NON-ASSERTED self-declaration falls back here — contradicted by an adherence negation, or
+  // subordinated to a reported question. This is the move that distinguishes these two rules from a filter:
+  // the surface is kept as indirect evidence. Without this line, the capping would erase the
+  // hit instead of lowering it — exactly what doctrine refuses. The two causes share this
+  // slot because they produce the SAME result; they stay two distinct booleans because
+  // they do not fire on the same labels.
   const unassertedSurfaces = contradicted || reported ? selfDeclaredSurfaces : [];
   const surfaces: string[] = [];
   for (const s of [
-    // L'auto-déclaration ANGLAISE arrive ici et nulle part ailleurs — jamais dans `explicitSurfaces`.
+    // ENGLISH self-declaration arrives here and nowhere else — never in `explicitSurfaces`.
     ...selfDeclaredEnSurfaces,
     ...unassertedSurfaces,
     ...degraded,
@@ -544,46 +544,46 @@ function classifyTopicalItem(
       surfaces.push(s);
     }
   }
-  // FRANCHISSEMENT SOLO — même règle, seconde voie.
+  // SOLO CROSSING — same rule, second path.
   //
-  // Un terme dégradé par le REGISTRE INFORMATIONNEL franchit SEUL, exactement comme un nom nu de
-  // `indirectSolo`. Les deux cas ont la même forme : le terme précis EST écrit, et c'est le CADRAGE
-  // qui interdit d'affirmer. Le tier des noms nus tenait déjà cette forme pour les noms nus ; il lui
-  // manquait ce chemin-ci. C'est une règle qui rejoint un cas qu'elle avait manqué, pas une règle
-  // neuve — et sans lui, les deux mécanismes se composaient en une DISPARITION : le cadrage retirait
-  // l'étage nommé, puis le seuil retirait le constat, alors qu'aucune des deux règles ne demandait
-  // qu'il n'y ait plus rien à montrer.
+  // A term degraded by the INFORMATIONAL REGISTER crosses ALONE, exactly like a bare name from
+  // `indirectSolo`. Both cases share the same form: the precise term IS written, and it is the FRAMING
+  // that forbids asserting. The bare-name tier already held this form for bare names; it was
+  // missing this path. It is a rule joining a case it had missed, not a new
+  // rule — and without it, the two mechanisms composed into a DISAPPEARANCE: the framing removed
+  // the named storey, then the threshold removed the finding, whereas neither rule required
+  // that there be nothing left to show.
   //
-  // La 3ᵉ personne, elle, ne confère RIEN. Sa raison est l'inverse : elle dit que le signal ne
-  // concerne pas le locuteur, ce qui est précisément un motif de NE PAS laisser un item isolé poser
-  // un constat sur lui. Les deux plafonnements produisent le même étage pour des raisons opposées,
-  // et seule l'une des deux justifie de sauter le seuil.
+  // The 3rd person, in contrast, confers NOTHING. Its reason is the reverse: it says the signal does
+  // not concern the speaker, which is precisely a reason NOT to let an isolated item place
+  // a finding on them. The two cappings produce the same storey for opposite reasons,
+  // and only one of the two justifies skipping the threshold.
   const degradedSolo = informational && degraded.length > 0;
-  // MÊME FRANCHISSEMENT POUR L'AUTO-DÉCLARATION NON ASSERTÉE, et pour la raison déjà écrite juste
-  // au-dessus : le terme précis EST écrit, et c'est le CADRAGE qui interdit d'affirmer. Sans cette
-  // ligne, la dégradation se compose avec le seuil en une DISPARITION — le plafonnement retire
-  // l'étage nommé, puis le seuil retire le constat, alors qu'aucune des deux règles ne demande
-  // qu'il n'y ait plus rien à montrer. C'est de l'effacement par la porte de derrière, très
-  // exactement ce que « dégrader, ne pas filtrer » refuse.
+  // SAME CROSSING FOR NON-ASSERTED SELF-DECLARATION, and for the reason already written just
+  // above: the precise term IS written, and it is the FRAMING that forbids asserting. Without this
+  // line, the degradation composes with the threshold into a DISAPPEARANCE — the capping removes
+  // the named storey, then the threshold removes the finding, whereas neither rule requires
+  // that there be nothing left to show. It is erasure through the back door, very
+  // exactly what « degrade, don't filter » refuses.
   //
-  // Mesuré, et c'est ce qui a rendu la règle visible : « on me demande si je suis dépressif » rendait
-  // RIEN sur un label à seuil 2, là où le même cadre rendait un constat large sur les labels à
-  // seuil 1. Le plafonnement de la contradiction d'adhésion portait le même défaut latent, sans
-  // qu'aucun banc puisse le voir — son seul label déclarant `adherence` est à seuil 1.
+  // Measured, and this is what made the rule visible: « on me demande si je suis dépressif » returned
+  // NOTHING on a threshold-2 label, where the same frame returned a broad finding on threshold-1
+  // labels. The capping of the adherence contradiction carried the same latent defect, without
+  // any bench being able to see it — its only label declaring `adherence` is at threshold 1.
   const unassertedSolo = unassertedSurfaces.length > 0;
-  // ET L'AUTO-DÉCLARATION ANGLAISE N'EN CONFÈRE AUCUN — absence DÉLIBÉRÉE, mesurée, à ne pas
-  // « réparer » en la rangeant avec les deux cas ci-dessus.
+  // AND ENGLISH SELF-DECLARATION CONFERS NONE — a DELIBERATE, measured absence, not to be
+  // « fixed » by filing it with the two cases above.
   //
-  // Ses voisins de ce bloc franchissent parce que le terme précis EST écrit et que seul le CADRAGE
-  // interdit d'affirmer. La forme se ressemble, et c'est le piège : ici le cadrage n'établit rien
-  // sur le locuteur, parce que le cadre anglais ne désambiguïse pas (`filters-en.ts`). Lui donner le
-  // franchissement reviendrait à faire porter au cadre une charge qu'il ne porte pas.
+  // Its neighbors in this block cross because the precise term IS written and only the FRAMING
+  // forbids asserting. The form looks alike, and that is the trap: here the framing establishes nothing
+  // about the speaker, because the English frame does not disambiguate (`filters-en.ts`). Giving it the
+  // crossing would amount to making the frame carry a load it does not bear.
   //
-  // Mesuré, variante rejetée : la dispense faisait passer un jeu de 43 phrases d'idiome de 8 à 16
-  // déclenchements et ajoutait un tort sur `en_idiomatic` (« i am so ocd about the label alignment
-  // on the jars ») — sur un terme, `ocd`, qui était DÉJÀ au lexique. Le coût n'est pas le
-  // vocabulaire, c'est le franchissement. Prix accepté en échange : sur les labels à seuil 2,
-  // « i am diabetic » écrit une seule fois ne rend rien.
+  // Measured, rejected variant: the waiver took a set of 43 idiom sentences from 8 to 16
+  // firings and added a wrong on `en_idiomatic` (« i am so ocd about the label alignment
+  // on the jars ») — on a term, `ocd`, that was ALREADY in the lexicon. The cost is not the
+  // vocabulary, it is the crossing. Price accepted in exchange: on threshold-2 labels,
+  // « i am diabetic » written a single time returns nothing.
   if (surfaces.length > 0) {
     return {
       stage: 'indirect',
@@ -594,34 +594,34 @@ function classifyTopicalItem(
   return null;
 }
 
-/** Item → hit conflictual (B5) : insulte émise + cible 2ᵉ personne, hors citation. */
+/** Item → conflictual hit (B5): insult issued + 2nd-person target, outside citation. */
 function classifyConflictualItem(
   spaces: TextSpaces,
   lexicon: ItemLevelLexicon,
 ): Omit<ItemHit, 'itemIndex'> | null {
   if (CITATION_MARKERS.some((c) => findMarker(spaces.full, c) !== null)) {
-    return null; // insulte RAPPORTÉE / reçue (« il m'a traite de… ») — hors-champ
+    return null; // REPORTED / received insult (« il m'a traite de… ») — out of scope
   }
   const insultSurfaces = hitSurfaces(spaces, lexicon.insults);
   if (insultSurfaces.length === 0) {
     return null;
   }
-  // Cible 2ᵉ personne : espace direct seul (mots-fonction, cf. classifyTopicalItem).
+  // 2nd-person target: direct space only (function words, cf. classifyTopicalItem).
   const targeted = lexicon.targets.some((t) => findMarker(spaces.full, normString(t)) !== null);
-  // Sans cible 2ᵉ personne = juron de frustration (« putain ce bug ») → exclu.
+  // Without a 2nd-person target = frustration swear-word (« putain ce bug ») → excluded.
   return targeted ? { stage: 'explicit', surfaces: insultSurfaces } : null;
 }
 
 /**
- * Item → hit d'INTÉRÊT (D2, PANO-75 ; co-occurrence PANO-76) : un marqueur présent (frontière de
- * mot), ni nié, ni cité. Forme SIMPLIFIÉE de `classifyTopicalItem` — AUCUN appel à `hasThirdPerson` :
- * l'absence de dégradation 3ᵉ personne EST la règle « un intérêt reste un intérêt » (parler d'autrui
- * signale le même thème). Toujours `explicit` (un seul étage). `selfDeclared` remonté pour le bonus.
+ * Item → INTEREST hit (D2, PANO-75; co-occurrence PANO-76): a marker present (word
+ * boundary), neither negated nor cited. SIMPLIFIED form of `classifyTopicalItem` — NO call to `hasThirdPerson`:
+ * the absence of 3rd-person degradation IS the rule « an interest stays an interest » (talking about others
+ * signals the same theme). Always `explicit` (a single storey). `selfDeclared` surfaced for the bonus.
  *
- * DÉSAMBIGUÏSATION PAR CO-OCCURRENCE (collecte-puis-filtre, compatible passe unique PANO-87) : on
- * récupère TOUS les hits bruts de l'item (solo, ancrés, auto-déclarés), puis on garde les marqueurs
- * ANCRÉS (ambigus) SEULEMENT si un compagnon du domaine co-occurre — un solo/selfDeclared (signal
- * fort), ou un AUTRE ancré (deux 50/50 ensemble valent le domaine). Les ancrés isolés sont écartés.
+ * CO-OCCURRENCE DISAMBIGUATION (collect-then-filter, single-pass compatible PANO-87): we
+ * gather ALL the item's raw hits (solo, anchored, self-declared), then keep the ANCHORED
+ * (ambiguous) markers ONLY if a domain companion co-occurs — a solo/selfDeclared (strong
+ * signal), or ANOTHER anchored one (two 50/50s together are worth the domain). Isolated anchored ones are set aside.
  */
 function classifyInterestItem(
   spaces: TextSpaces,
@@ -634,8 +634,8 @@ function classifyInterestItem(
   );
   const soloSurfaces = hitSurfaces(spaces, lexicon.markers);
   const anchoredSurfaces = hitSurfaces(spaces, lexicon.anchored ?? []);
-  // Un compagnon FORT (solo ou auto-déclaré) suffit à ancrer ; sinon, deux ancrés distincts
-  // s'ancrent mutuellement. Isolé, un ancré ne compte pas.
+  // A STRONG companion (solo or self-declared) is enough to anchor; otherwise, two distinct anchored ones
+  // anchor each other. Isolated, an anchored one does not count.
   const strongCompanion = soloSurfaces.length > 0 || selfDeclaredSurfaces.length > 0;
   const keptAnchored = strongCompanion || anchoredSurfaces.length >= 2 ? anchoredSurfaces : [];
   const surfaces: string[] = [];
@@ -650,18 +650,18 @@ function classifyInterestItem(
   return { stage: 'explicit', surfaces, selfDeclared: selfDeclaredSurfaces.length > 0 };
 }
 
-// --- Agrégation ------------------------------------------------------------------------------------
+// --- Aggregation ------------------------------------------------------------------------------------
 
 /**
- * Détecte UN lexique sur les textes déjà normalisés → l'étage agrégé + ses items contributeurs, ou
- * `null` si le lexique ne tague pas. Typé sur l'union CONCRÈTE `DetectableLexicon` (et non le
- * générique de `detectLabels`) parce que le narrowing par `kind` ne fonctionne pas sur un paramètre
- * de type : ici la valeur est concrète, la discrimination narrow correctement vers chaque classifieur.
- *   - `interest` (D2) : un seul étage ; pas de seuil — le CLASSEMENT (top-N, plancher) vit dans la
- *     règle D2 ; on émet tout intérêt ayant ≥ 1 hit ;
- *   - `item-level` (conflictual) : ≥ 1 item émis → `explicit` ;
- *   - `topical` (sensible) : ≥ 1 explicite → `explicit` ; sinon ≥ 1 marqueur SOLO **ou** ≥ seuil
- *     indirect → `indirect`.
+ * Detects ONE lexicon over the already-normalized texts → the aggregated storey + its contributing items, or
+ * `null` if the lexicon does not tag. Typed on the CONCRETE union `DetectableLexicon` (and not the
+ * generic of `detectLabels`) because narrowing by `kind` does not work on a type
+ * parameter: here the value is concrete, the discrimination narrows correctly toward each classifier.
+ *   - `interest` (D2): a single storey; no threshold — the RANKING (top-N, floor) lives in the
+ *     D2 rule; we emit any interest having ≥ 1 hit;
+ *   - `item-level` (conflictual): ≥ 1 item emitted → `explicit`;
+ *   - `topical` (sensitive): ≥ 1 explicit → `explicit`; else ≥ 1 SOLO marker **or** ≥ indirect
+ *     threshold → `indirect`.
  */
 function detectOne(
   normalized: readonly TextSpaces[],
@@ -691,9 +691,9 @@ function detectOne(
   if (explicitCount >= 1) {
     return { stage: 'explicit', items };
   }
-  // Un marqueur SOLO dispense du seuil, et de lui SEUL : il ne peut jamais faire monter l'étage.
-  // Le plafond est structurel — ce bloc est APRÈS le retour `explicit`, donc un solo n'ajoute
-  // jamais rien à un constat nommé, et il ne peut pas en fabriquer un.
+  // A SOLO marker waives the threshold, and it ALONE: it can never raise the storey.
+  // The ceiling is structural — this block is AFTER the `explicit` return, so a solo never adds
+  // anything to a named finding, and it cannot fabricate one.
   const hasSolo = items.some((i) => i.stage === 'indirect' && i.solo === true);
   if (hasSolo || indirectCount >= lexicon.indirectThreshold) {
     return { stage: 'indirect', items };
@@ -702,16 +702,16 @@ function detectOne(
 }
 
 /**
- * Détecte les labels sur une liste de textes (les items d'UNE section, dans l'ordre source).
- * Générique sur le type de label (PANO-75, MÉCANIQUE UNIQUEMENT) : le type de `lexicon.label` est
- * propagé tel quel vers `LabelDetection.label` — D1 (`LabelLexicon[]`) reçoit `SensitiveLabel`, D2
- * (`InterestLexicon[]`) reçoit `string`, sans que la machinerie n'interprète jamais la valeur. Le
- * comportement de détection est INCHANGÉ pour D1 (goldens de non-régression : `detect.test.ts`,
+ * Detects labels over a list of texts (the items of ONE section, in source order).
+ * Generic over the label type (PANO-75, MECHANICS ONLY): the type of `lexicon.label` is
+ * propagated as is toward `LabelDetection.label` — D1 (`LabelLexicon[]`) receives `SensitiveLabel`, D2
+ * (`InterestLexicon[]`) receives `string`, without the machinery ever interpreting the value. The
+ * detection behavior is UNCHANGED for D1 (non-regression goldens: `detect.test.ts`,
  * `lexicon-battery.test.ts`, `d1-sensitive-topics.test.ts`).
  *
- * `items` porte TOUS les items contributeurs du label retenu (les preuves à référencer) ; les items
- * non retenus n'entrent jamais au magasin (borne §5.1). Le CLASSEMENT des intérêts (top-N, plancher)
- * ne vit PAS ici : c'est la règle D2 qui l'applique sur ces détections brutes.
+ * `items` carries ALL the contributing items of the retained label (the evidence to reference); the
+ * non-retained items never enter the store (bound §5.1). The RANKING of interests (top-N, floor)
+ * does NOT live here: it is the D2 rule that applies it on these raw detections.
  */
 export function detectLabels<T extends DetectableLexicon>(
   texts: readonly string[],

@@ -1,27 +1,25 @@
-# ADR-0006 : L'accès au serveur local depuis un site HTTPS dépend du navigateur, pas de nous
+# ADR-0006: Access to the local server from an HTTPS site depends on the browser, not on us
 
-**Statut :** Accepté
-**Date :** 2026-07-19
-**Décideur :** yuya
+**Status:** Accepted
+**Date:** 2026-07-19
+**Decider:** yuya
 
-## Contexte
+## Context
 
-L'analyse IA locale (ADR-0002 pour le cadre, `web/src/ai/`) demande au navigateur de joindre
-`http://localhost:8080`, le serveur `llama.cpp` que la personne fait tourner chez elle. La page, elle,
-est servie en HTTPS depuis `panopti.cool` (ADR-0001).
+The local AI analysis (ADR-0002 for the framework, `web/src/ai/`) asks the browser to reach
+`http://localhost:8080`, the `llama.cpp` server that the person runs on their own machine. The page,
+for its part, is served over HTTPS from `panopti.cool` (ADR-0001).
 
-Cette combinaison — origine publique en HTTPS, destinataire en clair sur la boucle locale — est
-exactement celle que les navigateurs ont passé dix ans à restreindre. **La fonctionnalité marchait en
-développement et échouait en production, et rien dans le code n'expliquait la différence** : en
-développement la page est servie depuis `localhost`, donc l'origine ET la cible sont sur la boucle
-locale, cas que tous les moteurs exemptent.
+This combination — public HTTPS origin, cleartext recipient on the local loopback — is exactly the one
+browsers have spent ten years restricting. **The feature worked in development and failed in
+production, and nothing in the code explained the difference**: in development the page is served from
+`localhost`, so both the origin AND the target are on the local loopback, a case every engine exempts.
 
-Le diagnostic a coûté cher, pour une raison qui mérite d'être consignée : **le blocage se présente
-sous une bannière qui désigne un autre mécanisme.** Les deux moteurs mentent différemment, et les
-messages verbatim ci-dessous sont le moyen le plus rapide, pour la prochaine personne, de savoir
-devant quel mur elle se trouve.
+The diagnosis was costly, for a reason that deserves to be recorded: **the block presents itself under
+a banner that designates another mechanism.** The two engines lie differently, and the verbatim
+messages below are the fastest way, for the next person, to know which wall they are facing.
 
-### Chromium (mesuré sur Brave 1.92, `panopti.cool`, 2026-07-19)
+### Chromium (measured on Brave 1.92, `panopti.cool`, 2026-07-19)
 
 ```
 Access to fetch at 'http://localhost:8080/v1/models' from origin 'https://panopti.cool'
@@ -29,14 +27,14 @@ has been blocked by CORS policy: Permission was denied for this request to acces
 `loopback` address space.
 ```
 
-**« blocked by CORS policy » est une fausse piste.** Le serveur `llama.cpp` répond parfaitement au
-CORS — vérifié en `curl`, hors navigateur : il reflète l'`Origin` reçue et répond au préflight
-`OPTIONS` avec `Allow-Methods: GET, POST` et `Allow-Headers: *`, sans aucun réglage. Le mécanisme
-réel est **Local Network Access** (LNA), une **permission** livrée dans Chrome 142 et adoptée par
-Brave en 1.88.127. Chromium range ses échecs LNA sous la bannière CORS ; cette phrase a coûté une
-hypothèse entière au diagnostic.
+**"blocked by CORS policy" is a false trail.** The `llama.cpp` server answers CORS perfectly —
+verified in `curl`, outside the browser: it reflects the received `Origin` and answers the `OPTIONS`
+preflight with `Allow-Methods: GET, POST` and `Allow-Headers: *`, with no setting at all. The real
+mechanism is **Local Network Access** (LNA), a **permission** delivered in Chrome 142 and adopted by
+Brave in 1.88.127. Chromium files its LNA failures under the CORS banner; this sentence cost the
+diagnosis a whole hypothesis.
 
-Déclarer l'espace d'adressage visé ne change rien, et le navigateur le dit lui-même :
+Declaring the targeted address space changes nothing, and the browser says so itself:
 
 ```
 Access to fetch at 'http://localhost:8080/v1/models' from origin 'https://panopti.cool'
@@ -44,150 +42,144 @@ has been blocked by CORS policy: Request had a target IP address space of `local
 resource is in address space `loopback`.
 ```
 
-Le premier message corrige la constante (`loopback`, pas `local`) ; avec la bonne, le refus revient à
-l'identique, sur la permission. **Les deux messages diffèrent, et c'est ce qui permet d'attribuer
-l'échec à la permission plutôt que de le supposer.**
+The first message corrects the constant (`loopback`, not `local`); with the right one, the refusal
+comes back identical, on the permission. **The two messages differ, and that is what lets one
+attribute the failure to the permission rather than suppose it.**
 
-### WebKit / Safari (mécanisme vérifié en source, échec rapporté par le mainteneur)
+### WebKit / Safari (mechanism verified in source, failure reported by the maintainer)
 
 ```
 Not allowed to request resource
 Fetch API cannot load http://localhost:8080/v1/models due to access control checks.
 ```
 
-**« access control checks » est la même fausse piste, sous une autre forme.** Les deux lignes sont un
-SEUL événement : `CachedResourceLoader::requestResource` construit une `ResourceError` de type
-`AccessControl`, dont le rendu console parle de contrôle d'accès — alors que la condition qui a
-échoué est le **contenu mixte**. WebKit ne dispense PAS la boucle locale du blocage de contenu mixte :
-`MixedContentChecker` n'a qu'une dérogation, codée en dur pour un domaine tiers, et l'existence même
-de cette dérogation prouve la règle. Le bogue WebKit qui lèverait la restriction est ouvert **depuis
-2017**, sans activité depuis 2023.
+**"access control checks" is the same false trail, in another form.** The two lines are ONE event:
+`CachedResourceLoader::requestResource` builds a `ResourceError` of type `AccessControl`, whose console
+rendering speaks of access control — whereas the condition that failed is **mixed content**. WebKit
+does NOT exempt the local loopback from mixed-content blocking: `MixedContentChecker` has only one
+exception, hard-coded for a third-party domain, and the very existence of that exception proves the
+rule. The WebKit bug that would lift the restriction has been open **since 2017**, with no activity
+since 2023.
 
-Conséquence : **Safari n'a aucune permission à accorder.** Ni réglage par site, ni entrée de menu
-Développement (« Disable Cross-Origin Restrictions » porte sur le CORS, pas sur le contenu mixte).
-L'absence d'interface dans la barre d'adresse est le comportement attendu, pas une anomalie.
+Consequence: **Safari has no permission to grant.** No per-site setting, no Develop-menu entry
+("Disable Cross-Origin Restrictions" bears on CORS, not on mixed content). The absence of an interface
+in the address bar is the expected behavior, not an anomaly.
 
-Les deux murs sont donc **de natures différentes** — une permission qu'on peut accorder d'un côté,
-une règle sans dérogation de l'autre — et une interface qui les confondrait enverrait un utilisateur
-Safari chercher un réglage qui n'existe pas.
+The two walls are therefore **of different natures** — a permission one can grant on one side, a rule
+with no exception on the other — and an interface that confused them would send a Safari user hunting
+for a setting that does not exist.
 
-## Décision
+## Decision
 
-1. **On ne contourne rien.** Aucun correctif n'existe côté site, et aucun n'est cherché.
-2. **L'interface DISTINGUE « bloqué » de « absent »**, par la permission (`navigator.permissions`,
-   `web/src/ai/local-network.ts`), qui se lit sans émettre de requête. C'est le seul angle par lequel
-   un script obtient cette information.
-3. **L'interface INSTRUIT le déblocage plutôt que d'attendre une fenêtre.** Sur Chromium la
-   permission reste indéfiniment à `prompt` sans qu'aucune fenêtre ne s'ouvre — mesuré, y compris
-   derrière un vrai clic (bogue Brave `brave-browser#53727`, ouvert). `prompt` et `denied` sont donc
-   traités **identiquement** : du point de vue de la personne devant l'écran, une fenêtre qui ne
-   s'ouvre jamais est un blocage.
-4. **Quand on ne sait pas, on le dit.** Un navigateur dont on ne peut pas lire la permission tombe
-   dans un état `unknown` où l'interface **ne nomme aucune cause** — elle ne peut pas distinguer un
-   serveur éteint d'un mur — et propose les issues dans l'ordre de ce qu'elles coûtent : changer de
-   navigateur d'abord, servir le site en local ensuite. Une instruction fausse coûte plus cher
-   qu'une instruction vague, et envoyer quelqu'un chercher un cadenas que Safari n'a pas est une
-   instruction fausse.
-5. **Le repli universel est de servir le site depuis `localhost`.** Une page dont l'initiateur est
-   déjà sur la boucle locale est exemptée **dans les trois moteurs** : plus de contenu mixte (les
-   deux bouts sont en clair), plus de porte LNA (`loopback → *` n'est pas une requête de réseau
-   local, par définition de la spécification). Ce n'est pas un contournement, c'est la suppression du
-   problème — et c'est la réponse architecturalement honnête à « cet outil tourne sur ta machine ».
-   `http://localhost` **reste un contexte sécurisé** : le Worker du moteur et les API de crypto
-   continuent de fonctionner.
+1. **We work around nothing.** No fix exists on the site side, and none is sought.
+2. **The interface DISTINGUISHES "blocked" from "absent"**, via the permission
+   (`navigator.permissions`, `web/src/ai/local-network.ts`), which is read without emitting a request.
+   It is the only angle by which a script obtains this information.
+3. **The interface INSTRUCTS the unblocking rather than waiting for a prompt.** On Chromium the
+   permission stays indefinitely at `prompt` without any window opening — measured, including behind a
+   real click (Brave bug `brave-browser#53727`, open). `prompt` and `denied` are therefore treated
+   **identically**: from the point of view of the person in front of the screen, a window that never
+   opens is a block.
+4. **When we do not know, we say so.** A browser whose permission we cannot read falls into an
+   `unknown` state where the interface **names no cause** — it cannot distinguish a server that is off
+   from a wall — and offers the ways out in the order of what they cost: change browser first, serve the
+   site locally next. A false instruction costs more than a vague instruction, and sending someone to
+   hunt for a padlock that Safari does not have is a false instruction.
+5. **The universal fallback is to serve the site from `localhost`.** A page whose initiator is already
+   on the local loopback is exempted **in all three engines**: no more mixed content (both ends are in
+   cleartext), no more LNA gate (`loopback → *` is not a local-network request, by definition of the
+   specification). This is not a workaround, it is the removal of the problem — and it is the
+   architecturally honest answer to "this tool runs on your machine". `http://localhost` **stays a
+   secure context**: the engine's Worker and the crypto APIs keep working.
 
-**ADR-0001 est intact.** Tout ceci est du code client et de la documentation ; aucune surface de
-déploiement n'est touchée, et la propriété « statique réversible » n'est pas entamée.
+**ADR-0001 is intact.** All of this is client code and documentation; no deployment surface is
+touched, and the "reversible static" property is not eroded.
 
-## Options écartées, AVEC leurs raisons
+## Options discarded, WITH their reasons
 
-Une impasse consignée sans sa raison est une impasse qu'on réexplore.
+A dead end recorded without its reason is a dead end one re-explores.
 
-**TLS sur `llama-server` (`--ssl-key-file` / `--ssl-cert-file`), en général.** Écarté parce que le
-gain **dépend du moteur, et vaut zéro là où le problème a été mesuré**. LNA est défini sur l'espace
-d'adressage **sans référence au schéma** : `https://localhost` reste `loopback`, donc la permission
-Chromium s'applique identiquement. Accorder la permission dispense d'ailleurs déjà du contenu mixte —
-le TLS est donc redondant avec le correctif, et inutile sans lui.
-*Nuance honnête :* sur Safari, dont le mur EST le contenu mixte, le TLS devrait fonctionner. Écarté
-quand même : il exige un certificat approuvé dans le trousseau (un auto-signé échoue silencieusement
-pour une sous-ressource), soit une décision de confiance qu'un outil de sensibilisation à la vie
-privée ne peut pas demander à la légère — et l'accessibilité (CLAUDE.md) l'interdit comme voie
-principale. Le repli `localhost` obtient le même résultat sans certificat, et vaut pour tous les
-moteurs.
+**TLS on `llama-server` (`--ssl-key-file` / `--ssl-cert-file`), in general.** Discarded because the
+gain **depends on the engine, and is worth zero where the problem was measured**. LNA is defined on the
+address space **with no reference to the scheme**: `https://localhost` stays `loopback`, so the
+Chromium permission applies identically. Granting the permission already dispenses with mixed content,
+moreover — TLS is therefore redundant with the fix, and useless without it.
+*Honest nuance:* on Safari, whose wall IS mixed content, TLS should work. Discarded anyway: it requires
+a trusted certificate in the keychain (a self-signed one fails silently for a subresource), that is, a
+trust decision that a privacy-awareness tool cannot ask lightly — and accessibility (CLAUDE.md) forbids
+it as the main path. The `localhost` fallback obtains the same result with no certificate, and holds
+for all engines.
 
-**Un en-tête de réponse côté serveur.** Écarté : il n'existe pas. `Access-Control-Allow-Private-Network`
-appartenait à Private Network Access, **suspendu en 2024** ; le mot n'apparaît nulle part dans la
-spécification LNA, qui remplace le préflight par une permission. `llama-server` ne l'envoie pas et
-n'a aucun réglage pour le faire — vérifié en source. Aucun en-tête ne peut accorder une permission.
+**A server-side response header.** Discarded: it does not exist.
+`Access-Control-Allow-Private-Network` belonged to Private Network Access, **suspended in 2024**; the
+word appears nowhere in the LNA specification, which replaces the preflight with a permission.
+`llama-server` does not send it and has no setting to do so — verified in source. No header can grant a
+permission.
 
-**L'option `targetAddressSpace` de `fetch`.** Écarté **par mesure** : avec la bonne constante
-(`loopback`), Brave refuse toujours sur la permission. La spécification est explicite — cette option
-ne dispense que du contrôle de contenu mixte, jamais de la permission.
+**The `targetAddressSpace` option of `fetch`.** Discarded **by measurement**: with the right constant
+(`loopback`), Brave still refuses on the permission. The specification is explicit — this option only
+dispenses with the mixed-content check, never with the permission.
 
-**Les drapeaux `--cors-*` de `llama-server`.** Écarté : sans objet. Le CORS n'a jamais été le
-problème (mesuré en `curl`), et ces drapeaux ne touchent pas aux en-têtes en cause.
+**The `--cors-*` flags of `llama-server`.** Discarded: moot. CORS was never the problem (measured in
+`curl`), and these flags do not touch the headers at issue.
 
-**Sonder le serveur au chargement de la page pour « déclencher la permission plus tôt ».** Écarté sur
-deux motifs. La fenêtre ne s'ouvre pas (point 3), donc le gain est nul ; et un outil qui montre la
-surveillance ne contacte pas une machine sans qu'on le lui demande. Le report du premier contact à un
-clic explicite est **conservé** — il reste juste sur ses propres termes, et c'est à cet endroit que
-l'interface place désormais l'instruction que le navigateur ne donne pas.
+**Probing the server on page load to "trigger the permission earlier".** Discarded on two grounds. The
+window does not open (point 3), so the gain is nil; and a tool that shows surveillance does not contact
+a machine without being asked. Deferring the first contact to an explicit click is **kept** — it just
+stays on its own terms, and it is at this spot that the interface now places the instruction the
+browser does not give.
 
-**Installer le site en application web (PWA).** Écarté, et la raison vaut d'être retenue parce que la
-question se repose naturellement. Une PWA installée depuis Safari **tourne dans WebKit** ; sur iOS,
-tout navigateur est WebKit quel qu'il soit. Même moteur, même règle de contenu mixte : l'installation
-ne change pas la politique, elle change l'habillage.
+**Installing the site as a web app (PWA).** Discarded, and the reason is worth retaining because the
+question comes back naturally. A PWA installed from Safari **runs in WebKit**; on iOS, every browser is
+WebKit whatever it is. Same engine, same mixed-content rule: the installation does not change the
+policy, it changes the packaging.
 
-Plus fondamentalement, **le blocage naît de l'ÉCART entre l'origine `https://panopti.cool` et la
-cible `http://localhost`.** Tant que la page vient d'un domaine distant, l'écart existe, et aucune
-manière de l'installer, de l'épingler ou de la mettre en plein écran ne le referme. La seule chose
-qui le supprime est que **la page elle-même soit servie depuis `localhost`** — ce que fait le repli
-ci-dessus, et c'est précisément pourquoi il marche partout.
+More fundamentally, **the block arises from the GAP between the origin `https://panopti.cool` and the
+target `http://localhost`.** As long as the page comes from a remote domain, the gap exists, and no way
+of installing, pinning or full-screening it closes it. The only thing that removes it is for **the page
+itself to be served from `localhost`** — which is what the fallback above does, and it is precisely why
+it works everywhere.
 
-**Un proxy, un relais, ou un point d'accès hébergé.** Écarté d'office : les items de l'export
-partiraient vers un tiers. L'invariant de CLAUDE.md n'est pas négociable, et aucune commodité de
-transport ne l'ouvre.
+**A proxy, a relay, or a hosted access point.** Discarded outright: the export items would leave toward
+a third party. The CLAUDE.md invariant is not negotiable, and no transport convenience opens it.
 
-## Ce que le diagnostic a fait croire à tort
+## What the diagnosis wrongly led us to believe
 
-Consigné parce que ces erreurs sont **reproductibles par la lecture des mêmes indices**, et qu'un
-lecteur qui les refait perdra le même temps.
+Recorded because these errors are **reproducible by reading the same clues**, and a reader who redoes
+them will lose the same time.
 
-- **`Access-Control-Allow-Private-Network` absent des réponses de `llama-server`** a été pris pour la
-  cause. C'en était une observation exacte et une conclusion fausse : l'en-tête appartient à une
-  spécification suspendue et ne joue plus aucun rôle. C'est la faute que CLAUDE.md nomme — **une
-  assertion négative vérifie ce qu'elle ATTEINT, pas ce qu'elle affirme** : l'absence était réelle,
-  sa signification supposée.
-- **Un premier essai en Chromium/Electron a réussi**, ce qui a fait conclure trop vite que le
-  transport était sain. Electron n'applique pas LNA. Un banc qui ne reproduit pas l'environnement de
-  la personne ne prouve rien sur son cas — et c'est ce résultat vert qui a failli faire livrer un
-  discriminant (`mode: 'no-cors'`) qui échoue précisément sur le navigateur concerné.
-- **Le CORS a été suspecté deux fois**, une fois par hypothèse et une fois par la bannière du
-  message. Les deux moteurs libellent ce blocage en langage de contrôle d'accès ; c'est le piège
-  central de ce dossier.
+- **`Access-Control-Allow-Private-Network` absent from `llama-server`'s responses** was taken for the
+  cause. It was an exact observation of it and a false conclusion: the header belongs to a suspended
+  specification and plays no role anymore. It is the fault CLAUDE.md names — **a negative assertion
+  verifies what it REACHES, not what it affirms**: the absence was real, its supposed meaning was not.
+- **A first attempt in Chromium/Electron succeeded**, which led to concluding too quickly that the
+  transport was sound. Electron does not apply LNA. A benchmark that does not reproduce the person's
+  environment proves nothing about their case — and it is that green result that nearly led to shipping
+  a discriminant (`mode: 'no-cors'`) that fails precisely on the browser concerned.
+- **CORS was suspected twice**, once by hypothesis and once by the message's banner. Both engines label
+  this block in access-control language; it is the central trap of this case.
 
-## Conséquences
+## Consequences
 
-**Ferme :** l'idée qu'un réglage du produit, du serveur ou de la commande de lancement puisse rétablir
-la fonctionnalité. La dépendance est à la politique du navigateur, et elle est subie.
+**Closes:** the idea that a setting of the product, the server or the launch command could restore the
+feature. The dependency is on the browser's policy, and it is endured.
 
-**Ouvre :** une interface qui dit la vérité sur ce qui vient d'échouer — jusqu'ici le produit
-affirmait « serveur non détecté » à quelqu'un dont le serveur tournait, à l'endroit précis où il
-demande qu'on lui fasse confiance sur un fait concernant la machine de la personne. Et un chemin de
-repli qui, en servant le site depuis la machine, rend l'invariant de traitement local **visible**
-plutôt que promis.
+**Opens:** an interface that tells the truth about what just failed — until now the product asserted
+"server not detected" to someone whose server was running, at the precise spot where it asks to be
+trusted on a fact concerning the person's machine. And a fallback path that, by serving the site from
+the machine, makes the local-processing invariant **visible** rather than promised.
 
-**Firefox est mesuré, et c'est le seul des trois qui marche sans rien expliquer** (mainteneur, sur sa
-machine, 2026-07-19) : il ouvre la fenêtre de permission **spontanément**, à l'arrivée sur la page, et
-la fonctionnalité marche une fois accordée. C'est exactement ce que Chromium était censé faire et ne
-fait pas.
+**Firefox is measured, and it is the only one of the three that works without explaining anything**
+(maintainer, on their machine, 2026-07-19): it opens the permission window **spontaneously**, on
+arrival at the page, and the feature works once granted. It is exactly what Chromium was supposed to do
+and does not.
 
-Le tableau réel, et c'est lui que la copy doit servir :
+The real table, and it is the one the copy must serve:
 
-| Moteur | Ce qui se passe | Ce que l'interface a à dire |
+| Engine | What happens | What the interface has to say |
 | --- | --- | --- |
-| Firefox | fenêtre spontanée, puis ça marche | rien |
-| Chromium / Brave | marche, mais la fenêtre ne s'ouvre jamais | le chemin manuel du cadenas |
-| WebKit / Safari | **ne peut pas marcher** | changer de navigateur, ou servir en local |
+| Firefox | spontaneous window, then it works | nothing |
+| Chromium / Brave | works, but the window never opens | the manual padlock path |
+| WebKit / Safari | **cannot work** | change browser, or serve locally |
 
-Les trois ne sont donc pas trois degrés d'un même problème : **deux marchent et un est un mur.**
+The three are therefore not three degrees of the same problem: **two work and one is a wall.**

@@ -1,27 +1,27 @@
-// Lexique d'intérêt `mathematiques` (D2, PANO-89 lot 4) — mathématiques (champ savoir).
+// Interest lexicon `mathematiques` (D2, PANO-89 batch 4) — mathematics (knowledge field).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant des maths FR : branches, objets, figures. Usage SOBRE (édition/edtech).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR math: branches, objects, figures. SOBER usage (publishing/edtech).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « mathematiques », « algebre », « geometrie », « trigonometrie », « derivee »,
 //     « integrale », « theoreme », « pythagore », « topologie », « logarithme », « nombre premier ».
-//   · ANCRÉ — « maths », « fonction » (rôle / cérémonie), « suite » (hôtel / continuation),
-//     « matrice » (Matrix / utérus), « limite », « ensemble » (« tous ensemble »), « produit » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « maths », « fonction » (role / ceremony), « suite » (hotel / continuation),
+//     « matrice » (Matrix / womb), « limite », « ensemble » (« tous ensemble »), « produit »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
 //   · SOLO — « mathematics », « algebra », « geometry », « trigonometry », « theorem », « calculus »,
-//     « topology », « logarithm », « prime number », « pythagoras » : univoques.
-//   · ANCRÉ — le vocabulaire math EN est massivement recyclé par la langue courante et la tech :
-//     « math » (« DO THE MATH » = tire les conclusions), « integral » (« an INTEGRAL PART of » —
-//     adjectif courant), « derivative » (produit DÉRIVÉ financier), « matrix » (le FILM), « function »
-//     (fonction de PROGRAMMATION), « sequence », « limit », « proof » (« proof of purchase »).
-//   · EXCLU — « set » : « set », « DJ set », « set up », « TV set », « sunset »… → ÉCARTÉ, même en
-//     ancré (c'est le « ia nu » du lexique maths).
+//     « topology », « logarithm », « prime number », « pythagoras »: univocal.
+//   · ANCHORED — the EN math vocabulary is massively recycled by everyday language and tech:
+//     « math » (« DO THE MATH » = draw the conclusions), « integral » (« an INTEGRAL PART of » —
+//     a common adjective), « derivative » (financial DERIVATIVE product), « matrix » (the FILM), « function »
+//     (PROGRAMMING function), « sequence », « limit », « proof » (« proof of purchase »).
+//   · EXCLUDED — « set »: « set », « DJ set », « set up », « TV set », « sunset »… → DISCARDED, even
+//     anchored (it is the « bare ia » of the math lexicon).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive.
 
 import type { InterestLexicon } from '../types';
 
@@ -49,7 +49,7 @@ export const MATHEMATIQUES_LEXICON: InterestLexicon = {
     'calcul differentiel',
     'thales',
     'suite arithmetique',
-    // Variantes EN (PANO-88) : SOLO univoques (branches / objets / figures).
+    // EN variants (PANO-88): SOLO univocal (branches / objects / figures).
     'mathematics',
     'algebra',
     'geometry',
@@ -62,22 +62,22 @@ export const MATHEMATIQUES_LEXICON: InterestLexicon = {
     'pythagoras',
   ],
   anchored: [
-    'maths', // abréviation
-    'fonction', // rôle / cérémonie / fonction (maths)
-    'suite', // hôtel / continuation
-    'matrice', // Matrix / utérus
-    'limite', // limite générique
-    'ensemble', // « tous ensemble » / ensemble (maths)
-    'produit', // produit (commerce) / produit (maths)
-    'racine', // racine (plante) / racine carrée
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'math', // « do the math » = tire les conclusions (EN)
-    'integral', // « an integral part of » — adjectif courant (EN)
-    'derivative', // produit dérivé financier (EN)
-    'matrix', // le film (EN)
-    'function', // fonction de programmation (EN)
-    'sequence', // séquence générique (EN)
-    'limit', // limite générique (EN)
+    'maths', // abbreviation
+    'fonction', // role / ceremony / function (math)
+    'suite', // hotel / continuation
+    'matrice', // Matrix / womb
+    'limite', // generic limit
+    'ensemble', // « tous ensemble » / set (math)
+    'produit', // product (commerce) / product (math)
+    'racine', // root (plant) / square root
+    // EN variants (PANO-88): ANCHORED.
+    'math', // « do the math » = draw the conclusions (EN)
+    'integral', // « an integral part of » — a common adjective (EN)
+    'derivative', // financial derivative product (EN)
+    'matrix', // the film (EN)
+    'function', // programming function (EN)
+    'sequence', // generic sequence (EN)
+    'limit', // generic limit (EN)
     'proof', // « proof of purchase » (EN)
   ],
   selfDeclared: ['etudiant en mathematiques', 'matheux'],

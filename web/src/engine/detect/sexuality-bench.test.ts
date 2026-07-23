@@ -1,219 +1,217 @@
-// Banc `sexuality` — la mesure des six voix scellées en `sexuality-registers.fixture.ts`.
+// `sexuality` bench — the measurement of the six voices sealed in `sexuality-registers.fixture.ts`.
 //
-// ── CE QUE CE FICHIER NE COUVRE PAS, et il faut le lire AVANT les chiffres ───────────────────────
-// - **Deux torts ET une sur-classification subsistent, figés comme attendus.** Ils sont comptés
-//   séparément et ne se somment pas — « trois défauts » serait déjà une lecture fausse, puisque le
-//   tort d'un non-porteur et la promotion d'un proche ne se réparent pas au même endroit. Un attendu
-//   n'est pas un pardon : c'est l'enregistrement d'un état, écrit pour rougir le jour où il change.
-//   AUCUN n'est réparé ici.
-// - **Les sondes hors-corpus font le gros du travail, et davantage que dans le lot religieux.** Les
-//   six voix seules n'auraient montré ni le trou des formulations trans binaires, ni l'absence
-//   totale d'auto-déclaration anglaise. Un banc de six voix ne suffit pas à ce label, et le dire est
-//   plus utile que de le prouver deux fois.
-// - **Une sonde hors-corpus a aussi produit la seule ERREUR de ce banc**, et elle est conservée
-//   comme correction plutôt qu'effacée : les injures homophobes ont été déclarées « câblées nulle
-//   part » sur la foi de sondes en termes NUS, alors qu'elles sont câblées et routent correctement
-//   dès qu'une cible est présente. Une sonde mal construite ne se voit pas mieux qu'un filet mal
-//   cité — le bloc en fin de fichier porte le détail.
-// - **Le registre hostile n'est pas mesuré**, par exclusion déclarée dans la fixture. La frontière
-//   `sexuality` / `conflictual` sur ce registre reste entière — et la sonde qui la regarde établit
-//   seulement que RIEN n'y est câblé, ce qui n'est pas la même chose que de l'avoir éprouvée.
-// - **Une voix par registre.** Six personnes ne sont pas une distribution. Aucun chiffre ici ne se
-//   généralise à « les gens qui écrivent comme ça ».
-// - **Les cinq autres labels retournent zéro partout, et ce zéro mesure MES VOIX, pas le détecteur.**
-//   Les items de vie ont été écrits pour rester à l'écart du corps et du soin. Trente cellules
-//   vertes sur les cinq autres labels ne disent donc rien de ces labels : elles disent que j'ai
-//   écrit ce que je voulais écrire. C'est déclaré ici parce que la version flatteuse — « aucun
-//   débordement inter-labels » — serait fausse.
+// ── WHAT THIS FILE DOES NOT COVER, and it must be read BEFORE the numbers ─────────────────────────
+// - **Two wrongs AND one over-classification remain, frozen as expected.** They are counted
+//   separately and do not sum — « three defects » would already be a false reading, since the wrong
+//   of a non-bearer and the promotion of a close relative are not repaired in the same place. An
+//   expected is not a pardon: it is the record of a state, written to blush the day it changes.
+//   NONE is repaired here.
+// - **The out-of-corpus probes do the bulk of the work, and more than in the religious batch.** The
+//   six voices alone would have shown neither the hole in binary trans phrasings nor the total
+//   absence of English self-declaration. A bench of six voices is not enough for this label, and
+//   saying so is more useful than proving it twice.
+// - **An out-of-corpus probe also produced the only ERROR of this bench**, and it is kept as a
+//   correction rather than erased: homophobic slurs were declared « wired nowhere » on the strength
+//   of probes in BARE terms, whereas they are wired and route correctly as soon as a target is
+//   present. A badly built probe is no more visible than a badly cited net — the block at the end of
+//   the file carries the detail.
+// - **The hostile register is not measured**, by exclusion declared in the fixture. The
+//   `sexuality` / `conflictual` boundary on this register stays whole — and the probe that looks at
+//   it establishes only that NOTHING is wired there, which is not the same as having tested it.
+// - **One voice per register.** Six people are not a distribution. No number here generalizes to
+//   « people who write like this ».
+// - **The five other labels return zero everywhere, and that zero measures MY VOICES, not the detector.**
+//   The life items were written to stay clear of the body and of care. Thirty green cells on the
+//   five other labels therefore say nothing about those labels: they say that I wrote what I wanted
+//   to write. It is declared here because the flattering version — « no inter-label overflow » —
+//   would be false.
 //
-// ── UN SEUL MÉCANISME, VU DES DEUX CÔTÉS — la lecture qui tient tout ce fichier ──────────────────
-// Ce banc a d'abord été lu comme deux défauts opposés : un excès d'affirmation d'un côté, un manque
-// de rappel de l'autre. C'est la même chose. **Le produit lit une COPULE et rien d'autre.** Qui
-// l'écrit est nommé MÊME EN LA DÉMENTANT ; qui ne l'écrit pas est invisible à travers vingt-quatre
-// items de vie. Le lexique ne détectait pas une orientation, il détectait une PHRASE.
+// ── ONE SINGLE MECHANISM, SEEN FROM BOTH SIDES — the reading that holds this whole file ───────────
+// This bench was first read as two opposite defects: an excess of affirmation on one side, a lack
+// of recall on the other. It is the same thing. **The product reads a COPULA and nothing else.**
+// Whoever writes it is named EVEN WHILE DENYING IT; whoever does not write it is invisible across
+// twenty-four life items. The lexicon was not detecting an orientation, it was detecting a SENTENCE.
 //
-// Les deux réparations de ce lot sont donc un seul geste appliqué aux deux versants, et c'est
-// pourquoi elles ont été ratifiées ensemble : n'expédier que la démotion aurait rétréci la sortie
-// d'un label déjà presque muet.
+// The two repairs of this batch are therefore a single gesture applied to both sides, and that is
+// why they were ratified together: shipping only the demotion would have shrunk the output of an
+// already almost-mute label.
 //
-// ── CE QUE CE BANC A TROUVÉ, puis CE QUE LA RÉPARATION A DÉPLACÉ ────────────────────────────────
-// Les résultats d'origine sont conservés avec leurs valeurs d'AVANT : sans elles, la mise à jour
-// effacerait le constat au lieu de l'enregistrer.
+// ── WHAT THIS BENCH FOUND, then WHAT THE REPAIR MOVED ────────────────────────────────────────────
+// The original results are kept with their BEFORE values: without them, the update would erase the
+// finding instead of recording it.
 //
-// 1. LA PAIRE S'EFFONDRAIT, ET PAR UN CHEMIN PRÉCIS. `fr_ally_close` — hétérosexuelle, scellée
-//    `signalWithoutLived` — recevait un constat NOMMÉ. La cause n'était pas sa densité de
-//    vocabulaire : l'ablation montrait qu'elle tenait à UN item, et cet item est une QUESTION
-//    RAPPORTÉE À LAQUELLE ELLE RÉPOND NON. Le produit nommait une femme lesbienne sur une phrase
-//    dont le sens est qu'elle ne l'est pas — l'obligation de doctrine n°1 de CLAUDE.md en défaut,
-//    sur le label où un constat nommé faux OUTE quelqu'un.
-//      · alliée `explicit`  →  `indirect`                                          — RÉPARÉ
+// 1. THE PAIR COLLAPSED, AND BY A PRECISE PATH. `fr_ally_close` — heterosexual, sealed
+//    `signalWithoutLived` — received a NAMED finding. The cause was not its vocabulary density:
+//    the ablation showed it hung on ONE item, and that item is a REPORTED QUESTION TO WHICH SHE
+//    ANSWERS NO. The product was naming a lesbian woman on a sentence whose meaning is that she is
+//    not one — CLAUDE.md doctrinal obligation n°1 in default, on the label where a false named
+//    finding OUTS someone.
+//      · ally `explicit`  →  `indirect`                                          — REPAIRED
 //
-//    La négation ATTACHÉE à la copule était déjà filtrée (« je ne suis pas lesbienne » → RIEN). Ce
-//    qui passait, c'est le cadre interrogatif rapporté.
+//    The negation ATTACHED to the copula was already filtered (« je ne suis pas lesbienne » → RIEN).
+//    What was getting through is the reported interrogative frame.
 //
-// ── LA RÉPARATION RATIFIÉE : DÉMOTION, PAS FILTRAGE ─────────────────────────────────────────────
-// Une auto-déclaration SUBORDONNÉE à une question rapportée produit désormais un constat LARGE. Le
-// tag reste — on lui pose la question, c'est le sujet de sa phrase — et l'affirmation tombe. Même
-// doctrine que la contradiction d'adhésion du lot religieux, et l'élargissement du filtre de
-// négation a été rejeté pour la même raison : effacer serait faux, et les formes n'ont pas de fin.
+// ── THE RATIFIED REPAIR: DEMOTION, NOT FILTERING ─────────────────────────────────────────────────
+// A self-declaration SUBORDINATED to a reported question now produces a BROAD finding. The tag
+// stays — she is being asked the question, it is the subject of her sentence — and the affirmation
+// falls. Same doctrine as the adherence contradiction of the religious batch, and widening the
+// negation filter was rejected for the same reason: erasing would be false, and the forms have no
+// end.
 //
-// TROIS CHOSES QUE CETTE RÉPARATION A DÉPLACÉES AU-DELÀ DE CE LABEL, et il faut les lire ici parce
-// qu'aucun banc de `sexuality` ne les couvre :
+// THREE THINGS THIS REPAIR MOVED BEYOND THIS LABEL, and they must be read here because no bench of
+// `sexuality` covers them:
 //
-//   (a) LE DÉFAUT N'ÉTAIT PAS CELUI DE `sexuality`. Le même cadre nommait aussi sur `mental_health`
-//       (« on me demande si je suis dépressif ») et sur `religion` (« … si je suis catholique »).
-//       La règle vit donc dans la machinerie, pas dans un lexique, et elle répare trois labels.
-//   (b) LA DÉMOTION SEULE EFFAÇAIT, SUR LES LABELS À SEUIL ≥ 2. Abaisser l'étage puis laisser le
-//       seuil retirer le constat est un effacement par la porte de derrière — mesuré : le cadre
-//       rendait RIEN sur `mental_health`. Le franchissement solo, déjà accordé au registre
-//       informationnel pour ce motif exact, a été étendu à l'auto-déclaration non assertée.
-//   (c) LA CONTRADICTION D'ADHÉSION DU LOT RELIGIEUX PORTAIT LE MÊME DÉFAUT LATENT, invisible parce
-//       que son unique label déclarant `adherence` est à seuil 1. Elle est réparée par la même
-//       ligne, sans qu'aucun banc n'ait pu le montrer.
+//   (a) THE DEFECT WAS NOT `sexuality`'s. The same frame also named on `mental_health`
+//       (« on me demande si je suis dépressif ») and on `religion` (« … si je suis catholique »).
+//       The rule therefore lives in the machinery, not in a lexicon, and it repairs three labels.
+//   (b) THE DEMOTION ALONE ERASED, ON THE LABELS WITH THRESHOLD ≥ 2. Lowering the storey then
+//       letting the threshold remove the finding is an erasure by the back door — measured: the
+//       frame returned NOTHING on `mental_health`. The solo crossing, already granted to the
+//       informational register for this exact motive, was extended to non-asserted self-declaration.
+//   (c) THE ADHERENCE CONTRADICTION OF THE RELIGIOUS BATCH CARRIED THE SAME LATENT DEFECT, invisible
+//       because its only label declaring `adherence` is at threshold 1. It is repaired by the same
+//       line, without any bench having been able to show it.
 //
-// ── LA FRONTIÈRE DE LA RÉPARATION, mesurée et non supposée ──────────────────────────────────────
-// LE DÉMENTI QUI SUIT UNE AFFIRMATION N'EST PAS COUVERT, et c'est un refus délibéré de la moitié de
-// la consigne, appuyé sur une mesure. « je suis lesbienne, je réponds non » continue de NOMMER.
-// Traiter une négation traînante comme un démenti se heurte à un fait du français : « non mais » est
-// un marqueur d'insistance AFFIRMATIVE (« je suis lesbienne, non mais vraiment »), si bien qu'une
-// négation après la copule ne distingue pas le démenti de l'emphase — et démonter une affirmation
-// sincère est le mode d'échec le plus coûteux qui soit sur ce label. C'est le même piège qui avait
-// imposé une fenêtre de deux tokens à la contradiction d'adhésion.
+// ── THE BOUNDARY OF THE REPAIR, measured and not supposed ─────────────────────────────────────────
+// THE DENIAL THAT FOLLOWS AN AFFIRMATION IS NOT COVERED, and it is a deliberate refusal of half of
+// the instruction, resting on a measurement. « je suis lesbienne, je réponds non » keeps NAMING.
+// Treating a trailing negation as a denial runs into a fact of French: « non mais » is a marker of
+// AFFIRMATIVE insistence (« je suis lesbienne, non mais vraiment »), so a negation after the copula
+// does not distinguish the denial from the emphasis — and dismantling a sincere affirmation is the
+// most costly failure mode there is on this label. It is the same trap that had imposed a two-token
+// window on the adherence contradiction.
 //
-// Ce que la réparation atteint quand même : l'item de `fr_ally_close` porte LES DEUX formes, et le
-// cadre interrogatif suffit à le démoter. La consigne est donc satisfaite sur le cas mesuré, et non
-// sur la classe — l'assertion plus bas fige la différence.
+// What the repair reaches nonetheless: the item of `fr_ally_close` carries BOTH forms, and the
+// interrogative frame is enough to demote it. The instruction is therefore satisfied on the
+// measured case, and not on the class — the assertion below freezes the difference.
 //
-// 2. LE RAPPEL FR TENAIT À UNE SEULE PHRASE. `fr_lived_ordinary` retirée de son unique copule ne
-//    rendait plus RIEN — pas même un constat large. Neuf ans de couple, un pacs, un bar, une marche,
-//    une équipe : zéro. Quelqu'un qui vit la chose sans jamais écrire la copule était INVISIBLE.
-//      · concernée privée de sa copule : `RIEN`  →  `indirect`                       — RÉPARÉ
-//      · densité de preuves : 1  →  2                                                — RÉPARÉ
+// 2. THE FR RECALL HUNG ON A SINGLE SENTENCE. `fr_lived_ordinary` stripped of its only copula
+//    returned NOTHING anymore — not even a broad finding. Nine years of a couple, a civil union, a
+//    bar, a march, a team: zero. Someone who lives the thing without ever writing the copula was
+//    INVISIBLE.
+//      · bearer stripped of her copula: `RIEN`  →  `indirect`                       — REPAIRED
+//      · evidence density: 1  →  2                                                  — REPAIRED
 //
-// 3. L'ALLIÉE PORTAIT PLUS DE PREUVES QUE LA PERSONNE CONCERNÉE — 2 contre 1. Le défaut du banc
-//    politique transposé : le comptage compte des CELLULES, l'asymétrie vit dans les PREUVES, et
-//    aucun compteur générique ne l'aurait montrée. L'inversion est corrigée (2 et 2) ; les densités
-//    sont désormais ÉGALES, et ce sont les étages qui séparent les deux voix.
+// 3. THE ALLY CARRIED MORE EVIDENCE THAN THE PERSON CONCERNED — 2 against 1. The defect of the
+//    political bench transposed: the counting counts CELLS, the asymmetry lives in the EVIDENCE, and
+//    no generic counter would have shown it. The inversion is corrected (2 and 2); the densities are
+//    now EQUAL, and it is the storeys that separate the two voices.
 //
-// 4. L'ANGLAIS A LE PROFIL EXACTEMENT INVERSE DE CELUI QU'IL FAUDRAIT. Aucune auto-déclaration
-//    anglaise ne produit de constat nommé — et la plupart ne produisent RIEN DU TOUT. Ce qui
-//    déclenche, ce sont des mots de SUJET. Le produit anglais est donc aveugle aux personnes
-//    concernées et sensible à quiconque parle du sujet : `en_lived_plain` (« i am gay ») et une
-//    définition de MOTS CROISÉS reçoivent le même étage.
+// 4. THE ENGLISH HAS EXACTLY THE PROFILE IT SHOULD NOT. No English self-declaration produces a named
+//    finding — and most produce NOTHING AT ALL. What triggers is SUBJECT words. The English product
+//    is therefore blind to the people concerned and sensitive to whoever talks about the subject:
+//    `en_lived_plain` (« i am gay ») and a CROSSWORD definition receive the same storey.
 //
-// 5. LES TROUS DE COUVERTURE FR ÉTAIENT DANS LES FORMULATIONS, PAS DANS LES ORIENTATIONS. Les neuf
-//    orientations testées au cadre calqué déclenchaient déjà toutes. En revanche « je suis une femme
-//    trans » et « je suis un homme trans » ne rendaient RIEN — les formulations les plus courantes
-//    des personnes trans binaires — et « je suis transgenre » rendait un étage plus bas que « je
-//    suis trans ». Forme du trou trouvé sur les traditions religieuses, déplacée vers la morphologie.
-//      · les deux syntagmes trans : `RIEN`  →  `explicit`                             — RÉPARÉ
-//      · « je suis transgenre » : `indirect`  →  `explicit`                           — RÉPARÉ
+// 5. THE FR COVERAGE HOLES WERE IN THE PHRASINGS, NOT IN THE ORIENTATIONS. The nine orientations
+//    tested in the traced frame already all triggered. On the other hand « je suis une femme trans »
+//    and « je suis un homme trans » returned NOTHING — the most common phrasings of binary trans
+//    people — and « je suis transgenre » returned one storey lower than « je suis trans ». Shape of
+//    the hole found on religious traditions, moved to morphology.
+//      · the two trans phrases: `RIEN`  →  `explicit`                               — REPAIRED
+//      · « je suis transgenre »: `indirect`  →  `explicit`                          — REPAIRED
 //
-// ── LA RÉPARATION DU RAPPEL, ET CE QU'ELLE N'A DÉLIBÉRÉMENT PAS TENTÉ ───────────────────────────
-// Elle est STRUCTURELLE là où elle pouvait l'être, et lexicale là où elle ne le pouvait pas.
+// ── THE RECALL REPAIR, AND WHAT IT DELIBERATELY DID NOT ATTEMPT ───────────────────────────────────
+// It is STRUCTURAL where it could be, and lexical where it could not.
 //
-// STRUCTUREL — le trou des syntagmes n'était PAS lexical : le terme nu était déjà admis, et c'est le
-// NOM DE PERSONNE intercalé entre la copule et le terme qui cassait le pattern. Les noms de personne
-// sont donc entrés dans les modificateurs génériques, avec le reste de la grammaire. Une ligne, et
-// la construction est traitée comme une CLASSE — « une personne trans », « un mec trans », « un
-// homme homosexuel » marchent sans avoir été listés nulle part, ce que les assertions vérifient.
+// STRUCTURAL — the phrase hole was NOT lexical: the bare term was already admitted, and it is the
+// PERSON NAME slipped between the copula and the term that broke the pattern. Person names therefore
+// entered the generic modifiers, with the rest of the grammar. One line, and the construction is
+// treated as a CLASS — « une personne trans », « un mec trans », « un homme homosexuel » work
+// without having been listed anywhere, which the assertions verify.
 //
-// LEXICAL — trois asymétries de morphologie, admises parce qu'elles n'ont pas de forme structurelle :
-// l'adjectif masculin `lesbien` manquait quand le féminin était admis (« bar lesbien », « couple
-// lesbien » ne rendaient rien) ; `homosexuel`/`homosexuelle` n'étaient nulle part en indirect, si
-// bien que « il est homosexuel » se taisait là où « il est gay » parlait ; les féminins `asexuelle`
-// et `pansexuelle` manquaient face à leurs masculins. Trois fois la même chose : une couverture
-// vérifiée dans un seul sens.
+// LEXICAL — three morphology asymmetries, admitted because they have no structural form:
+// the masculine adjective `lesbien` was missing when the feminine was admitted (« bar lesbien »,
+// « couple lesbien » returned nothing); `homosexuel`/`homosexuelle` were nowhere in indirect, so
+// that « il est homosexuel » stayed silent where « il est gay » spoke; the feminines `asexuelle`
+// and `pansexuelle` were missing against their masculines. Three times the same thing: a coverage
+// verified in a single direction.
 //
-// ── CE QUI N'EST PAS RÉCUPÉRABLE, ET C'EST LA MAJORITÉ ──────────────────────────────────────────
-// Sur les vingt-quatre items de `fr_lived_ordinary`, UN SEUL était récupérable, et il l'a été. Le
-// dire est plus utile que de gonfler une liste, parce que la tentation inverse est précise et
-// coûteuse.
+// ── WHAT IS NOT RECOVERABLE, AND IT IS THE MAJORITY ──────────────────────────────────────────────
+// Of the twenty-four items of `fr_lived_ordinary`, ONLY ONE was recoverable, and it was. Saying so
+// is more useful than padding a list, because the opposite temptation is precise and costly.
 //
-// Ce qui reste muet, et POURQUOI ça doit le rester : « ma copine et moi », « ma compagne ronfle »,
-// « on est allées à la marche », « soirée entre nous ». « ma copine » est écrit à l'identique par un
-// homme hétérosexuel ; « la marche » est une randonnée ; une soirée est une soirée. Ce qui les rend
-// lisibles dans le corpus, c'est le GENRE DE QUI ÉCRIT croisé avec celui du partenaire — une
-// inférence que l'item ne porte pas, et que le produit devrait aller chercher ailleurs.
+// What stays mute, and WHY it must stay so: « ma copine et moi », « ma compagne ronfle »,
+// « on est allées à la marche », « soirée entre nous ». « ma copine » is written identically by a
+// heterosexual man; « la marche » is a hike; an evening is an evening. What makes them legible in
+// the corpus is the GENDER OF WHO WRITES crossed with that of the partner — an inference the item
+// does not carry, and that the product would have to go seek elsewhere.
 //
-// ── CORRECTION : LA RAISON CI-DESSUS ÉTAIT TROP LARGE D'UN ITEM ──────────────────────────────────
-// Une version antérieure écrivait « AUCUN de ces items ne porte d'information d'orientation », et
-// rangeait « on s'est pacsées » dans la liste. C'est faux pour celui-là, et la nuance n'est pas
-// cosmétique.
+// ── CORRECTION: THE REASON ABOVE WAS TOO BROAD BY ONE ITEM ────────────────────────────────────────
+// An earlier version wrote « NONE of these items carries orientation information », and filed
+// « on s'est pacsées » in the list. It is false for that one, and the nuance is not cosmetic.
 //
 //     « on s'est pacsees en octobre »
 //
-// L'accord du participe au FÉMININ PLURIEL, sur un verbe réciproque, dit que les deux personnes du
-// pacs sont des femmes. **L'item PORTE l'information.** Ce qui manque n'est pas la donnée — c'est un
-// mécanisme capable de lire une morphologie d'accord, ce qu'un lexique ne peut pas être.
+// The agreement of the participle in the FEMININE PLURAL, on a reciprocal verb, says that the two
+// people of the civil union are women. **The item DOES carry the information.** What is missing is
+// not the data — it is a mechanism able to read an agreement morphology, which a lexicon cannot be.
 //
-// Pourquoi la distinction compte : « l'item ne porte pas l'information » ferme le sujet
-// définitivement, tandis que « aucun lexique ne sait lire ce que l'item porte » le renvoie à une
-// décision de machinerie. La première version était une garantie CITABLE, et c'est très exactement
-// la forme que ce dépôt paie neuf fois — un filet écrit sur les cas typiques, cité comme couvrant le
-// domaine.
+// Why the distinction matters: « the item does not carry the information » closes the subject
+// definitively, whereas « no lexicon knows how to read what the item carries » sends it back to a
+// machinery decision. The first version was a CITABLE guarantee, and it is exactly the shape this
+// repo pays nine times over — a net written on typical cases, cited as covering the domain.
 //
-// CE QUI N'EN DÉCOULE PAS : un lot de morphologie. Un lecteur d'accord réciproque est une grosse
-// pièce de machinerie pour un rendement d'UN item sur vingt-quatre, et l'orthographe d'internet fait
-// sauter l'accord une fois sur deux. La décision reste de ne pas le chercher ; ce qui change est
-// qu'elle est désormais une décision, et non une impossibilité.
+// WHAT DOES NOT FOLLOW FROM IT: a morphology batch. A reciprocal-agreement reader is a big piece of
+// machinery for a yield of ONE item in twenty-four, and internet spelling drops the agreement one
+// time in two. The decision remains not to seek it; what changes is that it is now a decision, and
+// not an impossibility.
 //
-// ET LE COROLLAIRE TRAVERSE LES LANGUES, ce qui est la raison pour laquelle cette correction a été
-// trouvée en instruisant l'anglais. L'anglais n'a pas d'accord : il ne peut porter le même fait que
-// LEXICALEMENT, et c'est pourquoi `same sex` existe comme forme ORDINAIRE là où le français n'a
-// qu'un terme administratif. Inversion exacte, et elle décide de ce que chaque langue peut espérer :
+// AND THE COROLLARY CROSSES LANGUAGES, which is why this correction was found while instructing the
+// English. English has no agreement: it can carry the same fact only LEXICALLY, and that is why
+// `same sex` exists as an ORDINARY form where French has only an administrative term. Exact
+// inversion, and it decides what each language can hope for:
 //
-//     le français porte le fait dans une MORPHOLOGIE qu'aucun lexique ne lit ;
-//     l'anglais le porte dans un SYNTAGME que tout lexique lit.
+//     French carries the fact in a MORPHOLOGY that no lexicon reads;
+//     English carries it in a PHRASE that any lexicon reads.
 //
-// `same sex` est donc, en anglais, le seul terme qui achète du rappel hors auto-déclaration et hors
-// vocabulaire communautaire — la seule brèche dans l'ancre décrite plus bas, et elle n'a pas
-// d'équivalent français.
+// `same sex` is therefore, in English, the only term that buys recall outside self-declaration and
+// outside community vocabulary — the only breach in the anchor described below, and it has no
+// French equivalent.
 //
-// C'est le problème du MILIEU PARTAGÉ de `health_physical`, transposé et aggravé : là-bas le milieu
-// était partagé avec un autre label, ici il est partagé avec la vie ordinaire de tout le monde.
-// Admettre « ma copine » ou « ma compagne » ne détecterait pas des lesbiennes — ça taguerait la
-// moitié de la population, et le seuil 1 de ce label en ferait immédiatement des constats. La règle
-// suivie est donc celle qu'impose la doctrine de démonstration : on cherche ce qui DISTINGUE, jamais
-// ce qui ACCOMPAGNE.
+// It is the SHARED MILIEU problem of `health_physical`, transposed and worsened: over there the
+// milieu was shared with another label, here it is shared with everyone's ordinary life.
+// Admitting « ma copine » or « ma compagne » would not detect lesbians — it would tag half the
+// population, and this label's threshold 1 would immediately make findings of them. The rule
+// followed is therefore the one the demonstration doctrine imposes: we seek what DISTINGUISHES,
+// never what ACCOMPANIES.
 //
-// Conséquence à porter telle quelle : le rappel de ce label restera adossé à l'auto-déclaration et
-// au vocabulaire communautaire. Une personne qui vit sa vie sans jamais nommer ni l'un ni l'autre
-// n'est pas détectable depuis le texte, et ce banc ne prétend pas le contraire.
+// Consequence to carry as is: this label's recall will stay anchored to self-declaration and to
+// community vocabulary. A person who lives their life without ever naming either is not detectable
+// from the text, and this bench does not claim the contrary.
 //
-// ── CE QUE LA RÉPARATION DU RAPPEL A COÛTÉ, mesuré et non estimé ────────────────────────────────
-// UNE preuve de plus sur `fr_banalised`, qui écrit « quel personnage est le plus lesbien » : elle
-// passe de 4 à 5. Ce n'est PAS un tort neuf — sa cellule était déjà rouge, son étage ne bouge pas,
-// et le compteur de torts est inchangé. Le terme reste, en application de la doctrine ratifiée : il
-// déclenche sur des porteuses ET sur des non-porteuses, donc il n'est pas candidat à l'éviction, et
-// chasser ce faux positif coûterait à la concernée son unique preuve récupérable.
-// `en_homograph_guard` ne gagne rien.
+// ── WHAT THE RECALL REPAIR COST, measured and not estimated ──────────────────────────────────────
+// ONE more piece of evidence on `fr_banalised`, which writes « quel personnage est le plus lesbien »:
+// it goes from 4 to 5. It is NOT a new wrong — its cell was already red, its storey does not move,
+// and the wrong counter is unchanged. The term stays, in application of the ratified doctrine: it
+// triggers on bearers AND on non-bearers, so it is not a candidate for eviction, and chasing this
+// false positive would cost the person concerned her only recoverable piece of evidence.
+// `en_homograph_guard` gains nothing.
 //
-// ── LES DEUX PRÉDICTIONS SCELLÉES, ET LEUR SORT ─────────────────────────────────────────────────
-// Elles avaient été écrites d'avance dans la fixture, tirées d'une fuite déclarée. Les publier
-// gagnantes ET perdantes est ce qui leur donne une valeur :
+// ── THE TWO SEALED PREDICTIONS, AND THEIR FATE ───────────────────────────────────────────────────
+// They had been written in advance in the fixture, drawn from a declared leak. Publishing them
+// winning AND losing is what gives them value:
 //
-//   (a) CONFIRMÉE, et plus nettement que scellée. Je prédisais que `en_lived_plain` ne produirait
-//       pas de constat NOMMÉ. Non seulement il n'en produit pas, mais son auto-déclaration ne
-//       contribue à RIEN : l'ablation de « i am gay » ne change pas son étage.
-//   (b) FAUSSE. Je prédisais que `en_homograph_guard` rendrait ZÉRO, par la porte de langue. Il rend
-//       un TORT. Ma prédiction supposait qu'une porte filtre les auto-déclarations anglaises — elle
-//       le fait — mais j'en avais tiré à tort que rien d'anglais ne déclenchait. Les mots de sujet
-//       passent, et une grille de mots croisés suffit.
+//   (a) CONFIRMED, and more sharply than sealed. I predicted that `en_lived_plain` would not produce
+//       a NAMED finding. Not only does it not produce one, but its self-declaration contributes to
+//       NOTHING: the ablation of « i am gay » does not change its storey.
+//   (b) FALSE. I predicted that `en_homograph_guard` would return ZERO, by the language gate. It
+//       returns a WRONG. My prediction assumed a gate filters English self-declarations — it does —
+//       but I had wrongly concluded that nothing English triggered. Subject words get through, and a
+//       crossword grid is enough.
 //
-// ── PAR QUEL CHEMIN LES ZÉROS ARRIVENT ──────────────────────────────────────────────────────────
-// CLAUDE.md, *Ce qu'un filet prouve* : une assertion négative vérifie ce qu'elle ATTEINT, pas ce
-// qu'elle affirme. Deux zéros de ce banc ressemblent à des filtres qui marchent et n'en sont pas —
-// les assertions plus bas le démontrent au lieu de le supposer.
+// ── BY WHICH PATH THE ZEROS ARRIVE ───────────────────────────────────────────────────────────────
+// CLAUDE.md, *What a net proves*: a negative assertion verifies what it REACHES, not what it
+// affirms. Two zeros of this bench look like filters that work and are not — the assertions below
+// demonstrate it instead of supposing it.
 //
-//   · `fr_lived_ordinary` #10 emploie un terme réapproprié et ne produit AUCUN `conflictual`. Ce
-//     n'est pas un filtre d'usage intra-communautaire — rien dans le produit ne sait qu'un terme a
-//     été repris par celles qu'il visait — mais ce n'est PAS NON PLUS une absence de câblage, comme
-//     ce banc l'a d'abord asserté à tort. Le terme EST câblé ; c'est la GARDE DE CIBLE qui le
-//     retient, cette phrase ne s'adressant à personne. La correction, et la sonde mal construite qui
-//     l'a rendue nécessaire, vivent dans le dernier bloc du fichier.
-//   · Les zéros anglais de la plupart des sondes d'auto-déclaration ne mesurent pas une prudence du
-//     détecteur : ils mesurent une absence de câblage.
+//   · `fr_lived_ordinary` #10 uses a reclaimed term and produces NO `conflictual`. It is not a
+//     filter of intra-community use — nothing in the product knows a term has been reclaimed by
+//     those it targeted — but it is NOT EITHER an absence of wiring, as this bench first wrongly
+//     asserted. The term IS wired; it is the TARGET GUARD that holds it back, this sentence
+//     addressing no one. The correction, and the badly built probe that made it necessary, live in
+//     the last block of the file.
+//   · The English zeros of most self-declaration probes do not measure a prudence of the detector:
+//     they measure an absence of wiring.
 
 import { describe, expect, it } from 'vitest';
 import { WIRED_LEXICONS } from '../lexicon/index';
@@ -229,19 +227,19 @@ const byId = (id: string) => {
   return persona;
 };
 
-/** Nombre de preuves `sexuality` citées pour une persona — le grain où vit l'asymétrie. */
+/** Number of `sexuality` evidence pieces cited for a persona — the grain where the asymmetry lives. */
 const evidence = (id: string) =>
   detectFor(byId(id)).find((d) => d.label === 'sexuality')?.items.length ?? 0;
 
 const stage = (id: string) => detectFor(byId(id)).find((d) => d.label === 'sexuality')?.stage;
 
-/** Le résumé d'une détection sur un texte isolé, ou `RIEN`. */
+/** The summary of a detection on an isolated text, or `RIEN`. */
 const runOn = (texts: readonly string[]) => {
   const out = detectLabels([...texts], WIRED_LEXICONS);
   return out.map((d) => `${d.label}[${d.stage}]`).join(', ') || 'RIEN';
 };
 
-/** La voix privée d'un seul de ses items — l'ablation qui dit ce qui PORTE réellement l'étage. */
+/** The voice stripped of a single one of its items — the ablation that tells what really CARRIES the storey. */
 const without = (id: string, drop: number) =>
   runOn(
     byId(id)
@@ -249,165 +247,163 @@ const without = (id: string, drop: number) =>
       .map((i) => i.text),
   );
 
-describe('banc sexuality — comptage commun', () => {
+describe('sexuality bench — common counting', () => {
   expectBenchCounts(SEXUALITY_REGISTER_PERSONAS, {
-    // DEUX torts BRUTS, et ils ne se lisent pas pareil — c'est pour ça qu'ils ne se somment pas.
-    // `fr_banalised` est un tort du FRANÇAIS, là où le vocabulaire existe : il mesure le tri du
-    // détecteur, et il est le vrai plancher de faux positifs du lot.
-    // `en_homograph_guard` est un tort de l'ANGLAIS sur UN item — une définition de mots croisés — et
-    // la dernière assertion établit qu'il mesure une absence de câblage plutôt qu'un tri.
+    // TWO RAW wrongs, and they do not read the same — that is why they do not sum.
+    // `fr_banalised` is a wrong of FRENCH, where the vocabulary exists: it measures the detector's
+    // sorting, and it is the true false-positive floor of the batch.
+    // `en_homograph_guard` is a wrong of ENGLISH on ONE item — a crossword definition — and
+    // the last assertion establishes that it measures an absence of wiring rather than a sorting.
     torts: ['fr_banalised/sexuality', 'en_homograph_guard/sexuality'],
-    // AVANT RÉPARATION : `['fr_ally_close/sexuality']` — l'alliée hétérosexuelle était promue en
-    // constat NOMMÉ, le tort propre à son état et le plus coûteux qui soit sur ce label. La démotion
-    // l'a ramenée au constat large, l'étage que son sceau attendait. C'est la ligne dont le
-    // retournement se lit comme une réparation.
+    // BEFORE REPAIR: `['fr_ally_close/sexuality']` — the heterosexual ally was promoted to a NAMED
+    // finding, the wrong proper to her state and the most costly there is on this label. The
+    // demotion brought her back to the broad finding, the storey her seal expected. It is the line
+    // whose reversal reads as a repair.
     escalated: [],
-    // Aucune correction d'annotateur : je ne conteste aucun de mes six sceaux après mesure. La
-    // prédiction (b) est fausse, mais une prédiction n'est pas une vérité-terrain — la corriger ici
-    // reviendrait à réécrire un sceau pour arranger un chiffre.
+    // No annotator correction: I contest none of my six seals after measurement. Prediction (b) is
+    // false, but a prediction is not ground truth — correcting it here would amount to rewriting a
+    // seal to arrange a number.
     corrections: [],
     tortsAfterCorrection: ['fr_banalised/sexuality', 'en_homograph_guard/sexuality'],
-    // Les trois vécus sont tagués. ATTENTION À LA LECTURE : ce vert ne dit pas que le rappel tient.
-    // Il dit qu'un tag existe. Les étages ci-dessous et l'ablation plus bas disent le reste, et ils
-    // ne racontent pas la même histoire.
+    // The three lived voices are tagged. MIND THE READING: this green does not say the recall holds.
+    // It says a tag exists. The storeys below and the ablation further down say the rest, and they
+    // do not tell the same story.
     missedRecall: [],
     missedSignal: [],
     livedStages: {
-      // Les deux vécus FRANÇAIS atteignent le constat nommé — premier rappel `sexuality` jamais
-      // mesuré dans ce dépôt, et il vaut pour l'orientation comme pour l'identité de genre.
+      // The two FRENCH lived voices reach the named finding — first `sexuality` recall ever measured
+      // in this repo, and it holds for orientation as for gender identity.
       fr_lived_ordinary: 'explicit',
       fr_nonbinary_lived: 'explicit',
-      // L'ANGLAIS N'Y ARRIVE PAS, et c'est la prédiction (a) confirmée. Un homme qui écrit « i am
-      // gay » en toutes lettres reçoit un constat LARGE là où une francophone qui écrit l'équivalent
-      // reçoit un constat NOMMÉ. Ce n'est pas une finesse de banc : c'est une asymétrie de
-      // traitement entre deux utilisateurs du même produit.
+      // THE ENGLISH DOES NOT GET THERE, and it is prediction (a) confirmed. A man who writes « i am
+      // gay » in full receives a BROAD finding where a francophone who writes the equivalent
+      // receives a NAMED finding. It is not a bench subtlety: it is an asymmetry of treatment
+      // between two users of the same product.
       en_lived_plain: 'indirect',
     },
   });
 });
 
-describe("banc sexuality — LA PAIRE, et l'effondrement que le comptage générique explique mal", () => {
-  // Piège propre à CETTE paire, hérité de la paire religieuse : les deux voix ATTENDENT un tag. Deux
-  // cellules vertes au compteur de rappel sont donc le résultat NORMAL et ne prouvent rien. Ce qui
-  // se lit est la distance entre les deux étages — et elle est NULLE.
+describe('sexuality bench — THE PAIR, and the collapse the generic counting explains badly', () => {
+  // Trap proper to THIS pair, inherited from the religious pair: both voices EXPECT a tag. Two green
+  // cells at the recall counter are therefore the NORMAL result and prove nothing. What reads is the
+  // distance between the two storeys — and it is NIL.
 
-  it("LES ÉTAGES DIVERGENT — l'appartenance nomme, la proximité ne nomme plus", () => {
-    // LE RÉSULTAT CENTRAL DU BANC, et la ligne dont le retournement EST la réparation.
+  it('THE STOREYS DIVERGE — membership names, proximity no longer names', () => {
+    // THE BENCH'S CENTRAL RESULT, and the line whose reversal IS the repair.
     //
-    // AVANT : les deux voix rendaient `explicit`. Une femme lesbienne et une femme hétérosexuelle
-    // qui tient la comptabilité d'une association recevaient le même constat, de même confiance.
+    // BEFORE: both voices returned `explicit`. A lesbian woman and a heterosexual woman who keeps
+    // the books of an association received the same finding, of the same confidence.
     //
-    // APRÈS : la lecture « proximité / allié » est atteignable par le cas qu'elle décrit. Ce qu'il
-    // faut se garder de conclure — et c'est la conclusion tentante — c'est que le produit sait
-    // DÉSORMAIS distinguer l'appartenance de la proximité. Il ne sait toujours pas : il sait
-    // reconnaître UNE FORME, celle où la copule est subordonnée à une question rapportée. Une
-    // alliée qui n'emploierait jamais cette tournure reste indistinguable, et ce banc ne la porte
-    // pas.
+    // AFTER: the « proximity / ally » reading is reachable by the case it describes. What must be
+    // guarded against concluding — and it is the tempting conclusion — is that the product NOW knows
+    // how to distinguish membership from proximity. It still does not: it knows how to recognize ONE
+    // FORM, the one where the copula is subordinated to a reported question. An ally who would never
+    // use this turn stays indistinguishable, and this bench does not carry her.
     expect(stage('fr_lived_ordinary')).toBe('explicit');
     expect(stage('fr_ally_close')).toBe('indirect');
   });
 
-  it("DENSITÉ DE PREUVES — 2 et 2, et l'inversion est corrigée", () => {
-    // AVANT : 1 pour la concernée, 2 pour l'alliée. L'asymétrie était RETOURNÉE — l'alliée portait
-    // DEUX FOIS PLUS de preuves que la femme dont le constat parle réellement. C'est l'endroit que
-    // le banc politique avait désigné : le comptage compte des CELLULES, l'asymétrie vit dans les
-    // PREUVES, et aucun compteur générique de ce dépôt ne l'aurait rendue visible.
+  it('EVIDENCE DENSITY — 2 and 2, and the inversion is corrected', () => {
+    // BEFORE: 1 for the person concerned, 2 for the ally. The asymmetry was REVERSED — the ally
+    // carried TWICE AS MUCH evidence as the woman the finding actually speaks of. It is the place the
+    // political bench had pointed to: the counting counts CELLS, the asymmetry lives in the
+    // EVIDENCE, and no generic counter of this repo would have made it visible.
     //
-    // APRÈS : la concernée gagne une preuve (son bar), l'alliée n'en gagne aucune. L'inversion
-    // disparaît. CE QU'IL NE FAUT PAS EN CONCLURE : que la densité sépare désormais les deux voix.
-    // Elle ne les sépare pas — elle est ÉGALE. Ce qui les sépare est l'étage, et la densité a
-    // seulement cessé de dire le contraire de ce que l'étage dit.
+    // AFTER: the person concerned gains one piece of evidence (her bar), the ally gains none. The
+    // inversion disappears. WHAT MUST NOT BE CONCLUDED FROM IT: that the density now separates the
+    // two voices. It does not separate them — it is EQUAL. What separates them is the storey, and
+    // the density has only stopped saying the opposite of what the storey says.
     expect(evidence('fr_lived_ordinary')).toBe(2);
     expect(evidence('fr_ally_close')).toBe(2);
   });
 
-  it("ABLATION — l'effondrement tenait à UN item, et le retrait de ce même item ne change plus rien", () => {
-    // CE QUI DONNE SON SENS À TOUT LE RESTE, et qui transforme un défaut diffus en point de
-    // réparation précis.
+  it('ABLATION — the collapse hung on ONE item, and removing that same item no longer changes anything', () => {
+    // WHAT GIVES ITS MEANING TO ALL THE REST, and turns a diffuse defect into a precise repair
+    // point.
     //
-    // AVANT : retirer à l'alliée l'item où on la prend pour lesbienne la ramenait en constat LARGE,
-    // tandis que retirer l'item du frère ne changeait rien — la preuve que sa promotion tenait à
-    // UNE phrase et non à sa densité de vocabulaire. Tout le reste de ce qu'elle écrit (un frère, un
-    // mari, une association, une marche, une permanence) produisait déjà CORRECTEMENT un constat
-    // large : la lecture « proximité / allié » fonctionnait, elle était seulement écrasée.
+    // BEFORE: removing from the ally the item where she is taken for a lesbian brought her back to a
+    // BROAD finding, while removing the brother's item changed nothing — the proof that her
+    // promotion hung on ONE sentence and not on her vocabulary density. Everything else she writes
+    // (a brother, a husband, an association, a march, a duty shift) already produced CORRECTLY a
+    // broad finding: the « proximity / ally » reading worked, it was only crushed.
     //
-    // APRÈS : les deux ablations laissent le constat large. L'item réparé ne PROMEUT plus, et c'est
-    // le sens précis de la démotion — il compte encore comme preuve, il n'affirme plus.
+    // AFTER: both ablations leave the broad finding. The repaired item no longer PROMOTES, and it is
+    // the precise meaning of the demotion — it still counts as evidence, it no longer affirms.
     expect(without('fr_ally_close', 2)).toBe('sexuality[indirect]');
     expect(without('fr_ally_close', 0)).toBe('sexuality[indirect]');
 
-    // ET LA CONCERNÉE AVAIT UNE MARGE NULLE. AVANT : privée de sa seule copule, elle ne rendait
-    // plus RIEN — pas même un constat large. Neuf ans de couple, un pacs, un bar, une marche, une
-    // équipe : zéro preuve. À comparer à `fr_practising` du lot religieux, que le retrait de sa
-    // déclaration, de son jeûne ou de sa prière laissait chaque fois en constat nommé.
+    // AND THE PERSON CONCERNED HAD A NIL MARGIN. BEFORE: stripped of her only copula, she returned
+    // NOTHING anymore — not even a broad finding. Nine years of a couple, a civil union, a bar, a
+    // march, a team: zero evidence. To compare with `fr_practising` of the religious batch, which
+    // the removal of her declaration, her fast or her prayer left each time in a named finding.
     //
-    // APRÈS : elle retombe en constat LARGE au lieu de disparaître. C'est le versant RAPPEL du même
-    // mécanisme, et les deux ablations de ce test se lisent ensemble — le produit ne lisait qu'une
-    // COPULE, si bien que la même règle nommait qui l'écrivait en la démentant et effaçait qui ne
-    // l'écrivait pas.
+    // AFTER: she falls back to a BROAD finding instead of disappearing. It is the RECALL side of the
+    // same mechanism, and the two ablations of this test read together — the product read only a
+    // COPULA, so the same rule named whoever wrote it while denying it and erased whoever did not
+    // write it.
     //
-    // CE QUI RESTE VRAI, et il faut le garder sous les yeux : sa marge tient à UN item de plus, pas
-    // à une sur-détermination. Elle est loin de `fr_practising` et de ses trois porteurs
-    // indépendants.
+    // WHAT STAYS TRUE, and it must be kept in sight: her margin hangs on ONE more item, not on an
+    // over-determination. She is far from `fr_practising` and its three independent bearers.
     expect(without('fr_lived_ordinary', 1)).toBe('sexuality[indirect]');
   });
 });
 
-describe('banc sexuality — LE FILTRE DE NÉGATION, et la frontière où il cesse', () => {
-  it('la négation ATTACHÉE à la copule tient', () => {
-    // Obligation de doctrine n°1 (CLAUDE.md). Là où elle est câblée, elle fonctionne.
+describe('sexuality bench — THE NEGATION FILTER, and the boundary where it stops', () => {
+  it('the negation ATTACHED to the copula holds', () => {
+    // Doctrinal obligation n°1 (CLAUDE.md). Where it is wired, it works.
     expect(runOn(['je ne suis pas lesbienne'])).toBe('RIEN');
     expect(runOn(['je ne suis pas gay'])).toBe('RIEN');
   });
 
-  it('LA QUESTION RAPPORTÉE NE NOMME PLUS, et le tag survit', () => {
-    // AVANT RÉPARATION : `sexuality[explicit]` sur les deux premières. Il suffisait qu'une personne
-    // rapporte qu'on lui a posé la question pour être NOMMÉE — y compris quand elle écrivait dans la
-    // même phrase que la réponse est non. Désormais : constat LARGE. Démotion, pas filtrage.
+  it('THE REPORTED QUESTION NO LONGER NAMES, and the tag survives', () => {
+    // BEFORE REPAIR: `sexuality[explicit]` on the first two. It was enough for a person to report
+    // being asked the question to be NAMED — including when she wrote in the same sentence that the
+    // answer is no. Now: BROAD finding. Demotion, not filtering.
     expect(runOn(['on me demande si je suis lesbienne'])).toBe('sexuality[indirect]');
     expect(
       runOn(['on me demande souvent si je suis lesbienne, je reponds non et on continue']),
     ).toBe('sexuality[indirect]');
     expect(runOn(['il m a demande si j etais lesbienne'])).toBe('sexuality[indirect]');
 
-    // LA STRUCTURE EST VÉRIFIÉE, pas seulement la présence des mots — sans quoi la règle démoterait
-    // toute phrase contenant « demande » et « si ». La copule AFFIRMÉE, suivie d'une mention de la
-    // question, continue de nommer : mêmes mots, ordre différent, sens opposé.
+    // THE STRUCTURE IS VERIFIED, not only the presence of the words — otherwise the rule would
+    // demote any sentence containing « demande » and « si ». The AFFIRMED copula, followed by a
+    // mention of the question, keeps naming: same words, different order, opposite meaning.
     expect(runOn(['je suis lesbienne, et si on me le demande je le dis'])).toBe(
       'sexuality[explicit]',
     );
   });
 
-  it('LA FRONTIÈRE — un démenti SANS cadre interrogatif nomme toujours', () => {
-    // LE RÉSULTAT À NE PAS OUBLIER en citant la réparation, et il est mesuré, pas déduit. La
-    // démotion s'accroche au cadre interrogatif rapporté. Une affirmation suivie d'un démenti n'en
-    // porte pas, et continue de produire un constat NOMMÉ.
+  it('THE BOUNDARY — a denial WITHOUT an interrogative frame still names', () => {
+    // THE RESULT NOT TO FORGET when citing the repair, and it is measured, not deduced. The demotion
+    // hooks onto the reported interrogative frame. An affirmation followed by a denial carries none,
+    // and keeps producing a NAMED finding.
     //
-    // L'élargissement au démenti traînant a été EXAMINÉ ET ÉCARTÉ, pour une raison que le français
-    // impose : « non mais » est un marqueur d'insistance AFFIRMATIVE. Les deux sondes ci-dessous
-    // portent la même négation après la même copule et disent l'inverse l'une de l'autre ; aucune
-    // règle de négation traînante ne peut les séparer, et démonter la seconde — une affirmation
-    // sincère — est le mode d'échec le plus coûteux de ce label.
+    // Widening to the trailing denial was EXAMINED AND SET ASIDE, for a reason French imposes:
+    // « non mais » is a marker of AFFIRMATIVE insistence. The two probes below carry the same
+    // negation after the same copula and say the opposite of each other; no trailing-negation rule
+    // can separate them, and dismantling the second — a sincere affirmation — is the most costly
+    // failure mode of this label.
     expect(runOn(['je suis lesbienne, je reponds non'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis lesbienne, non mais vraiment'])).toBe('sexuality[explicit]');
   });
 
-  it('la 3ᵉ personne redescend correctement', () => {
-    // Ce qui marche, et qu'il faut asserter pour que sa disparition se voie.
+  it('the 3rd person comes back down correctly', () => {
+    // What works, and must be asserted so that its disappearance shows.
     expect(runOn(['ma soeur est lesbienne'])).toBe('sexuality[indirect]');
     expect(runOn(['mon frere est gay'])).toBe('sexuality[indirect]');
   });
 });
 
-describe('banc sexuality — CADRE CALQUÉ, ce que les six voix ne pouvaient pas voir', () => {
-  it('les neuf orientations testées déclenchent toutes, au même étage', () => {
-    // Même frame syntaxique, seul le terme change : là où on mesure, on isole (technique de la
-    // fixture politique, reprise par la religieuse). Ces sondes neutralisent le confondant de la
-    // paire — si une orientation était muette, l'effondrement mesuré plus haut aurait pu être un
-    // artefact de mon choix d'écrire une femme lesbienne.
+describe('sexuality bench — TRACED FRAME, what the six voices could not see', () => {
+  it('the nine tested orientations all trigger, at the same storey', () => {
+    // Same syntactic frame, only the term changes: where we measure, we isolate (technique of the
+    // political fixture, taken up by the religious one). These probes neutralize the confounder of
+    // the pair — if one orientation were mute, the collapse measured above could have been an
+    // artifact of my choice to write a lesbian woman.
     //
-    // Elles le neutralisent : la couverture FR des orientations est UNIFORME, y compris pour la
-    // bisexualité, l'asexualité et la pansexualité, qu'aucune voix porteuse du lot n'incarne.
+    // They neutralize it: the FR coverage of the orientations is UNIFORM, including for bisexuality,
+    // asexuality and pansexuality, which no bearing voice of the batch embodies.
     for (const t of [
       'lesbienne',
       'gay',
@@ -423,97 +419,93 @@ describe('banc sexuality — CADRE CALQUÉ, ce que les six voix ne pouvaient pas
     }
   });
 
-  it('LES TROUS SONT DANS LES FORMULATIONS TRANS, et le cadre calqué les rend visibles', () => {
-    // ET ELLES TROUVENT AUTRE CHOSE, que ce banc n'était pas conçu pour chercher. C'est la forme
-    // EXACTE du défaut trouvé sur les traditions religieuses, déplacée du sujet vers la
-    // morphologie : dans le cadre où neuf orientations produisent un constat nommé, deux
-    // formulations trans ne produisent RIEN.
+  it('THE HOLES ARE IN THE TRANS PHRASINGS, and the traced frame makes them visible', () => {
+    // AND THEY FIND SOMETHING ELSE, which this bench was not designed to seek. It is the EXACT shape
+    // of the defect found on religious traditions, moved from the subject to the morphology: in the
+    // frame where nine orientations produce a named finding, two trans phrasings produce NOTHING.
     //
-    // Et ce ne sont pas des formulations marginales : « je suis une femme trans » et « je suis un
-    // homme trans » sont les manières les plus ordinaires dont les personnes trans binaires se
-    // décrivent. `fr_nonbinary_lived` ne pouvait pas le voir — elle est non binaire, et le terme
-    // qu'elle emploie, lui, est couvert.
-    // AVANT : « je suis une femme trans » et « je suis un homme trans » rendaient RIEN — les
-    // formulations les plus ordinaires des personnes trans binaires, muettes dans le cadre exact où
-    // neuf orientations produisaient un constat nommé.
+    // And they are not marginal phrasings: « je suis une femme trans » and « je suis un homme
+    // trans » are the most ordinary ways binary trans people describe themselves. `fr_nonbinary_lived`
+    // could not see it — she is non-binary, and the term she uses, itself, is covered.
+    // BEFORE: « je suis une femme trans » and « je suis un homme trans » returned NOTHING — the most
+    // ordinary phrasings of binary trans people, mute in the exact frame where nine orientations
+    // produced a named finding.
     //
-    // LA RÉPARATION N'EST PAS LEXICALE, et c'est le point : le terme nu était DÉJÀ admis. Ce qui
-    // cassait le pattern d'auto-déclaration, c'est le NOM DE PERSONNE intercalé entre la copule et
-    // le terme. Les noms de personne sont donc entrés dans les modificateurs génériques, avec le
-    // reste de la grammaire — une seule ligne, là où lister les syntagmes par label aurait multiplié
-    // les entrées sans jamais couvrir la suivante.
+    // THE REPAIR IS NOT LEXICAL, and that is the point: the bare term was ALREADY admitted. What
+    // broke the self-declaration pattern is the PERSON NAME slipped between the copula and the term.
+    // Person names therefore entered the generic modifiers, with the rest of the grammar — a single
+    // line, where listing the phrases by label would have multiplied the entries without ever
+    // covering the next one.
     expect(runOn(['je suis trans'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis non binaire'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis une femme trans'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis un homme trans'])).toBe('sexuality[explicit]');
 
-    // ET LA RÉPARATION STRUCTURELLE COUVRE CE QU'AUCUNE SONDE N'AVAIT DEMANDÉ — la preuve qu'elle
-    // traite la construction et non les deux cas trouvés. Ces quatre-là n'ont jamais été ajoutés
-    // nulle part : ils marchent parce que la grammaire a été réparée.
+    // AND THE STRUCTURAL REPAIR COVERS WHAT NO PROBE HAD ASKED FOR — the proof that it treats the
+    // construction and not the two cases found. These four were never added anywhere: they work
+    // because the grammar was repaired.
     expect(runOn(['je suis une personne trans'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis un mec trans'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis un homme homosexuel'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis une femme lesbienne'])).toBe('sexuality[explicit]');
 
-    // AVANT : `sexuality[indirect]`. Un étage INCOHÉRENT entre deux synonymes dans le même cadre —
-    // la même déclaration recevait une confiance différente selon le mot choisi, ce qu'aucune
-    // doctrine ne demande. `transgenre` est désormais admis en auto-déclaration comme `trans`.
+    // BEFORE: `sexuality[indirect]`. An INCOHERENT storey between two synonyms in the same frame —
+    // the same declaration received a different confidence depending on the word chosen, which no
+    // doctrine asks. `transgenre` is now admitted in self-declaration like `trans`.
     expect(runOn(['je suis transgenre'])).toBe('sexuality[explicit]');
 
-    // CE QUE CE RETOURNEMENT NE PROUVE PAS, et c'est l'essentiel. La question posée était : le
-    // cadre calqué est-il désormais suffisant, ou ne mesure-t-il que ce que j'ai pensé à écrire ?
-    // LA SECONDE RÉPONSE EST LA VRAIE, et la réparation structurelle ne l'annule qu'en partie.
+    // WHAT THIS REVERSAL DOES NOT PROVE, and it is the essential. The question asked was: is the
+    // traced frame now sufficient, or does it only measure what I thought to write?
+    // THE SECOND ANSWER IS THE TRUE ONE, and the structural repair only partly cancels it.
     //
-    // Ce qui est acquis : la construction [copule][nom de personne][terme] est traitée comme une
-    // classe, donc les formulations de cette FAMILLE sont couvertes sans avoir été listées — les
-    // quatre sondes ci-dessus le montrent. Ce qui ne l'est pas : toute autre construction. Une
-    // auto-désignation qui n'emploie pas la copule, un terme absent du lexique, une périphrase —
-    // rien de tout cela n'est mesuré, et des sondes ne trouveront jamais que ce qu'on a pensé à leur
-    // donner. La couverture des TERMES ne se règle pas ici : elle demanderait une revue et un témoin
-    // de symétrie, le travail que `religion-symmetry.test.ts` fait pour son label et que ce banc ne
-    // fait pas.
+    // What is acquired: the construction [copula][person name][term] is treated as a class, so the
+    // phrasings of this FAMILY are covered without having been listed — the four probes above show
+    // it. What is not: any other construction. A self-designation that does not use the copula, a
+    // term absent from the lexicon, a periphrasis — none of that is measured, and probes will never
+    // find anything but what one thought to give them. TERM coverage is not settled here: it would
+    // demand a review and a symmetry witness, the work that `religion-symmetry.test.ts` does for its
+    // label and that this bench does not do.
   });
 
-  it('les termes MAJORITAIRES déclenchent — la réparation de symétrie, et son état d’avant', () => {
-    // AVANT, et cette assertion tenait le contraire, gelé : « je suis heterosexuelle » → `RIEN`,
-    // « je suis cisgenre » → `RIEN`. Elle enregistrait donc correctement le défaut, et c'est la
-    // LECTURE qu'elle en donnait qui était fausse — elle est conservée ici parce que l'erreur de
-    // raisonnement vaut plus cher que le chiffre.
+  it('the MAJORITY terms trigger — the symmetry repair, and its prior state', () => {
+    // BEFORE, and this assertion held the contrary, frozen: « je suis heterosexuelle » → `RIEN`,
+    // « je suis cisgenre » → `RIEN`. It therefore recorded the defect correctly, and it is the
+    // READING it gave that was false — it is kept here because the reasoning error is worth more
+    // than the number.
     //
-    // Elle concluait : « Personne ne déclare ces états, donc l'effet pratique est faible. » La
-    // prémisse est juste — le corpus scellé la porte en toutes lettres — et la conclusion ne suit
-    // pas. Un terme qui n'est jamais écrit ne coûte pas de rappel quand il manque ; ce qu'il coûte
-    // est la PROPRIÉTÉ du lexique, qui n'attrapait alors que les identités minoritaires. La règle
-    // ratifiée ne demande pas que « je suis hétéro » RAPPORTE autant que « je suis gay », elle
-    // demande qu'il DÉCLENCHE autant. La rareté d'usage est une raison de ne pas attendre de gain,
-    // jamais une raison de ne pas réparer.
+    // It concluded: « No one declares these states, so the practical effect is weak. » The premise
+    // is right — the sealed corpus carries it in full — and the conclusion does not follow. A term
+    // that is never written costs no recall when it is missing; what it costs is the PROPERTY of the
+    // lexicon, which then only caught minority identities. The ratified rule does not ask that
+    // « je suis hétéro » REPORT as much as « je suis gay », it asks that it TRIGGER as much. Rarity
+    // of use is a reason not to expect gain, never a reason not to repair.
     expect(runOn(['je suis heterosexuelle'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis cisgenre'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis heterosexuel'])).toBe('sexuality[explicit]');
     expect(runOn(['je suis cis'])).toBe('sexuality[explicit]');
 
-    // Le témoin appelé par le bloc précédent (« elle demanderait une revue et un témoin de
-    // symétrie ») EXISTE désormais : `sexuality-symmetry.test.ts`. Ce banc continue de ne pas faire
-    // ce travail — il éprouve des cadres, pas une couverture.
+    // The witness called for by the preceding block (« it would demand a review and a symmetry
+    // witness ») NOW EXISTS: `sexuality-symmetry.test.ts`. This bench keeps not doing that work — it
+    // tests frames, not a coverage.
   });
 });
 
-describe("banc sexuality — L'ANGLAIS, et par quel chemin ses chiffres arrivent", () => {
-  it('AUCUNE auto-déclaration anglaise ne produit de constat nommé — et les zéros restants ont CHACUN leur cause', () => {
-    // CLAUDE.md, *Ce qu'un filet prouve* : une assertion négative vérifie ce qu'elle ATTEINT, pas ce
-    // qu'elle affirme.
+describe('sexuality bench — THE ENGLISH, and by which path its numbers arrive', () => {
+  it('NO English self-declaration produces a named finding — and the remaining zeros EACH have their cause', () => {
+    // CLAUDE.md, *What a net proves*: a negative assertion verifies what it REACHES, not what it
+    // affirms.
     //
-    // AVANT LE LOT DE VOCABULAIRE EN : les NEUF sondes ci-dessous rendaient `RIEN`, et ce zéro
-    // uniforme mesurait une ABSENCE DE CÂBLAGE — pas une prudence du détecteur. La valeur d'avant est
-    // conservée ici, sans quoi la mise à jour effacerait le constat au lieu de l'enregistrer.
+    // BEFORE THE EN VOCABULARY BATCH: the NINE probes below returned `RIEN`, and that uniform zero
+    // measured an ABSENCE OF WIRING — not a prudence of the detector. The prior value is kept here,
+    // without which the update would erase the finding instead of recording it.
     //
-    // APRÈS : le zéro se scinde, et c'est le progrès réel du lot. Les termes câblés produisent
-    // désormais un constat LARGE ; les zéros qui subsistent ne sont plus un zéro unique à cause
-    // unique, mais CINQ zéros à CINQ causes distinctes — et aucune n'est « le détecteur est prudent ».
-    // C'est cette distinction que l'ancienne assertion ne pouvait pas porter.
+    // AFTER: the zero splits, and it is the real progress of the batch. The wired terms now produce
+    // a BROAD finding; the zeros that remain are no longer a single zero with a single cause, but
+    // FIVE zeros with FIVE distinct causes — and none is « the detector is prudent ».
+    // It is that distinction the old assertion could not carry.
 
-    // (1) LE CÂBLAGE EXISTE DÉSORMAIS — et ce qui les retient au constat LARGE est la COPULE, seule.
-    //     C'est le seul groupe dont le zéro a été réparé, et sa cause résiduelle est unique et nommée.
+    // (1) THE WIRING NOW EXISTS — and what holds them to the BROAD finding is the COPULA, alone.
+    //     It is the only group whose zero was repaired, and its residual cause is single and named.
     for (const probe of [
       'i am a lesbian',
       'i am lesbian',
@@ -523,38 +515,40 @@ describe("banc sexuality — L'ANGLAIS, et par quel chemin ses chiffres arrivent
       'i am non binary',
       'i am aromantic',
     ]) {
-      expect(runOn([probe])).toBe('sexuality[indirect]'); // rendait `RIEN` avant le lot
+      expect(runOn([probe])).toBe('sexuality[indirect]'); // returned `RIEN` before the batch
     }
 
-    // (2) LES ZÉROS QUI RESTENT, chacun avec SA raison — et elles ne sont pas interchangeables.
-    //   · `bi` — écarté NU : préfixe de périodicité productif (« bi weekly », « bi monthly »),
-    //     mesuré. `bisexual` porte le sens, et le rend `indirect` juste au-dessus.
-    //   · `trans` — admis pour la future copule, écarté d'`indirect` : le préfixe y est ingérable
-    //     (« trans fat », « trans european »). `transgender` porte le sens sans la collision.
-    //   · `straight` — écarté d'`indirect` sur MESURE : il y porterait `en_homograph_guard` de 1 tort
-    //     à 4 (menuiserie, scie, sang-froid). Sa maison est la copule, où le cadre le désambiguïse.
-    //   · `hetero` — écarté d'`indirect` : préfixe savant (« hetero atom »).
-    //   · `enby` — aucune maison indirecte, et c'est cohérent : c'est un terme d'AUTO-DÉSIGNATION,
-    //     pas un mot de sujet. Personne n'écrit « enby » en parlant d'autre chose.
+    // (2) THE ZEROS THAT REMAIN, each with ITS reason — and they are not interchangeable.
+    //   · `bi` — set aside BARE: productive periodicity prefix (« bi weekly », « bi monthly »),
+    //     measured. `bisexual` carries the sense, and makes it `indirect` just above.
+    //   · `trans` — admitted for the future copula, set aside from `indirect`: the prefix is
+    //     unmanageable there (« trans fat », « trans european »). `transgender` carries the sense
+    //     without the collision.
+    //   · `straight` — set aside from `indirect` on MEASUREMENT: it would take `en_homograph_guard`
+    //     from 1 wrong to 4 (carpentry, saw, composure). Its home is the copula, where the frame
+    //     disambiguates it.
+    //   · `hetero` — set aside from `indirect`: learned prefix (« hetero atom »).
+    //   · `enby` — no indirect home, and it is coherent: it is a term of SELF-DESIGNATION, not a
+    //     subject word. No one writes « enby » while talking about something else.
     //
-    // MISE À JOUR — LOT DES ADJECTIFS EN : `straight` et `enby` QUITTENT ce groupe. Ils sont admis
-    // au tier `selfDeclaredEn`, qui se matche par la copule et atterrit en LARGE. Leur raison
-    // d'exclusion ci-dessus visait l'`indirect` NU, et elle tient toujours là-bas — c'est le cadre
-    // qui les rend admissibles, et rien d'autre. `bi`, `trans` et `hetero` RESTENT muets : eux, le
-    // cadre ne les sauve pas (« im bi weekly on the newsletter » porte la copule).
+    // UPDATE — EN ADJECTIVES BATCH: `straight` and `enby` LEAVE this group. They are admitted to the
+    // tier `selfDeclaredEn`, which matches by the copula and lands in BROAD. Their exclusion reason
+    // above targeted the BARE `indirect`, and it still holds there — it is the frame that makes them
+    // admissible, and nothing else. `bi`, `trans` and `hetero` STAY mute: for them, the frame does
+    // not save them (« im bi weekly on the newsletter » carries the copula).
     for (const probe of ['i am bi', 'i am trans', 'i am hetero']) {
       expect(runOn([probe])).toBe('RIEN');
     }
 
-    // (2 bis) LE VERSANT MAJORITAIRE, ET C'EST LA RÉPARATION DE SYMÉTRIE ANGLAISE. « i am straight »
-    //     rendait `RIEN` quand « i am gay » rendait déjà un constat : un lexique qui n'attrapait que
-    //     les identités minoritaires. Les deux rendent désormais le MÊME étage.
+    // (2 bis) THE MAJORITY SIDE, AND IT IS THE ENGLISH SYMMETRY REPAIR. « i am straight »
+    //     returned `RIEN` when « i am gay » already returned a finding: a lexicon that caught only
+    //     minority identities. The two now return the SAME storey.
     for (const probe of ['i am straight', 'i am cisgender', 'i am enby']) {
-      expect(runOn([probe])).toBe('sexuality[indirect]'); // rendait `RIEN` avant le lot
+      expect(runOn([probe])).toBe('sexuality[indirect]'); // returned `RIEN` before the batch
     }
 
-    // (3) ET LA PROPRIÉTÉ QUI TIENT TOUT LE BLOC, inchangée par le lot : aucune de ces formes ne
-    //     NOMME. Le lot ajoute du signal, il n'ouvre aucune route vers le constat nommé anglais.
+    // (3) AND THE PROPERTY THAT HOLDS THE WHOLE BLOCK, unchanged by the batch: none of these forms
+    //     NAMES. The batch adds signal, it opens no route toward the English named finding.
     for (const probe of [
       'i am a lesbian',
       'i am bisexual',
@@ -567,71 +561,71 @@ describe("banc sexuality — L'ANGLAIS, et par quel chemin ses chiffres arrivent
       );
     }
 
-    // Les deux seules exceptions, et elles n'en sont pas : ce ne sont pas des auto-déclarations
-    // reconnues comme telles, ce sont des mots de SUJET rencontrés dans une phrase. L'étage le
-    // prouve — constat LARGE, jamais nommé, exactement comme le mot seul.
+    // The only two exceptions, and they are not: they are not self-declarations recognized as such,
+    // they are SUBJECT words met in a sentence. The storey proves it — BROAD finding, never named,
+    // exactly like the word alone.
     expect(runOn(['i am gay'])).toBe('sexuality[indirect]');
     expect(runOn(['gay'])).toBe('sexuality[indirect]');
     expect(runOn(['i am queer'])).toBe('sexuality[indirect]');
     expect(runOn(['queer'])).toBe('sexuality[indirect]');
   });
 
-  it('LE PROFIL ANGLAIS EST INVERSÉ — aveugle aux personnes, sensible au sujet', () => {
-    // LA CONCLUSION À CITER À LA PLACE DES CHIFFRES. Ce qui déclenche en anglais, ce sont des mots
-    // de sujet : ils rendent un constat large à quiconque parle de la question, y compris à qui
-    // n'est pas concerné.
+  it('THE ENGLISH PROFILE IS INVERTED — blind to people, sensitive to the subject', () => {
+    // THE CONCLUSION TO CITE INSTEAD OF THE NUMBERS. What triggers in English is subject words: they
+    // return a broad finding to whoever talks about the question, including whoever is not
+    // concerned.
     for (const probe of ['pride', 'lgbt', 'coming out']) {
       expect(runOn([probe])).toBe('sexuality[indirect]');
     }
 
-    // LA DÉMONSTRATION LA PLUS COURTE DU DÉFAUT, en deux lignes qui reçoivent le MÊME étage : un
-    // homme qui écrit son orientation en toutes lettres, et une définition de mots croisés où le
-    // mot a son sens ancien de « bizarre ». Le produit anglais ne les distingue pas.
+    // THE SHORTEST DEMONSTRATION OF THE DEFECT, in two lines that receive the SAME storey: a man who
+    // writes his orientation in full, and a crossword definition where the word has its old sense of
+    // « odd ». The English product does not distinguish them.
     expect(runOn(['i am gay, i have been out since i was nineteen'])).toBe('sexuality[indirect]');
     expect(runOn(['crossword clue queer meaning odd four letters'])).toBe('sexuality[indirect]');
 
-    // Et l'ablation le confirme sur la voix entière : retirer à `en_lived_plain` son
-    // auto-déclaration ne change pas son étage. Elle ne contribuait à rien.
+    // And the ablation confirms it on the whole voice: removing from `en_lived_plain` its
+    // self-declaration does not change its storey. It contributed to nothing.
     expect(without('en_lived_plain', 0)).toBe('sexuality[indirect]');
   });
 
-  it('le tort unique de `en_homograph_guard` est bien celui-là, et pas un autre', () => {
-    // Nommer l'item évite qu'un tort DIFFÉRENT se glisse un jour sous le même compteur à 1.
+  it('the unique wrong of `en_homograph_guard` is indeed that one, and not another', () => {
+    // Naming the item prevents a DIFFERENT wrong from slipping one day under the same counter at 1.
     const detections = detectFor(byId('en_homograph_guard'));
     expect(detections.map((d) => `${d.label}[${d.stage}]`)).toEqual(['sexuality[indirect]']);
     expect(detections[0]?.items.map((i) => i.itemIndex)).toEqual([3]);
 
-    // Ce que la garde établit, et qui n'était PAS ma prédiction : les autres homographes qu'elle
-    // porte — un lancer parfait, une parution bimestrielle, une arête droite, une sortie de
-    // retraite — ne déclenchent pas. Un seul mot passe. La prédiction scellée (b) annonçait zéro ;
-    // elle est fausse, et l'écrire ici est le prix de l'avoir écrite d'avance.
+    // What the guard establishes, and which was NOT my prediction: the other homographs it carries —
+    // a perfect throw, a bimonthly issue, a straight edge, a retirement exit — do not trigger. A
+    // single word gets through. The sealed prediction (b) announced zero; it is false, and writing
+    // it here is the price of having written it in advance.
   });
 });
 
-describe('banc sexuality — LE VOCABULAIRE EN, et par quel chemin son zéro de torts arrive', () => {
-  // ── CE QUE CE BLOC NE COUVRE PAS, et il faut le lire avant le vert ───────────────────────────────
-  // - **Il mesure le tier INDIRECT, et rien d'autre.** La copule anglaise n'existe pas ; ces
-  //   assertions ne disent rien du constat NOMMÉ en anglais, qui reste inatteignable.
-  // - **Il mesure UNE voix adverse, en anglais BRITANNIQUE.** `en_homograph_guard` est dense en
-  //   fléchettes, *allotment* et *oche*. Les homographies de l'anglais américain, indien ou nigérian
-  //   ne sont pas mesurées — et `ace`, `bi`, `straight` ont des distributions régionales distinctes.
-  // - **Son autrice a déclaré une fuite** : elle connaissait la classe de l'échec par homographie.
-  //   Un plancher mesuré sur des pièges qu'on savait chercher n'est pas un plancher.
+describe('sexuality bench — THE EN VOCABULARY, and by which path its zero of wrongs arrives', () => {
+  // ── WHAT THIS BLOCK DOES NOT COVER, and it must be read before the green ──────────────────────────
+  // - **It measures the INDIRECT tier, and nothing else.** The English copula does not exist; these
+  //   assertions say nothing about the NAMED finding in English, which stays unreachable.
+  // - **It measures ONE adverse voice, in BRITISH English.** `en_homograph_guard` is dense in
+  //   darts, *allotment* and *oche*. The homographies of American, Indian or Nigerian English are
+  //   not measured — and `ace`, `bi`, `straight` have distinct regional distributions.
+  // - **Its author declared a leak**: she knew the class of the homograph failure. A floor measured
+  //   on traps one knew to look for is not a floor.
   //
-  // ── LE ZÉRO DE TORTS EST LE PRODUIT DES EXCLUSIONS, PAS DES ADMISSIONS ───────────────────────────
-  // C'est la seule lecture juste de ce bloc, et la version flatteuse — « les termes ajoutés sont
-  // sûrs » — serait fausse. Aucun des vingt-six termes admis n'a d'homographe dans le registre de la
-  // voix garde, parce que ceux qui en avaient un ont été ÉCARTÉS À LA PORTE. Le second test le
-  // démontre en négatif plutôt que de le supposer : il rejoue les exclusions et compte ce qu'elles
-  // retiennent. Sans lui, le vert du premier test serait une garantie sur-citable.
+  // ── THE ZERO OF WRONGS IS THE PRODUCT OF THE EXCLUSIONS, NOT OF THE ADMISSIONS ────────────────────
+  // It is the only fair reading of this block, and the flattering version — « the added terms are
+  // safe » — would be false. None of the twenty-six admitted terms has a homograph in the register
+  // of the guard voice, because those that had one were SET ASIDE AT THE GATE. The second test
+  // demonstrates it in the negative rather than supposing it: it replays the exclusions and counts
+  // what they hold back. Without it, the green of the first test would be an over-citable guarantee.
 
-  it('le vocabulaire EN admis ne coûte AUCUN tort, et le FR ne bouge pas', () => {
-    // `en_homograph_guard` est scellée non-porteuse : tout constat y est un tort. Elle en avait UN
-    // avant ce lot (une définition de mots croisés), elle en a toujours UN.
+  it('the admitted EN vocabulary costs NO wrong, and the FR does not move', () => {
+    // `en_homograph_guard` is sealed non-bearing: any finding there is a wrong. It had ONE before
+    // this batch (a crossword definition), it still has ONE.
     expect(stage('en_homograph_guard')).toBe('indirect');
     expect(evidence('en_homograph_guard')).toBe(1);
 
-    // Les quatre voix françaises sont strictement inchangées — le bloc EN ne touche pas le FR.
+    // The four French voices are strictly unchanged — the EN block does not touch the FR.
     expect(stage('fr_lived_ordinary')).toBe('explicit');
     expect(evidence('fr_lived_ordinary')).toBe(2);
     expect(stage('fr_ally_close')).toBe('indirect');
@@ -640,26 +634,26 @@ describe('banc sexuality — LE VOCABULAIRE EN, et par quel chemin son zéro de 
     expect(evidence('fr_nonbinary_lived')).toBe(2);
   });
 
-  it("CE QUE LE LOT NE RÉPARE PAS — l'anglophone reste au constat LARGE", () => {
-    // LE RÉSULTAT À CITER À LA PLACE DU VERT CI-DESSUS, et il ne bouge pas d'un cran.
+  it('WHAT THE BATCH DOES NOT REPAIR — the anglophone stays at the BROAD finding', () => {
+    // THE RESULT TO CITE INSTEAD OF THE GREEN ABOVE, and it does not move a notch.
     //
-    // Le défaut nommé par ce banc — un homme qui écrit son orientation en toutes lettres reçoit un
-    // constat LARGE là où une francophone qui écrit l'équivalent reçoit un constat NOMMÉ — vit à la
-    // COPULE. Aucun terme d'un tier indirect ne l'atteint, et ce lot en ajoute vingt-six sans y
-    // toucher : il gagne UNE preuve, il ne change pas d'étage.
+    // The defect named by this bench — a man who writes his orientation in full receives a BROAD
+    // finding where a francophone who writes the equivalent receives a NAMED finding — lives at the
+    // COPULA. No term of an indirect tier reaches it, and this batch adds twenty-six without
+    // touching it: it gains ONE piece of evidence, it does not change storey.
     expect(stage('en_lived_plain')).toBe('indirect');
-    expect(evidence('en_lived_plain')).toBe(5); // 4 avant le lot
+    expect(evidence('en_lived_plain')).toBe(5); // 4 before the batch
     expect(runOn(['i am gay'])).toBe('sexuality[indirect]');
-    expect(runOn(['i am a lesbian'])).toBe('sexuality[indirect]'); // rendait RIEN avant le lot
+    expect(runOn(['i am a lesbian'])).toBe('sexuality[indirect]'); // returned RIEN before the batch
   });
 
-  it('LES EXCLUSIONS SONT PORTANTES — la preuve en négatif du zéro ci-dessus', () => {
-    // Le cœur du bloc, et il a fallu s'y reprendre à deux fois — la première version est consignée
-    // plus bas, parce que son échec est le motif même de ce fichier.
+  it('THE EXCLUSIONS ARE LOAD-BEARING — the negative proof of the zero above', () => {
+    // The heart of the block, and it took two goes — the first version is recorded further down,
+    // because its failure is the very motive of this file.
     //
-    // Ce qu'il faut mesurer : ce que les termes ÉCARTÉS auraient coûté S'ILS AVAIENT ÉTÉ ADMIS. Cela
-    // demande de faire tourner le détecteur sur un lexique MUTÉ — le terme réellement placé au tier
-    // où il aurait vécu. Sans la mutation, on ne mesure rien du tout.
+    // What must be measured: what the SET-ASIDE terms would have cost IF THEY HAD BEEN ADMITTED.
+    // That demands running the detector on a MUTATED lexicon — the term actually placed at the tier
+    // where it would have lived. Without the mutation, nothing at all is measured.
     const avecTerme = (terme: string) => {
       const muté: TopicalLexicon = {
         ...SEXUALITY_LEXICON,
@@ -670,66 +664,66 @@ describe('banc sexuality — LE VOCABULAIRE EN, et par quel chemin son zéro de 
       return detectLabels(items, lex).find((d) => d.label === 'sexuality')?.items.length ?? 0;
     };
 
-    // La voix garde porte UN tort aujourd'hui. Chaque exclusion se justifie par ce qu'elle évite.
+    // The guard voice carries ONE wrong today. Each exclusion is justified by what it avoids.
     expect(evidence('en_homograph_guard')).toBe(1);
-    expect(avecTerme('straight')).toBe(4); // menuiserie, scie, sang-froid — +3
+    expect(avecTerme('straight')).toBe(4); // carpentry, saw, composure — +3
     expect(avecTerme('out')).toBeGreaterThan(1); // « came out of retirement », « come out of a slump »
 
-    // LA CONTRE-ÉPREUVE, sans laquelle les deux lignes ci-dessus mesureraient seulement « ajouter un
-    // mot ajoute des hits » : deux termes ADMIS, passés par la même mutation, ne coûtent RIEN.
-    // C'est ce qui distingue « ces exclusions portent » de « toute exclusion porterait ».
+    // THE COUNTER-PROOF, without which the two lines above would only measure « adding a word adds
+    // hits »: two ADMITTED terms, passed through the same mutation, cost NOTHING.
+    // It is what distinguishes « these exclusions are load-bearing » from « any exclusion would be ».
     expect(avecTerme('deadname')).toBe(1);
     expect(avecTerme('genderqueer')).toBe(1);
   });
 
-  // ── LA PREMIÈRE VERSION DE L'ASSERTION CI-DESSUS ÉTAIT VIDE, et elle est consignée plutôt
-  //    qu'effacée ────────────────────────────────────────────────────────────────────────────────
-  // Elle n'appliquait aucune mutation : elle ajoutait le terme exclu comme un ITEM DE TEXTE
-  // supplémentaire (`runOn([item, 'straight'])`) et comparait le résultat. Or un terme exclu n'est
-  // dans aucun lexique — l'ajouter au texte ne pouvait rien changer, par construction. L'assertion
-  // rendait 0 pour `straight` comme pour `deadname`, et j'ai d'abord lu ce 0 comme un défaut de la
-  // mesure du lot.
+  // ── THE FIRST VERSION OF THE ASSERTION ABOVE WAS EMPTY, and it is recorded rather
+  //    than erased ─────────────────────────────────────────────────────────────────────────────────
+  // It applied no mutation: it added the excluded term as an extra TEXT ITEM
+  // (`runOn([item, 'straight'])`) and compared the result. But an excluded term is in no lexicon —
+  // adding it to the text could change nothing, by construction. The assertion returned 0 for
+  // `straight` as for `deadname`, and I first read that 0 as a defect in the batch's measurement.
   //
-  // C'est le cas d'école de CLAUDE.md commis DANS le test écrit pour prouver qu'une exclusion porte :
-  // une assertion négative vérifie ce qu'elle ATTEINT, pas ce qu'elle affirme. Elle n'a été trouvée
-  // que parce qu'elle a rougi — si `straight` avait par hasard matché quelque chose, elle serait
-  // passée au vert en ne mesurant toujours rien.
+  // It is the textbook case of CLAUDE.md committed IN the test written to prove an exclusion is
+  // load-bearing: a negative assertion verifies what it REACHES, not what it affirms. It was found
+  // only because it went red — if `straight` had by chance matched something, it would have gone
+  // green while still measuring nothing.
 });
 
-describe('banc sexuality — « TRANSITION », et le constat NOMMÉ sur une phrase de carrière', () => {
-  // ── CE QUE CE BLOC FIGE, ET IL N'A PAS ÉTÉ TROUVÉ PAR LES SIX VOIX ──────────────────────────────
-  // Trouvé par une sonde hors-corpus, en instruisant la portabilité anglaise du terme : le tier
-  // `explicit` portait « ma transition » NU, et le tier d'auto-déclaration portait « en transition ».
-  // Mesuré, en français LIVRÉ :
+describe('sexuality bench — « TRANSITION », and the NAMED finding on a career sentence', () => {
+  // ── WHAT THIS BLOCK FREEZES, AND IT WAS NOT FOUND BY THE SIX VOICES ───────────────────────────────
+  // Found by an out-of-corpus probe, while instructing the English portability of the term: the
+  // `explicit` tier carried « ma transition » BARE, and the self-declaration tier carried « en
+  // transition ». Measured, in DELIVERED French:
   //
   //     « ma transition vers le management a pris deux ans »  →  sexuality[explicit]
   //     « je suis en transition professionnelle »             →  sexuality[explicit]
   //
-  // Un constat NOMMÉ — celui qui OUTE, le coût d'erreur le plus élevé du produit — sur une phrase de
-  // reconversion. Aucune des six voix ne pouvait le voir : `fr_nonbinary_lived` est la seule à écrire
-  // le mot, et elle l'écrit au sens du genre. Un banc de personas mesure ce que ses personas écrivent.
+  // A NAMED finding — the one that OUTS, the highest error cost of the product — on a career-change
+  // sentence. None of the six voices could see it: `fr_nonbinary_lived` is the only one to write the
+  // word, and she writes it in the sense of gender. A bench of personas measures what its personas
+  // write.
   //
-  // POURQUOI LE DÉFAUT EXISTAIT, et c'est la partie réutilisable : le POSSESSIF avait été pris pour
-  // la forme PORTÉE qui désambiguïse (ADR-0003, deuxième porte — « seules ses formes portées
-  // entrent »). Il ne l'est pas ici. « ma transition professionnelle » est portée exactement pareil,
-  // et « je suis en transition de carrière » l'est davantage encore. Ce qui sépare une transition de
-  // genre d'une reconversion n'est pas le PORTEUR, c'est le DOMAINE — et la deuxième porte
-  // d'ADR-0003 ne dit pas laquelle des deux choses elle demande.
+  // WHY THE DEFECT EXISTED, and it is the reusable part: the POSSESSIVE had been taken for the
+  // CARRIED form that disambiguates (ADR-0003, second gate — « only its carried forms enter »). It
+  // is not so here. « ma transition professionnelle » is carried exactly the same, and « je suis en
+  // transition de carrière » more so still. What separates a gender transition from a career change
+  // is not the CARRIER, it is the DOMAIN — and the second gate of ADR-0003 does not say which of the
+  // two things it asks for.
   //
-  // ── LA RÉPARATION : DÉMOTION, PAS ÉVICTION ──────────────────────────────────────────────────────
-  // Le terme nu n'est pas retiré. ADR-0003 (*Admettre n'est pas évincer*) l'interdirait — et
-  // l'ablation ne l'aurait de toute façon pas autorisée : retirer « ma transition » ne change RIEN
-  // sur les six voix, mais ce zéro-là mesure que PERSONNE DANS LE CORPUS N'ÉCRIT LA FORME, pas que
-  // le terme ne sert à rien. Une ablation sans porteur ne décide pas d'une éviction.
+  // ── THE REPAIR: DEMOTION, NOT EVICTION ────────────────────────────────────────────────────────────
+  // The bare term is not removed. ADR-0003 (*Admettre n'est pas évincer*) would forbid it — and the
+  // ablation would not have authorized it anyway: removing « ma transition » changes NOTHING on the
+  // six voices, but that zero measures that NO ONE IN THE CORPUS WRITES THE FORM, not that the term
+  // is useless. An ablation without a bearer does not decide an eviction.
   //
-  // Les deux formes nues sont donc descendues en `indirectCore`, et quatre formes QUALIFIÉES PAR LE
-  // DOMAINE sont montées en `explicit`. Coût mesuré : NUL — `fr_nonbinary_lived` garde son étage ET
-  // sa preuve, les cinq autres voix ne bougent pas.
+  // The two bare forms are therefore lowered to `indirectCore`, and four forms QUALIFIED BY THE
+  // DOMAIN are raised to `explicit`. Measured cost: NIL — `fr_nonbinary_lived` keeps its storey AND
+  // its evidence, the five other voices do not move.
 
-  it('LES FORMES NUES NE NOMMENT PLUS, et le tag survit', () => {
-    // AVANT : `sexuality[explicit]` sur les six. Démotion, pas filtrage — le constat reste, parce
-    // que quelqu'un qui écrit « ma transition » sans autre mot parle très probablement de la sienne.
-    // L'effacer serait faux ; le laisser NOMMÉ l'oute sur une phrase de reconversion.
+  it('THE BARE FORMS NO LONGER NAME, and the tag survives', () => {
+    // BEFORE: `sexuality[explicit]` on the six. Demotion, not filtering — the finding stays, because
+    // someone who writes « ma transition » with no other word very probably speaks of their own.
+    // Erasing it would be false; leaving it NAMED outs them on a career-change sentence.
     for (const probe of [
       'ma transition vers le management a pris deux ans',
       'ma transition professionnelle avance bien',
@@ -742,10 +736,10 @@ describe('banc sexuality — « TRANSITION », et le constat NOMMÉ sur une phra
     }
   });
 
-  it("LES FORMES QUALIFIÉES PAR LE DOMAINE nomment, et c'est là que le rappel vit", () => {
-    // La contrepartie de la démotion, et sans elle le lot serait un rétrécissement : une transition
-    // de genre écrite comme telle continue de produire un constat nommé. « mon parcours de
-    // transition » ne rendait RIEN auparavant — un gain, pas seulement un déplacement.
+  it('THE FORMS QUALIFIED BY THE DOMAIN name, and it is there that the recall lives', () => {
+    // The counterpart of the demotion, and without it the batch would be a shrinking: a gender
+    // transition written as such keeps producing a named finding. « mon parcours de transition »
+    // returned NOTHING before — a gain, not merely a displacement.
     for (const probe of [
       'ma transition de genre a commence il y a deux ans',
       'ma transition hormonale se passe bien',
@@ -756,48 +750,47 @@ describe('banc sexuality — « TRANSITION », et le constat NOMMÉ sur une phra
     }
   });
 
-  it('LA VOIX NON BINAIRE NE PAIE RIEN — ni étage, ni preuve', () => {
-    // LE CHIFFRE QUI AUTORISE LA RÉPARATION. Elle écrit « je suis en transition depuis quatre ans »,
-    // et c'était l'un de ses deux porteurs. La démotion aurait pu lui coûter son constat nommé : elle
-    // ne lui coûte rien, parce que son auto-déclaration d'identité le porte indépendamment.
+  it('THE NON-BINARY VOICE PAYS NOTHING — neither storey nor evidence', () => {
+    // THE NUMBER THAT AUTHORIZES THE REPAIR. She writes « je suis en transition depuis quatre ans »,
+    // and it was one of her two bearers. The demotion could have cost her her named finding: it
+    // costs her nothing, because her identity self-declaration carries it independently.
     //
-    // CE QU'IL NE FAUT PAS EN CONCLURE : que la démotion est gratuite pour toute personne trans. Elle
-    // l'est pour CELLE-CI, qui a deux porteurs. Une personne qui écrirait sa transition et jamais son
-    // identité descendrait d'un étage — et le corpus n'en contient aucune, donc ce coût-là n'est pas
-    // mesuré. C'est le cas que la prochaine voix scellée devrait porter.
+    // WHAT MUST NOT BE CONCLUDED FROM IT: that the demotion is free for any trans person. It is free
+    // for THIS ONE, who has two bearers. A person who would write their transition and never their
+    // identity would drop a storey — and the corpus contains none, so that cost is not measured. It
+    // is the case the next sealed voice should carry.
     expect(stage('fr_nonbinary_lived')).toBe('explicit');
     expect(evidence('fr_nonbinary_lived')).toBe(2);
   });
 });
 
-describe('banc sexuality — LES INJURES, et la CORRECTION du chemin que ce banc avait dit', () => {
-  // ── CE BLOC EST UNE CORRECTION, ET LA VERSION FAUSSE EST CITÉE PLUTÔT QU'EFFACÉE ───────────────
-  // Ce banc a d'abord asserté que les injures visant les personnes gays n'étaient « câblées nulle
-  // part », et en a tiré que le zéro observé était une ABSENCE et non un filtre. C'ÉTAIT FAUX, et
-  // la manière dont c'était faux est le sujet de ce bloc.
+describe('sexuality bench — THE SLURS, and the CORRECTION of the path this bench had stated', () => {
+  // ── THIS BLOCK IS A CORRECTION, AND THE FALSE VERSION IS CITED RATHER THAN ERASED ───────────────
+  // This bench first asserted that slurs targeting gay people were « wired nowhere », and concluded
+  // that the observed zero was an ABSENCE and not a filter. IT WAS FALSE, and the way it was false
+  // is the subject of this block.
   //
-  // LES TERMES SONT CÂBLÉS, et depuis longtemps : `conflictual` les porte sur un arbitrage explicite,
-  // avec leurs équivalents anti-croyant à côté. La symétrie que ce banc annonçait rompue est INTACTE.
+  // THE TERMS ARE WIRED, and long since: `conflictual` carries them on an explicit arbitration, with
+  // their anti-believer equivalents alongside. The symmetry this bench announced broken is INTACT.
   //
-  // PAR QUEL CHEMIN LE ZÉRO ARRIVAIT DONC : `conflictual` tague sous une CONJONCTION — une insulte ET
-  // une cible de 2ᵉ personne. Les sondes d'origine étaient des termes NUS. Elles ne mesuraient pas
-  // l'absence du terme, elles mesuraient l'absence de la CIBLE, et les deux causes rendent le même
-  // zéro.
+  // BY WHICH PATH THE ZERO ARRIVED THEN: `conflictual` tags under a CONJUNCTION — an insult AND a
+  // 2nd-person target. The original probes were BARE terms. They did not measure the absence of the
+  // term, they measured the absence of the TARGET, and the two causes return the same zero.
   //
-  // C'EST LE CAS D'ÉCOLE DE CLAUDE.md COMMIS DANS L'ASSERTION ÉCRITE POUR L'ÉVITER. Le test
-  // demandait « par quel chemin ce zéro arrive-t-il », se donnait la question comme titre, et
-  // répondait à côté — une assertion négative vérifie ce qu'elle ATTEINT, pas ce qu'elle affirme.
-  // Il l'a fait sur la conjonction exacte qu'ADR-0003 nomme (*Annoter une couverture accidentelle*),
-  // où une couverture peut être complète d'un côté et nulle de l'autre. La leçon n'a pas manqué de
-  // filet : elle avait le sien, écrit dans le même fichier.
+  // IT IS THE TEXTBOOK CASE OF CLAUDE.md COMMITTED IN THE ASSERTION WRITTEN TO AVOID IT. The test
+  // asked « by which path does this zero arrive », gave itself the question as a title, and answered
+  // beside it — a negative assertion verifies what it REACHES, not what it affirms. It did so on the
+  // exact conjunction ADR-0003 names (*Annoter une couverture accidentelle*), where a coverage can
+  // be complete on one side and nil on the other. The lesson did not lack a net: it had its own,
+  // written in the same file.
   //
-  // CE QUE CE BLOC MESURE DÉSORMAIS : les deux membres de la conjonction, séparément, plus les deux
-  // registres qui ne doivent PAS tagger. Un zéro n'y est plus lisible sans savoir lequel des deux
-  // membres manque.
+  // WHAT THIS BLOCK NOW MEASURES: both members of the conjunction, separately, plus the two
+  // registers that must NOT tag. A zero is no longer legible there without knowing which of the two
+  // members is missing.
 
-  it('NU — les termes seuls ne taguent pas, faute de CIBLE et non faute de câblage', () => {
-    // La sonde d'origine, conservée avec son résultat inchangé — c'est sa LECTURE qui était fausse,
-    // pas son chiffre. L'assertion suivante est ce qui lui donne son sens.
+  it('BARE — the terms alone do not tag, for lack of a TARGET and not for lack of wiring', () => {
+    // The original probe, kept with its result unchanged — it is its READING that was false, not its
+    // number. The following assertion is what gives it its meaning.
     for (const probe of [
       'gouine',
       'une gouine',
@@ -809,44 +802,45 @@ describe('banc sexuality — LES INJURES, et la CORRECTION du chemin que ce banc
     }
   });
 
-  it('AVEC CIBLE — les injures homophobes routent bien vers `conflictual`, et la symétrie tient', () => {
-    // LE CONTRÔLE D'ANTI-VACUITÉ QUI MANQUAIT. Le même terme, la même phrase à une adresse près :
-    // le zéro du dessus vient de la cible absente, et rien d'autre.
+  it('WITH A TARGET — homophobic slurs route correctly toward `conflictual`, and the symmetry holds', () => {
+    // THE ANTI-VACUITY CONTROL THAT WAS MISSING. The same term, the same sentence to one address
+    // away: the zero above comes from the absent target, and nothing else.
     expect(runOn(["t'es qu'une gouine"])).toBe('conflictual[explicit]');
     expect(runOn(["t'es qu'un pede"])).toBe('conflictual[explicit]');
     expect(runOn(['espece de tapette'])).toBe('conflictual[explicit]');
 
-    // ET LA SYMÉTRIE AVEC LE LOT RELIGIEUX EST INTACTE — c'est très précisément ce que la version
-    // fausse de ce bloc annonçait rompu. Les deux frontières se comportent pareil, par le même
-    // mécanisme, au même étage.
+    // AND THE SYMMETRY WITH THE RELIGIOUS BATCH IS INTACT — it is very precisely what the false
+    // version of this block announced broken. The two boundaries behave the same, by the same
+    // mechanism, at the same storey.
     expect(runOn(["t'es qu'une bigote"])).toBe('conflictual[explicit]');
   });
 
-  it("RÉAPPROPRIÉ — l'usage intra-communautaire ne tague pas, et voici par quel chemin", () => {
-    // LE CRITÈRE D'ACCEPTATION DU LOT, et il était DÉJÀ tenu — mais il faut dire par quoi, sans quoi
-    // on recommencerait à lire ce zéro comme une finesse qu'il n'est pas.
+  it('RECLAIMED — intra-community use does not tag, and here is by which path', () => {
+    // THE ACCEPTANCE CRITERION OF THE BATCH, and it was ALREADY held — but it must be said by what,
+    // otherwise we would start again reading this zero as a subtlety it is not.
     //
-    // Ce n'est PAS un filtre d'usage réapproprié : rien dans le produit ne sait qu'un terme a été
-    // repris par celles qu'il visait. C'est la GARDE DE CIBLE qui les sauve — ces phrases ne
-    // s'adressent à personne. La protection est réelle et elle est structurelle, mais elle est
-    // INCIDENTE : elle vaut pour tout énoncé sans adresse, et pas pour la reprise en particulier.
+    // It is NOT a reclaimed-use filter: nothing in the product knows a term has been taken up by
+    // those it targeted. It is the TARGET GUARD that saves them — these sentences address no one.
+    // The protection is real and it is structural, but it is INCIDENTAL: it holds for any utterance
+    // without an address, and not for reclamation in particular.
     expect(
       runOn(['l equipe de foot du dimanche est a moitie gouine et personne ne l a decide']),
     ).toBe('RIEN');
     expect(runOn(['on est trois gouines dans l equipe'])).toBe('RIEN');
     expect(runOn(['je suis une gouine et je vais bien'])).toBe('RIEN');
 
-    // LA LIMITE, MESURÉE ET NON SUPPOSÉE, et elle suit exactement la dette de `conflictual` : une
-    // reprise AFFECTUEUSE qui s'adresse à quelqu'un franchit la garde et produit un constat NOMMÉ.
-    // C'est le défaut déjà mesuré par le banc de ce label — la garde de cible sélectionne l'adresse,
-    // et l'affection adresse. Ce n'est pas propre aux injures homophobes, et ce lot ne le répare pas.
+    // THE LIMIT, MEASURED AND NOT SUPPOSED, and it follows exactly the debt of `conflictual`: an
+    // AFFECTIONATE reclamation that addresses someone crosses the guard and produces a NAMED
+    // finding. It is the defect already measured by this label's bench — the target guard selects
+    // the address, and affection addresses. It is not proper to homophobic slurs, and this batch
+    // does not repair it.
     expect(runOn(["t'es une gouine et je t aime"])).toBe('conflictual[explicit]');
   });
 
-  it("GROUPE — le slur dans l'absolu reste hors de tout label, comme la doctrine le demande", () => {
-    // Frontière posée par l'en-tête de `lexicon/sexuality.ts` : le slur visant un GROUPE dans
-    // l'absolu relève d'un futur label dédié et n'entre nulle part. Vérifié plutôt que supposé —
-    // et ce zéro-ci a bien la cause qu'on lui prête, la garde de cible n'admettant pas de classe.
+  it('GROUP — the slur in the absolute stays outside every label, as doctrine demands', () => {
+    // Boundary set by the header of `lexicon/sexuality.ts`: the slur targeting a GROUP in the
+    // absolute belongs to a future dedicated label and enters nowhere. Verified rather than supposed
+    // — and this zero does have the cause attributed to it, the target guard admitting no class.
     for (const probe of ['les pedes sont partout', 'je deteste les gouines', 'tous des tapettes']) {
       expect(runOn([probe])).toBe('RIEN');
     }

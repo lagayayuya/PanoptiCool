@@ -1,52 +1,52 @@
-// Wording du MOTEUR — LE SÉLECTEUR. Aucune prose ne vit ici.
+// ENGINE wording — THE SELECTOR. No prose lives here.
 //
-// TROIS FICHIERS, UN PÉRIMÈTRE (structure ratifiée par yuya, lot i18n-EN) :
-//   - `wording.fr.ts` — la prose française. ORACLE DE FORME : le type du bundle en est dérivé.
-//   - `wording.en.ts` — la prose anglaise, annotée `WordingBundle`.
-//   - CE FICHIER — la résolution `(locale, clé) → texte`, et rien d'autre.
+// THREE FILES, ONE SCOPE (structure ratified by yuya, i18n-EN batch):
+//   - `wording.fr.ts` — the French prose. SHAPE ORACLE: the bundle type is derived from it.
+//   - `wording.en.ts` — the English prose, annotated `WordingBundle`.
+//   - THIS FILE — the `(locale, key) → text` resolution, and nothing else.
 //
-// L'obligation de CLAUDE.md est qu'on puisse relire d'une traite TOUT ce que la machine ose déduire.
-// Une table entrelacée `{fr, en}` par entrée se relirait deux fois à moitié — le relecteur anglais
-// sauterait une ligne sur deux, et le français qu'il ne lit pas est précisément ce à quoi il devrait
-// comparer. Un fichier par langue garde la propriété qui compte, et la double.
+// CLAUDE.md's obligation is that one can re-read in one pass EVERYTHING the machine dares to deduce.
+// An interleaved `{fr, en}` table per entry would be re-read twice at half — the English reviewer
+// would skip every other line, and the French they do not read is precisely what they should be
+// comparing against. One file per language keeps the property that matters, and doubles it.
 //
-// ─── LA PARITÉ EST TENUE PAR LE COMPILATEUR, DANS LES DEUX SENS ─────────────────────────────────
-// `WordingBundle = typeof FR` ; `wording.en.ts` s'en annote. Une entrée ajoutée en français et
-// oubliée en anglais ne compile pas ; une clé anglaise qui n'existe pas en français non plus.
-// C'est ce qui rend ce lot sûr à mener pendant que le lexique bouge ailleurs : une lecture ratifiée
-// dans trois semaines NE PEUT PAS partir non traduite.
+// ─── PARITY IS HELD BY THE COMPILER, IN BOTH DIRECTIONS ─────────────────────────────────────────
+// `WordingBundle = typeof FR`; `wording.en.ts` annotates itself with it. An entry added in French
+// and forgotten in English does not compile; nor does an English key that does not exist in French.
+// This is what makes this batch safe to run while the lexicon moves elsewhere: a reading ratified
+// three weeks from now CANNOT ship untranslated.
 //
-// ⚠ LA CONDITION QUI TIENT CETTE GARANTIE NE SE VOIT PAS À LA LECTURE. Elle tient au fait que les
-// tables de `wording.fr.ts` sont des LITTÉRAUX NON ANNOTÉS. Les annoter
-// `Readonly<Record<string, string>>` — le réflexe naturel, et ce que faisait l'ex-fichier
-// monolingue — efface les clés du type : une table anglaise VIDE compilerait alors sans une erreur
-// (mesuré). `wording-parity.test.ts` épingle la garantie pour qu'elle ne puisse pas tomber en
-// silence ; c'est sa raison d'être unique.
+// ⚠ THE CONDITION THAT HOLDS THIS GUARANTEE IS NOT VISIBLE ON READING. It rests on the fact that
+// the tables of `wording.fr.ts` are UNANNOTATED LITERALS. Annotating them
+// `Readonly<Record<string, string>>` — the natural reflex, and what the ex-monolingual file did —
+// erases the keys from the type: an EMPTY English table would then compile without an error
+// (measured). `wording-parity.test.ts` pins the guarantee so it cannot fall silently; that is its
+// sole reason to exist.
 //
-// POURQUOI UN PARAMÈTRE `locale` ET NON UNE LANGUE AMBIANTE. `ui/copy.ts` lit la langue de la page
-// une fois, au chargement du module (`<html lang>`, cf. `i18n/current.ts`). Le moteur NE PEUT PAS :
-// il passe la 2ᵉ passe `tsc -p src/engine/tsconfig.json`, sans DOM, et n'a donc pas de `document` à
-// lire. L'asymétrie entre les deux périmètres est de PRINCIPE, pas de commodité.
+// WHY A `locale` PARAMETER AND NOT AN AMBIENT LANGUAGE. `ui/copy.ts` reads the page's language once,
+// at module load (`<html lang>`, cf. `i18n/current.ts`). The engine CANNOT: it passes the 2nd
+// `tsc -p src/engine/tsconfig.json` pass, without DOM, and so has no `document` to read. The
+// asymmetry between the two scopes is one of PRINCIPLE, not convenience.
 
 import { DEFAULT_LOCALE, type Locale } from '../i18n/locales';
 import type { SensitiveLabel } from './lexicon/types';
 import { EN } from './wording.en';
 import { FR } from './wording.fr';
 
-/** La forme d'un bundle de wording — dérivée du français, qui est l'oracle. */
+/** The shape of a wording bundle — derived from French, which is the oracle. */
 export type WordingBundle = typeof FR;
 
 const BUNDLES: Record<Locale, WordingBundle> = { fr: FR, en: EN };
 
 function bundle(locale: Locale): WordingBundle {
-  // `?? BUNDLES[DEFAULT_LOCALE]` n'est pas de la paranoïa défensive : `Locale` est une union fermée,
-  // mais la langue traverse la frontière du worker en `postMessage`, où le type ne survit pas. Une
-  // langue inconnue rend du français plutôt qu'un plantage — même arbitrage qu'`i18n/current.ts`.
+  // `?? BUNDLES[DEFAULT_LOCALE]` is not defensive paranoia: `Locale` is a closed union, but the
+  // language crosses the worker boundary via `postMessage`, where the type does not survive. An
+  // unknown language returns French rather than a crash — same arbitration as `i18n/current.ts`.
   return BUNDLES[locale] ?? BUNDLES[DEFAULT_LOCALE];
 }
 
-/** Repli VISIBLE d'une clé de lexique non routée — jamais une chaîne vide silencieuse, pour qu'une
- * dérive lexique/wording saute aux yeux plutôt que de rendre un blanc. */
+/** VISIBLE fallback for an unrouted lexicon key — never a silent empty string, so that a
+ * lexicon/wording drift jumps to the eye rather than rendering a blank. */
 export const MISSING_WORDING_PREFIX = '[gabarit manquant : ';
 
 function resolve(table: Readonly<Record<string, string>>, key: string): string {
@@ -54,9 +54,9 @@ function resolve(table: Readonly<Record<string, string>>, key: string): string {
 }
 
 // --- CLAIMS ------------------------------------------------------------------------------------
-// Le claim est la SEULE ligne rendue (PANO-56) : c'est sur lui que porte le garde-fou de doctrine
-// « jamais de verdict sur la personne » (propriété (c) de `wording.test.ts`). Style ÉPURÉ
-// (décision yuya) : un SYNTAGME COURT sans sujet explicite — les comptes vivent dans les tuiles.
+// The claim is the ONLY line rendered (PANO-56): it is the one the doctrine guardrail "never a
+// verdict on the person" bears on (property (c) of `wording.test.ts`). SPARE style (yuya's
+// decision): a SHORT PHRASE with no explicit subject — the counts live in the tiles.
 
 export function opacitySemanticWallClaim(locale: Locale): string {
   return bundle(locale).opacitySemanticWallClaim();
@@ -74,26 +74,26 @@ export function d2InterestClaim(locale: Locale, signalCount: number): string {
   return bundle(locale).d2InterestClaim(signalCount);
 }
 
-// --- RÉSOLVEURS --------------------------------------------------------------------------------
+// --- RESOLVERS ---------------------------------------------------------------------------------
 
-/** Nom court du sujet d'un signal sensible. */
+/** Short name of the topic of a sensitive signal. */
 export function sensitiveTopicName(locale: Locale, label: SensitiveLabel): string {
   return bundle(locale).sensitiveTopicName[label];
 }
 
-/** Texte d'une lecture, depuis la clé portée par le lexique sensible. */
+/** Text of a reading, from the key carried by the sensitive lexicon. */
 export function readingText(locale: Locale, key: string): string {
   return resolve(bundle(locale).readings, key);
 }
 
 /**
- * Les clés de lecture DÉCLARÉES — pour que le filet puisse vérifier l'AUTRE sens de la couverture :
- * qu'aucun texte ratifié ne reste câblé à rien. Expose les clés, jamais les textes.
+ * The DECLARED reading keys — so the net can verify the OTHER direction of coverage: that no
+ * ratified text stays wired to nothing. Exposes the keys, never the texts.
  *
- * Rendues depuis le FRANÇAIS, et c'est correct PARCE QUE la parité est tenue par le compilateur :
- * les deux bundles portent le même jeu de clés par construction, donc couvrir l'un couvre l'autre.
- * Ce raisonnement a un maillon invisible — si la parité tombait, ceci deviendrait faux en silence.
- * C'est exactement ce que `wording-parity.test.ts` épingle.
+ * Returned from FRENCH, and that is correct BECAUSE parity is held by the compiler: both bundles
+ * carry the same set of keys by construction, so covering one covers the other. This reasoning has
+ * an invisible link — if parity fell, this would become false silently. That is exactly what
+ * `wording-parity.test.ts` pins.
  */
 export function readingKeys(): readonly string[] {
   return Object.keys(FR.readings);
@@ -103,39 +103,39 @@ export function hasReading(key: string): boolean {
   return key in FR.readings;
 }
 
-/** Texte du nom d'un thème, depuis la clé portée par le lexique d'intérêt. */
+/** Text of a theme's name, from the key carried by the interest lexicon. */
 export function themeLabelText(locale: Locale, key: string): string {
   return resolve(bundle(locale).themeLabels, key);
 }
 
-/** Clés de libellé routées — pour le test de couverture D2. Voir `readingKeys` sur le FR. */
+/** Routed label keys — for the D2 coverage test. See `readingKeys` on the FR. */
 export function hasThemeLabel(key: string): boolean {
   return key in FR.themeLabels;
 }
 
-/** Texte d'un usage, depuis la clé portée par le lexique d'intérêt. */
+/** Text of a usage, from the key carried by the interest lexicon. */
 export function usageText(locale: Locale, key: string): string {
   return resolve(bundle(locale).usages, key);
 }
 
-/** Clés d'usage routées — pour le test de couverture D2. Voir `readingKeys` sur le FR. */
+/** Routed usage keys — for the D2 coverage test. See `readingKeys` on the FR. */
 export function hasUsage(key: string): boolean {
   return key in FR.usages;
 }
 
-/** Clés d'acteur routées — pour le test de couverture D2. Voir `readingKeys` sur le FR.
+/** Routed actor keys — for the D2 coverage test. See `readingKeys` on the FR.
  *
- * ⚠ EXISTE PARCE QU'UNE ASSERTION MENTAIT. Le filet D2 vérifiait le routage d'un acteur en exigeant
- * `actorLabel(k) !== k` — « un vrai libellé, pas la clé ». En français les deux coïncidaient ; en
- * anglais, `advertiser` se traduit par `advertiser`, et l'assertion tombait sur une table pourtant
- * parfaitement routée. Elle vérifiait donc ce qu'elle ATTEIGNAIT (le texte diffère de la clé), pas
- * ce qu'elle AFFIRMAIT (la clé est routée) — les deux n'ont divergé qu'à la première langue où un
- * mot se traduit par lui-même. */
+ * ⚠ EXISTS BECAUSE AN ASSERTION WAS LYING. The D2 net checked an actor's routing by requiring
+ * `actorLabel(k) !== k` — "a real label, not the key". In French the two coincided; in English,
+ * `advertiser` translates to `advertiser`, and the assertion failed on a table that was nonetheless
+ * perfectly routed. It therefore checked what it REACHED (the text differs from the key), not what
+ * it ASSERTED (the key is routed) — the two only diverged at the first language where a word
+ * translates to itself. */
 export function hasActorLabel(actor: string): boolean {
   return actor in FR.actorLabels;
 }
 
-/** Libellé d'un acteur ; repli sur la clé brute si inconnue (comportement conservé de `actorLabel`). */
+/** An actor's label; falls back to the raw key if unknown (behavior kept from `actorLabel`). */
 export function actorLabel(locale: Locale, actor: string): string {
   const labels: Readonly<Record<string, string>> = bundle(locale).actorLabels;
   return labels[actor] ?? actor;

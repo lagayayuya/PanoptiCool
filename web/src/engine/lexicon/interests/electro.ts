@@ -1,28 +1,28 @@
-// Lexique d'intérêt `electro` (D2, PANO-78 lot 3) — musique électro / DJ.
+// Interest lexicon `electro` (D2, PANO-78 batch 3) — electronic music / DJ.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de l'électro FR : genres, ARTISTES, festivals, matériel, jargon. Entités =
-// signal public générique enrichi par recherche.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR electro: genres, ARTISTS, festivals, gear, jargon. Entities =
+// generic public signal enriched by research.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
 //   · SOLO — « techno », « dj set », « david guetta », « daft punk », « charlotte de witte »,
 //     « tomorrowland », « french touch », « hardstyle », « boiler room », « platines ».
-//   · ANCRÉ — « house » (maison), « trance » (transe), « set », « mix », « drop » (chute), « kick »,
-//     « bass », « acid », « justice » (justice / groupe), « garage » (parking / genre), « dj » : co-occurrence.
-//   · EXCLU — rien de désespéré.
+//   · ANCHORED — « house » (home), « trance » (trance), « set », « mix », « drop » (drop/fall), « kick »,
+//     « bass », « acid », « justice » (justice / band), « garage » (parking / genre), « dj »: co-occurrence.
+//   · EXCLUDED — nothing desperate.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// L'électro anglophone se dit surtout par son ATELIER (production) et ses sous-genres.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Anglophone electro speaks mostly by its WORKSHOP (production) and its sub-genres.
 //   · SOLO — « sidechain », « mixdown », « ableton », « fl studio », « wavetable », « vst »,
 //     « four on the floor », « amen break », « berghain », « warehouse party », « white label »,
-//     sous-genres (« liquid dnb », « uk garage », « speed garage », « breakcore », « minimal techno »,
+//     sub-genres (« liquid dnb », « uk garage », « speed garage », « breakcore », « minimal techno »,
 //     « acid house », « dnb »).
-//   · ANCRÉ — « loop » (la BOUCLE de programmation, sens dominant hors musique ; et le loop pedal de
-//     `guitare`), « lfo » (sigle court), « afters » (générique), « bootleg » (copie pirate),
-//     « residency » (= INTERNAT de médecine) : compagnon requis.
+//   · ANCHORED — « loop » (the programming LOOP, dominant sense outside music; and the loop pedal of
+//     `guitare`), « lfo » (short acronym), « afters » (generic), « bootleg » (pirate copy),
+//     « residency » (= medical RESIDENCY): companion required.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. « french touch »/« daft punk » partagés avec la culture musicale large (assumé).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. « french touch »/« daft punk » shared with broad music culture (assumed).
 
 import type { InterestLexicon } from '../types';
 
@@ -53,7 +53,7 @@ export const ELECTRO_LEXICON: InterestLexicon = {
     'table de mixage',
     'synthe modulaire',
     'edm',
-    // Artistes / genres / festivals / matériel (enrichi)
+    // Artists / genres / festivals / gear (enriched)
     'gesaffelstein',
     'amelie lens',
     'boris brejcha',
@@ -69,7 +69,7 @@ export const ELECTRO_LEXICON: InterestLexicon = {
     'controleur midi',
     'vinyle mix',
     'basse ligne',
-    // Variantes EN (PANO-88) : SOLO univoques (atelier de production / sous-genres / lieux).
+    // EN variants (PANO-88): SOLO univocal (production workshop / sub-genres / venues).
     'sidechain',
     'mixdown',
     'ableton',
@@ -90,32 +90,32 @@ export const ELECTRO_LEXICON: InterestLexicon = {
     'dnb',
   ],
   anchored: [
-    'house', // maison / house music
-    'trance', // transe / genre
-    'set', // ensemble / DJ set
-    'mix', // mélange / mix
-    'drop', // chute / drop
-    'kick', // coup / kick (batterie)
-    'bass', // basse générique
-    'acid', // acide / acid house
-    'justice', // justice / le groupe
-    'garage', // parking / genre garage
-    'dj', // sigle (disc jockey)
-    'cdj', // matériel (court)
-    'minimal', // minimal générique vs genre
-    'hardcore', // intense générique vs genre
-    'techhouse', // (gardé ancré, court)
-    'bpm', // sigle
-    'rave', // rêver (anglais) vs rave party
-    'ambient', // ambiant générique vs genre
-    'b2b', // back to back (DJ) vs sigle (EN)
-    'warm up', // set d'ouverture vs échauffement générique (EN)
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'loop', // boucle de programmation / loop pedal (guitare) (EN)
-    'lfo', // sigle court (EN)
-    'afters', // générique (EN)
-    'bootleg', // copie pirate / coupe de jean (EN)
-    'residency', // = internat de médecine vs résidence de DJ (EN)
+    'house', // home / house music
+    'trance', // trance / genre
+    'set', // set/group / DJ set
+    'mix', // mixture / mix
+    'drop', // fall / drop
+    'kick', // kick / kick (drums)
+    'bass', // generic bass
+    'acid', // acid / acid house
+    'justice', // justice / the band
+    'garage', // parking / garage genre
+    'dj', // acronym (disc jockey)
+    'cdj', // gear (short)
+    'minimal', // generic minimal vs genre
+    'hardcore', // generic intense vs genre
+    'techhouse', // (kept anchored, short)
+    'bpm', // acronym
+    'rave', // to rave (English) vs rave party
+    'ambient', // generic ambient vs genre
+    'b2b', // back to back (DJ) vs acronym (EN)
+    'warm up', // opening set vs generic warm-up (EN)
+    // EN variants (PANO-88): ANCHORED.
+    'loop', // programming loop / loop pedal (guitare) (EN)
+    'lfo', // short acronym (EN)
+    'afters', // generic (EN)
+    'bootleg', // pirate copy / bootleg jeans (EN)
+    'residency', // = medical residency vs DJ residency (EN)
   ],
   selfDeclared: ['dj', 'producteur de musique'],
 };

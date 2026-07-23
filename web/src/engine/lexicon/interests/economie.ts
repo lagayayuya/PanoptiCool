@@ -1,32 +1,32 @@
-// Lexique d'intérêt `economie` (D2, PANO-89 lot 4) — économie (champ savoir).
+// Interest lexicon `economie` (D2, PANO-89 batch 4) — economics (knowledge field).
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de l'économie FR : concepts, théoriciens, indicateurs. Entités = signal public
-// générique enrichi par recherche. Usage SOBRE (édition/edtech).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR economics: concepts, theorists, indicators. Entities = generic public
+// signal enriched by research. SOBER usage (publishing/edtech).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — concepts/théoriciens univoques : « microeconomie », « macroeconomie », « inflation »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal concepts/theorists: « microeconomie », « macroeconomie », « inflation »,
 //     « pib », « keynes », « adam smith », « offre et demande », « recession », « deflation »,
 //     « banque centrale », « produit interieur brut ».
-//   · ANCRÉ — « economie » (« faire des économies »), « marche » (marché / marche), « croissance »,
-//     « monnaie », « offre », « demande », « bourse » (sac / scolarité), « karl marx » (Marx Brothers) : co-occurrence.
-//   · EXCLU — « capitalisme »/« communisme » (idéologies → frôlent `politics`, D1) écartés par prudence.
+//   · ANCHORED — « economie » (« faire des économies »), « marche » (market / step), « croissance »,
+//     « monnaie », « offre », « demande », « bourse » (bag / scholarship), « karl marx » (Marx Brothers): co-occurrence.
+//   · EXCLUDED — « capitalisme »/« communisme » (ideologies → brush `politics`, D1) discarded out of caution.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// L'EN est ici PLUS précis que le FR : il SÉPARE la discipline (« economics ») de la chose et de
-// l'épargne (« economy »), là où « économie » fusionne les trois. On exploite la séparation.
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// EN here is MORE precise than FR: it SEPARATES the discipline (« economics ») from the thing and
+// from saving (« economy »), where « économie » fuses the three. We exploit the separation.
 //   · SOLO — « economics », « microeconomics », « macroeconomics », « gdp », « supply and demand »,
 //     « central bank », « interest rate », « monetary policy », « globalization », « stock market ».
-//   · ANCRÉ — « economy » (« ECONOMY CLASS », « fuel economy », « the economy » — jamais solo),
-//     « growth » (« personal growth », « growth mindset »), « market », « currency » (partagé
-//     `crypto`), « supply », « demand », « proof » : compagnon requis.
-//   · EXCLUS EN — « capitalism », « communism », « socialism », « inequality » : miroir exact de
-//     l'exclusion FR des « -ismes » militants (frôlent `politics`, D1).
+//   · ANCHORED — « economy » (« ECONOMY CLASS », « fuel economy », « the economy » — never solo),
+//     « growth » (« personal growth », « growth mindset »), « market », « currency » (shared
+//     `crypto`), « supply », « demand », « proof »: companion required.
+//   · EN EXCLUDED — « capitalism », « communism », « socialism », « inequality »: exact mirror of
+//     the FR exclusion of militant « -isms » (brush `politics`, D1).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. Champ SAVOIR (théories, concepts, indicateurs), JAMAIS l'ACTUALITÉ ni la POLITIQUE
-// partisane (→ `politics`, D1). Marx figure comme THÉORICIEN de l'économie, jamais comme étiquette
-// idéologique ; les « -ismes » militants sont exclus.
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. KNOWLEDGE field (theories, concepts, indicators), NEVER the NEWS nor partisan
+// POLITICS (→ `politics`, D1). Marx appears as an economic THEORIST, never as an ideological
+// label; the militant « -isms » are excluded.
 
 import type { InterestLexicon } from '../types';
 
@@ -54,7 +54,7 @@ export const ECONOMIE_LEXICON: InterestLexicon = {
     'politique monetaire',
     'mondialisation',
     'karl marx',
-    // Variantes EN (PANO-88) : SOLO — « economics » EST la discipline (l'EN sépare, le FR fusionne).
+    // EN variants (PANO-88): SOLO — « economics » IS the discipline (EN separates, FR fuses).
     'economics',
     'microeconomics',
     'macroeconomics',
@@ -68,20 +68,20 @@ export const ECONOMIE_LEXICON: InterestLexicon = {
   ],
   anchored: [
     'economie', // « faire des économies »
-    'marche', // marché / marche (verbe)
-    'croissance', // croissance générique
-    'monnaie', // monnaie (rendu) / devise
-    'offre', // offre générique
-    'demande', // demande générique
-    'bourse', // sac / scolarité vs bourse (finance)
-    'capital', // partagé sociologie / générique
-    // Variantes EN (PANO-88) : ANCRÉS.
-    'economy', // « economy class » / « fuel economy » / « the economy » — jamais solo (EN)
+    'marche', // market / step (verb)
+    'croissance', // generic growth
+    'monnaie', // change (money) / currency
+    'offre', // generic offer
+    'demande', // generic demand
+    'bourse', // bag / scholarship vs bourse (finance)
+    'capital', // shared sociologie / generic
+    // EN variants (PANO-88): ANCHORED.
+    'economy', // « economy class » / « fuel economy » / « the economy » — never solo (EN)
     'growth', // « personal growth » / « growth mindset » (EN)
-    'market', // marché générique (EN)
-    'currency', // partagé crypto (EN)
-    'supply', // offre générique (EN)
-    'demand', // demande générique (EN)
+    'market', // generic market (EN)
+    'currency', // shared crypto (EN)
+    'supply', // generic supply (EN)
+    'demand', // generic demand (EN)
   ],
   selfDeclared: ['etudiant en economie'],
 };

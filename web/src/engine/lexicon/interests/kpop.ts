@@ -1,22 +1,22 @@
-// Lexique d'intérêt `kpop` (D2, PANO-76 lot 1, réécriture PROFONDE) — pop coréenne + fandom.
+// Interest lexicon `kpop` (D2, PANO-76 batch 1, DEEP rewrite) — Korean pop + fandom.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant de la K-pop FR : genre, groupes emblématiques (entités publiques enrichies par
-// recherche), culture de fandom. À l'aveugle depuis l'usage commun.
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR K-pop: genre, emblematic groups (public entities enriched by
+// research), fandom culture. Blind from common usage.
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « kpop », « korean pop », « blackpink », « stray kids », « enhypen »,
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « kpop », « korean pop », « blackpink », « stray kids », « enhypen »,
 //     « aespa », « newjeans », « nmixx », « ateez », « itzy », « le sserafim », « hallyu »,
 //     « lightstick », « fanchant ».
-//   · ANCRÉ — noms de groupes qui sont des mots courants → RÉCUPÉRÉS par co-occurrence : « twice »
-//     (anglais), « seventeen » (nombre), « ive » (« I've »), « treasure » (anglais), « comeback »,
-//     « bias », « idole », « fandom » : comptent près d'un compagnon kpop.
-//   · EXCLU — « bts » (= diplôme brevet de technicien supérieur), même ancré (co-occurre trop
-//     facilement avec « comeback »/« idole » dans un contexte étudiant ? non — mais le risque
-//     diplôme reste ; décision de prudence, EXCLU).
+//   · ANCHORED — group names that are common words → RECOVERED by co-occurrence: « twice »
+//     (English), « seventeen » (number), « ive » (« I've »), « treasure » (English), « comeback »,
+//     « bias », « idole », « fandom »: count near a kpop companion.
+//   · EXCLUDED — « bts » (= the French BTS diploma), even anchored (does it co-occur too
+//     easily with « comeback »/« idole » in a student context? no — but the diploma
+//     risk remains; caution decision, EXCLUDED).
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. DISTINCT des autres thèmes musique (rap, électro — thèmes séparés).
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. DISTINCT from the other music themes (rap, electro — separate themes).
 
 import type { InterestLexicon } from '../types';
 
@@ -49,7 +49,7 @@ export const KPOP_LEXICON: InterestLexicon = {
     'idole k pop',
     'girl group',
     'boys band coreen',
-    // Agences, groupes & jargon (rétrofit PANO-90) — « bts » reste EXCLU (homonyme du diplôme).
+    // Agencies, groups & jargon (retrofit PANO-90) — « bts » stays EXCLUDED (homonym of the diploma).
     'hybe',
     'jyp',
     'riize',
@@ -60,18 +60,18 @@ export const KPOP_LEXICON: InterestLexicon = {
     'kpop stan',
   ],
   anchored: [
-    'twice', // anglais « twice »
-    'seventeen', // nombre
+    'twice', // English « twice »
+    'seventeen', // number
     'ive', // « I've »
-    'treasure', // anglais « treasure »
-    'comeback', // retour générique
-    'bias', // biais / anglais
-    'idole', // idole générique
-    'fandom', // fandom générique
-    'maknae', // niche mais univoque → ancré par prudence de volume
-    'sm', // agence SM vs sigle / initiales
-    'yg', // agence YG vs initiales
-    'nct', // groupe vs sigle
-    'stan', // fan inconditionnel (EN) vs prénom / Eminem (ancré, PANO-88)
+    'treasure', // English « treasure »
+    'comeback', // generic comeback
+    'bias', // bias / English
+    'idole', // generic idol
+    'fandom', // generic fandom
+    'maknae', // niche but univocal → anchored out of volume caution
+    'sm', // SM agency vs acronym / initials
+    'yg', // YG agency vs initials
+    'nct', // group vs acronym
+    'stan', // diehard fan (EN) vs first name / Eminem (anchored, PANO-88)
   ],
 };

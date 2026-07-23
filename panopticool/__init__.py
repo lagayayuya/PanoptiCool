@@ -1,16 +1,16 @@
-"""PanoptiCool — générateur de fixture d'export TikTok 100 % synthétique (PANO-11).
+"""PanoptiCool — 100% synthetic TikTok export fixture generator (PANO-11).
 
-Voir CLAUDE.md pour le but et l'invariant de privacy, et
-docs/tiktok-export-schema.md pour le contrat de structure (seule source de vérité).
+See CLAUDE.md for the purpose and the privacy invariant, and
+docs/tiktok-export-schema.md for the structure contract (the sole source of truth).
 """
 
 from .generator import build_export, generate, make_populators, write_zip
 from .personas import PERSONAS, Persona
 from .registry import REGISTRY, CATEGORIES, enumerate_sections
 
-# NB : `validate` n'est volontairement pas importé ici pour que
-# `python -m panopticool.validate` ne déclenche pas l'avertissement runpy de
-# double-import. Il reste accessible via `from panopticool.validate import validate`.
+# NB: `validate` is deliberately not imported here so that
+# `python -m panopticool.validate` does not trigger runpy's double-import
+# warning. It remains reachable via `from panopticool.validate import validate`.
 
 __all__ = [
     "build_export",

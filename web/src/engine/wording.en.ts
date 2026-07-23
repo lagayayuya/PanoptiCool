@@ -1,32 +1,32 @@
-// Wording EN — la prose du MOTEUR, en anglais. Périmètre ratifiable n°1, moitié anglaise.
+// EN wording — the ENGINE's prose, in English. Ratifiable scope #1, English half.
 //
 // ┌──────────────────────────────────────────────────────────────────────────────────────────┐
-// │ TRADUCTION PROVISOIRE — À RELIRE PAR yuya, ligne à ligne, comme la moitié française.       │
-// │ Les propriétés de cadrage sont tenues par `wording.test.ts` ; le TON ne l'est pas.         │
+// │ PROVISIONAL TRANSLATION — TO BE REVIEWED BY yuya, line by line, like the French half.      │
+// │ The framing properties are held by `wording.test.ts`; the TONE is not.                     │
 // └──────────────────────────────────────────────────────────────────────────────────────────┘
 //
-// LA FORME EST TENUE PAR `wording.fr.ts`. Ce fichier s'annote `WordingBundle` (= `typeof FR`) :
-// une entrée oubliée, une clé en trop ou une signature qui diverge sont des erreurs de COMPILATION.
-// Ce qu'aucun compilateur ne voit : qu'une entrée soit réellement TRADUITE. Recopier le français ici
-// passerait tous les filets — cette moitié-là est une relecture humaine, et elle n'en a pas d'autre.
+// THE SHAPE IS HELD BY `wording.fr.ts`. This file annotates itself `WordingBundle` (= `typeof FR`):
+// a forgotten entry, an extra key, or a diverging signature are COMPILE errors. What no compiler
+// sees: whether an entry is actually TRANSLATED. Copying the French here would pass every net —
+// this half is a human review, and it has no other.
 //
-// ─── LE REGISTRE EST DE LA DOCTRINE, PAS DU STYLE ───────────────────────────────────────────────
-// ADR-0003 (*Le cadrage*) : le moteur montre ce qu'une plateforme POURRAIT déduire, et ne rend
-// jamais de verdict. Le français est non assertif à dessein, et l'anglais dérive vers l'accusatoire
-// avec une facilité qu'il faut nommer :
-//   - on ne traduit pas MOT À MOT, on traduit le SENS. « simple curiosité » devient « curiosity »
-//     et non « simple curiosity » — parce que c'est le meilleur anglais, pas parce que « simple »
-//     serait dangereux ;
-//   - l'ÉVENTAIL doit rester un éventail. Les trois lectures d'un même axe se pèsent l'une l'autre :
-//     si l'une prend du poids en anglais, `equal` cesse d'être `equal` et l'outil CHIFFRE sans le
-//     dire, ce qu'ADR-0003 (*L'incertitude*) interdit — `ranked` ordonne, il ne chiffre pas.
+// ─── THE REGISTER IS DOCTRINE, NOT STYLE ────────────────────────────────────────────────────────
+// ADR-0003 (*The framing*): the engine shows what a platform COULD deduce, and never renders a
+// verdict. The French is non-assertive on purpose, and English drifts toward the accusatory with an
+// ease that must be named:
+//   - we do not translate WORD FOR WORD, we translate the MEANING. "simple curiosité" becomes
+//     "curiosity" and not "simple curiosity" — because it is the best English, not because "simple"
+//     would be dangerous;
+//   - the FAN must stay a fan. The three readings of a single axis weigh against one another: if one
+//     gains weight in English, `equal` stops being `equal` and the tool QUANTIFIES without saying
+//     so, which ADR-0003 (*The uncertainty*) forbids — `ranked` orders, it does not quantify.
 //
-// ORTHOGRAPHE : américaine (`OG_LOCALE.en = 'en_US'`) — « analyze », « maximize », « unfavorable ».
+// SPELLING: American (`OG_LOCALE.en = 'en_US'`) — "analyze", "maximize", "unfavorable".
 //
-// TROIS CHOIX N'ÉTAIENT PAS DES TRADUCTIONS MAIS DES DÉCISIONS ÉDITORIALES — `Football`,
-// `Engagement`, `Conflictuel`. Tous trois RATIFIÉS par yuya ; le raisonnement est consigné à
-// l'entrée concernée, parce qu'une décision qui ne dit pas sa raison se re-tranche à chaque
-// relecture, et parfois dans l'autre sens.
+// THREE CHOICES WERE NOT TRANSLATIONS BUT EDITORIAL DECISIONS — `Football`, `Engagement`,
+// `Conflictuel`. All three RATIFIED by yuya; the reasoning is recorded at the entry concerned,
+// because a decision that does not state its reason gets re-settled at every review, and sometimes
+// the other way.
 
 import type { WordingBundle } from './wording';
 
@@ -37,23 +37,23 @@ export const EN: WordingBundle = {
   opacitySemanticWallExplainer: (): string =>
     `The export only makes the tip of the iceberg visible. The rest is available to TikTok and its partners alone.`,
 
-  // Le claim porte le CRITÈRE d'admission de `conflictual` (propos ÉMIS, VISANT un autre
-  // utilisateur), pas le sujet — c'est ce qui doit survivre à la traduction.
+  // The claim carries the admission CRITERION of `conflictual` (a remark EMITTED, DIRECTED AT
+  // another user), not the topic — that is what must survive the translation.
   //
-  // « aggressive » ET NON « abusive », et ce n'est pas une nuance de force : « abusive » qualifie
-  // la PERSONNE qui écrit (« an abusive user »), là où « aggressive remark » qualifie le PROPOS.
-  // ADR-0003 interdit exactement ce glissement — l'auteur du constat décrit un signal, jamais un
-  // état posé sur quelqu'un. « directed at another user » porte le « visant autrui » ; sans lui, la
-  // phrase couvrirait le juron sans cible (« putain ce bug »), que la doctrine exclut.
+  // "aggressive" AND NOT "abusive", and this is not a nuance of strength: "abusive" qualifies the
+  // PERSON writing ("an abusive user"), whereas "aggressive remark" qualifies the REMARK. ADR-0003
+  // forbids exactly this slide — the author of the finding describes a signal, never a state placed
+  // on someone. "directed at another user" carries the "targeting another"; without it, the
+  // sentence would cover the target-less curse ("damn this bug"), which doctrine excludes.
   d1ConflictualNamedClaim: (): string => `Aggressive remark directed at another user.`,
 
   d2InterestClaim: (signalCount: number): string => {
-    // ⚠ CETTE LIGNE NE PEUT PAS ÊTRE RECOPIÉE DU FRANÇAIS, et c'est le piège le plus facile du lot.
-    // Le français met ZÉRO au singulier (« 0 commentaire »), d'où son `<= 1` ; l'anglais met zéro
-    // au PLURIEL (« 0 comments »). Un `<= 1` traduit tel quel rendrait « 0 comment », faux, et
-    // invisible aux goldens — qui portent des volumes réalistes, donc toujours pluriels.
-    // `Intl.PluralRules` porte la règle par CLDR plutôt que par la mémoire de qui écrit la ligne ;
-    // il n'est pas du DOM, donc il passe la 2ᵉ passe `tsc -p src/engine/tsconfig.json`.
+    // ⚠ THIS LINE CANNOT BE COPIED FROM THE FRENCH, and it is the easiest trap of the batch. French
+    // puts ZERO in the singular ("0 commentaire"), hence its `<= 1`; English puts zero in the PLURAL
+    // ("0 comments"). A `<= 1` translated as-is would return "0 comment", wrong, and invisible to
+    // the goldens — which carry realistic volumes, hence always plural. `Intl.PluralRules` carries
+    // the rule via CLDR rather than via the memory of whoever writes the line; it is not DOM, so it
+    // passes the 2nd `tsc -p src/engine/tsconfig.json` pass.
     const word =
       new Intl.PluralRules('en-US').select(signalCount) === 'one' ? 'comment' : 'comments';
     return `Interest inferred from ${signalCount} ${word} on the same topic.`;
@@ -62,11 +62,11 @@ export const EN: WordingBundle = {
   sensitiveTopicName: {
     mental_health: 'Mental health',
     politics: 'Politics',
-    // RATIFIÉ yuya. « Conflict » et non « Conflictual » : l'adjectif existe mais appartient au
-    // registre savant, et un titre de carte doit se lire sans dictionnaire (objectif
-    // d'accessibilité). « Hostility » et « Aggression » se lisent plus clairement encore, et c'est
-    // exactement pourquoi ils sont écartés : ils ACCUSENT, là où le français est délibérément
-    // doux — la doctrine non verdictive d'ADR-0003 tranche contre la clarté ici.
+    // RATIFIED yuya. "Conflict" and not "Conflictual": the adjective exists but belongs to the
+    // learned register, and a card title must read without a dictionary (accessibility goal).
+    // "Hostility" and "Aggression" read even more clearly, and that is exactly why they are set
+    // aside: they ACCUSE, where the French is deliberately gentle — ADR-0003's non-verdictive
+    // doctrine rules against clarity here.
     conflictual: 'Conflict',
     health_physical: 'Physical health',
     sexuality: 'Sexuality',
@@ -74,21 +74,21 @@ export const EN: WordingBundle = {
   },
 
   readings: {
-    // L'axe « pour qui » : c'est moi · c'est quelqu'un d'autre · ce n'est personne. Les trois se
-    // pèsent, et aucune ne doit sortir plus lourde que les autres.
-    // « personal experience » plutôt que « lived experience » : le second est correct mais porte un
-    // registre militant/thérapeutique qui l'alourdit face à « curiosity ». « curiosity » nu et non
-    // « just curiosity » — meilleur anglais, et le « just » aurait allégé la troisième face au
-    // moment où la première pèse déjà.
+    // The "for whom" axis: it's me · it's someone else · it's no one. The three weigh against one
+    // another, and none must come out heavier than the others.
+    // "personal experience" rather than "lived experience": the latter is correct but carries an
+    // activist/therapeutic register that weighs it down against "curiosity". Bare "curiosity" and
+    // not "just curiosity" — better English, and the "just" would have lightened the third at the
+    // moment the first already weighs.
     'sensitive.mental-health.reading.lived': 'personal experience',
     'sensitive.mental-health.reading.relative': 'concern for someone close',
     'sensitive.mental-health.reading.curiosity': 'curiosity',
-    // `politics` — trois MÉCANISMES, pas trois degrés (cf. la note française).
+    // `politics` — three MECHANISMS, not three degrees (cf. the French note).
     'sensitive.politics.reading.engaged': 'genuine political engagement',
     'sensitive.politics.reading.irony': 'irony or provocation',
-    // « veille » n'a pas de mot anglais : ni « watch » (qui surveille) ni « monitoring » (qui
-    // professionnalise) ne rendent le suivi ordinaire d'un sujet. « staying informed » dit le
-    // mécanisme réel — suivre sans adhérer — au prix d'une syllabe de plus.
+    // "veille" has no English word: neither "watch" (which surveils) nor "monitoring" (which
+    // professionalizes) conveys the ordinary following of a topic. "staying informed" states the
+    // real mechanism — following without endorsing — at the cost of one more syllable.
     'sensitive.politics.reading.watch': 'curiosity / staying informed',
     'sensitive.health-physical.reading.lived': 'personal experience',
     'sensitive.health-physical.reading.relative': 'concern for someone close',
@@ -103,10 +103,10 @@ export const EN: WordingBundle = {
 
   themeLabels: {
     'theme.cuisine.label': 'Cooking',
-    // RATIFIÉ yuya. « engagement » nu est un contresens EXACT ici : sur une plateforme, le mot
-    // désigne l'interaction mesurée (le taux d'engagement), soit l'inverse de l'intention. Mais
-    // « Activism » rétrécit — le français couvre l'implication civique LARGE, pas le militantisme.
-    // « Civic engagement » garde l'ampleur et tue l'ambiguïté.
+    // RATIFIED yuya. Bare "engagement" is an EXACT mistranslation here: on a platform, the word
+    // denotes measured interaction (the engagement rate), i.e. the opposite of intent. But
+    // "Activism" narrows — the French covers BROAD civic involvement, not militancy. "Civic
+    // engagement" keeps the breadth and kills the ambiguity.
     'theme.engagement.label': 'Civic engagement',
     'theme.mental-health.label': 'Mental health',
     'theme.politics.label': 'Politics',
@@ -114,12 +114,12 @@ export const EN: WordingBundle = {
     'theme.gaming.label': 'Gaming',
     'theme.muscu.label': 'Weight training',
     'theme.running.label': 'Running',
-    // RATIFIÉ yuya, et RÉVOCABLE — le raisonnement est consigné pour qu'on puisse le rouvrir.
-    // « Football » en-US désigne le football américain, donc le risque de contresens est réel. Il
-    // est gardé quand même pour deux raisons : le produit est européen par contexte, et surtout LA
-    // PREUVE SE CORRIGE ELLE-MÊME — un lecteur américain qui lit « Football » au-dessus de
-    // commentaires sur la Premier League comprend immédiatement. « Soccer » sonnerait faux partout
-    // ailleurs pour éviter un malentendu que la ligne suivante lève déjà.
+    // RATIFIED yuya, and REVOCABLE — the reasoning is recorded so it can be reopened. "Football" in
+    // en-US means American football, so the risk of mistranslation is real. It is kept anyway for
+    // two reasons: the product is European by context, and above all THE EVIDENCE CORRECTS ITSELF —
+    // an American reader who reads "Football" above comments on the Premier League understands
+    // immediately. "Soccer" would ring false everywhere else, to avoid a misunderstanding the next
+    // line already dispels.
     'theme.football.label': 'Football',
     'theme.ia.label': 'Artificial intelligence',
     'theme.crypto.label': 'Crypto',

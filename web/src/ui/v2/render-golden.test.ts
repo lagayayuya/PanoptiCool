@@ -1,45 +1,45 @@
-// GOLDEN DE RENDU v2 — le filet de la refonte A (audit d'architecture §5).
+// v2 RENDER GOLDEN — the net of rework A (architecture audit §5).
 //
-// POURQUOI CE TEST EXISTE. La refonte A change le schéma PAR CONSTRUCTION (`EngineOutput` →
-// `Analysis`) : aucun diff exact n'est donc possible à la frontière du moteur. Le seul point de
-// mesure qui SURVIT à la refonte est **ce que l'utilisateur voit**. Ce golden rend l'UI v2 de bout
-// en bout (zip → ingestion → règles → rendu) et fige le résultat. La promesse « le rendu v2 ne
-// bouge pas » devient vérifiable par diff, au lieu d'être affirmée.
+// WHY THIS TEST EXISTS. Rework A changes the schema BY CONSTRUCTION (`EngineOutput` →
+// `Analysis`): no exact diff is therefore possible at the engine's border. The only
+// measurement point that SURVIVES the rework is **what the user sees**. This golden renders the v2
+// UI end to end (zip → ingestion → rules → render) and freezes the result. The promise « the v2
+// render does not move » becomes verifiable by diff, instead of merely asserted.
 //
-// CE QU'IL COUVRE, et pourquoi la persona est OBLIGATOIRE : les 3 zips committés de `samples/` ne
-// produisent AUCUN topic D1/D2 — ni sensible, ni intérêt, ni preuve, ni thème (mesuré). Un golden
-// bâti sur eux « prouverait » l'invariance de tout SAUF du cœur que la refonte réécrit. La persona
-// de démo (`demo/synthetic-export.ts`) est donc le cas porteur : elle seule exerce le sensible
-// (mental_health, conflictual), les intérêts (chats, cinema_series), les preuves ancrées, les
-// triggerTerms surlignés et le C5 (« comment:8 » nourrit conflictual ET cinema_series).
+// WHAT IT COVERS, and why the persona is MANDATORY: the 3 committed zips of `samples/` produce
+// NO D1/D2 topic — no sensitive, no interest, no evidence, no theme (measured). A golden
+// built on them « would prove » the invariance of everything EXCEPT the core the rework rewrites.
+// The demo persona (`demo/synthetic-export.ts`) is therefore the bearing case: it alone exercises
+// the sensitive (mental_health, conflictual), the interests (chats, cinema_series), the anchored
+// evidence, the highlighted triggerTerms and the C5 (« comment:8 » feeds conflictual AND cinema_series).
 //
-// TROIS PRÉCAUTIONS, sans quoi le filet serait troué :
-//   1. horloge GELÉE — `activity-rhythm` calcule ses fenêtres glissantes sur `Date.now()` ;
-//   2. déplis FORCÉS OUVERTS — les preuves vivent derrière un `useState(false)` interne ; fermés,
-//      le golden ne verrait ni verbatim, ni terme surligné, ni C5 ;
-//   3. styles RETIRÉS — le CSS n'est pas du comportement, et son volume rendrait le diff illisible.
+// THREE PRECAUTIONS, without which the net would be holed:
+//   1. clock FROZEN — `activity-rhythm` computes its sliding windows on `Date.now()`;
+//   2. disclosures FORCED OPEN — the evidence lives behind an internal `useState(false)`; closed,
+//      the golden would see neither verbatim, nor highlighted term, nor C5;
+//   3. styles REMOVED — CSS is not behavior, and its volume would make the diff unreadable.
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme de preuve déclare sa frontière, sinon il finit sur-cité.
-// Celui-ci a été cité comme s'il couvrait « le rendu » ; il couvre le sous-arbre `ResultsView`, et
-// pas davantage :
-//   - `AiSection` — montée derrière `aiSource !== undefined`, jamais passé ici ;
-//   - `LandingPage`, `AnalysisPage`, `SiteHeader`, `SiteFooter` — aucune de ces vues n'entre dans
-//     `ResultsView`. Elles sont couvertes par `ui-golden.test.ts`, ajouté pour ce trou précis ;
-//   - L'ÉVENTAIL EN MODE `equal`. La persona de démo produit un constat `mental_health` NOMMÉ, donc
-//     un éventail `ranked` : le mode `equal` (constats larges) n'est monté par aucun golden. La
-//     frontière est STRUCTURELLE et mérite d'être lue comme telle — la persona est écrite à
-//     l'aveugle, comme une personne, donc ce qu'elle n'exerce pas n'est le choix de personne, et ce
-//     que personne n'a décidé d'omettre, personne ne pense à l'écrire. Un défaut a vécu là (le mode
-//     `equal` tronquait à deux lectures) ; il est couvert par `fan-readings.test.ts`.
-//   - LE MOBILE, EN ENTIER. `useIsMobile` lit `matchMedia` ; en environnement Node, `window` est
-//     absent, donc il rend `false` — ce golden n'a JAMAIS rendu autre chose que le desktop, alors
-//     que les composants portent des variantes mobiles complètes (`M_*`) ;
-//   - l'état FERMÉ des déplis : la précaution 2 les force tous ouverts. Le rendu replié, celui que
-//     l'utilisateur voit en premier, n'est pas figé ;
-//   - le CSS (précaution 3) : aucune régression de style n'est détectable ici ;
-//   - les formes au SINGULIER. Persona et zips committés portent des volumes réalistes, donc
-//     pluriels : « 1 items » est resté invisible ici jusqu'à ce qu'un test d'appel le montre
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+// CLAUDE.md obligation: a proof mechanism declares its border, otherwise it ends up over-cited.
+// This one was cited as if it covered « the render »; it covers the `ResultsView` subtree, and
+// no more:
+//   - `AiSection` — mounted behind `aiSource !== undefined`, never passed here;
+//   - `LandingPage`, `AnalysisPage`, `SiteHeader`, `SiteFooter` — none of these views enters
+//     `ResultsView`. They are covered by `ui-golden.test.ts`, added for that precise hole;
+//   - THE FAN IN `equal` MODE. The demo persona produces a NAMED `mental_health` finding, hence
+//     a `ranked` fan: the `equal` mode (broad findings) is mounted by no golden. The
+//     border is STRUCTURAL and deserves to be read as such — the persona is written
+//     blind, like a person, so what it does not exercise is no one's choice, and what
+//     no one decided to omit, no one thinks to write down. A defect lived there (the `equal`
+//     mode truncated at two readings); it is covered by `fan-readings.test.ts`.
+//   - THE MOBILE, IN FULL. `useIsMobile` reads `matchMedia`; in a Node environment, `window` is
+//     absent, so it returns `false` — this golden has NEVER rendered anything but the desktop, even
+//     though the components carry complete mobile variants (`M_*`);
+//   - the CLOSED state of the disclosures: precaution 2 forces them all open. The collapsed render,
+//     the one the user sees first, is not frozen;
+//   - the CSS (precaution 3): no style regression is detectable here;
+//   - the SINGULAR forms. Persona and committed zips carry realistic volumes, hence
+//     plurals: « 1 items » stayed invisible here until a calling test showed it
 //     (`ui/copy.test.ts`).
 
 import { readFileSync } from 'node:fs';
@@ -50,7 +50,7 @@ import { buildSyntheticExportZip, buildSyntheticExportZipEn } from '../../demo/s
 import { processExport } from '../../engine/pipeline';
 import { ResultsView } from './ResultsView';
 
-// Précaution 2 : toute bascule booléenne initialisée à `false` (les déplis) est ouverte.
+// Precaution 2: every boolean toggle initialized to `false` (the disclosures) is opened.
 vi.mock('preact/hooks', async (importOriginal) => {
   const actual = await importOriginal<typeof import('preact/hooks')>();
   return {
@@ -63,7 +63,7 @@ vi.mock('preact/hooks', async (importOriginal) => {
 const FIXED_NOW = Date.UTC(2026, 6, 16, 12, 0, 0);
 
 beforeAll(() => {
-  // Précaution 1 : horloge gelée → fenêtres glissantes reproductibles.
+  // Precaution 1: frozen clock → reproducible sliding windows.
   vi.useFakeTimers({ toFake: ['Date'] });
   vi.setSystemTime(FIXED_NOW);
 });
@@ -72,12 +72,12 @@ function readSample(name: string): Uint8Array {
   return new Uint8Array(readFileSync(new URL(`../../../../samples/${name}`, import.meta.url)));
 }
 
-/** Précaution 3 : on garde la structure et le texte, on jette le CSS. Une balise par ligne. */
+/** Precaution 3: we keep the structure and the text, we drop the CSS. One tag per line. */
 function readable(html: string): string {
   return html.replace(/ style="[^"]*"/g, '').replace(/></g, '>\n<');
 }
 
-it('rendu v2 — golden de bout en bout (persona + zips committés)', async () => {
+it('v2 render — end-to-end golden (persona + committed zips)', async () => {
   const cases: { name: string; zip: Uint8Array; demo: boolean }[] = [
     { name: 'persona-fr', zip: buildSyntheticExportZip(undefined, FIXED_NOW), demo: true },
     { name: 'persona-en', zip: buildSyntheticExportZipEn(undefined, FIXED_NOW), demo: true },
@@ -90,12 +90,12 @@ it('rendu v2 — golden de bout en bout (persona + zips committés)', async () =
   for (const c of cases) {
     const res = processExport(c.zip);
     if (!res.ok) {
-      // Un refus EST un comportement (`absent` : clé `Searches` omise → rejet à la validation).
-      // On le fige tel quel plutôt que de le masquer : la refonte ne doit pas le changer non plus.
+      // A refusal IS a behavior (`absent`: `Searches` key omitted → rejected at validation).
+      // We freeze it as is rather than hide it: the rework must not change it either.
       parts.push(`### ${c.name}\nREFUSÉ — ${JSON.stringify(res)}`);
       continue;
     }
-    // biome-ignore lint/suspicious/noExplicitAny: la prop `output` change de type à la refonte A.
+    // biome-ignore lint/suspicious/noExplicitAny: the `output` prop changes type at rework A.
     const view = ResultsView as any;
     parts.push(`### ${c.name}\n${readable(render(h(view, { output: res.output, demo: c.demo })))}`);
   }

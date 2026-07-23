@@ -1,28 +1,28 @@
-// Lexique d'intérêt `chats` (D2, PANO-77 lot 2 · enrichi entités) — chats.
+// Interest lexicon `chats` (D2, PANO-77 batch 2 · entities enriched) — cats.
 //
-// ── Généricité (PANO-70 §3) ────────────────────────────────────────────────────────────────────
-// Vocabulaire courant du chat FR : soin, RACES répandues, comportement. À l'aveugle ; races =
-// entités publiques génériques enrichies par recherche (top races France).
+// ── Genericity (PANO-70 §3) ────────────────────────────────────────────────────────────────────
+// Common vocabulary of FR cats: care, widespread BREEDS, behavior. Blind; breeds =
+// generic public entities enriched by research (top France breeds).
 //
-// ── Méthode recall — tiers ─────────────────────────────────────────────────────────────────────
-//   · SOLO — univoques : « chaton », « miaou », « litiere », « griffoir », « ronronnement » ; races
+// ── Recall method — tiers ──────────────────────────────────────────────────────────────────────
+//   · SOLO — univocal: « chaton », « miaou », « litiere », « griffoir », « ronronnement »; breeds
 //     (« maine coon », « sacre de birmanie », « bengal », « sphynx », « ragdoll », « scottish fold »).
-//   · ANCRÉ — le 50/50 MAJEUR : « chat » (= messagerie en ligne) → co-occurrence ; aussi « matou »,
-//     « griffe », « spa », « persan » (langue), « europeen », « savannah » (prénom) : compagnon requis.
-//   · EXCLU — « minou » (affectif ambigu / vulgaire) → ÉCARTÉ par prudence.
+//   · ANCHORED — the MAJOR 50/50: « chat » (= online chat) → co-occurrence; also « matou »,
+//     « griffe », « spa », « persan » (language), « europeen », « savannah » (first name): companion required.
+//   · EXCLUDED — « minou » (ambiguous affectionate / vulgar) → DISCARDED out of caution.
 //
-// ── Variantes EN (PANO-88) — sondage FP ────────────────────────────────────────────────────────
-// Usage EN réel vérifié par recherche (CatTok / vocabulaire propriétaire).
+// ── EN variants (PANO-88) — FP survey ──────────────────────────────────────────────────────────
+// Real EN usage verified by research (CatTok / owner vocabulary).
 //   · SOLO — « meow », « kitten », « catnip », « litter box », « scratching post », « cat tree »,
-//     « purring », « catio », « cattok » : univoques.
-//   · ANCRÉ — « kitty » (Hello Kitty / cagnotte / vulgaire), « feline » (« feline grace »), « tabby »
-//     (prénom Tabitha), « calico » (TISSU calicot), « zoomies » (partagé chiens/lapins), « paw »
-//     (partagé chiens) : compagnon requis.
-//   · TRAP ASSUMÉ — « kitten » matche « kitten heels » (chaussure, → `mode`) : chevauchement D2×D2
-//     toléré, le classement noie un hit isolé.
+//     « purring », « catio », « cattok »: univocal.
+//   · ANCHORED — « kitty » (Hello Kitty / kitty / vulgar), « feline » (« feline grace »), « tabby »
+//     (first name Tabitha), « calico » (calico FABRIC), « zoomies » (shared dogs/rabbits), « paw »
+//     (shared dogs): companion required.
+//   · ASSUMED TRAP — « kitten » matches « kitten heels » (shoe, → `mode`): D2×D2 overlap
+//     tolerated, the ranking drowns an isolated hit.
 //
-// ── Frontière ──────────────────────────────────────────────────────────────────────────────────
-// Non sensible. « chat » nu n'est JAMAIS solo (messagerie) ; « chat »+`s?` ne matche pas « chatte ».
+// ── Boundary ───────────────────────────────────────────────────────────────────────────────────
+// Not sensitive. Bare « chat » is NEVER solo (chat messaging); « chat »+`s?` does not match « chatte ».
 
 import type { InterestLexicon } from '../types';
 
@@ -35,7 +35,7 @@ export const CHATS_LEXICON: InterestLexicon = {
     { actor: 'platform', usage: { templateId: 'usage.platform.feed-tuning', params: {} } },
   ],
   markers: [
-    // Soin / comportement
+    // Care / behavior
     'chaton',
     'miaou',
     'miaulement',
@@ -47,7 +47,7 @@ export const CHATS_LEXICON: InterestLexicon = {
     'herbe a chat',
     'caisse de transport',
     'chatiere',
-    // Races (univoques)
+    // Breeds (univocal)
     'maine coon',
     'sacre de birmanie',
     'siamois',
@@ -61,7 +61,7 @@ export const CHATS_LEXICON: InterestLexicon = {
     'bleu russe',
     'mau egyptien',
     'felin domestique',
-    // Variantes EN (PANO-88) : SOLO univoques (soin / comportement / communauté).
+    // EN variants (PANO-88): SOLO univocal (care / behavior / community).
     'meow',
     'meowing',
     'kitten',
@@ -74,25 +74,25 @@ export const CHATS_LEXICON: InterestLexicon = {
     'cattok',
   ],
   anchored: [
-    'chat', // = messagerie en ligne (50/50 MAJEUR)
+    'chat', // = online chat (MAJOR 50/50)
     'chats',
-    'matou', // affectif générique
-    'griffe', // signature / griffe de marque
-    'spa', // refuge animalier vs jacuzzi
-    'croquettes', // partagé avec chiens
-    'veterinaire', // partagé avec chiens
-    'persan', // langue / peuple vs race persan
-    'europeen', // européen vs chat européen
-    'savannah', // prénom / ville vs race savannah
-    'abyssin', // peuple vs race abyssin
-    'angora', // laine vs chat angora
-    // Variantes EN (PANO-88) : ANCRÉS — le court EN est massivement polysémique.
-    'kitty', // Hello Kitty / cagnotte / vulgaire (EN)
-    'feline', // « feline grace » (adjectif figuré, EN)
-    'tabby', // prénom (Tabitha) vs robe tabby (EN)
-    'calico', // TISSU calicot vs robe calico (EN)
-    'zoomies', // partagé chiens / lapins (EN)
-    'paw', // partagé chiens (EN)
+    'matou', // generic affectionate
+    'griffe', // signature / brand label
+    'spa', // animal shelter vs jacuzzi
+    'croquettes', // shared with dogs
+    'veterinaire', // shared with dogs
+    'persan', // language / people vs persian breed
+    'europeen', // european vs european cat
+    'savannah', // first name / city vs savannah breed
+    'abyssin', // people vs abyssinian breed
+    'angora', // wool vs angora cat
+    // EN variants (PANO-88): ANCHORED — the short EN word is massively polysemous.
+    'kitty', // Hello Kitty / kitty / vulgar (EN)
+    'feline', // « feline grace » (figurative adjective, EN)
+    'tabby', // first name (Tabitha) vs tabby coat (EN)
+    'calico', // calico FABRIC vs calico coat (EN)
+    'zoomies', // shared dogs / rabbits (EN)
+    'paw', // shared dogs (EN)
   ],
   selfDeclared: ['proprietaire de chat', 'cat mom'],
 };
