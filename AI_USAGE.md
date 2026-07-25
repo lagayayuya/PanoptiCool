@@ -12,8 +12,7 @@ answer for).
 **This project was built by exploring.** The real structure of the exports, the ethical line of what
 a tool dares to assert, the technical feasibility, accessibility to as many people as possible, the
 overall vision — each of these axes sharpened as I went, not before starting. That's why some
-entries in this journal contradict older ones: these aren't errors quietly corrected, they're the
-stages of an exploration that converged. As the first public version approached, I made the choice to
+entries in this journal contradict older ones. As the first public version approached, I made the choice to
 **start again on a cleaner base** — the decisions brought back to what holds, the engine brought back
 to what it really returns — so this v1 would be as accessible as possible. The journal keeps the
 trace of the path; the ADRs, for their part, present only the destination.
@@ -31,6 +30,14 @@ reread critically and remains my responsibility. The raw transcripts are not pub
 ---
 
 ## Chronology
+
+### 2026-07-23 → 07-25 — Translating the repo's French prose to English
+- **Surface:** Claude Code
+- **Default mode:** augmentation → automation
+- **Done:** Two mockups, desktop and mobile, became a real roadmap page in both languages, reachable from the site bar everywhere. Three guardrails came with it: a test pairing each status with its prose in both languages, since the compiler cannot do it; two new reference renders; and the list of arrays under parity watch updated deliberately rather than by reflex.
+
+  Then the repo's French prose was translated to English: the documents and decision records, the comments and docstrings, the doctrine headers of the wording and copy files, the test names. What stayed French stayed French on purpose — the ratified product copy, the detection lexicon, the generated reference renders, the French pages and the legal notice, the validator's own output, and the French examples quoted inside the prose. The work was split so that no two writers could reach the same file, and the one holding the boundary verified rather than translated. Two breakages inherited from interrupted runs, one of which broke a core test file, were found and repaired. The history itself was not rewritten: forcing it would break every reference, every existing clone, the safety tag and the journal's own citations, and would machine-rewrite a ratified record. History stays French; what comes after is English.
+- **Human judgment:** I wrote the page's content and designed it before handing it over to be built and translated, then reworked a number of formulations and validated the result by hand. On the translation, I set the boundary — what is prose and may move, what is ratified copy or measured data and may not — and I refused the history rewrite. I reread the documents myself and corrected what the machine had rendered too literally.
 
 ### 2026-07-21 — Preparing for publication: the triage, the invariant, the recomposition
 - **Surface:** Claude Code

@@ -63,12 +63,13 @@ export const EN: UiCopy = {
     githubLabel: 'GitHub',
     githubAriaLabel: 'View the code on GitHub',
     tocAriaLabel: 'Contents',
+    roadmapLabel: 'Roadmap',
   },
 
   UI_FOOTER: {
     tagline: 'PanoptiCool — your data stays with you.',
     legalLink: 'Legal notice',
-    credits: 'Built by Yuya and Claude (Sonnet 5, Opus 4.8 and Fable 5)',
+    credits: 'Built by Yuya and Claude',
   },
 
   UI_LEARN: {
@@ -223,6 +224,62 @@ export const EN: UiCopy = {
     consentCheckbox: 'I understand what this data is, and I choose to view my analysis.',
     continueButton: 'Continue to the export →',
     laterButton: 'Not now',
+  },
+
+  // The STATUS of each step is not translated — it lives in the component's spine
+  // (`ROADMAP_STEPS`), cf. the French half. What is here is the prose, in the SAME order.
+  //
+  // The dates are written in the American form (`OG_LOCALE.en = 'en_US'`, like the rest of the file):
+  // « 31 juillet 2026 » becomes « July 31, 2026 » and not « 31 July 2026 ».
+  UI_ROADMAP: {
+    kicker: 'roadmap',
+    titleLine1: 'What’s done,',
+    titleLine2: 'what’s coming',
+    lede: 'The plan is to move forward one platform at a time, taking the time to build an analysis that is coherent, accessible and genuinely explanatory for each one.',
+
+    statusDone: 'Done',
+    statusNow: 'In progress',
+    statusNext: 'Planned',
+
+    steps: [
+      {
+        date: 'May 2026',
+        title: 'TikTok analysis, by lexicon and local AI',
+        text: 'Drop your export and see what it reveals: rhythms, interests, sensitive signals. Everything happens in the browser, nothing is sent.',
+      },
+      {
+        date: 'July 2026',
+        title: 'English version',
+        text: 'Full translation of the machinery, the lexicons, the site and the GitHub repository, from French into English.',
+      },
+      {
+        date: 'July 31, 2026',
+        title: 'Instagram analysis',
+        text: 'The Instagram export is far richer than TikTok’s, which calls for an entirely different approach to make that data readable: a map of locations, an analysis of conversations…',
+      },
+      {
+        date: 'upcoming',
+        title: 'Browser extension to delete your own content automatically',
+        text: 'An Instagram export can contain the messages and the media — photos, videos, audio — sent in your conversations, which makes it especially sensitive. What this extension is for: pick what you want to unsend from within PanoptiCool, then let it delete the selected content for you.',
+      },
+      {
+        date: 'upcoming',
+        title: 'Email generator for partial GDPR / CCPA data erasure',
+        text: 'Generating a personalized email from the data you selected in PanoptiCool, plus other recommended categories, to cut down how much the platforms keep about you without having to delete your account.',
+      },
+    ],
+
+    helpKicker: 'want to help?',
+    helpTitle: 'What I won’t have time to do alone',
+    helpLede:
+      'A few examples of where a hand would be precious — this list is neither exhaustive nor ordered by priority.',
+    helpItems: [
+      'Enriching the analysis lexicons, in French as much as in English: suggesting words, phrases, colloquial variants. No technical skill needed.',
+      'Digging through your own export to spot what could still be drawn from it. The TikTok analysis was built from mine, where a lot of fields were empty: I have never posted content and ad personalization is off on my accounts, so whole sections remain unexplored. Don’t send me your export — just tell me what you find in it.',
+      'And more broadly: feedback, a bug, a sentence that rings wrong, a criticism, a piece of advice or an idea.',
+    ],
+    helpGithub: 'Browse the GitHub repository',
+    helpContact: 'Get in touch',
   },
 
   UI_ANALYSE: {

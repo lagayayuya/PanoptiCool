@@ -1,8 +1,9 @@
 // Sticky site bar (« Accueil v2 » / « parcours guidé » mockups + Mobile variants):
-// eye + wordmark, optional contextual badge (« démo · données fictives »), language selector and
-// GitHub link. On MOBILE (« … Mobile » mockups): tightened paddings, touch targets ≥ 44 px,
-// GitHub as an icon only, badge hidden (no room at 390 px — the « démo » info moves into the kicker
-// of the hero, cf. ResultsView), and an optional TABLE OF CONTENTS as horizontal scrollable chips under the
+// eye + wordmark, optional contextual badge (« démo · données fictives »), roadmap link, language
+// selector and GitHub link. On MOBILE (« … Mobile » mockups): tightened paddings, touch targets
+// ≥ 44 px, roadmap and GitHub as icons only, badge hidden (no room at 390 px — the « démo » info
+// moves into the kicker of the hero, cf. ResultsView; the roadmap page says the same thing in its
+// own kicker), and an optional TABLE OF CONTENTS as horizontal scrollable chips under the
 // bar (the journey has no sidebar on mobile).
 //
 // THE LANGUAGE SELECTOR IS ALWAYS VISIBLE, including when a single language is published.
@@ -26,6 +27,10 @@ import { useIsMobile } from './useIsMobile';
 
 const GITHUB_URL = UI_BRAND.githubUrl;
 
+/** The roadmap page, reachable from every page of the site. Path WITHOUT language — `localeHref`
+ * prefixes it. It is the same slug in both languages, like `/analyse` and `/mentions-legales`. */
+const ROADMAP_PATH = '/feuille-de-route';
+
 /** Mobile table-of-contents entry (chips under the bar). `muted`: section unavailable on mobile
  * (local AI) — dotted chip, dimmed text, but the link stays (the callout explains why). */
 export interface TocChip {
@@ -39,6 +44,28 @@ function GitHubIcon({ size }: { size: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
       <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  );
+}
+
+/** Roadmap glyph: the timeline of the page it opens — a rail, three stations, the last one hollow. */
+function RoadmapIcon({ size }: { size: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      aria-hidden="true"
+    >
+      <path d="M4 2.5v11" />
+      <circle cx="4" cy="3.5" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="4" cy="8" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="4" cy="12.5" r="1.4" />
+      <path d="M7.5 3.5h6M7.5 8h4.5M7.5 12.5h5" />
     </svg>
   );
 }
@@ -98,6 +125,14 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
             {UI_HEADER.wordmark}
           </a>
           <span style={{ flex: 1 }} />
+          <a
+            href={localeHref(ROADMAP_PATH)}
+            aria-label={UI_HEADER.roadmapLabel}
+            class="hv-cy"
+            style={M_ICON_LINK}
+          >
+            <RoadmapIcon size={17} />
+          </a>
           {langGroup}
           <a
             href={GITHUB_URL}
@@ -105,7 +140,7 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
             rel="noreferrer"
             aria-label={UI_HEADER.githubAriaLabel}
             class="hv-cy"
-            style={M_GH_LINK}
+            style={M_ICON_LINK}
           >
             <GitHubIcon size={17} />
           </a>
@@ -136,6 +171,11 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
       </a>
       {badge !== undefined && <span style={BADGE}>{badge}</span>}
       <span style={{ flex: 1 }} />
+      {/* NO ICON on desktop (yuya's decision): the label says it, and the glyph next to the
+          framed GitHub button made the bar's right side read as three competing controls. */}
+      <a href={localeHref(ROADMAP_PATH)} class="hv-cy" style={NAV_LINK}>
+        {UI_HEADER.roadmapLabel}
+      </a>
       {langGroup}
       <a href={GITHUB_URL} target="_blank" rel="noreferrer" class="hv-cy" style={GH_LINK}>
         <GitHubIcon size={13} />
@@ -222,6 +262,21 @@ const GH_LINK = {
   borderRadius: '7px',
   padding: '9px 13px',
 } as const;
+/** Roadmap link — same shape as the GitHub link, BORDERLESS: two framed buttons side by side would
+ * read as a pair of equals, when one leaves the site and the other does not. */
+const NAV_LINK = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '7px',
+  fontSize: '11px',
+  fontWeight: 500,
+  letterSpacing: '0.04em',
+  color: NAVY.textSecondary,
+  textDecoration: 'none',
+  border: '1px solid transparent',
+  borderRadius: '7px',
+  padding: '9px 11px',
+} as const;
 
 // --- Mobile variant (« … Mobile » mockups: 44 px targets, GitHub icon only) ------------------------
 const M_WRAP = {
@@ -234,10 +289,12 @@ const M_WRAP = {
 } as const;
 // The bar's background covers the full width (M_WRAP), but the CONTENT aligns on the
 // 480 px column of the rest of the page (M_SHELL) — otherwise logo and wordmark float at the edge on tablet.
+// `gap: 8px` and not 10: with the roadmap link added, six items share 358 px at 390 px, and 10 px
+// gaps put the row 5 px over — the wordmark then truncates on the reference width itself. Measured.
 const M_ROW = {
   display: 'flex',
   alignItems: 'center',
-  gap: '10px',
+  gap: '8px',
   padding: '8px 16px',
   maxWidth: '480px',
   margin: '0 auto',
@@ -254,17 +311,27 @@ const M_LOGO_CROP = {
   textDecoration: 'none',
 } as const;
 const M_LOGO_IMG = { width: '105px', height: '59px', display: 'block' } as const;
+// SHRINKABLE, and it is not cosmetic. The mobile bar carries logo, wordmark, two icon links and
+// the language selector: at 390 px it fits, below it no longer does. `minWidth: 0` is what allows a
+// flex item to go under its content width — without it the row OVERFLOWS instead of compressing,
+// and the language selector leaves the screen on a small phone.
 const M_WORDMARK = {
   fontSize: '14px',
   fontWeight: 600,
   letterSpacing: '0.02em',
   color: NAVY.textBright,
   textDecoration: 'none',
+  minWidth: 0,
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 } as const;
+// The 44 px touch target is held by `minHeight`, NOT by the horizontal padding — which is why
+// tightening the latter to make room for the roadmap link costs nothing in accessibility.
 const M_LANG_BASE = {
   ...LANG_BASE,
   fontSize: '12px',
-  padding: '13px 13px',
+  padding: '13px 10px',
   minHeight: '44px',
 } as const;
 const M_LANG_ON = { ...M_LANG_BASE, color: NAVY.bgPage, background: NAVY.accent } as const;
@@ -274,7 +341,9 @@ const M_LANG_OFF = {
   background: 'transparent',
   cursor: 'default',
 } as const;
-const M_GH_LINK = {
+/** Square 44 px target — carries the GitHub link AND the roadmap link, which are icon-only on
+ * mobile: at 390 px the bar has no room for two more labels (their accessible names carry them). */
+const M_ICON_LINK = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

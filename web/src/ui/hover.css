@@ -84,6 +84,38 @@
   border-color: #26325a !important;
 }
 
+/* Roadmap timeline (RoadmapPage) — the only two rules of the site that an inline style cannot
+ * express AT ALL, hover aside: a `@keyframes` and a `prefers-reduced-motion` query. They live here
+ * because this sheet is the single global one, imported by `SiteHead` for every page.
+ *
+ * The pulse marks the step IN PROGRESS. It is decorative — the status is also written, in words,
+ * in the card's tag — so it is dropped outright when the system asks for less motion. */
+.rm-card {
+  transition: border-color 0.15s;
+}
+.rm-card:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
+  border-color: #3b4a86 !important;
+}
+
+@keyframes rm-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(47, 212, 240, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 9px rgba(47, 212, 240, 0);
+  }
+}
+.rm-pulse {
+  animation: rm-pulse 2.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rm-pulse {
+    animation: none;
+  }
+}
+
 /* Links in the prose (brew.sh, localhost:8080, section 04 →): the cyan lightening of the
  * mockup (`a:hover`), targeted by class because the global rule would lose against the inline. */
 .hv-a:hover {

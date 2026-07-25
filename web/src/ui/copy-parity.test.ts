@@ -77,6 +77,8 @@ describe('copy — FR/EN parity', () => {
       'UI_LEARN_PANELS.rhythm.columns',
       'UI_RESULTS.summaryActorTakeaways',
       'UI_RESULTS.summaryDataTypes',
+      'UI_ROADMAP.helpItems',
+      'UI_ROADMAP.steps',
     ]);
   });
 

@@ -82,6 +82,7 @@ vi.mock('./useIsMobile', () => ({
 const { AiMobileNotice, AiSection } = await import('./AiSection');
 const { AnalysisPage, errorMessage } = await import('./AnalysisPage');
 const { LandingPage } = await import('./LandingPage');
+const { RoadmapPage } = await import('./RoadmapPage');
 const { SiteFooter } = await import('./SiteFooter');
 const { SiteHeader } = await import('./SiteHeader');
 
@@ -196,6 +197,13 @@ const CASES: {
     seed: (v) => (v === false ? true : v),
     node: () => h(LandingPage, null),
   },
+
+  // `RoadmapPage`: a page with no state — the two variants render everything it says. The rail
+  // colors are dropped by `readable()` (it strips the CSS); what is frozen here is the ORDER of
+  // the steps, their tags and their prose. The alignment of the spine on the prose is
+  // `roadmap.test.ts`'s business.
+  { name: 'roadmap-desktop', mobile: false, seed: (v) => v, node: () => h(RoadmapPage, null) },
+  { name: 'roadmap-mobile', mobile: true, seed: (v) => v, node: () => h(RoadmapPage, null) },
 
   // `AnalysisPage`: the `output` state is already covered by `render-golden` (it is `ResultsView`).
   // What was not covered is the drop zone and the failure message.

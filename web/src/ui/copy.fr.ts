@@ -100,13 +100,17 @@ export const FR = {
     githubLabel: 'GitHub',
     githubAriaLabel: 'Voir le code sur GitHub',
     tocAriaLabel: 'Sommaire',
+    /** Roadmap link — visible label on desktop, ACCESSIBLE NAME of the icon on mobile. A single
+     * entry for the two: the gloss they carried (« — où en est le projet ») was removed from the
+     * bar by yuya, and an accessible name that no longer says more than the label is the label. */
+    roadmapLabel: 'Feuille de route',
   },
 
   // --- Footer (`ui/v2/SiteFooter.tsx`) ----------------------------------------------------------
   UI_FOOTER: {
     tagline: 'PanoptiCool — tes données restent chez toi.',
     legalLink: 'Mentions légales',
-    credits: 'Développé par Yuya et Claude (Sonnet 5, Opus 4.8 et Fable 5)',
+    credits: 'Développé par Yuya et Claude',
   },
 
   // --- « pour comprendre » panels (`ui/v2/LearnPanel.tsx`) --------------------------------------
@@ -280,6 +284,71 @@ export const FR = {
       'J’ai compris la nature de ces données et je choisis de consulter mon analyse.',
     continueButton: 'Continuer vers l’export →',
     laterButton: 'Pas maintenant',
+  },
+
+  // --- 2 bis. ROADMAP · `ui/v2/RoadmapPage.tsx` -------------------------------------------------
+  // The page reached from the site bar. Only the PROSE lives here.
+  //
+  // THE STATUS OF EACH STEP IS NOT IN THIS FILE, and that is deliberate: « terminé / en cours /
+  // prévu » is a fact about the project, identical in every language, and a fact written twice
+  // starts diverging the day one of the two is updated. Its home is the spine `ROADMAP_STEPS`
+  // of the component, which also carries the order. Here, the prose of each step, in the same
+  // order — the two lists are held at the same length by `ui/v2/roadmap.test.ts`, which no type
+  // can do (`typeof` of an array gives `T[]`, not a tuple).
+  //
+  // The tag WORDS, for their part, are prose: they are keyed by status, below.
+  UI_ROADMAP: {
+    kicker: 'feuille de route',
+    // The title is written in TWO LINES because the mockup breaks it there: the break is part of
+    // the balance of the block, not of the sentence. Joined by a space, it reads the same.
+    titleLine1: 'Ce qui est fait,',
+    titleLine2: 'ce qui arrive',
+    lede: 'L’objectif est d’avancer une plateforme à la fois, en prenant le temps de proposer une analyse cohérente, accessible et pédagogique adaptée à chaque plateforme.',
+
+    /** The tag of a step, keyed by its status (the spine names the status, this file names it). */
+    statusDone: 'Terminé',
+    statusNow: 'En cours',
+    statusNext: 'Prévu',
+
+    steps: [
+      {
+        date: 'mai 2026',
+        title: 'Analyse TikTok via lexique et IA locale',
+        text: 'Déposer son export et découvrir ce qu’il révèle : rythmes, centres d’intérêt, signaux sensibles. Tout se passe dans le navigateur, rien n’est envoyé.',
+      },
+      {
+        date: 'juillet 2026',
+        title: 'Version anglaise',
+        text: 'Traduction intégrale de la machinerie, des lexiques, du site et du dépôt GitHub, du français vers l’anglais.',
+      },
+      {
+        date: '31 juillet 2026',
+        title: 'Analyse Instagram',
+        text: 'L’export Instagram est beaucoup plus riche que celui de TikTok, ce qui implique une tout autre logique pour rendre ces données accessibles : carte des localisations, analyse des conversations…',
+      },
+      {
+        date: 'à venir',
+        title: 'Extension de navigateur pour supprimer automatiquement son contenu',
+        text: 'L’export Instagram peut contenir les messages et les médias — photos, vidéos, audios — envoyés dans les discussions, ce qui le rend particulièrement sensible. L’objectif de cette extension : sélectionner depuis PanoptiCool ce que tu veux désenvoyer, puis la laisser supprimer automatiquement le contenu sélectionné.',
+      },
+      {
+        date: 'à venir',
+        title: 'Générateur d’email pour retrait partiel des données RGPD / CCPA',
+        text: 'Génération d’un email personnalisé à partir des données sélectionnées sur PanoptiCool et d’autres catégories recommandées afin de réduire la quantité de données conservées par les plateformes sans avoir à supprimer son compte.',
+      },
+    ],
+
+    helpKicker: "envie d'aider ?",
+    helpTitle: 'Ce que je n’aurai pas le temps de faire seul',
+    helpLede:
+      'Quelques exemples de ce sur quoi un coup de main serait précieux, sans que cette liste soit exhaustive ni classée par priorité.',
+    helpItems: [
+      'Enrichir les lexiques d’analyse, en français comme en anglais : proposer des mots, des expressions, des variantes familières. Aucune compétence technique requise.',
+      'Éplucher ton propre export pour repérer ce qu’on pourrait encore en tirer. L’analyse TikTok a été construite à partir du mien, où beaucoup de champs étaient vides : je n’ai jamais publié de contenu et la personnalisation publicitaire est désactivée sur mes comptes, des sections entières restent donc inexplorées. Ne m’envoie pas ton export, dis-moi juste ce que tu y trouves.',
+      'Et plus largement : un retour, un bug, une formulation qui cloche, une critique, un conseil ou une idée.',
+    ],
+    helpGithub: 'Consulter le dépôt GitHub',
+    helpContact: 'Me contacter',
   },
 
   // --- 3. ANALYSIS · upload, loading, failures (`ui/v2/AnalysisPage.tsx`) ------------------------

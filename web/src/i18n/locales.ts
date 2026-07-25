@@ -80,7 +80,7 @@ export function localePath(locale: Locale, path: string): string {
  * Only what is VISITED and indexed enters here: neither the root (which redirects and canonizes to
  * the default language), nor the redirects of the old URLs.
  */
-export const PAGE_PATHS = ['/', '/analyse', '/mentions-legales'] as const;
+export const PAGE_PATHS = ['/', '/analyse', '/feuille-de-route', '/mentions-legales'] as const;
 
 /** The BCP 47 code expected by `<html lang>` and `hreflang`. */
 export const HTML_LANG: Record<Locale, string> = { fr: 'fr', en: 'en' };
