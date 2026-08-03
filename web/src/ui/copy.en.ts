@@ -318,11 +318,6 @@ export const EN: UiCopy = {
     errorUnreadable:
       'File unreadable or corrupted: check that you selected the .zip of your TikTok export.',
     errorUnexpected: 'This file can’t be analyzed.',
-
-    devPanelLabel: '🧪 temporary — edge case testing',
-    devCaseNormal: 'Normal',
-    devCaseNoDeductions: 'Case: no inferences',
-    devCaseLowData: 'Case: little data',
   },
 
   UI_CARD: {

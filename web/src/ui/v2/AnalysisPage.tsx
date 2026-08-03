@@ -26,74 +26,6 @@ import { SiteFooter } from './SiteFooter';
 import { SiteHeader, type TocChip } from './SiteHeader';
 import { useIsMobile } from './useIsMobile';
 
-// ─────────────────────────────────────────────────────────────────────────────────────────────
-// TEMPORARY — edge-case test panel (requested to validate `NoDeductionCard` and the
-// « peu de données » banner of `AiSection` without having to fabricate a real poor export). TO
-// BE REMOVED once the validation is done: neither the panel nor `EdgeCase` is meant to survive in
-// prod. Touches NO real path (user export) — only the synthetic source.
-//
-// HIDDEN for now (`SHOW_DEV_EDGE_CASE_PANEL = false`) — code kept as is to
-// be able to turn it back on at once by flipping the constant to `true`, without rewriting it.
-// ─────────────────────────────────────────────────────────────────────────────────────────────
-
-const SHOW_DEV_EDGE_CASE_PANEL = false;
-
-type EdgeCase = 'normal' | 'noDeductions' | 'lowData';
-
-/** Number of items (comments + searches) kept in the « peu de données » case — below
- * `LOW_DATA_THRESHOLD` (5, `NoDeductionCard.ts`) to trigger the banner everywhere. */
-const LOW_DATA_ITEM_COUNT = 3;
-
-/** Removes the D1 (sensitive subjects) and D2 (interests) deductions from an `Analysis` — the only
- * reliable way to guarantee « aucune déduction » on the demo fixture, whose text is designed to
- * match several lexicons. The rest (rhythm, volumes, semantic wall) is NOT touched: the case
- * tested is "no deductions", not "no data". TEMPORARY, cf. block above.
- *
- * Batch A1: filtered `insights[]` on two `ruleId` — one had to know the D1/D2 identities to
- * guess which of the insights were deductions. Both fields are named: we empty them. */
-function stripDeductionsForTest(output: Analysis): Analysis {
-  return { ...output, themes: [], signals: [] };
-}
-
-function buildEdgeCaseZip(edgeCase: EdgeCase): Uint8Array {
-  return edgeCase === 'lowData'
-    ? buildDemoExportZip(currentLocale(), LOW_DATA_ITEM_COUNT)
-    : buildDemoExportZip(currentLocale());
-}
-
-function DevEdgeCasePanel({
-  current,
-  onPick,
-}: {
-  current: EdgeCase;
-  onPick: (c: EdgeCase) => void;
-}) {
-  const options: { id: EdgeCase; label: string }[] = [
-    { id: 'normal', label: UI_ANALYSE.devCaseNormal },
-    { id: 'noDeductions', label: UI_ANALYSE.devCaseNoDeductions },
-    { id: 'lowData', label: UI_ANALYSE.devCaseLowData },
-  ];
-  return (
-    <div style={DEV_PANEL_OUTER}>
-      <div style={DEV_PANEL}>
-        <span style={DEV_LABEL}>{UI_ANALYSE.devPanelLabel}</span>
-        <div style={DEV_ROW}>
-          {options.map((o) => (
-            <button
-              key={o.id}
-              type="button"
-              style={o.id === current ? DEV_BTN_ON : DEV_BTN}
-              onClick={() => onPick(o.id)}
-            >
-              {o.label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 type Status =
   | { kind: 'idle'; error?: string }
   | { kind: 'loading' }
@@ -134,8 +66,6 @@ export function AnalysisPage() {
     isDemoUrl() ? { kind: 'loading' } : { kind: 'idle' },
   );
   const [dragOver, setDragOver] = useState(false);
-  // TEMPORARY (test panel above) — edge case currently displayed in demo mode.
-  const [edgeCase, setEdgeCase] = useState<EdgeCase>('normal');
   const isMobile = useIsMobile();
 
   async function analyze(zipBytes: Uint8Array, aiSource: AiSource, demo: boolean): Promise<void> {
@@ -148,32 +78,9 @@ export function AnalysisPage() {
       }
       if (result.stage === 'validate') {
         // Minimal observation net (PANO-63) — never network, never persisted.
-        console.warn('[PanoptiCool] export réel — échec de validation :', result.issues);
+        console.warn('[PanoptiCool] real export — validation failure:', result.issues);
       }
       setStatus({ kind: 'idle', error: errorMessage(result) });
-    } catch {
-      setStatus({ kind: 'idle', error: UI_ANALYSE.errorUnexpected });
-    }
-  }
-
-  /** TEMPORARY — reruns the demo with the variant chosen in the test panel. */
-  async function runDemo(nextEdgeCase: EdgeCase): Promise<void> {
-    setEdgeCase(nextEdgeCase);
-    setStatus({ kind: 'loading' });
-    try {
-      const result = await analyzeExport(buildEdgeCaseZip(nextEdgeCase), currentLocale());
-      if (!result.ok) {
-        setStatus({ kind: 'idle', error: errorMessage(result) });
-        return;
-      }
-      const output =
-        nextEdgeCase === 'noDeductions' ? stripDeductionsForTest(result.output) : result.output;
-      setStatus({
-        kind: 'output',
-        output,
-        aiSource: () => Promise.resolve(buildEdgeCaseZip(nextEdgeCase)),
-        demo: true,
-      });
     } catch {
       setStatus({ kind: 'idle', error: UI_ANALYSE.errorUnexpected });
     }
@@ -231,10 +138,6 @@ export function AnalysisPage() {
 
       {status.kind === 'output' ? (
         <>
-          {/* TEMPORARY — only in demo mode, cf. block at the top of the file. */}
-          {SHOW_DEV_EDGE_CASE_PANEL && status.demo && (
-            <DevEdgeCasePanel current={edgeCase} onPick={(c) => void runDemo(c)} />
-          )}
           <ResultsView output={status.output} aiSource={status.aiSource} demo={status.demo} />
           <div style={FOOTER_WRAP}>
             <SiteFooter />
@@ -443,43 +346,3 @@ const M_PICK_BTN = {
 } as const;
 const M_PICK_ICON = { fontSize: '18px', color: NAVY.accent, lineHeight: 1 } as const;
 const M_PICK_MAIN = { fontSize: '14px', fontWeight: 600, color: NAVY.accentBright } as const;
-
-// --- TEMPORARY edge-case test panel (to be removed after validation) --------------------------------
-const DEV_PANEL_OUTER = {
-  background: 'rgba(232,117,78,.1)',
-  borderBottom: `1px dashed ${NAVY.riskBorder}`,
-} as const;
-const DEV_PANEL = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignItems: 'center',
-  gap: '12px',
-  maxWidth: '1160px',
-  margin: '0 auto',
-  padding: '10px 24px',
-} as const;
-const DEV_LABEL = {
-  fontSize: '10.5px',
-  fontWeight: 600,
-  letterSpacing: '0.04em',
-  color: NAVY.riskLabel,
-  flex: 'none',
-} as const;
-const DEV_ROW = { display: 'flex', gap: '8px', flexWrap: 'wrap' } as const;
-const DEV_BTN = {
-  cursor: 'pointer',
-  fontSize: '11px',
-  fontWeight: 500,
-  fontFamily: 'inherit',
-  color: NAVY.textSecondary,
-  background: 'transparent',
-  border: `1px solid ${NAVY.riskBorder}`,
-  borderRadius: '20px',
-  padding: '6px 12px',
-} as const;
-const DEV_BTN_ON = {
-  ...DEV_BTN,
-  color: NAVY.bgPage,
-  background: NAVY.risk,
-  border: `1px solid ${NAVY.risk}`,
-} as const;

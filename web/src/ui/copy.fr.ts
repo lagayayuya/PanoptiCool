@@ -396,13 +396,6 @@ export const FR = {
     errorUnreadable:
       'Fichier illisible ou corrompu : vérifie que tu as bien sélectionné le .zip de ton export TikTok.',
     errorUnexpected: 'Impossible d’analyser ce fichier.',
-
-    /** TEMPORARY edge-case test panel (hidden outside the demo, cf. `SHOW_DEV_EDGE_CASE_PANEL`).
-     * It lives here like the rest: displayed text is displayed text, even provisional. */
-    devPanelLabel: '🧪 temporaire — test des cas limites',
-    devCaseNormal: 'Normal',
-    devCaseNoDeductions: 'Cas : aucune déduction',
-    devCaseLowData: 'Cas : peu de données',
   },
 
   // --- Deduction cards (`ui/v2/ThemeCardNavy.tsx`) -----------------------------------------------
