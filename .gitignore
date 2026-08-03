@@ -27,7 +27,13 @@ transcripts/
 # Instagram (v2) — private R&D sandbox: contains a real export, under consent.
 # A real export may feed the work, it never enters the repo (invariant, CLAUDE.md).
 # What comes out of it can only be a structure or a statistic — never a value.
-Instagram/
+#
+# ⚠ THE LEADING SLASH IS LOAD-BEARING. Without it the pattern matches a directory of that name at
+# ANY depth — and `core.ignorecase` is true on macOS, so it also matched `web/public/guides/
+# instagram/`. The fourteen screenshots of the Instagram export guide were silently never staged:
+# `git add -A` reported nothing, the page worked locally off the working tree, and production would
+# have served fourteen 404s. Anchored, it means this directory and only this one.
+/Instagram/
 
 # Benchmark runs from old R&D tooling (the WebLLM playground, since removed). Nothing produces them
 # any more, but runs may survive locally: they contain inference output on real data and must never

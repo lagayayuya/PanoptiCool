@@ -12,7 +12,8 @@
 
 import { useState } from 'preact/hooks';
 import { localeHref } from '../../i18n/current';
-import { UI_CONSENT, UI_LANDING } from '../copy';
+import { UI_CONSENT, UI_GUIDE, UI_LANDING } from '../copy';
+import { ExportGuide, type GuideTarget } from './ExportGuide';
 import { EyeLogo } from './EyeLogo';
 import { NAVY } from './palette';
 import { SiteFooter } from './SiteFooter';
@@ -132,6 +133,9 @@ function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: bo
 
 export function LandingPage() {
   const [consentOpen, setConsentOpen] = useState(false);
+  // `null` = closed. The guide opens on its picker from the hero; the platform cards of the v4
+  // home will open it straight on their own steps.
+  const [guideTarget, setGuideTarget] = useState<GuideTarget | null>(null);
   const isMobile = useIsMobile();
 
   return (
@@ -173,6 +177,16 @@ export function LandingPage() {
                 {UI_LANDING.ctaDemo}
               </a>
             </div>
+            {/* Getting the archive is the first obstacle, and the biggest — it belongs next to the
+                call to action, not in a help page nobody opens. */}
+            <button
+              type="button"
+              class="hv-cy"
+              style={GUIDE_LINK}
+              onClick={() => setGuideTarget('pick')}
+            >
+              {UI_GUIDE.openLabel} →
+            </button>
             <div style={isMobile ? M_TRUST_COL : TRUST_ROW}>
               {UI_LANDING.trust.map((t) => (
                 <span key={t} style={isMobile ? M_TRUST_ITEM : TRUST_ITEM}>
@@ -269,6 +283,9 @@ export function LandingPage() {
       </div>
 
       {consentOpen && <ConsentModal onClose={() => setConsentOpen(false)} isMobile={isMobile} />}
+      {guideTarget !== null && (
+        <ExportGuide target={guideTarget} onClose={() => setGuideTarget(null)} />
+      )}
     </div>
   );
 }
@@ -800,4 +817,16 @@ const M_FULL_BTN = {
   minHeight: '50px',
   justifyContent: 'center',
   textAlign: 'center',
+} as const;
+const GUIDE_LINK = {
+  cursor: 'pointer',
+  alignSelf: 'flex-start',
+  fontFamily: 'inherit',
+  fontSize: '11.5px',
+  fontWeight: 500,
+  color: NAVY.textSecondary,
+  background: 'transparent',
+  border: `1px solid ${NAVY.borderChip}`,
+  borderRadius: '8px',
+  padding: '9px 13px',
 } as const;

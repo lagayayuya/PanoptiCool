@@ -47,6 +47,7 @@ export const UI_LEARN = B.UI_LEARN;
 export const UI_ACTIVITY = B.UI_ACTIVITY;
 export const UI_TIME_ESTIMATE = B.UI_TIME_ESTIMATE;
 export const UI_LANDING = B.UI_LANDING;
+export const UI_GUIDE = B.UI_GUIDE;
 export const UI_CONSENT = B.UI_CONSENT;
 export const UI_ROADMAP = B.UI_ROADMAP;
 export const UI_ANALYSE = B.UI_ANALYSE;

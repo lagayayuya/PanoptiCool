@@ -216,6 +216,94 @@ export const EN: UiCopy = {
     whyLink: 'See the demo with made-up data →',
   },
 
+  UI_GUIDE: {
+    openLabel: 'How do I get my data?',
+    pickTitle: 'Which file are you after?',
+    pickLede: 'You ask for it inside the app, in a handful of steps.',
+    close: 'Close',
+    back: 'Back',
+    previous: 'Previous step',
+    next: 'Next step',
+    stepOf: (n: number, total: number) => `Step ${n} of ${total}`,
+    waitDot: 'And then: the wait',
+
+    waitTitle: 'The file arrives in a few days.',
+    waitText:
+      'The platform builds the archive on its side. There is nothing to do until then — but a request made on a Thursday evening is an easy thing to forget.',
+    reminderButton: 'Add a reminder to my calendar',
+    reminderNote: 'Once downloaded, open this file and pick your calendar app.',
+    reminderSummaryTikTok: 'Collect my TikTok export',
+    reminderSummaryInstagram: 'Collect my Instagram export',
+    reminderDescription:
+      'The file should be ready. Grab the .zip from the app, then drop it on PanoptiCool.',
+
+    tiktok: {
+      label: 'TikTok',
+      lede: 'Six steps inside the app. JSON is not the format it offers by default.',
+      steps: [
+        {
+          text: 'Open your profile, then the ☰ menu at the top right.',
+          alt: 'TikTok’s Profile tab, with the menu icon at the top right.',
+        },
+        {
+          text: 'Scroll to the very bottom of the menu, to “Settings and privacy”.',
+          alt: 'TikTok’s side menu, open on the “Settings and privacy” row.',
+        },
+        {
+          text: 'Under the “Account” section, open “Account”.',
+          alt: 'The Settings and privacy screen, showing the Account section.',
+        },
+        {
+          text: 'At the very bottom of the list: “Download your data”.',
+          alt: 'The Account screen, with the “Download your data” row at the bottom.',
+        },
+        {
+          text: 'Pick the JSON format — that is the one PanoptiCool reads — then “Select all”.',
+          alt: 'The format picker open on JSON, with all ten categories ticked.',
+        },
+        {
+          text: 'Submit, then come back a few days later to the “Download data” tab to collect the .zip.',
+          alt: 'The “Download data” tab, showing the pending request.',
+        },
+      ],
+    },
+
+    instagram: {
+      label: 'Instagram',
+      lede: 'Seven steps. Remember to ask for “All time”: by default, Meta only hands over a year.',
+      steps: [
+        {
+          text: 'Open “Settings and activity”, then “Accounts Center” at the very top.',
+          alt: 'Instagram’s Settings and activity screen, with Accounts Center first.',
+        },
+        {
+          text: 'Inside Accounts Center: “Your information and permissions”.',
+          alt: 'The Accounts Center panel, showing the “Your information and permissions” row.',
+        },
+        {
+          text: 'Open “Export your information”.',
+          alt: 'The “Your information and permissions” screen, with “Export your information”.',
+        },
+        {
+          text: 'Tap “Create export”.',
+          alt: 'The Export your information screen, with the “Create export” button.',
+        },
+        {
+          text: 'Choose “Export to device” — not to an external service.',
+          alt: 'The “Choose where to export” screen, with both destinations.',
+        },
+        {
+          text: 'Set the three rows: date range “All time”, format JSON, and lower media quality so the archive stays openable.',
+          alt: 'The options screen, set to All time, JSON and lower quality.',
+        },
+        {
+          text: 'Submit. Meta prepares the file and emails you a link — expect a few days.',
+          alt: 'The Current activity tab, with the request pending.',
+        },
+      ],
+    },
+  },
+
   UI_CONSENT: {
     dialogAriaLabel: 'Before you continue',
     kicker: 'before you continue',

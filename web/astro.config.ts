@@ -1,7 +1,7 @@
 import preact from '@astrojs/preact';
 import { defineConfig } from 'astro/config';
 import { siteZip } from './integrations/site-zip';
-import { DEFAULT_LOCALE, LOCALES } from './src/i18n/locales';
+import { DEFAULT_LOCALE, LOCALES, SITE_ORIGIN } from './src/i18n/locales';
 
 // PanoptiCool — Astro shell + Preact islands (ADR-0002).
 // `output` stays on the "static" default: static build served by Caddy (ADR-0001),
@@ -16,9 +16,11 @@ export default defineConfig({
   // directly, without going through `npm run build` — the zip was then missing on the deployed site.
   integrations: [preact(), siteZip()],
 
-  // The production domain, in ONE place. The absolute URLs required by Open Graph, the canonical,
-  // the hreflang tags and the sitemap all derive from `Astro.site` — none of them rewrites it.
-  site: 'https://panopti.cool',
+  // The production domain, in ONE place — `SITE_ORIGIN`, next to the language lists and imported
+  // here for the same reason. The absolute URLs required by Open Graph, the canonical, the hreflang
+  // tags and the sitemap all derive from `Astro.site`; the ISLANDS, which have no `Astro`, read the
+  // constant directly rather than guess from `location.origin`.
+  site: SITE_ORIGIN,
 
   i18n: {
     locales: [...LOCALES],

@@ -284,6 +284,108 @@ export const FR = {
     whyLink: 'Voir la démo avec des données fictives →',
   },
 
+  // --- Export guide (`ui/v2/ExportGuide.tsx`) ----------------------------------------------------
+  // The step-by-step for asking a platform for your file. It is the first obstacle, and by a wide
+  // margin: the menu is buried, the JSON format is not the default, and the file takes days to
+  // arrive. Everything else in the product is useless to someone who never gets past this.
+  //
+  // ⚠ THE CAPTIONS DESCRIBE THE SCREENSHOTS, WHICH ARE DATED. `public/guides/**` was captured on
+  // 2026-07-31; a platform that moves a menu makes these sentences false while every test stays
+  // green — no net can see that. When a step stops matching, three things move together: the
+  // screenshot, its caption here, and the rectangle framing the control in `ui/v2/ExportGuide.tsx`.
+  //
+  // The number of steps DIFFERS BY PLATFORM (TikTok 6, Instagram 7) and that is not an oversight:
+  // the two flows do not have the same number of screens. The component reads the array's length.
+  UI_GUIDE: {
+    openLabel: 'Comment accéder à mes données',
+    pickTitle: 'Tu veux récupérer quel fichier ?',
+    pickLede: 'La demande se fait dans l’application, en quelques étapes.',
+    close: 'Fermer',
+    back: 'Retour',
+    previous: 'Étape précédente',
+    next: 'Étape suivante',
+    stepOf: (n: number, total: number) => `Étape ${n} sur ${total}`,
+    /** The last dot is NOT a step — it is the slide about the wait. Labelling it « Étape 8 sur 7 »
+     * is what a screen reader announced before this key existed. */
+    waitDot: 'Et après : l’attente',
+
+    waitTitle: 'Le fichier arrive dans quelques jours.',
+    waitText:
+      'La plateforme prépare l’archive de son côté. Tu n’as rien à faire d’ici là — mais on oublie facilement une demande faite un jeudi soir.',
+    reminderButton: 'Ajouter un rappel à mon agenda',
+    reminderNote: 'Une fois téléchargé, ouvre ce fichier et sélectionne ton application d’agenda.',
+    reminderSummaryTikTok: 'Récupérer mon export TikTok',
+    reminderSummaryInstagram: 'Récupérer mon export Instagram',
+    reminderDescription:
+      'Le fichier devrait être prêt. Récupère le .zip dans l’application, puis dépose-le sur PanoptiCool.',
+
+    tiktok: {
+      label: 'TikTok',
+      lede: 'Six étapes dans l’application. Le format JSON n’est pas celui proposé par défaut.',
+      steps: [
+        {
+          text: 'Ouvre ton profil, puis le menu ☰ en haut à droite.',
+          alt: 'L’onglet Profil de TikTok, avec l’icône du menu en haut à droite.',
+        },
+        {
+          text: 'Descends tout en bas du menu, jusqu’à « Paramètres et confidentialité ».',
+          alt: 'Le menu latéral de TikTok, ouvert sur la ligne « Paramètres et confidentialité ».',
+        },
+        {
+          text: 'Dans la section « Compte », ouvre « Compte ».',
+          alt: 'L’écran Paramètres et confidentialité, avec la section Compte.',
+        },
+        {
+          text: 'Tout en bas de la liste : « Télécharger tes données ».',
+          alt: 'L’écran Compte, avec la ligne « Télécharger tes données » en bas.',
+        },
+        {
+          text: 'Choisis le format JSON — c’est celui que PanoptiCool lit — puis « Tout sélectionner ».',
+          alt: 'Le sélecteur de format ouvert sur JSON, et les dix catégories cochées.',
+        },
+        {
+          text: 'Valide, puis reviens quelques jours plus tard dans l’onglet « Télécharger les données » pour récupérer le .zip.',
+          alt: 'L’onglet « Télécharger les données », avec la demande en cours.',
+        },
+      ],
+    },
+
+    instagram: {
+      label: 'Instagram',
+      lede: 'Sept étapes. Pense à demander « Depuis le début » : par défaut, Meta ne donne qu’un an.',
+      steps: [
+        {
+          text: 'Ouvre « Paramètres et activité », puis « Espace Comptes » tout en haut.',
+          alt: 'L’écran Paramètres et activité d’Instagram, avec Espace Comptes en premier.',
+        },
+        {
+          text: 'Dans Espace Comptes : « Vos informations et autorisations ».',
+          alt: 'Le panneau Espace Comptes, avec la ligne « Vos informations et autorisations ».',
+        },
+        {
+          text: 'Ouvre « Exporter vos informations ».',
+          alt: 'L’écran « Vos informations et autorisations », avec « Exporter vos informations ».',
+        },
+        {
+          text: 'Appuie sur « Créer une exportation ».',
+          alt: 'L’écran Exporter vos informations, avec le bouton « Créer une exportation ».',
+        },
+        {
+          text: 'Choisis « Exporter sur mon appareil » — pas vers un service externe.',
+          alt: 'L’écran « Choisir où exporter », avec les deux destinations possibles.',
+        },
+        {
+          text: 'Règle les trois lignes : période « Depuis le début », format JSON, et qualité inférieure pour que l’archive reste ouvrable.',
+          alt: 'L’écran des options, réglé sur Depuis le début, JSON et qualité inférieure.',
+        },
+        {
+          text: 'Valide. Meta prépare le fichier et t’envoie un lien par e-mail — compte quelques jours.',
+          alt: 'L’onglet Activité en cours, avec la demande en attente.',
+        },
+      ],
+    },
+  },
+
   // --- 2 bis. Consent modal (`LandingPage.ConsentModal`) -----------------------------------------
   // The product's front door: it is IT that warns of what one is about to look at. A separate
   // group because it is reread as a block — it is the most sensitive text of the page.

@@ -69,6 +69,11 @@ describe('copy — FR/EN parity', () => {
     expect(Object.keys(arrayLengths(FR)).sort()).toEqual([
       'UI_ACTIVITY.hourMarks',
       'UI_AI_LEARN.columns',
+      // The two guides do NOT have the same number of steps (TikTok 6, Instagram 7): the flows do
+      // not have the same number of screens. What parity requires is FR == EN per platform, which
+      // is what the equality above checks — not that the two platforms agree with each other.
+      'UI_GUIDE.instagram.steps',
+      'UI_GUIDE.tiktok.steps',
       'UI_LANDING.feats',
       'UI_LANDING.steps',
       'UI_LANDING.trust',

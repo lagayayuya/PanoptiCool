@@ -82,6 +82,23 @@ export function localePath(locale: Locale, path: string): string {
  */
 export const PAGE_PATHS = ['/', '/analyse', '/feuille-de-route', '/mentions-legales'] as const;
 
+/**
+ * The site's public origin — ONE home, read by `astro.config.ts` for `site` and therefore by every
+ * absolute URL the build emits (canonical, hreflang, og:url, sitemap).
+ *
+ * It also serves the ISLANDS, and that is why it is a constant rather than `Astro.site`: a
+ * component running in the browser has no `Astro`, and reaching for `location.origin` instead
+ * writes down wherever the page happens to be served from. That is not hypothetical — the export
+ * guide's calendar reminder shipped a `URL:http://localhost:4322/fr/analyse` for exactly that
+ * reason, which is a link to nothing on anyone else's machine.
+ */
+export const SITE_ORIGIN = 'https://panopti.cool';
+
+/** The absolute URL of a page in a language — the island-side counterpart of `localePath`. */
+export function siteUrl(locale: Locale, path: string): string {
+  return `${SITE_ORIGIN}${localePath(locale, path)}`;
+}
+
 /** The BCP 47 code expected by `<html lang>` and `hreflang`. */
 export const HTML_LANG: Record<Locale, string> = { fr: 'fr', en: 'en' };
 

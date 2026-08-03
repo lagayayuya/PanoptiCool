@@ -47,6 +47,13 @@
 //     person, so that what it does not exercise is no one's choice, and what
 //     no one decided to omit, no one thinks to write down. A defect lived exactly there;
 //     it is covered by `fan-readings.test.ts`;
+//   - THE MODALS, BOTH OF THEM. `ConsentModal` and `ExportGuide` render only when their state says
+//     open, and this file seeds no state inside `LandingPage` — so it freezes the BUTTONS that open
+//     them and nothing behind. The export guide is the larger gap: its picker, its six/seven step
+//     slides per platform per language, its wait slide and the whole of `UI_GUIDE` are rendered by
+//     no net at all. What IS held elsewhere is the format of the file its last slide produces
+//     (`ics.test.ts`) and the FR/EN length parity of the two step arrays
+//     (`ui/copy-parity.test.ts`); between those two and the screen, there is nothing;
 //   - THE BEHAVIOR. This is string rendering: no click, no input, no effect. A
 //     button that calls nothing anymore would pass silently;
 //   - THE CSS, removed by `readable()` as in the neighboring golden;
