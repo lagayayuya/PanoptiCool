@@ -130,7 +130,7 @@ function SourceCard({ ev, reuse }: { ev: Evidence; reuse: string | null }) {
     <div style={SRC_CARD}>
       <div style={SRC_HEAD}>
         <span style={SRC_KIND}>{sourceKindLabel(ev.channel)}</span>
-        <span style={{ flex: 1 }} />
+        <span style={HEAD_SPACER} />
         {reuse !== null && <span style={SRC_SHARED}>{UI_CARD.sourceReused}</span>}
       </div>
       <div style={SRC_TEXT}>
@@ -264,7 +264,9 @@ function UsageBlock({ usage }: { usage: readonly ThemeUsageLine[] }) {
   return (
     <div style={USAGE}>
       <div style={USAGE_HEAD}>
-        <span style={{ color: NAVY.risk, fontSize: '11px', lineHeight: 1 }}>▲</span>
+        <span aria-hidden="true" style={{ color: NAVY.risk, fontSize: '15px', lineHeight: 1 }}>
+          ▲
+        </span>
         <span style={USAGE_TITLE}>{UI_CARD.usageTitle}</span>
       </div>
       <div style={USAGE_LIST}>
@@ -332,8 +334,12 @@ export function ThemeCardNavy({
                 construction (§2.1) — the badge lives on `SignalCardNavy`. The ex-`theme.sensitive`
                 was never `true`; the type now says so, rather than a dead condition. */}
           </div>
+          <span style={HEAD_SPACER} />
           <span style={HEAD_META}>
             {UI_CARD.headSources(distinctEvidenceCount(theme.deductions))}
+          </span>
+          <span style={HEAD_CARET} aria-hidden="true">
+            {open ? UI_CARD.caretOpen : UI_CARD.caretClosed}
           </span>
         </div>
       </button>
@@ -385,7 +391,11 @@ export function SignalCardNavy({
             <span style={NAME}>{signal.label}</span>
             {signal.sensitive && <span style={SENSIBLE_TAG}>{UI_CARD.sensitiveTag}</span>}
           </div>
+          <span style={HEAD_SPACER} />
           <span style={HEAD_META}>{UI_CARD.headSources(srcCount)}</span>
+          <span style={HEAD_CARET} aria-hidden="true">
+            {open ? UI_CARD.caretOpen : UI_CARD.caretClosed}
+          </span>
         </div>
       </button>
       {open && (
@@ -397,7 +407,14 @@ export function SignalCardNavy({
   );
 }
 
-// --- Styles (« ThemeCardNavy » mockup) ------------------------------------------------------------
+// --- Styles (« ThemeCardV5 » mockup) --------------------------------------------------------------
+// THE CARD IS WHERE v5 CHANGES THE MOST, and it is the one that needed it: v4 set its labels at
+// 7.5–10.5 px in uppercase with tracking — « LECTURE PRINCIPALE », « RECHERCHE », « RECOUPÉ ». At
+// that size uppercase micro-type reads as decoration, and the reader skips to the quoted sentence
+// without ever learning what frames it. v5 sets the same words in plain 13–15 px sentence case.
+// Nothing was removed; the apparatus simply became readable, which is the whole point of a card
+// whose job is to show WHY a deduction was made.
+//
 // The padding NO LONGER LIVES on the card but on its children (header button + body). Reason: the
 // card has the padding, but the toggle-click is on the BUTTON it contains. A click in the padding
 // ring therefore fell on the `<article>` (without `onClick`), not on the button. The
@@ -406,9 +423,9 @@ export function SignalCardNavy({
 // carrying the padding on the button itself, its REAL box — thus its clickable area — covers the whole
 // width and the whole height of the header, ring included. No more trick.
 const CARD = {
-  background: NAVY.bgThemeCard,
-  border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '11px',
+  background: NAVY.bgCard,
+  border: `1px solid ${NAVY.borderCard}`,
+  borderRadius: '20px',
   display: 'flex',
   flexDirection: 'column',
 } as const;
@@ -421,7 +438,7 @@ const HEAD_BTN = {
   border: 'none',
   boxSizing: 'border-box',
   width: '100%',
-  padding: '16px',
+  padding: '24px 26px',
   textAlign: 'left',
   fontFamily: 'inherit',
   color: 'inherit',
@@ -429,192 +446,199 @@ const HEAD_BTN = {
 const HEAD_TOP = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: '10px',
+  gap: '14px',
+  flexWrap: 'wrap',
 } as const;
 const HEAD_NAME_ROW = {
   display: 'flex',
   alignItems: 'center',
-  gap: '9px',
+  gap: '14px',
   flexWrap: 'wrap',
   minWidth: 0,
 } as const;
 const NAME = {
-  fontSize: '15px',
+  fontSize: '22px',
+  fontWeight: 600,
+  lineHeight: 1.2,
+  letterSpacing: '-0.02em',
+  color: '#ffffff',
+} as const;
+// ⚠ THE « SENSIBLE » BADGE TURNS ORANGE. v4 set it in the same grey as the rest of the header,
+// where it read as one more metadata chip; v5 gives it the risk accent the page uses nowhere else
+// on a card. It is the one label that changes how the card underneath should be read — ADR-0003 is
+// exactly about not letting that pass unmarked — so it is now the only coloured thing in the row.
+const SENSIBLE_TAG = {
+  fontSize: '13px',
   fontWeight: 500,
   lineHeight: 1.2,
-  color: NAVY.textBright,
-} as const;
-const SENSIBLE_TAG = {
-  fontSize: '8px',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  color: '#93a0bf',
-  border: `1px solid ${NAVY.borderPill}`,
+  color: '#e8a184',
+  border: '1px solid rgba(232,117,78,.45)',
   borderRadius: '20px',
-  padding: '4px 8px',
+  padding: '6px 12px',
 } as const;
+const HEAD_SPACER = { flex: 1 } as const;
 const HEAD_META = {
-  fontSize: '10px',
-  lineHeight: 1.5,
-  color: NAVY.textMuted,
-  textAlign: 'right',
+  fontSize: '15px',
+  lineHeight: 1.3,
+  color: NAVY.textBody,
   whiteSpace: 'nowrap',
 } as const;
-// The body now carries its own inset (the card no longer has padding). Horizontal and
-// bottom margin of 16px: the `borderTop` separator thus stays inset as before (it runs along the width of the
-// body, not that of the card). The header → separator gap comes from the button's bottom padding (16px).
+/** The open/closed marker. v4 had none — the header was a button that looked like a title, and
+ *  nothing said it could be opened until the cursor happened to cross it. */
+const HEAD_CARET = { fontSize: '13px', lineHeight: 1, color: NAVY.accent } as const;
+// The body carries its own inset (the card no longer has padding). Horizontal and bottom margin
+// aligned on the header's 26 px, so the separator runs along the body rather than the card.
 const BODY = {
-  margin: '0 16px 16px',
-  borderTop: `1px solid ${NAVY.borderInset}`,
-  paddingTop: '15px',
+  margin: '0 26px 26px',
+  borderTop: `1px solid ${NAVY.borderHeader}`,
+  paddingTop: '22px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '18px',
+  gap: '26px',
 } as const;
-const INF = { display: 'flex', flexDirection: 'column', gap: '11px' } as const;
-const INF_HEAD = { display: 'flex', gap: '10px', alignItems: 'flex-start' } as const;
+const INF = { display: 'flex', flexDirection: 'column', gap: '16px' } as const;
+const INF_HEAD = { display: 'flex', gap: '12px', alignItems: 'flex-start' } as const;
 const INF_DOT = {
-  marginTop: '6px',
-  width: '8px',
-  height: '8px',
+  marginTop: '8px',
+  width: '9px',
+  height: '9px',
   borderRadius: '50%',
   flex: 'none',
 } as const;
 const INF_LABEL = {
   flex: 1,
   minWidth: 0,
-  fontSize: '14px',
+  fontSize: '17px',
+  fontWeight: 500,
   lineHeight: 1.6,
-  color: NAVY.textBright,
+  color: '#ffffff',
 } as const;
-const INF_BODY = { marginLeft: '18px', display: 'flex', flexDirection: 'column' } as const;
+// 21 px = the dot's 9 px + the 12 px gap: the evidence hangs under the claim, not under the bullet.
+const INF_BODY = { marginLeft: '21px', display: 'flex', flexDirection: 'column' } as const;
 const EV_BLOCK = { display: 'flex', flexDirection: 'column' } as const;
 const EV_GROUP = {
-  marginTop: '10px',
+  marginTop: '18px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '9px',
+  gap: '14px',
 } as const;
 const EV_FAN_SOURCES = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '8px',
-  borderLeft: `2px solid ${NAVY.borderChip}`,
-  paddingLeft: '12px',
+  gap: '10px',
+  borderLeft: `2px solid ${NAVY.borderInset}`,
+  paddingLeft: '16px',
 } as const;
-const FAN = { display: 'flex', flexDirection: 'column', gap: '7px' } as const;
-const FAN_RANKED_ROW = { display: 'flex', flexWrap: 'wrap', gap: '8px' } as const;
-const RANKED_COL = { display: 'flex', flexDirection: 'column', gap: '4px' } as const;
+const FAN = { display: 'flex', flexDirection: 'column', gap: '14px' } as const;
+const FAN_RANKED_ROW = { display: 'flex', flexWrap: 'wrap', gap: '12px' } as const;
+const RANKED_COL = { display: 'flex', flexDirection: 'column', gap: '7px' } as const;
 // The « secondaires » alternatives align in a row under their single label.
-const SEC_CHIPS = { display: 'flex', flexWrap: 'wrap', gap: '6px' } as const;
+const SEC_CHIPS = { display: 'flex', flexWrap: 'wrap', gap: '12px' } as const;
 const RANKED_LABEL_MAIN = {
-  fontSize: '7.5px',
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
+  fontSize: '13px',
+  fontWeight: 500,
+  lineHeight: 1,
   color: NAVY.readingPrimaryLabel,
 } as const;
-const RANKED_LABEL_SEC = { ...RANKED_LABEL_MAIN, color: NAVY.textDim } as const;
+const RANKED_LABEL_SEC = { ...RANKED_LABEL_MAIN, color: NAVY.textMuted } as const;
 const CHIP_BASE = {
-  fontSize: '11px',
+  fontSize: '15px',
   lineHeight: 1.3,
-  borderRadius: '7px',
-  padding: '7px 11px',
+  borderRadius: '11px',
+  padding: '11px 14px',
 } as const;
 const CHIP_MAIN = {
   ...CHIP_BASE,
+  fontWeight: 500,
   color: NAVY.readingPrimaryText,
   background: NAVY.readingPrimaryBg,
   border: `1px solid ${NAVY.readingPrimaryBorder}`,
 } as const;
 const CHIP_SEC = {
   ...CHIP_BASE,
-  color: '#aab0b8',
-  background: NAVY.bgSourceCard,
-  border: `1px solid ${NAVY.borderChip}`,
+  color: NAVY.textBody,
+  background: NAVY.bgInset,
+  border: `1px solid ${NAVY.borderInset}`,
 } as const;
 const CHIP_EQUAL = {
   ...CHIP_BASE,
   color: NAVY.textHeading,
-  background: NAVY.bgSourceCard,
-  border: `1px solid ${NAVY.borderChip}`,
+  background: NAVY.bgInset,
+  border: `1px solid ${NAVY.borderInset}`,
 } as const;
 const FAN_EQUAL_ROW = {
   display: 'flex',
   flexWrap: 'wrap',
-  gap: '9px',
+  gap: '12px',
   alignItems: 'center',
 } as const;
-const FAN_EQUAL_SEP = { fontSize: '13px', lineHeight: 1, color: NAVY.textDim } as const;
+const FAN_EQUAL_SEP = { fontSize: '16px', lineHeight: 1, color: NAVY.textMuted } as const;
 const SRC_CARD = {
-  padding: '11px 13px',
-  background: NAVY.bgSourceCard,
+  padding: '16px 18px',
+  background: NAVY.bgInset,
   border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '8px',
+  borderRadius: '14px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '7px',
+  gap: '10px',
 } as const;
-const SRC_HEAD = { display: 'flex', alignItems: 'center', gap: '8px' } as const;
-const SRC_KIND = {
-  color: NAVY.textDim,
-  fontSize: '8.5px',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-} as const;
+const SRC_HEAD = { display: 'flex', alignItems: 'center', gap: '12px' } as const;
+const SRC_KIND = { fontSize: '14px', lineHeight: 1, color: NAVY.textMuted } as const;
 const SRC_SHARED = {
-  fontSize: '8.5px',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.textSecondary,
+  fontSize: '13px',
+  lineHeight: 1.2,
+  color: NAVY.textHeading,
   border: `1px solid ${NAVY.borderPill}`,
-  borderRadius: '10px',
-  padding: '2px 7px',
+  borderRadius: '20px',
+  padding: '5px 11px',
 } as const;
-const SRC_TEXT = { fontSize: '11.5px', lineHeight: 1.7, color: NAVY.textSecondary } as const;
+const SRC_TEXT = { fontSize: '15px', lineHeight: 1.7, color: NAVY.textHeading } as const;
 const MARK_ON = {
   color: '#ffffff',
   background: 'rgba(255,255,255,.10)',
   borderBottom: '1px solid rgba(255,255,255,.45)',
-  borderRadius: '2px',
+  borderRadius: '3px',
   padding: '1px 3px',
   fontWeight: 600,
 } as const;
-const SRC_REUSE = { fontSize: '10px', lineHeight: 1.45, color: '#8592b4' } as const;
+const SRC_REUSE = { fontSize: '14px', lineHeight: 1.5, color: NAVY.textMuted } as const;
 const USAGE = {
-  border: `1px solid ${NAVY.riskBorder}`,
-  background: NAVY.riskBg,
-  borderRadius: '9px',
-  padding: '14px',
+  border: '1px solid rgba(232,117,78,.35)',
+  background: 'rgba(232,117,78,.06)',
+  borderRadius: '16px',
+  padding: '20px 22px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '11px',
+  gap: '16px',
 } as const;
-const USAGE_HEAD = { display: 'flex', alignItems: 'center', gap: '8px' } as const;
+const USAGE_HEAD = { display: 'flex', alignItems: 'center', gap: '10px' } as const;
 const USAGE_TITLE = {
-  fontSize: '9px',
+  fontSize: '16px',
   fontWeight: 600,
   lineHeight: 1.3,
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  color: NAVY.riskLabel,
+  color: '#e8a184',
 } as const;
-const USAGE_LIST = { display: 'flex', flexDirection: 'column', gap: '9px' } as const;
-const USAGE_ROW = { display: 'flex', gap: '10px', alignItems: 'baseline' } as const;
+const USAGE_LIST = { display: 'flex', flexDirection: 'column' } as const;
+// v5 RULES BETWEEN THE ROWS instead of spacing them. Each row is « qui » / « ce qu'il en fait »,
+// and the actor column is a real grid track: at 15 px the old fixed 104 px column truncated
+// « courtiers de données » on the first wrap.
+const USAGE_ROW = {
+  display: 'grid',
+  gridTemplateColumns: 'minmax(120px, 180px) minmax(0, 1fr)',
+  gap: '18px',
+  alignItems: 'baseline',
+  padding: '12px 0',
+  borderTop: '1px solid rgba(232,117,78,.2)',
+} as const;
 const USAGE_ACTOR = {
-  flex: 'none',
-  width: '104px',
-  fontSize: '9px',
-  fontWeight: 600,
+  fontSize: '15px',
+  fontWeight: 500,
   lineHeight: 1.4,
-  letterSpacing: '0.02em',
-  textTransform: 'uppercase',
-  color: '#d9d2cb',
+  color: NAVY.riskText,
 } as const;
 const USAGE_TEXT = {
-  flex: 1,
   minWidth: 0,
-  fontSize: '10.5px',
-  lineHeight: 1.5,
-  color: '#93a0bf',
+  fontSize: '15px',
+  lineHeight: 1.55,
+  color: NAVY.textBody,
 } as const;

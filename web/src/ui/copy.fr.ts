@@ -145,7 +145,6 @@ export const FR = {
 
   // --- « pour comprendre » panels (`ui/v2/LearnPanel.tsx`) --------------------------------------
   UI_LEARN: {
-    kicker: 'pour comprendre',
     close: 'fermer ✕',
     /** Dotted section-header button — `label` names what the panel explains. */
     open: (label: string) => `comprendre · ${label}`,
@@ -602,6 +601,11 @@ export const FR = {
     sensitiveTag: 'sensible',
     /** Closed header: « N sources » — DISTINCT pieces of evidence, the only number the card announces. */
     headSources: (n: number) => `${n} ${plural(n, 'source', 'sources')}`,
+    /** The open/closed marker of a card. Glyphs, not words: `aria-hidden`, because the
+     *  `aria-expanded` of the button already says the state to a screen reader — announcing it
+     *  twice, once as a triangle, is noise. Identical in both languages for that reason. */
+    caretClosed: '▾',
+    caretOpen: '▴',
 
     /** Channel of a piece of evidence — CLOSED union (`Evidence['channel']`), cf. the component's `Record`. */
     channelSearch: 'recherche',
@@ -635,7 +639,12 @@ export const FR = {
       'Quatre étapes, du plus factuel au plus interprété : ton activité brute, puis les déductions thème par thème — chacune reliée aux données exactes qui la nourrissent.',
 
     tocAriaLabel: 'Sommaire',
-    tocTitle: 'sommaire',
+    tocTitle: 'Sommaire',
+    /** Closing line of the sticky sidebar — the promise, kept in view the whole way down. */
+    tocNote: 'Tout est lu sur ton ordinateur. Rien n’est envoyé.',
+    /** Same slot in demo mode: the figures below are invented, and that has to be said WHERE
+     *  they are read, not only in the header badge. */
+    tocNoteDemo: 'Données fictives. Tout est lu sur ton ordinateur.',
 
     tocActivity: 'Ton activité',
     tocDeductions: 'Déductions',
@@ -675,13 +684,17 @@ export const FR = {
       'interactions',
       'visionnage',
     ],
-    summaryActorsTitle: 'Ce que des acteurs comme TikTok ou des agrégateurs peuvent en tirer',
+    summaryActorsTitle: 'Ce qu’on peut en tirer',
     summaryActorTakeaways: [
       'centres d’intérêt et habitudes de consommation',
       'disponibilité, fatigue, fenêtres d’attention exploitables',
       'signaux sensibles — santé mentale, opinion politique, conflictualité — assortis d’un niveau de confiance',
-      'des segments revendables à des annonceurs, courtiers de données, voire autorités',
+      'des segments revendables à des annonceurs, des courtiers de données, voire des autorités',
     ],
+    /** The doctrine, said once, at the end of what the page dared to deduce (ADR-0003: systemic
+     *  demonstration, never a verdict on the person). */
+    summaryFoot:
+      'PanoptiCool ne porte aucun jugement : il montre seulement ce que TikTok pourrait inférer — pour que tu décides quoi exposer.',
   },
 
   // --- Educational panels of the results view ----------------------------------------------------

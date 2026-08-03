@@ -36,12 +36,13 @@ export function RhythmCard({ rhythm }: { rhythm: Rhythm }) {
   const max = Math.max(1, ...hourlyActivity);
   return (
     <div style={CARD}>
-      {/* Header (mockup retouch): title + note on the left, LEGEND on the right. */}
+      {/* Header: title + note on the left, LEGEND on the right, pushed by a spacer rather than by
+          `space-between` — v5 sets the title and its note on a shared baseline, which a
+          two-element split would break as soon as the legend wraps. */}
       <div style={CARD_HEAD}>
-        <div style={HEAD_TITLES}>
-          <span style={CARD_TITLE}>{UI_ACTIVITY.rhythmTitle}</span>
-          <span style={CARD_NOTE}>{UI_ACTIVITY.rhythmNote}</span>
-        </div>
+        <span style={CARD_TITLE}>{UI_ACTIVITY.rhythmTitle}</span>
+        <span style={CARD_NOTE}>{UI_ACTIVITY.rhythmNote}</span>
+        <span style={SPACER} />
         <div style={LEGEND_ROW}>
           <div style={LEGEND_ITEM}>
             <div style={{ ...LEGEND_SQ, background: NAVY.risk }} />
@@ -59,7 +60,7 @@ export function RhythmCard({ rhythm }: { rhythm: Rhythm }) {
             <div
               style={{
                 ...BAR,
-                height: `${Math.max(4, Math.round((count / max) * 100))}%`,
+                height: `${Math.max(5, Math.round((count / max) * 100))}%`,
                 background: NIGHT_HOURS.has(hour) ? NAVY.risk : NAVY.graphDay,
               }}
             />
@@ -71,17 +72,18 @@ export function RhythmCard({ rhythm }: { rhythm: Rhythm }) {
           <span key={h}>{h}</span>
         ))}
       </div>
-      {/* Foot (mockup retouch): 12-month / 30-day counters on the left, estimate on the right.
-          The TOTAL is no longer counted here — it becomes the « vidéos visionnées » tile of the volumes. */}
+      {/* Foot: 12-month / 30-day counters on the left, estimate on the right. The TOTAL is not
+          counted here — it is the « vidéos visionnées » tile of the volumes. v5 stacks each
+          counter (figure over caption) and sets them side by side. */}
       <div style={RHYTHM_FOOT}>
-        <div style={COUNTER_COL}>
-          <div style={COUNTER_ROW}>
+        <div style={COUNTER_ROW}>
+          <div style={COUNTER_COL}>
             <span style={COUNTER_N}>
               {UI_ACTIVITY.counterApprox(formatInt(videosWatched.last12Months))}
             </span>
             <span style={COUNTER_LABEL}>{UI_ACTIVITY.counter12MonthsLabel}</span>
           </div>
-          <div style={COUNTER_ROW}>
+          <div style={COUNTER_COL}>
             <span style={COUNTER_N}>
               {UI_ACTIVITY.counterApprox(formatInt(videosWatched.last30Days))}
             </span>
@@ -141,10 +143,11 @@ export function VolumesCard({
     return null;
   }
   return (
-    <div style={{ ...CARD, flex: '2 1 340px' }}>
+    <div style={CARD}>
       <div style={CARD_HEAD}>
         <span style={CARD_TITLE}>{UI_ACTIVITY.volumesTitle}</span>
-        <span style={CARD_NOTE}>{UI_ACTIVITY.volumesNote}</span>
+        <span style={SPACER} />
+        <span style={CARD_NOTE_END}>{UI_ACTIVITY.volumesNote}</span>
       </div>
       <div style={TILES}>
         {tiles.map((t) => (
@@ -174,8 +177,8 @@ export function AnalyzableShareCard({ opacity }: { opacity: Opacity }) {
       : formatPercent(ratio);
   const pct = ratio * 100;
   return (
-    <div style={{ ...CARD, flex: '1 1 300px' }}>
-      <span style={{ ...CARD_TITLE, lineHeight: 1.35 }}>{UI_ACTIVITY.opacityTitle}</span>
+    <div style={CARD}>
+      <span style={CARD_TITLE}>{UI_ACTIVITY.opacityTitle}</span>
       <div style={DONUT_ROW}>
         <div
           style={{
@@ -191,14 +194,14 @@ export function AnalyzableShareCard({ opacity }: { opacity: Opacity }) {
         </div>
         <div style={DONUT_LEGEND}>
           <div style={LEGEND_ITEM}>
-            <div style={{ ...LEGEND_SQ2, background: NAVY.accent }} />
-            <span style={LEGEND_LABEL}>
+            <div style={{ ...LEGEND_SQ, background: NAVY.accent }} />
+            <span style={LEGEND_LABEL_WRAP}>
               {UI_ACTIVITY.opacityReadableLegend(formatInt(readableCount), readableCount)}
             </span>
           </div>
           <div style={LEGEND_ITEM}>
-            <div style={{ ...LEGEND_SQ2, background: NAVY.donutRest }} />
-            <span style={LEGEND_LABEL}>
+            <div style={{ ...LEGEND_SQ, background: NAVY.donutRest }} />
+            <span style={LEGEND_LABEL_WRAP}>
               {UI_ACTIVITY.opacityOpaqueLegend(formatInt(opaqueCount), opaqueCount)}
             </span>
           </div>
@@ -213,144 +216,158 @@ export function AnalyzableShareCard({ opacity }: { opacity: Opacity }) {
   );
 }
 
-// --- Styles (« parcours guidé » mockup, section 01) ------------------------------------------------
+// --- Styles (« PanoptiCool v5 Web » mockup, section 01) --------------------------------------------
+// v5 IS A LEGIBILITY PASS, not a new layout: the cards, their order and their contents are v4's.
+// What moves is the scale — 11 px labels become 14–15 px, the card titles leave uppercase tracking
+// for 20 px sentence case, radii go 12 → 20 px. It is the accessibility objective applied to the
+// densest surface of the product (CLAUDE.md: the tool aims at the greatest number).
 const CARD = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '14px',
-  padding: '24px',
+  gap: '20px',
+  padding: '28px',
   background: NAVY.bgCard,
   border: `1px solid ${NAVY.borderCard}`,
-  borderRadius: '12px',
+  borderRadius: '20px',
   minWidth: 0,
 } as const;
 const CARD_HEAD = {
   display: 'flex',
   alignItems: 'baseline',
-  justifyContent: 'space-between',
-  gap: '8px',
+  gap: '16px',
   flexWrap: 'wrap',
 } as const;
 const CARD_TITLE = {
-  fontSize: '13.5px',
-  fontWeight: 500,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.textHeading,
+  fontSize: '20px',
+  fontWeight: 600,
+  lineHeight: 1.2,
+  color: '#ffffff',
 } as const;
-const CARD_NOTE = { fontSize: '11.5px', color: NAVY.textMuted } as const;
-const HEAD_TITLES = {
-  display: 'flex',
-  alignItems: 'baseline',
-  gap: '12px',
-  flexWrap: 'wrap',
-} as const;
-const BARS = { display: 'flex', alignItems: 'flex-end', gap: '3px', height: '120px' } as const;
+const CARD_NOTE = { fontSize: '15px', lineHeight: 1.4, color: NAVY.textBody } as const;
+/** Note pushed to the RIGHT of its header (the volumes card's « 12 derniers mois »). */
+const CARD_NOTE_END = { fontSize: '14px', lineHeight: 1.4, color: NAVY.textMuted } as const;
+const SPACER = { flex: 1 } as const;
+const BARS = { display: 'flex', alignItems: 'flex-end', gap: '5px', height: '150px' } as const;
 const BAR_CELL = { flex: 1, display: 'flex', alignItems: 'flex-end', height: '100%' } as const;
-const BAR = { width: '100%', minHeight: '4px', borderRadius: '3px 3px 0 0' } as const;
+const BAR = { width: '100%', minHeight: '5px', borderRadius: '5px 5px 0 0' } as const;
 const AXIS = {
   display: 'flex',
   justifyContent: 'space-between',
-  fontSize: '10.5px',
-  color: NAVY.textFaint,
+  fontSize: '14px',
+  lineHeight: 1,
+  color: NAVY.textMuted,
 } as const;
 const RHYTHM_FOOT = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  gap: '18px',
+  gap: '24px',
   flexWrap: 'wrap',
-  borderTop: `1px solid ${NAVY.borderCard}`,
-  paddingTop: '13px',
+  borderTop: `1px solid ${NAVY.borderHeader}`,
+  paddingTop: '20px',
 } as const;
+// v5 STACKS the counters — the number above its label, no longer on the same baseline. At 30 px
+// the figure is the thing read first, and « ≈ 100 000 » beside its caption on one line would run
+// past the card on a narrow column.
+const COUNTER_ROW = { display: 'flex', gap: '36px', flexWrap: 'wrap' } as const;
 const COUNTER_COL = { display: 'flex', flexDirection: 'column', gap: '7px' } as const;
-const COUNTER_ROW = { display: 'flex', alignItems: 'baseline', gap: '8px' } as const;
 const COUNTER_N = {
-  fontSize: '14px',
-  fontWeight: 600,
+  fontSize: '30px',
+  fontWeight: 700,
   lineHeight: 1,
-  color: NAVY.textBright,
+  letterSpacing: '-0.03em',
+  color: '#ffffff',
 } as const;
-const COUNTER_LABEL = { fontSize: '11.5px', lineHeight: 1.3, color: '#a3b0cf' } as const;
+const COUNTER_LABEL = { fontSize: '15px', lineHeight: 1.4, color: NAVY.textBody } as const;
 const LEGEND_ROW = {
   display: 'flex',
   flexWrap: 'wrap',
   gap: '18px',
   alignItems: 'center',
 } as const;
-const LEGEND_ITEM = { display: 'flex', alignItems: 'center', gap: '8px' } as const;
-const LEGEND_SQ = { width: '13px', height: '13px', borderRadius: '2px', flex: 'none' } as const;
-const LEGEND_SQ2 = { width: '10px', height: '10px', borderRadius: '2px', flex: 'none' } as const;
-const LEGEND_LABEL = { fontSize: '11.5px', lineHeight: 1.35, color: NAVY.textBody } as const;
+const LEGEND_ITEM = { display: 'flex', alignItems: 'center', gap: '9px' } as const;
+const LEGEND_SQ = { width: '11px', height: '11px', borderRadius: '3px', flex: 'none' } as const;
+const LEGEND_LABEL = { fontSize: '14px', lineHeight: 1, color: NAVY.textBody } as const;
+const LEGEND_LABEL_WRAP = { fontSize: '15px', lineHeight: 1.4, color: NAVY.textBody } as const;
 const ESTIMATE = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '4px',
-  fontSize: '11px',
+  gap: '7px',
+  fontSize: '15px',
   lineHeight: 1.6,
-  color: NAVY.riskLabel,
+  color: NAVY.riskText,
   background: NAVY.riskBg,
   border: `1px solid ${NAVY.riskBorder}`,
-  borderRadius: '9px',
-  padding: '10px 14px',
-  maxWidth: '460px',
+  borderRadius: '16px',
+  padding: '16px 20px',
+  maxWidth: '420px',
 } as const;
+// The tag leaves uppercase micro-type for plain 14 px: at 9 px it was decoration, not a word.
 const ESTIMATE_TAG = {
-  fontSize: '9px',
-  fontWeight: 600,
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  color: NAVY.risk,
+  fontSize: '14px',
+  fontWeight: 500,
+  lineHeight: 1,
+  color: '#e8a184',
 } as const;
 const TILES = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
-  gap: '10px',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))',
+  gap: '12px',
   flex: 1,
   alignContent: 'center',
 } as const;
 const TILE = {
+  minWidth: 0,
   display: 'flex',
   flexDirection: 'column',
-  gap: '7px',
-  padding: '14px 15px',
+  gap: '8px',
+  padding: '18px 20px',
   background: NAVY.bgInset,
   border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '9px',
+  borderRadius: '14px',
 } as const;
+// ⚠ THE FIGURES TURN CYAN in v5, where v4 set them in plain white. It is the one colour change of
+// the section and it is deliberate: the tiles are the only place the page states a RAW COUNT — what
+// is literally in the file, before any inference. The accent marks that, and the donut's « 26 % »
+// uses the same cyan for the same reason.
 const TILE_N = {
-  fontSize: '24px',
-  fontWeight: 600,
+  fontSize: '26px',
+  fontWeight: 700,
   lineHeight: 1,
-  letterSpacing: '-0.02em',
-  color: NAVY.textBright,
+  letterSpacing: '-0.03em',
+  color: NAVY.accent,
 } as const;
-const TILE_LABEL = { fontSize: '11px', lineHeight: 1.45, color: '#a3b0cf' } as const;
+const TILE_LABEL = { fontSize: '15px', lineHeight: 1.45, color: NAVY.textBody } as const;
 const CARD_FOOT2 = {
-  fontSize: '11px',
-  lineHeight: 1.7,
-  color: NAVY.textMuted,
-  borderTop: `1px solid ${NAVY.borderCard}`,
-  paddingTop: '12px',
+  fontSize: '15px',
+  lineHeight: 1.65,
+  color: NAVY.textBody,
+  borderTop: `1px solid ${NAVY.borderHeader}`,
+  paddingTop: '18px',
 } as const;
-const DONUT_ROW = { display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' } as const;
+const DONUT_ROW = { display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' } as const;
 const DONUT = {
   flex: 'none',
-  width: '92px',
-  height: '92px',
+  width: '110px',
+  height: '110px',
   borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
 } as const;
 const DONUT_HOLE = {
-  width: '58px',
-  height: '58px',
+  width: '72px',
+  height: '72px',
   borderRadius: '50%',
   background: NAVY.bgCard,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
 } as const;
-const DONUT_PCT = { fontSize: '14px', fontWeight: 600, color: NAVY.accent } as const;
-const DONUT_LEGEND = { display: 'flex', flexDirection: 'column', gap: '9px', minWidth: 0 } as const;
+const DONUT_PCT = { fontSize: '20px', fontWeight: 700, lineHeight: 1, color: NAVY.accent } as const;
+const DONUT_LEGEND = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+  minWidth: 0,
+} as const;

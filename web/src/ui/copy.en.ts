@@ -89,7 +89,6 @@ export const EN: UiCopy = {
   },
 
   UI_LEARN: {
-    kicker: 'to understand',
     close: 'close ✕',
     open: (label: string) => `understand · ${label}`,
   },
@@ -458,6 +457,10 @@ export const EN: UiCopy = {
   UI_CARD: {
     sensitiveTag: 'sensitive',
     headSources: (n: number) => `${n} ${plural(n, 'source', 'sources')}`,
+    // Glyphs: identical in both languages BY DESIGN, cf. the French comment. The non-copy
+    // witness of `copy-parity.test.ts` tolerates a margin of identical entries for this.
+    caretClosed: '▾',
+    caretOpen: '▴',
 
     channelSearch: 'search',
     channelComment: 'comment',
@@ -485,7 +488,9 @@ export const EN: UiCopy = {
       'Four steps, from the most factual to the most interpreted: your raw activity, then the inferences topic by topic — each tied to the exact data feeding it.',
 
     tocAriaLabel: 'Contents',
-    tocTitle: 'contents',
+    tocTitle: 'Contents',
+    tocNote: 'Everything is read on your computer. Nothing is sent.',
+    tocNoteDemo: 'Made-up data. Everything is read on your computer.',
 
     tocActivity: 'Your activity',
     tocDeductions: 'Inferences',
@@ -515,13 +520,15 @@ export const EN: UiCopy = {
       'Taken one by one, this data is unremarkable. Cross-referenced, it sketches a profile — and one harmless item can feed several readings at once.',
     summaryDataTypesTitle: 'Types of data read',
     summaryDataTypes: ['searches', 'comments', 'session metadata', 'interactions', 'viewing'],
-    summaryActorsTitle: 'What players like TikTok or aggregators can draw from it',
+    summaryActorsTitle: 'What can be drawn from it',
     summaryActorTakeaways: [
       'interests and consumption habits',
       'availability, tiredness, exploitable windows of attention',
       'sensitive signals — mental health, political opinion, hostility — each with a confidence level',
       'segments that can be sold on to advertisers, data brokers, even authorities',
     ],
+    summaryFoot:
+      'PanoptiCool passes no judgment: it only shows what TikTok could infer — so you can decide what to expose.',
   },
 
   UI_LEARN_PANELS: {

@@ -149,13 +149,13 @@ function SectionHead({
       <div style={SEC_HEAD_ROW}>
         <span style={SEC_N}>{n}</span>
         <span style={isMobile ? M_SEC_TITLE : SEC_TITLE}>{title}</span>
-        {!isMobile && <span style={SEC_RULE} />}
+        {!isMobile && <span style={SEC_SPACER} />}
         {!isMobile && learn !== undefined && (
           <LearnToggle open={learn.open} label={learn.label} onToggle={learn.onToggle} />
         )}
       </div>
-      {sub !== undefined && <div style={isMobile ? M_SEC_SUB : SEC_SUB}>{sub}</div>}
-      {framing !== undefined && <div style={isMobile ? M_SEC_FRAMING : SEC_FRAMING}>{framing}</div>}
+      {sub !== undefined && <p style={isMobile ? M_SEC_SUB : SEC_SUB}>{sub}</p>}
+      {framing !== undefined && <p style={isMobile ? M_SEC_FRAMING : SEC_FRAMING}>{framing}</p>}
       {isMobile && learn !== undefined && (
         <div style={{ alignSelf: 'flex-start' }}>
           <LearnToggle open={learn.open} label={learn.label} onToggle={learn.onToggle} />
@@ -213,6 +213,11 @@ export function ResultsView({
                 {t.label}
               </a>
             ))}
+            {/* The promise, under the contents rather than in the hero: the sidebar is sticky, so
+                it is the one place on this page where a sentence stays in view the whole way down.
+                In demo mode it also says the figures are invented, which is exactly where a reader
+                scrolling past a « santé mentale » card needs to be told. */}
+            <span style={TOC_NOTE}>{demo ? UI_RESULTS.tocNoteDemo : UI_RESULTS.tocNote}</span>
           </nav>
         )}
 
@@ -332,10 +337,13 @@ export function ResultsView({
             />
           )}
           <div style={SUMMARY_CARD}>
-            <div style={SUMMARY_LEDE}>{UI_RESULTS.summaryLede}</div>
+            <p style={SUMMARY_LEDE}>{UI_RESULTS.summaryLede}</p>
+            {/* v5 gives the two columns EQUAL tracks (v4 weighted them 1:2). The left one holds
+                five chips, the right four lines: at equal width each wraps once instead of the
+                chips crowding into three rows beside a column of half-empty lines. */}
             <div style={SUMMARY_COLS}>
-              <div style={SUMMARY_COL_LEFT}>
-                <div style={SUMMARY_COL_TITLE}>{UI_RESULTS.summaryDataTypesTitle}</div>
+              <div style={SUMMARY_COL}>
+                <span style={SUMMARY_COL_TITLE}>{UI_RESULTS.summaryDataTypesTitle}</span>
                 <div style={CHIP_ROW}>
                   {UI_RESULTS.summaryDataTypes.map((t) => (
                     <span key={t} style={DATA_CHIP}>
@@ -344,18 +352,21 @@ export function ResultsView({
                   ))}
                 </div>
               </div>
-              <div style={SUMMARY_COL_RIGHT}>
-                <div style={SUMMARY_COL_TITLE}>{UI_RESULTS.summaryActorsTitle}</div>
+              <div style={SUMMARY_COL}>
+                <span style={SUMMARY_COL_TITLE}>{UI_RESULTS.summaryActorsTitle}</span>
                 <div style={TAKEAWAYS}>
                   {UI_RESULTS.summaryActorTakeaways.map((t) => (
                     <div key={t} style={TAKEAWAY_ROW}>
-                      <span style={{ color: NAVY.textFaint }}>›</span>
+                      <span style={TAKEAWAY_MARK} aria-hidden="true">
+                        ›
+                      </span>
                       <span>{t}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
+            <span style={SUMMARY_FOOT}>{UI_RESULTS.summaryFoot}</span>
           </div>
         </div>
       </div>
@@ -376,14 +387,19 @@ export function ResultsView({
   );
 }
 
-// --- Styles (« parcours guidé » mockup) ------------------------------------------------------------
+// --- Styles (« PanoptiCool v5 Web » mockup) --------------------------------------------------------
+// v5 is the SAME PAGE at a larger scale: four sections, the same cards, the same order. What the
+// pass changes is what a reader can actually read — body text from 12–14 px to 15–17 px, section
+// titles from 17 px uppercase-tracked to 30 px sentence case, and the numbered disc replaced by a
+// plain cyan « 01 ». The mobile block below is NOT rescaled: it already sits at v4 Mobile's own
+// sizes, and no v5 mobile mockup exists to move it toward.
 const PAGE = { display: 'flex', flexDirection: 'column' } as const;
 const GRID = {
-  maxWidth: '1280px',
+  maxWidth: '1240px',
   margin: '0 auto',
-  padding: '48px 40px 32px',
+  padding: '40px 40px 80px',
   display: 'grid',
-  gridTemplateColumns: '210px minmax(0, 1fr)',
+  gridTemplateColumns: '230px minmax(0, 1fr)',
   gap: '52px',
   alignItems: 'start',
   width: '100%',
@@ -391,42 +407,54 @@ const GRID = {
 } as const;
 const SIDEBAR = {
   position: 'sticky',
-  top: '78px',
+  top: '86px',
   display: 'flex',
   flexDirection: 'column',
   gap: '6px',
 } as const;
 const TOC_TITLE = {
-  fontSize: '10px',
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
+  fontSize: '12px',
+  fontWeight: 500,
+  lineHeight: 1,
   color: NAVY.textMuted,
-  padding: '0 12px 8px',
+  padding: '0 14px 10px',
 } as const;
 const TOC_LINK = {
   display: 'flex',
   alignItems: 'center',
-  gap: '10px',
-  fontSize: '12px',
+  gap: '12px',
+  fontSize: '15px',
   fontWeight: 500,
-  lineHeight: 1.4,
-  color: NAVY.textSecondary,
+  lineHeight: 1.3,
+  color: NAVY.textHeading,
   textDecoration: 'none',
-  borderRadius: '8px',
-  padding: '10px 12px',
-  border: '1px solid transparent',
+  borderRadius: '12px',
+  padding: '13px 14px',
+  // A visible-but-quiet rest border, not `transparent`: the hover only has to CHANGE the colour,
+  // so the row does not gain a 1 px box on hover and shift its neighbours.
+  border: '1px solid #141c38',
 } as const;
-const TOC_N = { fontSize: '11px', fontWeight: 600, lineHeight: 1, color: NAVY.accent } as const;
-const CONTENT = { display: 'flex', flexDirection: 'column', gap: '26px', minWidth: 0 } as const;
+const TOC_N = { fontSize: '12px', fontWeight: 600, lineHeight: 1, color: NAVY.accent } as const;
+/** Closing line of the table of contents — what the whole page rests on, kept in view while
+ *  scrolling because the sidebar is sticky. */
+const TOC_NOTE = {
+  fontSize: '13px',
+  lineHeight: 1.6,
+  color: NAVY.textMuted,
+  borderTop: `1px solid ${NAVY.borderHeader}`,
+  marginTop: '16px',
+  padding: '16px 14px 0',
+} as const;
+const CONTENT = { display: 'flex', flexDirection: 'column', gap: '28px', minWidth: 0 } as const;
 const HERO = {
   display: 'grid',
-  gridTemplateColumns: 'minmax(0, 1fr) minmax(220px, 320px)',
-  gap: '40px',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))',
+  gap: '44px',
   alignItems: 'center',
-  paddingBottom: '28px',
+  padding: '12px 0 20px',
 } as const;
-const HERO_COL = { display: 'flex', flexDirection: 'column', gap: '16px', minWidth: 0 } as const;
-const HERO_EYE = { minWidth: 0 } as const;
+const HERO_COL = { display: 'flex', flexDirection: 'column', gap: '18px', minWidth: 0 } as const;
+const HERO_EYE = { width: '100%', maxWidth: '260px', justifySelf: 'end' } as const;
 const KICKER = {
   fontSize: '11px',
   letterSpacing: '0.16em',
@@ -435,140 +463,140 @@ const KICKER = {
 } as const;
 const HERO_TITLE = {
   margin: 0,
-  fontSize: '38px',
-  fontWeight: 500,
-  lineHeight: 1.15,
-  letterSpacing: '-0.02em',
-  color: NAVY.textBright,
+  fontSize: '44px',
+  fontWeight: 600,
+  lineHeight: 1.12,
+  letterSpacing: '-0.03em',
+  color: '#ffffff',
+  textWrap: 'balance',
 } as const;
 const HERO_LEDE = {
   margin: 0,
-  fontSize: '14px',
-  lineHeight: 1.8,
+  fontSize: '17px',
+  lineHeight: 1.65,
   color: NAVY.textBody,
-  maxWidth: '560px',
+  maxWidth: '600px',
 } as const;
 const HERO_SUB = {
   margin: 0,
-  fontSize: '12px',
-  lineHeight: 1.75,
+  fontSize: '15px',
+  lineHeight: 1.6,
   color: NAVY.textMuted,
-  maxWidth: '560px',
+  maxWidth: '600px',
 } as const;
 const SEC_HEAD_WRAP = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '8px',
-  paddingTop: '22px',
+  gap: '14px',
+  paddingTop: '32px',
 } as const;
-const SEC_HEAD_ROW = { display: 'flex', alignItems: 'center', gap: '14px' } as const;
-const SEC_N = {
+const SEC_HEAD_ROW = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
-  width: '30px',
-  height: '30px',
-  borderRadius: '50%',
-  border: '1px solid rgba(47,212,240,.5)',
-  fontSize: '12px',
-  fontWeight: 600,
-  color: NAVY.accent,
-  flex: 'none',
+  gap: '14px',
+  flexWrap: 'wrap',
 } as const;
+// ⚠ THE DISC IS GONE. v4 circled the number in a 30 px ring; v5 sets it as a plain 12 px cyan
+// label beside a 30 px title. The ring competed with the title for the eye and the title lost.
+const SEC_N = { fontSize: '12px', fontWeight: 600, lineHeight: 1, color: NAVY.accent } as const;
 const SEC_TITLE = {
-  fontSize: '17px',
-  fontWeight: 500,
-  lineHeight: 1.3,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.textBright,
+  fontSize: '30px',
+  fontWeight: 600,
+  lineHeight: 1.15,
+  letterSpacing: '-0.025em',
+  color: '#ffffff',
 } as const;
-const SEC_RULE = { flex: 1, height: '1px', background: NAVY.borderCard } as const;
-const SEC_SUB = {
-  fontSize: '12px',
-  lineHeight: 1.6,
-  color: NAVY.textMuted,
-  paddingLeft: '44px',
-} as const;
-// Section 02 framing — same indent as the subtitle, a more discreet tone (mockup).
+const SEC_SPACER = { flex: 1 } as const;
+// The subtitle loses its 44 px indent with the disc that justified it: nothing to clear anymore.
+const SEC_SUB = { margin: 0, fontSize: '16px', lineHeight: 1.6, color: NAVY.textBody } as const;
 const SEC_FRAMING = {
-  fontSize: '11px',
+  margin: 0,
+  fontSize: '15px',
+  lineHeight: 1.7,
+  color: NAVY.textMuted,
+  maxWidth: '820px',
+} as const;
+const M_SEC_FRAMING = {
+  margin: 0,
+  fontSize: '12px',
   lineHeight: 1.7,
   color: NAVY.textFaint,
-  paddingLeft: '44px',
-  maxWidth: '720px',
 } as const;
-const M_SEC_FRAMING = { fontSize: '12px', lineHeight: 1.7, color: NAVY.textFaint } as const;
 // The two example-words of the framing — same styles as what they designate (mockup):
 // the source highlighting (`highlight`), the tint of the main reading.
 const FRAMING_HIGHLIGHT = {
-  color: NAVY.textBright,
+  color: '#ffffff',
   borderBottom: '1px solid rgba(255,255,255,.45)',
 } as const;
 const FRAMING_PRIMARY = { color: '#cdb6f0' } as const;
 const CARDS_ROW = {
-  display: 'flex',
-  gap: '16px',
-  flexWrap: 'wrap',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
+  gap: '18px',
   alignItems: 'stretch',
 } as const;
 const THEME_LIST = { display: 'flex', flexDirection: 'column', gap: '16px' } as const;
 const SUMMARY_CARD = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
-  padding: '26px',
+  gap: '24px',
+  padding: '32px',
   background: NAVY.bgCard,
   border: `1px solid ${NAVY.borderCard}`,
-  borderRadius: '12px',
+  borderRadius: '20px',
 } as const;
 const SUMMARY_LEDE = {
-  fontSize: '13.5px',
-  lineHeight: 1.75,
-  color: NAVY.textBody,
+  margin: 0,
+  fontSize: '18px',
+  lineHeight: 1.65,
+  color: NAVY.textHeading,
   maxWidth: '820px',
 } as const;
-const SUMMARY_COLS = { display: 'flex', gap: '40px', flexWrap: 'wrap' } as const;
-const SUMMARY_COL_LEFT = {
-  flex: '1 1 240px',
-  minWidth: 0,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '11px',
+const SUMMARY_COLS = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
+  gap: '36px',
 } as const;
-const SUMMARY_COL_RIGHT = {
-  flex: '2 1 320px',
+const SUMMARY_COL = {
   minWidth: 0,
   display: 'flex',
   flexDirection: 'column',
-  gap: '11px',
+  gap: '14px',
 } as const;
 const SUMMARY_COL_TITLE = {
-  fontSize: '11px',
+  fontSize: '18px',
+  fontWeight: 600,
   lineHeight: 1.3,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.textMuted,
+  color: '#ffffff',
 } as const;
-const CHIP_ROW = { display: 'flex', flexWrap: 'wrap', gap: '8px' } as const;
+const CHIP_ROW = { display: 'flex', flexWrap: 'wrap', gap: '10px' } as const;
 const DATA_CHIP = {
-  fontSize: '12px',
+  fontSize: '15px',
   lineHeight: 1.3,
   color: NAVY.textHeading,
   background: NAVY.bgInset,
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '6px',
-  padding: '7px 11px',
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '11px',
+  padding: '11px 14px',
 } as const;
 const TAKEAWAYS = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '9px',
-  fontSize: '12.5px',
+  gap: '11px',
+  fontSize: '15px',
   lineHeight: 1.6,
   color: NAVY.textBody,
 } as const;
-const TAKEAWAY_ROW = { display: 'flex', gap: '10px' } as const;
+const TAKEAWAY_ROW = { display: 'flex', gap: '12px' } as const;
+const TAKEAWAY_MARK = { color: NAVY.textMuted, flex: 'none' } as const;
+/** Closing line of section 03 — the doctrine, said once, at the end of what the page dared. */
+const SUMMARY_FOOT = {
+  fontSize: '15px',
+  lineHeight: 1.65,
+  color: NAVY.textMuted,
+  borderTop: `1px solid ${NAVY.borderHeader}`,
+  paddingTop: '20px',
+} as const;
 
 // --- MOBILE styles (« PanoptiCool v4 Mobile » mockup) ----------------------------------------------
 const M_SHELL = {
@@ -623,4 +651,9 @@ const M_SEC_TITLE = {
   textTransform: 'uppercase',
   color: NAVY.textBright,
 } as const;
-const M_SEC_SUB = { fontSize: '12.5px', lineHeight: 1.65, color: NAVY.textMuted } as const;
+const M_SEC_SUB = {
+  margin: 0,
+  fontSize: '12.5px',
+  lineHeight: 1.65,
+  color: NAVY.textMuted,
+} as const;

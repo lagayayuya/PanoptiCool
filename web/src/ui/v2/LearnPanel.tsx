@@ -1,6 +1,10 @@
-// « pour comprendre » educational panels (« parcours guidé » mockup): STATIC content taken
+// « pour comprendre » educational panels (« PanoptiCool v5 Web » mockup): STATIC content taken
 // as is from the mockup, collapsible per section via the dotted button of the header. The wording
 // is the mockup's (validated by yuya in Claude Design) — not an engine template.
+//
+// v5 DROPPED THE « POUR COMPRENDRE » KICKER, and the panel reads better without it: the question is
+// now set at 20 px, which makes it unmistakably the panel's heading, and the control that opened it
+// already says « comprendre · … ». The label was announcing what the reader had just clicked.
 
 import { UI_LEARN } from '../copy';
 import { NAVY } from './palette';
@@ -21,7 +25,6 @@ export function LearnPanel({
 }) {
   return (
     <div class="hl-learn" style={PANEL}>
-      <span style={KICKER}>{UI_LEARN.kicker}</span>
       <span style={QUESTION}>{question}</span>
       <div style={GRID}>
         {columns.map((c) => (
@@ -53,63 +56,54 @@ export function LearnToggle({
   );
 }
 
+// The mockup's grid breaks at `min(100%, 260px)` rather than at a bare 260 px: inside a narrow
+// parent, a bare minimum forces the track wider than the container and the row overflows. The
+// `min()` lets the track fall back to the full width instead. Same form in every v5 grid here.
 const PANEL = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '14px',
-  padding: '24px 28px',
+  gap: '18px',
+  padding: '28px',
   background: NAVY.learnBg,
   border: `1px dashed ${NAVY.learnBorder}`,
-  borderRadius: '12px',
-} as const;
-const KICKER = {
-  fontSize: '10px',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
-  color: NAVY.learnAccent,
+  borderRadius: '20px',
 } as const;
 const QUESTION = {
-  fontSize: '16px',
-  fontWeight: 500,
-  lineHeight: 1.4,
-  color: NAVY.textBright,
+  fontSize: '20px',
+  fontWeight: 600,
+  lineHeight: 1.3,
+  color: '#ffffff',
 } as const;
 const GRID = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-  gap: '20px',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
+  gap: '24px',
 } as const;
-const COL = { display: 'flex', flexDirection: 'column', gap: '8px' } as const;
+const COL = { display: 'flex', flexDirection: 'column', gap: '9px', minWidth: 0 } as const;
 const COL_TITLE = {
-  fontSize: '11px',
-  fontWeight: 500,
+  fontSize: '15px',
+  fontWeight: 600,
   lineHeight: 1.3,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
   color: NAVY.learnTitle,
 } as const;
-const COL_TEXT = { fontSize: '12.5px', lineHeight: 1.75, color: NAVY.textBody } as const;
+const COL_TEXT = { fontSize: '15px', lineHeight: 1.7, color: NAVY.textBody } as const;
 const FOOTNOTE = {
-  fontSize: '11.5px',
+  fontSize: '15px',
   lineHeight: 1.7,
-  color: NAVY.textMuted,
+  color: NAVY.textBody,
   borderTop: `1px dashed ${NAVY.learnBorder}`,
-  paddingTop: '13px',
+  paddingTop: '18px',
 } as const;
 const TOGGLE = {
   cursor: 'pointer',
   flex: 'none',
-  fontSize: '10.5px',
-  // explicit `lineHeight`: makes this chip's height DETERMINISTIC (28.5 px) — the neighboring « 100 %
-  // local » badge aligns to it (cf. `LOCAL_BADGE`), which requires a known height, not « normal ».
-  lineHeight: 1,
+  fontSize: '14px',
+  lineHeight: 1.2,
   fontWeight: 500,
   fontFamily: 'inherit',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
   color: NAVY.learnAccent,
   background: 'transparent',
   border: `1px dashed ${NAVY.learnBorder}`,
-  borderRadius: '20px',
-  padding: '8px 13px',
+  borderRadius: '11px',
+  padding: '11px 15px',
 } as const;
