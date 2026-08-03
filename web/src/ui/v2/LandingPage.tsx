@@ -38,15 +38,6 @@ const ANALYSE_PATH = '/analyse';
 const INSTAGRAM_LIVE = false;
 
 /**
- * The TikTok card's preview — a 16:10 crop of the render the README already ships
- * (`docs/assets/screenshot-deductions.png`), which is the DEMO PERSONA: every value on it is
- * synthetic. Instagram has no counterpart yet on purpose; the mockup's is a render of a real
- * export, i.e. actual photographs, and it gets rebuilt from the synthetic persona with the
- * connector.
- */
-const TIKTOK_PREVIEW = '/platform/tiktok-preview.webp';
-
-/**
  * The URLs of the two resource rails — the language-independent SPINE, paired BY INDEX with
  * `UI_LANDING.learnLinks` / `actLinks`, exactly as `ROADMAP_STEPS` pairs with `UI_ROADMAP.steps`.
  *
@@ -175,19 +166,19 @@ export function LandingPage() {
     open: string;
     demo: string;
     accent: string;
-    preview: string | null;
-    previewAlt: string;
     live: boolean;
     guide: GuideTarget;
   }) => (
     <div style={PLATFORM_CARD}>
-      {/* The card LEADS with a preview: what the analysis actually looks like, before any prose.
-          A gradient sinks the image into the card so the logo and the name read over it. */}
+      {/* The card LEADS with the platform's name over a panel — the mockup's masthead, minus its
+          image. ⚠ THE PANEL IS EMPTY ON PURPOSE, in both cards. The mockup's previews are renders
+          of a REAL export (actual photographs), which cannot enter a public repo, and the v5
+          analysis page is about to change what a render even looks like — so a preview built now
+          would be a picture of a screen that no longer exists. Both get filled from the synthetic
+          persona once that page has settled. */}
       <div style={PREVIEW}>
-        {p.preview !== null && <img src={p.preview} alt={p.previewAlt} style={PREVIEW_IMG} />}
         <span aria-hidden="true" style={PREVIEW_FADE} />
         <div style={PREVIEW_ID}>
-          <span style={PREVIEW_LOGO}>{UI_LANDING.previewLogoPlaceholder}</span>
           <span style={PREVIEW_NAME}>{p.name}</span>
         </div>
       </div>
@@ -238,7 +229,12 @@ export function LandingPage() {
                 hero's call to action. Sized to its content, not to the column: it opens a modal,
                 it does not start the analysis, and a full-width filled button claimed otherwise. */}
             <div style={CTA_ROW}>
-              <button type="button" style={CTA} onClick={() => setGuideTarget('pick')}>
+              <button
+                type="button"
+                class="hv-cta"
+                style={CTA}
+                onClick={() => setGuideTarget('pick')}
+              >
                 {UI_GUIDE.openLabel}
                 <span style={CTA_ARROW}>→</span>
               </button>
@@ -268,10 +264,6 @@ export function LandingPage() {
             open: UI_LANDING.instagramOpen,
             demo: UI_LANDING.instagramDemo,
             accent: NAVY.instagram,
-            // No preview yet, and deliberately: the mockup's is a render of a REAL export — actual
-            // photographs. It gets rebuilt from the synthetic persona with the connector.
-            preview: null,
-            previewAlt: '',
             live: INSTAGRAM_LIVE,
             guide: 'instagram',
           })}
@@ -282,8 +274,6 @@ export function LandingPage() {
             open: UI_LANDING.tiktokOpen,
             demo: UI_LANDING.tiktokDemo,
             accent: NAVY.accent,
-            preview: TIKTOK_PREVIEW,
-            previewAlt: UI_LANDING.tiktokPreviewAlt,
             live: true,
             guide: 'tiktok',
           })}
@@ -691,13 +681,6 @@ const PREVIEW = {
   overflow: 'hidden',
   background: NAVY.bgInset,
 } as const;
-const PREVIEW_IMG = {
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  objectPosition: '0% 0%',
-  display: 'block',
-} as const;
 const PREVIEW_FADE = {
   position: 'absolute',
   inset: 0,
@@ -711,22 +694,6 @@ const PREVIEW_ID = {
   display: 'flex',
   alignItems: 'center',
   gap: '14px',
-} as const;
-const PREVIEW_LOGO = {
-  width: '52px',
-  height: '52px',
-  borderRadius: '14px',
-  background: 'rgba(19,27,56,.9)',
-  border: '1px dashed #3a4a80',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flex: 'none',
-  fontSize: '9px',
-  fontWeight: 500,
-  lineHeight: 1.2,
-  color: '#8b99bb',
-  textAlign: 'center',
 } as const;
 const PREVIEW_NAME = {
   fontSize: '31px',

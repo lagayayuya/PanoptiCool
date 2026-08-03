@@ -235,14 +235,6 @@ export const FR = {
     // The bullets say what the READER gets out of each export, not what the engine does. The two
     // lists are deliberately different in nature: an Instagram export is a corpus, a TikTok export
     // is a set of deductions.
-    /** The 52 px square that sits on the preview, next to the platform's name. The mockup carries a
-     * dashed placeholder there, and so does the product: vendoring TikTok's and Meta's marks into a
-     * public AGPL repo is a decision to take deliberately, not a detail to slip into an asset
-     * folder. The name beside it already says which platform this is. */
-    previewLogoPlaceholder: 'logo',
-    tiktokPreviewAlt: 'Aperçu : ce que l’algorithme a pu déduire, sujet par sujet.',
-    instagramPreviewAlt:
-      'Aperçu : toutes les photos, vidéos et vocaux échangés, replacés sur une spirale du temps.',
     instagramName: 'Instagram',
     instagramLede:
       'Un des exports les plus riches. Contient notamment toutes les photos, vidéos et vocaux que tu as échangés, replacés année par année.',

@@ -72,6 +72,28 @@
   filter: brightness(1.25);
 }
 
+/* The home's call to action (« comment accéder à mes données »). It is RECESSED — a panel sunk into
+ * the page rather than a filled button — so its hover raises it a step instead of lightening it:
+ * the surface and its border both come up, and the arrow leans toward the modal it opens. Targeting
+ * the arrow needs no `!important`: no inline style sets a transform for it to beat. */
+.hv-cta {
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.hv-cta:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
+  background: #172145 !important;
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
+  border-color: #36446f !important;
+}
+.hv-cta span {
+  transition: transform 0.15s;
+}
+.hv-cta:hover span {
+  transform: translateX(3px);
+}
+
 /* Table-of-contents links (desktop sidebar, mobile chips). */
 .hv-toc {
   transition:
