@@ -1,6 +1,6 @@
-# Les goldens de rendu sont des instruments GÉNÉRÉS (snapshots HTML, ~7 000 lignes) : ils agissent
-# — ils rougissent sur tout écart — mais leur contenu ne se relit pas comme du code. Marqués
-# `linguist-generated` pour que GitHub les replie dans les diffs et les sorte des statistiques de
-# langage ; rien ne change localement, et un diff de golden reste à examiner ligne à ligne quand il
-# bouge (CLAUDE.md : tout changement de comportement du noyau se prouve par un golden à diff nul).
+# The render goldens are GENERATED instruments (HTML snapshots, ~7 000 lines): they act — they go
+# red on any deviation — but their content does not read like code. Marked `linguist-generated` so
+# GitHub folds them in diffs and drops them from the language statistics; nothing changes locally,
+# and a golden diff still has to be examined line by line when it moves (CLAUDE.md: any change of
+# behavior in the core is proven by a zero-diff golden).
 web/src/ui/v2/__snapshots__/** linguist-generated

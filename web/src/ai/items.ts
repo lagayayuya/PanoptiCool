@@ -4,7 +4,7 @@
 // benchmark showed that each of these additions DEGRADES the output quality. This module therefore
 // does only one thing: extract the two textual channels of a normalized export, as indexed items.
 //
-// Why a path SEPARATE from the engine: `EngineOutput` only carries the evidence actually cited
+// Why a path SEPARATE from the engine: `Analysis` only carries the evidence actually cited
 // by a finding (memory bound, ADR-0003) — never the complete list of comments and
 // searches. The AI analysis needs it; extending the engine to it would be a doctrine decision
 // (ADR-0002). We therefore start again from the zip's bytes in a dedicated worker (`items-worker.ts`),

@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
 
-# Télémétrie Astro coupée projet-wide (ADR-0003 / éthos anti-surveillance ; relevé au bootstrap PANO-29).
+# Astro telemetry off project-wide (ADR-0003 / anti-surveillance ethos; recorded at bootstrap, PANO-29).
 env:
   ASTRO_TELEMETRY_DISABLED: '1'
 
@@ -17,11 +17,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          # 22 LTS. Vitest 4 supporte ^20 || ^22 || >=24 — Node 23 (impair) est exclu.
+          # 22 LTS. Vitest 4 supports ^20 || ^22 || >=24 — Node 23 (odd) is ruled out.
           node-version: '22'
           cache: npm
           cache-dependency-path: web/package-lock.json
-      # Étapes TS : working-directory: web par étape (panopticool/ Python reste à la racine).
+      # TS steps: working-directory: web per step (the Python panopticool/ stays at the root).
       - run: npm ci
         working-directory: web
       - run: npm run lint
@@ -32,12 +32,12 @@ jobs:
         working-directory: web
       - run: npm run build
         working-directory: web
-      # L'archive de la route B (section IA) est écrite par une INTÉGRATION Astro, pas par un script
-      # `postbuild` : c'est ce qui la rend indépendante de la commande qui lance le build (un
-      # hébergeur appelle `astro build` directement). Ce test vérifie qu'elle sort bien du build —
-      # il ne dit rien de son CONTENU, seulement qu'elle existe. Sans lui, un débranchement de
-      # l'intégration laisserait la CI verte et le lien de téléchargement en 404 en production.
-      - name: L'archive du site sort du build (route B, ADR-0006)
+      # The route-B archive (AI section) is written by an Astro INTEGRATION, not by a `postbuild`
+      # script: that is what makes it independent of the command that starts the build (a host calls
+      # `astro build` directly). This test checks that it does come out of the build — it says
+      # nothing about its CONTENT, only that it exists. Without it, unplugging the integration would
+      # leave CI green and the download link a 404 in production.
+      - name: The site archive comes out of the build (route B, ADR-0006)
         run: test -f dist/panopticool-site.zip
         working-directory: web
 
@@ -49,8 +49,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      # panopticool = stdlib only, tourne depuis la RACINE (pas de working-directory: web,
-      # sinon le module est introuvable). Smoke : génère un export puis le valide.
+      # panopticool = stdlib only, runs from the ROOT (no working-directory: web, or the module
+      # cannot be found). Smoke: generate an export, then validate it.
       - name: Generate + validate synthetic export
         run: |
           python -m panopticool -o ci.zip

@@ -7,7 +7,7 @@ value is real; none designates a real person (see the privacy invariant in
 
 ## Contents
 - `user_data_tiktok.json` — the 10 top-level categories; `Watch History` ≈ 300 entries,
-  the other sections at the scale of the real weights (§2). ~64 KB uncompressed.
+  the other sections at the scale of the real weights (§2). ~89 KB uncompressed (91 457 bytes).
 
 ## Reproduce identically
 The archive is deterministic (fixed seed, frozen ZIP date):

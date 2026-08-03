@@ -60,7 +60,7 @@ export function siteZip(): AstroIntegration {
         const zipped = zipSync(files, { level: 6 });
         writeFileSync(join(outDir, SITE_ZIP_NAME), zipped);
         logger.info(
-          `${SITE_ZIP_NAME} — ${Object.keys(files).length} fichiers, ${(zipped.length / 1024 / 1024).toFixed(1)} Mo`,
+          `${SITE_ZIP_NAME} — ${Object.keys(files).length} files, ${(zipped.length / 1024 / 1024).toFixed(1)} MB`,
         );
       },
     },

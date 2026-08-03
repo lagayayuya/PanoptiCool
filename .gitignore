@@ -1,10 +1,10 @@
-# Sorties générées (synthétiques, mais hors versionnement par hygiène)
+# Generated outputs (synthetic, but kept out of versioning as a matter of hygiene)
 out/
 *.zip
-# Exception : l'échantillon de démo est versionné
+# Exception: the demo sample IS versioned
 !samples/*.zip
 
-# Dépendances JS installées à la racine (le package web a déjà sa propre règle)
+# JS dependencies installed at the root (the web package already has its own rule)
 node_modules/
 
 # Python
@@ -13,21 +13,29 @@ __pycache__/
 .venv/
 venv/
 
-# OS / éditeurs
+# OS / editors
 .DS_Store
 
-# Claude Code — le cadre (skills, launch.json) est suivi ; seul le local machine-spécifique est ignoré
-.claude/settings.local.json
+# Claude Code — ignored whole. The launch config names the private Instagram sandbox below, so
+# tracking it would publish a pointer into a directory this file deliberately excludes. To be
+# revisited when that connector lands in web/ and the path becomes public.
+.claude/
 
-# Transcripts bruts de session (privés) — seule l'entrée curée d'AI_USAGE.md est publique
+# Raw session transcripts (private) — only the curated AI_USAGE.md entry is public
 transcripts/
 
-# Instagram (v2) — bac à sable R&D privé : contient un vrai export, sous consentement.
-# Un export réel peut nourrir le travail, il n'entre jamais dans le dépôt (invariant, CLAUDE.md).
-# Ce qui en sort ne peut être qu'une structure ou une statistique — jamais une valeur.
+# Instagram (v2) — private R&D sandbox: contains a real export, under consent.
+# A real export may feed the work, it never enters the repo (invariant, CLAUDE.md).
+# What comes out of it can only be a structure or a statistic — never a value.
 Instagram/
 
-# Runs de benchmark d'anciens outils de R&D (playground WebLLM, retiré). Plus rien ne les produit,
-# mais des runs peuvent subsister en local : ils contiennent des sorties d'inférence sur données
-# réelles et ne doivent jamais être committés (invariant de privacy, CLAUDE.md).
+# Benchmark runs from old R&D tooling (the WebLLM playground, since removed). Nothing produces them
+# any more, but runs may survive locally: they contain inference output on real data and must never
+# be committed (privacy invariant, CLAUDE.md).
 benchmark-runs/
+Design.pdf
+
+# Structure quiz — a personal tool for re-reading the project (bus factor of 1, METHODE.md).
+# Nothing in it is produced by the product or consumed by it: the question banks are a hand-written
+# snapshot, and progress lives in the browser's localStorage.
+quiz/

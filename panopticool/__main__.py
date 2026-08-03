@@ -44,7 +44,7 @@ def _overrides(empty, absent):
     for raw, state in [(s, EMPTY) for s in empty] + [(s, ABSENT) for s in absent]:
         path = tuple(p for p in raw.split("/") if p)
         if path not in valid:
-            print(f"avertissement : section inconnue ignorée : {raw!r}", file=sys.stderr)
+            print(f"warning: unknown section ignored: {raw!r}", file=sys.stderr)
             continue
         overrides[path] = state
     return overrides
@@ -53,23 +53,23 @@ def _overrides(empty, absent):
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m panopticool",
-        description="Génère un faux export TikTok synthétique (.zip) et le valide.")
+        description="Generates a synthetic fake TikTok export (.zip) and validates it.")
     parser.add_argument("-o", "--out", default=DEFAULT_OUT,
-                        help=f"chemin du .zip de sortie (défaut : {DEFAULT_OUT})")
+                        help=f"path of the output .zip (default: {DEFAULT_OUT})")
     parser.add_argument("-s", "--seed", type=int, default=DEFAULT_SEED,
-                        help=f"graine aléatoire (sorties reproductibles ; défaut : {DEFAULT_SEED})")
+                        help=f"random seed (reproducible outputs; default: {DEFAULT_SEED})")
     parser.add_argument("-v", "--volume", type=int, default=DEFAULT_VOLUME,
-                        help=f"Watch History ≈ N, reste à l'échelle §2 (défaut : {DEFAULT_VOLUME})")
+                        help=f"Watch History ≈ N, the rest scaled per §2 (default: {DEFAULT_VOLUME})")
     parser.add_argument("--ads", choices=("off", "on"), default="off",
-                        help="off (défaut) : sections ads vides/null ; on : reconstruction NON VÉRIFIÉE (§3)")
+                        help="off (default): ads sections empty/null; on: UNVERIFIED reconstruction (§3)")
     parser.add_argument("--persona", choices=PERSONA_NAMES, default="default",
-                        help="profil d'identité (défaut : aléatoire)")
+                        help="identity profile (default: random)")
     parser.add_argument("--empty", action="append", default=[], metavar="SECTION",
-                        help="force une section à son encodage du vide (répétable), ex. 'Your Activity/Searches'")
+                        help="force a section to its empty encoding (repeatable), e.g. 'Your Activity/Searches'")
     parser.add_argument("--absent", action="append", default=[], metavar="SECTION",
-                        help="omet entièrement la clé d'une section (répétable)")
+                        help="omit a section's key entirely (repeatable)")
     parser.add_argument("--no-validate", action="store_true",
-                        help="n'exécute pas le validateur après écriture")
+                        help="do not run the validator after writing")
     args = parser.parse_args(argv)
 
     ads = args.ads == "on"
@@ -80,7 +80,7 @@ def main(argv=None) -> int:
     zip_path = generate(args.out, volume=args.volume, ads=ads, persona=persona,
                         overrides=overrides)
     size = Path(zip_path).stat().st_size
-    print(f"écrit : {zip_path} ({size} octets) — volume={args.volume} "
+    print(f"written: {zip_path} ({size} bytes) — volume={args.volume} "
           f"ads={args.ads} persona={args.persona}")
 
     if args.no_validate:

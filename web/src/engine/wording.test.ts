@@ -1,78 +1,79 @@
-// Tests de PROPRIÉTÉ de cadrage (PANO-13, garde-fou de cadrage d'ADR-0003 ; révisé PANO-56
-// correction n°5 ; porté sur `wording.ts` à la Refonte A, lot A2 — ex-`ui/templates.test.ts`).
+// Framing PROPERTY tests (PANO-13, ADR-0003's framing guardrail; revised at PANO-56 correction
+// no. 5; carried onto `wording.ts` at Rework A, batch A2 — ex-`ui/templates.test.ts`).
 //
-// Ils ne jugent PAS le ton (provisoire, relu par yuya) : ils verrouillent des propriétés
-// STRUCTURELLES sur chaque texte rendu —
-//   (a) aucune marque de 2ᵉ personne, sur TOUT texte du fichier de wording ;
-//   (c) pour les CLAIMS (seule ligne affichée depuis PANO-56 — un syntagme court SANS sujet
-//       explicite) : aucun verdict direct sur la personne, et aucun label sensible posé NU sans
-//       marqueur d'inférence.
-// Les fragments courts (lectures d'éventail, libellés de thème, usage, noms de sujet) ne sont soumis
-// qu'à (a) : « un vécu personnel » n'a pas à se cadrer, ce n'est pas une phrase assertive.
-// C'est le filet automatique de « miroir, pas oracle ». Il doit rester vert.
+// They do NOT judge the tone (provisional, re-read by yuya): they lock STRUCTURAL properties on
+// every rendered text —
+//   (a) no 2nd-person mark, on EVERY text in the wording file;
+//   (c) for CLAIMS (the only line displayed since PANO-56 — a short phrase WITHOUT an explicit
+//       subject): no direct verdict on the person, and no sensitive label laid down BARE without an
+//       inference marker.
+// Short fragments (fan readings, theme labels, usage, subject names) are subject only to (a): « un
+// vécu personnel » does not have to frame itself, it is not an assertive sentence.
+// This is the automatic net of « a mirror, not an oracle ». It must stay green.
 //
-// ─── CE QUE CE FILET NE COUVRE PAS ──────────────────────────────────────────────────────────────
-// Obligation de CLAUDE.md : un mécanisme de preuve déclare sa frontière, sinon il finit sur-cité.
+// ─── WHAT THIS NET DOES NOT COVER ───────────────────────────────────────────────────────────────
+// A CLAUDE.md obligation: a proof mechanism declares its border, or it ends up over-cited.
 //
-//   - LE GARDE (a) EST LEXICAL, PAS PRAGMATIQUE. Il attrape des PRONOMS, pas l'ADRESSE. « Consider
-//     seeking help » s'adresse au lecteur sans porter un seul jeton de 2ᵉ personne, et passe. Ce
-//     qu'on tient est « aucun pronom de 2ᵉ personne », pas « le moteur ne s'adresse à personne » —
-//     la seconde est l'obligation d'ADR-0003, et c'est une relecture humaine qui la tient.
-//   - (c) EST UN PROXY, DANS LES DEUX LANGUES. `PERSON_DIRECT_VERDICT` cherche une copule française
-//     (« la personne EST X ») ; l'anglais a la sienne (`is`/`seems`/`looks`), et les deux listes
-//     sont des approximations, pas une analyse grammaticale. Une forme assertive écrite autrement —
-//     participe seul, apposition — passe. C'est un garde-fou, pas une preuve.
-//   - AUCUN DES DEUX NE JUGE LA TRADUCTION. Le sweep balaie les deux bundles, donc un texte anglais
-//     fautif rougit ; mais un texte anglais qui RECOPIE le français passe (a) et (c) sans un bruit.
-//     Le témoin de non-recopie plus bas n'attrape que le cas grossier — zéro texte traduit. Entre
-//     « rien n'est traduit » et « tout est bien traduit », il n'y a que la relecture humaine.
-//   - LES TABLES NE PASSENT PAS PAR ICI. Lectures, thèmes, usages et acteurs sont des résolveurs
-//     (`RESOLVERS`) : leur couverture est tenue par `d1/d2-wording-coverage.test.ts`, et leur parité
-//     FR/EN par `wording-parity.test.ts`. Trois filets, trois propriétés — n'en citer aucun pour un
-//     autre.
+//   - GUARD (a) IS LEXICAL, NOT PRAGMATIC. It catches PRONOUNS, not ADDRESS. « Consider seeking
+//     help » addresses the reader without carrying a single 2nd-person token, and passes. What we
+//     hold is « no 2nd-person pronoun », not « the engine addresses no one » — the second is
+//     ADR-0003's obligation, and it is a human re-reading that holds it.
+//   - (c) IS A PROXY, IN BOTH LANGUAGES. `PERSON_DIRECT_VERDICT` looks for a French copula (« la
+//     personne EST X »); English has its own (`is`/`seems`/`looks`), and both lists are
+//     approximations, not a grammatical analysis. An assertive form written otherwise — a bare
+//     participle, an apposition — passes. It is a guardrail, not a proof.
+//   - NEITHER OF THEM JUDGES THE TRANSLATION. The sweep covers both bundles, so a faulty English
+//     text goes red; but an English text that COPIES the French passes (a) and (c) without a sound.
+//     The non-copy witness below only catches the crude case — zero text translated. Between
+//     « nothing is translated » and « everything is well translated », there is only human
+//     re-reading.
+//   - THE TABLES DO NOT GO THROUGH HERE. Readings, themes, usages and actors are resolvers
+//     (`RESOLVERS`): their coverage is held by `d1/d2-wording-coverage.test.ts`, and their FR/EN
+//     parity by `wording-parity.test.ts`. Three nets, three properties — never cite one for
+//     another.
 //
-// ─── (b) « SUJET = PLATEFORME » A ÉTÉ RETIRÉ AVEC `framing` — pourquoi ce n'est pas une perte ────
-// La propriété (b) exigeait que chaque gabarit `*.framing` prenne la plateforme/le système pour
-// sujet. Or `framing` n'était PLUS RENDU depuis PANO-56 : (b) prouvait donc une obligation de
-// doctrine SUR DU TEXTE QUE PERSONNE NE LIT. Le retirer avec son sujet n'enlève aucune garantie sur
-// l'écran. (b) ne peut PAS être reportée telle quelle sur le `claim` : la forme ratifiée en PANO-56
-// était un syntagme SANS sujet — exiger qu'il nomme la plateforme rouvrirait PANO-56 et réécrirait
-// le wording, donc le golden.
-// ⚠ Cette phrase citait « Signal indirect associable à la santé mentale » AU PRÉSENT, comme si ce
-// claim existait. Il n'existe plus : les dix phrases des cinq labels à éventail ont été retirées
-// avec le lot C (l'éventail porte le sens), et il ne reste que trois claims — aucun ne porte de
-// label sensible. Le raisonnement sur (b) tient sans l'exemple ; l'exemple, lui, envoyait traduire
-// une phrase morte.
-// Ce qui SURVIT, et qui est le vrai filet, c'est (c) : « jamais de verdict sur la personne », sur le
-// texte réellement affiché. Il a été ÉLARGI AVANT le retrait de `framing` — condition non
-// négociable de yuya ; le commit qui la portait n'a pas survécu à la réécriture d'historique v1 —
-// sa v0 n'ancrait la forme assertive que sur le lexème « personne ».
+// ─── (b) « SUBJECT = PLATFORM » WAS REMOVED ALONG WITH `framing` — why that is not a loss ────────
+// Property (b) required every `*.framing` template to take the platform/the system as its subject.
+// But `framing` had NOT BEEN RENDERED since PANO-56: (b) was therefore proving a doctrinal
+// obligation ON TEXT NOBODY READS. Removing it along with its subject takes away no guarantee on
+// the screen. (b) CANNOT be carried over as-is onto the `claim`: the form ratified at PANO-56 was a
+// phrase WITHOUT a subject — requiring it to name the platform would reopen PANO-56 and rewrite the
+// wording, hence the golden.
+// ⚠ This paragraph used to cite « Signal indirect associable à la santé mentale » IN THE PRESENT, as
+// if that claim existed. It no longer does: the ten sentences of the five fan labels were removed
+// with batch C (the fan carries the meaning), and only three claims remain — none of them carries a
+// sensitive label. The reasoning about (b) holds without the example; the example, for its part,
+// was sending a dead sentence off to be translated.
+// What SURVIVES, and what is the real net, is (c): « never a verdict on the person », on the text
+// actually displayed. It was WIDENED BEFORE `framing` was removed — a non-negotiable condition from
+// yuya; the commit that carried it did not survive the v1 history rewrite — its v0 anchored the
+// assertive form on the lexeme « personne » alone.
 
 import { describe, expect, it } from 'vitest';
 import { LOCALES, type Locale } from '../i18n/locales';
 import * as wording from './wording';
 
-// Le sweep est EXHAUSTIF PAR CONSTRUCTION : il balaie les exports du module (`import * as`), pas une
-// liste tenue à la main — mieux que l'ex-`allTemplateIds()`, qui dépendait d'une entrée au catalogue.
-// Un claim ajouté est balayé sans rien déclarer.
-// `actorLabel`/`readingText`/`themeLabelText`/`usageText`/`sensitiveTopicName`/`hasX` prennent une
-// CLÉ, pas des params de rendu : ce sont des résolveurs, pas des textes. Les tables qu'ils résolvent
-// sont balayées par `d1/d2-wording-coverage.test.ts`, sur les clés RÉELLES des lexiques.
+// The sweep is EXHAUSTIVE BY CONSTRUCTION: it walks the module's exports (`import * as`), not a
+// hand-maintained list — better than the ex-`allTemplateIds()`, which depended on an entry in the
+// catalog. An added claim is swept without declaring anything.
+// `actorLabel`/`readingText`/`themeLabelText`/`usageText`/`sensitiveTopicName`/`hasX` take a KEY,
+// not render params: they are resolvers, not texts. The tables they resolve are swept by
+// `d1/d2-wording-coverage.test.ts`, on the REAL keys of the lexicons.
 const RESOLVERS = /^(has|actorLabel|readingText|themeLabelText|usageText|sensitiveTopicName)/;
 
-// ⚠ CHAQUE RENDU EST PARAMÉTRÉ PAR LA LANGUE, et le sweep les balaie TOUTES (`LOCALES`). Sans ça,
-// la propriété (a) — une obligation d'ADR-0003 — ne tiendrait que dans la langue balayée, et le
-// bundle anglais pourrait écrire « you seem depressed » sans que rien ne rougisse. C'est le motif
-// que CLAUDE.md compte sept fois : un filet écrit sur les cas typiques, cité comme s'il couvrait
-// le domaine.
+// ⚠ EVERY RENDER IS PARAMETERIZED BY LANGUAGE, and the sweep walks them ALL (`LOCALES`). Without
+// that, property (a) — an ADR-0003 obligation — would hold only in the swept language, and the
+// English bundle could write « you seem depressed » without anything going red. This is the pattern
+// CLAUDE.md counts seven times: a net written on the typical cases, cited as if it covered the
+// domain.
 const RENDERERS: [string, (locale: Locale) => string][] = Object.entries(wording).flatMap(
   ([name, value]) => {
     if (typeof value !== 'function' || RESOLVERS.test(name)) {
       return [];
     }
-    // `fn.length` donne l'arité. Le PREMIER paramètre est la `Locale` ; les suivants (seul
-    // `d2InterestClaim` en a un, `signalCount: number`) sont nourris d'un nombre, sans avoir à
-    // lister les cas. ⚠ Le `- 1` n'est pas cosmétique : sans lui, la locale recevrait `5`.
+    // `fn.length` gives the arity. The FIRST parameter is the `Locale`; the following ones (only
+    // `d2InterestClaim` has one, `signalCount: number`) are fed a number, with no need to list the
+    // cases. ⚠ The `- 1` is not cosmetic: without it, the locale would receive `5`.
     const fn = value as (locale: Locale, ...args: number[]) => string;
     const extras = new Array<number>(Math.max(0, fn.length - 1)).fill(5);
     const entry: [string, (locale: Locale) => string] = [
@@ -85,22 +86,22 @@ const RENDERERS: [string, (locale: Locale) => string][] = Object.entries(wording
 
 const CLAIMS = RENDERERS.filter(([name]) => /Claim$/.test(name));
 
-// (a) 2ᵉ personne — UNE OBLIGATION DE DOCTRINE, PAS UNE RÈGLE DE STYLE. ADR-0003 (*Le cadrage*) :
-// le moteur ne s'adresse JAMAIS à la personne, à aucun niveau de confiance. « Tu sembles traverser
-// une dépression » prononcerait le verdict que la doctrine interdit.
+// (a) 2nd person — A DOCTRINAL OBLIGATION, NOT A STYLE RULE. ADR-0003 (*The framing*): the engine
+// NEVER addresses the person, at any confidence level. « Tu sembles traverser une dépression »
+// would pronounce the verdict the doctrine forbids.
 //
-// FR : pronoms/déterminants (bornés par `\b` pour éviter les faux positifs comme « habi**tu**des »
-// ou « in**te**ntion ») + élision « t' » (t'as, t'es…). Apostrophe droite ET typographique.
+// FR: pronouns/determiners (bounded by `\b` to avoid false positives such as « habi**tu**des » or
+// « in**te**ntion ») + the elision « t' » (t'as, t'es…). Straight AND typographic apostrophe.
 const SECOND_PERSON_FR = /\b(tu|toi|ton|ta|tes|te|vous|votre|vos|vôtre)\b|\bt['’]/i;
 
-// EN : le garde est écrit AVANT le fichier qu'il protège, et c'est délibéré — une obligation de
-// doctrine qui n'existe que dans une langue tient dans une langue. Sans lui, `wording.en.ts`
-// écrirait « you seem depressed » et ce filet resterait VERT.
+// EN: the guard is written BEFORE the file it protects, and that is deliberate — a doctrinal
+// obligation that exists in only one language holds in one language. Without it, `wording.en.ts`
+// would write « you seem depressed » and this net would stay GREEN.
 //
-// Les bornes de mot ne sont pas de la décoration : `\byou\b` laisse passer « young » (pas de
-// frontière entre « you » et « n »), et « youth » reste utilisable. `your` a ses propres flexions
-// (`yours`, `yourself`, `yourselves`), d'où une seconde alternative plutôt qu'un `\byour` nu qui
-// mordrait sans les nommer. Les élisions couvrent les deux apostrophes, comme côté FR.
+// The word boundaries are not decoration: `\byou\b` lets « young » through (no boundary between
+// « you » and « n »), and « youth » stays usable. `your` has its own inflections (`yours`,
+// `yourself`, `yourselves`), hence a second alternative rather than a bare `\byour` that would bite
+// without naming them. The elisions cover both apostrophes, as on the FR side.
 const SECOND_PERSON_EN = /\byou(?:['’](?:re|ve|ll|d))?\b|\byour(?:s|self|selves)?\b/i;
 
 const SECOND_PERSON_GUARDS: readonly [string, RegExp][] = [
@@ -108,41 +109,42 @@ const SECOND_PERSON_GUARDS: readonly [string, RegExp][] = [
   ['EN', SECOND_PERSON_EN],
 ];
 
-// (c) Proxy de « pas de verdict sur la personne » (CLAIMS seuls, depuis PANO-56) — deux formes
-// interdites, approximatives par construction (v0) :
-//   - une assertion directe sur la personne (« la personne est/semble X ») ;
-//   - un label sensible NU sans marqueur d'inférence à proximité — le claim doit décrire un
-//     SIGNAL/une LECTURE, jamais un état constaté comme fait.
-// Élargissement du premier proxy : cf. en-tête (prérequis au retrait de `framing`).
-// Ces deux fragments ne portent AUCUNE séquence d'échappement : littéraux simples (le `String.raw`
-// n'a de sens que sur la ligne suivante, qui écrit `\b`/`\s`).
-// Les deux listes portent le FRANÇAIS ET L'ANGLAIS : un claim anglais « the user seems anxious »
-// doit être attrapé par le même filet. Sans les lexèmes EN, (c) tiendrait dans une langue — le même
-// défaut que (a) portait avant ce lot, et pour la même raison.
+// (c) Proxy for « no verdict on the person » (CLAIMS only, since PANO-56) — two forbidden forms,
+// approximate by construction (v0):
+//   - a direct assertion about the person (« la personne est/semble X »);
+//   - a BARE sensitive label with no inference marker nearby — the claim must describe a
+//     SIGNAL/a READING, never a state established as fact.
+// Widening of the first proxy: cf. the header (a prerequisite to removing `framing`).
+// These two fragments carry NO escape sequence: plain literals (the `String.raw` only makes sense
+// on the following line, which writes `\b`/`\s`).
+// Both lists carry FRENCH AND ENGLISH: an English claim « the user seems anxious » must be caught
+// by the same net. Without the EN lexemes, (c) would hold in one language — the same defect (a)
+// carried before this batch, and for the same reason.
 const PERSON_NOUN = `(?:personne|utilisateur|utilisatrice|individu|auteur|titulaire|abonné|membre|il|elle|user|person|individual|author|member|account|they|he|she)`;
 const COPULA = `(?:est|semble|paraît|parait|demeure|reste|serait|apparaît|apparait|a l['’]air|is|are|seems?|appears?|looks?|remains?|sounds?)`;
 const PERSON_DIRECT_VERDICT = new RegExp(String.raw`\b${PERSON_NOUN}\s+${COPULA}\b`, 'i');
-// Lexèmes sensibles NUS — FR et EN. `depress` couvre depressed/depression ; `anxi` couvre
-// anxious/anxiety. Les bornes de mot sur `gay`/`trans` évitent « gaya », « transfert », « transit ».
+// BARE sensitive lexemes — FR and EN. `depress` covers depressed/depression; `anxi` covers
+// anxious/anxiety. The word boundaries on `gay`/`trans` avoid « gaya », « transfert », « transit ».
 const BARE_SENSITIVE_LABEL =
   /(dépress|depress|anxi(eux|été|ous|ety)|homosexuel|bisexuel|lesbienne|lesbian|\bgay\b|\btrans(gender|genre)?\b|extrémiste|extremist|terroriste|terrorist|malade|handicap|disabled|suicidal|addict)/i;
 const INFERENCE_MARKER =
   /(déduit|suppos|associable|signal|indice|indirect|lu comme|distingu|attribu|confirm|repér|concentr|expos|inferred|infer|linked|associated|could|possible|potential|reading|marker)/i;
 
-describe('wording — couverture', () => {
-  it('le fichier porte des textes (le sweep ne rate pas la couverture réelle)', () => {
+describe('wording — coverage', () => {
+  it('the file carries texts (the sweep does not miss the real coverage)', () => {
     expect(RENDERERS.length).toBeGreaterThan(0);
     expect(CLAIMS.length).toBeGreaterThan(0);
   });
 
-  // Le sweep repose sur une CONVENTION DE NOM (`…Claim` ⇒ la propriété (c) s'applique) : un claim
-  // renommé s'échapperait du filet EN SILENCE. Cette liste est la sentinelle — elle tombe si un
-  // claim disparaît, est ajouté ou est mal nommé. À mettre à jour SCIEMMENT, jamais par réflexe.
-  it('chaque claim attendu est balayé (une faute de nom ne peut pas échapper au filet)', () => {
-    // DIX CLAIMS ONT DISPARU, et leur absence est le sujet du lot C : les cinq labels sensibles à
-    // ÉVENTAIL n'ont plus de phrase — l'éventail porte le sens, la phrase répétait le titre de la
-    // carte. Ne restent que les constats SANS éventail : `conflictual` (pas de lectures par
-    // doctrine B5, et sa phrase porte le critère « émis, visant autrui ») et les intérêts D2.
+  // The sweep rests on a NAMING CONVENTION (`…Claim` ⇒ property (c) applies): a renamed claim would
+  // escape the net IN SILENCE. This list is the sentinel — it falls if a claim disappears, is added
+  // or is misnamed. To be updated KNOWINGLY, never by reflex.
+  it('every expected claim is swept (a naming mistake cannot escape the net)', () => {
+    // TEN CLAIMS HAVE DISAPPEARED, and their absence is the subject of batch C: the five sensitive
+    // FAN labels no longer have a sentence — the fan carries the meaning, the sentence repeated the
+    // card's title. Only the findings WITHOUT a fan remain: `conflictual` (no readings, by doctrine
+    // B5, and its sentence carries the criterion « emitted, aimed at someone else ») and the D2
+    // interests.
     expect(CLAIMS.map(([n]) => n).sort()).toEqual([
       'd1ConflictualNamedClaim',
       'd2InterestClaim',
@@ -150,7 +152,7 @@ describe('wording — couverture', () => {
     ]);
   });
 
-  it('rend une chaîne non vide pour chaque texte, dans CHAQUE langue', () => {
+  it('renders a non-empty string for every text, in EVERY language', () => {
     for (const locale of LOCALES) {
       for (const [name, render] of RENDERERS) {
         expect(render(locale).length, `${name} (${locale})`).toBeGreaterThan(0);
@@ -158,18 +160,18 @@ describe('wording — couverture', () => {
     }
   });
 
-  // Contrôle de NON-RECOPIE : au moins un claim doit DIFFÉRER entre les deux langues. Un bundle
-  // anglais qui recopierait le français passerait tout le reste de ce fichier — la parité prouve
-  // qu'une entrée existe, jamais qu'elle est traduite. Ce témoin ne prouve pas la traduction non
-  // plus ; il attrape seulement le cas grossier où personne n'aurait rien traduit du tout.
-  it('les deux langues ne rendent pas le MÊME texte (le bundle EN n’est pas une copie)', () => {
+  // NON-COPY check: at least one claim must DIFFER between the two languages. An English bundle
+  // that copied the French would pass everything else in this file — parity proves that an entry
+  // exists, never that it is translated. This witness does not prove the translation either; it
+  // only catches the crude case where nobody translated anything at all.
+  it('the two languages do not render the SAME text (the EN bundle is not a copy)', () => {
     const differs = RENDERERS.filter(([, render]) => render('fr') !== render('en'));
-    expect(differs.length, 'aucun texte ne diffère entre FR et EN').toBeGreaterThan(0);
+    expect(differs.length, 'no text differs between FR and EN').toBeGreaterThan(0);
   });
 });
 
-describe('wording — propriétés « miroir, pas oracle »', () => {
-  it('(a) aucun texte ne contient de marque de 2ᵉ personne', () => {
+describe('wording — « a mirror, not an oracle » properties', () => {
+  it('(a) no text contains a 2nd-person mark', () => {
     for (const locale of LOCALES) {
       for (const [name, render] of RENDERERS) {
         const text = render(locale);
@@ -177,19 +179,19 @@ describe('wording — propriétés « miroir, pas oracle »', () => {
           const match = text.match(guard);
           expect(
             match,
-            `2ᵉ personne ${lang} « ${match?.[0]} » dans ${name} (${locale}) : "${text}"`,
+            `${lang} 2nd person « ${match?.[0]} » in ${name} (${locale}): "${text}"`,
           ).toBeNull();
         }
       }
     }
   });
 
-  // CONTRÔLES NÉGATIFS du garde (a), sur le modèle de ceux de (c) plus bas. Ils fixent le GARDE, pas
-  // le wording : ils survivent donc à toute réécriture de la prose, et sont — aujourd'hui — la SEULE
-  // preuve que la moitié anglaise mord (cf. la frontière déclarée en tête de fichier).
-  it('(a) le garde EN attrape la 2ᵉ personne anglaise, verdict compris', () => {
+  // NEGATIVE CONTROLS on guard (a), on the model of (c)'s below. They pin the GUARD, not the
+  // wording: they therefore survive any rewriting of the prose, and are — today — the ONLY proof
+  // that the English half bites (cf. the border declared at the top of the file).
+  it('(a) the EN guard catches English 2nd person, verdict included', () => {
     for (const forbidden of [
-      'you seem depressed', // le verdict exact qu'ADR-0003 interdit
+      'you seem depressed', // the exact verdict ADR-0003 forbids
       'your anxiety is showing',
       "you're likely struggling",
       'a signal about yourself',
@@ -199,7 +201,7 @@ describe('wording — propriétés « miroir, pas oracle »', () => {
     }
   });
 
-  it("(a) le garde EN n'attrape PAS les mots qui contiennent « you » sans s'adresser à personne", () => {
+  it('(a) the EN guard does NOT catch words containing « you » that address no one', () => {
     for (const allowed of [
       'signal associated with a young audience',
       'youth culture interest',
@@ -211,38 +213,38 @@ describe('wording — propriétés « miroir, pas oracle »', () => {
   });
 });
 
-describe('wording — propriété « pas de verdict sur la personne » (claims uniquement)', () => {
-  it('(c) aucun claim n’assertionne directement un état de la personne', () => {
+describe('wording — « no verdict on the person » property (claims only)', () => {
+  it('(c) no claim directly asserts a state of the person', () => {
     for (const locale of LOCALES) {
       for (const [name, render] of CLAIMS) {
         const text = render(locale);
         const match = text.match(PERSON_DIRECT_VERDICT);
         expect(
           match,
-          `verdict direct sur la personne « ${match?.[0]} » dans ${name} (${locale}) : "${text}"`,
+          `direct verdict on the person « ${match?.[0]} » in ${name} (${locale}): "${text}"`,
         ).toBeNull();
       }
     }
   });
 
-  it('(c) tout label sensible d’un claim est accompagné d’un marqueur d’inférence, jamais posé nu', () => {
+  it('(c) every sensitive label in a claim comes with an inference marker, never laid down bare', () => {
     for (const locale of LOCALES) {
       for (const [name, render] of CLAIMS) {
         const text = render(locale);
         if (BARE_SENSITIVE_LABEL.test(text)) {
           expect(
             INFERENCE_MARKER.test(text),
-            `label sensible sans marqueur d'inférence dans ${name} (${locale}) : "${text}"`,
+            `sensitive label with no inference marker in ${name} (${locale}): "${text}"`,
           ).toBe(true);
         }
       }
     }
   });
 
-  // CONTRÔLES NÉGATIFS du filet (c). Un test de propriété qui ne rejette rien est vert ET vide : ces
-  // cas prouvent que l'élargissement mord VRAIMENT, sur les formes qui passaient la v0. Ils fixent le
-  // filet lui-même — pas le wording —, donc survivent à toute réécriture de la prose.
-  it('(c) le filet attrape un verdict porté par un sujet AUTRE que « personne » (trou de la v0)', () => {
+  // NEGATIVE CONTROLS on net (c). A property test that rejects nothing is green AND empty: these
+  // cases prove that the widening REALLY bites, on the forms that passed v0. They pin the net
+  // itself — not the wording — and therefore survive any rewriting of the prose.
+  it('(c) the net catches a verdict carried by a subject OTHER than « personne » (v0 hole)', () => {
     for (const forbidden of [
       'utilisateur est passionné de crypto',
       'utilisatrice semble anxieuse',
@@ -254,13 +256,13 @@ describe('wording — propriété « pas de verdict sur la personne » (claims u
     }
   });
 
-  // ⚠ CES CHAÎNES SONT DES FORMES, PAS DES CITATIONS DU WORDING VIVANT — et deux d'entre elles ne
-  // sont plus produites par personne : « Signal indirect associable… » est parti avec les claims à
-  // éventail, et « repéré dans des commentaires » avec le canal (une preuve tirée d'une RECHERCHE
-  // était annoncée comme un commentaire). Les garder est VOULU : ces contrôles fixent le FILET, pas
-  // la prose, et une forme retirée du produit reste une forme que le filet doit savoir ne pas
-  // rejeter. Ne pas les lire comme l'état courant du wording — `wording.ts` est sa seule maison.
-  it('(c) le filet n’attrape PAS un syntagme sans verdict (aucun faux positif sur la forme ratifiée)', () => {
+  // ⚠ THESE STRINGS ARE FORMS, NOT QUOTATIONS OF THE LIVING WORDING — and two of them are no longer
+  // produced by anyone: « Signal indirect associable… » left with the fan claims, and « repéré dans
+  // des commentaires » left with the channel (evidence drawn from a SEARCH was announced as a
+  // comment). Keeping them is DELIBERATE: these controls pin the NET, not the prose, and a form
+  // withdrawn from the product remains a form the net must know not to reject. Do not read them as
+  // the current state of the wording — `wording.ts` is its only home.
+  it('(c) the net does NOT catch a phrase without a verdict (no false positive on the ratified form)', () => {
     for (const allowed of [
       'Propos agressif adressé à un autre utilisateur, repéré dans des commentaires.',
       'Signal indirect associable à la santé mentale.',

@@ -34,10 +34,10 @@ const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
       }
       html {
         scroll-behavior: smooth;
-        scroll-padding-top: 80px; /* sommaire : les ancres s'arrêtent sous la barre sticky */
+        scroll-padding-top: 80px; /* table of contents: the anchors stop under the sticky bar */
       }
-      /* Mobile (maquette « v4 Mobile ») : la barre sticky est plus haute (rangée logo + chips de
-         sommaire) — même seuil que MOBILE_QUERY (ui/v2/useIsMobile.ts, à garder alignés). */
+      /* Mobile (« v4 Mobile » mockup): the sticky bar is taller (logo row + table-of-contents
+         chips) — same threshold as MOBILE_QUERY (ui/v2/useIsMobile.ts, to keep aligned). */
       @media (max-width: 720px) {
         html {
           scroll-padding-top: 132px;
@@ -48,7 +48,7 @@ const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
         background: #070b18; /* NAVY.bgPage */
         color: #e9eefb; /* NAVY.textBright */
       }
-      /* Spinner de l'écran de chargement (styles inline — le @keyframes global vit ici). */
+      /* Loading-screen spinner (inline styles — the global @keyframes lives here). */
       @keyframes pano-spin {
         to {
           transform: rotate(360deg);

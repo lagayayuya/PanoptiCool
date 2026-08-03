@@ -187,8 +187,8 @@ export async function runLlamaCppStream(
     throw err instanceof Error ? err : new Error(String(err));
   }
   if (!res.ok)
-    throw new Error(`llama.cpp : HTTP ${res.status} — le serveur tourne-t-il sur cette URL ?`);
-  if (!res.body) throw new Error('llama.cpp : réponse sans corps de flux.');
+    throw new Error(`llama.cpp: HTTP ${res.status} — is the server running on this URL?`);
+  if (!res.body) throw new Error('llama.cpp: response with no stream body.');
 
   const reader = res.body.getReader();
   const decoder = new TextDecoder();

@@ -1,30 +1,30 @@
-// Goldens de MÉCANIQUE de D2 (socle PANO-75) — verrouillent le comportement de la règle
-// INDÉPENDAMMENT du contenu réel des lexiques (lots PANO-76+). Comme D1 sépare `detect.test.ts`
-// (lexiques FACTICES) de `lexicon-battery.test.ts` (lexiques réels), la mécanique D2 se teste sur des
-// lexiques factices injectés via le paramètre `lexicons` de `d2Interests` : le socle reste
-// littéralement intact quand les lots de contenu changent le registre réel.
+// D2 MECHANICS goldens (PANO-75 base) — they lock the rule's behavior INDEPENDENTLY of the real
+// content of the lexicons (PANO-76+ batches). Just as D1 separates `detect.test.ts` (FAKE lexicons)
+// from `lexicon-battery.test.ts` (real lexicons), D2's mechanics are tested on fake lexicons
+// injected through `d2Interests`'s `lexicons` parameter: the base stays literally intact when
+// content batches change the real register.
 //
-// Garde-fous vérifiés ici : jamais de `readings`, classement (plancher + tri par volume), confiance
-// dérivée du volume, bonus d'auto-déclaration, thème bien formé (nom + bloc usage). Le CONTENU réel
-// (détection par thème, adversité, frontière D1, dédup D1×D2) vit dans
-// `detect/interests-battery.test.ts`. Phrases 100 % synthétiques, jamais tirées d'un export réel.
+// Guardrails checked here: never any `readings`, ranking (floor + sort by volume), confidence
+// derived from volume, self-declaration bonus, well-formed theme (name + usage block). The real
+// CONTENT (per-theme detection, adversity, the D1 border, D1×D2 dedup) lives in
+// `detect/interests-battery.test.ts`. Sentences 100 % synthetic, never taken from a real export.
 //
-// PORTÉ À LA REFONTE A. Trois verrous changent de NATURE — il faut le dire, pas les réécrire en
-// silence :
-//   - « D2 n'émet JAMAIS de `sensitivity` » devient « `sensitive === false` ». Ce n'est PAS un
-//     renommage : §2.1 a fusionné trois axes de gradation DÉGÉNÉRÉS (`sensitivity` toujours `3`,
-//     `Theme.sensitive` toujours `false`, `Confidence.level: 'high'` sans producteur) en UN
-//     discriminant qui, lui, VARIE. L'assertion passe d'« absent » à « explicitement faux » — et le
-//     `Theme.sensitive` qu'on vérifiait en plus a disparu, l'information ne vit qu'à un endroit ;
-//   - « les insights sont groupés par `themeId`, dans l'ordre » n'est plus testable PARCE QUE c'est
-//     devenu STRUCTUREL : un thème PORTE ses constats (`deductions`). Le regroupement que
-//     `buildPageBlocks` refaisait à l'affichage est fait ICI, une fois. Ce qu'un test peut encore
-//     prouver, et qui reste une décision de règle : D2 émet UN constat par thème retenu ;
-//   - « claim = TemplateRef de l'allowlist » devient l'identité RÉELLE (même bascule que les goldens
-//     D1) : le claim est le TEXTE de `d2InterestClaim(volume)`, il ne PEUT pas sortir d'une liste.
-//     On vérifie donc qu'il porte le BON volume — ce que l'allowlist ne prouvait pas.
-// Le magasin de preuves disparaît avec `evidenceId`/`source.path` : une preuve est référencée
-// directement, son identité est la paire `channel`/`sourceIndex` (§5.4).
+// CARRIED OVER AT REWORK A. Three locks change NATURE — that has to be said, not rewritten in
+// silence:
+//   - « D2 NEVER emits `sensitivity` » becomes « `sensitive === false` ». This is NOT a rename:
+//     §2.1 merged three DEGENERATE gradation axes (`sensitivity` always `3`, `Theme.sensitive`
+//     always `false`, `Confidence.level: 'high'` with no producer) into ONE discriminant that does
+//     VARY. The assertion moves from « absent » to « explicitly false » — and the `Theme.sensitive`
+//     we additionally checked has gone, the information lives in exactly one place;
+//   - « the insights are grouped by `themeId`, in order » is no longer testable BECAUSE it has
+//     become STRUCTURAL: a theme CARRIES its findings (`deductions`). The grouping that
+//     `buildPageBlocks` used to redo at display time is done HERE, once. What a test can still
+//     prove, and what remains a rule decision: D2 emits ONE finding per retained theme;
+//   - « claim = a TemplateRef from the allowlist » becomes the REAL identity (same switch as the D1
+//     goldens): the claim is the TEXT of `d2InterestClaim(volume)`, it CANNOT come out of a list.
+//     So what we check is that it carries the RIGHT volume — which the allowlist did not prove.
+// The evidence store disappears along with `evidenceId`/`source.path`: a piece of evidence is
+// referenced directly, its identity is the `channel`/`sourceIndex` pair (§5.4).
 
 import { describe, expect, it } from 'vitest';
 import type { AnalysisTheme, Deduction } from '../analysis';
@@ -35,29 +35,30 @@ import { validTikTokExport } from '../valid-export.fixture';
 import { d2InterestClaim } from '../wording';
 import { d2Interests } from './d2-interests';
 
-/** Lexiques FACTICES — marqueurs inventés, sans collision possible, pour tester la seule mécanique. */
+/** FAKE lexicons — invented markers, with no possible collision, to test the mechanics alone. */
 const ANIMAL: InterestLexicon = {
   kind: 'interest',
   label: 'factice_animal',
   themeLabel: 'theme.factice-animal.label',
   usage: [{ actor: 'advertiser', usage: { templateId: 'usage.factice.animal', params: {} } }],
   markers: ['wombat', 'okapi', 'tapir'],
-  // Marqueurs ambigus : ne comptent que près d'un compagnon du domaine (co-occurrence PANO-76).
+  // Ambiguous markers: they only count next to a companion from the domain (co-occurrence,
+  // PANO-76).
   anchored: ['patte', 'poil'],
   selfDeclared: ['zoologue'],
 };
-const PLANTE: InterestLexicon = {
+const PLANT: InterestLexicon = {
   kind: 'interest',
   label: 'factice_plante',
   themeLabel: 'theme.factice-plante.label',
   usage: [{ actor: 'platform', usage: { templateId: 'usage.factice.plante', params: {} } }],
   markers: ['bonsai', 'ficus'],
 };
-const FACTICES: readonly InterestLexicon[] = [ANIMAL, PLANTE];
+const FAKES: readonly InterestLexicon[] = [ANIMAL, PLANT];
 
-/** Export valide dont `CommentsList`/`SearchList` portent les textes donnés (dates fixes, reste =
- * vide). Canal unique par défaut — les tests historiques passent `withChannels(texts, [])`, cf.
- * alias `withComments` ci-dessous, comportement INCHANGÉ (PANO-80). */
+/** Valid export whose `CommentsList`/`SearchList` carry the given texts (fixed dates, the rest
+ * empty). Single channel by default — the historical tests pass `withChannels(texts, [])`, cf. the
+ * `withComments` alias below, behavior UNCHANGED (PANO-80). */
 function withChannels(
   comments: readonly string[],
   searches: readonly string[],
@@ -82,70 +83,70 @@ function withChannels(
   return normalizeExport(base);
 }
 
-/** Alias historique (Comments seul, Searches vide) — comportement des goldens EXISTANTS INCHANGÉ. */
+/** Historical alias (Comments only, Searches empty) — behavior of the EXISTING goldens UNCHANGED. */
 function withComments(texts: readonly string[]): ReturnType<typeof normalizeExport> {
   return withChannels(texts, []);
 }
 
-/** Export dont SEUL `SearchList` porte les termes donnés (`CommentsList` vide). */
+/** Export where ONLY `SearchList` carries the given terms (`CommentsList` empty). */
 function withSearches(terms: readonly string[]): ReturnType<typeof normalizeExport> {
   return withChannels([], terms);
 }
 
 function run(texts: readonly string[]): AnalysisTheme[] {
-  return d2Interests(withComments(texts), FACTICES);
+  return d2Interests(withComments(texts), FAKES);
 }
 
 function runChannels(comments: readonly string[], searches: readonly string[]): AnalysisTheme[] {
-  return d2Interests(withChannels(comments, searches), FACTICES);
+  return d2Interests(withChannels(comments, searches), FAKES);
 }
 
-/** Le thème d'`id` donné, ou `undefined` — remplace le `find` sur `insight.themeId`. */
+/** The theme with the given `id`, or `undefined` — replaces the `find` on `insight.themeId`. */
 const themeById = (themes: readonly AnalysisTheme[], id: string): AnalysisTheme | undefined =>
   themes.find((t) => t.id === id);
 
-/** Les constats de tous les thèmes (ex-`out.insights`, qui était plat). */
+/** The findings of every theme (ex-`out.insights`, which was flat). */
 const allDeductions = (themes: readonly AnalysisTheme[]): Deduction[] =>
   themes.flatMap((t) => t.deductions);
 
-describe('d2Interests — forme', () => {
-  it('Comments vide → []', () => {
-    expect(d2Interests(normalizeExport(validTikTokExport()), FACTICES)).toEqual([]);
+describe('d2Interests — shape', () => {
+  it('Comments empty → []', () => {
+    expect(d2Interests(normalizeExport(validTikTokExport()), FAKES)).toEqual([]);
   });
 
-  it('un intérêt sous le plancher (1 seul hit) → aucun thème (borne §5.1 : aucune miette citée)', () => {
+  it('an interest below the floor (a single hit) → no theme (§5.1 bound: no crumb cited)', () => {
     expect(run(['un wombat traverse la clairière', 'belle lumière ce soir'])).toEqual([]);
   });
 
-  it('un intérêt au plancher (≥ 2 hits) → 1 thème portant 1 constat', () => {
+  it('an interest at the floor (≥ 2 hits) → 1 theme carrying 1 finding', () => {
     const out = run(['un wombat au zoo', 'encore un okapi superbe']);
     expect(out).toHaveLength(1);
     expect(out[0]?.id).toBe('factice_animal');
     expect(out[0]?.deductions).toHaveLength(1);
-    // Le claim porte le VOLUME réel (2 hits) — ex-« claim.templateId ⊆ allowlist ».
+    // The claim carries the REAL volume (2 hits) — ex-« claim.templateId ⊆ allowlist ».
     expect(out[0]?.deductions[0]?.claim).toBe(d2InterestClaim('fr', 2));
   });
 });
 
-describe('d2Interests — goldens structurels (cadrage PANO-74)', () => {
-  // animal ×3, plante ×2 → deux thèmes, animal en tête (volume décroissant).
+describe('d2Interests — structural goldens (PANO-74 framing)', () => {
+  // animal ×3, plant ×2 → two themes, animal first (decreasing volume).
   const CORPUS = [
     'un wombat au réveil', // animal 1
     'encore un okapi', // animal 2
     'et un tapir aussi', // animal 3
-    'mon bonsai a grandi', // plante 1
-    'un ficus au salon', // plante 2
-    'belle balade en forêt', // non-porteur : jamais cité
+    'mon bonsai a grandi', // plant 1
+    'un ficus au salon', // plant 2
+    'belle balade en forêt', // non-bearing: never cited
   ];
   const out = run(CORPUS);
 
-  it('D2 n’émet JAMAIS de constat sensible (ex-« jamais de sensitivity » — §2.1)', () => {
+  it('D2 NEVER emits a sensitive finding (ex-« never any sensitivity » — §2.1)', () => {
     for (const deduction of allDeductions(out)) {
       expect(deduction.sensitive).toBe(false);
     }
   });
 
-  it('D2 n’émet JAMAIS de readings (pas d’éventail de lectures)', () => {
+  it('D2 NEVER emits readings (no fan of readings)', () => {
     for (const deduction of allDeductions(out)) {
       for (const e of deduction.evidence) {
         expect(e.readings).toBeUndefined();
@@ -153,29 +154,29 @@ describe('d2Interests — goldens structurels (cadrage PANO-74)', () => {
     }
   });
 
-  it('classement : plancher respecté et thèmes triés par volume décroissant', () => {
+  it('ranking: floor respected and themes sorted by decreasing volume', () => {
     expect(out.map((t) => t.id)).toEqual(['factice_animal', 'factice_plante']);
     for (const deduction of allDeductions(out)) {
       for (const e of deduction.evidence) {
-        expect(e.text).not.toContain('forêt'); // le non-porteur n’entre jamais (borne §5.1)
+        expect(e.text).not.toContain('forêt'); // the non-bearing item never gets in (§5.1 bound)
       }
     }
   });
 
-  it('UN constat par thème retenu (ex-« insights groupés par themeId » — désormais structurel)', () => {
+  it('ONE finding per retained theme (ex-« insights grouped by themeId » — now structural)', () => {
     for (const theme of out) {
       expect(theme.deductions).toHaveLength(1);
     }
   });
 
-  it('confiance dérivée du volume, jamais high (animal 3 < seuil → low)', () => {
+  it('confidence derived from volume, never high (animal 3 < threshold → low)', () => {
     for (const deduction of allDeductions(out)) {
       expect(deduction.confidence === 'low' || deduction.confidence === 'medium').toBe(true);
     }
     expect(themeById(out, 'factice_animal')?.deductions[0]?.confidence).toBe('low');
   });
 
-  it('thème bien formé : nom en TEXTE, usage = actor + usage en TEXTE (A2, plus de TemplateRef)', () => {
+  it('well-formed theme: name as TEXT, usage = actor + usage as TEXT (A2, no more TemplateRef)', () => {
     for (const theme of out) {
       expect(typeof theme.label).toBe('string');
       for (const u of theme.usage) {
@@ -185,70 +186,65 @@ describe('d2Interests — goldens structurels (cadrage PANO-74)', () => {
     }
   });
 
-  it('triggerTerms ⊂ texte de SA preuve, au caractère près', () => {
+  it('triggerTerms ⊂ the text of ITS OWN evidence, character for character', () => {
     for (const deduction of allDeductions(out)) {
       for (const e of deduction.evidence) {
         for (const term of e.triggerTerms ?? []) {
-          expect(e.text.includes(term), `« ${term} » absent de « ${e.text} »`).toBe(true);
+          expect(e.text.includes(term), `« ${term} » missing from « ${e.text} »`).toBe(true);
         }
       }
     }
   });
 });
 
-describe('d2Interests — bonus d’auto-déclaration', () => {
-  it('« je suis un vrai zoologue » pousse la confiance low → medium', () => {
+describe('d2Interests — self-declaration bonus', () => {
+  it('« je suis un vrai zoologue » pushes confidence low → medium', () => {
     const out = run(['je suis un vrai zoologue', 'un wombat superbe']);
     expect(themeById(out, 'factice_animal')?.deductions[0]?.confidence).toBe('medium');
   });
 });
 
-describe('d2Interests — désambiguïsation par CO-OCCURRENCE (marqueurs ancrés)', () => {
-  it('un ancré ISOLÉ (sans compagnon) ne compte pas — même répété, aucun thème', () => {
-    // « patte » est ancré ; deux items « patte » seuls, aucun compagnon du domaine → aucun thème.
+describe('d2Interests — disambiguation by CO-OCCURRENCE (anchored markers)', () => {
+  it('an ISOLATED anchored marker (no companion) does not count — even repeated, no theme', () => {
+    // « patte » is anchored; two items with « patte » alone, no companion from the domain → no
+    // theme.
     expect(run(['une patte dans la boue', 'encore une patte cassée'])).toEqual([]);
   });
 
-  it('un ancré près d’un SOLO compagnon compte (« wombat » ancre « patte »)', () => {
-    // 2 items pour atteindre le plancher : chacun a un solo (wombat/okapi) qui ancre l’ancré.
+  it('an anchored marker next to a SOLO companion counts (« wombat » anchors « patte »)', () => {
+    // 2 items to reach the floor: each has a solo (wombat/okapi) that anchors the anchored marker.
     const animal = themeById(
       run(['un wombat avec une patte cassée', 'un okapi et son poil ras']),
       'factice_animal',
     );
     expect(animal).toBeDefined();
-    // La surface de l’ancré est bien retenue comme preuve (triggerTerm).
+    // The anchored marker's surface is indeed retained as evidence (triggerTerm).
     const surfaces = (animal?.deductions[0]?.evidence ?? []).flatMap((e) => e.triggerTerms ?? []);
     expect(surfaces).toContain('patte');
   });
 
-  it('DEUX ancrés distincts s’ancrent mutuellement (« patte » + « poil »)', () => {
+  it('TWO distinct anchored markers anchor each other (« patte » + « poil »)', () => {
     const out = run(['patte et poil partout ce matin', 'encore patte et poil sur le tapis']);
     expect(themeById(out, 'factice_animal')).toBeDefined();
   });
 
-  it('un ancré près d’une AUTO-DÉCLARATION compagnon compte', () => {
+  it('an anchored marker next to a companion SELF-DECLARATION counts', () => {
     const out = run(['je suis un vrai zoologue, quelle patte', 'un wombat de plus']);
     expect(themeById(out, 'factice_animal')).toBeDefined();
   });
 });
 
-describe('d2Interests — adaptateur Searches (PANO-80, PANO-70 §1.6)', () => {
-  it('Comments vide MAIS Searches porteuse (≥ plancher) → thème détecté quand même', () => {
-    const out = d2Interests(
-      withSearches(['un wombat au zoo', 'encore un okapi superbe']),
-      FACTICES,
-    );
+describe('d2Interests — Searches adapter (PANO-80, PANO-70 §1.6)', () => {
+  it('Comments empty BUT Searches bearing (≥ floor) → theme detected all the same', () => {
+    const out = d2Interests(withSearches(['un wombat au zoo', 'encore un okapi superbe']), FAKES);
     expect(out).toHaveLength(1);
     expect(out[0]?.id).toBe('factice_animal');
   });
 
-  it('détection sur RECHERCHES seules : chaque preuve porte le canal `search` et son index source', () => {
-    // Ex-`evidenceId: 'search:<index>'` + `source: { path }` : l'identité est une PAIRE de données,
-    // plus une chaîne préfixée à fabriquer puis re-parser (§5.4).
-    const out = d2Interests(
-      withSearches(['un wombat au zoo', 'encore un okapi superbe']),
-      FACTICES,
-    );
+  it('detection on SEARCHES alone: each piece of evidence carries the `search` channel and its source index', () => {
+    // Ex-`evidenceId: 'search:<index>'` + `source: { path }`: the identity is a PAIR of data, no
+    // longer a prefixed string to build and then re-parse (§5.4).
+    const out = d2Interests(withSearches(['un wombat au zoo', 'encore un okapi superbe']), FAKES);
     const animal = themeById(out, 'factice_animal');
     expect(
       (animal?.deductions[0]?.evidence ?? []).map((e) => ({
@@ -261,9 +257,9 @@ describe('d2Interests — adaptateur Searches (PANO-80, PANO-70 §1.6)', () => {
     ]);
   });
 
-  it('plancher atteint À TRAVERS les deux canaux (1 comment + 1 recherche) → thème détecté', () => {
-    // Le point dur que les préfixes `comment:`/`search:` protégeaient : deux items d'index source 0
-    // sur deux canaux ne doivent pas collisionner. La paire le tient nativement.
+  it('floor reached ACROSS both channels (1 comment + 1 search) → theme detected', () => {
+    // The hard point the `comment:`/`search:` prefixes protected: two items with source index 0 on
+    // two channels must not collide. The pair holds it natively.
     const animal = themeById(
       runChannels(['un wombat au réveil'], ['encore un okapi superbe']),
       'factice_animal',
@@ -280,7 +276,7 @@ describe('d2Interests — adaptateur Searches (PANO-80, PANO-70 §1.6)', () => {
     ]);
   });
 
-  it('Comments vide ET Searches vide → [] (guard préservé)', () => {
-    expect(d2Interests(withChannels([], []), FACTICES)).toEqual([]);
+  it('Comments empty AND Searches empty → [] (guard preserved)', () => {
+    expect(d2Interests(withChannels([], []), FAKES)).toEqual([]);
   });
 });

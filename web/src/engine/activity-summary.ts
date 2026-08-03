@@ -1,6 +1,6 @@
 // Factual reader — Activity Summary (PANO-84). Distinct from the `Rule` rules (`rules/*.ts`): not an
 // `Insight` producer (no inference, no `claim`/`framing`), just a source-projection of two ALL-TIME
-// counters (contract §"Your Activity"/Activity Summary) into `EngineOutput`.
+// counters (contract §"Your Activity"/Activity Summary) into the engine's `Analysis`.
 //
 // Window distinct from R1/R2/R3/R5 (≈ 1 year, bounded by the export): these two counters are "since
 // account registration", never mixed with the wording of the `inferred` rules. The distinction is

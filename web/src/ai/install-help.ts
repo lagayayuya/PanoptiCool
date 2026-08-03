@@ -84,8 +84,8 @@ export function serverUrl(): string {
   return `http://localhost:${SERVER_PORT}`;
 }
 
-/** Name of the site archive, generated at EACH build from `dist/` (`scripts/build-site-zip.mjs`).
- * Route B's link points at it — a name written twice would drift. */
+/** Name of the site archive, generated at EACH build from `dist/` by the `siteZip` Astro
+ * integration. Route B's link points at it — a name written twice would drift. */
 export const SITE_ZIP_NAME = 'panopticool-site.zip';
 
 /**

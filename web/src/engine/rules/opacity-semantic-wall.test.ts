@@ -1,22 +1,23 @@
-// Test du mur sémantique (PANO-6) — les propriétés que `readOpacity` doit tenir.
+// Test of the semantic wall (PANO-6) — the properties `readOpacity` must hold.
 //
-// Couvre :
-//   - aucun item opaque → `undefined` (sans mur, rien à révéler ; l'absence est une règle dédiée) ;
-//   - la valeur est une projection-source en COMPTES seulement (`readableCount`/`opaqueCount`),
-//     aucune valeur source verbatim, aucun verdict.
+// Covers:
+//   - no opaque item → `undefined` (no wall, nothing to reveal; absence is a dedicated rule);
+//   - the value is a source-projection in COUNTS only (`readableCount`/`opaqueCount`),
+//     no verbatim source value, no verdict.
 //
-// PORTÉ À LA REFONTE A. Trois verrous ne sont pas traduits mais SUPPRIMÉS — ils ne portaient sur
-// rien qui existe encore, et leur inventer un remplaçant ferait revenir le concept par la bande :
-//   - `kind`/`ruleId` : l'union `Insight` et les registres sont retirés (A1). Le producteur a un nom
-//     et un type de retour propres — il n'y a plus de discriminant à vérifier, le compilateur tient
-//     ce que le `kind` gardait ;
-//   - `confidence: { state: 'factual' }` : le factuel n'est plus un constat, c'est une donnée nommée
-//     (`Opacity`). Il n'y a plus de confiance à graduer sur des comptes ;
-//   - `claim`/`framing` = TemplateRef de l'allowlist : le claim d'opacity est un TEXTE CONSTANT
-//     (aucun param n'y entrait), appelé directement par l'UI (`opacitySemanticWallClaim()`, A2). Il
-//     n'est plus porté par la règle : il n'y a rien ici à en tester. Son texte est couvert par le
-//     golden de rendu.
-// Ce qui reste est ce que la règle fait réellement : compter, et se taire quand il n'y a rien.
+// CARRIED OVER AT REWORK A. Three locks are not translated but DELETED — they bore on nothing that
+// still exists, and inventing a replacement for them would bring the concept back through the side
+// door:
+//   - `kind`/`ruleId`: the `Insight` union and the registries are gone (A1). The producer has its
+//     own name and its own return type — there is no discriminant left to check, the compiler holds
+//     what `kind` used to keep;
+//   - `confidence: { state: 'factual' }`: the factual is no longer a finding, it is a named value
+//     (`Opacity`). There is no confidence left to grade over counts;
+//   - `claim`/`framing` = a TemplateRef from the allowlist: opacity's claim is a CONSTANT TEXT (no
+//     param ever went into it), called directly by the UI (`opacitySemanticWallClaim()`, A2). It is
+//     no longer carried by the rule: there is nothing here to test about it. Its text is covered by
+//     the render golden.
+// What remains is what the rule actually does: count, and stay silent when there is nothing.
 
 import { describe, expect, it } from 'vitest';
 import { normalizeExport } from '../normalize';
@@ -31,7 +32,7 @@ import type {
 import { validTikTokExport } from '../valid-export.fixture';
 import { readOpacity } from './opacity-semantic-wall';
 
-/** Surcouche typée des conteneurs de liste mutés par les tests (le fixture les renvoie vides). */
+/** Typed overlay of the list containers the tests mutate (the fixture returns them empty). */
 type MutableExport = TikTokExport & {
   'Your Activity': {
     Searches: { SearchList: SearchItem[] };
@@ -45,60 +46,60 @@ type MutableExport = TikTokExport & {
   };
 };
 
-/** Item de recherche synthétique (texte tapé = lisible hors-ligne). */
+/** Synthetic search item (typed text = readable offline). */
 function search(term: string): SearchItem {
   return { Date: '2024-01-01 00:00:00', SearchTerm: term };
 }
 
-/** Item de commentaire synthétique (texte tapé = lisible hors-ligne ; clés minuscules §1.3). */
+/** Synthetic comment item (typed text = readable offline; lowercase keys, §1.3). */
 function comment(text: string): { date: string; comment: string } {
   return { date: '2024-01-01 00:00:00', comment: text };
 }
 
-/** Item de visionnage synthétique (lien opaque ; `Title` vide = muet). */
+/** Synthetic watch item (opaque link; empty `Title` = mute). */
 function watch(link: string): WatchHistoryItem {
   return { Date: '2024-01-01 00:00:00', Link: link, Title: '' };
 }
 
-/** Item de like synthétique (lien opaque ; clés minuscules §1.3). */
+/** Synthetic like item (opaque link; lowercase keys, §1.3). */
 function like(link: string): LikeItem {
   return { date: '2024-01-01 00:00:00', link };
 }
 
-/** Item de favori vidéo synthétique (lien opaque). */
+/** Synthetic favorite-video item (opaque link). */
 function favorite(link: string): FavoriteVideoItem {
   return { Date: '2024-01-01 00:00:00', Link: link };
 }
 
-/** Item de repost synthétique (lien opaque). */
+/** Synthetic repost item (opaque link). */
 function repost(link: string): RepostItem {
   return { Date: '2024-01-01 00:00:00', Link: link };
 }
 
 describe('readOpacity', () => {
-  it('export entièrement vide (encodages de vide partout) → undefined (pas de mur, opaqueCount = 0)', () => {
+  it('fully empty export (empty encodings everywhere) → undefined (no wall, opaqueCount = 0)', () => {
     expect(readOpacity(normalizeExport(validTikTokExport()))).toBeUndefined();
   });
 
-  it('items lisibles seuls (aucun opaque) → undefined (opaqueCount = 0, rien à révéler)', () => {
+  it('readable items only (no opaque one) → undefined (opaqueCount = 0, nothing to reveal)', () => {
     const base = validTikTokExport() as MutableExport;
     base['Your Activity'].Searches.SearchList.push(search('chats mignons'), search('recette'));
     base.Comment.Comments.CommentsList.push(comment('trop bien'));
     expect(readOpacity(normalizeExport(base))).toBeUndefined();
   });
 
-  it('au moins un item opaque → une valeur émise (ex-« un unique insight opacity »)', () => {
+  it('at least one opaque item → a value is emitted (ex-« a single opacity insight »)', () => {
     const base = validTikTokExport() as MutableExport;
     base['Your Activity']['Watch History'].VideoList.push(watch('https://x/1'));
     expect(readOpacity(normalizeExport(base))).toBeDefined();
   });
 
-  it('comptes : readable = recherches + commentaires, opaque = visionnages + likes + favoris + reposts', () => {
+  it('counts: readable = searches + comments, opaque = watches + likes + favorites + reposts', () => {
     const base = validTikTokExport() as MutableExport;
-    // Lisibles : 2 recherches + 1 commentaire = 3.
+    // Readable: 2 searches + 1 comment = 3.
     base['Your Activity'].Searches.SearchList.push(search('a'), search('b'));
     base.Comment.Comments.CommentsList.push(comment('c'));
-    // Opaques : 2 visionnages + 1 like + 1 favori + 3 reposts = 7.
+    // Opaque: 2 watches + 1 like + 1 favorite + 3 reposts = 7.
     base['Your Activity']['Watch History'].VideoList.push(watch('w1'), watch('w2'));
     base['Likes and Favorites']['Like List'].ItemFavoriteList.push(like('l1'));
     base['Likes and Favorites']['Favorite Videos'].FavoriteVideoList.push(favorite('f1'));
@@ -107,7 +108,7 @@ describe('readOpacity', () => {
     expect(readOpacity(normalizeExport(base))).toEqual({ readableCount: 3, opaqueCount: 7 });
   });
 
-  it('opaque présent même sans aucun lisible → readableCount = 0, valeur émise', () => {
+  it('opaque present even with nothing readable → readableCount = 0, a value is emitted', () => {
     const base = validTikTokExport() as MutableExport;
     base['Likes and Favorites']['Like List'].ItemFavoriteList.push(like('l1'), like('l2'));
     expect(readOpacity(normalizeExport(base))).toEqual({ readableCount: 0, opaqueCount: 2 });
