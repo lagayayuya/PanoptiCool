@@ -8,8 +8,9 @@
 // of them to be missed the day it changes; the ratifiable-copy rule exists for the same reason on
 // the prose side.
 //
-// SELF-HOSTED JetBrains Mono (PANO-56): targeted `latin` subset, 4 weights, zero CDN — the
-// constraint is the zero-CDN, not the list of pages that apply it.
+// SELF-HOSTED Archivo: targeted `latin` subset, the 4 weights the mockups use, zero CDN — the
+// constraint is the zero-CDN, not the list of pages that apply it. The design project loads it from
+// Google Fonts; a static site that promises nothing leaves the device cannot, so it ships its own.
 //
 // ─── WHAT THIS LAYOUT DOES NOT COVER ────────────────────────────────────────────────────────────
 //   - `pages/index.astro` (the root) does NOT use it, deliberately: that page loads no font and
@@ -21,10 +22,10 @@
 //   - It does not choose the language. The language comes from the page's FOLDER
 //     (`Astro.currentLocale`) — that is what makes `<html lang>` true by construction in each tree,
 //     and `i18n/current.ts` reads that attribute to fabricate the islands' links.
-import '@fontsource/jetbrains-mono/latin-400.css';
-import '@fontsource/jetbrains-mono/latin-500.css';
-import '@fontsource/jetbrains-mono/latin-600.css';
-import '@fontsource/jetbrains-mono/latin-700.css';
+import '@fontsource/archivo/latin-400.css';
+import '@fontsource/archivo/latin-500.css';
+import '@fontsource/archivo/latin-600.css';
+import '@fontsource/archivo/latin-700.css';
 import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../i18n/locales';
 import SiteHead from '../ui/SiteHead.astro';
 
@@ -56,7 +57,7 @@ const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
     <style is:global>
       :root {
         color-scheme: dark;
-        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+        font-family: Archivo, system-ui, -apple-system, 'Segoe UI', sans-serif;
       }
       body {
         margin: 0;

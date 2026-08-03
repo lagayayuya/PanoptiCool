@@ -67,7 +67,7 @@ import { formatDecimal, formatFixedDecimal } from '../format';
 import type { AiSource } from './ai-source';
 import { LearnPanel, LearnToggle } from './LearnPanel';
 import { LOW_DATA_THRESHOLD } from './NoDeductionCard';
-import { NAVY } from './palette';
+import { MONO, NAVY } from './palette';
 
 /** Context window SUGGESTED in the copyable command (yuya's decision, 2026-07-15 rework).
  * `/props` always prevails at runtime once the server is reached. */
@@ -1215,6 +1215,7 @@ const CMD_TEXT = {
   lineHeight: 1.5,
   color: NAVY.accentBright,
   overflowWrap: 'anywhere',
+  fontFamily: MONO,
 } as const;
 // The « copier / copié ✓ » label — a simple visual marker now (the whole row copies),
 // therefore WITHOUT its own hover.
@@ -1282,7 +1283,7 @@ const ADDR_INPUT = {
   minWidth: '200px',
   fontSize: '12px',
   lineHeight: 1.3,
-  fontFamily: 'inherit',
+  fontFamily: MONO,
   color: NAVY.textBright,
   background: NAVY.bgPage,
   border: `1px solid ${NAVY.borderInset}`,
@@ -1331,7 +1332,7 @@ const PROMPT_AREA = {
   resize: 'vertical',
   fontSize: '12.5px',
   lineHeight: 1.75,
-  fontFamily: 'inherit',
+  fontFamily: MONO,
   color: NAVY.textHeading,
   background: NAVY.bgPage,
   border: `1px solid ${NAVY.borderInset}`,
@@ -1368,6 +1369,7 @@ const PAYLOAD_BOX = {
   overflowWrap: 'anywhere',
   maxHeight: '300px',
   overflow: 'auto',
+  fontFamily: MONO,
 } as const;
 const RUN_BTN = {
   cursor: 'pointer',
