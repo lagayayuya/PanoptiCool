@@ -1,42 +1,74 @@
 ---
-// ENGLISH legal page — twin of `fr/mentions-legales.astro`. A TEXT page: pure Astro, no
-// island, zero JS, like its twin.
+// « Mentions légales » (LCEN art. 6-III) — the ENGLISH twin, written by a human rather than
+// translated. TEXT page: pure Astro, no island, zero JS — the only one on the site in that case,
+// and the only one exercising ADR-0002's SSG rationale. Do not add interactivity here without
+// reason: its value is being readable without running a line of script.
 //
-// ⚠ THIS TEXT IS NOT THE BINDING TEXT, and the page says so itself in the last line.
-// « Mentions légales » is an obligation of FRENCH law (LCEN art. 6-III); *legal notice* is
-// its closest label, not the regime. Two pages both claiming to be
-// binding would contend for authority in two different bodies of law — hence the explicit reference
-// to the French version, which does not exist in the French and is therefore not a translation.
-//
-// Three qualifications do NOT cross over and are rendered in their ordinary sense, never in an invented
-// statutory equivalent: « édité à titre non professionnel et sans but lucratif » (a lightened
-// disclosure regime, specific to French law), « hébergeur » (a French obligation, kept as
-// mere information), and the scope of « au sens du RGPD » — exact, but silent on the CCPA or
-// any other regime this text, read outside the EU, does not claim to cover.
+// The shell lives in `layouts/Page.astro` — which adds no script, so the zero-JS promise holds.
+// The page’s own text stylesheet goes through the `page-style` slot; the LEGAL TEXT itself stays
+// here rather than in `copy.*` (yuya's decision): it is a REFERENCE text, read as a block and not
+// by table entries, and its English version is a TWIN page written by a human.
+import { DEFAULT_LOCALE, type Locale, localePath } from '../../i18n/locales';
+import Page from '../../layouts/Page.astro';
+import { headCopy } from '../../ui/head-copy';
 
-import '@fontsource/jetbrains-mono/latin-400.css';
-import '@fontsource/jetbrains-mono/latin-500.css';
-import '@fontsource/jetbrains-mono/latin-600.css';
-import '@fontsource/jetbrains-mono/latin-700.css';
-import { DEFAULT_LOCALE, HTML_LANG, type Locale, localePath } from '../../i18n/locales';
-import SiteHead from '../../ui/SiteHead.astro';
-
-// The language comes from the page's FOLDER, it is not written here: it is what makes
-// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
-// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+const head = headCopy(locale);
 ---
 
-<!doctype html>
-<html lang={HTML_LANG[locale]}>
-  <head>
-    <SiteHead
-      title="PanoptiCool — legal notice"
-      description="Publisher, host, and what PanoptiCool does not collect."
-      path="/mentions-legales"
-    />
-  </head>
-  <body>
+<Page title={head.legalTitle} description={head.legalDescription} path="/mentions-legales">
+  <style is:global slot="page-style">
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+    .back {
+      display: inline-block;
+      font-size: 11px;
+      color: #8b98c0; /* NAVY.textMuted */
+      text-decoration: none;
+      margin-bottom: 32px;
+    }
+    .back:hover {
+      color: #2fd4f0;
+    }
+    h1 {
+      font-size: 22px;
+      line-height: 1.3;
+      margin: 0 0 32px;
+    }
+    h2 {
+      font-size: 13px;
+      line-height: 1.4;
+      color: #dde4f4; /* NAVY.textHeading */
+      margin: 36px 0 12px;
+    }
+    p,
+    li {
+      font-size: 12px;
+      line-height: 1.75;
+      color: #aab6d6; /* NAVY.textBody */
+    }
+    p {
+      margin: 0 0 12px;
+    }
+    ul {
+      margin: 0 0 12px;
+      padding-left: 18px;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    strong {
+      color: #c8d2e8; /* NAVY.textSecondary */
+    }
+    .dim {
+      font-size: 11px;
+      color: #66739a; /* NAVY.textDim */
+      margin-top: 36px;
+    }
+  </style>
     <main>
       <a class="back" href={localePath(locale, '/')}>← Back</a>
 
@@ -109,70 +141,4 @@ const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
         >) is the legally binding text.
       </p>
     </main>
-
-    <style is:global>
-      :root {
-        color-scheme: dark;
-        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      }
-      body {
-        margin: 0;
-        background: #070b18; /* NAVY.bgPage */
-        color: #e9eefb; /* NAVY.textBright */
-      }
-      a {
-        color: #2fd4f0;
-      }
-      main {
-        max-width: 680px;
-        margin: 0 auto;
-        padding: 48px 20px 80px;
-      }
-      .back {
-        display: inline-block;
-        font-size: 11px;
-        color: #8b98c0; /* NAVY.textMuted */
-        text-decoration: none;
-        margin-bottom: 32px;
-      }
-      .back:hover {
-        color: #2fd4f0;
-      }
-      h1 {
-        font-size: 22px;
-        line-height: 1.3;
-        margin: 0 0 32px;
-      }
-      h2 {
-        font-size: 13px;
-        line-height: 1.4;
-        color: #dde4f4; /* NAVY.textHeading */
-        margin: 36px 0 12px;
-      }
-      p,
-      li {
-        font-size: 12px;
-        line-height: 1.75;
-        color: #aab6d6; /* NAVY.textBody */
-      }
-      p {
-        margin: 0 0 12px;
-      }
-      ul {
-        margin: 0 0 12px;
-        padding-left: 18px;
-      }
-      li {
-        margin-bottom: 8px;
-      }
-      strong {
-        color: #c8d2e8; /* NAVY.textSecondary */
-      }
-      .dim {
-        font-size: 11px;
-        color: #66739a; /* NAVY.textDim */
-        margin-top: 36px;
-      }
-    </style>
-  </body>
-</html>
+</Page>

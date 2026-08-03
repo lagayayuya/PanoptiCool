@@ -1,0 +1,72 @@
+---
+// The shell every localized page shares: the doctype, `<html lang>`, the self-hosted font, the
+// `<head>` through `SiteHead`, and the three base global rules.
+//
+// WHY IT EXISTS. The eight pages of `pages/{fr,en}/` each repeated the same twenty lines —
+// four `@fontsource` imports, the `locale` derivation, `<html lang>`, and a `<style is:global>`
+// block with `:root`, `body` and `a`. Eight copies of a background colour is eight chances for one
+// of them to be missed the day it changes; the ratifiable-copy rule exists for the same reason on
+// the prose side.
+//
+// SELF-HOSTED JetBrains Mono (PANO-56): targeted `latin` subset, 4 weights, zero CDN — the
+// constraint is the zero-CDN, not the list of pages that apply it.
+//
+// ─── WHAT THIS LAYOUT DOES NOT COVER ────────────────────────────────────────────────────────────
+//   - `pages/index.astro` (the root) does NOT use it, deliberately: that page loads no font and
+//     mounts no island because it almost never displays, and its own header explains why. Routing
+//     it through here would make every visitor of the root pay four font round-trips.
+//   - It carries no page-specific CSS. `analyse` needs a `scroll-padding-top` and a global
+//     `@keyframes`; `mentions-legales` needs its whole text stylesheet. Both pass it through the
+//     `head-style` slot rather than have this file grow a per-page conditional.
+//   - It does not choose the language. The language comes from the page's FOLDER
+//     (`Astro.currentLocale`) — that is what makes `<html lang>` true by construction in each tree,
+//     and `i18n/current.ts` reads that attribute to fabricate the islands' links.
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '@fontsource/jetbrains-mono/latin-600.css';
+import '@fontsource/jetbrains-mono/latin-700.css';
+import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../i18n/locales';
+import SiteHead from '../ui/SiteHead.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path of THIS page, WITHOUT the language (« / », « /analyse », …) — passed on to `SiteHead`. */
+  path: string;
+}
+
+const { title, description, path } = Astro.props;
+
+const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+---
+
+<!doctype html>
+<html lang={HTML_LANG[locale]}>
+  <head>
+    <SiteHead title={title} description={description} path={path} />
+  </head>
+  <body>
+    <slot />
+    {/* ⚠ POSITION IS LOAD-BEARING, twice over. These rules stay at the END of `<body>`, after the
+        `hover.css` that `SiteHead` imports — that is where the eight pages used to put them, and
+        moving them into `<head>` would put them BEFORE it. And the base block comes before the
+        page's `page-style` slot, as when both lived in a single block: a page overriding one of
+        these rules must win on ORDER, not only on specificity. Verified by diffing the built CSS
+        stream rule by rule against the pre-layout build. */}
+    <style is:global>
+      :root {
+        color-scheme: dark;
+        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+      }
+      body {
+        margin: 0;
+        background: #070b18; /* NAVY.bgPage */
+        color: #e9eefb; /* NAVY.textBright */
+      }
+      a {
+        color: #2fd4f0; /* NAVY.accent */
+      }
+    </style>
+    <slot name="page-style" />
+  </body>
+</html>

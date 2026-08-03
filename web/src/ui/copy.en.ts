@@ -52,6 +52,22 @@ export const EN: UiCopy = {
     fallbackLink: 'Continue to PanoptiCool →',
   },
 
+  UI_HEAD: {
+    homeTitle: 'PanoptiCool — Find out what your social networks know about you.',
+    homeDescription:
+      'PanoptiCool reads your TikTok export and shows you what an algorithm could infer from it — 100% local, nothing is sent.',
+    analyseTitle: 'PanoptiCool — what TikTok could infer',
+    analyseDescription:
+      'Analyse your TikTok export entirely in your browser: rhythms, themes, sensitive signals — nothing leaves your machine.',
+    roadmapTitle: 'PanoptiCool — roadmap',
+    roadmapDescription:
+      "What's done, what's coming: the steps of PanoptiCool, one platform at a time.",
+    legalTitle: 'PanoptiCool — legal notice',
+    legalDescription: 'Publisher, host, and what PanoptiCool does not collect.',
+    ogImageAlt:
+      'PanoptiCool — find out what your social networks know about you. 100% local, open source, no account.',
+  },
+
   UI_HEADER: {
     homeAriaLabel: 'PanoptiCool — home',
     logoAlt: 'PanoptiCool',

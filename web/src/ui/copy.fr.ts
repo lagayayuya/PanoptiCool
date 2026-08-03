@@ -86,6 +86,36 @@ export const FR = {
     fallbackLink: 'Continuer vers PanoptiCool →',
   },
 
+  // --- <head> of the pages (`layouts/Page.astro` via `ui/head-copy.ts`) --------------------------
+  // The title and the description of a page are the ONLY prose a search engine and a share
+  // preview really read — and until this group existed they were hard-coded in each of the eight
+  // `.astro` files, i.e. OUTSIDE the ratifiable perimeter. A reviewer auditing "everything the
+  // product says" did not see them.
+  //
+  // They could not simply read `copy.ts`: that selector resolves the language by reading
+  // `document.documentElement.lang`, which does not exist in Node at build time — an English page
+  // would have emitted a FRENCH title. `head-copy.ts` therefore takes the locale as a PARAMETER,
+  // exactly as `engine/wording.ts` does and for the same reason. The prose stays here; only the
+  // resolution differs.
+  UI_HEAD: {
+    homeTitle: 'PanoptiCool — Découvre ce que tes réseaux savent de toi.',
+    homeDescription:
+      "PanoptiCool lit ton export TikTok et te montre ce qu'un algorithme pourrait en déduire — 100 % local, rien n'est envoyé.",
+    analyseTitle: 'PanoptiCool — ce que TikTok pourrait déduire',
+    analyseDescription:
+      'Analyse ton export TikTok entièrement dans ton navigateur : rythmes, thèmes, signaux sensibles — rien ne quitte ta machine.',
+    roadmapTitle: 'PanoptiCool — feuille de route',
+    roadmapDescription:
+      'Ce qui est fait, ce qui arrive : les étapes de PanoptiCool, une plateforme à la fois.',
+    legalTitle: 'PanoptiCool — mentions légales',
+    legalDescription: 'Éditeur, hébergeur, et ce que PanoptiCool ne collecte pas.',
+    // The alternative text of the share image. It was written ONCE, in French, in
+    // `SiteHead.astro` — so the English tree served a French alt to every preview bot and every
+    // screen reader that reached it.
+    ogImageAlt:
+      'PanoptiCool — découvre ce que tes réseaux savent de toi. 100 % local, open source, sans compte.',
+  },
+
   // --- Site bar (`ui/v2/SiteHeader.tsx`) --------------------------------------------------------
   UI_HEADER: {
     homeAriaLabel: 'PanoptiCool — accueil',

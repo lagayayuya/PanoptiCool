@@ -32,6 +32,7 @@ import {
   OG_LOCALE,
   PUBLISHED_LOCALES,
 } from '../i18n/locales';
+import { headCopy } from './head-copy';
 
 interface Props {
   title: string;
@@ -53,7 +54,7 @@ const site = Astro.site;
 if (site === undefined) {
   // Without `site`, all the absolute URLs of this file would be silently wrong — a broken
   // preview and a relative canonical are not seen at build. Better to refuse to build.
-  throw new Error('SiteHead : `site` doit être défini dans astro.config.ts.');
+  throw new Error('SiteHead: `site` must be defined in astro.config.ts.');
 }
 
 const canonical = new URL(localePath(locale, path), site).href;
@@ -63,6 +64,10 @@ const alternates = PUBLISHED_LOCALES.map((l) => ({
   href: new URL(localePath(l, path), site).href,
 }));
 const xDefault = new URL(localePath(DEFAULT_LOCALE, path), site).href;
+
+// The share image's alt text was written here, in French, for BOTH language trees — so `/en`
+// served a French alt to every preview bot and every screen reader. It reads the perimeter now.
+const { ogImageAlt } = headCopy(locale);
 ---
 
 <meta charset="utf-8" />
@@ -86,10 +91,7 @@ const xDefault = new URL(localePath(DEFAULT_LOCALE, path), site).href;
 <meta property="og:image" content={ogImage} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta
-  property="og:image:alt"
-  content="PanoptiCool — découvre ce que tes réseaux savent de toi. 100 % local, open source, sans compte."
-/>
+<meta property="og:image:alt" content={ogImageAlt} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />

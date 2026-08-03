@@ -3,46 +3,19 @@
 // home page. Static build (ADR-0001/0002); the interactivity (consent modal, animated eye)
 // lives in a single `client:only` island, as everywhere else.
 //
-// SELF-HOSTED JetBrains Mono font (PANO-56): targeted "latin"-subset import, 4 weights,
-// zero CDN — the constraint is zero-CDN, not the list of pages that apply it.
-import '@fontsource/jetbrains-mono/latin-400.css';
-import '@fontsource/jetbrains-mono/latin-500.css';
-import '@fontsource/jetbrains-mono/latin-600.css';
-import '@fontsource/jetbrains-mono/latin-700.css';
-import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../../i18n/locales';
-import SiteHead from '../../ui/SiteHead.astro';
+// The shell — doctype, `<html lang>`, the font, the base global styles — lives in
+// `layouts/Page.astro`; the `<head>` prose lives in the ratifiable perimeter (`copy.*`, group
+// `UI_HEAD`) and is read here by PARAMETER, because at build there is no `<html lang>` for
+// `copy.ts` to resolve from.
+import { DEFAULT_LOCALE, type Locale } from '../../i18n/locales';
+import Page from '../../layouts/Page.astro';
+import { headCopy } from '../../ui/head-copy';
 import { LandingPage } from '../../ui/v2/LandingPage';
 
-// The language comes from the page's FOLDER, it is not written here: it is what makes
-// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
-// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+const head = headCopy(locale);
 ---
 
-<!doctype html>
-<html lang={HTML_LANG[locale]}>
-  <head>
-    <SiteHead
-      title="PanoptiCool — Découvre ce que tes réseaux savent de toi."
-      description="PanoptiCool lit ton export TikTok et te montre ce qu'un algorithme pourrait en déduire — 100 % local, rien n'est envoyé."
-      path="/"
-    />
-  </head>
-  <body>
-    <LandingPage client:only="preact" />
-    <style is:global>
-      :root {
-        color-scheme: dark;
-        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      }
-      body {
-        margin: 0;
-        background: #070b18; /* NAVY.bgPage */
-        color: #e9eefb; /* NAVY.textBright */
-      }
-      a {
-        color: #2fd4f0;
-      }
-    </style>
-  </body>
-</html>
+<Page title={head.homeTitle} description={head.homeDescription} path="/">
+  <LandingPage client:only="preact" />
+</Page>

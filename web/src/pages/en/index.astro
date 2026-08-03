@@ -1,54 +1,21 @@
 ---
-// Home page (2026-07-15 design rework, « Accueil v2 » mockup) — REPLACES the historical
-// home page. Static build (ADR-0001/0002); the interactivity (consent modal, animated eye)
-// fits in a single `client:only` island, as everywhere else.
+// Home page (2026-07-15 design rework, « Accueil v2 » mockup) — the English twin of
+// `pages/fr/index.astro`. Static build (ADR-0001/0002); the interactivity fits in a single
+// `client:only` island, as everywhere else.
 //
-// SELF-HOSTED JetBrains Mono font (PANO-56): targeted « latin » subset import, 4 weights,
-// zero CDN — the constraint is the zero-CDN, not the list of pages that apply it.
-import '@fontsource/jetbrains-mono/latin-400.css';
-import '@fontsource/jetbrains-mono/latin-500.css';
-import '@fontsource/jetbrains-mono/latin-600.css';
-import '@fontsource/jetbrains-mono/latin-700.css';
-import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../../i18n/locales';
-import SiteHead from '../../ui/SiteHead.astro';
+// The shell — doctype, `<html lang>`, the font, the base global styles — lives in
+// `layouts/Page.astro`; the `<head>` prose lives in the ratifiable perimeter (`copy.*`, group
+// `UI_HEAD`) and is read here by PARAMETER, because at build there is no `<html lang>` for
+// `copy.ts` to resolve from — which is exactly how this page used to emit a French title.
+import { DEFAULT_LOCALE, type Locale } from '../../i18n/locales';
+import Page from '../../layouts/Page.astro';
+import { headCopy } from '../../ui/head-copy';
 import { LandingPage } from '../../ui/v2/LandingPage';
 
-// The language comes from the page's FOLDER, it is not written here: it is what makes
-// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
-// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
-
-// THE <head> TEXTS ARE WRITTEN HERE, IN ENGLISH, and it is not an oversight of `ui/copy.ts`.
-// This catalog resolves the language by reading `document.documentElement.lang`: at BUILD, in Node, there
-// is no `document` and it therefore falls back to the default language. An English page that read
-// `UI_*` would emit a FRENCH title and description in its <head> — that is, in the
-// only part of the page a search engine and a share preview really read.
+const head = headCopy(locale);
 ---
 
-<!doctype html>
-<html lang={HTML_LANG[locale]}>
-  <head>
-    <SiteHead
-      title="PanoptiCool — Find out what your social networks know about you."
-      description="PanoptiCool reads your TikTok export and shows you what an algorithm could infer from it — 100% local, nothing is sent."
-      path="/"
-    />
-  </head>
-  <body>
-    <LandingPage client:only="preact" />
-    <style is:global>
-      :root {
-        color-scheme: dark;
-        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      }
-      body {
-        margin: 0;
-        background: #070b18; /* NAVY.bgPage */
-        color: #e9eefb; /* NAVY.textBright */
-      }
-      a {
-        color: #2fd4f0;
-      }
-    </style>
-  </body>
-</html>
+<Page title={head.homeTitle} description={head.homeDescription} path="/">
+  <LandingPage client:only="preact" />
+</Page>

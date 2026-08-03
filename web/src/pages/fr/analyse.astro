@@ -2,58 +2,38 @@
 // Analysis journey (2026-07-15 design rework, « PanoptiCool v4 — parcours guidé » mockup).
 // `?demo` → synthetic export through the real engine; otherwise drop of the real export (drag &
 // drop). All interactivity lives in the single `client:only` island (ADR-0002), as elsewhere.
-import '@fontsource/jetbrains-mono/latin-400.css';
-import '@fontsource/jetbrains-mono/latin-500.css';
-import '@fontsource/jetbrains-mono/latin-600.css';
-import '@fontsource/jetbrains-mono/latin-700.css';
-import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../../i18n/locales';
-import SiteHead from '../../ui/SiteHead.astro';
+//
+// The shell lives in `layouts/Page.astro`; what stays here is what only this page needs — the
+// scroll offset under the sticky table of contents, and the global `@keyframes` the loading
+// spinner's inline style refers to (an inline style cannot declare its own keyframes).
+import { DEFAULT_LOCALE, type Locale } from '../../i18n/locales';
+import Page from '../../layouts/Page.astro';
+import { headCopy } from '../../ui/head-copy';
 import { AnalysisPage } from '../../ui/v2/AnalysisPage';
 
-// The language comes from the page's FOLDER, it is not written here: it is what makes
-// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
-// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+const head = headCopy(locale);
 ---
 
-<!doctype html>
-<html lang={HTML_LANG[locale]}>
-  <head>
-    <SiteHead
-      title="PanoptiCool — ce que TikTok pourrait déduire"
-      description="Analyse ton export TikTok entièrement dans ton navigateur : rythmes, thèmes, signaux sensibles — rien ne quitte ta machine."
-      path="/analyse"
-    />
-  </head>
-  <body>
-    <AnalysisPage client:only="preact" />
-    <style is:global>
-      :root {
-        color-scheme: dark;
-        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      }
+<Page title={head.analyseTitle} description={head.analyseDescription} path="/analyse">
+  <style is:global slot="page-style">
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px; /* table of contents: the anchors stop under the sticky bar */
+    }
+    /* Mobile (« v4 Mobile » mockup): the sticky bar is taller (logo row + table-of-contents
+       chips) — same threshold as MOBILE_QUERY (ui/v2/useIsMobile.ts, to keep aligned). */
+    @media (max-width: 720px) {
       html {
-        scroll-behavior: smooth;
-        scroll-padding-top: 80px; /* table of contents: the anchors stop under the sticky bar */
+        scroll-padding-top: 132px;
       }
-      /* Mobile (« v4 Mobile » mockup): the sticky bar is taller (logo row + table-of-contents
-         chips) — same threshold as MOBILE_QUERY (ui/v2/useIsMobile.ts, to keep aligned). */
-      @media (max-width: 720px) {
-        html {
-          scroll-padding-top: 132px;
-        }
+    }
+    /* Loading-screen spinner (inline styles — the global @keyframes lives here). */
+    @keyframes pano-spin {
+      to {
+        transform: rotate(360deg);
       }
-      body {
-        margin: 0;
-        background: #070b18; /* NAVY.bgPage */
-        color: #e9eefb; /* NAVY.textBright */
-      }
-      /* Loading-screen spinner (inline styles — the global @keyframes lives here). */
-      @keyframes pano-spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-    </style>
-  </body>
-</html>
+    }
+  </style>
+  <AnalysisPage client:only="preact" />
+</Page>

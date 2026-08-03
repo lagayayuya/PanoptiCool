@@ -3,44 +3,19 @@
 // (`/en/feuille-de-route`), like `/en/mentions-legales`: the site's URL space is the product of
 // `PAGE_PATHS` by the published languages, and a path that changed with the language would give
 // each page two addresses to keep in step for nothing.
-import '@fontsource/jetbrains-mono/latin-400.css';
-import '@fontsource/jetbrains-mono/latin-500.css';
-import '@fontsource/jetbrains-mono/latin-600.css';
-import '@fontsource/jetbrains-mono/latin-700.css';
-import { DEFAULT_LOCALE, HTML_LANG, type Locale } from '../../i18n/locales';
-import SiteHead from '../../ui/SiteHead.astro';
+//
+// The shell lives in `layouts/Page.astro`; the `<head>` prose lives in the ratifiable perimeter
+// and is read by PARAMETER (`headCopy`), because at build there is no `<html lang>` for `copy.ts`
+// to resolve from.
+import { DEFAULT_LOCALE, type Locale } from '../../i18n/locales';
+import Page from '../../layouts/Page.astro';
+import { headCopy } from '../../ui/head-copy';
 import { RoadmapPage } from '../../ui/v2/RoadmapPage';
 
-// The language comes from the page's FOLDER, it is not written here: it is what makes
-// `<html lang>` true by construction in each language tree — and `i18n/current.ts`,
-// which reads this attribute to fabricate the islands' links, depends on it entirely.
 const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+const head = headCopy(locale);
 ---
 
-<!doctype html>
-<html lang={HTML_LANG[locale]}>
-  <head>
-    <SiteHead
-      title="PanoptiCool — roadmap"
-      description="What's done, what's coming: the steps of PanoptiCool, one platform at a time."
-      path="/feuille-de-route"
-    />
-  </head>
-  <body>
-    <RoadmapPage client:only="preact" />
-    <style is:global>
-      :root {
-        color-scheme: dark;
-        font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-      }
-      body {
-        margin: 0;
-        background: #070b18; /* NAVY.bgPage */
-        color: #e9eefb; /* NAVY.textBright */
-      }
-      a {
-        color: #2fd4f0;
-      }
-    </style>
-  </body>
-</html>
+<Page title={head.roadmapTitle} description={head.roadmapDescription} path="/feuille-de-route">
+  <RoadmapPage client:only="preact" />
+</Page>
