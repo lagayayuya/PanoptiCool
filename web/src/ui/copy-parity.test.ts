@@ -6,11 +6,14 @@
 //
 //   **`typeof` of an array gives `T[]`, never a tuple.** An English translation can provide
 //   TWO columns where French has THREE, or four axis ticks instead of five, and
-//   compile without a word. This perimeter carries TEN arrays — the columns of the three
-//   educational panels and of the AI panel, the steps and cards of the home page, the summary
-//   bullets, the confidence pledges and the hour ticks —, and a
-//   missing column is not seen on rereading: it is seen on the page, in English, one day
-//   when no one compares the two files anymore.
+//   compile without a word. This perimeter carries a dozen arrays — the columns of the three
+//   educational panels and of the AI panel, the steps of the two export guides, the home page's
+//   connector bullets, consequences and resource rails, the summary bullets, the roadmap and the
+//   hour ticks — and a missing entry is not seen on rereading: it is seen on the page, in English,
+//   one day when no one compares the two files anymore.
+//
+//   The enumerated list below is the inventory; it is the thing to update, knowingly, when an
+//   array is added or removed.
 //
 // The net is therefore at RUNTIME, and it does not duplicate the compiler: it covers exactly what
 // the compiler lets through.
@@ -74,8 +77,11 @@ describe('copy — FR/EN parity', () => {
       // is what the equality above checks — not that the two platforms agree with each other.
       'UI_GUIDE.instagram.steps',
       'UI_GUIDE.tiktok.steps',
-      'UI_LANDING.feats',
-      'UI_LANDING.steps',
+      'UI_LANDING.actLinks',
+      'UI_LANDING.consequences',
+      'UI_LANDING.instagramBullets',
+      'UI_LANDING.learnLinks',
+      'UI_LANDING.tiktokBullets',
       'UI_LANDING.trust',
       'UI_LEARN_PANELS.deductions.columns',
       'UI_LEARN_PANELS.market.columns',

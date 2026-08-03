@@ -53,9 +53,9 @@ export const EN: UiCopy = {
   },
 
   UI_HEAD: {
-    homeTitle: 'PanoptiCool — Find out what your social networks know about you.',
+    homeTitle: 'PanoptiCool — Find out what TikTok and Instagram know about you.',
     homeDescription:
-      'PanoptiCool reads your TikTok export and shows you what an algorithm could infer from it — 100% local, nothing is sent.',
+      'PanoptiCool opens your TikTok or Instagram export in your browser and makes it readable — 100% local, nothing is sent.',
     analyseTitle: 'PanoptiCool — what TikTok could infer',
     analyseDescription:
       'Analyse your TikTok export entirely in your browser: rhythms, themes, sensitive signals — nothing leaves your machine.',
@@ -147,73 +147,104 @@ export const EN: UiCopy = {
   },
 
   UI_LANDING: {
-    heroKicker: 'your data exports, decoded on your own machine',
-    heroTitle: 'Find out what your social networks know about you.',
+    heroTitle: 'Find out what TikTok and Instagram know about you.',
     heroLede:
-      'Every platform has to hand over your data if you ask for it. PanoptiCool reads those exports and shows you what an algorithm could infer from them: your rhythms, your interests, and the sensitive signals you don’t think you’re leaving behind.',
+      'These apps have to hand you a copy of everything they recorded. PanoptiCool opens that file in your browser and makes it readable.',
+    trust: ['Free, no account', 'Nothing is sent over the internet', 'Open source'],
 
-    pickLabel: 'choose your platform',
-    platformTikTok: 'TikTok',
-    platformAvailable: 'available',
-    platformSoon: 'Instagram, YouTube… coming soon',
-
-    ctaAnalyse: 'Analyze my TikTok data',
-    ctaDemo: 'or try it first with made-up data →',
-    trust: ['100% local — nothing is sent', 'open source', 'free, no account'],
-
-    howTitle: 'How it works',
-    howNote: 'with TikTok',
-    steps: [
-      {
-        n: '1',
-        title: 'Get your TikTok export',
-        text: 'In the app: Profile → Settings → Account → Download your data. Choose the JSON format — the file can take anywhere from 1 to 48 hours to be ready.',
-      },
-      {
-        n: '2',
-        title: 'Drop it here',
-        text: 'The file is read directly in your browser. It never leaves your computer, and the code is open if you want to check.',
-      },
-      {
-        n: '3',
-        title: 'Explore the inferences',
-        text: 'Rhythms, topics, sensitive signals with their confidence level. And if you want, a local AI takes the analysis further.',
-      },
+    instagramName: 'Instagram',
+    instagramLede:
+      'One of the richest exports there is. It holds every photo, video and voice note you exchanged, put back in place year by year.',
+    instagramBullets: [
+      'Every one of your conversations, and the photos you exchanged',
+      'All your interactions with other accounts',
+      'What your account is worth, your interests, and the identity inferred from them',
     ],
+    instagramOpen: 'Open my Instagram data',
+    instagramDemo: 'Try the Instagram demo',
 
-    discoverTitle: 'What you’re about to find',
-    feats: [
+    tiktokName: 'TikTok',
+    tiktokLede:
+      'What the algorithm could infer about you, subject by subject. Mostly built on the comments you left and the searches you typed.',
+    tiktokBullets: [
+      'All your figures and your activity rhythm',
+      'Your searches and comments, listed and analyzed — with or without AI',
+      'A look at how the algorithms and the data market actually work',
+    ],
+    tiktokOpen: 'Open my TikTok data',
+    tiktokDemo: 'Try the TikTok demo',
+
+    platformSoon: 'YouTube, Google and X are coming.',
+    platformComingSoon: 'Analysis coming soon',
+
+    rightTitle:
+      'You have the right to get your data back. Being able to read it is another matter.',
+    rightLaw:
+      'The GDPR requires Instagram, TikTok or Google to hand you a copy of what they keep on you, on request. The law works: the export arrives.',
+    rightArchive:
+      'What arrives is a technical archive: folders of files, built to be compliant, not to be read. Transparency stops at the format.',
+    rightProduct:
+      'PanoptiCool opens that archive and makes it readable: what you wrote, what was inferred, and what it all adds up to. Everything happens in your browser — you can cut the internet before you start.',
+
+    statMessages: '+80,000',
+    statMessagesLabel: 'messages recovered from a single Instagram account.',
+    statValue: '$500',
+    statValueLabel: 'Average of what an Instagram account created 10 years ago can earn Meta.',
+
+    marketTitle: 'This data does not stay where you think it does.',
+    marketLede:
+      'An advertising profile is not a plain list of interests: it is a file that gets cross-referenced, resold, and that sometimes ends up freely downloadable.',
+    consequences: [
       {
-        tag: 'analysis',
-        title: 'Your profile, as an algorithm sees it',
-        text: 'Every inference is tied to the exact data feeding it — searches, comments, metadata — with a confidence score.',
+        kicker: 'The model',
+        title: 'It gets resold',
+        text: 'Ad networks, data brokers and third-party apps buy ready-made segments: “25-34, online at night, looking for housing”. You were never a party to the transaction.',
       },
       {
-        tag: 'local ai',
-        title: 'An AI that runs on your machine',
-        text: 'Install a small open-source model and let it analyze your traces. Cut the wifi if you like: it all works offline.',
-        mobileBadge: 'on desktop',
-        mobileText:
-          'Install a small open-source model and let it analyze your traces. For now, this analysis is only available on a computer.',
+        kicker: 'The accident',
+        title: 'It leaks',
+        text: 'No database is impregnable. In 2021 the details of more than 500 million Facebook accounts, phone numbers included, ended up freely downloadable. A leak cannot be taken back.',
       },
       {
-        tag: 'to understand',
-        title: 'Learn as you explore',
-        text: 'In every section, expandable explanations: how an algorithm guesses, where profiles end up, what a token is, your GDPR rights.',
+        kicker: 'The use',
+        title: 'It decides things',
+        text: 'A profile does not only pick an advert: it can steer a price, a recommendation, the order of what you see. You live with the conclusions without ever getting to read them.',
       },
     ],
 
     whyKicker: 'why “panopticool”?',
-    whyTextBefore: 'The ',
-    whyTextItalic: 'panopticon',
-    // ⚠ IMPOSED FRAGMENTS (the word is in italics in the middle of the sentence), and the cut DIFFERS from
-    // the French: « le panoptique (en anglais, panopticon) » glosses a word English does not have to
-    // gloss — the term IS English. The « before » therefore reduces to the article, and the parenthesis
-    // disappears. Translating the gloss word for word would have produced « the panopticon (in English,
-    // panopticon) », which is gibberish.
+    // Same imposed fragmentation as the French: « panopticon » is italicized mid-sentence.
+    whyTextBefore: 'The panopticon (in French, ',
+    whyTextItalic: 'panoptique',
     whyTextAfter:
-      ' is a prison where a single guard can watch everyone without being seen. Platforms work a little like that, except here you’re the one watching, from your own computer, and that’s... cool?',
-    whyLink: 'See the demo with made-up data →',
+      ') is a prison where a single guard can watch everyone without ever being seen. Platforms work a little like that, except here you’re the one watching, from your own computer, and that’s... cool?',
+    whyDemoTikTok: 'TikTok demo, made-up data →',
+    whyDemoInstagram: 'Instagram demo, made-up data →',
+
+    learnKicker: 'Understand',
+    learnTitle: 'Read further',
+    learnLede:
+      'What the law says, who enforces it, and why privacy is not just a matter for people with something to hide.',
+    learnLinks: [
+      { name: 'La Quadrature du Net', note: 'A French group defending digital rights' },
+      { name: 'noyb', note: 'The collective complaints against the tech giants' },
+      {
+        name: 'Privacy Guides — why it matters',
+        note: 'Privacy, secrecy, anonymity: what sets them apart',
+      },
+    ],
+
+    actKicker: 'Act',
+    actTitle: 'Test yourself, and protect yourself',
+    actLede: 'Free tools to measure your exposure and pick alternatives, at your own pace.',
+    actLinks: [
+      { name: 'Have I Been Pwned', note: 'Check whether your address has already leaked' },
+      {
+        name: 'Threat modeling',
+        note: 'Five minutes to work out what you actually need to protect',
+      },
+      { name: 'Privacy Guides — tools', note: 'Recommended alternatives, by use case' },
+    ],
   },
 
   UI_GUIDE: {

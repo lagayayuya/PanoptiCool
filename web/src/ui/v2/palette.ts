@@ -32,6 +32,8 @@ export const NAVY = {
 
   // Main accent (cyan).
   accent: '#2fd4f0',
+  /** The Instagram connector's accent — the one colour that tells the two cards apart. */
+  instagram: '#f0a0d8',
   accentBright: '#7ce6f8',
   accentBgSoft: 'rgba(47,212,240,.10)',
   accentBorderSoft: 'rgba(47,212,240,.55)',

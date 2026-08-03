@@ -1,14 +1,16 @@
-// Home page (« Accueil v2 » mockup, 2026-07-15 rework). DELIBERATE gaps vs the mockup
-// (yuya's decisions): no newsletter section; a single selectable platform (TikTok), the
-// dotted chip becomes « Instagram, YouTube… bientôt ».
+// Home page (« Accueil v4 » mockup). ONE DELIBERATE GAP vs the mockup (yuya's decision): no
+// newsletter block. The site is a static build with no server, so the form would either do nothing
+// or hand an address to a third party — a field that pretends to subscribe you is the one thing
+// this product cannot ship.
+//
+// WHAT v4 REPLACES. The « Comment ça marche » steps and the « Ce que tu vas découvrir » cards are
+// gone, with their copy: both described the journey in the abstract, and the two connector cards
+// below say the same thing concretely, per platform. The export guide says the rest, in screenshots
+// rather than in a paragraph.
 //
 // The language selector only leads somewhere for a PUBLISHED locale — it is `localeHref` that
-// carries this rule, not this page. Writing here the inventory of what does or does not have a target behind
-// would go stale at the first locale added, with nothing to signal it.
-//
-// The consent modal takes the mockup as is: the « Continuer vers l'export » click
-// (mandatory checked box) leads to the real journey (/analyse); the « données fictives » link leads to
-// the same page in demo mode (/analyse?demo) — same render, synthetic source.
+// carries this rule, not this page. Writing here the inventory of what does or does not have a
+// target behind would go stale at the first locale added, with nothing to signal it.
 
 import { useState } from 'preact/hooks';
 import { localeHref } from '../../i18n/current';
@@ -25,14 +27,33 @@ import { useIsMobile } from './useIsMobile';
 const DEMO_PATH = '/analyse?demo';
 const ANALYSE_PATH = '/analyse';
 
-const STEPS = UI_LANDING.steps;
+/**
+ * Whether the Instagram connector is reachable.
+ *
+ * NOT a flag to be forgotten: the card renders in full either way, because the reader needs to know
+ * what the export contains BEFORE requesting it — the file takes days to arrive. What the flag
+ * governs is only whether the two buttons lead to an analysis or to the export guide. The commit
+ * that lands the connector flips it, and nothing else here moves.
+ */
+const INSTAGRAM_LIVE = false;
 
-/** Styling of the 3 cards — colors ONLY, in the catalog's order (`UI_LANDING.feats`).
- * The prose lives in the catalog; this array only carries what is not text. */
-const FEAT_COLORS: readonly { tagColor: string; border: string }[] = [
-  { tagColor: NAVY.accent, border: NAVY.borderCard },
-  { tagColor: NAVY.accent, border: NAVY.borderCard },
-  { tagColor: '#8fa3ff', border: NAVY.learnBorder },
+/**
+ * The URLs of the two resource rails — the language-independent SPINE, paired BY INDEX with
+ * `UI_LANDING.learnLinks` / `actLinks`, exactly as `ROADMAP_STEPS` pairs with `UI_ROADMAP.steps`.
+ *
+ * A URL is an address, not prose: it does not translate, and putting it in `copy.*` would ask a
+ * translator to keep two copies of it in step. The cost of the split is that nothing but
+ * `landing.test.ts` notices if one list gains an entry and the other does not.
+ */
+export const LEARN_URLS: readonly string[] = [
+  'https://www.laquadrature.net/',
+  'https://noyb.eu/',
+  'https://www.privacyguides.org/en/basics/why-privacy-matters/',
+];
+export const ACT_URLS: readonly string[] = [
+  'https://haveibeenpwned.com/',
+  'https://www.privacyguides.org/en/basics/threat-modeling/',
+  'https://www.privacyguides.org/en/tools/',
 ];
 
 function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: boolean }) {
@@ -133,59 +154,70 @@ function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: bo
 
 export function LandingPage() {
   const [consentOpen, setConsentOpen] = useState(false);
-  // `null` = closed. The guide opens on its picker from the hero; the platform cards of the v4
-  // home will open it straight on their own steps.
+  // `null` = closed. The hero opens the guide on its picker; each platform card opens it straight
+  // on its own steps.
   const [guideTarget, setGuideTarget] = useState<GuideTarget | null>(null);
   const isMobile = useIsMobile();
+
+  const platformCard = (p: {
+    name: string;
+    lede: string;
+    bullets: readonly string[];
+    open: string;
+    demo: string;
+    accent: string;
+    live: boolean;
+    guide: GuideTarget;
+  }) => (
+    <div style={isMobile ? M_PLATFORM_CARD : PLATFORM_CARD}>
+      <span style={{ ...PLATFORM_NAME, color: p.accent }}>{p.name}</span>
+      <p style={PLATFORM_LEDE}>{p.lede}</p>
+      <ul style={BULLETS}>
+        {p.bullets.map((b) => (
+          <li key={b} style={BULLET}>
+            <span style={{ ...BULLET_DOT, background: p.accent }} />
+            {b}
+          </li>
+        ))}
+      </ul>
+      <div style={PLATFORM_ACTIONS}>
+        <button
+          type="button"
+          class="hv-br"
+          style={{ ...PLATFORM_CTA, background: p.accent }}
+          onClick={() => (p.live ? setConsentOpen(true) : setGuideTarget(p.guide))}
+        >
+          {p.open}
+        </button>
+        {p.live ? (
+          <a href={localeHref(DEMO_PATH)} class="hv-cy" style={PLATFORM_DEMO}>
+            {p.demo}
+          </a>
+        ) : (
+          <span style={PLATFORM_SOON_TAG}>{UI_LANDING.platformComingSoon}</span>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div style={isMobile ? M_PAGE : PAGE}>
       <SiteHeader />
       <div style={isMobile ? M_SHELL : SHELL}>
-        {/* --- Hero (mobile: single column, static centered logo — Mobile mockup) -------------- */}
+        {/* --- Hero ---------------------------------------------------------------------------- */}
         <div style={isMobile ? undefined : HERO}>
           <div style={HERO_COL}>
-            <span style={isMobile ? M_KICKER : KICKER}>{UI_LANDING.heroKicker}</span>
             <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>{UI_LANDING.heroTitle}</h1>
             <p style={isMobile ? M_HERO_LEDE : HERO_LEDE}>{UI_LANDING.heroLede}</p>
-            <div style={PICK_BLOCK}>
-              <span style={PICK_LABEL}>{UI_LANDING.pickLabel}</span>
-              <div style={isMobile ? M_PICK_COL : PICK_ROW}>
-                <div style={isMobile ? M_PLATFORM_ON : PLATFORM_ON}>
-                  <span style={isMobile ? M_PLATFORM_NAME : PLATFORM_NAME}>
-                    {UI_LANDING.platformTikTok}
-                  </span>
-                  <span style={isMobile ? M_PLATFORM_SUB : PLATFORM_SUB}>
-                    {UI_LANDING.platformAvailable}
-                  </span>
-                </div>
-                <div style={isMobile ? M_PLATFORM_SOON : PLATFORM_SOON}>
-                  <span style={isMobile ? M_SOON_TEXT : SOON_TEXT}>{UI_LANDING.platformSoon}</span>
-                </div>
-              </div>
-            </div>
-            <div style={isMobile ? M_CTA_COL : CTA_ROW}>
-              <button
-                type="button"
-                style={isMobile ? M_CTA : CTA}
-                onClick={() => setConsentOpen(true)}
-              >
-                {UI_LANDING.ctaAnalyse}{' '}
-                <span style={{ fontSize: isMobile ? '15px' : '13px' }}>→</span>
-              </button>
-              <a href={localeHref(DEMO_PATH)} style={isMobile ? M_DEMO_BTN : DEMO_LINK}>
-                {UI_LANDING.ctaDemo}
-              </a>
-            </div>
-            {/* Getting the archive is the first obstacle, and the biggest — it belongs next to the
-                call to action, not in a help page nobody opens. */}
+            {/* Getting the archive is the first obstacle and by far the biggest — the guide is the
+                hero's call to action, not a help link further down the page. */}
             <button
               type="button"
-              class="hv-cy"
-              style={GUIDE_LINK}
+              class="hv-br"
+              style={isMobile ? M_CTA : CTA}
               onClick={() => setGuideTarget('pick')}
             >
-              {UI_GUIDE.openLabel} →
+              {UI_GUIDE.openLabel} <span style={{ fontSize: isMobile ? '15px' : '13px' }}>→</span>
             </button>
             <div style={isMobile ? M_TRUST_COL : TRUST_ROW}>
               {UI_LANDING.trust.map((t) => (
@@ -203,64 +235,61 @@ export function LandingPage() {
           )}
         </div>
 
-        {/* --- How it works ------------------------------------------------------------------- */}
+        {/* --- The two connectors -------------------------------------------------------------- */}
+        <div style={isMobile ? M_CARD_COL : PLATFORM_GRID}>
+          {platformCard({
+            name: UI_LANDING.instagramName,
+            lede: UI_LANDING.instagramLede,
+            bullets: UI_LANDING.instagramBullets,
+            open: UI_LANDING.instagramOpen,
+            demo: UI_LANDING.instagramDemo,
+            accent: NAVY.instagram,
+            live: INSTAGRAM_LIVE,
+            guide: 'instagram',
+          })}
+          {platformCard({
+            name: UI_LANDING.tiktokName,
+            lede: UI_LANDING.tiktokLede,
+            bullets: UI_LANDING.tiktokBullets,
+            open: UI_LANDING.tiktokOpen,
+            demo: UI_LANDING.tiktokDemo,
+            accent: NAVY.accent,
+            live: true,
+            guide: 'tiktok',
+          })}
+        </div>
+        <p style={SOON_LINE}>{UI_LANDING.platformSoon}</p>
+
+        {/* --- The right, and what it actually gets you ---------------------------------------- */}
         <div style={isMobile ? M_SECTION : SECTION}>
-          {isMobile ? (
-            <div style={M_SECTION_HEAD}>
-              <span style={M_SECTION_TITLE}>{UI_LANDING.howTitle}</span>
-              <span style={SECTION_NOTE}>{UI_LANDING.howNote}</span>
+          <h2 style={isMobile ? M_BIG_TITLE : BIG_TITLE}>{UI_LANDING.rightTitle}</h2>
+          <div style={isMobile ? M_CARD_COL : PROSE_GRID}>
+            <p style={PROSE}>{UI_LANDING.rightLaw}</p>
+            <p style={PROSE}>{UI_LANDING.rightArchive}</p>
+            <p style={PROSE}>{UI_LANDING.rightProduct}</p>
+          </div>
+          <div style={isMobile ? M_CARD_COL : STAT_ROW}>
+            <div style={STAT}>
+              <span style={STAT_N}>{UI_LANDING.statMessages}</span>
+              <span style={STAT_LABEL}>{UI_LANDING.statMessagesLabel}</span>
             </div>
-          ) : (
-            <div style={SECTION_HEAD}>
-              <span style={SECTION_TITLE}>{UI_LANDING.howTitle}</span>
-              <span style={RULE} />
-              <span style={SECTION_NOTE}>{UI_LANDING.howNote}</span>
+            <div style={STAT}>
+              <span style={STAT_N}>{UI_LANDING.statValue}</span>
+              <span style={STAT_LABEL}>{UI_LANDING.statValueLabel}</span>
             </div>
-          )}
-          <div style={isMobile ? M_CARD_COL : CARD_GRID}>
-            {STEPS.map((st) => (
-              <div key={st.n} style={isMobile ? M_STEP_CARD : STEP_CARD}>
-                <span style={STEP_N}>{st.n}</span>
-                <span style={isMobile ? M_CARD_TITLE : CARD_TITLE}>{st.title}</span>
-                <span style={isMobile ? M_CARD_TEXT : CARD_TEXT}>{st.text}</span>
-              </div>
-            ))}
           </div>
         </div>
 
-        {/* --- What you will discover ----------------------------------------------------------- */}
+        {/* --- Where the profiles go ----------------------------------------------------------- */}
         <div style={isMobile ? M_SECTION : SECTION}>
-          {isMobile ? (
-            <span style={M_SECTION_TITLE}>{UI_LANDING.discoverTitle}</span>
-          ) : (
-            <div style={SECTION_HEAD}>
-              <span style={SECTION_TITLE}>{UI_LANDING.discoverTitle}</span>
-              <span style={RULE} />
-            </div>
-          )}
+          <h2 style={isMobile ? M_BIG_TITLE : BIG_TITLE}>{UI_LANDING.marketTitle}</h2>
+          <p style={PROSE}>{UI_LANDING.marketLede}</p>
           <div style={isMobile ? M_CARD_COL : CARD_GRID}>
-            {UI_LANDING.feats.map((f, i) => (
-              <div
-                key={f.tag}
-                style={{
-                  ...(isMobile ? M_FEAT_CARD : FEAT_CARD),
-                  border: `1px solid ${FEAT_COLORS[i]?.border ?? NAVY.borderCard}`,
-                }}
-              >
-                <div style={FEAT_TAG_ROW}>
-                  <span style={{ ...FEAT_TAG, color: FEAT_COLORS[i]?.tagColor ?? NAVY.accent }}>
-                    {f.tag}
-                  </span>
-                  {isMobile && 'mobileBadge' in f && f.mobileBadge !== undefined && (
-                    <span style={M_DESKTOP_ONLY_BADGE}>{f.mobileBadge}</span>
-                  )}
-                </div>
-                <span style={isMobile ? M_CARD_TITLE : CARD_TITLE}>{f.title}</span>
-                <span style={isMobile ? M_CARD_TEXT : CARD_TEXT}>
-                  {isMobile && 'mobileText' in f && f.mobileText !== undefined
-                    ? f.mobileText
-                    : f.text}
-                </span>
+            {UI_LANDING.consequences.map((c) => (
+              <div key={c.title} style={isMobile ? M_STEP_CARD : STEP_CARD}>
+                <span style={CONSEQUENCE_KICKER}>{c.kicker}</span>
+                <span style={isMobile ? M_CARD_TITLE : CARD_TITLE}>{c.title}</span>
+                <span style={isMobile ? M_CARD_TEXT : CARD_TEXT}>{c.text}</span>
               </div>
             ))}
           </div>
@@ -274,9 +303,40 @@ export function LandingPage() {
             <i>{UI_LANDING.whyTextItalic}</i>
             {UI_LANDING.whyTextAfter}
           </p>
-          <a href={localeHref(DEMO_PATH)} style={isMobile ? M_WHY_LINK : WHY_LINK}>
-            {UI_LANDING.whyLink}
-          </a>
+          <div style={WHY_LINKS}>
+            <a href={localeHref(DEMO_PATH)} class="hv-cy" style={isMobile ? M_WHY_LINK : WHY_LINK}>
+              {UI_LANDING.whyDemoTikTok}
+            </a>
+            {INSTAGRAM_LIVE && (
+              <a
+                href={localeHref(DEMO_PATH)}
+                class="hv-cy"
+                style={isMobile ? M_WHY_LINK : WHY_LINK}
+              >
+                {UI_LANDING.whyDemoInstagram}
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* --- Going further ------------------------------------------------------------------- */}
+        <div style={isMobile ? M_CARD_COL : RAIL_GRID}>
+          <Rail
+            kicker={UI_LANDING.learnKicker}
+            title={UI_LANDING.learnTitle}
+            lede={UI_LANDING.learnLede}
+            links={UI_LANDING.learnLinks}
+            urls={LEARN_URLS}
+            isMobile={isMobile}
+          />
+          <Rail
+            kicker={UI_LANDING.actKicker}
+            title={UI_LANDING.actTitle}
+            lede={UI_LANDING.actLede}
+            links={UI_LANDING.actLinks}
+            urls={ACT_URLS}
+            isMobile={isMobile}
+          />
         </div>
 
         <SiteFooter />
@@ -286,6 +346,46 @@ export function LandingPage() {
       {guideTarget !== null && (
         <ExportGuide target={guideTarget} onClose={() => setGuideTarget(null)} />
       )}
+    </div>
+  );
+}
+
+/** One resource rail. `links` carries the prose, `urls` the addresses — paired by index. */
+function Rail({
+  kicker,
+  title,
+  lede,
+  links,
+  urls,
+  isMobile,
+}: {
+  kicker: string;
+  title: string;
+  lede: string;
+  links: readonly { name: string; note: string }[];
+  urls: readonly string[];
+  isMobile: boolean;
+}) {
+  return (
+    <div style={isMobile ? M_RAIL : RAIL}>
+      <span style={KICKER}>{kicker}</span>
+      <span style={isMobile ? M_CARD_TITLE : CARD_TITLE}>{title}</span>
+      <p style={RAIL_LEDE}>{lede}</p>
+      <div style={RAIL_LINKS}>
+        {links.map((l, i) => (
+          <a
+            key={l.name}
+            href={urls[i] ?? '#'}
+            target="_blank"
+            rel="noreferrer"
+            class="hv-bd"
+            style={RAIL_LINK}
+          >
+            <span style={RAIL_LINK_NAME}>{l.name}</span>
+            <span style={RAIL_LINK_NOTE}>{l.note}</span>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
@@ -334,50 +434,6 @@ const HERO_LEDE = {
   color: NAVY.textLede,
   maxWidth: '540px',
 } as const;
-const PICK_BLOCK = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '9px',
-  paddingTop: '6px',
-} as const;
-const PICK_LABEL = {
-  fontSize: '9px',
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  color: NAVY.textDim,
-} as const;
-const PICK_ROW = { display: 'flex', gap: '10px', flexWrap: 'wrap' } as const;
-const PLATFORM_ON = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
-  padding: '12px 18px',
-  background: NAVY.accentBgSoft,
-  border: `1px solid ${NAVY.accentBorderSoft}`,
-  borderRadius: '10px',
-} as const;
-const PLATFORM_NAME = { fontSize: '12px', fontWeight: 600, color: NAVY.accentBright } as const;
-const PLATFORM_SUB = {
-  fontSize: '9px',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.accent,
-} as const;
-const PLATFORM_SOON = {
-  display: 'flex',
-  alignItems: 'center',
-  padding: '12px 18px',
-  border: `1px dashed ${NAVY.borderInset}`,
-  borderRadius: '10px',
-} as const;
-const SOON_TEXT = { fontSize: '10px', lineHeight: 1.3, color: NAVY.textGhost } as const;
-const CTA_ROW = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '18px',
-  flexWrap: 'wrap',
-  paddingTop: '4px',
-} as const;
 const CTA = {
   cursor: 'pointer',
   display: 'flex',
@@ -392,15 +448,6 @@ const CTA = {
   border: 'none',
   borderRadius: '9px',
   padding: '15px 24px',
-} as const;
-const DEMO_LINK = {
-  fontSize: '11.5px',
-  fontWeight: 500,
-  lineHeight: 1.4,
-  color: NAVY.textLede,
-  textDecoration: 'none',
-  borderBottom: `1px solid ${NAVY.borderChip}`,
-  paddingBottom: '3px',
 } as const;
 const TRUST_ROW = { display: 'flex', gap: '18px', flexWrap: 'wrap', paddingTop: '4px' } as const;
 const TRUST_ITEM = {
@@ -417,21 +464,6 @@ const TRUST_DOT = {
   background: NAVY.ok,
 } as const;
 const SECTION = { display: 'flex', flexDirection: 'column', gap: '22px' } as const;
-const SECTION_HEAD = { display: 'flex', alignItems: 'center', gap: '14px' } as const;
-const SECTION_TITLE = {
-  fontSize: '13px',
-  fontWeight: 500,
-  letterSpacing: '0.12em',
-  textTransform: 'uppercase',
-  color: NAVY.textBright,
-} as const;
-const RULE = { flex: 1, height: '1px', background: NAVY.borderCard } as const;
-const SECTION_NOTE = {
-  fontSize: '9.5px',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.textDim,
-} as const;
 const CARD_GRID = {
   display: 'grid',
   gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
@@ -446,18 +478,6 @@ const STEP_CARD = {
   border: `1px solid ${NAVY.borderCard}`,
   borderRadius: '12px',
 } as const;
-const STEP_N = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '26px',
-  height: '26px',
-  borderRadius: '50%',
-  border: '1px solid rgba(47,212,240,.5)',
-  fontSize: '11px',
-  fontWeight: 600,
-  color: NAVY.accent,
-} as const;
 const CARD_TITLE = {
   fontSize: '13px',
   fontWeight: 500,
@@ -465,15 +485,6 @@ const CARD_TITLE = {
   color: NAVY.textBright,
 } as const;
 const CARD_TEXT = { fontSize: '11px', lineHeight: 1.7, color: NAVY.textLede } as const;
-const FEAT_CARD = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-  padding: '24px',
-  background: NAVY.bgCard,
-  borderRadius: '12px',
-} as const;
-const FEAT_TAG = { fontSize: '9px', letterSpacing: '0.12em', textTransform: 'uppercase' } as const;
 const WHY_CARD = {
   display: 'flex',
   flexDirection: 'column',
@@ -608,12 +619,6 @@ const GO_BTN_OFF = {
 } as const;
 
 // --- MOBILE styles (« Accueil v2 Mobile » mockup: single column, touch targets ≥ 44 px) ------------
-const FEAT_TAG_ROW = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  flexWrap: 'wrap',
-} as const;
 // The background (gradient) covers the FULL width — no ceiling here, otherwise the black body appears as
 // bands on either side of the 480 px container on intermediate screens (720 px and less,
 // but wider than 480). Only the CONTENT is centered at 480 px (M_SHELL).
@@ -648,44 +653,6 @@ const M_HERO_LEDE = {
   lineHeight: 1.75,
   color: NAVY.textLede,
 } as const;
-const M_PICK_COL = { display: 'flex', flexDirection: 'column', gap: '10px' } as const;
-const M_PLATFORM_ON = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: '10px',
-  width: '100%',
-  boxSizing: 'border-box',
-  minHeight: '52px',
-  padding: '14px 18px',
-  background: NAVY.accentBgSoft,
-  border: `1px solid ${NAVY.accentBorderSoft}`,
-  borderRadius: '12px',
-} as const;
-const M_PLATFORM_NAME = { fontSize: '14px', fontWeight: 600, color: NAVY.accentBright } as const;
-const M_PLATFORM_SUB = {
-  fontSize: '11px',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.accent,
-} as const;
-const M_PLATFORM_SOON = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  minHeight: '44px',
-  boxSizing: 'border-box',
-  padding: '10px 18px',
-  border: `1px dashed ${NAVY.borderInset}`,
-  borderRadius: '12px',
-} as const;
-const M_SOON_TEXT = { fontSize: '12px', lineHeight: 1.4, color: NAVY.textGhost } as const;
-const M_CTA_COL = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  paddingTop: '4px',
-} as const;
 const M_CTA = {
   ...CTA,
   justifyContent: 'center',
@@ -696,22 +663,6 @@ const M_CTA = {
   lineHeight: 1.3,
   borderRadius: '12px',
   padding: '16px 24px',
-} as const;
-const M_DEMO_BTN = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  minHeight: '48px',
-  boxSizing: 'border-box',
-  fontSize: '13px',
-  fontWeight: 500,
-  lineHeight: 1.5,
-  color: NAVY.textSecondary,
-  textDecoration: 'none',
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '12px',
-  padding: '12px 18px',
-  textAlign: 'center',
 } as const;
 const M_TRUST_COL = {
   display: 'flex',
@@ -735,18 +686,8 @@ const M_TRUST_DOT = {
   flex: 'none',
 } as const;
 const M_SECTION = { display: 'flex', flexDirection: 'column', gap: '18px' } as const;
-const M_SECTION_HEAD = { display: 'flex', flexDirection: 'column', gap: '6px' } as const;
-const M_SECTION_TITLE = {
-  fontSize: '15px',
-  fontWeight: 500,
-  lineHeight: 1.3,
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
-  color: NAVY.textBright,
-} as const;
 const M_CARD_COL = { display: 'flex', flexDirection: 'column', gap: '14px' } as const;
 const M_STEP_CARD = { ...STEP_CARD, gap: '11px', padding: '20px' } as const;
-const M_FEAT_CARD = { ...FEAT_CARD, padding: '20px' } as const;
 const M_CARD_TITLE = {
   fontSize: '14px',
   fontWeight: 500,
@@ -754,16 +695,6 @@ const M_CARD_TITLE = {
   color: NAVY.textBright,
 } as const;
 const M_CARD_TEXT = { fontSize: '12.5px', lineHeight: 1.7, color: NAVY.textLede } as const;
-const M_DESKTOP_ONLY_BADGE = {
-  fontSize: '9.5px',
-  lineHeight: 1.3,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.riskLabel,
-  border: '1px solid rgba(232,117,78,.4)',
-  borderRadius: '20px',
-  padding: '4px 8px',
-} as const;
 const M_WHY_CARD = { ...WHY_CARD, gap: '14px', padding: '24px 20px' } as const;
 const M_WHY_TEXT = { margin: 0, fontSize: '13px', lineHeight: 1.75, color: NAVY.textLede } as const;
 const M_WHY_LINK = {
@@ -818,15 +749,155 @@ const M_FULL_BTN = {
   justifyContent: 'center',
   textAlign: 'center',
 } as const;
-const GUIDE_LINK = {
-  cursor: 'pointer',
-  alignSelf: 'flex-start',
-  fontFamily: 'inherit',
-  fontSize: '11.5px',
-  fontWeight: 500,
-  color: NAVY.textSecondary,
-  background: 'transparent',
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '8px',
-  padding: '9px 13px',
+
+// --- v4 sections ----------------------------------------------------------------------------
+const PLATFORM_GRID = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  gap: '18px',
 } as const;
+const PLATFORM_CARD = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+  padding: '24px 22px',
+  background: NAVY.bgCard,
+  border: `1px solid ${NAVY.borderCard}`,
+  borderRadius: '16px',
+} as const;
+const M_PLATFORM_CARD = { ...PLATFORM_CARD, padding: '20px 18px' } as const;
+const PLATFORM_NAME = { fontSize: '17px', fontWeight: 600, letterSpacing: '-0.01em' } as const;
+const PLATFORM_LEDE = {
+  margin: 0,
+  fontSize: '12px',
+  lineHeight: 1.7,
+  color: NAVY.textLede,
+} as const;
+const BULLETS = {
+  listStyle: 'none',
+  margin: '2px 0 0',
+  padding: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+} as const;
+const BULLET = {
+  display: 'flex',
+  gap: '9px',
+  fontSize: '11.5px',
+  lineHeight: 1.6,
+  color: NAVY.textSecondary,
+} as const;
+const BULLET_DOT = {
+  flex: 'none',
+  width: '5px',
+  height: '5px',
+  borderRadius: '50%',
+  marginTop: '6px',
+} as const;
+const PLATFORM_ACTIONS = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '9px',
+  marginTop: '6px',
+} as const;
+const PLATFORM_CTA = {
+  cursor: 'pointer',
+  fontFamily: 'inherit',
+  fontSize: '12.5px',
+  fontWeight: 600,
+  color: NAVY.bgPage,
+  border: 'none',
+  borderRadius: '9px',
+  padding: '12px 14px',
+} as const;
+const PLATFORM_DEMO = {
+  fontSize: '11.5px',
+  color: NAVY.textMuted,
+  textDecoration: 'none',
+  textAlign: 'center',
+} as const;
+const PLATFORM_SOON_TAG = { fontSize: '11px', color: NAVY.textDim, textAlign: 'center' } as const;
+const SOON_LINE = {
+  margin: 0,
+  fontSize: '11.5px',
+  color: NAVY.textDim,
+  textAlign: 'center',
+} as const;
+const BIG_TITLE = {
+  margin: 0,
+  fontSize: '24px',
+  fontWeight: 500,
+  lineHeight: 1.3,
+  letterSpacing: '-0.02em',
+  color: NAVY.textBright,
+} as const;
+const M_BIG_TITLE = { ...BIG_TITLE, fontSize: '19px' } as const;
+const PROSE_GRID = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+  gap: '18px',
+} as const;
+const PROSE = { margin: 0, fontSize: '12px', lineHeight: 1.8, color: NAVY.textLede } as const;
+const STAT_ROW = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  gap: '18px',
+} as const;
+const STAT = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '6px',
+  padding: '18px 20px',
+  background: NAVY.bgCard,
+  border: `1px solid ${NAVY.borderCard}`,
+  borderRadius: '14px',
+} as const;
+const STAT_N = {
+  fontSize: '26px',
+  fontWeight: 600,
+  color: NAVY.accent,
+  letterSpacing: '-0.02em',
+} as const;
+const STAT_LABEL = { fontSize: '11.5px', lineHeight: 1.6, color: NAVY.textLede } as const;
+const CONSEQUENCE_KICKER = {
+  fontSize: '10px',
+  letterSpacing: '0.16em',
+  textTransform: 'uppercase',
+  color: NAVY.textDim,
+} as const;
+const WHY_LINKS = { display: 'flex', gap: '18px', flexWrap: 'wrap' } as const;
+const RAIL_GRID = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+  gap: '18px',
+} as const;
+const RAIL = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  padding: '22px 20px',
+  background: NAVY.bgCard,
+  border: `1px solid ${NAVY.borderCard}`,
+  borderRadius: '16px',
+} as const;
+const M_RAIL = { ...RAIL, padding: '18px 16px' } as const;
+const RAIL_LEDE = {
+  margin: '0 0 4px',
+  fontSize: '11.5px',
+  lineHeight: 1.7,
+  color: NAVY.textLede,
+} as const;
+const RAIL_LINKS = { display: 'flex', flexDirection: 'column', gap: '8px' } as const;
+const RAIL_LINK = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '3px',
+  padding: '11px 13px',
+  background: NAVY.bgPage,
+  border: `1px solid ${NAVY.borderChip}`,
+  borderRadius: '10px',
+  textDecoration: 'none',
+} as const;
+const RAIL_LINK_NAME = { fontSize: '12px', fontWeight: 500, color: NAVY.textBright } as const;
+const RAIL_LINK_NOTE = { fontSize: '11px', lineHeight: 1.5, color: NAVY.textMuted } as const;

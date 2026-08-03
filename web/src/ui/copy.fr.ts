@@ -98,9 +98,9 @@ export const FR = {
   // exactly as `engine/wording.ts` does and for the same reason. The prose stays here; only the
   // resolution differs.
   UI_HEAD: {
-    homeTitle: 'PanoptiCool — Découvre ce que tes réseaux savent de toi.',
+    homeTitle: 'PanoptiCool — Découvre ce que TikTok et Instagram savent de toi.',
     homeDescription:
-      "PanoptiCool lit ton export TikTok et te montre ce qu'un algorithme pourrait en déduire — 100 % local, rien n'est envoyé.",
+      "PanoptiCool ouvre ton export TikTok ou Instagram dans ton navigateur et te le rend lisible — 100 % local, rien n'est envoyé.",
     analyseTitle: 'PanoptiCool — ce que TikTok pourrait déduire',
     analyseDescription:
       'Analyse ton export TikTok entièrement dans ton navigateur : rythmes, thèmes, signaux sensibles — rien ne quitte ta machine.',
@@ -215,62 +215,91 @@ export const FR = {
   },
 
   // --- 2. HOME (`ui/v2/LandingPage.tsx`) ---------------------------------------------------------
+  // Rebuilt on the « Accueil v4 » mockup. What DISAPPEARS with it, and why it is not a loss:
+  // `steps` (« Comment ça marche », three numbered cards) and `feats` (« Ce que tu vas découvrir »,
+  // three cards) both described the TikTok journey in the abstract. The two platform cards below
+  // say the same thing concretely, per connector, and the export guide says the rest — in
+  // screenshots rather than in a paragraph. Keeping them would have been three ways of saying
+  // « you drop a file and we read it ».
+  //
+  // ⚠ NO NEWSLETTER, deliberately (yuya's decision). The mockup has a subscribe form; the site is a
+  // static build with no server, so the form would either do nothing or hand an address to a third
+  // party. A field that pretends to subscribe you is the one thing this product cannot ship.
   UI_LANDING: {
-    heroKicker: 'tes exports de données, décodés chez toi',
-    heroTitle: 'Découvre ce que tes réseaux savent de toi.',
+    heroTitle: 'Découvre ce que TikTok et Instagram savent de toi.',
     heroLede:
-      'Chaque plateforme doit te remettre tes données si tu les demandes. PanoptiCool lit ces exports et te montre ce qu’un algorithme pourrait en déduire : tes rythmes, tes centres d’intérêt et les signaux sensibles que tu ne penses pas laisser.',
+      'Ces applications doivent te remettre une copie de tout ce qu’elles ont enregistré. PanoptiCool ouvre ce fichier dans ton navigateur et te le rend lisible.',
+    trust: ['Gratuit, sans compte', 'Rien n’est envoyé sur internet', 'Code ouvert'],
 
-    pickLabel: 'choisis ta plateforme',
-    platformTikTok: 'TikTok',
-    platformAvailable: 'disponible',
-    platformSoon: 'Instagram, YouTube… bientôt',
-
-    ctaAnalyse: 'Analyser mes données TikTok',
-    ctaDemo: 'ou essaie d’abord avec des données fictives →',
-    trust: ['100 % local — rien n’est envoyé', 'open source', 'gratuit, sans compte'],
-
-    howTitle: 'Comment ça marche',
-    howNote: 'avec TikTok',
-    steps: [
-      {
-        n: '1',
-        title: 'Récupère ton export TikTok',
-        text: 'Dans l’app : Profil → Paramètres → Compte → Télécharger tes données. Choisis le format JSON — le fichier peut prendre 1 h à 48 h pour être disponible.',
-      },
-      {
-        n: '2',
-        title: 'Dépose-le ici',
-        text: 'Le fichier est lu directement dans ton navigateur. Il ne quitte jamais ton ordinateur, le code est ouvert si tu veux vérifier.',
-      },
-      {
-        n: '3',
-        title: 'Explore les déductions',
-        text: 'Rythmes, thèmes, signaux sensibles avec leur niveau de confiance. Et si tu veux, une IA locale pousse l’analyse plus loin.',
-      },
+    // --- The two connector cards ---
+    // The bullets say what the READER gets out of each export, not what the engine does. The two
+    // lists are deliberately different in nature: an Instagram export is a corpus, a TikTok export
+    // is a set of deductions.
+    instagramName: 'Instagram',
+    instagramLede:
+      'Un des exports les plus riches. Contient notamment toutes les photos, vidéos et vocaux que tu as échangés, replacés année par année.',
+    instagramBullets: [
+      'L’intégralité de tes conversations et des photos échangées',
+      'Toutes tes interactions avec les autres comptes',
+      'La valeur de ton compte, tes centres d’intérêt et ton identité déduite',
     ],
+    instagramOpen: 'Ouvrir mes données Instagram',
+    instagramDemo: 'Essayer la démo Instagram',
 
-    discoverTitle: 'Ce que tu vas découvrir',
-    /** The three cards. Colors and borders stay in the component: it is not prose. */
-    feats: [
+    tiktokName: 'TikTok',
+    tiktokLede:
+      'Ce que l’algorithme a pu déduire de toi, sujet par sujet. Se concentre principalement sur les commentaires et recherches effectuées.',
+    tiktokBullets: [
+      'Toutes tes statistiques et ton rythme d’activité',
+      'Les recherches et commentaires listés et analysés, avec ou sans IA',
+      'Apprentissage des algorithmes et du marché des données',
+    ],
+    tiktokOpen: 'Ouvrir mes données TikTok',
+    tiktokDemo: 'Essayer la démo TikTok',
+
+    platformSoon: 'YouTube, Google, X arrivent.',
+    platformComingSoon: 'Analyse bientôt disponible',
+
+    // --- The right, and what it actually gets you ---
+    rightTitle: 'Tu as le droit de récupérer tes données. Encore faut-il pouvoir les lire.',
+    rightLaw:
+      'Le RGPD oblige Instagram, TikTok ou Google à te remettre une copie de ce qu’ils conservent sur toi, sur simple demande. Le droit fonctionne : l’export arrive.',
+    rightArchive:
+      'Ce qui arrive, c’est une archive technique : des dossiers de fichiers, conçus pour être conformes, pas pour être parcourus. La transparence s’arrête au format.',
+    rightProduct:
+      'PanoptiCool ouvre cette archive et la rend lisible : ce que tu as écrit, ce qui a été déduit, et ce que ça permet de reconstituer. Tout se passe dans ton navigateur — tu peux couper internet avant de commencer.',
+
+    // ⚠ TWO ORDERS OF MAGNITUDE, NOT TWO VALUES. The repo's invariant lets a STATISTIC cross the
+    // border from a real export, never a value: « +80 000 » is a rounded count, and the account it
+    // comes from is the maintainer's own, under consent. The euro figure is an ESTIMATE of what an
+    // account yields in advertising — it rests on published ARPU tables, and the reference document
+    // that carries them arrives with the Instagram connector. Until then it is a claim this repo
+    // cannot source, and that is worth knowing before it is quoted anywhere else.
+    statMessages: '+80 000',
+    statMessagesLabel: 'messages récupérés depuis un seul compte Instagram.',
+    statValue: '500 $',
+    statValueLabel:
+      'Valeur moyenne de ce qu’un compte Instagram créé il y a 10 ans peut rapporter à Meta.',
+
+    // --- Where the profiles go ---
+    marketTitle: 'Ces données ne restent pas où tu crois.',
+    marketLede:
+      'Un profil publicitaire n’est pas une simple liste de centres d’intérêt : c’est un dossier qui se recoupe, se revend, et qui finit parfois en libre accès sur internet.',
+    consequences: [
       {
-        tag: 'analyse',
-        title: 'Ton profil, tel qu’un algorithme le voit',
-        text: 'Chaque déduction est reliée aux données exactes qui la nourrissent — recherches, commentaires, métadonnées — avec un score de confiance.',
+        kicker: 'Le modèle',
+        title: 'Elles se revendent',
+        text: 'Régies publicitaires, courtiers en données et applications tierces achètent des segments prêts à l’emploi : « 25-34 ans, connectée la nuit, en recherche de logement ». Tu n’es jamais partie à la transaction.',
       },
       {
-        tag: 'ia locale',
-        title: 'Une IA qui tourne chez toi',
-        text: 'Installe un petit modèle open source et fais-lui analyser tes traces. Coupe le wifi si tu veux : tout fonctionne hors ligne.',
-        // On MOBILE local analysis is not available — adapted badge + text, not an omission.
-        mobileBadge: 'sur ordinateur',
-        mobileText:
-          'Installe un petit modèle open source et fais-lui analyser tes traces. Pour l’instant, cette analyse n’est disponible que sur ordinateur.',
+        kicker: 'L’accident',
+        title: 'Elles fuitent',
+        text: 'Aucune base n’est inviolable. En 2021, les informations de plus de 500 millions de comptes Facebook, numéros de téléphone compris, se sont retrouvées en téléchargement libre. Une fuite ne se rétracte pas.',
       },
       {
-        tag: 'pour comprendre',
-        title: 'Apprendre en explorant',
-        text: 'À chaque section, des explications dépliables : comment un algorithme devine, où vont les profils, ce qu’est un token, tes droits RGPD.',
+        kicker: 'L’usage',
+        title: 'Elles servent à décider',
+        text: 'Un profil ne sert pas qu’à choisir une publicité : il peut orienter un prix, une recommandation, l’ordre de ce que tu vois. Tu subis les conclusions sans jamais pouvoir les relire.',
       },
     ],
 
@@ -280,8 +309,39 @@ export const FR = {
     whyTextBefore: 'Le panoptique (en anglais, ',
     whyTextItalic: 'panopticon',
     whyTextAfter:
-      ") est une prison où un seul gardien peut observer tout le monde sans être vu. Les plateformes fonctionnent un peu pareil, mais ici c'est toi qui observes depuis ton ordinateur, et ça c'est... cool?",
-    whyLink: 'Voir la démo avec des données fictives →',
+      ') est une prison où un seul gardien peut observer tout le monde sans jamais être vu. Les plateformes fonctionnent un peu pareil, mais ici c’est toi qui observes depuis ton ordinateur, et ça c’est... cool ?',
+    whyDemoTikTok: 'Démo TikTok, données fictives →',
+    whyDemoInstagram: 'Démo Instagram, données fictives →',
+
+    // --- The two resource rails ---
+    // ⚠ THE LINKS ARE PAIRED BY INDEX with the URL spine in `ui/v2/LandingPage.tsx`, exactly as the
+    // roadmap steps are — a URL is an address, not prose, and it does not translate. `landing.test.ts`
+    // holds the pairing, because nothing else would notice a list gaining an entry on one side only.
+    learnKicker: 'Comprendre',
+    learnTitle: 'En apprendre plus',
+    learnLede:
+      'Ce que dit la loi, qui la fait appliquer, et pourquoi la vie privée n’est pas qu’une affaire de gens qui ont des choses à cacher.',
+    learnLinks: [
+      { name: 'La Quadrature du Net', note: 'Association qui défend les libertés numériques' },
+      { name: 'noyb', note: 'Les plaintes collectives contre les géants du web' },
+      {
+        name: 'Privacy Guides — pourquoi ça compte',
+        note: 'Vie privée, secret, anonymat : ce qui les distingue',
+      },
+    ],
+
+    actKicker: 'Agir',
+    actTitle: 'Tester et se protéger',
+    actLede:
+      'Des outils gratuits pour mesurer ton exposition et choisir des alternatives, à ton rythme.',
+    actLinks: [
+      { name: 'Have I Been Pwned', note: 'Vérifier si ton adresse a déjà fuité' },
+      {
+        name: 'Modèle de menace',
+        note: 'Cinq minutes pour cerner ce que tu dois vraiment protéger',
+      },
+      { name: 'Privacy Guides — outils', note: 'Alternatives recommandées, par usage' },
+    ],
   },
 
   // --- Export guide (`ui/v2/ExportGuide.tsx`) ----------------------------------------------------
