@@ -225,7 +225,13 @@ export function ResultsView({
           {/* --- Hero -------------------------------------------------------------------------- */}
           <div style={isMobile ? M_HERO : HERO}>
             <div style={HERO_COL}>
-              <span style={isMobile ? M_KICKER : KICKER}>{kicker}</span>
+              {/* ⚠ THE KICKER IS MOBILE-ONLY NOW. The v5 hero has none — h1 then two paragraphs —
+                  and on desktop the tracked 11 px uppercase line was the last of its kind on the
+                  page. It stays on mobile because « v4 Mobile » is that layout's only mockup AND
+                  because it is where the demo mention lives: the header badge has no room there,
+                  and the sticky table of contents that now carries the mention on desktop is not
+                  rendered on mobile either. Dropping it there would lose the information. */}
+              {isMobile && <span style={M_KICKER}>{kicker}</span>}
               <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>
                 {UI_RESULTS.heroTitleLine1}
                 {!isMobile && <br />}
@@ -455,12 +461,6 @@ const HERO = {
 } as const;
 const HERO_COL = { display: 'flex', flexDirection: 'column', gap: '18px', minWidth: 0 } as const;
 const HERO_EYE = { width: '100%', maxWidth: '260px', justifySelf: 'end' } as const;
-const KICKER = {
-  fontSize: '11px',
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  color: NAVY.accent,
-} as const;
 const HERO_TITLE = {
   margin: 0,
   fontSize: '44px',

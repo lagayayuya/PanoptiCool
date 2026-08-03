@@ -761,11 +761,13 @@ export const FR = {
 
   // --- Section 04 · local AI (`ui/v2/AiSection.tsx`) --------------------------------------------
   UI_AI: {
-    kicker: '04 · aller plus loin',
+    /** The section NUMBER, set like 01–03 of `ResultsView`: this band is the page's fourth step,
+     *  and it used to introduce itself with a kicker of its own (« 04 · aller plus loin »). */
+    sectionNumber: '04',
     title: 'Analyser avec une IA locale',
-    localBadge: '100 % local et gratuit',
+    localBadge: 'gratuit, 100 % local',
     learnLabel: 'le modèle',
-    lede: "Le modèle tourne sur ton ordinateur : rien n'est envoyé sur Internet. Trois étapes — installer, choisir un prompt, lancer.",
+    lede: "Le modèle tourne sur ton ordinateur : rien n'est envoyé sur Internet. Deux étapes — installer, puis lancer l'analyse.",
 
     // --- « peu de données » banner ---
     lowDataCounts: (comments: number, searches: number) =>
@@ -809,9 +811,13 @@ export const FR = {
 
     termClosed: 'jamais ouvert de terminal ? ▾',
     termOpened: 'jamais ouvert de terminal ? ✕',
+    /** v5 opens this disclosure into a two-column panel, like the educational ones — hence a
+     *  title and two column headings where v4 ran two paragraphs. */
+    termPanelTitle: 'Le terminal, en deux mots',
+    termWhatTitle: 'Ce que c’est',
     termIntro:
-      'Un terminal, c’est une simple fenêtre où tu colles du texte et tu appuies sur Entrée. Les commandes de cette page ne peuvent rien casser sur ton ordinateur.',
-    termHowLead: (osLabel: string, how: string) => `Pour l’ouvrir sur ${osLabel} : ${how}`,
+      'Une simple fenêtre où tu colles du texte et tu appuies sur Entrée. Les commandes de cette page ne peuvent rien casser sur ton ordinateur.',
+    termHowTitle: (osLabel: string) => `L’ouvrir sur ${osLabel}`,
     /** `Record` over the CLOSED union of OSes: a system added without its instructions does not compile. */
     termHows: {
       macos: 'appuie sur ⌘ + Espace, tape « Terminal », puis Entrée.',
@@ -901,7 +907,7 @@ export const FR = {
       ' dans n’importe quel navigateur : tu retrouves cette page, servie depuis ta machine et déjà branchée au modèle. L’étape suivante se passe là-bas.',
 
     // --- Step 2 · prompt & launch (merged card, v4 mockup) ---
-    step2MergedLabel: 'Prompt & lancement',
+    step2MergedLabel: 'Poser la question et lancer',
     /** ⚠ IMPOSED FRAGMENTS: same highlighting of the address. */
     step2WaitingBefore:
       'Tu as choisi l’option B « Tout sur ta machine ». Pour continuer, termine les étapes ci-dessus (téléchargement du site et commande dans le terminal), puis ouvre ',

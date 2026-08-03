@@ -439,10 +439,13 @@ export function AiSection({ source }: { source: AiSource }) {
     <div id="sec-ia" style={BAND}>
       <div style={SHELL}>
         <div style={HEAD}>
-          <span style={KICKER}>{UI_AI.kicker}</span>
+          {/* Numbered like 01–03 above: this band is the page's fourth step, not a product of its
+              own — it used to open on a kicker of its own instead. */}
           <div style={TITLE_ROW}>
+            <span style={SEC_N}>{UI_AI.sectionNumber}</span>
             <span style={TITLE}>{UI_AI.title}</span>
             <span style={LOCAL_BADGE}>{UI_AI.localBadge}</span>
+            <span style={HEAD_SPACER} />
             <LearnToggle
               open={learnOpen}
               label={UI_AI.learnLabel}
@@ -458,7 +461,7 @@ export function AiSection({ source }: { source: AiSource }) {
             <span style={LOW_DATA_ICON} aria-hidden="true">
               ▲
             </span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
+            <div style={BANNER_COL}>
               <span style={LOW_DATA_TITLE}>
                 {UI_AI.lowDataCounts(counts.comments, counts.searches)}
               </span>
@@ -479,7 +482,7 @@ export function AiSection({ source }: { source: AiSource }) {
             >
               {banner.ok ? '✓' : '▲'}
             </span>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <div style={BANNER_COL}>
               <span style={{ ...BANNER_TITLE, color: banner.ok ? '#bfe9cd' : NAVY.riskText }}>
                 {banner.title}
               </span>
@@ -494,22 +497,41 @@ export function AiSection({ source }: { source: AiSource }) {
         <div style={STEP_CARD}>
           <div style={STEP_HEAD}>
             <StepTitle n="1" label={UI_AI.step1Label} />
-            <span style={{ flex: 1 }} />
+            <span style={HEAD_SPACER} />
+          </div>
+
+          {/* The OS picker leaves the title row and takes its own, with the terminal disclosure
+              pushed to its right end. Two reasons: at 22 px the step title no longer shares a line
+              with three buttons, and the picker only means something when there IS something to
+              install — in local mode the whole row is moot, so it does not render. */}
+          {!localMode && (
             <div style={OS_PICK_ROW}>
               <span style={OS_PICK_LABEL}>{UI_AI.osPickLabel}</span>
-              {(['macos', 'windows', 'linux'] as const).map((o) => (
-                <button
-                  type="button"
-                  key={o}
-                  class="hv-bd"
-                  style={o === os ? OS_BTN_ON : OS_BTN}
-                  onClick={() => setOsSel(o)}
-                >
-                  {osLabel[o]}
-                </button>
-              ))}
+              <div style={OS_BTN_GROUP}>
+                {(['macos', 'windows', 'linux'] as const).map((o) => (
+                  <button
+                    type="button"
+                    key={o}
+                    class="hv-bd"
+                    style={o === os ? OS_BTN_ON : OS_BTN}
+                    onClick={() => setOsSel(o)}
+                  >
+                    {osLabel[o]}
+                  </button>
+                ))}
+              </div>
+              <span style={HEAD_SPACER} />
+              <button
+                type="button"
+                class="hl-btn"
+                style={TERM_BTN}
+                aria-expanded={termOpen}
+                onClick={() => setTermOpen(!termOpen)}
+              >
+                {termOpen ? UI_AI.termOpened : UI_AI.termClosed}
+              </button>
             </div>
-          </div>
+          )}
 
           {localMode ? (
             /* Route B completed (or dev): the page AND the model are served from the machine — there
@@ -518,26 +540,31 @@ export function AiSection({ source }: { source: AiSource }) {
               <span style={{ ...BANNER_ICON, color: NAVY.ok }} aria-hidden="true">
                 ✓
               </span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={BANNER_COL}>
                 <span style={{ ...BANNER_TITLE, color: '#bfe9cd' }}>{UI_AI.readyTitle}</span>
                 <span style={{ ...BANNER_TEXT, color: '#9ec7ac' }}>{UI_AI.readyText}</span>
               </div>
             </div>
           ) : (
             <>
-              <div class="hv-bd" style={TERM_BOX}>
-                <button type="button" style={TERM_BTN} onClick={() => setTermOpen(!termOpen)}>
-                  {termOpen ? UI_AI.termOpened : UI_AI.termClosed}
-                </button>
-                {termOpen && (
-                  <div style={TERM_BODY}>
-                    <span style={TERM_TEXT}>{UI_AI.termIntro}</span>
-                    <span style={TERM_TEXT}>
-                      {UI_AI.termHowLead(osLabel[os], UI_AI.termHows[os])}
-                    </span>
+              {/* v5 turns the disclosure into a two-column panel of the same family as the
+                  educational ones: the button sits in the row above (beside the OS picker) and
+                  what it opens is a panel, not a box wrapped around its own trigger. */}
+              {termOpen && (
+                <div class="hl-learn" style={TERM_BOX}>
+                  <span style={TERM_TITLE}>{UI_AI.termPanelTitle}</span>
+                  <div style={TERM_GRID}>
+                    <div style={TERM_COL}>
+                      <span style={TERM_COL_TITLE}>{UI_AI.termWhatTitle}</span>
+                      <span style={TERM_TEXT}>{UI_AI.termIntro}</span>
+                    </div>
+                    <div style={TERM_COL}>
+                      <span style={TERM_COL_TITLE}>{UI_AI.termHowTitle(osLabel[os])}</span>
+                      <span style={TERM_TEXT}>{UI_AI.termHows[os]}</span>
+                    </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
 
               <div style={SUB_ROW}>
                 <span style={SUB_N}>1</span>
@@ -677,9 +704,7 @@ export function AiSection({ source }: { source: AiSource }) {
                       />
                       <div style={STATUS_GROUP}>
                         <div style={{ ...STATUS_DOT, background: serverStatus.color }} />
-                        <span
-                          style={{ fontSize: '11px', lineHeight: 1.3, color: serverStatus.color }}
-                        >
+                        <span style={{ ...STATUS_LABEL, color: serverStatus.color }}>
                           {serverStatus.label}
                           {probe.kind === 'ok' && probe.modelId !== null
                             ? UI_AI.probeModelSuffix(probe.modelId)
@@ -846,19 +871,20 @@ export function AiSection({ source }: { source: AiSource }) {
               )}
 
               <div style={RUN_ROW}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  {/* The failure help is chosen on what we KNOW (read permission + recognized engine,
-                      `probeFailureHelp`) — never a cause asserted without evidence (ADR-0006). */}
-                  {!run.running && probe.kind === 'idle' && (
-                    <div style={WARN_TEXT}>{UI_AI.step3WarnIdle}</div>
-                  )}
-                  {!run.running && probe.kind === 'checking' && (
-                    <div style={WARN_TEXT}>{UI_AI.probeChecking}</div>
-                  )}
-                  {!run.running && probe.kind === 'error' && (
-                    <div style={WARN_TEXT}>{probeFailureHelp(probe.gate)}</div>
-                  )}
-                </div>
+                {/* The failure help is chosen on what we KNOW (read permission + recognized engine,
+                    `probeFailureHelp`) — never a cause asserted without evidence (ADR-0006).
+                    v5 lets the help be a flex item of the row rather than a wrapper that always
+                    grows: the button is pushed right by its own `margin-left: auto`, so when
+                    there is no help to show the row does not keep a phantom column. */}
+                {!run.running && probe.kind === 'idle' && (
+                  <div style={WARN_TEXT}>{UI_AI.step3WarnIdle}</div>
+                )}
+                {!run.running && probe.kind === 'checking' && (
+                  <div style={WARN_TEXT}>{UI_AI.probeChecking}</div>
+                )}
+                {!run.running && probe.kind === 'error' && (
+                  <div style={WARN_TEXT}>{probeFailureHelp(probe.gate)}</div>
+                )}
                 {run.running && (
                   <button type="button" style={STOP_BTN} onClick={stop}>
                     {UI_AI.step3Stop}
@@ -884,7 +910,7 @@ export function AiSection({ source }: { source: AiSource }) {
                     {run.running && <span style={{ color: NAVY.accent }}>▌</span>}
                   </div>
                   {!run.running && run.text !== '' && (
-                    <span style={STEP_FOOT}>
+                    <span style={RESULT_STATS}>
                       {run.interrupted ? UI_AI.runInterrupted : ''}
                       {run.promptTokens > 0
                         ? UI_AI.runStats(
@@ -906,111 +932,113 @@ export function AiSection({ source }: { source: AiSource }) {
   );
 }
 
-// --- Styles (« guided journey » mockup, section 04) ------------------------------------------------
+// --- Styles (« PanoptiCool v5 Web » mockup, section 04) --------------------------------------------
+// Same pass as the rest of the page: the structure is v4's (two step cards, the install route
+// picker, the prompt and its payload), the SIZES are v5's. Section 04 carried the smallest type of
+// the whole product — 9.5 px tracked uppercase on the OS picker, the model notes, the route labels
+// and the copy button — on the one section that asks the reader to run commands they do not know.
+// It is now 13–16 px sentence case throughout.
+//
+// The band also loses its cyan top rule and its gradient for a flat inset panel: the rule made
+// section 04 read as a separate product, and it is the fourth step of one page.
 const BAND = {
-  marginTop: '20px',
-  background: 'linear-gradient(180deg, #0e1836, #0a1024)',
-  borderTop: '1px solid rgba(47,212,240,.45)',
+  marginTop: '24px',
+  background: NAVY.bgInset,
+  borderTop: `1px solid ${NAVY.borderHeader}`,
 } as const;
 const SHELL = {
-  maxWidth: '1020px',
+  maxWidth: '1080px',
   margin: '0 auto',
-  padding: '58px 40px 40px',
+  padding: '64px 40px 80px',
   display: 'flex',
   flexDirection: 'column',
-  gap: '30px',
+  gap: '28px',
 } as const;
-const HEAD = { display: 'flex', flexDirection: 'column', gap: '12px' } as const;
-const KICKER = {
-  fontSize: '11px',
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  color: NAVY.accent,
+const HEAD = { display: 'flex', flexDirection: 'column', gap: '18px' } as const;
+const TITLE_ROW = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '14px',
+  flexWrap: 'wrap',
 } as const;
-const TITLE_ROW = { display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' } as const;
+/** The section number, set exactly like 01–03 in `ResultsView` — this band is the fourth step of
+ *  the same page, and it used to announce itself with a kicker of its own. */
+const SEC_N = { fontSize: '12px', fontWeight: 600, lineHeight: 1, color: NAVY.accent } as const;
 const TITLE = {
-  fontSize: '26px',
+  fontSize: '30px',
+  fontWeight: 600,
+  lineHeight: 1.15,
+  letterSpacing: '-0.025em',
+  color: '#ffffff',
+} as const;
+const LOCAL_BADGE = {
+  fontSize: '13px',
   fontWeight: 500,
   lineHeight: 1.2,
-  letterSpacing: '-0.01em',
-  color: NAVY.textBright,
-} as const;
-// Height-aligned with the neighboring « comprendre » button (`LearnToggle`, both lineHeight 1):
-// same 28.5 px box (font 9.5 + 2×8.5 padding + 2 border = 10.5 + 2×8 + 2 for the button).
-// yuya: the two must share top and bottom in the title row.
-const LOCAL_BADGE = {
-  fontSize: '9.5px',
-  lineHeight: 1,
-  letterSpacing: '0.1em',
-  textTransform: 'uppercase',
   color: NAVY.accent,
   border: '1px solid rgba(47,212,240,.4)',
   borderRadius: '20px',
-  padding: '8.5px 9px',
+  padding: '7px 12px',
 } as const;
+const HEAD_SPACER = { flex: 1 } as const;
 const LEDE = {
   margin: 0,
-  fontSize: '13px',
-  lineHeight: 1.8,
+  fontSize: '17px',
+  lineHeight: 1.65,
   color: NAVY.textBody,
-  maxWidth: '720px',
+  maxWidth: '760px',
 } as const;
 const STEP_CARD = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '14px',
-  padding: '28px',
-  background: 'rgba(12,19,41,.65)',
+  gap: '24px',
+  padding: '32px',
+  background: NAVY.bgCard,
   border: `1px solid ${NAVY.borderCard}`,
-  borderRadius: '12px',
+  borderRadius: '20px',
 } as const;
-const STEP_HEAD = { display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' } as const;
+const STEP_HEAD = { display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' } as const;
+// The step number loses its ring, like the section numbers above: at 22 px the figure carries
+// itself, and a circle around it only competed with the label beside.
 const STEP_N = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '28px',
-  height: '28px',
-  borderRadius: '50%',
-  border: '1px solid rgba(47,212,240,.5)',
-  fontSize: '12px',
-  fontWeight: 600,
+  fontSize: '22px',
+  fontWeight: 700,
+  lineHeight: 1,
   color: NAVY.accent,
   flex: 'none',
 } as const;
 const STEP_LABEL = {
-  fontSize: '13.5px',
-  fontWeight: 500,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.textHeading,
+  fontSize: '22px',
+  fontWeight: 600,
+  lineHeight: 1.2,
+  letterSpacing: '-0.02em',
+  color: '#ffffff',
 } as const;
-// System selector (v4 mockup) — replaces the ex-badge « OS détecté »: the detection stays
-// best-effort, but the person can now correct it with one click.
+// System selector — the detection stays best-effort, but the person can correct it with one click.
+const OS_BTN_GROUP = { display: 'flex', gap: '8px', flexWrap: 'wrap' } as const;
 const OS_PICK_ROW = {
   display: 'flex',
-  alignItems: 'center',
-  gap: '6px',
+  alignItems: 'flex-start',
+  gap: '12px',
   flexWrap: 'wrap',
 } as const;
 const OS_PICK_LABEL = {
-  fontSize: '9.5px',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
+  fontSize: '14px',
+  lineHeight: 1,
   color: NAVY.textMuted,
+  paddingTop: '13px',
 } as const;
 const OS_BTN = {
   cursor: 'pointer',
-  fontSize: '9.5px',
+  fontSize: '14px',
   fontWeight: 500,
   fontFamily: 'inherit',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.textMuted,
+  lineHeight: 1.2,
+  color: NAVY.textBody,
   background: 'transparent',
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '20px',
-  padding: '6px 10px',
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '10px',
+  padding: '11px 14px',
 } as const;
 const OS_BTN_ON = {
   ...OS_BTN,
@@ -1018,19 +1046,19 @@ const OS_BTN_ON = {
   background: NAVY.accent,
   border: `1px solid ${NAVY.accent}`,
 } as const;
-const FIELD_COL = { display: 'flex', flexDirection: 'column', gap: '8px' } as const;
+const FIELD_COL = { display: 'flex', flexDirection: 'column', gap: '12px' } as const;
 // Browser banner / « tout est prêt » callout — the green/orange tints of the mockup.
 const BANNER_BASE = {
   display: 'flex',
-  gap: '12px',
+  gap: '14px',
   alignItems: 'flex-start',
-  borderRadius: '12px',
-  padding: '16px 20px',
+  borderRadius: '20px',
+  padding: '22px 26px',
 } as const;
 const BANNER_OK = {
   ...BANNER_BASE,
-  background: 'rgba(74,222,128,.05)',
-  border: '1px solid rgba(74,222,128,.28)',
+  background: NAVY.okBg,
+  border: '1px solid rgba(74,222,128,.3)',
 } as const;
 const BANNER_WARN = {
   ...BANNER_BASE,
@@ -1039,54 +1067,72 @@ const BANNER_WARN = {
 } as const;
 const READY_BOX = {
   ...BANNER_BASE,
-  background: 'rgba(74,222,128,.05)',
-  border: '1px solid rgba(74,222,128,.28)',
-  borderRadius: '10px',
+  background: 'rgba(74,222,128,.06)',
+  border: '1px solid rgba(74,222,128,.3)',
+  borderRadius: '16px',
+  padding: '20px 24px',
 } as const;
-const BANNER_ICON = { fontSize: '13px', lineHeight: 1.5, flex: 'none' } as const;
-const BANNER_TITLE = { fontSize: '12.5px', fontWeight: 600, lineHeight: 1.5 } as const;
-const BANNER_TEXT = { fontSize: '11.5px', lineHeight: 1.7, maxWidth: '760px' } as const;
-// « jamais ouvert de terminal ? » disclosure (mockup) — dotted, same family as the educational
-// panels.
+const BANNER_ICON = { fontSize: '16px', lineHeight: 1.5, flex: 'none' } as const;
+const BANNER_COL = { display: 'flex', flexDirection: 'column', gap: '9px' } as const;
+const BANNER_TITLE = { fontSize: '17px', fontWeight: 600, lineHeight: 1.5 } as const;
+const BANNER_TEXT = { fontSize: '15px', lineHeight: 1.7, maxWidth: '780px' } as const;
+// « jamais ouvert de terminal ? » disclosure — dotted, same family as the educational panels, and
+// in v5 it IS one: the mockup opens it into a two-column learn panel rather than a boxed note.
+const TERM_BTN = {
+  cursor: 'pointer',
+  flex: 'none',
+  textAlign: 'left',
+  fontSize: '14px',
+  fontWeight: 500,
+  fontFamily: 'inherit',
+  lineHeight: 1.2,
+  color: NAVY.learnAccent,
+  background: 'transparent',
+  border: `1px dashed ${NAVY.learnBorder}`,
+  borderRadius: '11px',
+  padding: '11px 15px',
+} as const;
 const TERM_BOX = {
   display: 'flex',
   flexDirection: 'column',
-  border: `1px dashed ${NAVY.borderChip}`,
-  borderRadius: '9px',
+  gap: '18px',
+  padding: '28px',
+  background: NAVY.learnBg,
+  border: `1px dashed ${NAVY.learnBorder}`,
+  borderRadius: '20px',
 } as const;
-const TERM_BTN = {
-  cursor: 'pointer',
-  textAlign: 'left',
-  fontSize: '10.5px',
-  fontWeight: 500,
-  fontFamily: 'inherit',
+const TERM_TITLE = {
+  fontSize: '20px',
+  fontWeight: 600,
   lineHeight: 1.3,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.learnAccent,
-  background: 'transparent',
-  border: 'none',
-  padding: '12px 15px',
+  color: '#ffffff',
 } as const;
-const TERM_BODY = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '8px',
-  padding: '0 15px 14px',
+const TERM_GRID = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
+  gap: '24px',
 } as const;
-const TERM_TEXT = { fontSize: '11.5px', lineHeight: 1.75, color: NAVY.textBody } as const;
-// Numbered sub-steps of card 1 (small cyan squares, mockup).
-const SUB_ROW = { display: 'flex', gap: '14px', alignItems: 'flex-start' } as const;
+const TERM_COL = { display: 'flex', flexDirection: 'column', gap: '9px', minWidth: 0 } as const;
+const TERM_COL_TITLE = {
+  fontSize: '15px',
+  fontWeight: 600,
+  lineHeight: 1.3,
+  color: NAVY.learnTitle,
+} as const;
+const TERM_TEXT = { fontSize: '15px', lineHeight: 1.7, color: NAVY.textBody } as const;
+// Numbered sub-steps of card 1 (small cyan squares).
+const SUB_ROW = { display: 'flex', gap: '16px', alignItems: 'flex-start' } as const;
 const SUB_N = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '18px',
-  height: '18px',
-  borderRadius: '5px',
+  width: '26px',
+  height: '26px',
+  borderRadius: '8px',
   background: NAVY.accent,
-  fontSize: '10px',
+  fontSize: '14px',
   fontWeight: 700,
+  lineHeight: 1,
   color: NAVY.bgPage,
   flex: 'none',
 } as const;
@@ -1095,15 +1141,140 @@ const SUB_BODY = {
   minWidth: 0,
   display: 'flex',
   flexDirection: 'column',
-  gap: '9px',
+  gap: '12px',
 } as const;
 // The two routes (A / B).
 const ROUTE_GRID = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-  gap: '12px',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+  gap: '14px',
 } as const;
 const ROUTE_BTN = {
+  minWidth: 0,
+  cursor: 'pointer',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  textAlign: 'left',
+  gap: '10px',
+  padding: '22px 24px',
+  background: NAVY.bgInset,
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '16px',
+  fontFamily: 'inherit',
+} as const;
+const ROUTE_BTN_ON = {
+  ...ROUTE_BTN,
+  background: NAVY.accentBgSoft,
+  border: `1px solid ${NAVY.accentBorderSoft}`,
+} as const;
+const ROUTE_BTN_OFF = { ...ROUTE_BTN, cursor: 'not-allowed', opacity: 0.55 } as const;
+const ROUTE_TITLE = { fontSize: '17px', fontWeight: 600, lineHeight: 1.3 } as const;
+const ROUTE_TEXT = { fontSize: '15px', lineHeight: 1.65, color: NAVY.textBody } as const;
+const ROUTE_UNAVAIL = {
+  fontSize: '14px',
+  fontWeight: 500,
+  lineHeight: 1.5,
+  color: '#e8a184',
+} as const;
+// Indigo callout — permission note, « ouvre localhost » note, card 2 awaiting route B.
+const NOTE_BOX = {
+  fontSize: '15px',
+  lineHeight: 1.7,
+  color: NAVY.learnTitle,
+  background: 'rgba(124,150,255,.06)',
+  border: `1px solid ${NAVY.learnBorder}`,
+  borderRadius: '14px',
+  padding: '16px 18px',
+} as const;
+const ADDR_BLOCK = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+  borderTop: `1px solid ${NAVY.borderHeader}`,
+  paddingTop: '22px',
+} as const;
+// Route B: site download.
+const ZIP_ROW = { display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' } as const;
+const ZIP_BTN = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
+  fontSize: '15px',
+  fontWeight: 600,
+  lineHeight: 1.2,
+  color: NAVY.bgPage,
+  background: NAVY.accent,
+  borderRadius: '12px',
+  padding: '15px 20px',
+  textDecoration: 'none',
+} as const;
+const GH_LINK = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
+  fontSize: '15px',
+  fontWeight: 500,
+  lineHeight: 1.2,
+  color: NAVY.textHeading,
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '12px',
+  padding: '15px 20px',
+  textDecoration: 'none',
+} as const;
+const FOOT_LINK = { color: NAVY.accent, textDecoration: 'none' } as const;
+// Launch row (card 2): the help on the left, the button pushed right.
+const RUN_ROW = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '20px',
+  flexWrap: 'wrap',
+  borderTop: `1px solid ${NAVY.borderHeader}`,
+  paddingTop: '20px',
+} as const;
+const STEP_TEXT = { fontSize: '16px', lineHeight: 1.6, color: NAVY.textHeading } as const;
+const STEP_FOOT = { fontSize: '15px', lineHeight: 1.65, color: NAVY.textMuted } as const;
+// Command row — it is a `<button>`: full-width clickable target, text aligned left.
+const CMD_ROW = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  width: '100%',
+  boxSizing: 'border-box',
+  textAlign: 'left',
+  cursor: 'pointer',
+  fontFamily: 'inherit',
+  background: NAVY.bgInset,
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '12px',
+  padding: '16px 18px',
+} as const;
+const CMD_TEXT = {
+  flex: 1,
+  minWidth: 0,
+  fontSize: '14px',
+  lineHeight: 1.5,
+  color: NAVY.accentBright,
+  overflowWrap: 'anywhere',
+  fontFamily: MONO,
+} as const;
+// The « copier / copié ✓ » label — a visual marker (the whole row copies), so no hover of its own.
+const COPY_BTN = {
+  flex: 'none',
+  fontSize: '14px',
+  fontWeight: 600,
+  lineHeight: 1,
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '10px',
+  padding: '11px 14px',
+} as const;
+const MODEL_GRID = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 190px), 1fr))',
+  gap: '10px',
+} as const;
+const MODEL_BTN = {
+  minWidth: 0,
   cursor: 'pointer',
   display: 'flex',
   flexDirection: 'column',
@@ -1113,138 +1284,7 @@ const ROUTE_BTN = {
   padding: '16px 18px',
   background: NAVY.bgInset,
   border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '10px',
-  fontFamily: 'inherit',
-} as const;
-const ROUTE_BTN_ON = {
-  ...ROUTE_BTN,
-  background: NAVY.accentBgSoft,
-  border: `1px solid ${NAVY.accentBorderSoft}`,
-} as const;
-const ROUTE_BTN_OFF = { ...ROUTE_BTN, cursor: 'not-allowed', opacity: 0.55 } as const;
-const ROUTE_TITLE = {
-  fontSize: '12px',
-  fontWeight: 600,
-  lineHeight: 1.3,
-  letterSpacing: '0.04em',
-  textTransform: 'uppercase',
-} as const;
-const ROUTE_TEXT = { fontSize: '11px', lineHeight: 1.7, color: '#9aa7c7' } as const;
-const ROUTE_UNAVAIL = {
-  fontSize: '9.5px',
-  fontWeight: 500,
-  lineHeight: 1.5,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: '#e8a184',
-} as const;
-// Indigo callout — permission note, « ouvre localhost » note, card 2 awaiting route B.
-const NOTE_BOX = {
-  fontSize: '11.5px',
-  lineHeight: 1.75,
-  color: NAVY.learnTitle,
-  background: 'rgba(124,150,255,.06)',
-  border: `1px solid ${NAVY.learnBorder}`,
-  borderRadius: '8px',
-  padding: '12px 15px',
-} as const;
-const ADDR_BLOCK = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  borderTop: `1px solid ${NAVY.borderCard}`,
-  paddingTop: '14px',
-} as const;
-// Route B: site download.
-const ZIP_ROW = { display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' } as const;
-const ZIP_BTN = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '9px',
-  fontSize: '12px',
-  fontWeight: 600,
-  lineHeight: 1,
-  color: NAVY.bgPage,
-  background: NAVY.accent,
-  borderRadius: '8px',
-  padding: '12px 18px',
-  textDecoration: 'none',
-} as const;
-const GH_LINK = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  fontSize: '11.5px',
-  fontWeight: 500,
-  lineHeight: 1,
-  color: NAVY.textSecondary,
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '8px',
-  padding: '12px 16px',
-  textDecoration: 'none',
-} as const;
-const FOOT_LINK = { color: NAVY.accent, textDecoration: 'none' } as const;
-// Launch row (card 2): the help on the left, the buttons on the right.
-const RUN_ROW = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '16px',
-  borderTop: `1px solid ${NAVY.borderCard}`,
-  paddingTop: '14px',
-} as const;
-const STEP_TEXT = { fontSize: '12px', lineHeight: 1.6, color: NAVY.textBody } as const;
-const STEP_FOOT = { fontSize: '11px', lineHeight: 1.65, color: NAVY.textMuted } as const;
-// Command row — it is a `<button>`: full-width clickable target, text aligned left.
-const CMD_ROW = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  width: '100%',
-  boxSizing: 'border-box',
-  textAlign: 'left',
-  cursor: 'pointer',
-  fontFamily: 'inherit',
-  background: NAVY.bgPage,
-  border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '8px',
-  padding: '11px 13px',
-} as const;
-const CMD_TEXT = {
-  flex: 1,
-  fontSize: '12.5px',
-  lineHeight: 1.5,
-  color: NAVY.accentBright,
-  overflowWrap: 'anywhere',
-  fontFamily: MONO,
-} as const;
-// The « copier / copié ✓ » label — a simple visual marker now (the whole row copies),
-// therefore WITHOUT its own hover.
-const COPY_BTN = {
-  flex: 'none',
-  fontSize: '10px',
-  fontWeight: 500,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '6px',
-  padding: '7px 11px',
-} as const;
-const MODEL_GRID = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-  gap: '8px',
-} as const;
-const MODEL_BTN = {
-  cursor: 'pointer',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  textAlign: 'left',
-  gap: '7px',
-  padding: '12px 13px',
-  background: NAVY.bgInset,
-  border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '9px',
+  borderRadius: '14px',
   fontFamily: 'inherit',
 } as const;
 const MODEL_BTN_ON = {
@@ -1253,71 +1293,60 @@ const MODEL_BTN_ON = {
   border: `1px solid ${NAVY.accentBorderSoft}`,
 } as const;
 const MODEL_Q = {
-  fontSize: '11.5px',
+  fontSize: '15px',
   fontWeight: 600,
   lineHeight: 1.3,
   overflowWrap: 'anywhere',
 } as const;
-const MODEL_SIZE = { fontSize: '11px', lineHeight: 1, color: '#a3b0cf' } as const;
-const MODEL_NOTE = {
-  fontSize: '9.5px',
-  lineHeight: 1.35,
-  letterSpacing: '0.04em',
-  textTransform: 'uppercase',
-} as const;
+const MODEL_SIZE = { fontSize: '15px', lineHeight: 1, color: NAVY.textBody } as const;
+const MODEL_NOTE = { fontSize: '13px', fontWeight: 500, lineHeight: 1.35 } as const;
 const ADDR_ROW = {
   display: 'flex',
   alignItems: 'center',
   gap: '12px',
   flexWrap: 'wrap',
 } as const;
-const ADDR_LABEL = {
-  fontSize: '11px',
-  lineHeight: 1.3,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: NAVY.textMuted,
-} as const;
+const ADDR_LABEL = { fontSize: '14px', lineHeight: 1, color: NAVY.textMuted } as const;
 const ADDR_INPUT = {
   flex: 1,
-  minWidth: '200px',
-  fontSize: '12px',
-  lineHeight: 1.3,
+  minWidth: '220px',
+  fontSize: '14px',
+  lineHeight: 1.4,
   fontFamily: MONO,
   color: NAVY.textBright,
-  background: NAVY.bgPage,
+  background: NAVY.bgInset,
   border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '7px',
-  padding: '9px 12px',
+  borderRadius: '12px',
+  padding: '15px 17px',
 } as const;
-const STATUS_GROUP = { display: 'flex', alignItems: 'center', gap: '8px' } as const;
-const STATUS_DOT = { width: '9px', height: '9px', borderRadius: '50%' } as const;
+const STATUS_GROUP = { display: 'flex', alignItems: 'center', gap: '10px' } as const;
+const STATUS_DOT = { width: '11px', height: '11px', borderRadius: '50%', flex: 'none' } as const;
+const STATUS_LABEL = { fontSize: '15px', fontWeight: 500, lineHeight: 1.3 } as const;
 const RECHECK_BTN = {
   cursor: 'pointer',
-  fontSize: '10px',
-  fontWeight: 500,
+  fontSize: '15px',
+  fontWeight: 600,
   fontFamily: 'inherit',
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: '#a3b0cf',
-  background: 'transparent',
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '6px',
-  padding: '8px 12px',
+  lineHeight: 1.2,
+  color: NAVY.bgPage,
+  background: NAVY.accent,
+  border: 'none',
+  borderRadius: '12px',
+  padding: '15px 20px',
 } as const;
 /** The link to the local copy of the site — clickable (2026-07-20 retouch). */
 const LOCAL_URL_LINK = { color: NAVY.accentBright, textDecoration: 'none' } as const;
 const PRESET = {
   cursor: 'pointer',
-  fontSize: '10.5px',
+  fontSize: '14px',
   fontWeight: 500,
   fontFamily: 'inherit',
-  lineHeight: 1.3,
-  color: '#93a0bf',
+  lineHeight: 1.2,
+  color: NAVY.textBody,
   background: 'transparent',
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '20px',
-  padding: '8px 14px',
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '11px',
+  padding: '11px 15px',
 } as const;
 const PRESET_ON = {
   ...PRESET,
@@ -1325,63 +1354,70 @@ const PRESET_ON = {
   background: NAVY.accent,
   border: `1px solid ${NAVY.accent}`,
 } as const;
+// ⚠ THE PROMPT AREA LEAVES THE MONOSPACE. It is the one place here where the reader WRITES prose
+// rather than reads a command — the mockup sets it in the interface face, and the commands and the
+// payload keep `MONO` for the reason `palette.ts` gives (glyphs one verifies character by
+// character). The distinction is now legible instead of accidental.
 const PROMPT_AREA = {
   width: '100%',
   boxSizing: 'border-box',
-  minHeight: '130px',
+  minHeight: '150px',
   resize: 'vertical',
-  fontSize: '12.5px',
-  lineHeight: 1.75,
-  fontFamily: MONO,
-  color: NAVY.textHeading,
-  background: NAVY.bgPage,
+  fontSize: '15px',
+  lineHeight: 1.7,
+  fontFamily: 'inherit',
+  color: NAVY.textBright,
+  background: NAVY.bgInset,
   border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '9px',
-  padding: '14px 16px',
+  borderRadius: '12px',
+  padding: '16px 18px',
 } as const;
 const COUNT_ROW = {
   display: 'flex',
   alignItems: 'center',
-  gap: '14px',
+  gap: '16px',
   flexWrap: 'wrap',
 } as const;
-const COUNT_TEXT = { fontSize: '11px', lineHeight: 1.45, color: '#a3b0cf' } as const;
+const COUNT_TEXT = { fontSize: '15px', lineHeight: 1.45, color: NAVY.textBody } as const;
 const PAYLOAD_TOGGLE = {
   cursor: 'pointer',
-  fontSize: '11px',
+  fontSize: '15px',
+  fontWeight: 500,
   fontFamily: 'inherit',
   lineHeight: 1.3,
   color: NAVY.accent,
   background: 'transparent',
   border: 'none',
   borderBottom: '1px solid rgba(47,212,240,.4)',
-  padding: '2px 0',
+  padding: '3px 0',
 } as const;
 const PAYLOAD_BOX = {
-  background: NAVY.bgPage,
+  background: NAVY.bgInset,
   border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '9px',
-  padding: '15px 17px',
-  fontSize: '11.5px',
-  lineHeight: 1.8,
-  color: '#96a3c4',
+  borderRadius: '16px',
+  padding: '20px 22px',
+  fontSize: '14px',
+  lineHeight: 1.85,
+  color: NAVY.textBody,
   whiteSpace: 'pre-wrap',
   overflowWrap: 'anywhere',
-  maxHeight: '300px',
+  maxHeight: '340px',
   overflow: 'auto',
   fontFamily: MONO,
 } as const;
 const RUN_BTN = {
   cursor: 'pointer',
-  fontSize: '12px',
+  fontSize: '16px',
   fontWeight: 600,
   fontFamily: 'inherit',
-  letterSpacing: '0.04em',
+  lineHeight: 1.2,
   color: NAVY.bgPage,
   background: NAVY.accent,
   border: 'none',
-  borderRadius: '8px',
-  padding: '13px 22px',
+  borderRadius: '12px',
+  padding: '17px 26px',
+  marginLeft: 'auto',
+  flex: 'none',
 } as const;
 const RUN_BTN_OFF = { ...RUN_BTN, cursor: 'not-allowed', background: NAVY.textDim } as const;
 const STOP_BTN = {
@@ -1389,57 +1425,64 @@ const STOP_BTN = {
   background: '#7a2a24',
   color: NAVY.textBright,
 } as const;
-const WARN_TEXT = { fontSize: '11.5px', lineHeight: 1.65, color: NAVY.riskText } as const;
-// « peu de données » edge case (CasPeuDeDonnees mockup).
+const WARN_TEXT = {
+  flex: 1,
+  minWidth: '260px',
+  fontSize: '15px',
+  lineHeight: 1.65,
+  color: NAVY.riskText,
+} as const;
+// « peu de données » edge case.
 const LOW_DATA_BANNER = {
   display: 'flex',
-  gap: '12px',
+  gap: '14px',
   alignItems: 'flex-start',
   background: NAVY.riskBg,
   border: '1px solid rgba(232,117,78,.35)',
-  borderRadius: '12px',
-  padding: '18px 22px',
+  borderRadius: '20px',
+  padding: '22px 26px',
 } as const;
 const LOW_DATA_ICON = {
   color: NAVY.risk,
-  fontSize: '14px',
+  fontSize: '16px',
   lineHeight: 1.5,
   flex: 'none',
 } as const;
 const LOW_DATA_TITLE = {
-  fontSize: '13px',
+  fontSize: '17px',
   fontWeight: 600,
   lineHeight: 1.5,
   color: NAVY.riskText,
 } as const;
 const LOW_DATA_TEXT = {
-  fontSize: '12px',
+  fontSize: '15px',
   lineHeight: 1.7,
   color: '#d9a894',
-  maxWidth: '720px',
+  maxWidth: '760px',
 } as const;
-const LOW_DATA_HINT = { fontSize: '11.5px', lineHeight: 1.65, color: '#d9a894' } as const;
-const ERROR_TEXT = { fontSize: '11.5px', lineHeight: 1.65, color: NAVY.risk } as const;
+const LOW_DATA_HINT = { fontSize: '15px', lineHeight: 1.65, color: '#d9a894' } as const;
+const ERROR_TEXT = { fontSize: '15px', lineHeight: 1.65, color: NAVY.riskText } as const;
 const ERROR_BOX = {
   ...ERROR_TEXT,
   background: NAVY.riskBg,
   border: `1px solid ${NAVY.riskBorder}`,
-  borderRadius: '8px',
-  padding: '12px 15px',
+  borderRadius: '14px',
+  padding: '16px 18px',
 } as const;
 const RESULT_BOX = {
-  background: NAVY.bgPage,
+  background: NAVY.bgInset,
   border: `1px solid ${NAVY.borderInset}`,
-  borderRadius: '9px',
-  padding: '17px 19px',
-  fontSize: '12.5px',
+  borderRadius: '16px',
+  padding: '22px 24px',
+  fontSize: '16px',
   lineHeight: 1.8,
-  color: NAVY.textHeading,
+  color: NAVY.textBright,
   whiteSpace: 'pre-wrap',
   overflowWrap: 'anywhere',
   maxHeight: '420px',
   overflowY: 'auto',
 } as const;
+const RESULT_STATS = { fontSize: '14px', lineHeight: 1.45, color: NAVY.textMuted } as const;
 
 // --- MOBILE variant (« PanoptiCool v4 Mobile » mockup) ---------------------------------------------
 // Local AI requires a computer (llama.cpp): on mobile we do NOT display the interactive

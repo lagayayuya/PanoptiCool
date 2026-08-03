@@ -47,7 +47,9 @@ const THEME: AnalysisTheme = {
   label: 'Cuisine',
   deductions: [
     {
-      label: 'Cuisine',
+      // `claim` and not a fan: the closed header is what is under test, and a finding without a
+      // fan is the shorter of the two ways to be a valid one (`claim-fan-invariant.test.ts`).
+      claim: 'Cuisine — 4 recherches sur le sujet.',
       sensitive: false,
       confidence: 'medium',
       evidence: [

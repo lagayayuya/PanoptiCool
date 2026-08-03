@@ -590,11 +590,11 @@ export const EN: UiCopy = {
   },
 
   UI_AI: {
-    kicker: '04 · going further',
+    sectionNumber: '04',
     title: 'Analyze with a local AI',
-    localBadge: '100% local and free',
+    localBadge: 'free, 100% local',
     learnLabel: 'the model',
-    lede: 'The model runs on your computer: nothing is sent over the Internet. Three steps — install, choose a prompt, run.',
+    lede: 'The model runs on your computer: nothing is sent over the Internet. Two steps — install, then run the analysis.',
 
     lowDataCounts: (comments: number, searches: number) =>
       `Your export contains very little text: ${comments} ${UNITS.comment(comments)} and ${searches} ${UNITS.search(searches)}.`,
@@ -626,9 +626,11 @@ export const EN: UiCopy = {
 
     termClosed: 'never opened a terminal? ▾',
     termOpened: 'never opened a terminal? ✕',
+    termPanelTitle: 'The terminal, in two words',
+    termWhatTitle: 'What it is',
     termIntro:
-      'A terminal is just a window where you paste text and press Enter. The commands on this page can’t break anything on your computer.',
-    termHowLead: (osLabel: string, how: string) => `To open it on ${osLabel}: ${how}`,
+      'Just a window where you paste text and press Enter. The commands on this page can’t break anything on your computer.',
+    termHowTitle: (osLabel: string) => `Opening it on ${osLabel}`,
     termHows: {
       macos: 'press ⌘ + Space, type “Terminal”, then Enter.',
       windows: 'open the Start menu, type “PowerShell”, then Enter.',
@@ -691,7 +693,7 @@ export const EN: UiCopy = {
     localOpenAfter:
       ' in any browser: you’ll find this page again, served from your machine and already connected to the model. The next step happens over there.',
 
-    step2MergedLabel: 'Prompt & run',
+    step2MergedLabel: 'Ask the question and run',
     step2WaitingBefore:
       'You chose option B, “Everything on your machine”. To continue, finish the steps above (download the site and run the terminal command), then open ',
     step2WaitingAfter: ' in a browser: you’ll find this section there, ready to run the analysis.',
