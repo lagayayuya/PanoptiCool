@@ -152,6 +152,10 @@ export const EN: UiCopy = {
       'These apps have to hand you a copy of everything they recorded. PanoptiCool opens that file in your browser and makes it readable.',
     trust: ['Free, no account', 'Nothing is sent over the internet', 'Open source'],
 
+    previewLogoPlaceholder: 'logo',
+    tiktokPreviewAlt: 'Preview: what the algorithm could infer, subject by subject.',
+    instagramPreviewAlt:
+      'Preview: every photo, video and voice note exchanged, laid out on a spiral of time.',
     instagramName: 'Instagram',
     instagramLede:
       'One of the richest exports there is. It holds every photo, video and voice note you exchanged, put back in place year by year.',

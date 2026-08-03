@@ -38,6 +38,15 @@ const ANALYSE_PATH = '/analyse';
 const INSTAGRAM_LIVE = false;
 
 /**
+ * The TikTok card's preview — a 16:10 crop of the render the README already ships
+ * (`docs/assets/screenshot-deductions.png`), which is the DEMO PERSONA: every value on it is
+ * synthetic. Instagram has no counterpart yet on purpose; the mockup's is a render of a real
+ * export, i.e. actual photographs, and it gets rebuilt from the synthetic persona with the
+ * connector.
+ */
+const TIKTOK_PREVIEW = '/platform/tiktok-preview.webp';
+
+/**
  * The URLs of the two resource rails — the language-independent SPINE, paired BY INDEX with
  * `UI_LANDING.learnLinks` / `actLinks`, exactly as `ROADMAP_STEPS` pairs with `UI_ROADMAP.steps`.
  *
@@ -166,63 +175,78 @@ export function LandingPage() {
     open: string;
     demo: string;
     accent: string;
+    preview: string | null;
+    previewAlt: string;
     live: boolean;
     guide: GuideTarget;
   }) => (
-    <div style={isMobile ? M_PLATFORM_CARD : PLATFORM_CARD}>
-      <span style={{ ...PLATFORM_NAME, color: p.accent }}>{p.name}</span>
-      <p style={PLATFORM_LEDE}>{p.lede}</p>
-      <ul style={BULLETS}>
-        {p.bullets.map((b) => (
-          <li key={b} style={BULLET}>
-            <span style={{ ...BULLET_DOT, background: p.accent }} />
-            {b}
-          </li>
-        ))}
-      </ul>
-      <div style={PLATFORM_ACTIONS}>
-        <button
-          type="button"
-          class="hv-br"
-          style={{ ...PLATFORM_CTA, background: p.accent }}
-          onClick={() => (p.live ? setConsentOpen(true) : setGuideTarget(p.guide))}
-        >
-          {p.open}
-        </button>
-        {p.live ? (
-          <a href={localeHref(DEMO_PATH)} class="hv-cy" style={PLATFORM_DEMO}>
-            {p.demo}
-          </a>
-        ) : (
-          <span style={PLATFORM_SOON_TAG}>{UI_LANDING.platformComingSoon}</span>
-        )}
+    <div style={PLATFORM_CARD}>
+      {/* The card LEADS with a preview: what the analysis actually looks like, before any prose.
+          A gradient sinks the image into the card so the logo and the name read over it. */}
+      <div style={PREVIEW}>
+        {p.preview !== null && <img src={p.preview} alt={p.previewAlt} style={PREVIEW_IMG} />}
+        <span aria-hidden="true" style={PREVIEW_FADE} />
+        <div style={PREVIEW_ID}>
+          <span style={PREVIEW_LOGO}>{UI_LANDING.previewLogoPlaceholder}</span>
+          <span style={PREVIEW_NAME}>{p.name}</span>
+        </div>
+      </div>
+      <div style={isMobile ? M_PLATFORM_BODY : PLATFORM_BODY}>
+        <span style={PLATFORM_LEDE}>{p.lede}</span>
+        <span style={DIVIDER} />
+        <div style={BULLETS}>
+          {p.bullets.map((b) => (
+            <span key={b} style={BULLET}>
+              <span style={{ ...BULLET_DOT, background: p.accent }} />
+              {b}
+            </span>
+          ))}
+        </div>
+        <span style={{ flex: 1 }} />
+        <div style={PLATFORM_ACTIONS}>
+          <button
+            type="button"
+            class="hv-br"
+            style={{ ...PLATFORM_CTA, background: p.accent }}
+            onClick={() => (p.live ? setConsentOpen(true) : setGuideTarget(p.guide))}
+          >
+            {p.open}
+          </button>
+          {p.live ? (
+            <a href={localeHref(DEMO_PATH)} class="hv-bd" style={PLATFORM_DEMO}>
+              {p.demo}
+            </a>
+          ) : (
+            <span style={PLATFORM_SOON_TAG}>{UI_LANDING.platformComingSoon}</span>
+          )}
+        </div>
       </div>
     </div>
   );
 
   return (
-    <div style={isMobile ? M_PAGE : PAGE}>
+    <div style={PAGE}>
       <SiteHeader />
+
       <div style={isMobile ? M_SHELL : SHELL}>
         {/* --- Hero ---------------------------------------------------------------------------- */}
         <div style={isMobile ? undefined : HERO}>
-          <div style={HERO_COL}>
+          <div style={isMobile ? M_HERO_COL : HERO_COL}>
             <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>{UI_LANDING.heroTitle}</h1>
             <p style={isMobile ? M_HERO_LEDE : HERO_LEDE}>{UI_LANDING.heroLede}</p>
             {/* Getting the archive is the first obstacle and by far the biggest — the guide is the
-                hero's call to action, not a help link further down the page. */}
-            <button
-              type="button"
-              class="hv-br"
-              style={isMobile ? M_CTA : CTA}
-              onClick={() => setGuideTarget('pick')}
-            >
-              {UI_GUIDE.openLabel} <span style={{ fontSize: isMobile ? '15px' : '13px' }}>→</span>
-            </button>
+                hero's call to action. Sized to its content, not to the column: it opens a modal,
+                it does not start the analysis, and a full-width filled button claimed otherwise. */}
+            <div style={CTA_ROW}>
+              <button type="button" style={CTA} onClick={() => setGuideTarget('pick')}>
+                {UI_GUIDE.openLabel}
+                <span style={CTA_ARROW}>→</span>
+              </button>
+            </div>
             <div style={isMobile ? M_TRUST_COL : TRUST_ROW}>
               {UI_LANDING.trust.map((t) => (
-                <span key={t} style={isMobile ? M_TRUST_ITEM : TRUST_ITEM}>
-                  <span style={isMobile ? M_TRUST_DOT : TRUST_DOT} />
+                <span key={t} style={TRUST_ITEM}>
+                  <span style={TRUST_DOT} />
                   {t}
                 </span>
               ))}
@@ -236,7 +260,7 @@ export function LandingPage() {
         </div>
 
         {/* --- The two connectors -------------------------------------------------------------- */}
-        <div style={isMobile ? M_CARD_COL : PLATFORM_GRID}>
+        <div style={isMobile ? M_PLATFORM_GRID : PLATFORM_GRID}>
           {platformCard({
             name: UI_LANDING.instagramName,
             lede: UI_LANDING.instagramLede,
@@ -244,6 +268,10 @@ export function LandingPage() {
             open: UI_LANDING.instagramOpen,
             demo: UI_LANDING.instagramDemo,
             accent: NAVY.instagram,
+            // No preview yet, and deliberately: the mockup's is a render of a REAL export — actual
+            // photographs. It gets rebuilt from the synthetic persona with the connector.
+            preview: null,
+            previewAlt: '',
             live: INSTAGRAM_LIVE,
             guide: 'instagram',
           })}
@@ -254,73 +282,78 @@ export function LandingPage() {
             open: UI_LANDING.tiktokOpen,
             demo: UI_LANDING.tiktokDemo,
             accent: NAVY.accent,
+            preview: TIKTOK_PREVIEW,
+            previewAlt: UI_LANDING.tiktokPreviewAlt,
             live: true,
             guide: 'tiktok',
           })}
+          <div style={SOON_BOX}>
+            <span style={SOON_TEXT}>{UI_LANDING.platformSoon}</span>
+          </div>
         </div>
-        <p style={SOON_LINE}>{UI_LANDING.platformSoon}</p>
+      </div>
 
-        {/* --- The right, and what it actually gets you ---------------------------------------- */}
-        <div style={isMobile ? M_SECTION : SECTION}>
-          <h2 style={isMobile ? M_BIG_TITLE : BIG_TITLE}>{UI_LANDING.rightTitle}</h2>
-          <div style={isMobile ? M_CARD_COL : PROSE_GRID}>
+      {/* --- The right, and what it actually gets you — its own band ------------------------- */}
+      <div style={BAND}>
+        <div style={isMobile ? M_BAND_INNER : BAND_INNER}>
+          <div style={RIGHT_COL}>
+            <span style={isMobile ? M_H2 : H2}>{UI_LANDING.rightTitle}</span>
             <p style={PROSE}>{UI_LANDING.rightLaw}</p>
             <p style={PROSE}>{UI_LANDING.rightArchive}</p>
             <p style={PROSE}>{UI_LANDING.rightProduct}</p>
           </div>
-          <div style={isMobile ? M_CARD_COL : STAT_ROW}>
+          <div style={isMobile ? M_STAT_CARD : STAT_CARD}>
             <div style={STAT}>
-              <span style={STAT_N}>{UI_LANDING.statMessages}</span>
+              <span style={isMobile ? M_STAT_N : STAT_N}>{UI_LANDING.statMessages}</span>
               <span style={STAT_LABEL}>{UI_LANDING.statMessagesLabel}</span>
             </div>
+            <span style={STAT_DIVIDER} />
             <div style={STAT}>
-              <span style={STAT_N}>{UI_LANDING.statValue}</span>
+              <span style={isMobile ? M_STAT_N : STAT_N}>{UI_LANDING.statValue}</span>
               <span style={STAT_LABEL}>{UI_LANDING.statValueLabel}</span>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* --- Where the profiles go ----------------------------------------------------------- */}
-        <div style={isMobile ? M_SECTION : SECTION}>
-          <h2 style={isMobile ? M_BIG_TITLE : BIG_TITLE}>{UI_LANDING.marketTitle}</h2>
+      <div style={isMobile ? M_TAIL : TAIL}>
+        {/* --- Where the profiles go --------------------------------------------------------- */}
+        <div style={SECTION_HEAD}>
+          <span style={isMobile ? M_H2 : H2}>{UI_LANDING.marketTitle}</span>
           <p style={PROSE}>{UI_LANDING.marketLede}</p>
-          <div style={isMobile ? M_CARD_COL : CARD_GRID}>
-            {UI_LANDING.consequences.map((c) => (
-              <div key={c.title} style={isMobile ? M_STEP_CARD : STEP_CARD}>
-                <span style={CONSEQUENCE_KICKER}>{c.kicker}</span>
-                <span style={isMobile ? M_CARD_TITLE : CARD_TITLE}>{c.title}</span>
-                <span style={isMobile ? M_CARD_TEXT : CARD_TEXT}>{c.text}</span>
-              </div>
-            ))}
-          </div>
+        </div>
+        <div style={CARD_GRID}>
+          {UI_LANDING.consequences.map((c) => (
+            <div key={c.title} style={isMobile ? M_CARD : CARD}>
+              <span style={KICKER}>{c.kicker}</span>
+              <span style={CARD_TITLE}>{c.title}</span>
+              <span style={CARD_TEXT}>{c.text}</span>
+            </div>
+          ))}
         </div>
 
-        {/* --- Why « panopticool »? ------------------------------------------------------------- */}
+        {/* --- Why « panopticool »? ---------------------------------------------------------- */}
         <div style={isMobile ? M_WHY_CARD : WHY_CARD}>
-          <span style={isMobile ? M_KICKER : KICKER}>{UI_LANDING.whyKicker}</span>
-          <p style={isMobile ? M_WHY_TEXT : WHY_TEXT}>
+          <span style={KICKER}>{UI_LANDING.whyKicker}</span>
+          <p style={WHY_TEXT}>
             {UI_LANDING.whyTextBefore}
             <i>{UI_LANDING.whyTextItalic}</i>
             {UI_LANDING.whyTextAfter}
           </p>
           <div style={WHY_LINKS}>
-            <a href={localeHref(DEMO_PATH)} class="hv-cy" style={isMobile ? M_WHY_LINK : WHY_LINK}>
+            <a href={localeHref(DEMO_PATH)} class="hv-cy" style={WHY_LINK}>
               {UI_LANDING.whyDemoTikTok}
             </a>
             {INSTAGRAM_LIVE && (
-              <a
-                href={localeHref(DEMO_PATH)}
-                class="hv-cy"
-                style={isMobile ? M_WHY_LINK : WHY_LINK}
-              >
+              <a href={localeHref(DEMO_PATH)} class="hv-bd" style={WHY_LINK}>
                 {UI_LANDING.whyDemoInstagram}
               </a>
             )}
           </div>
         </div>
 
-        {/* --- Going further ------------------------------------------------------------------- */}
-        <div style={isMobile ? M_CARD_COL : RAIL_GRID}>
+        {/* --- Going further ----------------------------------------------------------------- */}
+        <div style={RAIL_GRID}>
           <Rail
             kicker={UI_LANDING.learnKicker}
             title={UI_LANDING.learnTitle}
@@ -369,147 +402,29 @@ function Rail({
   return (
     <div style={isMobile ? M_RAIL : RAIL}>
       <span style={KICKER}>{kicker}</span>
-      <span style={isMobile ? M_CARD_TITLE : CARD_TITLE}>{title}</span>
-      <p style={RAIL_LEDE}>{lede}</p>
-      <div style={RAIL_LINKS}>
-        {links.map((l, i) => (
-          <a
-            key={l.name}
-            href={urls[i] ?? '#'}
-            target="_blank"
-            rel="noreferrer"
-            class="hv-bd"
-            style={RAIL_LINK}
-          >
+      <span style={RAIL_TITLE}>{title}</span>
+      <span style={RAIL_LEDE}>{lede}</span>
+      <span style={{ flex: 1 }} />
+      {links.map((l, i) => (
+        <a
+          key={l.name}
+          href={urls[i] ?? '#'}
+          target="_blank"
+          rel="noreferrer"
+          class="hv-a"
+          style={RAIL_LINK}
+        >
+          <span style={RAIL_LINK_COL}>
             <span style={RAIL_LINK_NAME}>{l.name}</span>
             <span style={RAIL_LINK_NOTE}>{l.note}</span>
-          </a>
-        ))}
-      </div>
+          </span>
+          <span style={{ flex: 1 }} />
+          <span style={RAIL_ARROW}>→</span>
+        </a>
+      ))}
     </div>
   );
 }
-
-// --- Styles (mockup values, NAVY palette) ---------------------------------------------------------
-const PAGE = {
-  minHeight: '100vh',
-  background: `linear-gradient(180deg, ${NAVY.bgPageTop} 0%, ${NAVY.bgPage} 480px)`,
-  color: NAVY.textBright,
-} as const;
-const SHELL = {
-  maxWidth: '1160px',
-  margin: '0 auto',
-  padding: '72px 40px 64px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '72px',
-} as const;
-const HERO = {
-  display: 'grid',
-  gridTemplateColumns: 'minmax(0, 1fr) minmax(280px, 440px)',
-  gap: '56px',
-  alignItems: 'center',
-} as const;
-const HERO_COL = { display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0 } as const;
-const HERO_EYE = { minWidth: 0 } as const;
-const KICKER = {
-  fontSize: '10px',
-  letterSpacing: '0.16em',
-  textTransform: 'uppercase',
-  color: NAVY.accent,
-} as const;
-const HERO_TITLE = {
-  margin: 0,
-  fontSize: '42px',
-  fontWeight: 500,
-  lineHeight: 1.15,
-  letterSpacing: '-0.02em',
-  color: NAVY.textBright,
-  textWrap: 'balance',
-} as const;
-const HERO_LEDE = {
-  margin: 0,
-  fontSize: '13px',
-  lineHeight: 1.8,
-  color: NAVY.textLede,
-  maxWidth: '540px',
-} as const;
-const CTA = {
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '9px',
-  fontSize: '12px',
-  fontWeight: 600,
-  fontFamily: 'inherit',
-  letterSpacing: '0.03em',
-  color: NAVY.bgPage,
-  background: NAVY.accent,
-  border: 'none',
-  borderRadius: '9px',
-  padding: '15px 24px',
-} as const;
-const TRUST_ROW = { display: 'flex', gap: '18px', flexWrap: 'wrap', paddingTop: '4px' } as const;
-const TRUST_ITEM = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '7px',
-  fontSize: '10px',
-  color: NAVY.textDim,
-} as const;
-const TRUST_DOT = {
-  width: '7px',
-  height: '7px',
-  borderRadius: '50%',
-  background: NAVY.ok,
-} as const;
-const SECTION = { display: 'flex', flexDirection: 'column', gap: '22px' } as const;
-const CARD_GRID = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-  gap: '16px',
-} as const;
-const STEP_CARD = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
-  padding: '24px',
-  background: NAVY.bgCard,
-  border: `1px solid ${NAVY.borderCard}`,
-  borderRadius: '12px',
-} as const;
-const CARD_TITLE = {
-  fontSize: '13px',
-  fontWeight: 500,
-  lineHeight: 1.4,
-  color: NAVY.textBright,
-} as const;
-const CARD_TEXT = { fontSize: '11px', lineHeight: 1.7, color: NAVY.textLede } as const;
-const WHY_CARD = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-  padding: '32px',
-  background: 'linear-gradient(180deg, #0e1836, #0b1226)',
-  border: '1px solid #243362',
-  borderRadius: '14px',
-  alignItems: 'flex-start',
-} as const;
-const WHY_TEXT = {
-  margin: 0,
-  fontSize: '12px',
-  lineHeight: 1.8,
-  color: NAVY.textLede,
-  maxWidth: '760px',
-} as const;
-const WHY_LINK = {
-  fontSize: '11px',
-  fontWeight: 500,
-  color: NAVY.accent,
-  borderBottom: '1px solid rgba(47,212,240,.4)',
-  paddingBottom: '2px',
-  textDecoration: 'none',
-} as const;
 
 // --- Consent modal ------------------------------------------------------------------------------
 const OVERLAY = {
@@ -622,91 +537,6 @@ const GO_BTN_OFF = {
 // The background (gradient) covers the FULL width — no ceiling here, otherwise the black body appears as
 // bands on either side of the 480 px container on intermediate screens (720 px and less,
 // but wider than 480). Only the CONTENT is centered at 480 px (M_SHELL).
-const M_PAGE = { ...PAGE } as const;
-const M_SHELL = {
-  maxWidth: '480px',
-  margin: '0 auto',
-  padding: '36px 20px 48px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '48px',
-} as const;
-const M_KICKER = {
-  fontSize: '11px',
-  lineHeight: 1.5,
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
-  color: NAVY.accent,
-} as const;
-const M_HERO_TITLE = {
-  margin: 0,
-  fontSize: '28px',
-  fontWeight: 500,
-  lineHeight: 1.25,
-  letterSpacing: '-0.02em',
-  color: NAVY.textBright,
-  textWrap: 'balance',
-} as const;
-const M_HERO_LEDE = {
-  margin: 0,
-  fontSize: '14px',
-  lineHeight: 1.75,
-  color: NAVY.textLede,
-} as const;
-const M_CTA = {
-  ...CTA,
-  justifyContent: 'center',
-  width: '100%',
-  boxSizing: 'border-box',
-  minHeight: '54px',
-  fontSize: '14px',
-  lineHeight: 1.3,
-  borderRadius: '12px',
-  padding: '16px 24px',
-} as const;
-const M_TRUST_COL = {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-  paddingTop: '2px',
-} as const;
-const M_TRUST_ITEM = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  fontSize: '12px',
-  lineHeight: 1.4,
-  color: NAVY.textMuted,
-} as const;
-const M_TRUST_DOT = {
-  width: '8px',
-  height: '8px',
-  borderRadius: '50%',
-  background: NAVY.ok,
-  flex: 'none',
-} as const;
-const M_SECTION = { display: 'flex', flexDirection: 'column', gap: '18px' } as const;
-const M_CARD_COL = { display: 'flex', flexDirection: 'column', gap: '14px' } as const;
-const M_STEP_CARD = { ...STEP_CARD, gap: '11px', padding: '20px' } as const;
-const M_CARD_TITLE = {
-  fontSize: '14px',
-  fontWeight: 500,
-  lineHeight: 1.45,
-  color: NAVY.textBright,
-} as const;
-const M_CARD_TEXT = { fontSize: '12.5px', lineHeight: 1.7, color: NAVY.textLede } as const;
-const M_WHY_CARD = { ...WHY_CARD, gap: '14px', padding: '24px 20px' } as const;
-const M_WHY_TEXT = { margin: 0, fontSize: '13px', lineHeight: 1.75, color: NAVY.textLede } as const;
-const M_WHY_LINK = {
-  display: 'flex',
-  alignItems: 'center',
-  minHeight: '44px',
-  fontSize: '13px',
-  fontWeight: 500,
-  lineHeight: 1.4,
-  color: NAVY.accent,
-  textDecoration: 'none',
-} as const;
 
 // --- Mobile modal: bottom sheet (« Accueil v2 Mobile » mockup) -------------------------------------
 const M_OVERLAY = {
@@ -751,153 +581,421 @@ const M_FULL_BTN = {
 } as const;
 
 // --- v4 sections ----------------------------------------------------------------------------
+
+// --- Styles — values taken from the « Accueil v4 » mockup, not invented ------------------------
+const PAGE = { minHeight: '100vh', background: NAVY.bgPage, color: NAVY.textBright } as const;
+/** The mockup's measure: 1080 content, 40 gutter. */
+const SHELL = { maxWidth: '1080px', margin: '0 auto', padding: '0 40px' } as const;
+const M_SHELL = { ...SHELL, padding: '0 20px' } as const;
+
+const HERO = {
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1fr) auto',
+  alignItems: 'center',
+  gap: '40px',
+  padding: '104px 0 60px',
+} as const;
+const HERO_COL = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '26px',
+  minWidth: 0,
+  maxWidth: '830px',
+} as const;
+const M_HERO_COL = { ...HERO_COL, gap: '20px', padding: '52px 0 40px' } as const;
+const HERO_EYE = { minWidth: 0 } as const;
+const HERO_TITLE = {
+  margin: 0,
+  fontSize: '66px',
+  fontWeight: 600,
+  lineHeight: 1.04,
+  letterSpacing: '-0.038em',
+  color: '#ffffff',
+  textWrap: 'balance',
+} as const;
+const M_HERO_TITLE = { ...HERO_TITLE, fontSize: '34px', lineHeight: 1.12 } as const;
+const HERO_LEDE = {
+  margin: 0,
+  fontSize: '19px',
+  lineHeight: 1.62,
+  color: NAVY.textBody,
+  maxWidth: '640px',
+} as const;
+const M_HERO_LEDE = { ...HERO_LEDE, fontSize: '15px' } as const;
+
+// ⚠ The call to action OPENS A MODAL — it does not start the analysis. The mockup gives it the
+// recessed treatment for that reason, and sizes it to its content: a full-width filled button
+// reads as « go », which is a promise this control does not keep.
+const CTA_ROW = { display: 'flex', gap: '12px', flexWrap: 'wrap', paddingTop: '2px' } as const;
+const CTA = {
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  fontFamily: 'inherit',
+  fontSize: '15px',
+  fontWeight: 600,
+  lineHeight: 1.2,
+  color: NAVY.textBright,
+  background: '#111938',
+  border: `1px solid ${NAVY.borderChip}`,
+  borderRadius: '12px',
+  padding: '16px 22px',
+} as const;
+const CTA_ARROW = { fontSize: '15px', lineHeight: 1, color: NAVY.textMuted } as const;
+
+const TRUST_ROW = { display: 'flex', gap: '26px', flexWrap: 'wrap', paddingTop: '4px' } as const;
+const M_TRUST_COL = { ...TRUST_ROW, gap: '10px', flexDirection: 'column' } as const;
+const TRUST_ITEM = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '9px',
+  fontSize: '13px',
+  fontWeight: 500,
+  lineHeight: 1.5,
+  color: '#9dabc8',
+} as const;
+const TRUST_DOT = {
+  width: '5px',
+  height: '5px',
+  borderRadius: '50%',
+  background: NAVY.accent,
+  flex: 'none',
+} as const;
+
+// --- The two connector cards ---
 const PLATFORM_GRID = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-  gap: '18px',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '22px',
+  paddingBottom: '104px',
+  alignItems: 'stretch',
+} as const;
+const M_PLATFORM_GRID = {
+  ...PLATFORM_GRID,
+  gridTemplateColumns: '1fr',
+  paddingBottom: '56px',
 } as const;
 const PLATFORM_CARD = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px',
-  padding: '24px 22px',
+  minWidth: 0,
   background: NAVY.bgCard,
   border: `1px solid ${NAVY.borderCard}`,
-  borderRadius: '16px',
+  borderRadius: '22px',
+  overflow: 'hidden',
 } as const;
-const M_PLATFORM_CARD = { ...PLATFORM_CARD, padding: '20px 18px' } as const;
-const PLATFORM_NAME = { fontSize: '17px', fontWeight: 600, letterSpacing: '-0.01em' } as const;
-const PLATFORM_LEDE = {
-  margin: 0,
-  fontSize: '12px',
-  lineHeight: 1.7,
-  color: NAVY.textLede,
+const PREVIEW = {
+  position: 'relative',
+  aspectRatio: '16 / 10',
+  overflow: 'hidden',
+  background: NAVY.bgInset,
 } as const;
-const BULLETS = {
-  listStyle: 'none',
-  margin: '2px 0 0',
-  padding: 0,
+const PREVIEW_IMG = {
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  objectPosition: '0% 0%',
+  display: 'block',
+} as const;
+const PREVIEW_FADE = {
+  position: 'absolute',
+  inset: 0,
+  background:
+    'linear-gradient(180deg, rgba(7,11,24,.10) 0%, rgba(7,11,24,.05) 42%, rgba(14,20,42,.92) 100%)',
+} as const;
+const PREVIEW_ID = {
+  position: 'absolute',
+  left: '24px',
+  bottom: '20px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '14px',
+} as const;
+const PREVIEW_LOGO = {
+  width: '52px',
+  height: '52px',
+  borderRadius: '14px',
+  background: 'rgba(19,27,56,.9)',
+  border: '1px dashed #3a4a80',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flex: 'none',
+  fontSize: '9px',
+  fontWeight: 500,
+  lineHeight: 1.2,
+  color: '#8b99bb',
+  textAlign: 'center',
+} as const;
+const PREVIEW_NAME = {
+  fontSize: '31px',
+  fontWeight: 600,
+  lineHeight: 1,
+  letterSpacing: '-0.028em',
+  color: '#ffffff',
+} as const;
+const PLATFORM_BODY = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '8px',
+  gap: '16px',
+  flex: 1,
+  padding: '22px 26px 26px',
 } as const;
+const M_PLATFORM_BODY = { ...PLATFORM_BODY, padding: '20px 18px 22px' } as const;
+const PLATFORM_LEDE = { fontSize: '13px', lineHeight: 1.55, color: NAVY.textMuted } as const;
+const DIVIDER = { height: '1px', background: NAVY.donutRest } as const;
+const BULLETS = { display: 'flex', flexDirection: 'column', gap: '11px' } as const;
 const BULLET = {
   display: 'flex',
-  gap: '9px',
-  fontSize: '11.5px',
-  lineHeight: 1.6,
-  color: NAVY.textSecondary,
+  gap: '11px',
+  fontSize: '15px',
+  lineHeight: 1.5,
+  color: '#c4cee6',
 } as const;
 const BULLET_DOT = {
-  flex: 'none',
   width: '5px',
   height: '5px',
   borderRadius: '50%',
-  marginTop: '6px',
+  flex: 'none',
+  marginTop: '9px',
 } as const;
 const PLATFORM_ACTIONS = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '9px',
-  marginTop: '6px',
+  gap: '10px',
+  paddingTop: '4px',
 } as const;
 const PLATFORM_CTA = {
   cursor: 'pointer',
   fontFamily: 'inherit',
-  fontSize: '12.5px',
+  fontSize: '15px',
   fontWeight: 600,
+  lineHeight: 1.2,
   color: NAVY.bgPage,
   border: 'none',
-  borderRadius: '9px',
-  padding: '12px 14px',
+  borderRadius: '12px',
+  padding: '17px 22px',
 } as const;
 const PLATFORM_DEMO = {
-  fontSize: '11.5px',
-  color: NAVY.textMuted,
-  textDecoration: 'none',
+  fontSize: '14px',
+  fontWeight: 500,
+  lineHeight: 1.2,
+  color: '#a7b2cd',
+  background: 'transparent',
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '12px',
+  padding: '15px 22px',
   textAlign: 'center',
+  textDecoration: 'none',
 } as const;
-const PLATFORM_SOON_TAG = { fontSize: '11px', color: NAVY.textDim, textAlign: 'center' } as const;
-const SOON_LINE = {
-  margin: 0,
-  fontSize: '11.5px',
+const PLATFORM_SOON_TAG = {
+  fontSize: '13px',
   color: NAVY.textDim,
   textAlign: 'center',
+  padding: '15px 22px',
 } as const;
-const BIG_TITLE = {
-  margin: 0,
-  fontSize: '24px',
+const SOON_BOX = {
+  gridColumn: '1 / -1',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  border: `1px dashed ${NAVY.borderInset}`,
+  borderRadius: '16px',
+  padding: '19px',
+} as const;
+const SOON_TEXT = {
+  fontSize: '13px',
   fontWeight: 500,
-  lineHeight: 1.3,
-  letterSpacing: '-0.02em',
-  color: NAVY.textBright,
+  lineHeight: 1.6,
+  color: NAVY.textMuted,
+  letterSpacing: '0.01em',
 } as const;
-const M_BIG_TITLE = { ...BIG_TITLE, fontSize: '19px' } as const;
-const PROSE_GRID = {
+
+// --- The right — a band of its own, so the page breathes between two card fields ---
+const BAND = {
+  background: NAVY.bgInset,
+  borderTop: `1px solid ${NAVY.borderHeader}`,
+  borderBottom: `1px solid ${NAVY.borderHeader}`,
+} as const;
+const BAND_INNER = {
+  maxWidth: '1080px',
+  margin: '0 auto',
+  padding: '80px 40px',
   display: 'grid',
-  gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-  gap: '18px',
+  gridTemplateColumns: '1fr 1fr',
+  gap: '72px',
+  alignItems: 'start',
 } as const;
-const PROSE = { margin: 0, fontSize: '12px', lineHeight: 1.8, color: NAVY.textLede } as const;
-const STAT_ROW = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-  gap: '18px',
+const M_BAND_INNER = {
+  ...BAND_INNER,
+  padding: '48px 20px',
+  gridTemplateColumns: '1fr',
+  gap: '28px',
 } as const;
-const STAT = {
+const RIGHT_COL = { display: 'flex', flexDirection: 'column', gap: '20px' } as const;
+const H2 = {
+  fontSize: '34px',
+  fontWeight: 600,
+  lineHeight: 1.2,
+  letterSpacing: '-0.025em',
+  color: '#ffffff',
+  textWrap: 'balance',
+} as const;
+const M_H2 = { ...H2, fontSize: '24px' } as const;
+const PROSE = { margin: 0, fontSize: '16px', lineHeight: 1.7, color: NAVY.textBody } as const;
+const STAT_CARD = {
   display: 'flex',
   flexDirection: 'column',
-  gap: '6px',
-  padding: '18px 20px',
+  gap: '28px',
+  padding: '36px',
   background: NAVY.bgCard,
   border: `1px solid ${NAVY.borderCard}`,
-  borderRadius: '14px',
+  borderRadius: '20px',
 } as const;
+const M_STAT_CARD = { ...STAT_CARD, gap: '20px', padding: '24px' } as const;
+const STAT = { display: 'flex', flexDirection: 'column', gap: '6px' } as const;
 const STAT_N = {
-  fontSize: '26px',
-  fontWeight: 600,
+  fontSize: '76px',
+  fontWeight: 700,
+  lineHeight: 0.9,
+  letterSpacing: '-0.04em',
   color: NAVY.accent,
-  letterSpacing: '-0.02em',
 } as const;
-const STAT_LABEL = { fontSize: '11.5px', lineHeight: 1.6, color: NAVY.textLede } as const;
-const CONSEQUENCE_KICKER = {
-  fontSize: '10px',
-  letterSpacing: '0.16em',
+const M_STAT_N = { ...STAT_N, fontSize: '44px' } as const;
+const STAT_LABEL = { fontSize: '14px', lineHeight: 1.5, color: NAVY.textBody } as const;
+const STAT_DIVIDER = { height: '1px', background: NAVY.borderCard } as const;
+
+// --- The tail: consequences, why, rails ---
+const TAIL = {
+  maxWidth: '1080px',
+  margin: '0 auto',
+  padding: '92px 40px 0',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '34px',
+} as const;
+const M_TAIL = { ...TAIL, padding: '56px 20px 0', gap: '26px' } as const;
+const SECTION_HEAD = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '18px',
+  maxWidth: '720px',
+} as const;
+const CARD_GRID = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 300px), 1fr))',
+  gap: '18px',
+} as const;
+const CARD = {
+  minWidth: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '12px',
+  padding: '26px 28px',
+  background: NAVY.bgCard,
+  border: `1px solid ${NAVY.borderCard}`,
+  borderRadius: '20px',
+} as const;
+const M_CARD = { ...CARD, padding: '22px 20px' } as const;
+/** The section kicker of the whole page: 12 px, tracked, uppercase, cyan. */
+const KICKER = {
+  fontSize: '12px',
+  fontWeight: 500,
+  lineHeight: 1,
+  letterSpacing: '0.06em',
   textTransform: 'uppercase',
-  color: NAVY.textDim,
+  color: NAVY.accent,
 } as const;
-const WHY_LINKS = { display: 'flex', gap: '18px', flexWrap: 'wrap' } as const;
+const CARD_TITLE = {
+  fontSize: '20px',
+  fontWeight: 600,
+  lineHeight: 1.25,
+  letterSpacing: '-0.015em',
+  color: '#ffffff',
+} as const;
+const CARD_TEXT = { fontSize: '15px', lineHeight: 1.65, color: NAVY.textBody } as const;
+
+const WHY_CARD = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+  padding: '30px 32px',
+  background: NAVY.bgCard,
+  border: `1px solid ${NAVY.borderCard}`,
+  borderRadius: '20px',
+} as const;
+const M_WHY_CARD = { ...WHY_CARD, padding: '24px 20px' } as const;
+const WHY_TEXT = {
+  margin: 0,
+  fontSize: '16px',
+  lineHeight: 1.7,
+  color: NAVY.textBody,
+  maxWidth: '760px',
+} as const;
+const WHY_LINKS = { display: 'flex', gap: '12px', flexWrap: 'wrap', paddingTop: '2px' } as const;
+const WHY_LINK = {
+  fontSize: '14px',
+  fontWeight: 500,
+  lineHeight: 1.2,
+  color: NAVY.textHeading,
+  background: 'transparent',
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '12px',
+  padding: '14px 20px',
+  textDecoration: 'none',
+} as const;
+
 const RAIL_GRID = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-  gap: '18px',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
+  gap: '22px',
+  alignItems: 'stretch',
 } as const;
 const RAIL = {
+  minWidth: 0,
   display: 'flex',
   flexDirection: 'column',
-  gap: '10px',
-  padding: '22px 20px',
+  gap: '4px',
+  padding: '30px 32px',
   background: NAVY.bgCard,
   border: `1px solid ${NAVY.borderCard}`,
-  borderRadius: '16px',
+  borderRadius: '20px',
 } as const;
-const M_RAIL = { ...RAIL, padding: '18px 16px' } as const;
+const M_RAIL = { ...RAIL, padding: '24px 20px' } as const;
+const RAIL_TITLE = {
+  fontSize: '22px',
+  fontWeight: 600,
+  lineHeight: 1.25,
+  letterSpacing: '-0.02em',
+  color: '#ffffff',
+  paddingTop: '10px',
+} as const;
 const RAIL_LEDE = {
-  margin: '0 0 4px',
-  fontSize: '11.5px',
-  lineHeight: 1.7,
-  color: NAVY.textLede,
+  fontSize: '14px',
+  lineHeight: 1.6,
+  color: NAVY.textMuted,
+  padding: '8px 0 12px',
 } as const;
-const RAIL_LINKS = { display: 'flex', flexDirection: 'column', gap: '8px' } as const;
 const RAIL_LINK = {
   display: 'flex',
-  flexDirection: 'column',
-  gap: '3px',
-  padding: '11px 13px',
-  background: NAVY.bgPage,
-  border: `1px solid ${NAVY.borderChip}`,
-  borderRadius: '10px',
+  alignItems: 'baseline',
+  gap: '14px',
+  padding: '15px 0',
+  borderTop: `1px solid ${NAVY.borderHeader}`,
   textDecoration: 'none',
 } as const;
-const RAIL_LINK_NAME = { fontSize: '12px', fontWeight: 500, color: NAVY.textBright } as const;
-const RAIL_LINK_NOTE = { fontSize: '11px', lineHeight: 1.5, color: NAVY.textMuted } as const;
+const RAIL_LINK_COL = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+  minWidth: 0,
+} as const;
+const RAIL_LINK_NAME = {
+  fontSize: '15px',
+  fontWeight: 500,
+  lineHeight: 1.35,
+  color: NAVY.textHeading,
+} as const;
+const RAIL_LINK_NOTE = { fontSize: '13px', lineHeight: 1.4, color: NAVY.textMuted } as const;
+const RAIL_ARROW = { fontSize: '14px', lineHeight: 1, color: NAVY.accent, flex: 'none' } as const;
