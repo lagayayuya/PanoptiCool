@@ -92,6 +92,11 @@ const { LandingPage } = await import('./LandingPage');
 const { RoadmapPage } = await import('./RoadmapPage');
 const { SiteFooter } = await import('./SiteFooter');
 const { SiteHeader } = await import('./SiteHeader');
+// ⚠ READ FROM THE PERIMETER, NEVER RETYPED. This case used to pass the badge as a literal
+// (« démo · données fictives »), so the golden went on freezing a string the product had stopped
+// producing — a net green for a reason that is not its own. Reading `UI_ANALYSE` makes the
+// snapshot move when the ratified copy moves, which is the only thing it can usefully witness here.
+const { UI_ANALYSE } = await import('../copy');
 
 const FIXED_NOW = Date.UTC(2026, 6, 16, 12, 0, 0);
 
@@ -174,7 +179,7 @@ const CASES: {
     name: 'header-desktop-badge',
     mobile: false,
     seed: (v) => v,
-    node: () => h(SiteHeader, { badge: 'démo · données fictives' }),
+    node: () => h(SiteHeader, { badge: UI_ANALYSE.badgeDemo }),
   },
   {
     name: 'header-mobile-toc',

@@ -513,7 +513,11 @@ export const FR = {
         text: 'Traduction intégrale de la machinerie, des lexiques, du site et du dépôt GitHub, du français vers l’anglais.',
       },
       {
-        date: '31 juillet 2026',
+        // ⚠ A DATE ON A STEP « en cours » GOES STALE BY ITSELF, and nothing here notices — this one
+        // read « 31 juillet 2026 » on 2026-08-03, i.e. the page announced as forthcoming a
+        // deadline it had already missed. A month rather than a day: it is the precision the
+        // project can actually keep, and the status tag beside it already says « En cours ».
+        date: 'août 2026',
         title: 'Analyse Instagram',
         text: 'L’export Instagram est beaucoup plus riche que celui de TikTok, ce qui implique une tout autre logique pour rendre ces données accessibles : carte des localisations, analyse des conversations…',
       },
@@ -564,9 +568,15 @@ export const FR = {
     hintDemoLink: 'Ou essaie avec des données fictives →',
 
     /** Site-bar badge once the analysis is rendered. Deliberately DISTINCT from `kicker`
-     * above even though « analyse locale » repeats in it: they are two interface roles, and
-     * confusing them would move one by changing the other. The repetition is VISIBLE here, thus arbitrable. */
-    badgeDemo: 'démo · données fictives',
+     * above even though « analyse locale » repeats in `badgeReal`: they are two interface roles, and
+     * confusing them would move one by changing the other. The repetition is VISIBLE here, thus arbitrable.
+     *
+     * ⚠ THE TWO NO LONGER SAY THE SAME KIND OF THING (yuya, 2026-08-03): the demo badge names the
+     * PLATFORM (« TikTok · démo », as in the v5 mockup), the real one names the PROCESSING
+     * (« analyse locale »). With one connector the asymmetry is invisible. With two it is the bar
+     * that tells the reader which connector they are in — so `badgeReal` is a decision waiting to
+     * be made, not an oversight left here. */
+    badgeDemo: 'TikTok · démo',
     badgeReal: 'analyse locale',
 
     /** MOBILE table of contents (chips) — shorter labels than those of the desktop TOC (`UI_RESULTS`),

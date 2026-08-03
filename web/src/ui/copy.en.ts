@@ -387,7 +387,7 @@ export const EN: UiCopy = {
         text: 'Full translation of the machinery, the lexicons, the site and the GitHub repository, from French into English.',
       },
       {
-        date: 'July 31, 2026',
+        date: 'August 2026',
         title: 'Instagram analysis',
         text: 'The Instagram export is far richer than TikTok’s, which calls for an entirely different approach to make that data readable: a map of locations, an analysis of conversations…',
       },
@@ -434,7 +434,7 @@ export const EN: UiCopy = {
       'No export yet? In the TikTok app: Profile → Settings → Account → Download your data (JSON format). ',
     hintDemoLink: 'Or try it with made-up data →',
 
-    badgeDemo: 'demo · made-up data',
+    badgeDemo: 'TikTok · demo',
     badgeReal: 'local analysis',
 
     tocActivity: 'Activity',

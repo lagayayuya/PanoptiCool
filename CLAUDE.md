@@ -101,6 +101,19 @@ Four end-to-end goldens take care of it, and you have to know which one sees wha
 
 Each **declares its border in its header**; the rule that requires it is below.
 
+**⚠ THE FOUR SHARE ONE BLIND SPOT**, and it is structural rather than an oversight: all of them mock
+`useState` so that every boolean initialized to `false` starts `true` (their « precaution 2 »,
+without which they would freeze neither a verbatim nor a highlight). **Everything a disclosure hides
+while CLOSED is therefore rendered by none of them** — and that is the state the reader meets first.
+Measured on 2026-08-03: the open caret appears 7 / 7 / 7 / 11 times across the four, the closed one
+zero times. Two witnesses cover a piece of it — `sensitive-collapse.test.ts` (a sensitive finding
+starts collapsed, ADR-0003) and `card-caret.test.ts` (the closed header says it can be opened) — and
+the rest is uncovered. Citing the goldens for a collapsed render is over-citing them.
+
+**And none of the four sees CSS.** `readable()` strips it, so a font, a colour or a whole type scale
+can change without moving a byte: the v5 pass of 2026-08-03 rewrote every size on the analysis page
+and their diff was structure only. A visual change is proven by looking, never by a green golden.
+
 ## What a net proves
 
 A proof mechanism — golden, witness, bench, measurement — **declares in its own file what it does NOT

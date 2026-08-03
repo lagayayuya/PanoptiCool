@@ -1,10 +1,11 @@
-// Sticky site bar (« Accueil v2 » / « parcours guidé » mockups + Mobile variants):
-// eye + wordmark, optional contextual badge (« démo · données fictives »), roadmap link, language
-// selector and GitHub link. On MOBILE (« … Mobile » mockups): tightened paddings, touch targets
-// ≥ 44 px, roadmap and GitHub as icons only, badge hidden (no room at 390 px — the « démo » info
-// moves into the kicker of the hero, cf. ResultsView; the roadmap page says the same thing in its
-// own kicker), and an optional TABLE OF CONTENTS as horizontal scrollable chips under the
-// bar (the journey has no sidebar on mobile).
+// Sticky site bar (« Accueil v4 » / « PanoptiCool v5 Web » mockups + Mobile variants):
+// eye + wordmark, optional contextual badge, roadmap link, language selector and GitHub link. The
+// badge's TEXT is not quoted here on purpose: it lives in `UI_ANALYSE.badge*`, and a comment
+// repeating it would be false the day it is ratified differently — as happened on 2026-08-03.
+// On MOBILE (« … Mobile » mockups): tightened paddings, touch targets ≥ 44 px, roadmap and GitHub
+// as icons only, badge hidden (no room at 390 px — the demo mention moves into the hero's kicker,
+// which is why that kicker survives on mobile alone), and an optional TABLE OF CONTENTS as
+// horizontal scrollable chips under the bar (the journey has no sidebar on mobile).
 //
 // THE LANGUAGE SELECTOR IS ALWAYS VISIBLE, including when a single language is published.
 // This is deliberate and it costs an inert button: it ANNOUNCES that the site has a notion of language.
