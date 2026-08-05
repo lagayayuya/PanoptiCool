@@ -45,3 +45,7 @@ Design.pdf
 # Nothing in it is produced by the product or consumed by it: the question banks are a hand-written
 # snapshot, and progress lives in the browser's localStorage.
 quiz/
+
+# Geo databases — fetched by `web/scripts/fetch-geo-db.mjs`, never committed (~40 MB, monthly
+# re-publication). Their absence is a degraded mode, not a failure: cf. NOTICE.
+/web/public/geo/

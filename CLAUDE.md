@@ -184,6 +184,10 @@ the code are correct and useful.
   prose — a quoted example is the measured thing, so translating it would destroy what it proves.
 - **The registry (`panopticool/registry.py`) is the structural oracle.** It describes the shape; it
   does not fabricate data. Population (synthetic values) is kept apart, in pluggable *populators*.
+- **The Instagram modules style themselves in CSS FILES**, and that is a ratified divergence
+  (ADR-0007, addendum): 7 335 lines of media queries, keyframes, pseudo-elements and 3D transforms
+  are not expressible as inline style objects. It applies to `web/src/ui/instagram/` and nowhere
+  else — everywhere else, the inline convention holds, with `ui/hover.css` for what it cannot say.
 - **An artifact has ONE home.** The other surfaces refer to it without copying it. A decision lives
   in an ADR (`docs/adr/`); a choice too small for an ADR is recorded **inline**, in the comment that
   carries the constraint (cf. the rule below); the format in the contract. Copying is manufacturing a

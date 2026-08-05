@@ -89,7 +89,7 @@ for a setting that does not exist.
    on the local loopback is exempted **in all three engines**: no more mixed content (both ends are in
    cleartext), no more LNA gate (`loopback → *` is not a local-network request, by definition of the
    specification). This is not a workaround, it is the removal of the problem — and it is the
-   architecturally honest answer to "this tool runs on your machine". `http://localhost` **stays a
+   architecturally honest answer to "this tool runs on your device". `http://localhost` **stays a
    secure context**: the engine's Worker and the crypto APIs keep working.
 
 **ADR-0001 is intact.** All of this is client code and documentation; no deployment surface is

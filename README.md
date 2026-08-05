@@ -26,7 +26,7 @@ but to come face to face with what we give away, and with what can be done with 
 > no server to send it to: the site is a static build, and the analysis runs in a Web Worker on your
 > machine. This isn't promised, it's verifiable.
 
-<img src="docs/assets/panopticool-diagram.svg" alt="How PanoptiCool works: a TikTok data export is analyzed entirely in your browser — ingest, analyze, results — with an optional local AI step; nothing leaves your machine.">
+<img src="docs/assets/panopticool-diagram.svg" alt="How PanoptiCool works: a TikTok data export is analyzed entirely in your browser — ingest, analyze, results — with an optional local AI step; nothing leaves your device.">
 
 **Today, a single connector: TikTok.** Instagram is in progress — its export is far richer, which
 calls for a different reading: a map of locations, an analysis of conversations. 
@@ -58,7 +58,7 @@ own machine** — free, offline, nothing sent anywhere.
 
 You don't need this repo for it. [The page](https://panopti.cool/en/analyse/) walks you through it,
 detects your OS, and gives you the exact commands to copy — including the shortest path, where a
-single `llama-server` serves **both the site and the model** from your machine, so it works in any
+single `llama-server` serves **both the site and the model** from your device, so it works in any
 browser and even without an Internet connection afterwards. The commands live there rather than
 here so the two can't drift apart.
 
@@ -184,7 +184,7 @@ npm install
 npm run dev
 ```
 
-Open **<http://localhost:4321>**. No key, no account. Demo mode is at
+Open **<http://localhost:8080>**. No key, no account. Demo mode is at
 `/en/analyse?demo` (or `/fr/analyse?demo`).
 
 | Command (from `web/`) | What it does |

@@ -4,3 +4,20 @@ This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
 by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version. See LICENSE.
+
+---
+
+## Third-party data
+
+**DB-IP City Lite** — IP-to-city database, used for the Instagram connector's map to place login
+IP addresses approximately. Licensed **CC BY 4.0**: <https://creativecommons.org/licenses/by/4.0/>
+Attribution: **IP Geolocation by DB-IP** — <https://db-ip.com>
+
+The database files are NOT distributed in this repository (~40 MB, republished monthly).
+`web/scripts/fetch-geo-db.mjs` downloads them into `web/public/geo/`. They are optional: without
+them the map draws its declared layer — the real GPS points from the export — and reports the
+inferred layer as unavailable.
+
+⚠ It is deliberately **not GeoLite2**. MaxMind's database adds an End User Licence Agreement on top
+of CC BY-SA 4.0 — an account to download, a tracking pixel on redistribution, and terms revisable by
+one party — which a project of this kind has no way to accept on its users' behalf.
