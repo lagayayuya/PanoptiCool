@@ -1,0 +1,84 @@
+# PanoptiCool — serving the static build (ADR-0001: sovereign hosting, Caddy, no backend).
+#
+# ⚠ THIS FILE IS AN ARTIFACT OF THE DEPLOYMENT, NOT OF THE BUILD. Nothing in `web/` reads it and no
+# test exercises it: it is the record of what the server must do for four properties the build
+# cannot hold on its own. It was written on 2026-08-05, when the site was measured for publication
+# and three of the four turned out to rest on nobody.
+#
+# ─── WHAT THIS FILE DOES NOT DO ─────────────────────────────────────────────────────────────────
+#   - IT IS NOT DEPLOYED FROM HERE. Copy it, adjust the domain and the root, reload Caddy. A
+#     Caddyfile in a repository is documentation of intent — the running one is on the server;
+#   - IT DOES NOT MAKE THE SITE PRIVATE. That property is held by the architecture (nothing leaves
+#     the browser, ADR-0002), not by a header. What the headers below buy is that a THIRD PARTY
+#     cannot make the page do something it does not do by itself;
+#   - IT ASSUMES THE BUILD IS COMPLETE. If `dist/` came out of a build without the geo databases,
+#     there is no archive to serve at all and the AI section says so on screen — that decision lives
+#     in `web/integrations/site-zip.ts`, not here.
+#
+# ─── WHAT THE CSP BELOW WAS ACTUALLY EXERCISED AGAINST (2026-08-05) ─────────────────────────────
+# The policy was not read and approved: `dist/` was served under it by a throwaway server and driven
+# headless. Loaded with ZERO violations: the home page, `/fr/tiktok?demo` (four deduction cards, so
+# the engine, its worker and the render), `/fr/instagram?demo` (the dossier's ten piece controls, 24
+# worker/script resources) and the MAP piece opened (two canvases, so maplibre's workers and WebGL).
+# `media-src blob:` is in the list because reading it without running it is what caught its absence:
+# the voice notes and videos of `MediaViewer.tsx` are blob URLs, and `default-src 'self'` would have
+# blocked every one of them silently.
+#
+# NOT exercised: the 3D scenes (space, universe), the media viewer's own playback, route A against a
+# real `llama-server`, and every header above that is not the CSP.
+
+panopti.cool {
+	root * /srv/panopticool
+	encode zstd gzip
+	file_server
+
+	# ⚠ THE 404 PAGE IS SERVED HERE OR NOWHERE. Astro writes `dist/404.html`; a static file server
+	# that does not know about it answers with its own bare error page — no language, no way back —
+	# which is what this site did until now, on a tree whose URLs have just been renamed.
+	handle_errors {
+		@notfound expression {err.status_code} == 404
+		rewrite @notfound /404.html
+		file_server
+	}
+
+	# ⚠ THE GEO DATABASES ARE THE SITE'S HEAVY OBJECT, and compression is what makes them bearable.
+	# `dbip-city-ipv4.mmdb` is 63 MB and `dbip-city-ipv6.mmdb` 71 MB, served RAW to the browser that
+	# draws the map's inferred layer. `encode` above roughly halves them on the wire — the archive
+	# built from the same files goes from 134 MB to 66 MB, which is the compression ratio to expect.
+	#
+	# The other half of the bill is paid in the code: the resolver fetches only the family an
+	# export's addresses actually need (`engine/instagram/mmdb-geo-resolver.ts`), so an all-IPv4
+	# export never asks for the 71 MB file at all.
+	#
+	# They are immutable per build and re-published upstream about monthly: a year is safe, and a
+	# rebuild changes nothing about their names — which is precisely why the cache is long and the
+	# HTML's is not.
+	@geo path /geo/*
+	header @geo Cache-Control "public, max-age=31536000, immutable"
+
+	# The hashed assets Astro emits carry their digest in the name; the HTML must not be cached, or a
+	# deploy is invisible until a browser decides otherwise.
+	@immutable path /_astro/*
+	header @immutable Cache-Control "public, max-age=31536000, immutable"
+	@html path *.html /
+	header @html Cache-Control "public, max-age=0, must-revalidate"
+
+	# ⚠ THE ARCHIVE IS 66 MB AND MUST NOT BE RE-COMPRESSED. It is already a zip; `encode` would spend
+	# CPU to make it very slightly larger, and some clients handle a doubly-encoded download badly.
+	@zip path /panopticool-site.zip
+	header @zip Cache-Control "public, max-age=3600"
+
+	header {
+		# A page that promises nothing leaves the device should not be embeddable by anyone, and
+		# should not be sniffed into another type.
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+		# ⚠ `connect-src` INCLUDES localhost ON PURPOSE, and it is the one line here that a reader
+		# should not "tighten". The local AI (ADR-0006) works by the page contacting a `llama-server`
+		# the READER started on their own machine; forbidding it would silently break route A while
+		# leaving the interface claiming it works. No remote origin is allowed.
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; worker-src 'self' blob:; connect-src 'self' http://localhost:* http://127.0.0.1:*; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"
+		-Server
+	}
+}

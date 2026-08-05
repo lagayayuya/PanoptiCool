@@ -1,0 +1,116 @@
+---
+// THE NOT-FOUND PAGE — the only page of the site that belongs to no language tree.
+//
+// WHY IT EXISTS. Eleven pages, four redirects and a rename that moved `/analyse` to `/tiktok`: the
+// old addresses are already shared and indexed, and a path this site does not know went to the
+// host's bare error page — no language, no wordmark, no way back. A 404 is not a detail on a site
+// whose URLs have just changed.
+//
+// ⚠ IT IS BILINGUAL BY CONSTRUCTION, and that is forced rather than chosen. A wrong URL carries no
+// language: `/fr/tiktok` typo'd is French, `/en/tikok` is English, and `/tikok` is neither. The page
+// cannot resolve a locale the way every other page does (from its FOLDER), so it renders both blocks
+// and lets the reader take theirs. This is the one page that reads `UI_NOTFOUND` from BOTH catalogs.
+//
+// ⚠ `<html lang>` IS THE DEFAULT LANGUAGE AND THE ENGLISH BLOCK CARRIES ITS OWN `lang`. That is what
+// the attribute is for: a screen reader switches voice on the second block instead of reading English
+// with a French one. Marking neither would have been the accessible failure that looks fine on screen.
+//
+// ⚠ NO ISLAND, NO SITE BAR, NO FOOTER — like `mentions-legales`, and for a stronger reason here: the
+// chrome is Preact, and this page must render when everything else has already failed to resolve. It
+// keeps the font and the palette so it reads as this site rather than as an error, and stops there.
+//
+// ─── WHAT THIS PAGE DOES NOT DO ─────────────────────────────────────────────────────────────────
+//   - IT DOES NOT GUESS. No `Accept-Language` sniffing, no redirect to a language: the build is
+//     static, so any guess would have to run in the browser — a script, on the page that exists
+//     precisely because something already went wrong;
+//   - IT IS NOT WIRED BY ITSELF. Astro writes `dist/404.html`; SERVING it for unknown paths is the
+//     host's job, and `deploy/Caddyfile` is where that is stated. On a host that ignores it, this
+//     page is built and never shown.
+// Two weights and not the layout's four: this page sets a heading and a paragraph, and it is the
+// page a reader reaches by accident — it should not cost four font round-trips to say « no ».
+import '@fontsource/archivo/latin-400.css';
+import '@fontsource/archivo/latin-700.css';
+import { DEFAULT_LOCALE, HTML_LANG, localePath } from '../i18n/locales';
+import { EN } from '../ui/copy.en';
+import { FR } from '../ui/copy.fr';
+import { headCopy } from '../ui/head-copy';
+import SiteHead from '../ui/SiteHead.astro';
+
+const BLOCKS = [
+  { lang: HTML_LANG.fr, copy: FR.UI_NOTFOUND, home: localePath('fr', '/') },
+  { lang: HTML_LANG.en, copy: EN.UI_NOTFOUND, home: localePath('en', '/') },
+];
+
+// The `<head>` speaks the default language, like the root page: a preview bot has no more to go on
+// than the page does. The path is `/404` and not the address that failed — the failing address is
+// unknown at build, and a canonical pointing at it would invite indexing of a dead URL.
+const head = headCopy(DEFAULT_LOCALE);
+---
+
+<!doctype html>
+<html lang={HTML_LANG[DEFAULT_LOCALE]}>
+  <head>
+    <SiteHead title={head.notFoundTitle} description={head.notFoundDescription} path="/404" />
+    {/* A 404 must never be indexed, whatever the host answers with it. */}
+    <meta name="robots" content="noindex, follow" />
+  </head>
+  <body>
+    <main>
+      <p class="code">{FR.UI_NOTFOUND.code}</p>
+      {
+        BLOCKS.map((b) => (
+          <section lang={b.lang}>
+            <h1>{b.copy.title}</h1>
+            <p>{b.copy.body}</p>
+            <a href={b.home}>{b.copy.home}</a>
+          </section>
+        ))
+      }
+    </main>
+    <style is:global>
+      :root {
+        color-scheme: dark;
+        font-family: Archivo, system-ui, -apple-system, 'Segoe UI', sans-serif;
+      }
+      body {
+        margin: 0;
+        background: #070b18; /* NAVY.bgPage */
+        color: #e9eefb; /* NAVY.textBright */
+      }
+      main {
+        max-width: 680px;
+        margin: 0 auto;
+        padding: 96px 40px 80px;
+      }
+      .code {
+        margin: 0 0 40px;
+        font-size: 15px;
+        /* 400 and 700 are the only weights this page loads — see the imports. */
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        color: #2fd4f0; /* NAVY.accent */
+      }
+      section + section {
+        margin-top: 48px;
+        padding-top: 40px;
+        border-top: 1px solid rgba(233, 238, 251, 0.12);
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+      section p {
+        margin: 0 0 20px;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #a8b3d1; /* NAVY.textSecondary */
+      }
+      section a {
+        color: #2fd4f0; /* NAVY.accent */
+        font-weight: 700;
+      }
+    </style>
+  </body>
+</html>

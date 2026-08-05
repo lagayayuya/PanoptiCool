@@ -60,17 +60,49 @@ async function fetchBuffer(url: string): Promise<ArrayBuffer> {
 
 export class MmdbGeoResolver implements GeoResolver {
   private constructor(
-    private readonly v4: MmdbReader,
-    private readonly v6: MmdbReader,
+    private v4: MmdbReader | null,
+    private v6: MmdbReader | null,
+    private readonly paths: { v4: string; v6: string } = GEO_DB_PATHS,
   ) {}
 
   /**
-   * Loads both databases.
+   * Answers whether the databases are THERE, and downloads nothing.
+   *
+   * ⚠ IT USED TO DOWNLOAD BOTH, ALWAYS — 134 MB per reader who opened the map, whatever their
+   * export contained. The two files are 63 MB (v4) and 71 MB (v6); an export whose logins are all
+   * IPv4, which is the common case, paid the larger of the two for nothing. `prepare` below is what
+   * fetches, and only what the addresses need.
+   *
+   * ⚠ SO `load` IS A `HEAD`, and the semantics shift with it: a non-null resolver now means « the
+   * site serves both files », not « both parsed ». That is what the worker needs at the moment it
+   * needs it — the notice on screen goes up before the analysis, long before any address is known.
    *
    * ⚠ RETURNS `null` WHEN THEY ARE ABSENT, rather than throwing. A checkout that has not run the
    * fetch script is the normal state of a fresh clone, and the map must then show its DECLARED
    * layer — real GPS points, the facts — while saying the inferred layer is unavailable. Failing
    * hard here would take the whole module down for want of an optional file.
+   */
+  static async load(
+    paths: { v4: string; v6: string } = GEO_DB_PATHS,
+  ): Promise<MmdbGeoResolver | null> {
+    try {
+      const [r4, r6] = await Promise.all([
+        fetch(paths.v4, { method: 'HEAD' }),
+        fetch(paths.v6, { method: 'HEAD' }),
+      ]);
+      if (!r4.ok || !r6.ok) return null;
+      return new MmdbGeoResolver(null, null, paths);
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Fetches the database each family of `ips` actually needs, and nothing else.
+   *
+   * ⚠ THIS IS WHERE THE 134 MB ARE DECIDED. An export with no IPv6 login never touches the 71 MB
+   * file; one with no IPv4 never touches the 63 MB one; an empty list downloads nothing at all and
+   * leaves the map its declared layer. Called once, before the lookups, by `geo.ts`.
    *
    * ⚠ AND `mmdb-lib` IS IMPORTED DYNAMICALLY, for two reasons that both matter: it must not enter
    * the TikTok bundle, and it references the Node global `Buffer` AT MODULE EVALUATION — so the
@@ -82,23 +114,36 @@ export class MmdbGeoResolver implements GeoResolver {
    * `import('buffer')` resolves to nothing — and in a browser worker there is no builtin to resolve
    * to either. The npm package carries its own types and its own implementation, which is what
    * makes this line mean the same thing to the compiler and to the browser.
+   *
+   * ⚠ A FAILURE HERE IS SILENT, BY THE SAME LOGIC AS `load`. The files answered `HEAD` a moment
+   * ago, so the interface has already said the layer is available; if the body then fails to arrive
+   * or to parse, the readers stay `null`, every lookup returns `null`, and the map draws its
+   * declared layer with a notice that is now optimistic. That window is the price of announcing the
+   * layer before the analysis instead of after it.
    */
-  static async load(
-    paths: { v4: string; v6: string } = GEO_DB_PATHS,
-  ): Promise<MmdbGeoResolver | null> {
+  async prepare(ips: readonly string[]): Promise<void> {
+    // IPv6 addresses are the ones carrying a colon — the only distinction the two databases need.
+    const needV6 = ips.some((ip) => ip.includes(':'));
+    const needV4 = ips.some((ip) => !ip.includes(':'));
+    if ((!needV4 || this.v4 !== null) && (!needV6 || this.v6 !== null)) return;
+
     try {
       const { Buffer } = await import('buffer');
       const g = globalThis as unknown as { Buffer?: typeof Buffer };
       if (g.Buffer === undefined) g.Buffer = Buffer;
-
       const { Reader } = await import('mmdb-lib');
-      const [b4, b6] = await Promise.all([fetchBuffer(paths.v4), fetchBuffer(paths.v6)]);
-      return new MmdbGeoResolver(
-        new Reader(Buffer.from(b4)) as MmdbReader,
-        new Reader(Buffer.from(b6)) as MmdbReader,
-      );
+
+      const load = async (url: string): Promise<MmdbReader> =>
+        new Reader(Buffer.from(await fetchBuffer(url))) as unknown as MmdbReader;
+
+      const [n4, n6] = await Promise.all([
+        needV4 && this.v4 === null ? load(this.paths.v4) : Promise.resolve(this.v4),
+        needV6 && this.v6 === null ? load(this.paths.v6) : Promise.resolve(this.v6),
+      ]);
+      this.v4 = n4;
+      this.v6 = n6;
     } catch {
-      return null;
+      // Left as they were: an unprepared family answers `null`, which `lookup` already handles.
     }
   }
 
@@ -106,7 +151,11 @@ export class MmdbGeoResolver implements GeoResolver {
     let r: FlatRecord | null;
     try {
       // IPv6 addresses are the ones carrying a colon — the only distinction the two databases need.
-      r = ((ip.includes(':') ? this.v6 : this.v4).get(ip) ?? null) as FlatRecord | null;
+      // A family `prepare` never fetched has no reader, and that is not an error: it is an address
+      // whose database was not needed, or one whose download failed after `load` said it was there.
+      const reader = ip.includes(':') ? this.v6 : this.v4;
+      if (reader === null) return null;
+      r = (reader.get(ip) ?? null) as FlatRecord | null;
     } catch {
       // A malformed address is not an error worth surfacing: it is one unlocated login among many.
       return null;

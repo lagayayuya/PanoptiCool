@@ -44,6 +44,15 @@ export interface GeoHit {
 export interface GeoResolver {
   /** Resolves an IP (v4 or v6) to a city-level position, or `null` when unknown. */
   lookup(ip: string): GeoHit | null;
+  /**
+   * Optional: let a resolver fetch what THESE addresses need, before the lookups start.
+   *
+   * ⚠ IT EXISTS TO KEEP 71 MB OFF THE WIRE. The MMDB resolver holds one database per address
+   * family — 63 MB for v4, 71 MB for v6 — and used to download both whatever the export contained.
+   * The engine still knows nothing about databases (ADR-0002): it hands over the addresses it is
+   * about to ask about, and a resolver with nothing to prepare simply does not implement this.
+   */
+  prepare?(ips: readonly string[]): Promise<void>;
 }
 
 export type DeclaredKind = 'post' | 'story' | 'last-known';
@@ -313,21 +322,41 @@ async function extractTrajectory(
   let geolocated = 0;
   let declaredPlaces = 0;
 
-  for (const item of await read(
+  const items = await read(
     src,
     'security_and_login_information/login_and_profile_creation/profile_activity.json',
-  )) {
-    let ip: string | undefined;
+  );
+
+  /** The address of one login item, without touching coverage — see the two passes below. */
+  const ipOf = (item: Parameters<typeof labelValues>[0]): string | undefined => {
     for (const lv of labelValues(item)) {
-      if (isLabel(lv.label, 'ipAddress') && lv.value) {
-        coverage?.record('ipAddress');
-        ip = lv.value;
-        break;
-      }
+      if (isLabel(lv.label, 'ipAddress') && lv.value) return lv.value;
     }
+    return undefined;
+  };
+
+  /**
+   * ⚠ FIRST PASS — THE ADDRESSES, AND NOTHING ELSE, so the resolver can fetch only the databases
+   * they need (`GeoResolver.prepare`). It walks the SAME array the second pass walks: nothing is
+   * re-read from the archive, and the only thing it builds is the `Set` the second pass needed
+   * anyway.
+   *
+   * It records NO coverage. `coverage.record('ipAddress')` counts items, and calling it here as
+   * well would double every count in the label-coverage report — the kind of drift that shows up
+   * as a suspiciously round number weeks later.
+   */
+  for (const item of items) {
+    const ip = ipOf(item);
+    if (ip !== undefined) ips.add(ip);
+  }
+  await geo.prepare?.([...ips]);
+
+  // Second pass — unchanged: it is the one that counts, dates and places.
+  for (const item of items) {
+    const ip = ipOf(item);
+    if (ip !== undefined) coverage?.record('ipAddress');
     if (ip === undefined) continue;
     ipEvents++;
-    ips.add(ip);
 
     const ts = tsLabel(item, 'lastLogin', coverage);
     // An undated login still counts as an IP event — it is one — but cannot be placed on a

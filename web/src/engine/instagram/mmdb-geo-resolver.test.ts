@@ -104,3 +104,74 @@ describe('the flat record becomes a GeoHit', () => {
     expect(r.lookup('2001:db8::1')?.lat).toBe(6);
   });
 });
+
+describe('⚠ only the database the addresses need is downloaded', () => {
+  // The whole point of `prepare`. Before it, `load` fetched both files — 63 MB + 71 MB — for every
+  // reader who opened the map, whatever their export held. These four cases are what says so.
+  //
+  // ─── WHAT THEY DO NOT COVER ───────────────────────────────────────────────────────────────────
+  //   - THE BYTES. `fetch` is stubbed: nothing here proves a real database parses, and nothing
+  //     measures a transfer. What is asserted is WHICH URLs are asked for, which is the decision;
+  //   - THE `HEAD` COST. `load` asks both files whether they exist, on every analysis, and that
+  //     pair of requests is not counted anywhere;
+  //   - THE ORDER. Both families are fetched concurrently and nothing asserts which lands first.
+  //
+  // ─── THE MUTATION THAT VERIFIES THIS BLOCK ────────────────────────────────────────────────────
+  // Run 2026-08-05: `needV4` and `needV6` forced to `true` in `prepare` — the behaviour as it was
+  // before this batch. THREE of the four cases went red (v4-alone, v6-alone, and the empty export);
+  // the fourth stayed green, correctly, because « both families present » is the one case where
+  // fetching both IS the answer. So this block is held by three witnesses and not four, and the
+  // fourth is a shape assertion rather than a guard. Restored; green again.
+
+  /** A resolver whose `load` succeeded, over a stubbed network. Returns the URLs actually fetched
+   *  with a body — `HEAD` calls are recorded apart, since they download nothing. */
+  async function prepared(ips: readonly string[]) {
+    const bodies: string[] = [];
+    const heads: string[] = [];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string, init?: { method?: string }) => {
+        if (init?.method === 'HEAD') {
+          heads.push(url);
+          return new Response(null, { status: 200 });
+        }
+        bodies.push(url);
+        // `mmdb-lib` never sees this: the Reader constructor is what would reject it, and the
+        // failure is swallowed by `prepare` on purpose. What we measure is the request.
+        return new Response(new Uint8Array([0]));
+      }),
+    );
+    try {
+      const r = await MmdbGeoResolver.load();
+      expect(r).not.toBeNull();
+      await r?.prepare(ips);
+      return { bodies, heads };
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  }
+
+  it('fetches v4 alone for an all-IPv4 export — the common case, and 71 MB saved', async () => {
+    const { bodies } = await prepared(['203.0.113.7', '198.51.100.4']);
+    expect(bodies).toEqual([GEO_DB_PATHS.v4]);
+  });
+
+  it('fetches v6 alone when every login is IPv6', async () => {
+    const { bodies } = await prepared(['2001:db8::1', '2001:db8::2']);
+    expect(bodies).toEqual([GEO_DB_PATHS.v6]);
+  });
+
+  it('fetches both when both families are present, and neither twice', async () => {
+    const { bodies } = await prepared(['203.0.113.7', '2001:db8::1', '198.51.100.4']);
+    expect([...bodies].sort()).toEqual([GEO_DB_PATHS.v4, GEO_DB_PATHS.v6].sort());
+  });
+
+  it('⚠ fetches NOTHING for an export with no login address at all', async () => {
+    // The zero here arrives by the intended path: no address, so no family, so no request — and
+    // `load`'s two `HEAD` calls still happened, which is what distinguishes this from a resolver
+    // that failed to load.
+    const { bodies, heads } = await prepared([]);
+    expect(bodies).toEqual([]);
+    expect(heads).toHaveLength(2);
+  });
+});
