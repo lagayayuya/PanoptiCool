@@ -20,8 +20,10 @@
 
 import { strFromU8, type UnzipFileInfo, unzipSync } from 'fflate';
 
-/** Name of the sole JSON file expected in the archive (contract §0). */
-const JSON_ENTRY_NAME = 'user_data_tiktok.json';
+/** Name of the sole JSON file expected in the archive (contract §0).
+ *  EXPORTED since the platform seam: `tiktok-connector.ts` recognises an archive by this entry, and
+ *  a second copy of the string is a second thing to update. */
+export const TIKTOK_JSON_ENTRY_NAME = 'user_data_tiktok.json';
 
 /**
  * **Decompressed** size threshold (bytes) beyond which we refuse gracefully (criterion 2).
@@ -94,7 +96,7 @@ export function decompressJsonEntry(
   try {
     unzipSync(zipBytes, {
       filter: (file: UnzipFileInfo): boolean => {
-        if (basename(file.name) === JSON_ENTRY_NAME) {
+        if (basename(file.name) === TIKTOK_JSON_ENTRY_NAME) {
           candidates.push({ name: file.name, originalSize: file.originalSize });
         }
         return false;

@@ -1,4 +1,4 @@
-// Site archive for the "Everything on your machine" path (route B of the AI section, ADR-0006:
+// Site archive for the "Everything on your device" path (route B of the AI section, ADR-0006:
 // serving the site from `localhost` removes the origin/target gap in all three engines).
 //
 // WHY AN ASTRO INTEGRATION, AND NOT A `postbuild` SCRIPT. This zip was first produced by

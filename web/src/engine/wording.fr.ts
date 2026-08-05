@@ -32,7 +32,7 @@ export const FR = {
   /** Draft (PANO-45, human gate) — accompanies the pie chart (PANO-57): makes explicit what the
    * ratio MEANS, not just the figure already in the legend. */
   opacitySemanticWallExplainer: (): string =>
-    `L'export ne rend visible que la partie émergée de l'iceberg. Le reste n'est accessible que pour TikTok et ses partenaires.`,
+    `L'export ne rend visible qu'une partie infime. Le reste n'est accessible que pour TikTok et ses partenaires.`,
 
   // --- D1 sensitive-topics detector — ONLY ONE SENTENCE SURVIVES -------------------------------
   // The ten sentences of the five fan labels are REMOVED: they repeated the title of the card one

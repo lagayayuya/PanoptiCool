@@ -47,4 +47,18 @@ export default defineConfig({
     '/analyse': '/fr/analyse',
     '/mentions-legales': '/fr/mentions-legales',
   },
+
+  vite: {
+    worker: {
+      // ⚠ `es` AND NOT VITE'S DEFAULT `iife`. The Instagram worker imports `mmdb-lib` and the
+      // `buffer` polyfill DYNAMICALLY — so that a page which never draws a map never downloads
+      // 36 KB of geo reader — and a dynamic import makes it a code-splitting build, which the IIFE
+      // format cannot express. The build fails outright rather than silently inlining, which is the
+      // good failure mode; this is the fix it asks for.
+      //
+      // Both workers are already instantiated with `{ type: 'module' }`, so nothing else changes:
+      // the format now matches how they were always being loaded.
+      format: 'es',
+    },
+  },
 });
