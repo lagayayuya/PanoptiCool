@@ -59,6 +59,7 @@ export const EN_INSTAGRAM: InstagramCopy = {
     stateSoon: 'coming',
     note: 'Read on your computer. Nothing is sent.',
     comingSoon: 'This piece is coming.',
+    building: 'This piece is being built…',
   },
 
   UI_IG_IDENTITY: {

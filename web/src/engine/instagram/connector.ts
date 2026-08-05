@@ -11,9 +11,15 @@
 // sink. On the reference export that is 349 threads and ~86 000 messages; walking them twice would
 // double the slowest phase for numbers we already hold.
 //
-// REPORTS ARE EMITTED AS THEY LAND, through `onReport`. The first useful screen is the inventory,
-// which arrives long before the map has resolved 166 IPs — a page that waits for everything shows a
-// spinner for the whole analysis and then everything at once, which is the worst of both.
+// REPORTS ARE EMITTED AS THEY LAND, through `onReport`. A page that waits for EVERYTHING shows a
+// spinner for the whole analysis and then everything at once, which is the worst of both — that
+// still holds, and it is why the last two passes are not waited for.
+//
+// ⚠ BUT THE ORDER IS NOT FREE, because the dossier opens on a piece. Identity ran last while being
+// the panel every reader lands on, so the first thing anyone saw was the only thing not ready. The
+// four passes the opening screen needs run first now; `relations` and `universe` follow, and the
+// interface reveals the dossier when identity lands rather than when the first patch does
+// (`ui/instagram/InstagramPage.tsx`). Waiting for one piece is not waiting for all of them.
 //
 // ─── WHAT THIS CONNECTOR DOES NOT DO ────────────────────────────────────────────────────────────
 //   - IT DOES NOT READ MESSAGE CONTENT. The conversations pass counts and dates; the text goes only
@@ -227,11 +233,7 @@ export const instagramConnector: Connector<InstagramReport> = {
       );
       emit({ conversations });
 
-      // 2 — Universe. Needs the holder, to turn a sender's name into a direction.
-      const universe = await runUniverse(source, drafts, conversations.self);
-      emit({ universe });
-
-      // 3 — Inventory, with the message block DERIVED rather than recomputed.
+      // 2 — Inventory, with the message block DERIVED rather than recomputed.
       const inventory = await runInventory(
         source,
         (p) => options.onProgress?.(p),
@@ -240,22 +242,42 @@ export const instagramConnector: Connector<InstagramReport> = {
       );
       emit({ inventory });
 
-      // 4 — Geo. Without a resolver there is simply no trajectory: the declared layer stands alone,
+      // 3 — Geo. Without a resolver there is simply no trajectory: the declared layer stands alone,
       //     which is the honest degraded mode rather than an error (`mmdb-geo-resolver.ts`).
       const resolver = opts.geoResolver ?? { lookup: () => null };
       const geo = await runGeo(source, resolver, locale, coverage);
       emit({ geo });
 
-      const relations = await runRelations(source, locale, coverage);
-      emit({ relations });
-
-      // 5 — Identity. Needs inventory and geo; emits no value of its own that they do not carry.
+      /**
+       * 4 — Identity. Needs inventory and geo; emits no value of its own that they do not carry.
+       *
+       * ⚠ IT USED TO RUN LAST, AND THAT IS THE DEFECT THIS ORDER FIXES. The dossier opens on the
+       * identity piece — it is the page a reader lands on — and identity was the SIXTH of six
+       * passes, so the one panel anyone looked at first was the last one built. Reported from the
+       * deployed site as three pieces « qui prennent beaucoup de temps à charger »: 01, 02 and 04,
+       * which is precisely ranks six, four and five. Nothing was slow; the reveal order was the
+       * inverse of the compute order.
+       *
+       * ⚠ AND THE GRAPH ALLOWED IT ALL ALONG. `universe` and `relations` are not identity's
+       * dependencies — `inventory` and `geo` are, and both now run before it. What moved is only
+       * what was free to move: the media walk and the interactions, which nobody is looking at
+       * while the first panel is still empty.
+       */
       const identity = await runIdentity(
         source,
         { inventory, geo, nowTs: Math.floor((options.now ?? Date.now()) / 1000), locale },
         coverage,
       );
       emit({ identity });
+
+      // 5 — Relations, then the media universe. Both are free of the pieces above and land while
+      //     the reader is already on the dossier.
+      const relations = await runRelations(source, locale, coverage);
+      emit({ relations });
+
+      // Universe needs the holder, to turn a sender's name into a direction.
+      const universe = await runUniverse(source, drafts, conversations.self);
+      emit({ universe });
 
       // 6 — Value. Returns `null` while its reference table is unratified, and the report then
       //     carries no `value` key at all — an absent key, not a zeroed report.

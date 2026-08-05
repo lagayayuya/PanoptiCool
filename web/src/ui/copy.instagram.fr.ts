@@ -75,6 +75,11 @@ export const FR_INSTAGRAM = {
     note: 'Lu sur ton ordinateur. Rien n’est envoyé.',
     /** Placeholder while a module has not been ported yet. Says what it will hold. */
     comingSoon: 'Cette pièce arrive.',
+    /** ⚠ DISTINCT DE `comingSoon`, et les deux se ressemblaient trop pour être confondus sans
+     *  conséquence : « arrive » annonce une pièce qui n'existe pas encore, alors que celle-ci est
+     *  en train de se calculer et s'affichera d'elle-même. Vu sur le site déployé, où trois pièces
+     *  disaient « arrive » pendant que le moteur les construisait. */
+    building: 'Cette pièce se construit…',
   },
 
   UI_IG_IDENTITY: {

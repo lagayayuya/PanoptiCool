@@ -277,9 +277,24 @@ export function InstagramPage() {
         onProgress: (progress) => setPhase({ kind: 'reading', progress }),
         onReport: (patch) => {
           setReport((prev) => ({ ...prev, ...patch }));
-          // The first piece to land ends the waiting screen: the reader can start on the dossier
-          // while the rest is still being built.
-          setPhase({ kind: 'ready' });
+          /**
+           * ⚠ THE DOSSIER OPENS WHEN **IDENTITY** LANDS, not when the first patch does.
+           *
+           * It used to reveal on the first piece, which was the honest reading of « the reader can
+           * start while the rest is built » — except the rail opens on 01 L'identité, and identity
+           * was the LAST pass to run. So the waiting screen ended and handed over a dossier whose
+           * opening panel was the one still empty: reported from the deployed site as pieces that
+           * « prennent beaucoup de temps à charger ».
+           *
+           * The connector runs identity fourth of six now (`engine/instagram/connector.ts`), and
+           * this waits for it. That is ONE piece, not all of them — `relations` and `universe` land
+           * afterwards, on a dossier the reader is already reading.
+           *
+           * ⚠ READ FROM THE PATCH, NOT THE ACCUMULATED REPORT. Identity arrives in a patch of its
+           * own, so the test is exact — and putting it inside the `setReport` updater would make a
+           * state reducer fire an effect, which a double invocation would then fire twice.
+           */
+          if (patch.identity !== undefined) setPhase({ kind: 'ready' });
         },
         // The geo database is optional (`NOTICE`). Its absence costs the map its inferred layer and
         // nothing else — announced BEFORE the analysis, so the notice is on screen while the
@@ -462,7 +477,8 @@ function ActiveModule({
   // export that is missing something rather than an analysis still running.
   const ready = MODULE_READY[id];
   if (Component === undefined || ready === undefined || !ready(report)) {
-    return <Placeholder id={id} />;
+    // A piece whose component EXISTS is being built; one with no component is not written yet.
+    return <Placeholder id={id} building={Component !== undefined && ready !== undefined} />;
   }
   return (
     <Component
@@ -475,12 +491,18 @@ function ActiveModule({
   );
 }
 
-/** A piece that has not been ported yet, or whose chunk is still loading. */
-function Placeholder({ id }: { id: string }) {
+/**
+ * A piece with nothing to show yet — and the two reasons for that are NOT the same sentence.
+ *
+ * ⚠ « Cette pièce arrive » ANNOUNCES SOMETHING THAT DOES NOT EXIST. It was shown for both cases,
+ * including a piece the engine was building at that very moment: on the deployed site three panels
+ * said a feature was coming while their data was seconds away. `building` says what is true.
+ */
+function Placeholder({ id, building }: { id: string; building: boolean }) {
   return (
     <div class="ig-placeholder">
       <span class="ig-placeholder-title">{UI_IG_RAIL.items.find((i) => i.id === id)?.label}</span>
-      <span>{UI_IG_RAIL.comingSoon}</span>
+      <span>{building ? UI_IG_RAIL.building : UI_IG_RAIL.comingSoon}</span>
     </div>
   );
 }
