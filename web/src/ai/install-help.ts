@@ -30,7 +30,10 @@ export interface ModelChoice {
    * is the ratifiable file. This module describes models, it does not speak to the user.
    * As a bonus, the badge color is now chosen on an identifier and not on a
    * comparison against French prose. */
-  note?: 'recommended' | 'borderline';
+  /** ⚠ ONE VARIANT. `'borderline'` went with UD-Q2_K_XL on 2026-08-03 — a note nothing carries is
+   *  a note nobody reads, and it had a ratified string per language behind it. It comes back with
+   *  the model that needs it, ratified again. */
+  note?: 'recommended';
 }
 
 const MODEL_REPO = 'unsloth/Ministral-3-3B-Instruct-2512-GGUF';
@@ -44,17 +47,38 @@ export const MODEL_CHOICES: ModelChoice[] = [
   },
   { quant: 'IQ4_XS', file: 'Ministral-3-3B-Instruct-2512-IQ4_XS.gguf', sizeGb: 2.0 },
   { quant: 'UD-Q3_K_XL', file: 'Ministral-3-3B-Instruct-2512-UD-Q3_K_XL.gguf', sizeGb: 1.9 },
-  {
-    quant: 'UD-Q2_K_XL',
-    file: 'Ministral-3-3B-Instruct-2512-UD-Q2_K_XL.gguf',
-    sizeGb: 1.5,
-    note: 'borderline',
-  },
 ];
+
+/* ⚠ UD-Q2_K_XL (1.5 GB) WAS REMOVED on 2026-08-02, yuya's decision: two-bit compression cost more
+   in quality than it gained in memory, on a page whose whole object is to show what a model
+   DEDUCES. The floor is UD-Q3_K_XL. Applied to both connectors on 2026-08-03 — the reason is the
+   page's purpose, which the Instagram piece shares. */
 
 /** Context window requested from the server — fallback if `/props` does not give it (see llama-client),
  * and the starting value of `serveCommand`. At runtime, `/props` always prevails. */
 export const DEFAULT_CONTEXT_WINDOW = 8192;
+
+/**
+ * Context window PROPOSED in the launch command (yuya's decision, 2026-08-02).
+ *
+ * It was 32 768. Too high: the window is allocated at RESERVATION, not as it fills — so an ordinary
+ * machine held four times the memory permanently for a prompt that used a quarter of it. A
+ * just-sufficient machine could not start the server at all, and the failure landed at launch, far
+ * from the page that had suggested the value.
+ *
+ * 8 704 = 8.5 × 1024. The granularity is not a flourish: it is the unit llama.cpp cuts its cache
+ * into, and a round decimal would be rounded there without saying so. Sampling targets ~65 % of this
+ * window, the rest being kept for the answer.
+ *
+ * At runtime `/props` — the server's real window — always prevails: this value decides nothing, it
+ * proposes a command.
+ */
+export const SUGGESTED_CONTEXT = 8704;
+
+/** Is the page served from the local loopback? Then no browser permission is in play at all. */
+export function isLocalOrigin(hostname: string): boolean {
+  return hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '[::1]';
+}
 const SERVER_PORT = 8080;
 
 /** Best-effort OS detection — used ONLY to preselect one of the three system buttons
@@ -89,7 +113,7 @@ export function serverUrl(): string {
 export const SITE_ZIP_NAME = 'panopticool-site.zip';
 
 /**
- * Route B "Everything on your machine" (ADR-0006, decision 5): serving the site from `localhost`
+ * Route B "Everything on your device" (ADR-0006, decision 5): serving the site from `localhost`
  * removes the origin/target gap in all three engines — it is not a workaround, it is the
  * removal of the problem. `llama-server --path` serves the site's static files AND the model's API
  * on the same port: a single command, neither `git` nor Node.
