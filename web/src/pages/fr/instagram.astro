@@ -1,0 +1,19 @@
+---
+// The Instagram journey — the second connector's page (ADR-0007).
+//
+// Everything interactive lives in the single `client:only` island (ADR-0002), as everywhere else.
+// What is NOT here, deliberately: no import of the Instagram modules. The page mounts the shell; the
+// shell will import each piece on demand, so a visitor who never opens the map never downloads
+// MapLibre and a visitor who never opens this page downloads none of it.
+import { DEFAULT_LOCALE, type Locale } from '../../i18n/locales';
+import Page from '../../layouts/Page.astro';
+import { headCopy } from '../../ui/head-copy';
+import { InstagramPage } from '../../ui/instagram/InstagramPage';
+
+const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
+const head = headCopy(locale);
+---
+
+<Page title={head.instagramTitle} description={head.instagramDescription} path="/instagram">
+  <InstagramPage client:only="preact" />
+</Page>

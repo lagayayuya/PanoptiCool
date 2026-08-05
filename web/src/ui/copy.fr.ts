@@ -98,12 +98,15 @@ export const FR = {
   // exactly as `engine/wording.ts` does and for the same reason. The prose stays here; only the
   // resolution differs.
   UI_HEAD: {
-    homeTitle: 'PanoptiCool — Découvre ce que TikTok et Instagram savent de toi.',
+    homeTitle: 'PanoptiCool — Découvre ce que Instagram et TikTok savent de toi.',
     homeDescription:
       "PanoptiCool ouvre ton export TikTok ou Instagram dans ton navigateur et te le rend lisible — 100 % local, rien n'est envoyé.",
     analyseTitle: 'PanoptiCool — ce que TikTok pourrait déduire',
     analyseDescription:
-      'Analyse ton export TikTok entièrement dans ton navigateur : rythmes, thèmes, signaux sensibles — rien ne quitte ta machine.',
+      'Analyse ton export TikTok entièrement dans ton navigateur : rythmes, thèmes, signaux sensibles — rien ne quitte ton appareil.',
+    instagramTitle: 'PanoptiCool — ce qu’Instagram a gardé de toi',
+    instagramDescription:
+      'Ouvre ton export Instagram dans ton navigateur : identité, carte, conversations, fichiers — tout est lu sur ton appareil, rien n’est envoyé.',
     roadmapTitle: 'PanoptiCool — feuille de route',
     roadmapDescription:
       'Ce qui est fait, ce qui arrive : les étapes de PanoptiCool, une plateforme à la fois.',
@@ -145,7 +148,11 @@ export const FR = {
 
   // --- « pour comprendre » panels (`ui/v2/LearnPanel.tsx`) --------------------------------------
   UI_LEARN: {
-    close: 'fermer ✕',
+    /** Le glyphe dit l'état, le libellé ne bouge pas : une commande qui change de nom
+     * en s'ouvrant oblige à relire pour retrouver ce qu'on venait d'ouvrir. Même
+     * convention que « jamais ouvert de terminal ? ». */
+    glyphClosed: '▾',
+    glyphOpen: '✕',
     /** Dotted section-header button — `label` names what the panel explains. */
     open: (label: string) => `comprendre · ${label}`,
   },
@@ -225,10 +232,10 @@ export const FR = {
   // static build with no server, so the form would either do nothing or hand an address to a third
   // party. A field that pretends to subscribe you is the one thing this product cannot ship.
   UI_LANDING: {
-    heroTitle: 'Découvre ce que TikTok et Instagram savent de toi.',
+    heroTitle: 'Découvre ce que Instagram et TikTok savent de toi.',
     heroLede:
-      'Ces applications doivent te remettre une copie de tout ce qu’elles ont enregistré. PanoptiCool ouvre ce fichier dans ton navigateur et te le rend lisible.',
-    trust: ['Gratuit, sans compte', 'Rien n’est envoyé sur internet', 'Code ouvert'],
+      'Ces applications collectent constamment tes données et peuvent te transmettre une copie. PanoptiCool te permet de visualiser ces données et de comprendre comment ces plateformes les utilisent.',
+    trust: ['100% Gratuit', 'Aucune donnée collectée', 'Code open-source'],
 
     // --- The two connector cards ---
     // The bullets say what the READER gets out of each export, not what the engine does. The two
@@ -262,11 +269,11 @@ export const FR = {
     // --- The right, and what it actually gets you ---
     rightTitle: 'Tu as le droit de récupérer tes données. Encore faut-il pouvoir les lire.',
     rightLaw:
-      'Le RGPD oblige Instagram, TikTok ou Google à te remettre une copie de ce qu’ils conservent sur toi, sur simple demande. Le droit fonctionne : l’export arrive.',
+      'Les plateformes sont légalement tenues de te remettre une copie de ce qu’ils conservent sur toi, sur simple demande.',
     rightArchive:
-      'Ce qui arrive, c’est une archive technique : des dossiers de fichiers, conçus pour être conformes, pas pour être parcourus. La transparence s’arrête au format.',
+      'Ce qui arrive, c’est une archive technique : des dossiers de fichiers, conçus pour être conformes, pas pour être parcourus.',
     rightProduct:
-      'PanoptiCool ouvre cette archive et la rend lisible : ce que tu as écrit, ce qui a été déduit, et ce que ça permet de reconstituer. Tout se passe dans ton navigateur — tu peux couper internet avant de commencer.',
+      'PanoptiCool ouvre cette archive et la rend lisible. Tout se passe depuis ton navigateur',
 
     // ⚠ TWO ORDERS OF MAGNITUDE, NOT TWO VALUES. The repo's invariant lets a STATISTIC cross the
     // border from a real export, never a value: « +80 000 » is a rounded count, and the account it
@@ -288,7 +295,7 @@ export const FR = {
       {
         kicker: 'Le modèle',
         title: 'Elles se revendent',
-        text: 'Régies publicitaires, courtiers en données et applications tierces achètent des segments prêts à l’emploi : « 25-34 ans, connectée la nuit, en recherche de logement ». Tu n’es jamais partie à la transaction.',
+        text: 'Régies publicitaires, courtiers en données et applications tierces achètent des segments prêts à l’emploi : « 25-34 ans, connectée la nuit, en recherche de logement ».',
       },
       {
         kicker: 'L’accident',
@@ -298,7 +305,7 @@ export const FR = {
       {
         kicker: 'L’usage',
         title: 'Elles servent à décider',
-        text: 'Un profil ne sert pas qu’à choisir une publicité : il peut orienter un prix, une recommandation, l’ordre de ce que tu vois. Tu subis les conclusions sans jamais pouvoir les relire.',
+        text: "Un profil ne sert pas qu’à choisir une publicité : il peut orienter un prix, une recommandation, les publications que tu vois. Tu subis une catégorisation invisible qui s'adapte et t'influence à chaque utilisation.",
       },
     ],
 
@@ -308,7 +315,7 @@ export const FR = {
     whyTextBefore: 'Le panoptique (en anglais, ',
     whyTextItalic: 'panopticon',
     whyTextAfter:
-      ') est une prison où un seul gardien peut observer tout le monde sans jamais être vu. Les plateformes fonctionnent un peu pareil, mais ici c’est toi qui observes depuis ton ordinateur, et ça c’est... cool ?',
+      ') est une prison où un seul gardien peut observer tout le monde sans jamais être vu. En l’utilisant comme example, Michel Foucault théorise le concept de panoptisme : Les individus, potentiellement observés en permanence sans pouvoir le vérifier, intérieurisent leur propre surveillance. Les réseaux sociaux, au travers de la collecte massive de données et de leurs algorithmes, en sont aujourd’hui un des mécanismes principaux. Ici aussi c’est toi qui t’observes, mais depuis ton appareil en utilisant une partie des données qui ont été recueillies sur toi, et ça c’est... cool ?',
     whyDemoTikTok: 'Démo TikTok, données fictives →',
     whyDemoInstagram: 'Démo Instagram, données fictives →',
 
@@ -641,12 +648,12 @@ export const FR = {
     kicker: 'résultats d’analyse',
     /** Mobile + demo: the header badge has no room, the info moves into the kicker. */
     kickerDemo: 'résultats d’analyse · démo, données fictives',
-    heroTitleLine1: 'Ce que TikTok',
-    heroTitleLine2: 'pourrait déduire',
+    heroTitleLine1: 'TikTok',
+    heroTitleLine2: '',
     heroLede:
-      'À partir de ce que tu cherches, regardes et commentes, TikTok essaie de deviner des choses sur toi. Ce sont des suppositions, pas des certitudes.',
+      'À partir de ce que tu cherches, regardes et commentes, TikTok enregistre, analyse et catégorise. PanoptiCool te montre ce qui peut en être déduit, et comment ces données circulent.',
     heroSub:
-      'Quatre étapes, du plus factuel au plus interprété : ton activité brute, puis les déductions thème par thème — chacune reliée aux données exactes qui la nourrissent.',
+      'Quatre étapes : ton activité brute, les déductions thèmatiques, un résumé et une IA locale qui lit ces mêmes données.',
 
     tocAriaLabel: 'Sommaire',
     tocTitle: 'Sommaire',
@@ -662,7 +669,8 @@ export const FR = {
     tocAi: 'IA locale',
 
     sec01Title: 'Ton activité en chiffres',
-    sec01Sub: "Quand tu utilises l'app, et combien de traces tu laisses.",
+    sec01Sub:
+      'Ce que TikTok a enregistré de toi, et ce qui peut en être lu. Les données sont classées par type.',
     sec01LearnLabel: 'les métadonnées',
     sec02Title: 'Déductions par thème',
     /** The verb changes with the device: one does not « clique » on a phone. */
@@ -685,7 +693,7 @@ export const FR = {
     sec03LearnLabel: 'le marché des données',
 
     summaryLede:
-      'Prises une à une, ces données sont banales. Recoupées, elles dessinent un profil — et une même donnée anodine nourrit plusieurs lectures à la fois.',
+      'Prises une à une, ces données sont banales. Recoupées, elles permettent aux plateformes de te catégoriser, de prédire et de t’influencer, et de vendre ce profil à quiconque le souhaite.',
     summaryDataTypesTitle: 'Types de données lues',
     summaryDataTypes: [
       'recherches',
@@ -701,10 +709,6 @@ export const FR = {
       'signaux sensibles — santé mentale, opinion politique, conflictualité — assortis d’un niveau de confiance',
       'des segments revendables à des annonceurs, des courtiers de données, voire des autorités',
     ],
-    /** The doctrine, said once, at the end of what the page dared to deduce (ADR-0003: systemic
-     *  demonstration, never a verdict on the person). */
-    summaryFoot:
-      'PanoptiCool ne porte aucun jugement : il montre seulement ce que TikTok pourrait inférer — pour que tu décides quoi exposer.',
   },
 
   // --- Educational panels of the results view ----------------------------------------------------
@@ -763,7 +767,7 @@ export const FR = {
         },
         {
           title: 'Tes droits (RGPD)',
-          text: 'En Europe, tu peux demander l’accès à tes données, leur effacement, et t’opposer au profilage. L’export que tu analyses ici vient de ce droit d’accès.',
+          text: 'En Europe, tu peux demander l’accès à tes données, leur effacement, et t’opposer au profilage.',
         },
       ],
     },
@@ -801,17 +805,17 @@ export const FR = {
     bwCompatTextChromium:
       'Ce navigateur sait se connecter à un modèle qui tourne chez toi — mais il ne te le proposera pas de lui-même : si la connexion échoue, clique sur l’icône à gauche de l’adresse de ce site, mets « Réseau local » sur « Autoriser », puis recharge la page.',
     bwBlockedTitle: (browser: string) =>
-      `Tu navigues avec ${browser} : ce site ne pourra pas voir le modèle sur ta machine.`,
+      `Tu navigues avec ${browser} : ce site ne pourra pas voir le modèle sur ton appareil.`,
     bwBlockedText: (browser: string) =>
       `${browser} bloque les connexions d’un site web vers ta propre machine, sans offrir de l’autoriser. Deux solutions : rouvrir cette page dans Firefox, Chrome, Brave ou Edge — ou suivre l’option B ci-dessous. L’option A est désactivée, l’option B fonctionne partout.`,
     /** Unrecognized browser: we name NO cause (ADR-0006, decision 4) — neither compatible,
      * nor blocked. Option A stays open, option B is the safe outcome. */
     bwUnknownTitle: 'Navigateur non reconnu.',
     bwUnknownText:
-      'Impossible de dire si ton navigateur laisse un site joindre un modèle sur ta machine. Essaie l’option A ; si elle échoue, l’option B fonctionne partout.',
+      'Impossible de dire si ton navigateur laisse un site joindre un modèle sur ton appareil. Essaie l’option A ; si elle échoue, l’option B fonctionne partout.',
 
     // --- localhost mode (the site is served from the machine, route B completed) ---
-    readyTitle: 'Tout est prêt : le site et le modèle tournent déjà sur ta machine.',
+    readyTitle: 'Tout est prêt : le site et le modèle tournent déjà sur ton appareil.',
     readyText:
       'Rien à installer. Passe directement à l’étape 2 pour choisir ton prompt, puis lance l’analyse.',
 
@@ -836,7 +840,7 @@ export const FR = {
     } satisfies Record<Os, string>,
 
     step1InstallText:
-      'Ouvre un terminal et colle cette commande : elle installe llama.cpp, le petit moteur libre qui fait tourner le modèle. Même commande quel que soit le chemin choisi ensuite :',
+      'Ouvre un terminal et colle cette commande : elle installe llama.cpp, le petit moteur libre qui fait tourner le modèle :',
     /** ⚠ IMPOSED FRAGMENTS: « brew.sh » is a link at the heart of the sentence. */
     brewNoteLead:
       'Commande non reconnue ? Installe d’abord Homebrew — une seule commande, indiquée sur ',
@@ -853,7 +857,7 @@ export const FR = {
     routeSiteText:
       'Tu restes sur cette page : plus qu’une commande à lancer. Nécessite Chrome, Brave, Edge ou Firefox.',
     routeSiteUnavailable: (browser: string) => `indisponible avec ${browser}`,
-    routeLocalTitle: 'B · Tout sur ta machine',
+    routeLocalTitle: 'B · Tout sur ton appareil',
     routeLocalText:
       'Tu télécharges aussi le site : tout tourne en local, avec n’importe quel navigateur — même sans Internet ensuite.',
 
@@ -867,7 +871,6 @@ export const FR = {
      * so a note added without text does not compile. */
     modelNotes: {
       recommended: 'recommandé',
-      borderline: 'limite, mais fonctionnel',
     } satisfies Record<NonNullable<ModelChoice['note']>, string>,
     /** The permission note BEFORE the first click, adapted to the recognized browser (ADR-0006) —
      * Firefox will open a window, Chromium never. When the browser is not recognized, the
@@ -914,13 +917,13 @@ export const FR = {
     /** ⚠ IMPOSED FRAGMENTS: the address is highlighted at the heart of the sentence. */
     localOpenBefore: 'Quand le terminal affiche « llama_server: listening on... », ouvre ',
     localOpenAfter:
-      ' dans n’importe quel navigateur : tu retrouves cette page, servie depuis ta machine et déjà branchée au modèle. L’étape suivante se passe là-bas.',
+      ' dans n’importe quel navigateur : tu retrouves cette page, servie depuis ton appareil et déjà branchée au modèle. L’étape suivante se passe là-bas.',
 
     // --- Step 2 · prompt & launch (merged card, v4 mockup) ---
     step2MergedLabel: 'Poser la question et lancer',
     /** ⚠ IMPOSED FRAGMENTS: same highlighting of the address. */
     step2WaitingBefore:
-      'Tu as choisi l’option B « Tout sur ta machine ». Pour continuer, termine les étapes ci-dessus (téléchargement du site et commande dans le terminal), puis ouvre ',
+      'Tu as choisi l’option B « Tout sur ton appareil ». Pour continuer, termine les étapes ci-dessus (téléchargement du site et commande dans le terminal), puis ouvre ',
     step2WaitingAfter:
       ' dans un navigateur : tu retrouveras cette section là-bas, prête à lancer l’analyse.',
 
@@ -981,7 +984,7 @@ export const FR = {
     /** Neither a readable permission, nor a recognized engine: we name NO cause, and the safe outcome is
      * route B — serving the site from the machine works in all engines (ADR-0006, dec. 5). */
     step3WarnUnknown:
-      'Impossible de dire si ton serveur est éteint ou si ton navigateur a bloqué la connexion. Vérifie d’abord que le serveur tourne (étape 1). S’il tourne, c’est ton navigateur — l’option B « Tout sur ta machine » fonctionne partout.',
+      'Impossible de dire si ton serveur est éteint ou si ton navigateur a bloqué la connexion. Vérifie d’abord que le serveur tourne (étape 1). S’il tourne, c’est ton navigateur — l’option B « Tout sur ton appareil » fonctionne partout.',
     runInterrupted: 'Analyse interrompue (sortie partielle) — ',
     runStats: (promptTokens: string, completionTokens: string, seconds: string) =>
       `${promptTokens} tokens lus · ${completionTokens} générés · ${seconds} s`,
@@ -1012,7 +1015,7 @@ export const FR = {
       },
       {
         title: 'Local = privé',
-        text: 'Le modèle est un simple fichier sur ton disque. Une fois téléchargé, tu peux couper Internet : l’analyse fonctionne toujours, et rien ne sort de ta machine.',
+        text: 'Le modèle est un simple fichier sur ton disque. Une fois téléchargé, tu peux couper Internet : l’analyse fonctionne toujours, et rien ne sort de ton appareil.',
       },
     ],
   },
@@ -1024,7 +1027,7 @@ export const FR = {
     sectionNumber: '04',
     calloutTitle: "L'analyse par IA n'est disponible que sur ordinateur pour l'instant.",
     calloutText:
-      "Le modèle tourne localement sur ta machine et demande un ordinateur. Ouvre PanoptiCool sur ton ordi pour cette étape — rien ne change pour le reste de l'analyse.",
+      "Le modèle tourne localement sur ton appareil et demande un ordinateur. Ouvre PanoptiCool sur ton ordi pour cette étape — rien ne change pour le reste de l'analyse.",
     /** FROZEN values of the decorative preview: they IMITATE `MODEL_CHOICES` without reading it, so that the
      * thumbnail stays stable if the model catalog moves. They are props, not data. */
     previewCommand: 'brew install llama.cpp',

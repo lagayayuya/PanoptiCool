@@ -51,7 +51,7 @@ export function LearnToggle({
 }) {
   return (
     <button type="button" class="hl-btn" style={TOGGLE} onClick={onToggle} aria-expanded={open}>
-      {open ? UI_LEARN.close : UI_LEARN.open(label)}
+      {UI_LEARN.open(label)} {open ? UI_LEARN.glyphOpen : UI_LEARN.glyphClosed}
     </button>
   );
 }

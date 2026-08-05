@@ -35,7 +35,7 @@ export function currentLocale(): Locale {
 }
 
 /**
- * The link of a page in the current language: `localeHref('/analyse')` → `/fr/analyse`.
+ * The link of a page in the current language: `localeHref('/tiktok')` → `/fr/analyse`.
  *
  * DO NOT use it for an anchor (`#sec-activite`) nor for an asset (`/logo.png`): those two
  * have no language. A prefixed anchor would leave the page; a prefixed asset would not load.
@@ -46,7 +46,7 @@ export function localeHref(path: string): string {
 
 /**
  * The current page's path WITHOUT its language, query included: on `/fr/analyse?demo`, returns
- * `/analyse?demo`. This is what is needed to offer THE SAME page in another language.
+ * `/tiktok?demo`. This is what is needed to offer THE SAME page in another language.
  *
  * The query is kept, and it is not a detail: dropping it would tip the demonstration
  * journey toward the upload of a real export — switching language would put the person in front of an

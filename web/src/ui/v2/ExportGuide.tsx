@@ -153,9 +153,9 @@ function downloadReminder(platform: GuidePlatform): void {
       description: UI_GUIDE.reminderDescription,
       // `siteUrl`, NOT `location.origin`: the reminder is read days later, on a phone, by a
       // calendar that will follow that link. `location.origin` writes down wherever the page
-      // happened to be served from — it shipped `http://localhost:4322/fr/analyse` from a dev
+      // happened to be served from — it shipped `http://localhost:8080/fr/analyse` from a dev
       // server, which is a link to nothing on anyone else's machine.
-      url: siteUrl(currentLocale(), '/analyse'),
+      url: siteUrl(currentLocale(), '/tiktok'),
     },
     now,
     `panopticool-${platform}-${now.getTime()}@panopti.cool`,

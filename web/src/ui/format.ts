@@ -48,7 +48,13 @@ import type { Locale } from '../i18n/locales';
  *  `OG_LOCALE`, which already declares `en_US` for this site. */
 const INTL_TAG: Record<Locale, string> = { fr: 'fr-FR', en: 'en-US' };
 
-const TAG = INTL_TAG[currentLocale()];
+/**
+ * ⚠ EXPORTED, because dates need the same tag and were not getting it. Two Instagram pieces called
+ * `toLocaleDateString(currentLocale())` with the BARE « fr »/« en » — which drops the region the
+ * comment above says CLDR needs, and leaves the runtime to pick one. One home for the tag, so a date
+ * and a number in the same sentence cannot come from two different locales.
+ */
+export const TAG = INTL_TAG[currentLocale()];
 
 const INT = new Intl.NumberFormat(TAG, { maximumFractionDigits: 0 });
 const ONE_DECIMAL = new Intl.NumberFormat(TAG, { maximumFractionDigits: 1 });

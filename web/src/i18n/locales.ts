@@ -58,10 +58,10 @@ export function isPublished(locale: Locale): boolean {
 }
 
 /**
- * The path of a page IN a language: `('fr', '/analyse')` → `/fr/analyse`.
+ * The path of a page IN a language: `('fr', '/tiktok')` → `/fr/analyse`.
  *
- * `path` is the path WITHOUT language, as it was written before this batch (« / », « /analyse »,
- * « /analyse?demo »). The root renders `/fr` and not `/fr/` — a single URL form, thus a single
+ * `path` is the path WITHOUT language, as it was written before this batch (« / », « /tiktok »,
+ * « /tiktok?demo »). The root renders `/fr` and not `/fr/` — a single URL form, thus a single
  * possible canonical.
  *
  * DO NOT pass it an anchor (`#sec-activite`) nor an asset path (`/logo.png`): those two
@@ -80,7 +80,7 @@ export function localePath(locale: Locale, path: string): string {
  * Only what is VISITED and indexed enters here: neither the root (which redirects and canonizes to
  * the default language), nor the redirects of the old URLs.
  */
-export const PAGE_PATHS = ['/', '/analyse', '/feuille-de-route', '/mentions-legales'] as const;
+export const PAGE_PATHS = ['/', '/tiktok', '/feuille-de-route', '/mentions-legales'] as const;
 
 /**
  * The site's public origin — ONE home, read by `astro.config.ts` for `site` and therefore by every
@@ -89,7 +89,7 @@ export const PAGE_PATHS = ['/', '/analyse', '/feuille-de-route', '/mentions-lega
  * It also serves the ISLANDS, and that is why it is a constant rather than `Astro.site`: a
  * component running in the browser has no `Astro`, and reaching for `location.origin` instead
  * writes down wherever the page happens to be served from. That is not hypothetical — the export
- * guide's calendar reminder shipped a `URL:http://localhost:4322/fr/analyse` for exactly that
+ * guide's calendar reminder shipped a `URL:http://localhost:8080/fr/analyse` for exactly that
  * reason, which is a link to nothing on anyone else's machine.
  */
 export const SITE_ORIGIN = 'https://panopti.cool';

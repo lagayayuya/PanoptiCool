@@ -1,7 +1,8 @@
 ---
-// Analysis journey (2026-07-15 design rework, « PanoptiCool v4 — parcours guidé » mockup).
-// `?demo` → synthetic export through the real engine; otherwise drop of the real export (drag &
-// drop). All interactivity lives in the single `client:only` island (ADR-0002), as elsewhere.
+// Analysis journey (2026-07-15 design rework, « PanoptiCool v4 — parcours guidé » mockup) —
+// English twin of `fr/analyse.astro`. `?demo` → synthetic export through the real engine;
+// otherwise upload of the real export (drag & drop). All the interactivity lives in the single
+// `client:only` island (ADR-0002), as elsewhere.
 //
 // The shell lives in `layouts/Page.astro`; what stays here is what only this page needs — the
 // scroll offset under the sticky table of contents, and the global `@keyframes` the loading
@@ -15,7 +16,7 @@ const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 const head = headCopy(locale);
 ---
 
-<Page title={head.analyseTitle} description={head.analyseDescription} path="/analyse">
+<Page title={head.analyseTitle} description={head.analyseDescription} path="/tiktok">
   <style is:global slot="page-style">
     html {
       scroll-behavior: smooth;

@@ -218,7 +218,7 @@ export function AnalysisPage() {
           {status.error !== undefined && <p style={ERROR}>{status.error}</p>}
           <p style={HINT}>
             {UI_ANALYSE.hintLead}
-            <a href={localeHref('/analyse?demo')} style={DEMO_LINK}>
+            <a href={localeHref('/tiktok?demo')} style={DEMO_LINK}>
               {UI_ANALYSE.hintDemoLink}
             </a>
           </p>

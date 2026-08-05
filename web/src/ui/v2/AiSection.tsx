@@ -35,6 +35,7 @@ import {
   type ModelChoice,
   type Os,
   SITE_ZIP_NAME,
+  SUGGESTED_CONTEXT,
   serveCommand,
   serverUrl,
 } from '../../ai/install-help';
@@ -68,10 +69,6 @@ import type { AiSource } from './ai-source';
 import { LearnPanel, LearnToggle } from './LearnPanel';
 import { LOW_DATA_THRESHOLD } from './NoDeductionCard';
 import { MONO, NAVY } from './palette';
-
-/** Context window SUGGESTED in the copyable command (yuya's decision, 2026-07-15 rework).
- * `/props` always prevails at runtime once the server is reached. */
-const SUGGESTED_CONTEXT = 32768;
 
 /** Where Homebrew installs — a URL is not prose, it lives with the component. */
 const BREW_URL = 'https://brew.sh';
@@ -619,7 +616,7 @@ export function AiSection({ source }: { source: AiSource }) {
                             <span
                               style={{
                                 ...MODEL_NOTE,
-                                color: m.note === 'recommended' ? NAVY.accent : '#e6b6a3',
+                                color: NAVY.accent,
                               }}
                             >
                               {UI_AI.modelNotes[m.note]}

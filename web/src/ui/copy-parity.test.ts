@@ -33,6 +33,8 @@
 import { describe, expect, it } from 'vitest';
 import { EN } from './copy.en';
 import { FR } from './copy.fr';
+import { EN_INSTAGRAM } from './copy.instagram.en';
+import { FR_INSTAGRAM } from './copy.instagram.fr';
 
 /** Paths of all the arrays in the bundle, with their length. Recursive: the arrays live at
  *  several levels (`UI_LEARN_PANELS.rhythm.columns`, `UI_LANDING.feats[].`…). */
@@ -58,6 +60,48 @@ describe('copy — FR/EN parity', () => {
     const fr = arrayLengths(FR);
     const en = arrayLengths(EN);
     expect(en).toEqual(fr);
+  });
+
+  // ⚠ THE SECOND PAIR IS SWEPT SEPARATELY, not merged into the first. Merging them would make one
+  // enumerated list cover two perimeters, and the list below is the thing a reviewer reads to know
+  // what is under watch — a list that spans two files answers « which one? » with a shrug.
+  it('the Instagram pair holds the same array lengths', () => {
+    expect(arrayLengths(EN_INSTAGRAM)).toEqual(arrayLengths(FR_INSTAGRAM));
+  });
+
+  it('the Instagram sweep finds exactly the known arrays', () => {
+    expect(Object.keys(arrayLengths(FR_INSTAGRAM)).sort()).toEqual([
+      // Added with the identity module, knowingly — which is what this list is for: the three
+      // educational columns must stay three in both languages, and no type holds that.
+      // The AI page's four teaching columns and its three cautions: their COUNT is the layout, and
+      // no type holds it — a translation with two cautions would silently drop one.
+      'UI_IG_ANALYSE.learnCols',
+      'UI_IG_ANALYSE.warnCols',
+      'UI_IG_IDENTITY.learnCols',
+      'UI_IG_RAIL.items',
+      'UI_IG_SHELL.guarantees',
+      // ⚠ THE CONTROLS VEIL'S LINES ARE SEGMENTED, alternating plain and emphasised — so each line
+      // is itself an array, and its LENGTH decides which words are set as a key cap. A translation
+      // that merges two segments silently unbolds one. Three lines per pointer, and the equality
+      // above holds the segment count of each: that is exactly what this list is for.
+      'UI_IG_SPACE.veilMouse',
+      'UI_IG_SPACE.veilMouse[0]',
+      'UI_IG_SPACE.veilMouse[1]',
+      'UI_IG_SPACE.veilMouse[2]',
+      'UI_IG_SPACE.veilTouch',
+      'UI_IG_SPACE.veilTouch[0]',
+      'UI_IG_SPACE.veilTouch[1]',
+      'UI_IG_SPACE.veilTouch[2]',
+      // The media scene wears the same veil, and its lines are segmented for the same reason.
+      'UI_IG_UNIVERSE.veilMouse',
+      'UI_IG_UNIVERSE.veilMouse[0]',
+      'UI_IG_UNIVERSE.veilMouse[1]',
+      'UI_IG_UNIVERSE.veilMouse[2]',
+      'UI_IG_UNIVERSE.veilTouch',
+      'UI_IG_UNIVERSE.veilTouch[0]',
+      'UI_IG_UNIVERSE.veilTouch[1]',
+      'UI_IG_UNIVERSE.veilTouch[2]',
+    ]);
   });
 
   // Control « by which path the zero arrives » (CLAUDE.md): the equality above would be true and

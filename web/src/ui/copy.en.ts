@@ -53,12 +53,15 @@ export const EN: UiCopy = {
   },
 
   UI_HEAD: {
-    homeTitle: 'PanoptiCool — Find out what TikTok and Instagram know about you.',
+    homeTitle: 'PanoptiCool — Find out what Instagram and TikTok know about you.',
     homeDescription:
       'PanoptiCool opens your TikTok or Instagram export in your browser and makes it readable — 100% local, nothing is sent.',
     analyseTitle: 'PanoptiCool — what TikTok could infer',
     analyseDescription:
-      'Analyse your TikTok export entirely in your browser: rhythms, themes, sensitive signals — nothing leaves your machine.',
+      'Analyse your TikTok export entirely in your browser: rhythms, themes, sensitive signals — nothing leaves your device.',
+    instagramTitle: 'PanoptiCool — what Instagram kept about you',
+    instagramDescription:
+      'Open your Instagram export in your browser: identity, map, conversations, files — everything is read on your device, nothing is sent.',
     roadmapTitle: 'PanoptiCool — roadmap',
     roadmapDescription:
       "What's done, what's coming: the steps of PanoptiCool, one platform at a time.",
@@ -89,7 +92,11 @@ export const EN: UiCopy = {
   },
 
   UI_LEARN: {
-    close: 'close ✕',
+    /** Le glyphe dit l'état, le libellé ne bouge pas : une commande qui change de nom
+     * en s'ouvrant oblige à relire pour retrouver ce qu'on venait d'ouvrir. Même
+     * convention que « jamais ouvert de terminal ? ». */
+    glyphClosed: '▾',
+    glyphOpen: '✕',
     open: (label: string) => `understand · ${label}`,
   },
 
@@ -146,10 +153,10 @@ export const EN: UiCopy = {
   },
 
   UI_LANDING: {
-    heroTitle: 'Find out what TikTok and Instagram know about you.',
+    heroTitle: 'Find out what Instagram and TikTok know about you.',
     heroLede:
-      'These apps have to hand you a copy of everything they recorded. PanoptiCool opens that file in your browser and makes it readable.',
-    trust: ['Free, no account', 'Nothing is sent over the internet', 'Open source'],
+      'These applications constantly collect your data and can send you a copy. PanoptiCool allows you to visualize this data and understand how these platforms use it.',
+    trust: ['100% Free', 'No data is collected', 'Open source'],
 
     instagramName: 'Instagram',
     instagramLede:
@@ -179,11 +186,11 @@ export const EN: UiCopy = {
     rightTitle:
       'You have the right to get your data back. Being able to read it is another matter.',
     rightLaw:
-      'The GDPR requires Instagram, TikTok or Google to hand you a copy of what they keep on you, on request. The law works: the export arrives.',
+      'Platforms are legally required to provide you with a copy of what they keep on you, upon simple request.',
     rightArchive:
-      'What arrives is a technical archive: folders of files, built to be compliant, not to be read. Transparency stops at the format.',
+      'What arrives is a technical archive: folders of files, built to be compliant, not to be read.',
     rightProduct:
-      'PanoptiCool opens that archive and makes it readable: what you wrote, what was inferred, and what it all adds up to. Everything happens in your browser — you can cut the internet before you start.',
+      'PanoptiCool opens that archive and makes it readable. Everything happens in your browser.',
 
     statMessages: '+80,000',
     statMessagesLabel: 'messages recovered from a single Instagram account.',
@@ -197,7 +204,7 @@ export const EN: UiCopy = {
       {
         kicker: 'The model',
         title: 'It gets resold',
-        text: 'Ad networks, data brokers and third-party apps buy ready-made segments: “25-34, online at night, looking for housing”. You were never a party to the transaction.',
+        text: 'Ad networks, data brokers and third-party apps buy ready-made segments: “25-34, online at night, looking for housing”.',
       },
       {
         kicker: 'The accident',
@@ -207,7 +214,7 @@ export const EN: UiCopy = {
       {
         kicker: 'The use',
         title: 'It decides things',
-        text: 'A profile does not only pick an advert: it can steer a price, a recommendation, the order of what you see. You live with the conclusions without ever getting to read them.',
+        text: 'A profile does not only pick an advert: it can steer a price, a recommendation, the content you see. You undergo an invisible categorization that adapts and influences you with each use.',
       },
     ],
 
@@ -216,7 +223,7 @@ export const EN: UiCopy = {
     whyTextBefore: 'The panopticon (in French, ',
     whyTextItalic: 'panoptique',
     whyTextAfter:
-      ') is a prison where a single guard can watch everyone without ever being seen. Platforms work a little like that, except here you’re the one watching, from your own computer, and that’s... cool?',
+      ") is a prison where a single guard can observe everyone without ever being seen. Using it as an example, Michel Foucault theorizes the concept of panopticonization: Individuals, potentially observed constantly without being able to verify it, internalize their own surveillance. Social media, through the massive collection of data and their algorithms, is now one of the main mechanisms. Here too, it's you who observes yourself, but from your device using some of the data that has been collected about you, and that's... cool?",
     whyDemoTikTok: 'TikTok demo, made-up data →',
     whyDemoInstagram: 'Instagram demo, made-up data →',
 
@@ -480,12 +487,12 @@ export const EN: UiCopy = {
   UI_RESULTS: {
     kicker: 'analysis results',
     kickerDemo: 'analysis results · demo, made-up data',
-    heroTitleLine1: 'What TikTok',
-    heroTitleLine2: 'could infer',
+    heroTitleLine1: 'TikTok',
+    heroTitleLine2: '',
     heroLede:
       'From what you search for, watch and comment on, TikTok tries to deduce things about you. These are guesses, not certainties.',
     heroSub:
-      'Four steps, from the most factual to the most interpreted: your raw activity, then the inferences topic by topic — each tied to the exact data feeding it.',
+      'Four steps: your activity, what the algorithm could infer, a summary, and a local AI you can run on your own computer.',
 
     tocAriaLabel: 'Contents',
     tocTitle: 'Contents',
@@ -498,7 +505,7 @@ export const EN: UiCopy = {
     tocAi: 'Local AI',
 
     sec01Title: 'Your activity in numbers',
-    sec01Sub: 'When you use the app, and how many traces you leave.',
+    sec01Sub: 'What you searched for, commented on, and watched.',
     sec01LearnLabel: 'metadata',
     sec02Title: 'Inferences by topic',
     sec02Sub: (tapVerb: string) =>
@@ -517,7 +524,7 @@ export const EN: UiCopy = {
     sec03LearnLabel: 'the data market',
 
     summaryLede:
-      'Taken one by one, this data is unremarkable. Cross-referenced, it sketches a profile — and one harmless item can feed several readings at once.',
+      'Taken one by one, this data is unremarkable. Cross-referenced, it allows platforms to categorize you, predict and influence your behavior, and sell that profile to anyone who wants it.',
     summaryDataTypesTitle: 'Types of data read',
     summaryDataTypes: ['searches', 'comments', 'session metadata', 'interactions', 'viewing'],
     summaryActorsTitle: 'What can be drawn from it',
@@ -527,8 +534,6 @@ export const EN: UiCopy = {
       'sensitive signals — mental health, political opinion, hostility — each with a confidence level',
       'segments that can be sold on to advertisers, data brokers, even authorities',
     ],
-    summaryFoot:
-      'PanoptiCool passes no judgment: it only shows what TikTok could infer — so you can decide what to expose.',
   },
 
   UI_LEARN_PANELS: {
@@ -583,7 +588,7 @@ export const EN: UiCopy = {
         },
         {
           title: 'Your rights (GDPR)',
-          text: 'In Europe, you can request access to your data, have it erased, and object to profiling. The export you’re analyzing here comes from that right of access.',
+          text: 'In Europe, you can request access to your data, have it erased, and object to profiling.',
         },
       ],
     },
@@ -606,18 +611,18 @@ export const EN: UiCopy = {
     browserFallbackName: 'your browser',
     bwCompatTitle: (browser: string) => `You’re browsing with ${browser}: compatible.`,
     bwCompatTextFirefox:
-      'This browser can connect to a model running on your machine. It will simply ask for your permission on first contact: a small window will appear at the top left, under the address bar — click “Allow”.',
+      'This browser can connect to a model running on your device. It will simply ask for your permission on first contact: a small window will appear at the top left, under the address bar — click “Allow”.',
     bwCompatTextChromium:
-      'This browser can connect to a model running on your machine — but it won’t offer it on its own: if the connection fails, click the icon to the left of this site’s address, set “Local network” to “Allow”, then reload the page.',
+      'This browser can connect to a model running on your device — but it won’t offer it on its own: if the connection fails, click the icon to the left of this site’s address, set “Local network” to “Allow”, then reload the page.',
     bwBlockedTitle: (browser: string) =>
-      `You’re browsing with ${browser}: this site won’t be able to see the model on your machine.`,
+      `You’re browsing with ${browser}: this site won’t be able to see the model on your device.`,
     bwBlockedText: (browser: string) =>
       `${browser} blocks connections from a website to your own machine, with no way to allow them. Two ways out: reopen this page in Firefox, Chrome, Brave or Edge — or follow option B below. Option A is disabled; option B works everywhere.`,
     bwUnknownTitle: 'Browser not recognized.',
     bwUnknownText:
-      'No way to tell whether your browser lets a site reach a model on your machine. Try option A; if it fails, option B works everywhere.',
+      'No way to tell whether your browser lets a site reach a model on your device. Try option A; if it fails, option B works everywhere.',
 
-    readyTitle: 'Everything is ready: the site and the model are already running on your machine.',
+    readyTitle: 'Everything is ready: the site and the model are already running on your device.',
     readyText:
       'Nothing to install. Go straight to step 2 to choose your prompt, then run the analysis.',
 
@@ -638,7 +643,7 @@ export const EN: UiCopy = {
     },
 
     step1InstallText:
-      'Open a terminal and paste this command: it installs llama.cpp, the small open-source engine that runs the model. Same command whichever path you choose next:',
+      'Open a terminal and paste this command: it installs llama.cpp, the small open-source engine that runs the model :',
     brewNoteLead: 'Command not recognized? Install Homebrew first — a single command, shown on ',
     brewNoteLinkLabel: 'brew.sh',
     brewNoteAfter: '.',
@@ -649,7 +654,7 @@ export const EN: UiCopy = {
     routeSiteText:
       'You stay on this page: just one more command to run. Requires Chrome, Brave, Edge or Firefox.',
     routeSiteUnavailable: (browser: string) => `unavailable with ${browser}`,
-    routeLocalTitle: 'B · Everything on your machine',
+    routeLocalTitle: 'B · Everything on your device',
     routeLocalText:
       'You download the site too: everything runs locally, with any browser — even without Internet afterwards.',
 
@@ -658,7 +663,6 @@ export const EN: UiCopy = {
     modelSize: (gb: string) => `${gb} GB`,
     modelNotes: {
       recommended: 'recommended',
-      borderline: 'borderline, but workable',
     },
 
     permNoteFirefox: (browser: string) =>
@@ -691,11 +695,11 @@ export const EN: UiCopy = {
       'What the command does: goes to Downloads → unpacks the zip → starts the site and the model together.',
     localOpenBefore: 'When the terminal shows “llama_server: listening on...”, open ',
     localOpenAfter:
-      ' in any browser: you’ll find this page again, served from your machine and already connected to the model. The next step happens over there.',
+      ' in any browser: you’ll find this page again, served from your device and already connected to the model. The next step happens over there.',
 
     step2MergedLabel: 'Ask the question and run',
     step2WaitingBefore:
-      'You chose option B, “Everything on your machine”. To continue, finish the steps above (download the site and run the terminal command), then open ',
+      'You chose option B, “Everything on your device”. To continue, finish the steps above (download the site and run the terminal command), then open ',
     step2WaitingAfter: ' in a browser: you’ll find this section there, ready to run the analysis.',
 
     step2Label: 'Analysis prompt',
@@ -737,7 +741,7 @@ export const EN: UiCopy = {
     step3WarnFirefox:
       'Server not detected — start it (step 1). If Firefox shows a permission request (top left, under the address bar), accept it, then check again.',
     step3WarnUnknown:
-      'No way to tell whether your server is off or your browser blocked the connection. First check that the server is running (step 1). If it is, it’s your browser — option B, “Everything on your machine”, works everywhere.',
+      'No way to tell whether your server is off or your browser blocked the connection. First check that the server is running (step 1). If it is, it’s your browser — option B, “Everything on your device”, works everywhere.',
     runInterrupted: 'Analysis interrupted (partial output) — ',
     runStats: (promptTokens: string, completionTokens: string, seconds: string) =>
       `${promptTokens} tokens read · ${completionTokens} generated · ${seconds} s`,
@@ -750,7 +754,7 @@ export const EN: UiCopy = {
   },
 
   UI_AI_LEARN: {
-    question: 'How does the model running on your machine work?',
+    question: 'How does the model running on your device work?',
     columns: [
       {
         title: 'Predicting the next word',
@@ -766,7 +770,7 @@ export const EN: UiCopy = {
       },
       {
         title: 'Local = private',
-        text: 'The model is just a file on your disk. Once downloaded, you can cut the Internet: the analysis still works, and nothing leaves your machine.',
+        text: 'The model is just a file on your disk. Once downloaded, you can cut the Internet: the analysis still works, and nothing leaves your device.',
       },
     ],
   },
@@ -775,7 +779,7 @@ export const EN: UiCopy = {
     sectionNumber: '04',
     calloutTitle: 'AI analysis is only available on a computer for now.',
     calloutText:
-      'The model runs locally on your machine and needs a computer. Open PanoptiCool on your desktop for this step — nothing changes for the rest of the analysis.',
+      'The model runs locally on your device and needs a computer. Open PanoptiCool on your desktop for this step — nothing changes for the rest of the analysis.',
     previewCommand: 'brew install llama.cpp',
     previewModelOn: 'UD-Q4_K_XL',
     previewModelOff: 'IQ4_XS',

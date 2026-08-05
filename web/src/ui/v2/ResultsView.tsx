@@ -372,7 +372,6 @@ export function ResultsView({
                 </div>
               </div>
             </div>
-            <span style={SUMMARY_FOOT}>{UI_RESULTS.summaryFoot}</span>
           </div>
         </div>
       </div>
@@ -452,10 +451,21 @@ const TOC_NOTE = {
   padding: '16px 14px 0',
 } as const;
 const CONTENT = { display: 'flex', flexDirection: 'column', gap: '28px', minWidth: 0 } as const;
+/**
+ * ⚠ DEUX COLONNES FIXES, comme le héros Instagram — et non `auto-fit`.
+ *
+ * `repeat(auto-fit, minmax(min(100%, 420px), 1fr))` repliait la grille sur UNE colonne dès que
+ * le conteneur passait sous ~884 px, et l'œil tombait alors SOUS le texte au lieu de lui faire
+ * face. Avec le sommaire collant qui prend sa part de largeur, ce seuil était franchi sur des
+ * écrans parfaitement larges.
+ *
+ * Le repli n'a plus à être géré ici : l'œil n'est simplement pas rendu en dessous du seuil
+ * mobile (`!isMobile`), ce qui règle le cas étroit sans laisser une colonne orpheline.
+ */
 const HERO = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))',
-  gap: '44px',
+  gridTemplateColumns: 'minmax(0, 1fr) auto',
+  gap: '40px',
   alignItems: 'center',
   padding: '12px 0 20px',
 } as const;
@@ -590,7 +600,7 @@ const TAKEAWAYS = {
 const TAKEAWAY_ROW = { display: 'flex', gap: '12px' } as const;
 const TAKEAWAY_MARK = { color: NAVY.textMuted, flex: 'none' } as const;
 /** Closing line of section 03 — the doctrine, said once, at the end of what the page dared. */
-const SUMMARY_FOOT = {
+const _SUMMARY_FOOT = {
   fontSize: '15px',
   lineHeight: 1.65,
   color: NAVY.textMuted,

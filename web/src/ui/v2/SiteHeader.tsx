@@ -30,7 +30,7 @@ import { useIsMobile } from './useIsMobile';
 const GITHUB_URL = UI_BRAND.githubUrl;
 
 /** The roadmap page, reachable from every page of the site. Path WITHOUT language — `localeHref`
- * prefixes it. It is the same slug in both languages, like `/analyse` and `/mentions-legales`. */
+ * prefixes it. It is the same slug in both languages, like `/tiktok` and `/mentions-legales`. */
 const ROADMAP_PATH = '/feuille-de-route';
 
 /** Mobile table-of-contents entry (chips under the bar). `muted`: section unavailable on mobile

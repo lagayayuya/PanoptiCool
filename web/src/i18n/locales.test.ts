@@ -18,9 +18,9 @@
 //   - IT DOES NOT READ THE `dist/`. It compares TypeScript lists and the tree of `src/pages/`.
 //     That the build actually produces these URLs, that it produces no others, and that
 //     `find dist -path '*en*'` stays empty, is verified on the build — not here;
-//   - IT FOLLOWS NO REDIRECT. That `/` goes to `/fr`, that `/analyse` responds, that a
+//   - IT FOLLOWS NO REDIRECT. That `/` goes to `/fr`, that `/tiktok` responds, that a
 //     `meta refresh` is well-formed: none of that is exercised. No request is made;
-//   - IT DOES NOT LOOK AT THE COMPONENTS' LINKS. An `href="/analyse"` forgotten without a language
+//   - IT DOES NOT LOOK AT THE COMPONENTS' LINKS. An `href="/tiktok"` forgotten without a language
 //     prefix passes this test silently; it is the render goldens that freeze it;
 //   - IT DOES NOT VERIFY THE RENDERING OF `lang`. It reads the SOURCE of the pages and forbids a
 //     hard-coded language code there; that `Astro.currentLocale` then renders the right value is seen at build;
@@ -152,11 +152,11 @@ describe('localePath', () => {
   });
 
   it('prefixes the other paths', () => {
-    expect(localePath('fr', '/analyse')).toBe('/fr/analyse');
+    expect(localePath('fr', '/tiktok')).toBe('/fr/tiktok');
     expect(localePath('en', '/mentions-legales')).toBe('/en/mentions-legales');
   });
 
   it('lets the query through — the demo journey depends on it', () => {
-    expect(localePath('fr', '/analyse?demo')).toBe('/fr/analyse?demo');
+    expect(localePath('fr', '/tiktok?demo')).toBe('/fr/tiktok?demo');
   });
 });

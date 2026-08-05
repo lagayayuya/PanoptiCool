@@ -24,8 +24,8 @@ import { useIsMobile } from './useIsMobile';
 
 // Paths WITHOUT language: `localeHref` sets it at render time. Keeping them here as module
 // constants would have frozen the language at module LOAD, before the page is necessarily read.
-const DEMO_PATH = '/analyse?demo';
-const ANALYSE_PATH = '/analyse';
+const DEMO_PATH = '/tiktok?demo';
+const ANALYSE_PATH = '/tiktok';
 
 /**
  * Whether the Instagram connector is reachable.
