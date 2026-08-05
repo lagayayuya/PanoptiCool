@@ -1,0 +1,175 @@
+/*
+ * « EN DÉTAIL » for the media — a chronological contact sheet.
+ *
+ * ⚠ IT DOES NOT REUSE THE COLUMN GRID of the two other tables, and that is the point: those sort
+ * ENTITIES (accounts, threads), this one shows OBJECTS. A column has nothing to say about an image;
+ * it needs room, not cells. Which is why this sheet is its own and not a variant of `fichier.css`.
+ */
+
+.uni-fichier {
+  min-width: 0;
+  animation: riseIn 0.25s ease backwards;
+}
+
+.uf-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 15px;
+  color: var(--ig-ink-dim);
+}
+/* ————— The two reading directions —————
+ * ⚠ NOT A SECOND SEGMENTED CONTROL. Shaped like the view tabs above it, this row read as a second
+ * view switch — two identical objects a few pixels apart, one changing what you look at and the
+ * other only which end you start from. It borrows the thread reader's jump pills instead: the same
+ * gesture there, « ⤒ début » and « fin ⤓ », and a shape used nowhere else on the page.
+ */
+.uf-order {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.uf-order-btn {
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-pill);
+  color: var(--ig-ink-2);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+.uf-order-btn:hover:not(.on) {
+  border-color: var(--ig-accent);
+  color: var(--ig-accent);
+}
+.uf-order-btn.on {
+  border-color: var(--ig-accent-border);
+  color: var(--ig-accent);
+  cursor: default;
+}
+
+/* ————— year sections ————— */
+.uf-year + .uf-year {
+  margin-top: 18px;
+}
+/* STICKY: scrolling a thousand thumbnails, « which year am I in » stays the most frequent
+   question, and scrolling back up to read it would undo the scrolling. */
+.uf-year-h {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 12px;
+  padding: 4px 0 8px;
+  /* The gradient blends into the CARD's background, not the page's: over `--bg` the sticky label
+     dragged a darker band behind it. */
+  background: linear-gradient(180deg, var(--ig-panel) 72%, transparent);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+.uf-year-n {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ig-muted);
+}
+
+.uf-grid {
+  display: grid;
+  /* `auto-fill` and NOT `auto-fit`: on a year with three media, `auto-fit` would stretch them
+     across the whole width and a lone photo would become a poster. */
+  grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+  gap: 9px;
+}
+
+.uf-thumb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+.uf-thumb:hover {
+  border-color: var(--ig-accent);
+  transform: scale(1.05);
+  z-index: 3;
+}
+.uf-thumb:focus-visible {
+  outline: 2px solid var(--ig-accent);
+  outline-offset: 1px;
+}
+.uf-thumb-img {
+  display: contents;
+}
+.uf-thumb canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* A kind mark when there is no image: a voice note has none, and a file the browser cannot decode
+   must not leave a blank cell with no explanation. */
+.uf-thumb-glyph {
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+.uf-thumb-play {
+  position: absolute;
+  right: 5px;
+  bottom: 4px;
+  font-size: 11px;
+  color: var(--ig-ink-bright);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  pointer-events: none;
+}
+
+.uf-sentinel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 0 8px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ig-muted);
+}
+
+.uf-more {
+  padding: 11px 16px;
+  background: transparent;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  color: var(--ig-accent);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.uf-more:hover {
+  border-color: var(--ig-accent);
+}
+
+@media (max-width: 700px) {
+  .uf-grid {
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  }
+}

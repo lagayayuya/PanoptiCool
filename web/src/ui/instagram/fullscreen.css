@@ -1,0 +1,103 @@
+/* biome-ignore-all lint/complexity/noImportantStyles: ⚠ LOAD-BEARING, and the whole reason these two
+   classes exist. They undo a height a PAGE's own sheet imposes on its scene — a rule that outranks
+   them by specificity and survives going fullscreen. Winning that race declaration by declaration is
+   what was tried first, and it worked on one scene and not the other. */
+
+/* FULLSCREEN — the toggle and the layout it imposes, for the two 3D scenes.
+ *
+ * ─── WHAT THIS SHEET DOES NOT COVER ─────────────────────────────────────────────────────────────
+ *   - THE SCENES' OWN RULES (`.uni-stage`, `.esp-stage`). They arrive with their pieces; what is
+ *     here is only what fullscreen has to UNDO, and it has to live beside the toggle because the
+ *     toggle is what sets the classes.
+ */
+
+.fs-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 11px;
+  background: color-mix(in srgb, var(--ig-panel) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--ig-line);
+  border-radius: var(--ig-r-pill);
+  color: var(--ig-muted);
+  font-family: var(--ig-font-mono);
+  font-size: 11.5px;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.fs-btn:hover {
+  color: var(--ig-ink-2);
+  border-color: var(--ig-line-strong);
+}
+.fs-btn:focus-visible {
+  outline: 1px solid var(--ig-warm);
+  outline-offset: 2px;
+}
+.fs-btn[aria-pressed="true"] {
+  border-color: var(--ig-warm);
+  color: var(--ig-warm);
+}
+.fs-ico {
+  font-size: 13px;
+  line-height: 1;
+}
+/* Below this the label would eat the scene. The icon stays, and `aria-label` goes on carrying the
+   whole sentence for screen readers. */
+@media (max-width: 560px) {
+  .fs-txt {
+    display: none;
+  }
+}
+
+/* ————— Fullscreen: TWO classes, two responsibilities —————
+ *
+ * `.is-fs` does the SIZE only, and holds in both modes: its sole job is to undo the fixed height a
+ * page imposes on its scene, which survives going fullscreen.
+ *
+ * `.is-fs-css` adds the POSITIONING, and only in fallback. That is the fix for a real defect: in
+ * native fullscreen the browser already puts the element in the top layer, and re-imposing
+ * `position: fixed` conflicts with that placement — the element then rendered at its natural size in
+ * the middle of a black background. The native mode needs nothing but its height back. */
+.is-fs {
+  width: 100% !important;
+  /* ⚠ `100dvh`, NOT `100%`. A percentage resolves against the parent — here a plain container with
+     no height of its own, which fell back to the content's height, so 619 px instead of fullscreen.
+     Viewport units resolve against the FULLSCREEN viewport when the element is in it, and against
+     the browser's otherwise: one rule for both modes.
+     And `dvh` rather than `vh`: on mobile `vh` counts the browser's collapsed bar, and the scene
+     would overflow by that much. */
+  height: 100dvh !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+.is-fs-css {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 90;
+}
+body.fs-lock {
+  overflow: hidden;
+}
+
+/* ————— The scenes —————
+ * ⚠ THE MEDIA SCENE NESTS ITS FRAME, and `.is-fs` lands on the OUTER one. Its 560 px height lives on
+ * `.uni-canvas` inside, which fullscreen never touched: the stage grew to the viewport and the
+ * lower half of the screen stayed black. The crowd's scene carries its height on the promoted
+ * element itself, which is why it never showed this. */
+.uni-stage.is-fs,
+.esp-stage.is-fs {
+  background: var(--ig-bg);
+}
+.uni-stage.is-fs .uni-canvas {
+  height: 100% !important;
+  border-radius: 0;
+  border: none;
+}

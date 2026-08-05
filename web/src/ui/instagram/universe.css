@@ -1,0 +1,67 @@
+/* THE MEDIA UNIVERSE — the hero, the sample slider, and the scene's frame.
+ *
+ * Tokens remapped onto `--ig-*`; no colour is invented. The scene's own colours go through
+ * `tokens.ts` (`hex()`), since three.js takes numbers rather than CSS strings.
+ *
+ * ─── WHAT THIS SHEET DOES NOT COVER ─────────────────────────────────────────────────────────────
+ *   - THE CARD, THE LEARN PANEL, THE SWITCH AND THE FILTER MENUS (`kit.css`, `filters.css`);
+ *   - THE MOVE STICK, THE FULLSCREEN BUTTON AND THE VIEWER, which travel with their components.
+ */
+
+.univers {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+  animation: riseIn 0.5s ease backwards;
+}
+
+/* ————— The scene ————— */
+.uni-stage {
+  position: relative;
+  min-width: 0;
+}
+
+/* Hidden, not unmounted — see the note where this class is applied. */
+.uni-hidden {
+  display: none;
+}
+
+/* ⚠ THE BACKGROUND IS HERE, not in the renderer. The scene is drawn over it with a transparent
+   clear colour: a halo at the centre, night at the edges. */
+.uni-canvas {
+  position: relative;
+  height: 560px;
+  border: 1px solid var(--ig-line-2);
+  border-radius: 14px;
+  overflow: hidden;
+  background: radial-gradient(
+    circle at 50% 45%,
+    var(--ig-panel-hi) 0%,
+    var(--ig-bg-top) 60%,
+    var(--ig-bg) 100%
+  );
+  /* The scene is turned by dragging, so the cursor says so before the gesture is tried. */
+  cursor: grab;
+}
+.uni-canvas:active {
+  cursor: grabbing;
+}
+.uni-canvas canvas {
+  display: block;
+}
+
+.uni-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  color: var(--ig-muted);
+}
+
+@media (max-width: 760px) {
+  .uni-stage {
+    height: 460px;
+  }
+}

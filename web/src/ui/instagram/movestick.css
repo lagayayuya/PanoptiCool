@@ -1,0 +1,50 @@
+/* THE STICK — the touch move control.
+ *
+ * Hidden by default. It appears only for COARSE pointers (finger, stylus) or narrow screens: on a
+ * machine with a keyboard it would occupy a corner of the scene for nothing. The second criterion
+ * also makes it testable by simply narrowing the window. */
+
+.stick {
+  display: none;
+}
+
+@media (pointer: coarse), (max-width: 760px) {
+  .stick {
+    /* ⚠ MUST MATCH `R` in the component: one is the drawing, the other the arithmetic that turns a
+       finger's position into a vector. They are two halves of one number. */
+    --stick-r: 46px;
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    width: calc(var(--stick-r) * 2);
+    height: calc(var(--stick-r) * 2);
+    border-radius: 50%;
+    background: rgba(11, 12, 14, 0.42);
+    backdrop-filter: blur(3px);
+    border: 1px solid var(--ig-line-strong);
+    /* Without this, dragging a finger scrolls the page instead of driving the camera. */
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .stick-ring {
+    position: absolute;
+    inset: 12px;
+    border: 1px dashed rgba(233, 231, 225, 0.22);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .stick-knob {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ig-warm) 78%, var(--ig-bg));
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    /* No transition: the stick has to stick to the finger. An interpolation, however short, reads
+       as latency. */
+  }
+}

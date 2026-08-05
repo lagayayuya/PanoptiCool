@@ -1,0 +1,372 @@
+/* THE SPACE — the hero, the split tiles, the filter row's extras, and the scene's frame.
+ *
+ * Tokens remapped onto `--ig-*`; no colour is invented. ⚠ THE SCENE'S OWN COLOURS ARE NOT HERE:
+ * three.js takes numbers, not CSS strings, so they are read through `tokens.ts` at build time of the
+ * scene (`hex()`). One vocabulary, two consumers.
+ *
+ * ─── WHAT THIS SHEET DOES NOT COVER ─────────────────────────────────────────────────────────────
+ *   - THE CARD, THE LEARN PANEL AND THE FILTER MENUS (`kit.css`, `filters.css`, both loaded by the
+ *     island);
+ *   - THE MOVE STICK AND THE FULLSCREEN BUTTON, which travel with their own components.
+ */
+
+.espace {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+  animation: riseIn 0.5s ease backwards;
+}
+
+.esp-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 760px;
+}
+.esp-h1 {
+  font-size: 44px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--ig-ink-bright);
+  text-wrap: balance;
+}
+.esp-lede {
+  /* ⚠ THE RESET IS NOT COSMETIC. A `<p>` carries a 1 em margin of its own, and inside a flex column
+     it ADDS to the gap: 18 px of design became 35 px on screen, which is the space the maintainer
+     saw between the title and the sentence under it. */
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ig-ink-dim);
+}
+
+.esp-note {
+  /* ⚠ IT TOUCHES WHAT IT TALKS ABOUT. Adrift above the controls, a sentence about what is missing
+     from the crowd read as a page-level warning; against the frame, it reads as the frame's caption.
+  */
+  margin: 0 0 12px;
+  max-width: 90ch;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+}
+
+/* The card's own spacing, and the row that carries the density slider and the reframe control. */
+.esp-card {
+  gap: 22px;
+}
+
+.modal-pseudo {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--ig-ink-bright);
+  overflow-wrap: anywhere;
+}
+/* A panel's identity block: the handle, then its line of meta. */
+.modal-id {
+  display: flex;
+  flex-direction: column;
+  padding-right: 52px; /* the closing ✕ is positioned over it */
+}
+/* The meta line under the handle: which way the link goes, then the last trace. */
+.rel-meta {
+  display: block;
+  margin-top: 9px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ig-ink-dim);
+}
+.rel-meta-link {
+  font-weight: 500;
+}
+/* The total, in large — it comes BEFORE the breakdown: you read the weight of the relation, then
+   what it is made of. */
+.rel-total {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 20px;
+  padding: 24px 26px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: 16px;
+}
+.rel-total-n {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+.rel-total-k {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ig-ink-dim);
+}
+.modal-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 13px;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-pill);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ig-ink-2);
+}
+.badge i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ig-accent);
+}
+.modal-section-h {
+  display: block;
+  margin-top: 24px;
+}
+.modal-cats {
+  margin-top: 8px;
+  display: grid;
+  gap: 0;
+}
+.modal-cat-block {
+  border-top: 1px solid var(--ig-line);
+}
+.modal-cat-block:first-child {
+  border-top: none;
+}
+.modal-cat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 0;
+  font-family: inherit;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: default;
+}
+/* ⚠ A ROW IS ONLY A CONTROL WHEN IT HAS SOMETHING TO OPEN. The pointer says so before the click
+   does, which is the whole difference between a list and a list you can unfold. */
+.modal-cat-block.expandable .modal-cat-row {
+  cursor: pointer;
+}
+.modal-cat-block.expandable .modal-cat-row:hover .mc-label {
+  color: var(--ig-ink-bright);
+}
+.mc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ig-accent);
+  flex-shrink: 0;
+}
+.mc-label {
+  flex: 1;
+  font-size: 15px;
+  color: var(--ig-ink-dim);
+}
+.mc-chevron {
+  font-size: 11px;
+  color: var(--ig-accent);
+}
+.mc-count {
+  font-size: 17px;
+  color: var(--ig-ink-bright);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.mc-details {
+  display: grid;
+  gap: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 2px 0 12px;
+  padding: 14px 16px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line);
+  border-radius: 4px;
+}
+.mc-detail {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.mc-detail-text {
+  font-size: 14px;
+  color: var(--ig-ink-dim);
+  line-height: 1.55;
+}
+.mc-detail-date {
+  flex-shrink: 0;
+  font-size: 13px;
+  color: var(--ig-muted);
+}
+.rel-content-note {
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+}
+.rel-account-modal {
+  width: min(580px, 94vw);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+.modal-timeline {
+  margin-top: 20px;
+}
+.tl-track {
+  position: relative;
+  height: 26px;
+  border-radius: var(--ig-r-ctl);
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+}
+/* The dots' track, inset by HALF A DIAMETER on each side. Without it the first and last dots — the
+   ones that land at 0 % and 100 % — hung half outside the frame. An `overflow: hidden` would have
+   cut them in two rather than made them fit. */
+.tl-dots {
+  position: absolute;
+  inset: 0 3.5px;
+}
+/* One tint only: the dot marks WHEN, the hover says WHAT. Four neighbouring violets said nothing
+   more (yuya's feedback). */
+.tl-dot {
+  background: var(--ig-accent);
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.85;
+}
+.tl-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--ig-muted);
+  font-variant-numeric: tabular-nums;
+}
+.modal-direction-note {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ig-line);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+}
+
+/* ————— The scene ————— */
+/* ⚠ HIDDEN, NOT UNMOUNTED — see the note where this class is applied. The render loop stops on its
+   own as soon as the container has no surface, so a hidden scene costs nothing. */
+.esp-hidden {
+  display: none;
+}
+.esp-stage {
+  position: relative;
+  min-width: 0;
+  height: 560px;
+  /* The mockup's gradient: the ground lightens towards the horizon, the sky falls back to the page's
+     bottom. There is NO covering GL layer — the 3D scene is drawn over this. */
+  background: linear-gradient(180deg, var(--ig-panel) 0%, var(--ig-bg-top) 55%, var(--ig-bg) 100%);
+  border: 1px solid var(--ig-line-2);
+  border-radius: var(--ig-r-card);
+  overflow: hidden;
+}
+.esp-wrap {
+  position: absolute;
+  inset: 0;
+}
+.esp-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+/* The label canvas sits OVER the scene and takes no pointer: the click must reach the figures. */
+.esp-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ————— The legend, at the foot of the scene ————— */
+.esp-legend {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  padding: 12px 16px;
+  background: rgba(7, 11, 24, 0.82);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  font-size: 14px;
+  color: var(--ig-ink-2);
+  pointer-events: none;
+}
+.esp-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.esp-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.legend-hint {
+  color: var(--ig-muted);
+  border-left: 1px solid var(--ig-line-3);
+  padding-left: 14px;
+}
+.legend-lists {
+  color: var(--ig-ink-dim);
+}
+/* ⚠ THE LEGEND YIELDS TO THE JOYSTICK. Both were anchored bottom-LEFT, four pixels apart: the touch
+   stick sat over the legend, which became unreadable at the exact moment one moves. */
+@media (pointer: coarse), (max-width: 760px) {
+  .esp-legend {
+    left: auto;
+    right: 12px;
+    max-width: calc(100% - 140px);
+    justify-content: flex-end;
+  }
+  .esp-legend .legend-hint {
+    display: none;
+  }
+}
+
+.esp-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  color: var(--ig-muted);
+}
+
+@media (max-width: 760px) {
+  .esp-h1 {
+    font-size: 32px;
+  }
+  .esp-stage {
+    height: 420px;
+  }
+}
