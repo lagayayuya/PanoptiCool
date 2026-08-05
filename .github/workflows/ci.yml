@@ -24,6 +24,32 @@ jobs:
       # TS steps: working-directory: web per step (the Python panopticool/ stays at the root).
       - run: npm ci
         working-directory: web
+
+      # ⚠ THE GEO DATABASES ARE FETCHED HERE AND NOWHERE ELSE, and the build now DEPENDS on it.
+      # They are gitignored (134 MB, republished monthly), so a checkout never has them. Until
+      # 2026-08-05 that was invisible: the build succeeded and wrote a route-B archive of 3 MB
+      # instead of 66, amputated of the databases, with no error — and the `test -f` below went
+      # green on it. The integration now refuses to write an archive it cannot complete, so a CI
+      # without this step fails LOUDLY at that step. That is the intended trade.
+      #
+      # ⚠ NOT AN npm `prebuild`, deliberately. A `prebuild` only runs when the build goes through
+      # the npm script, and a host that detects Astro runs `astro build` directly — which is the
+      # exact hole `integrations/site-zip.ts` exists to avoid. Here the step is explicit in the
+      # pipeline, and the CHECK that the archive is complete lives with the archive.
+      - name: Cache the geo databases
+        id: geo-cache
+        uses: actions/cache@v4
+        with:
+          path: web/public/geo
+          # Bump the suffix to force a refresh: DB-IP republishes monthly and the key has no date
+          # in it on purpose — a dated key would redownload 134 MB on the first CI run of every
+          # month, for databases whose freshness nothing here depends on.
+          key: geo-dbip-city-lite-v1
+      - name: Fetch the geo databases
+        if: steps.geo-cache.outputs.cache-hit != 'true'
+        run: node scripts/fetch-geo-db.mjs
+        working-directory: web
+
       - run: npm run lint
         working-directory: web
       - run: npm run typecheck
@@ -39,6 +65,17 @@ jobs:
       # leave CI green and the download link a 404 in production.
       - name: The site archive comes out of the build (route B, ADR-0006)
         run: test -f dist/panopticool-site.zip
+        working-directory: web
+      # ⚠ AND IT CARRIES WHAT IT PROMISES. `test -f` passed for months on an archive missing its
+      # geo databases: the file existed, so the check was green, and nobody could tell from CI.
+      # The integration is what refuses to write that archive; this asserts the outcome from
+      # outside it, so unplugging the guard is caught here rather than by a downloader.
+      - name: And it carries the geo databases and the licence files
+        run: |
+          unzip -l dist/panopticool-site.zip | grep -q 'geo/dbip-city-ipv4.mmdb'
+          unzip -l dist/panopticool-site.zip | grep -q 'geo/dbip-city-ipv6.mmdb'
+          unzip -l dist/panopticool-site.zip | grep -q 'NOTICE'
+          unzip -l dist/panopticool-site.zip | grep -q 'LICENSE'
         working-directory: web
 
   fixture:
