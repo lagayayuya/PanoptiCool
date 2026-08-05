@@ -51,7 +51,20 @@
   border-color: #8fa3ff !important;
 }
 
-/* Border AND text that light up (link-buttons: GitHub, check the connection…). */
+/* Border AND text that light up — GHOST elements ONLY: links, icon links, text buttons with no
+ * ground of their own.
+ *
+ * ⚠ THE NAME LIES, AND IT COST SOMETHING. `hv-cy` reads « cyan »; what it paints is #8fa3ff,
+ * PERIWINKLE — the same hover colour as `.hl-*` and `.hv-bd`, which is the site's one hover hue for
+ * an outline. On 2026-08-05 it was found on `RECHECK_BTN` (« vérifier la connexion »), the one
+ * FILLED element wearing it: accent ground, navy label, and a hover that turned the label violet on
+ * cyan — reported from a live test as « le texte devient rose/violet ». The class was picked because
+ * the button IS cyan and the class is called cyan.
+ *
+ * So the rule, stated where the trap is: an element with a `background` takes `.hv-br` (a step in
+ * brightness, what Instagram's `.ca-go` has always done for the same gesture); an element without
+ * one takes this. Renaming the class would touch forty-odd call sites and is not worth the churn —
+ * this paragraph is the guard instead. */
 .hv-cy {
   transition:
     color 0.15s,
@@ -64,12 +77,32 @@
   border-color: #8fa3ff !important;
 }
 
-/* Solid buttons (language, launch, download): a simple boost in brightness. */
+/* Solid buttons (language, launch, download, check the connection): a step in brightness.
+ *
+ * ⚠ 1.1 AND NOT 1.25 SINCE 2026-08-05, aligned on Instagram's `.ca-go`, which has always used that
+ * value for the same gesture. The two figures were never compared because the two products style
+ * themselves apart (ADR-0007, addendum) — the divergence surfaced only when a filled button here was
+ * put beside its Instagram twin. The lower step is the one kept: on the cyan accent, 1.25 washes the
+ * ground toward white and the navy label loses contrast against it. */
 .hv-br {
   transition: filter 0.15s;
 }
 .hv-br:hover {
-  filter: brightness(1.25);
+  filter: brightness(1.1);
+}
+
+/* Interrupting a run — a GHOST control, in both products. The border and the label warm; nothing
+ * fills. See `STOP_BTN` in `ui/v2/AiSection.tsx` for why it is not a second CTA. */
+.hv-stop {
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+}
+.hv-stop:hover {
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
+  border-color: #e8754e !important;
+  /* biome-ignore lint/complexity/noImportantStyles: only way to override the inline style (this file's contract, cf. header) */
+  color: #e49967 !important;
 }
 
 /* The home's call to action (« comment accéder à mes données »). It is RECESSED — a panel sunk into

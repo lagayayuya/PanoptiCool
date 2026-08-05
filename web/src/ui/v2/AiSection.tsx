@@ -65,8 +65,10 @@ import {
 import { currentLocale } from '../../i18n/current';
 import { UI_AI, UI_AI_LEARN, UI_AI_MOBILE, UI_BRAND } from '../copy';
 import { formatDecimal, formatFixedDecimal } from '../format';
+import { useSiteZipReady } from '../useSiteZipReady';
 import type { AiSource } from './ai-source';
 import { LearnPanel, LearnToggle } from './LearnPanel';
+import { Markdown } from './Markdown';
 import { LOW_DATA_THRESHOLD } from './NoDeductionCard';
 import { MONO, NAVY } from './palette';
 
@@ -258,7 +260,19 @@ export function AiSection({ source }: { source: AiSource }) {
     return () => {
       cancelled = true;
     };
-  }, [url, probeNonce]);
+    // ⚠ `url` IS NOT A DEPENDENCY, and taking it out is the fix rather than an omission. It was
+    // there, so once `probeNonce` had passed 1 — that is, after the FIRST deliberate click — every
+    // keystroke in the address field fired a request at localhost. Typing « 8080 » one character at
+    // a time contacts `localhost:8`, `:80`, `:808`, `:8080`; deleting it contacts them again on the
+    // way down. Read off a live console: `localhost:430`, `:43`, `:4`, one of them refused outright
+    // by the browser as an unsafe port.
+    //
+    // The comment above says a tool that shows surveillance cannot contact a machine without being
+    // asked to. That held for the first contact and was abandoned for every one after it — the
+    // precondition was satisfied once and then stopped being checked. Instagram's twin has always
+    // been a plain `onClick` (`AnalyseModule.tsx`, `check`): one gesture, one contact. Changing the
+    // address now arms the button instead of firing it.
+  }, [probeNonce]);
 
   // The server's REAL context (`/props`) — never a guess once the server is reached.
   const contextWindow =
@@ -374,6 +388,10 @@ export function AiSection({ source }: { source: AiSource }) {
   const effRoute: RouteChoice = compat ? (route.choice ?? 'site') : 'local';
   const localMode = env.localhost && probe.kind === 'ok';
   const promptActive = !(effRoute === 'local' && !localMode);
+
+  // The archive is asked for before it is offered — the hook says why, and the Instagram piece asks
+  // the same question from its own duplicated tutorial.
+  const zipReady = useSiteZipReady(effRoute === 'local');
 
   const install = installCommand(os);
   const serve = serveCommand(choice, SUGGESTED_CONTEXT);
@@ -710,9 +728,16 @@ export function AiSection({ source }: { source: AiSource }) {
                         {/* The action spells out its name in full, before AS WELL AS after the
                             first probe (2026-07-20 retouch: no more ⟳ glyph) — it is it
                             that triggers any contact with localhost. */}
+                        {/* ⚠ `hv-br` AND NOT `hv-cy`. This is a FILLED button — accent ground, navy
+                            label — and `hv-cy` repaints the LABEL periwinkle, which on a cyan
+                            ground reads as a violet word and loses its contrast. It was the ONLY
+                            filled element in this tree wearing that class; the eight others are
+                            links and text, where « border and text light up » is the right gesture.
+                            Instagram's twin button (`.ca-go`) has always stepped its brightness for
+                            this same action, so the two products now say the same thing. */}
                         <button
                           type="button"
-                          class="hv-cy"
+                          class="hv-br"
                           aria-label={UI_AI.probeCheckAria}
                           style={RECHECK_BTN}
                           onClick={() => setProbeNonce((n) => n + 1)}
@@ -731,11 +756,17 @@ export function AiSection({ source }: { source: AiSource }) {
                   <div style={SUB_ROW}>
                     <span style={SUB_N}>4</span>
                     <div style={SUB_BODY}>
-                      <span style={STEP_TEXT}>{UI_AI.localDownloadText}</span>
+                      <span style={STEP_TEXT}>
+                        {zipReady === false
+                          ? UI_AI.localDownloadTextNoZip
+                          : UI_AI.localDownloadText}
+                      </span>
                       <div style={ZIP_ROW}>
-                        <a href={`/${SITE_ZIP_NAME}`} download class="hv-br" style={ZIP_BTN}>
-                          {UI_AI.localZipButton(SITE_ZIP_NAME)}
-                        </a>
+                        {zipReady !== false && (
+                          <a href={`/${SITE_ZIP_NAME}`} download class="hv-br" style={ZIP_BTN}>
+                            {UI_AI.localZipButton(SITE_ZIP_NAME)}
+                          </a>
+                        )}
                         <a
                           href={UI_BRAND.githubUrl}
                           target="_blank"
@@ -883,7 +914,7 @@ export function AiSection({ source }: { source: AiSource }) {
                   <div style={WARN_TEXT}>{probeFailureHelp(probe.gate)}</div>
                 )}
                 {run.running && (
-                  <button type="button" style={STOP_BTN} onClick={stop}>
+                  <button type="button" class="hv-stop" style={STOP_BTN} onClick={stop}>
                     {UI_AI.step3Stop}
                   </button>
                 )}
@@ -903,8 +934,12 @@ export function AiSection({ source }: { source: AiSource }) {
               {(run.running || run.text !== '') && (
                 <div style={FIELD_COL}>
                   <div style={RESULT_BOX}>
-                    {run.text}
-                    {run.running && <span style={{ color: NAVY.accent }}>▌</span>}
+                    <Markdown
+                      text={run.text}
+                      {...(run.running && {
+                        trailing: <span style={{ color: NAVY.accent }}>▌</span>,
+                      })}
+                    />
                   </div>
                   {!run.running && run.text !== '' && (
                     <span style={RESULT_STATS}>
@@ -1416,11 +1451,45 @@ const RUN_BTN = {
   marginLeft: 'auto',
   flex: 'none',
 } as const;
-const RUN_BTN_OFF = { ...RUN_BTN, cursor: 'not-allowed', background: NAVY.textDim } as const;
-const STOP_BTN = {
+/**
+ * ⚠ EMPTIED, NOT GREYED. It filled with `textDim`, which put a solid grey slab where the accent
+ * button had been — and since the run button carries the « analyse en cours… » label while the model
+ * writes, that slab is what a reader looks at for the whole generation. Instagram's `.ca-run:disabled`
+ * has always done the opposite: it drops the fill and keeps the outline. Same gesture, same meaning,
+ * and the eye is left on the answer arriving rather than on a grey block beside it.
+ */
+const RUN_BTN_OFF = {
   ...RUN_BTN,
-  background: '#7a2a24',
-  color: NAVY.textBright,
+  cursor: 'not-allowed',
+  background: 'transparent',
+  border: `1px solid ${NAVY.borderInset}`,
+  color: NAVY.textMuted,
+} as const;
+/**
+ * ⚠ A SECONDARY CONTROL, NOT A SECOND CTA. It was `...RUN_BTN` over a brick ground (`#7a2a24`) —
+ * same size, same weight, same padding as the button that starts the analysis, in a red that made it
+ * the loudest thing on the page while the model was writing. Interrupting is reversible and costs
+ * nothing; it must not shout louder than the action it interrupts.
+ *
+ * Instagram's twin (`.ca-stop`) has always been a ghost: transparent, thin border, muted label,
+ * warming on hover. That is the gesture language the two products share, and this is it in v2's
+ * tokens — `borderInset` is `--ig-line-3`, `textMuted` is the muted ink, and the hover warms toward
+ * the risk hue exactly as the Instagram sheet does. The LAYOUT still differs (this one sits left of
+ * the run button, which `marginLeft: auto` pushes right) and that is allowed: ADR-0007 gives the two
+ * products separate renders. What it does not give them is separate meanings for the same gesture.
+ */
+const STOP_BTN = {
+  cursor: 'pointer',
+  fontSize: '14px',
+  fontWeight: 500,
+  fontFamily: 'inherit',
+  lineHeight: 1.2,
+  color: NAVY.textMuted,
+  background: 'transparent',
+  border: `1px solid ${NAVY.borderInset}`,
+  borderRadius: '10px',
+  padding: '11px 16px',
+  flex: 'none',
 } as const;
 const WARN_TEXT = {
   flex: 1,
@@ -1466,6 +1535,9 @@ const ERROR_BOX = {
   borderRadius: '14px',
   padding: '16px 18px',
 } as const;
+// ⚠ `white-space: normal`, and it is `Markdown` that earns it: the blocks now carry the spacing the
+// `pre-wrap` used to stand in for. Left on `pre-wrap`, every paragraph would keep the model's own
+// hard wraps AND gain the block margin — a double gap between lines that read as broken layout.
 const RESULT_BOX = {
   background: NAVY.bgInset,
   border: `1px solid ${NAVY.borderInset}`,
@@ -1474,7 +1546,6 @@ const RESULT_BOX = {
   fontSize: '16px',
   lineHeight: 1.8,
   color: NAVY.textBright,
-  whiteSpace: 'pre-wrap',
   overflowWrap: 'anywhere',
   maxHeight: '420px',
   overflowY: 'auto',

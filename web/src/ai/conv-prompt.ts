@@ -570,62 +570,27 @@ export function selectSequences(
   }
 
   /**
-   * ————— SECOND PASS: SPEND WHAT IS LEFT, AROUND THE SEQUENCES ALREADY CHOSEN —————
+   * ————— WHAT USED TO BE A SECOND PASS HERE, AND WHY IT IS GONE —————
    *
-   * ⚠ THE FIRST PASS ROUTINELY LEAVES A THIRD OF THE WINDOW UNUSED, and the leftover has nowhere to
-   * go: a sequence that ends before its share is spent passes the credit on, but a thread whose runs
-   * are all short simply stops asking. The model then gets a prompt well under the size it was
-   * given, made of extracts too thin to reason on — and a model with too little to read does not say
-   * less, it invents more (yuya, on the demo: « ça fait halluciner le modèle »).
+   * From 2026-08-04 to 2026-08-05 a second pass spent the leftover budget WIDENING the sequences
+   * already chosen — one message at a time, after then before, round-robin, never crossing into a
+   * neighbour. Its reason was measured and is worth keeping: the first pass routinely leaves about a
+   * third of the window unused, because a sequence that ends before its share is spent passes the
+   * credit on and a thread of short runs simply stops asking. A model given too little to read does
+   * not say less, it invents more (yuya, on the demo: « ça fait halluciner le modèle »).
    *
-   * So what is left is spent WIDENING what was already chosen, one message at a time, after then
-   * before, round-robin across the sequences. Widening rather than adding sequences: a wider extract
-   * is a longer stretch of one exchange, where an extra sequence is another isolated fragment.
+   * ⚠ IT WAS REMOVED BECAUSE THE ANSWERS GOT WORSE WITH IT, tested against the same threads (yuya,
+   * 2026-08-05). The mechanism that fits both observations: widening buys LENGTH inside a few
+   * periods, where what this prompt is for is BREADTH across the thread's whole span. A window
+   * two-thirds full of extracts spread over ten years reads better than a full one holding long runs
+   * from four of them — the model is asked how a relationship CHANGED, and a long stretch of one
+   * month answers a different question.
    *
-   * ⚠ IT NEVER CROSSES INTO ANOTHER SEQUENCE. `sent` holds every index already out, and a widening
-   * that met one would stitch two periods into a run the thread never had.
+   * ⚠ SO THE LEFTOVER IS UNSPENT AGAIN, and that is a known cost rather than an oversight. If the
+   * thin-prompt hallucination comes back, the lead is NOT to restore this: it is to spend the
+   * leftover on MORE sequences — more periods, same breadth — which is the one option neither
+   * version has tried.
    */
-  const spent = sequences.reduce((n, sq) => n + sq.messages.reduce((k, m) => k + cost(m), 0), 0);
-  let left = budgetTokens - spent - sequences.length * HEAD_TOKENS;
-  const edges = sequences.map((sq) => {
-    const first = sq.messages[0]?.index ?? 0;
-    const last = sq.messages[sq.messages.length - 1]?.index ?? 0;
-    return {
-      sq,
-      lo: clean.findIndex((m) => m.index === first),
-      hi: clean.findIndex((m) => m.index === last),
-    };
-  });
-  for (let grew = true; grew && left > 0; ) {
-    grew = false;
-    for (const e of edges) {
-      if (left <= 0) break;
-      for (const dir of [1, -1] as const) {
-        const at = dir === 1 ? e.hi + 1 : e.lo - 1;
-        const m = at >= 0 ? clean[at] : undefined;
-        if (m === undefined || sent.has(m.index)) continue;
-        const price = cost(m);
-        if (price > left) continue;
-        left -= price;
-        sent.add(m.index);
-        if (dir === 1) {
-          e.hi = at;
-          (e.sq.messages as ThreadMessage[]).push(m);
-        } else {
-          e.lo = at;
-          (e.sq.messages as ThreadMessage[]).unshift(m);
-        }
-        grew = true;
-      }
-    }
-  }
-  // The widened bounds are the sequence's own: a period announced by dates the extract no longer
-  // covers would be worse than no dates at all.
-  for (const sq of sequences) {
-    (sq as { from: number | null }).from = sq.messages[0]?.ts ?? null;
-    (sq as { to: number | null }).to = sq.messages[sq.messages.length - 1]?.ts ?? null;
-  }
-
   const flat = sequences.flatMap((s) => s.messages);
   return {
     kept: flat,

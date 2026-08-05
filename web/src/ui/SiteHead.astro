@@ -58,7 +58,18 @@ if (site === undefined) {
 }
 
 const canonical = new URL(localePath(locale, path), site).href;
-const ogImage = new URL('/og.jpg', site).href;
+/**
+ * ⚠ ONE SHARE CARD PER LANGUAGE, and the alt text is what proves this was half-done. That string was
+ * already localized here — the comment below still records why — while the IMAGE it describes stayed
+ * a single `/og.jpg` carrying « Découvre ce que tes réseaux savent de toi » to every English reader.
+ * The alt is read by a screen reader; the image is the first thing anyone sees when the link is
+ * shared, in Slack, in iMessage, in a group chat. The bigger half was the one left behind.
+ *
+ * Both are now shot from the home page itself in each language (`scripts/shoot-preview.mjs og <l>`),
+ * which is also what retires the previous card: it was a separate design, in a monospace theme two
+ * versions old, that no redesign could reach because it was an asset rather than a page.
+ */
+const ogImage = new URL(`/og.${locale}.jpg`, site).href;
 const alternates = PUBLISHED_LOCALES.map((l) => ({
   hreflang: HTML_LANG[l],
   href: new URL(localePath(l, path), site).href,

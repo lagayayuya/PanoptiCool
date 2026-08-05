@@ -190,11 +190,13 @@ describe('the sampler', () => {
     /**
      * Both ends are present: the oldest exchange and the newest.
      *
-     * ⚠ ASSERTED AS « CONTAINS », NOT « STARTS AT », since the widening pass. It used to read
-     * `sequences[last].messages[0].index === 45` and went red at 38 — correctly: the last sequence
-     * now begins earlier because the leftover budget grew it backwards. The claim being made is that
-     * the span is covered end to end, and a first index is only one way of checking that; the day
-     * widening arrived, it was the wrong one.
+     * ⚠ ASSERTED AS « CONTAINS », NOT « STARTS AT », AND IT STAYS THAT WAY. The form was forced by a
+     * widening pass that lived here for a day (2026-08-04 → 08-05, see `conv-prompt.ts`): it grew the
+     * last sequence backwards, `messages[0].index === 45` went red at 38, and the assertion was
+     * rewritten. The pass is gone and « starts at 45 » would pass again — but the claim this test
+     * makes is that the SPAN IS COVERED END TO END, and a first index was only ever one way of
+     * checking it. Going back would re-couple the test to an implementation detail that has already
+     * changed once.
      */
     const first = sel.sequences[0]?.messages.map((m) => m.index) ?? [];
     const last = sel.sequences[sel.sequences.length - 1]?.messages.map((m) => m.index) ?? [];

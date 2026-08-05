@@ -545,6 +545,16 @@
   color: var(--ig-ink-dim);
 }
 
+/* La rangée du système, sous le titre de l'étape 1 — même agencement que le produit TikTok :
+   l'intitulé, les trois pastilles, puis le dépliant du terminal poussé à droite par `kit-spacer`.
+   `flex-wrap` et non `nowrap` : à l'étroit le dépliant passe sous les pastilles au lieu de les
+   comprimer, ce qu'une rangée de titre ne pouvait pas se permettre. */
+.an-os-row {
+  display: flex;
+  align-items: center;
+  gap: 10px 16px;
+  flex-wrap: wrap;
+}
 .an-os-k {
   margin-right: 4px;
   font-size: 14px;
@@ -814,7 +824,9 @@
   text-decoration: none;
 }
 .an-zip-btn:hover {
-  filter: brightness(1.08);
+  /* 1.1 like every other filled button of the two products (2026-08-05 sweep): 1.08 was a third
+     value for one button, invisible to the eye and one more thing to keep in step. */
+  filter: brightness(1.1);
 }
 .an-zip-src {
   color: var(--ig-accent);

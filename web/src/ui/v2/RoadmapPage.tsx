@@ -28,7 +28,10 @@ export type RoadmapStatus = 'done' | 'now' | 'next';
  * THE SPINE — order and status of the steps. Paired by index with `UI_ROADMAP.steps`, whose
  * length must match (net: `roadmap.test.ts`).
  */
-export const ROADMAP_STEPS: readonly RoadmapStatus[] = ['done', 'done', 'now', 'next', 'next'];
+// ⚠ STEP 3 IS `done` SINCE 2026-08-05 — the Instagram analysis ships. A roadmap that still
+// announces as forthcoming what the home page already links to is the fastest way to lose a reader's
+// trust in the rest of the list.
+export const ROADMAP_STEPS: readonly RoadmapStatus[] = ['done', 'done', 'done', 'next', 'next'];
 
 export function RoadmapPage() {
   const isMobile = useIsMobile();
@@ -240,10 +243,18 @@ const PAGE = {
 // the edge read as two sites: going from one to the other, the whole page slides sideways. What the
 // mockup was protecting — a line length one can read — is held instead by `maxWidth` on the hero
 // and on the step texts, which is where it belongs.
+/**
+ * ⚠ THE SITE'S MEASURE, AND IT WAS THE LAST PAGE OUTSIDE IT. 1 160 px where every other page runs to
+ * 1 080 — read one after the other, the roadmap sat eighty pixels wider than the home it is one click
+ * from, and the gutters did not line up on the same scroll. `mentions-legales` was brought back to
+ * this measure and this scale by hand (Yul, 2026-08-05) and is the ratified reference: 1 080, a
+ * 56/40/80 frame, a 38 px title, a 20 px sub-heading. The type scale below follows it for the same
+ * reason it does — a page that sets its own sizes reads as a document from another product.
+ */
 const SHELL = {
-  maxWidth: '1160px',
+  maxWidth: '1080px',
   margin: '0 auto',
-  padding: '64px 40px 90px',
+  padding: '56px 40px 80px',
   display: 'flex',
   flexDirection: 'column',
   gap: '56px',
@@ -262,7 +273,8 @@ const KICKER = {
 } as const;
 const TITLE = {
   margin: 0,
-  fontSize: '40px',
+  // 38 like the legal page's h1: the site has one page-title size, and this was the outlier.
+  fontSize: '38px',
   fontWeight: 500,
   lineHeight: 1.15,
   letterSpacing: '-0.02em',
@@ -334,7 +346,8 @@ const HELP = {
 } as const;
 const HELP_HEAD = { display: 'flex', flexDirection: 'column', gap: '10px' } as const;
 const HELP_TITLE = {
-  fontSize: '19px',
+  // 20/18 — the site's sub-heading, desktop and mobile (cf. `mentions-legales`).
+  fontSize: '20px',
   fontWeight: 500,
   lineHeight: 1.4,
   color: NAVY.textBright,
@@ -390,7 +403,8 @@ const CONTACT_CTA = {
 const M_SHELL = {
   maxWidth: '480px',
   margin: '0 auto',
-  padding: '32px 20px 56px',
+  // 36/20/56 — the legal page's mobile frame, ratified with the desktop one.
+  padding: '36px 20px 56px',
   display: 'flex',
   flexDirection: 'column',
   gap: '40px',
@@ -418,12 +432,12 @@ const M_TAG_ROW = {
   gap: '9px',
   flexWrap: 'wrap',
 } as const;
-const M_TAG = { ...TAG, fontSize: '9px' } as const;
+const M_TAG = { ...TAG } as const;
 const M_DATE = { fontSize: '10.5px', lineHeight: 1, whiteSpace: 'nowrap' } as const;
 const M_STEP_TITLE = { ...STEP_TITLE, lineHeight: 1.45 } as const;
 const M_STEP_TEXT = { fontSize: '12px', lineHeight: 1.75, color: NAVY.textLede } as const;
 const M_HELP = { ...HELP, gap: '20px', padding: '24px 18px' } as const;
-const M_HELP_TITLE = { ...HELP_TITLE, fontSize: '17px', textWrap: 'balance' } as const;
+const M_HELP_TITLE = { ...HELP_TITLE, fontSize: '18px', textWrap: 'balance' } as const;
 const M_HELP_LIST = { ...HELP_LIST, gap: '12px' } as const;
 const M_HELP_ITEM = { ...HELP_ITEM, gap: '10px' } as const;
 const M_HELP_ACTIONS = {
