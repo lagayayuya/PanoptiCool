@@ -27,10 +27,28 @@
 # NOT exercised: the 3D scenes (space, universe), the media viewer's own playback, route A against a
 # real `llama-server`, and every header above that is not the CSP.
 
-panopti.cool {
-	root * /srv/panopticool
+# ⚠ MERGED WITH THE CONFIGURATION ALREADY RUNNING (2026-08-05), not written over it. Two of its
+# lines were absent from the version drafted here, and one of them mattered a great deal — see the
+# `log` block below. The lesson is the one this repository states elsewhere about comments: a file
+# that describes a neighbour it has never read describes something else.
+
+panopti.cool, www.panopti.cool {
+	# ⚠ `/var/www` AND NOT `/srv`. This draft said `/srv/panopticool` and the server has always used
+	# `/var/www/panopticool` — a first deployment following the draft uploads two hundred megabytes
+	# to a directory nothing serves, and the site does not change. Written here so the next reader
+	# copies an address that exists.
+	root * /var/www/panopticool
 	encode zstd gzip
 	file_server
+
+	# ⚠ NO ACCESS LOG, AND IT IS A PROMISE RATHER THAN A SETTING. The legal notice states that this
+	# site keeps nothing about its visitors; an access log is a list of IP addresses with timestamps,
+	# which is exactly the thing the whole product exists to make visible elsewhere. It was in the
+	# running configuration before this file existed, and it survives every merge — deleting it is
+	# not a change of configuration, it is breaking a published commitment.
+	log {
+		output discard
+	}
 
 	# ⚠ THE 404 PAGE IS SERVED HERE OR NOWHERE. Astro writes `dist/404.html`; a static file server
 	# that does not know about it answers with its own bare error page — no language, no way back —
