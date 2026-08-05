@@ -31,13 +31,38 @@ reread critically and remains my responsibility. The raw transcripts are not pub
 
 ## Chronology
 
-### 2026-08-03 — The v5 design, and the hygiene owed before a public push
+### 2026-08-03 → 08-05 — The integration: two products in one site, and the promise that had to change
 - **Surface:** Claude Code
 - **Default mode:** augmentation → automation
-- **Done:** The site adopts the theme ratified on the Instagram prototype (Archivo, the tokens carrying the « two colours are either identical or frankly different » rule), then the whole product moves to the v5 mockups. The home page was rebuilt twice: the first pass worked from a text extraction of the mockup — the strings in order, none of the structure — and lost the connector previews, the type scale and the layout of the rights section; the second read the markup. The analysis page followed, sections 01 to 04. Under the visual work, a hygiene pass: eight pages that each repeated the same twenty lines got a shared layout, the `<head>` prose entered the ratifiable perimeter it had never been in, a dev panel behind a permanently false flag was removed with the four unreachable strings it carried, and the export guide gained twenty-six annotated screenshots — four carousels, two platforms, two languages, with the click target framed on each.
-- **Human judgment:** I set the direction and refused two shortcuts. The connector previews are absent rather than approximated: the mockup's are renders of a real export — actual photographs — and the analysis page they show was about to be redrawn, so a preview built now would have been a picture of a screen that no longer exists. The platform logos are absent for a different reason: vendoring TikTok's and Meta's marks into a public AGPL repo is a decision, not a detail, and the platform name beside the slot already does the job. I also corrected the design as it came: the call to action that read as « go » when it only opens a modal, frames misaligned by a constant two percent, and a first home page that followed the mockup's words instead of its structure.
+- **Done:** The standalone prototype became the second connector of the real product in about
+  forty hours. First the seam — `ExportSource`, a random-access zip reader, seven extractors in the
+  one order their dependencies allow, the analysis moved into a worker: TikTok became one connector
+  of two rather than the product ([ADR-0007](docs/adr/0007-le-joint-de-plateforme.md)). Then the six
+  pieces of the dossier ported rather than rewritten, with their 3D scenes (the accounts as a crowd
+  you can walk into, every file of the export as a universe), the map's two layers, the conversation
+  reader and the per-thread local analysis. DB-IP City Lite replaced GeoLite2 on licence grounds.
+  A synthetic Instagram persona was written so `?demo` runs the real pipeline on an archive nobody
+  owns — twenty threads, arcs, and one thread that knows it is a thread. Last, the two journeys were
+  unified: one drop screen, one wait, one consent modal, and Instagram's own front door closed.
+  The wave's doctrinal change is [ADR-0008](docs/adr/0008-lecture-du-contenu-des-messages.md): the
+  analysis still counts and never reads, but the text of a thread is opened on a gesture — so the
+  guarantee that said otherwise left the interface and the legal notice was rewritten, in both
+  languages, to say what is actually true.
+- **Human judgment:** Lot of my calls here were about not letting the richer connector set
+  the rules. On the geo database I went with DB-IP over GeoLite2 purely on the licence, MaxMind wants an account and a tracking pixel on redistribution, which this project cannot accept. 
+  The rest was a lot of looking, testing and adjusting the integration of the new design and Instagram analytical tool. 
+  I also spent a good amount of time on the synthetic persona, I wanted a demo that runs the actual pipeline on an archive nobody owns, and one thread written to be worth reading . I renamed `/analyse` to `/tiktok` with redirects.
+  At the end I closed three things that would have shipped broken. The archive must not go out
+  amputated of its geo database, so the build now refuses to write it at all and route B hides its
+  button and says why, rather than handing out a 404. The English home page was showing a French
+  screenshot as its only evidence of what the product does, so the preview is per-language now and
+  regenerated from the demo route rather than cropped by hand.
 
-  What the machine established against itself is worth recording, because it is the pattern this repo watches for. Nothing in the v5 pass could have been caught by the reference renders: they strip the styles, so a font, a colour or an entire type scale changes without moving a byte of them. Their author had to say so rather than let « the tests pass » stand in for a look. Two further blind spots surfaced the same way: every card in those renders is forced OPEN, so the closed state — the one a reader meets first — is rendered by none of them, and one of them was freezing a badge by retyping its text instead of reading it, so it had gone on asserting a sentence the product had stopped producing. Both were closed, one with a new witness whose two deliberate breakages were run and published rather than predicted. And a date on the roadmap announced as forthcoming a deadline it had already missed.
+### 2026-07-23 → 08-03 — The Instagram prototype: exploring and prototyping on top of a personal export
+- **Surface:** Claude Design + Claude Code
+- **Default mode:** exploration → augmentation
+- **Done:** A second connector could not be designed from a schema: the Instagram export is a tree of ~500 files in two coexisting dialects, weighing gigabytes, whose field labels are in the account holder's language. So it began with a reading of a real export — mine, ~1.6 GB — under one rule: read everything, keep nothing. The mapping document holds counts, shapes and volumes, and not one message, pseudonym or media. From it came a standalone React prototype rather than a branch of the product: six pieces of a dossier — identity, a map of what an IP address gives away, conversations, the accounts you cross, the media, and a per-thread analysis by a local model. Claude Design carried the mockups (the shell, the home page, the dossier), Claude Code the prototype the mockups were tried on. Working against a real 2 GB archive is what produced the decisions that survived: an archive read entry by entry rather than decompressed whole, a label table instead of hard-coded field names, and an ExportSource interface the prototype was written against from the first line.
+- **Human judgment:** It was a lot of back and forth trials and experiments, my main priority was to make it interesting while being intuitive, interactive and mostly accessible, even thought the export was extremely rich. For example the map's zones were rebuilt multiple times, until I tried using a Heatmap to indicate the IP points, making the declared points and their associated media more visible. I also had some trouble deciding what to show/not show to keep it easy to read, that’s where I came up with the “In detail” view idea. I also added a warning panel on the AI Analysis page, in addition to the “understand · the model “ panel, hoping people will keep a distance with the result and use it more as a learning tool. After the prototype was done, I adapted the new theme to every pages, completely remade the home page and I took more time going over and editing all the text being shown on the website, being sure it is clear and conveys the intention of this project.
 
 ### 2026-07-23 → 07-25 — Translating the repo's French prose to English
 - **Surface:** Claude Code
