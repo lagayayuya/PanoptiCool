@@ -1,0 +1,132 @@
+/* THE TIMELINE — the grid, its scale legend and the drawn scrollbar.
+ *
+ * ⚠ THE SCROLLBAR IS DRAWN, not native. macOS overlays its scrollbars and hides them at rest, so in
+ * the column orientation nothing would indicate that there are more threads off to the side. It is
+ * chrome that has to be visible to do its job.
+ *
+ * Tokens are the shell's, transcribed into the `--ig-*` namespace and declared there — including
+ * `--ig-line-strong`, which only this sheet reads: a token declared in a piece's sheet exists only
+ * once that piece has been visited. No colour is invented. */
+
+/*
+ * « La trame ». The constraint that decides everything: NOTHING SCROLLS. The height is fixed and
+ * the cell size adapts to it — the opposite of the earlier frieze, where the cell was fixed and the
+ * page grew longer.
+ */
+.trame {
+  min-width: 0;
+}
+/*
+ * The container SCROLLS, the inner box takes the content's size. The opposite of the first version,
+ * which compressed the cells to fit a fixed frame: past a dozen threads they became illegible.
+ *
+ * In rows, only the height grows (the page scrolls, like the original heatmap).
+ * In columns, only the width grows (lateral scrolling, with the drawn scrollbar).
+ */
+.tr-scroll {
+  min-width: 0;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+/* The native scrollbar is hidden: the drawn one above it is the authority. */
+.tr-scroll::-webkit-scrollbar {
+  height: 0;
+}
+.tr-stage {
+  position: relative;
+  /* No padding: `clientWidth` includes it, so the canvas would be sized too wide and overflow.
+     The margins are taken INSIDE the drawing. */
+  padding: 0;
+  cursor: default;
+}
+/* The cursor promises a click only where there is one — that is, across a thread's whole row,
+   name and total bar included, and no longer on the cells alone. */
+.tr-stage.on-row {
+  cursor: pointer;
+}
+.tr-stage canvas {
+  display: block;
+}
+
+/* Raised under the tabs: the colour key is read BEFORE the grid, instead of having to travel its
+   whole height to find it. */
+.tr-scale {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--ig-muted);
+}
+.tr-scale i {
+  width: 26px;
+  height: 14px;
+  border-radius: 4px;
+}
+/* The readout shares the legend's line, separated by a rule and pushed right: the colour key is
+   fixed where the readout changes on every cell, and mixing them would make the legend jump with
+   every mouse move. */
+.tr-readout {
+  flex: 1;
+  min-width: 0;
+  margin-left: 8px;
+  padding-left: 12px;
+  border-left: 1px solid var(--ig-line);
+  font-size: 15px;
+  color: var(--ig-ink-2);
+}
+.tr-readout b {
+  color: var(--ig-ink-bright);
+  font-weight: 600;
+}
+
+/* The batch pager is not here: it belongs to the piece that frames the grid, which is what knows
+   how many batches there are. */
+
+@media (max-width: 900px) {
+  .tr-stage,
+  .trame-v .tr-stage {
+    height: 460px;
+  }
+}
+
+/* ————— the drawn scrollbar (column mode) ————— */
+.tr-cbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.tr-cbar-track {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 9px;
+  background: color-mix(in srgb, var(--ig-ink-bright) 4%, transparent);
+  border: 1px solid var(--ig-line);
+  border-radius: 5px;
+}
+.tr-cbar-thumb {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  min-width: 30px;
+  background: var(--ig-line-strong);
+  border-radius: 5px;
+  cursor: grab;
+}
+.tr-cbar-thumb:hover {
+  background: var(--ig-ink-dim);
+}
+.tr-cbar-thumb:active {
+  cursor: grabbing;
+}
+
+/* The line under the readout: what a click on a row does. Muted, because it is an instruction and
+   not a measure — it must not compete with the figures it sits beside. */
+.tr-ro-hint {
+  color: var(--ig-muted);
+}

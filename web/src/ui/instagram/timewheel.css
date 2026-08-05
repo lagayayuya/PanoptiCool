@@ -1,0 +1,75 @@
+/* THE TIME WHEEL — laid INSIDE the map: time is a dimension of the map, not a setting beside it.
+ *
+ * Tokens remapped onto `--ig-*`; no colour is invented. The band itself is a canvas and is drawn in
+ * the component, from the same tokens (`tokens.ts`) — a colour changed here changes there. */
+
+.tw {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  padding: 8px 12px;
+  /* Translucent, because the map has to stay readable under it — this control sits ON the scene. */
+  background: rgba(11, 12, 14, 0.82);
+  backdrop-filter: blur(3px);
+  border: 1px solid var(--ig-line-strong);
+  border-radius: var(--ig-r-ctl);
+}
+
+.tw-band {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  cursor: ew-resize;
+  border-radius: 3px;
+}
+.tw-band:focus-visible {
+  outline: 1px solid var(--ig-warm);
+  outline-offset: 2px;
+}
+.tw-band.dragging {
+  cursor: grabbing;
+}
+.tw-band canvas {
+  display: block;
+}
+
+.tw-side {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.tw-step {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--ig-line-strong);
+  border-radius: var(--ig-r-ctl);
+  color: var(--ig-ink-dim);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+.tw-step:hover {
+  border-color: var(--ig-warm);
+  color: var(--ig-warm);
+}
+.tw-date {
+  min-width: 9ch;
+  text-align: center;
+  font-family: var(--ig-font-mono);
+  font-size: 12px;
+  color: var(--ig-ink-2);
+}
+
+@media (max-width: 900px) {
+  .tw-band {
+    height: 38px;
+  }
+  .tw-date {
+    font-size: 11px;
+  }
+}

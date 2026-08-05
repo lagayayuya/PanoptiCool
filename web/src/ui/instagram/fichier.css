@@ -1,0 +1,210 @@
+/* THE FILE — the sortable table, rendered by BOTH « les messages » and « les interactions ».
+ *
+ * ⚠ IT IS LOADED BY THE ISLAND, and that is a build constraint rather than a taste: a CSS file
+ * imported by two dynamically-imported chunks is dropped from the build ENTIRELY (measured; the
+ * rule and its witness are in `styles.test.ts`). Two pieces render this shell, so it cannot live in
+ * either one's sheet — same reason `kit.css` and `filters.css` moved here.
+ *
+ * What stays with each piece is its VARIANT: `.fc-*` in `messages.css` for the threads' columns,
+ * and the accounts' `.fi-c-*` here, since only this table has a life track.
+ *
+ * Density is assumed: this is the tool view, next to a drawing that is not one.
+ */
+
+.fichier {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 16px;
+  min-width: 0;
+  animation: riseIn 0.25s ease backwards;
+}
+
+.fi-main {
+  min-width: 0;
+}
+
+/* With no shortcuts column the table takes the full width. A modifier rather than a change to
+   `.fichier`, so a caller that still wants the column keeps it. */
+.fichier.fi-solo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.fi-head,
+.fi-row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) 96px minmax(110px, 1.1fr) 96px minmax(0, 1.4fr) 26px;
+  align-items: center;
+  gap: 12px;
+}
+/* « Actions » is a number and « Quand » is a TRACK: the width belongs to the track, not to the
+   count. (Ex-« voir dans l'espace »: that arrow's column went with it.) */
+.fi-grid {
+  grid-template-columns: minmax(0, 1.4fr) 92px 72px minmax(0, 1.9fr);
+}
+/* The track and its date SIDE BY SIDE. Stacked, the date read as a caption of the track when it
+   is in fact its right-hand bound. */
+.fi-when {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.fi-track {
+  position: relative;
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--ig-panel-hi);
+  overflow: hidden;
+}
+.fi-track.empty {
+  opacity: 0.4;
+}
+.fi-track i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+  opacity: 0.85;
+}
+.fi-when-ago {
+  font-size: 13px;
+  color: var(--ig-muted);
+  white-space: nowrap;
+  text-align: right;
+}
+.fi-head {
+  padding: 0 12px 10px;
+  border-bottom: 1px solid var(--ig-line);
+}
+.fi-th {
+  padding: 0;
+  /* A non-sortable header must not disguise itself as a button: only `.fi-sortable` reacts. */
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ig-muted);
+}
+button.fi-th {
+  cursor: pointer;
+}
+button.fi-th:hover {
+  color: var(--ig-ink-2);
+}
+.fi-th.on {
+  color: var(--ig-accent);
+}
+.fi-arrow {
+  margin-left: 5px;
+  font-size: 10px;
+}
+.fi-th:not(.on) .fi-arrow {
+  opacity: 0.25;
+}
+.fi-rows {
+  max-height: min(64vh, 680px);
+  overflow-y: auto;
+}
+.fi-row {
+  padding: 12px;
+  border-bottom: 1px solid var(--ig-line);
+  border-radius: 10px;
+}
+/* The row IS the button: a full-width target, and one tab stop per account in the order shown. So
+   the native button look has to come off. */
+button.fi-row {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--ig-line);
+  /* The edge carries the follow link's colour, set inline. */
+  border-left: 3px solid transparent;
+  padding-left: 12px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.fi-row:hover {
+  background: var(--ig-accent-hover);
+}
+button.fi-row:hover .fi-name {
+  color: var(--ig-accent);
+}
+button.fi-row:focus-visible {
+  outline: 2px solid var(--ig-accent);
+  outline-offset: -2px;
+}
+.fi-name {
+  padding: 0;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--ig-ink-2);
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fi-name:hover {
+  color: var(--ig-accent);
+}
+.fi-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--ig-muted);
+}
+.fi-link i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+/* The action count is a NUMBER and no longer a bar: on a table sorted by volume the bar only drew
+   a staircase. The width it freed went to the life track. */
+.fi-act {
+  text-align: right;
+  color: var(--ig-ink-bright);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.fi-empty {
+  padding: 24px 8px;
+  font-size: 15px;
+  color: var(--ig-muted);
+}
+.fi-legend {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ig-line);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+}
+
+@media (max-width: 900px) {
+  .fichier {
+    grid-template-columns: 1fr;
+  }
+  .fi-head,
+  .fi-row {
+    grid-template-columns: minmax(0, 1.6fr) minmax(90px, 1fr) 80px 26px;
+  }
+  .fi-grid {
+    grid-template-columns: minmax(0, 1.6fr) minmax(90px, 1fr) 84px;
+  }
+  /* The link survives when narrow: the row's left edge still carries its colour. */
+  .fi-c-link {
+    display: none;
+  }
+}

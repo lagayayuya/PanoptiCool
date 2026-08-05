@@ -1,0 +1,430 @@
+/* THE MAP, IN DETAIL — four tiers, from meaning towards raw matter.
+ *
+ * Ported WHOLE from the prototype's `carte-detail.css`; tokens remapped onto `--ig-*`, no value
+ * invented. An earlier version of this file kept only the rules the port happened to render and
+ * dropped the thumbnails with them — which is exactly how the detail view lost its media.
+ *
+ * The reasoning behind each tier lives in `MapDetail.tsx`, beside the markup it explains.
+ */
+
+.cd {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  animation: riseIn 0.3s ease backwards;
+}
+
+.cd-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid var(--ig-line);
+  padding-top: 22px;
+}
+.cd-block:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+.cd-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.cd-h {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ig-ink-bright);
+  flex: none;
+  width: 100%;
+}
+.cd-lede {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ig-muted);
+  max-width: 74ch;
+}
+
+.cd-cities {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.cd-city {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 190px) minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--ig-line);
+}
+.cd-city-when {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.cd-when-b {
+  font-size: 12.5px;
+  color: var(--ig-faint);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.cd-when-b.r {
+  text-align: right;
+}
+.cd-rank {
+  font-size: 13px;
+  color: var(--ig-faint);
+  font-variant-numeric: tabular-nums;
+}
+.cd-city-who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.cd-city-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ig-ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cd-city-country {
+  font-size: 13px;
+  color: var(--ig-muted);
+}
+
+.cd-track {
+  position: relative;
+  display: block;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--ig-panel-hi);
+  overflow: hidden;
+}
+.cd-track.empty {
+  opacity: 0.4;
+}
+.cd-track i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: var(--ig-accent);
+  opacity: 0.75;
+}
+
+.cd-more {
+  align-self: flex-start;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ig-accent);
+  background: transparent;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.cd-more:hover {
+  border-color: var(--ig-accent);
+}
+
+.cd-year {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.cd-year-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.cd-year-n {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+.cd-year-c {
+  font-size: 13px;
+  color: var(--ig-muted);
+}
+.cd-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--ig-line);
+}
+.cd-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 8px;
+}
+.cd-point {
+  min-width: 0;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.cd-point:not(.inert):hover {
+  border-color: var(--ig-accent);
+}
+.cd-point.inert,
+.cd-point-btn {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 10px 14px 10px 10px;
+}
+.cd-point.inert {
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  padding: 11px 14px;
+}
+.cd-point-btn {
+  width: 100%;
+  font-family: inherit;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.cd-point-g {
+  font-size: 15px;
+  color: var(--ig-warm);
+  text-align: center;
+}
+
+.cd-thumb {
+  position: relative;
+  grid-row: 1 / span 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: 9px;
+  overflow: hidden;
+  background: var(--ig-panel-hi);
+}
+.cd-thumb-img {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.cd-thumb-img canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cd-thumb-glyph {
+  position: absolute;
+  font-size: 15px;
+  color: var(--ig-faint);
+}
+.cd-thumb.loading {
+  animation: blink 1.4s ease-in-out infinite;
+}
+.cd-thumb-play {
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  font-size: 10px;
+  color: var(--ig-ink-bright);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+.cd-point.story .cd-point-g {
+  color: var(--ig-amber);
+}
+.cd-point.last-known .cd-point-g {
+  color: var(--ig-accent);
+}
+.cd-point-k {
+  font-size: 14px;
+  color: var(--ig-ink-2);
+}
+.cd-point-k {
+  align-self: end;
+}
+.cd-point-c {
+  grid-column: 2;
+  align-self: start;
+  font-family: var(--ig-font-mono);
+  font-size: 13px;
+  color: var(--ig-muted);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cd-point-d {
+  grid-row: 1 / span 2;
+  grid-column: 3;
+  align-self: center;
+  font-size: 13px;
+  color: var(--ig-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.cd-addresses {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cd-addresses li {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+}
+.cd-addr-line {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ig-ink-bright);
+  overflow-wrap: anywhere;
+}
+.cd-addr-when {
+  font-size: 13px;
+  color: var(--ig-muted);
+}
+
+.cd-fold {
+  border-top: 1px solid var(--ig-line);
+}
+.cd-fold summary {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 4px;
+  cursor: pointer;
+  list-style: none;
+}
+.cd-fold summary::-webkit-details-marker {
+  display: none;
+}
+.cd-fold summary:hover .cd-fold-t {
+  color: var(--ig-accent);
+}
+.cd-fold-c {
+  font-size: 11px;
+  color: var(--ig-accent);
+  transition: transform 0.15s;
+}
+.cd-fold[open] .cd-fold-c {
+  transform: rotate(90deg);
+}
+.cd-fold-t {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ig-ink-2);
+  transition: color 0.15s;
+}
+.cd-fold-e {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--ig-muted);
+}
+.cd-fold-n {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+.cd-fold-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 4px 20px;
+}
+.cd-enables {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+}
+.cd-raw {
+  list-style: none;
+  margin: 0;
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 4px 20px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  font-family: var(--ig-font-mono);
+  font-size: 13px;
+  color: var(--ig-ink-dim);
+}
+.cd-raw li {
+  overflow-wrap: anywhere;
+}
+.cd-rest {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ig-faint);
+}
+
+@media (max-width: 860px) {
+  .cd-city {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 8px 14px;
+  }
+  .cd-city-when {
+    grid-column: 2 / span 1;
+  }
+}
+@media (max-width: 560px) {
+  .cd-point.inert,
+  .cd-point-btn {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+  .cd-point.inert {
+    grid-template-columns: 20px minmax(0, 1fr);
+  }
+  .cd-point-d {
+    grid-row: 3;
+    grid-column: 2;
+  }
+  .cd-fold-e {
+    display: none;
+  }
+}
+
+/* An export with nothing to detail — said, rather than an empty panel that reads as a failure. */
+.cd-empty {
+  padding: 32px 0;
+  font-size: 15px;
+  color: var(--ig-muted);
+}

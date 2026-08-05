@@ -1,0 +1,650 @@
+/* THE SHARED BRICKS — the card, the page header, the number tiles, the switch, the view tabs and the
+ * « to understand » panel.
+ *
+ * ⚠ PORTED WHOLE FROM THE PROTOTYPE'S `kit.css`, and that matters: an earlier version of this file
+ * kept only the rules a ported piece happened to render and dropped the rest as dead — the hero, the
+ * tiles, the gloss, the counts. They are not dead, they are the DESIGN SYSTEM, and the pieces that
+ * were written without them grew their own heroes and their own tiles instead. Every difference in
+ * proportion, spacing and type scale between the port and the prototype started here.
+ *
+ * ⚠ LOADED BY THE ISLAND, not by the pieces that render these bricks — a sheet imported by two
+ * lazily-loaded chunks is dropped from the build entirely (measured; see `InstagramPage.tsx`).
+ *
+ * Tokens remapped onto the `--ig-*` namespace; no value is invented.
+ */
+
+/* The navy theme's KIT: the bricks SEVERAL pieces lay down — the card, the segmented switch, the
+   « to understand » panel, the number tiles, and a page card's header and footnote.
+
+   ⚠ The move out of one piece's sheet is not cosmetic: each piece is a chunk loaded on demand and
+   its stylesheet travels with it. One piece borrowed the tiles from another's sheet and therefore
+   rendered them BARE until that other one had been visited first. Style follows the component, and
+   when several components use it, it rises into a shared file. */
+
+/* ============================ La carte ============================ */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+  padding: 28px;
+  background: var(--ig-panel);
+  border: 1px solid var(--ig-line-2);
+  border-radius: var(--ig-r-card);
+}
+.card-h {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ig-ink-bright);
+}
+.card-sub {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ig-muted);
+}
+.card-sub.warm {
+  color: var(--ig-warm-label);
+}
+
+/* A page card's header: a title or a count, a gloss, then the controls pushed right by
+   `.kit-spacer`. */
+/* ————— A card header: TWO states, never three —————
+ *
+ * It used to wrap freely. Narrowing the window, its five children — the count, the gloss, the clear
+ * control, the spacer, the view selector — each broke to a new line at its own threshold: four
+ * successive rearrangements, three of which mean nothing (« the selector alone at the bottom, the
+ * gloss still on the right »).
+ *
+ * `nowrap` removes the intermediate states: above the breakpoint everything holds on one line, the
+ * gloss compressing since it is the only one that can. Below it, a single rule stacks, and the
+ * selector takes the full width. Two states, one threshold. */
+.kit-head {
+  display: flex;
+  align-items: center;
+  gap: 12px 16px;
+  flex-wrap: nowrap;
+}
+.kit-count {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+/* `min-width: 0`: without it a flex child refuses to go below its content's width, and the gloss
+   pushed the selector out of frame instead of folding. */
+.kit-sub {
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ig-ink-dim);
+}
+.kit-foot {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+  border-top: 1px solid var(--ig-line);
+  padding-top: 16px;
+}
+.kit-spacer {
+  flex: 1;
+}
+
+/* ============================ Les tuiles de chiffres ============================ */
+.kit-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 18px;
+}
+.kit-tile {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 24px 26px;
+  background: var(--ig-panel);
+  border: 1px solid var(--ig-line-2);
+  border-radius: var(--ig-r-card);
+}
+.kit-tile-v {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ig-accent);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.kit-tile-k {
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--ig-ink-dim);
+}
+
+/* ============================ La bascule segmentée ============================ */
+.seg {
+  display: flex;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  overflow: hidden;
+  flex: none;
+}
+.seg button {
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--ig-ink-2);
+  background: transparent;
+  border: none;
+  padding: 13px 18px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+.seg button + button {
+  border-left: 1px solid var(--ig-line-3);
+}
+.seg button[aria-pressed="false"]:hover {
+  color: var(--ig-ink-bright);
+  background: var(--ig-accent-soft);
+}
+.seg button[aria-pressed="true"] {
+  color: var(--ig-bg);
+  background: var(--ig-accent);
+  cursor: default;
+}
+
+/* ============================ « Pour comprendre » ============================ */
+.learn-btn {
+  align-self: flex-start;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--ig-learn);
+  background: transparent;
+  border: 1px dashed var(--ig-learn-line);
+  border-radius: 11px;
+  padding: 11px 15px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.learn-btn:hover {
+  border-color: var(--ig-learn);
+  background: rgba(143, 163, 255, 0.08);
+}
+.learn-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  background: var(--ig-learn-bg);
+  border: 1px dashed var(--ig-learn-line);
+  border-radius: var(--ig-r-card);
+  animation: riseIn 0.3s ease backwards;
+}
+.learn-h {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ig-ink-bright);
+}
+.learn-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 24px;
+}
+.learn-cols > div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.learn-k {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ig-learn-title);
+}
+.learn-p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ig-ink-dim);
+}
+
+/* A piece's hero: title, standfirst, « to understand » button. */
+.kit-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 760px;
+}
+.kit-h1 {
+  font-size: 44px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--ig-ink-bright);
+  text-wrap: balance;
+}
+.kit-lede {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ig-ink-dim);
+}
+
+@media (max-width: 900px) {
+  .kit-h1 {
+    font-size: 34px;
+  }
+}
+/* Le SEUIL UNIQUE de l'en-tête. 760 et non 560 : à 560 le sélecteur de vue était déjà sorti
+   du cadre depuis deux cents pixels. */
+@media (max-width: 760px) {
+  .kit-head {
+    flex-wrap: wrap;
+  }
+  /* The spacer only exists to push the selector right on a shared line: stacked, it would add an
+     empty row. */
+  .kit-head .kit-spacer {
+    display: none;
+  }
+  /* Both families of view selector — `.seg` and `.vw-tabs` — take the full width. They did the same
+     thing in two places, and only the first had this rule. */
+  .kit-head .seg,
+  .kit-head .vw-tabs {
+    width: 100%;
+  }
+  .kit-head .seg button,
+  .kit-head .vw-tab {
+    flex: 1;
+  }
+}
+
+/* ————— THE VIEW SELECTOR —————
+   ⚠ THE BASE RULES WERE MISSING and the responsive override was not: only `.kit-head .vw-tabs`
+   named the class, so `La trame / En détail` and `Les gestes / Les comptes` rendered as two bare
+   browser buttons while the net stayed green. A class named by a DESCENDANT rule counts as reachable
+   — the border `styles.test.ts` states in its mutation 1a, met here in production rather than in a
+   mutation. It lives with the kit because two pieces render it, and the island loads this sheet. */
+.vw-tabs {
+  display: inline-flex;
+  flex: none;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  overflow: hidden;
+}
+.vw-tab {
+  padding: 13px 18px;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--ig-ink-2);
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+.vw-tab + .vw-tab {
+  border-left: 1px solid var(--ig-line-3);
+}
+.vw-tab:hover:not(.on) {
+  color: var(--ig-ink-bright);
+  background: var(--ig-accent-hover);
+}
+/* ————— THE SETTINGS BAR, WELDED TO THE VIEW IT SETTLES —————
+ *
+ * Display settings (grain, orientation, density, paging) are NOT filters: they describe how one
+ * looks, not what one looks at. Placed in a floating row above, they read as a second filter bar;
+ * welded to the view's frame — same border, no gap — they visibly belong to the object they settle.
+ *
+ * ⚠ IT LIVES WITH THE KIT because THREE pieces render it now (the heatmap, the crowd, the media
+ * plate), and a sheet with two importers is dropped from the build. It was in `messages.css` while
+ * the crowd rendered it too: the bar came out unstyled there, and this file's net could not see it
+ * until its upward edge was fixed.
+ */
+
+/* ————— the heatmap's own bar, from the prototype's `chrome.css` —————
+   ⚠ ONE BLOCK: the bar and the grid must not be separated by the container's gap, or their borders
+   do not meet. And the bar borrows the FILTER MENUS' controls rather than inventing a second set —
+   there is only one mechanic to learn on the page. */
+
+.vw-block {
+  min-width: 0;
+
+  animation: riseIn 0.25s ease backwards;
+}
+
+.vw-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-bottom: none;
+  border-radius: 14px 14px 0 0;
+}
+
+.vw-bar-right {
+  margin-left: auto;
+}
+
+.vw-pager {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.vw-pager > * {
+  flex: none;
+}
+
+.vw-arrow {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--ig-line-3);
+  border-radius: 11px;
+  color: var(--ig-ink-2);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.vw-arrow:hover:not(:disabled) {
+  border-color: var(--ig-accent);
+  color: var(--ig-accent);
+}
+
+.vw-arrow:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+.vw-range {
+  min-width: 12ch;
+  text-align: center;
+  font-size: 15px;
+  color: var(--ig-ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ⚠ THE THREE FRAMES THE BAR CAPS, squared off at the top so the two borders meet. They are named
+   here rather than in each piece's sheet because the JOIN belongs to the bar: a piece that styled
+   its own corner would drift from the bar the day the bar's radius changed. */
+.vw-block .tr-scroll,
+.vw-block .esp-stage,
+.vw-block .uni-canvas {
+  border-radius: 0 0 14px 14px;
+}
+.vw-block .uni-stage {
+  border-radius: 0 0 14px 14px;
+  overflow: hidden;
+}
+.vw-bar .fm-value {
+  white-space: nowrap;
+}
+
+/* A plain control in the same bar — « Recadrer ». Same family as the tabs above, so it sits here
+   rather than in one piece's sheet. */
+.vw-btn {
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-pill);
+  font-family: inherit;
+  color: var(--ig-ink-2);
+  font-size: 14px;
+  cursor: pointer;
+}
+.vw-btn:hover {
+  border-color: var(--ig-accent);
+  color: var(--ig-ink-bright);
+}
+
+.vw-tab.on {
+  background: var(--ig-accent);
+  color: var(--ig-bg);
+  cursor: default;
+}
+
+@media (max-width: 560px) {
+  .card,
+  .learn-panel {
+    padding: 22px 18px;
+  }
+  /* `.seg` existe aussi HORS en-tête (page 00, choix de vue des actions) : là, la pleine
+     largeur reste souhaitable en très étroit. */
+  .seg {
+    width: 100%;
+  }
+  .seg button {
+    flex: 1;
+  }
+}
+
+/* ————— The density slider —————
+   The compact form of the bar that tops a scene: label, value in bold, slider. Used by « the files »
+   and by « the interactions » — hence its place here. */
+/* The same scale as the neighbouring menus: the slider lives IN their row, and a size of its own
+   made it a third body size on a row that does not carry two. */
+.kit-slider {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  font-size: 15px;
+  color: var(--ig-muted);
+}
+.kit-slider b {
+  color: var(--ig-ink-bright);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.kit-slider input[type="range"] {
+  width: 150px;
+  accent-color: var(--ig-accent);
+}
+
+/* The section heading inside a panel — « Qui écrit ? », « Le rythme », « Détail des actions ».
+   ⚠ Its BASE rule was missing at first and only the per-section overrides came across, so every one
+   of those headings rendered at the panel's body size. It lives with the kit because BOTH panels
+   render it, and a sheet with two importers is dropped from the build. */
+.mini-h {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ig-ink-bright);
+  margin-bottom: 12px;
+}
+
+/* ————— THE CONTROLS VEIL —————
+   It LIFTS ON THE FIRST REAL GESTURE, not on a dismiss button: the person learns the control by
+   performing it, so the veil must never intercept that gesture. And it COVERS the scene rather than
+   sitting in one corner — a note in the corner reads as decoration of a picture, a veil reads as a
+   thing to get past.
+
+   ⚠ IT LIVES WITH THE KIT because two scenes wear it, the crowd and the media. A sheet with two
+   importers is dropped from the build. */
+.nav-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  /* Opaque enough to read, transparent enough to see the crowd behind: the veil ANNOUNCES a space,
+     it must not hide it. */
+  background: rgba(7, 11, 24, 0.6);
+  backdrop-filter: blur(1px);
+  text-align: center;
+  /* Transparent to clicks: the click that lifts the veil has to reach the scene. */
+  pointer-events: none;
+  animation: riseIn 0.25s ease backwards;
+}
+.nav-veil-title {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ig-ink-bright);
+}
+.nav-veil-keys {
+  display: grid;
+  gap: 7px;
+  list-style: none;
+  padding: 0;
+  font-size: 12.5px;
+  color: var(--ig-muted);
+}
+.nav-veil-keys b {
+  display: inline-block;
+  padding: 1px 7px;
+  margin: 0 2px;
+  border: 1px solid var(--ig-learn-line);
+  border-radius: 7px;
+  background: var(--ig-panel-hi);
+  color: var(--ig-ink-bright);
+  font-size: 14px;
+  font-weight: 600;
+}
+.nav-veil-go {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--ig-accent);
+}
+/* ⚠ THE POINTER DECIDES WHICH LIST SHOWS, not the width: a wide tablet is driven by a finger, a
+   narrow laptop by a mouse. Two whole lists, never interleaved — half-hidden `<li>`s made the source
+   unreadable and invited describing the same gesture twice. */
+.nav-veil-touch {
+  display: none;
+}
+@media (pointer: coarse) {
+  .nav-veil-mouse {
+    display: none;
+  }
+  .nav-veil-touch {
+    display: grid;
+  }
+  p.nav-veil-touch {
+    display: block;
+  }
+}
+
+/* ————— A VIEW'S BAR, WHEN NARROW —————
+ * Layout, density and paging must hold on ONE line: at 390 px the pager dropped below on its own
+ * and the bar doubled in height above an already tight view.
+ *
+ * ⚠ THESE RULES LOST THEIR `@media` WRAPPER IN THE PORT, and applied at every width: the pager sat
+ * FIRST in the bar on a 1 440 px screen, where the prototype puts it last and right-aligned, and
+ * every control was set at the small size. Restored here — and the wrapper is the whole point of
+ * each of them.
+ */
+@media (max-width: 900px) {
+  .vw-bar {
+    gap: 4px;
+    padding: 8px 6px;
+    /* ONE size for the whole bar: shrinking the buttons without the slider and the pager gave three
+       text sizes on a three-centimetre row. */
+    font-size: 12.5px;
+  }
+  .vw-bar .fm-btn {
+    padding: 6px 8px;
+    font-size: inherit;
+    gap: 5px;
+  }
+  .vw-range-k {
+    display: none;
+  }
+  /* The pager moves to the HEAD (yuya's decision): it is the control one works in a loop to walk
+     the batches, where layout and density are set once. On two lines, the first carries the
+     repeated gesture. */
+  .vw-pager {
+    gap: 3px;
+    order: -1;
+    margin-left: 0;
+  }
+  /* `min-width: 12ch` reserved room for « page 21 / 40 »; without the word six characters do, and
+     that reserve is what pushed the pager onto its own line. */
+  .vw-range {
+    font-size: inherit;
+    min-width: 5ch;
+  }
+  .vw-arrow {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+  /* The density slider narrows: at 150 px it pushed the pager out of the frame on « Les fichiers »,
+     whose bar carries three wide controls. */
+  .kit-slider input[type="range"] {
+    width: 88px;
+  }
+}
+
+/* ————— THE PANEL'S SHELL —————
+ *
+ * ⚠ IT LIVES WITH THE KIT, and that is a CASCADE constraint rather than tidiness. It was declared in
+ * BOTH `messages.css` and `espace.css`, each overridden by its own piece's width right after. Two
+ * single classes carry the same specificity, so the winner was whichever sheet loaded LAST — that
+ * is, whichever piece had been opened last. The thread panel came up at 900 px on a first visit and
+ * at 440 px after a detour through « Les interactions », with nothing in either file to suggest the
+ * other existed. A shell shared by two panels has one home.
+ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: rgba(7, 11, 24, 0.86);
+  backdrop-filter: blur(6px);
+  animation: riseIn 0.2s ease backwards;
+}
+.modal-card {
+  position: relative;
+  width: min(440px, 92vw);
+  background: var(--ig-panel);
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-card);
+  padding: 30px 32px 32px;
+  box-shadow: var(--ig-shadow);
+}
+.modal-close {
+  position: absolute;
+  top: 22px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  color: var(--ig-ink-2);
+  font-size: 17px;
+  cursor: pointer;
+  line-height: 1;
+}
+.modal-close:hover {
+  border-color: var(--ig-accent);
+  color: var(--ig-accent);
+}

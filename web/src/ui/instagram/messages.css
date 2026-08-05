@@ -1,0 +1,572 @@
+/* THE MESSAGES PIECE — the heatmap's bar, the detail table, and the thread modal.
+ *
+ * ⚠ PORTED WHOLE from the prototype's `conversations.css` and `fichier.css`, tokens remapped onto
+ * `--ig-*`. The version before this was written from scratch against markup of my own invention,
+ * which is why the view tabs rendered as grey blocks, the grain and paging controls sat outside the
+ * card, and the detail view showed pills where the prototype has numeric columns.
+ *
+ * The reasoning lives in the components, beside the markup it explains.
+ *
+ * ─── WHAT THIS SHEET DOES NOT COVER ─────────────────────────────────────────────────────────────
+ *   - THE GRID ITSELF (`trame.css`), THE FILTER BAR (`filters.css`), THE SHARED BRICKS (`kit.css`)
+ *     and THE READER (`conv-reader.css`);
+ *   - RULES FOR COMPONENTS THIS PORT DOES NOT CARRY — they are removed below rather than left to
+ *     look like a design nobody rendered.
+ */
+
+/* ————— from the prototype's `conversations.css` ————— */
+
+.convs {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+  animation: riseIn 0.5s ease backwards;
+}
+.convs-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 760px;
+}
+.convs-h1 {
+  font-size: 44px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--ig-ink-bright);
+  text-wrap: balance;
+}
+.convs-lede {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ig-ink-dim);
+}
+
+.convs-card {
+  gap: 22px;
+}
+.cv-beyond {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: 24px;
+}
+.cv-beyond-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.cv-beyond-v {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+.cv-beyond-k {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ig-ink-dim);
+}
+
+.conv-modal {
+  width: min(900px, 94vw);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.conv-meta {
+  margin-top: 9px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ig-ink-dim);
+}
+
+.conv-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 36px;
+  margin-top: calc(8px * 2);
+  padding: 24px 26px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: 16px;
+}
+.ch-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ch-n {
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+.ch-unit {
+  font-size: 15px;
+  color: var(--ig-ink-dim);
+}
+.ch-side {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-left: auto;
+}
+.ch-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ch-fact-v {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+.ch-fact-v b {
+  font-weight: 600;
+}
+.ch-vs {
+  margin: 0 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ig-muted);
+}
+.ch-fact-k {
+  font-size: 15px;
+  color: var(--ig-ink-dim);
+}
+
+.balance {
+  margin-top: calc(8px * 2.5);
+}
+.balance .mini-h {
+  display: block;
+  margin-bottom: 8px;
+}
+.balance-track {
+  display: flex;
+  height: 64px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--ig-line-3);
+}
+.bal-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 0 16px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.bal-self {
+  background: rgba(47, 212, 240, 0.16);
+  border-right: 1px solid var(--ig-line-3);
+}
+/* ⚠ ORANGE AND NOT THE PROTOTYPE'S YELLOW (yuya's decision). The two sides of this ribbon are the
+   same two voices as the diverging rows below it — cyan is you, orange is them — and a third tint
+   for the same distinction made them read as unrelated measurements. */
+.bal-other {
+  background: rgba(232, 117, 78, 0.16);
+  text-align: right;
+  align-items: flex-end;
+}
+.bal-who {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
+}
+.bal-n {
+  font-size: 14px;
+  color: var(--ig-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.who-sends {
+  margin-top: calc(8px * 2.5);
+}
+.who-sends .mini-h {
+  display: block;
+  margin-bottom: 8px;
+}
+.ws-list {
+  display: grid;
+  gap: 1px;
+}
+.ws-row {
+  display: grid;
+  grid-template-columns: 96px 54px 1fr 1fr 54px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 0;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  color: var(--ig-muted);
+  text-align: left;
+  font-family: inherit;
+}
+.ws-label {
+  color: var(--ig-ink-dim);
+}
+.ws-n {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+.ws-n-self {
+  text-align: right;
+}
+.ws-bar {
+  display: block;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--ig-panel-hi);
+  overflow: hidden;
+}
+.ws-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+}
+.ws-bar-self {
+  transform: scaleX(-1);
+}
+
+.ws-sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ig-line);
+}
+.ws-sheet-k {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+}
+.ws-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.ws-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 10px 14px;
+  background: transparent;
+  border: 1px solid var(--ig-line-3);
+  border-radius: 10px;
+  color: var(--ig-ink-2);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+.ws-chip:hover {
+  border-color: var(--ig-accent);
+}
+.ws-chip b {
+  font-weight: 400;
+  color: var(--ig-muted);
+}
+.ws-chip.on {
+  border-color: var(--ig-accent-border);
+  background: var(--ig-accent-soft);
+  color: var(--ig-accent);
+}
+.ws-chip.on b {
+  color: var(--ig-accent);
+}
+
+.conv-spark {
+  margin-top: calc(8px * 2.5);
+}
+.conv-spark .mini-h {
+  display: block;
+  margin-bottom: 8px;
+}
+/* La frise prend TOUTE la largeur du bloc. Sa taille de rendu est mesurée en JS (voir
+   `ConvModal`) ; cette règle garantit qu'elle ne dépasse pas si la mesure et la mise en page
+   se croisent d'une trame. */
+.conv-spark canvas {
+  display: block;
+  max-width: 100%;
+}
+
+.conv-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+.member-chip {
+  padding: 2px 9px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line);
+  border-radius: 20px;
+  font-size: 11px;
+  color: var(--ig-ink-dim);
+}
+
+.conv-media {
+  margin-top: 14px;
+}
+.cm-year + .cm-year {
+  margin-top: 18px;
+}
+.cm-year-label {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0 8px;
+  background: linear-gradient(180deg, var(--ig-panel) 72%, transparent);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+.cm-year-n {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ig-muted);
+}
+.cm-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+  gap: 10px;
+}
+.cm-empty {
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--ig-muted);
+}
+.cm-month-tag {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 3px 0;
+  background: linear-gradient(0deg, rgba(7, 11, 24, 0.88), transparent);
+  font-size: 13px;
+  text-align: center;
+  color: var(--ig-muted);
+  opacity: 0.85;
+  pointer-events: none;
+}
+.cm-thumb:hover .cm-month-tag {
+  color: var(--ig-ink-bright);
+  opacity: 1;
+}
+
+.cm-thumb {
+  position: relative;
+  width: 100%;
+  height: 84px;
+  padding: 0;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  overflow: hidden;
+  background: var(--ig-panel-2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s;
+}
+.cm-thumb:hover {
+  border-color: var(--ig-accent);
+}
+.cm-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.cm-ph {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cm-ph.loading {
+  background: linear-gradient(
+    100deg,
+    var(--ig-panel) 30%,
+    var(--ig-panel-2) 50%,
+    var(--ig-panel) 70%
+  );
+  background-size: 200% 100%;
+  animation: cmshimmer 1.3s linear infinite;
+}
+@keyframes cmshimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+.cm-play {
+  position: absolute;
+  bottom: 4px;
+  right: 5px;
+  font-size: 11px;
+  color: var(--ig-ink-bright);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+.cm-audio {
+  display: grid;
+  place-items: center;
+}
+.cm-audio-orb {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, var(--ig-warm-panel), var(--ig-panel-2));
+  border: 1.5px solid var(--ig-violet);
+  position: relative;
+}
+.cm-audio-orb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 13px;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--ig-violet) 0 1.5px, transparent 1.5px 3.5px);
+}
+
+.cm-views {
+  display: flex;
+  gap: 6px;
+  margin: 18px 0 26px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--ig-line);
+}
+.cm-view {
+  padding: 14px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -3px;
+  color: var(--ig-ink-dim);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+.cm-view:hover {
+  color: var(--ig-ink-bright);
+}
+.cm-view.on {
+  border-bottom-color: var(--ig-accent);
+  color: var(--ig-accent);
+}
+.cm-view:focus-visible {
+  outline: 1px solid var(--ig-warm);
+  outline-offset: -2px;
+}
+.fi-th.on {
+  color: var(--ig-accent);
+}
+.fi-th:not(.on) .fi-arrow {
+  opacity: 0.25;
+}
+.fc-grid {
+  padding: 7px 12px;
+  gap: 10px;
+}
+
+.fc-grid {
+  grid-template-columns: minmax(0, 1.6fr) 78px 84px repeat(5, minmax(52px, 0.62fr));
+}
+.fc-c-msg {
+  text-align: right;
+  color: var(--ig-ink-bright);
+  font-weight: 500;
+}
+.fi-head .fc-c-msg {
+  color: var(--ig-muted);
+  font-weight: 400;
+}
+.fc-c-n {
+  text-align: right;
+  color: var(--ig-ink-2);
+}
+.fc-c-n.z {
+  color: var(--ig-faint);
+}
+.fi-head .fc-c-n {
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.fc-grp {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  margin-right: 8px;
+  vertical-align: -3px;
+  fill: none;
+  stroke: var(--ig-orange);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.fc-bal {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--ig-panel-hi);
+}
+.fc-bal i {
+  display: block;
+  height: 100%;
+}
+.fc-bal-self {
+  background: var(--ig-warm);
+}
+.fc-bal-other {
+  background: var(--ig-accent);
+}
+
+@media (max-width: 1040px) {
+  .fc-grid {
+    grid-template-columns: minmax(0, 1.6fr) 78px 84px;
+  }
+  .fc-c-n {
+    display: none;
+  }
+}
+.modal-pseudo {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--ig-ink-bright);
+  overflow-wrap: anywhere;
+}
+.modal-id {
+  display: flex;
+  flex-direction: column;
+  padding-right: 52px;
+}

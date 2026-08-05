@@ -1,0 +1,476 @@
+/* IDENTITY — the piece's own surfaces.
+ *
+ * ⚠ THE VALUE CARD'S RULES ARE NOT HERE. That card renders the reference table, which is a research
+ * PROPOSAL and gated shut (`value-table.ts`); porting its styles would leave CSS for a component
+ * that cannot mount. They come back with the ratification, from the same source.
+ *
+ * The shared bricks — `.card`, `.seg`, `.vw-tab`, `.learn-*` — are in `kit.css`, and every token in
+ * `shell.css`; both are loaded by the island. They moved out of here the day a second piece read
+ * them: a brick or a token left in one piece's sheet is absent from every other piece until that
+ * one has been visited, and going through identity first made it look fixed.
+ *
+ * ─── WHAT IS NOT HERE ───────────────────────────────────────────────────────────────────────────
+ *   - `.det-missing` AND `.det-absent`, the two lists of what an export does NOT contain. The
+ *     component states those absences in prose today, so the rules styled nothing.
+ */
+/* « 00 · L'identité » — navy theme, « Instagram Shell v4 » mockup. */
+
+.idt {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-width: 0;
+  animation: riseIn 0.5s ease backwards;
+}
+
+/* ================================= The hero =================================
+   The mockup sets an `auto-fit minmax(420px, 1fr)` here: at its own maximum width the content
+   column is 878 px, while two 420 tracks plus the gutter ask for 884 — so the hero ALWAYS folded,
+   the eye landing under the text rather than beside it. Explicit columns instead: the text takes
+   what is left, the eye keeps its width, and the stacking is asked for at the point where it
+   becomes useful rather than suffered. */
+.idt-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 44px;
+  align-items: center;
+  padding: 4px 0 8px;
+}
+.idt-hero-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.idt-h1 {
+  font-size: 44px;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: var(--ig-ink-bright);
+  text-wrap: balance;
+}
+.idt-lede {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ig-ink-dim);
+  max-width: 600px;
+}
+.idt-sub {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+  max-width: 600px;
+}
+.idt-hero-eye {
+  width: 100%;
+  max-width: 260px;
+  justify-self: end;
+}
+
+/* =========================== The identity band =========================== */
+.idt-band {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 24px 28px;
+  background: var(--ig-panel);
+  border: 1px solid var(--ig-line-2);
+  border-radius: var(--ig-r-card);
+}
+.idt-band-who {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.idt-handle {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ig-ink-bright);
+  overflow-wrap: anywhere;
+}
+.idt-opened {
+  font-size: 14px;
+  color: var(--ig-muted);
+}
+.idt-fiche {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.idt-fiche-k {
+  font-size: 13px;
+  line-height: 1;
+  color: var(--ig-muted);
+}
+.idt-fiche-v {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================== The two registers ============================== */
+.idt-regs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 18px;
+}
+/* A single filled register takes the full width, rather than occupying one column facing an
+   emptiness that would read as missing data. */
+.idt-regs.solo {
+  grid-template-columns: 1fr;
+}
+.reg-head {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.reg-guessed {
+  background: var(--ig-warm-panel);
+  border-color: var(--ig-warm-line);
+}
+.reg-rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.reg-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--ig-line);
+}
+.reg-row dt {
+  width: 98px;
+  flex: none;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ig-muted);
+}
+.reg-row dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ig-ink-2);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+/* The « guessed » register stacks rather than aligning: each of its rows carries a THIRD piece of
+   information — the « tu ne l'as jamais donné » mention — which is the card's whole point. */
+.reg-rows.guessed .reg-row {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  padding: 16px 0;
+  border-top-color: var(--ig-warm-line);
+}
+.reg-rows.guessed dt {
+  width: auto;
+  color: var(--ig-warm-label);
+}
+.reg-rows.guessed dd {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+}
+.reg-tag {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ig-warm-body);
+}
+.reg-foot {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-warm-label);
+  border-top: 1px solid var(--ig-warm-line);
+  padding-top: 16px;
+}
+
+.act-count {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ig-ink-dim);
+}
+.act-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: 24px;
+}
+.act-tile {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.act-tile-v {
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ig-accent);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.act-tile-k {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--ig-ink-dim);
+}
+.act-foot {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+  border-top: 1px solid var(--ig-line);
+  padding-top: 16px;
+}
+
+/* ============================== « En détail » ============================== */
+.det {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  animation: riseIn 0.3s ease backwards;
+}
+.det-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--ig-line);
+  padding-top: 20px;
+}
+.det-block:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+.det-h {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ig-ink-bright);
+}
+.det-lede {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ig-muted);
+  max-width: 78ch;
+}
+.det-note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ig-muted);
+}
+
+.det-bars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.det-bars li {
+  display: grid;
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr) 74px;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 0;
+}
+.det-bar-k {
+  font-size: 15px;
+  color: var(--ig-ink-dim);
+  min-width: 0;
+}
+.det-bar-track {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--ig-panel-hi);
+  overflow: hidden;
+}
+.det-bar-track i {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--ig-accent);
+}
+.det-bar-v {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.det-rows {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.det-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 13px 0;
+  border-top: 1px solid var(--ig-line);
+}
+.det-row dt {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  color: var(--ig-ink-dim);
+}
+.det-row dd {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ig-ink-bright);
+  font-variant-numeric: tabular-nums;
+}
+
+.det-past,
+.det-past li {
+  display: grid;
+  grid-template-columns: minmax(0, 110px) minmax(0, 150px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-top: 1px solid var(--ig-line);
+}
+.det-when {
+  font-size: 14px;
+  color: var(--ig-muted);
+  font-variant-numeric: tabular-nums;
+}
+.det-what {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  color: var(--ig-ink-dim);
+}
+.det-val {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ig-ink-bright);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ============================ The rest of the file ============================ */
+.idt-suite {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.idt-suite-h {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ig-ink-bright);
+}
+.suite-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+}
+.suite-card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  padding: 24px 26px;
+  background: var(--ig-panel);
+  border: 1px solid var(--ig-line-2);
+  border-radius: var(--ig-r-card);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.suite-card:hover:not(:disabled) {
+  border-color: var(--ig-accent);
+}
+.suite-card:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+.suite-label {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ig-muted);
+}
+.suite-big {
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ig-ink-bright);
+  overflow-wrap: anywhere;
+}
+.suite-sub {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ig-ink-dim);
+}
+.suite-state {
+  font-size: 13px;
+  color: var(--ig-accent);
+}
+
+.idt-foot {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ig-faint);
+}
+
+/* ================================ Responsive ================================ */
+@media (max-width: 900px) {
+  .idt-h1 {
+    font-size: 34px;
+  }
+  .idt-hero {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  /* The eye disappears when narrow (Yul's decision): placed under the text instead of beside
+     it, it illustrates nothing any more and pushes the first real datum half a screen down. It
+     stays at wide widths, where it holds its place in the composition. */
+  .idt-hero-eye {
+    display: none;
+    max-width: 200px;
+    justify-self: start;
+  }
+  .det-bars li {
+    grid-template-columns: minmax(0, 1fr) 74px;
+  }
+  .det-bar-track {
+    grid-column: 1 / -1;
+  }
+  .det-past li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+@media (max-width: 560px) {
+  /* `.card`, `.learn-panel` and `.seg` take the same narrowing from `kit.css`, where they live. */
+  .idt-band {
+    padding: 22px 18px;
+  }
+}

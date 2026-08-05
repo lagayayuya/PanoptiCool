@@ -1,0 +1,213 @@
+/* THE FILTER BAR — the axis buttons and their menus.
+ *
+ * Lifted from the prototype's `relations-shared.css`, which mixes them with the interactions
+ * module's own rules. ⚠ ONLY THE `.fm*` RULES ARE HERE: the rest belongs to a module that has not
+ * been ported, and carrying it would be shipping styles for components that do not exist.
+ *
+ * Tokens are the shell's; no colour is invented.
+ *
+ * ⚠ THE BAR'S FRAME IS HERE TOO (`.fbar`), not in the piece that renders it. The bar
+ * is meant to serve more than one piece with the same grammar, and a frame owned by the first
+ * caller is a frame the second one has to guess at. */
+
+/* The filter block, and the row of menus inside it. The search OPENS the row — the most direct
+   gesture, and it precedes the settings that refine. `wrap` and not a scroller: when narrow the axes
+   go to a second line, where they stay readable and reachable. */
+.rel-controls {
+  display: grid;
+  gap: 14px;
+}
+.filter-menus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.filter-menus .fm-search {
+  order: -1;
+}
+
+/* The reset is a PILL, like the axes it undoes — not a text link. It only appears once a filter
+   bites: an undo control over a whole population is a control with no object. */
+.query-reset {
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-pill);
+  color: var(--ig-ink-2);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.query-reset:hover {
+  border-color: var(--ig-warm);
+  color: var(--ig-ink-bright);
+}
+
+.fm {
+  position: relative;
+}
+
+.fm-btn {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 12px 15px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  color: var(--ig-ink-bright);
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.fm-btn:hover,
+.fm-btn.open {
+  border-color: var(--ig-accent);
+}
+
+/* A CONSTRAINED axis is marked by a cyan edge. It is the one piece of information one must be able
+   to take without reading: where the filter bites. */
+.fm-btn.on {
+  border-color: var(--ig-accent-border);
+}
+
+/* ⚠ NO `font-size` HERE, and that is the point.
+   The label pinned 14 px while the value beside it inherited the button's 15 px — and 12 px when
+   narrow, where it had been reduced. « Grain » and « Trimestre » therefore read at two sizes inside
+   one button, on three pages. One size per control: it is COLOUR that separates the label from the
+   value, never the type size. */
+.fm-axis {
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ig-muted);
+}
+
+.fm-value {
+  color: var(--ig-ink-bright);
+}
+
+.fm-btn.on .fm-value {
+  color: var(--ig-accent);
+}
+
+.fm-caret {
+  font-size: 10px;
+  color: var(--ig-accent);
+}
+
+.fm-pop {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 40;
+  min-width: 250px;
+  padding: 8px;
+  display: grid;
+  gap: 2px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: 14px;
+  box-shadow: var(--ig-shadow);
+}
+
+.fm-opt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 13px;
+  background: transparent;
+  border: none;
+  border-radius: 9px;
+  color: var(--ig-ink-bright);
+  font-family: inherit;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fm-opt:hover {
+  background: var(--ig-accent-hover);
+}
+
+.fm-opt.on {
+  color: var(--ig-accent);
+  background: var(--ig-accent-soft);
+}
+
+/* Round = single choice, square = combinable. The shape states the rule, replacing the sentence
+   « choix unique — un compte n'a qu'un seul lien » that used to sit under each row. */
+.fm-mark {
+  display: grid;
+  place-items: center;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border: 1px solid var(--ig-line-3);
+  border-radius: 50%;
+}
+
+.fm-opt.multi .fm-mark {
+  border-radius: 2px;
+}
+
+.fm-mark i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ig-accent);
+}
+
+.fm-opt.multi .fm-mark i {
+  border-radius: 1px;
+}
+
+.fm-opt-label {
+  flex: 1;
+}
+
+.fm-opt-count {
+  color: var(--ig-muted);
+  font-size: 14px;
+}
+
+.fm-sep {
+  height: 1px;
+  margin: 3px 7px;
+  background: var(--ig-line);
+}
+
+/* The search OPENS the row (Yul's decision): it is the most direct gesture — you type a name — and
+   it precedes the settings, which refine. Same visual family as the menus, but with more air: it is
+   free input, not a choice among n.
+   Narrow on purpose — a prefix field, not a writing area. Three words fit, and the width given back
+   goes to the menus, which carry the query's state. */
+.fm-search {
+  flex: 0 1 210px;
+  max-width: 210px;
+  min-width: 150px;
+  padding: 10px 13px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-3);
+  border-radius: var(--ig-r-ctl);
+  color: var(--ig-ink-bright);
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.fm-search:focus {
+  outline: none;
+  border-color: var(--ig-accent);
+}
+
+.fm-search::placeholder {
+  color: var(--ig-faint);
+}
+
+/* The reset is TEXT, not a button drawn like the axes: it undoes rather than chooses, and a fifth
+   control shaped like the four others is read as a fifth axis. */

@@ -1,0 +1,165 @@
+/* THE MEDIA VIEWER — one media, centred, above everything.
+ *
+ * Tokens remapped onto `--ig-*`; no colour is invented.
+ *
+ * ─── WHAT THIS SHEET DOES NOT COVER ─────────────────────────────────────────────────────────────
+ *   - NOTHING, now. The download button's rules came back with the control.
+ */
+
+.mv-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: rgba(4, 5, 6, 0.82);
+  backdrop-filter: blur(4px);
+  animation: riseIn 0.18s ease backwards;
+  padding: 24px;
+}
+.mv-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: min(90vw, 720px);
+  max-height: 88vh;
+  background: linear-gradient(180deg, var(--ig-panel-2), var(--ig-panel));
+  border: 1px solid var(--ig-line-strong);
+  border-radius: 8px;
+  box-shadow: var(--ig-shadow);
+  overflow: hidden;
+}
+.mv-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--ig-bg) 55%, transparent);
+  border: 1px solid var(--ig-line);
+  border-radius: 50%;
+  color: var(--ig-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.12s ease,
+    border-color 0.12s ease;
+}
+.mv-close:hover {
+  color: var(--ig-ink-2);
+  border-color: var(--ig-ink-dim);
+}
+.mv-stage {
+  flex: 1;
+  min-height: 200px;
+  display: grid;
+  place-items: center;
+  background: var(--ig-panel-2);
+  overflow: hidden;
+}
+.mv-stage img,
+.mv-stage video {
+  display: block;
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+}
+.mv-empty {
+  width: 100%;
+  min-height: 240px;
+}
+.mv-empty.mv-loading {
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    rgba(233, 231, 225, 0.03) 10px,
+    rgba(233, 231, 225, 0.03) 20px
+  );
+  animation: mvpulse 1.2s ease-in-out infinite;
+}
+@keyframes mvpulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+.mv-audio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+}
+.mv-audio-orb {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 40%, var(--ig-warm-panel), var(--ig-panel-2));
+  border: 2px solid var(--ig-violet);
+  position: relative;
+}
+.mv-audio-orb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 40px;
+  height: 22px;
+  background: repeating-linear-gradient(90deg, var(--ig-violet) 0 4px, transparent 4px 9px);
+  -webkit-mask: repeating-linear-gradient(90deg, #000 0 4px, transparent 4px 9px);
+}
+.mv-audio audio {
+  width: min(360px, 70vw);
+}
+.mv-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--ig-line);
+}
+.mv-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.mv-title {
+  font-size: 12.5px;
+  color: var(--ig-ink-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mv-sub {
+  font-size: 10.5px;
+  color: var(--ig-muted);
+}
+
+/* ————— The download ————— */
+.mv-dl {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  background: var(--ig-panel-2);
+  border: 1px solid var(--ig-line-strong);
+  border-radius: 4px;
+  color: var(--ig-ink-dim);
+  font-family: var(--ig-font-mono);
+  font-size: 11.5px;
+  cursor: pointer;
+  transition:
+    color 0.12s ease,
+    border-color 0.12s ease;
+}
+.mv-dl:hover:not(:disabled) {
+  color: var(--ig-ink-2);
+  border-color: var(--ig-accent);
+}
+.mv-dl:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
