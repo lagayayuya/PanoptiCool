@@ -58,7 +58,7 @@ export function isPublished(locale: Locale): boolean {
 }
 
 /**
- * The path of a page IN a language: `('fr', '/tiktok')` → `/fr/analyse`.
+ * The path of a page IN a language: `('fr', '/tiktok')` → `/fr/tiktok`.
  *
  * `path` is the path WITHOUT language, as it was written before this batch (« / », « /tiktok »,
  * « /tiktok?demo »). The root renders `/fr` and not `/fr/` — a single URL form, thus a single
@@ -80,7 +80,18 @@ export function localePath(locale: Locale, path: string): string {
  * Only what is VISITED and indexed enters here: neither the root (which redirects and canonizes to
  * the default language), nor the redirects of the old URLs.
  */
-export const PAGE_PATHS = ['/', '/tiktok', '/feuille-de-route', '/mentions-legales'] as const;
+// ⚠ `/instagram` JOINED THE LIST the day the home page started leading there. It was built in both
+// trees and left out of this list on purpose — a connector with a door of its own, not yet part of
+// the journey, so not yet a URL we asked to have indexed. Now the two platform cards open the same
+// consent modal onto their own route, and a page the home page links to that the sitemap does not
+// declare is an inconsistency nothing else would have reported.
+export const PAGE_PATHS = [
+  '/',
+  '/tiktok',
+  '/instagram',
+  '/feuille-de-route',
+  '/mentions-legales',
+] as const;
 
 /**
  * The site's public origin — ONE home, read by `astro.config.ts` for `site` and therefore by every
@@ -89,7 +100,7 @@ export const PAGE_PATHS = ['/', '/tiktok', '/feuille-de-route', '/mentions-legal
  * It also serves the ISLANDS, and that is why it is a constant rather than `Astro.site`: a
  * component running in the browser has no `Astro`, and reaching for `location.origin` instead
  * writes down wherever the page happens to be served from. That is not hypothetical — the export
- * guide's calendar reminder shipped a `URL:http://localhost:8080/fr/analyse` for exactly that
+ * guide's calendar reminder shipped a `URL:http://localhost:8080/fr/tiktok` for exactly that
  * reason, which is a link to nothing on anyone else's machine.
  */
 export const SITE_ORIGIN = 'https://panopti.cool';

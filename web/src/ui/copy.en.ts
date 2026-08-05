@@ -46,6 +46,13 @@ export const EN: UiCopy = {
     githubUrl: 'https://github.com/lagayayuya/PanoptiCool',
   },
 
+  UI_NOTFOUND: {
+    code: '404',
+    title: 'This page does not exist.',
+    body: 'The link may be old, or mistyped. Nothing is lost either way: the site keeps nothing about you, so there is nothing to recover.',
+    home: 'Go to the home page',
+  },
+
   UI_ROOT: {
     title: 'PanoptiCool',
     description: 'PanoptiCool — find out what your social networks know about you.',
@@ -55,9 +62,9 @@ export const EN: UiCopy = {
   UI_HEAD: {
     homeTitle: 'PanoptiCool — Find out what Instagram and TikTok know about you.',
     homeDescription:
-      'PanoptiCool opens your TikTok or Instagram export in your browser and makes it readable — 100% local, nothing is sent.',
-    analyseTitle: 'PanoptiCool — what TikTok could infer',
-    analyseDescription:
+      'PanoptiCool opens your Instagram or TikTok export in your browser and makes it readable — 100% local, nothing is sent.',
+    tiktokTitle: 'PanoptiCool — what TikTok could infer',
+    tiktokDescription:
       'Analyse your TikTok export entirely in your browser: rhythms, themes, sensitive signals — nothing leaves your device.',
     instagramTitle: 'PanoptiCool — what Instagram kept about you',
     instagramDescription:
@@ -67,6 +74,8 @@ export const EN: UiCopy = {
       "What's done, what's coming: the steps of PanoptiCool, one platform at a time.",
     legalTitle: 'PanoptiCool — legal notice',
     legalDescription: 'Publisher, host, and what PanoptiCool does not collect.',
+    notFoundTitle: 'PanoptiCool — page not found',
+    notFoundDescription: 'This address does not exist on PanoptiCool.',
     ogImageAlt:
       'PanoptiCool — find out what your social networks know about you. 100% local, open source, no account.',
   },
@@ -181,7 +190,6 @@ export const EN: UiCopy = {
     tiktokDemo: 'Try the TikTok demo',
 
     platformSoon: 'YouTube, Google and X are coming.',
-    platformComingSoon: 'Analysis coming soon',
 
     rightTitle:
       'You have the right to get your data back. Being able to read it is another matter.',
@@ -363,7 +371,7 @@ export const EN: UiCopy = {
     line3After: ', remember to close the tab and delete the export file afterwards.',
 
     consentCheckbox: 'I understand what this data is, and I choose to view my analysis.',
-    continueButton: 'Continue to the export →',
+    continueButton: (platform: string) => `Continue to my ${platform} export →`,
     laterButton: 'Not now',
   },
 
@@ -416,7 +424,7 @@ export const EN: UiCopy = {
       'A few examples of where a hand would be precious — this list is neither exhaustive nor ordered by priority.',
     helpItems: [
       'Enriching the analysis lexicons, in French as much as in English: suggesting words, phrases, colloquial variants. No technical skill needed.',
-      'Digging through your own export to spot what could still be drawn from it. The TikTok analysis was built from mine, where a lot of fields were empty: I have never posted content and ad personalization is off on my accounts, so whole sections remain unexplored. Don’t send me your export — just tell me what you find in it.',
+      'Digging through your own export to spot what could still be drawn from it. The analytical framework was built from mine, where a lot of fields were empty: For example, ad personalization is off on my accounts, so whole sections remain unexplored. Don’t send me your export — just tell me what you find in it.',
       'And more broadly: feedback, a bug, a sentence that rings wrong, a criticism, a piece of advice or an idea.',
     ],
     helpGithub: 'Browse the GitHub repository',
@@ -425,11 +433,13 @@ export const EN: UiCopy = {
 
   UI_ANALYSE: {
     kicker: 'local analysis',
-    titleDesktop: 'Drop your TikTok export',
-    titleMobile: 'Choose your TikTok export',
+    titleDesktop: (platform: string) => `Drop your ${platform} export`,
+    titleMobile: (platform: string) => `Choose your ${platform} export`,
     ledeLead: 'The file is read and analyzed entirely on this device — it never leaves. ',
-    ledeDesktop: 'Drag in the .zip you got from TikTok, or click to choose it.',
-    ledeMobile: 'Select the .zip you got from TikTok (often in “Files” or “Downloads”).',
+    ledeDesktop: (platform: string) =>
+      `Drag in the .zip ${platform} sent you, or click to choose it.`,
+    ledeMobile: (platform: string) =>
+      `Select the .zip ${platform} sent you (often in “Files” or “Downloads”).`,
     dropMain: 'Drag your export here',
     dropSub: 'or click to choose the file (.zip)',
     pickButtonMobile: 'Choose my .zip file',
@@ -437,9 +447,7 @@ export const EN: UiCopy = {
     loadingMain: 'Analyzing…',
     loadingSub: 'everything happens on this device, nothing is sent.',
 
-    hintLead:
-      'No export yet? In the TikTok app: Profile → Settings → Account → Download your data (JSON format). ',
-    hintDemoLink: 'Or try it with made-up data →',
+    hintDemoLink: 'Try it with made-up data →',
 
     badgeDemo: 'TikTok · demo',
     badgeReal: 'local analysis',
@@ -687,6 +695,8 @@ export const EN: UiCopy = {
 
     localDownloadText:
       'Download the local version of the site — here, or from GitHub if you want to check the code:',
+    localDownloadTextNoZip:
+      'The archive is not available from this page: this build of the site did not produce one. That is a choice rather than a fault — an incomplete archive would have handed you a dead map without saying so. Get the source from GitHub instead, and the command below works exactly the same:',
     localZipButton: (zipName: string) => `⬇ ${zipName}`,
     localGithubLink: 'Check the source on GitHub ↗',
     localCmdText:

@@ -15,7 +15,7 @@ const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 const head = headCopy(locale);
 ---
 
-<Page title={head.analyseTitle} description={head.analyseDescription} path="/tiktok">
+<Page title={head.tiktokTitle} description={head.tiktokDescription} path="/tiktok">
   <style is:global slot="page-style">
     html {
       scroll-behavior: smooth;

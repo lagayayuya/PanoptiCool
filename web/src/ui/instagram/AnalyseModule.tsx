@@ -17,9 +17,10 @@
 // ─── WHAT THIS PIECE DOES NOT DO ────────────────────────────────────────────────────────────────
 //   - IT SENDS NOTHING ANYWHERE BUT `localhost`. The only network recipient is the server on the
 //     person's machine, reached on an explicit click. There is no other endpoint in this file;
-//   - IT DOES NOT RENDER MARKDOWN. The model's answer is shown as it arrives, pre-wrapped, the same
-//     as the TikTok section. A renderer is a dependency and a surface, for a formatting the answer
-//     does not need;
+//   - IT RENDERS THE ANSWER'S MARKDOWN, through `v2/Markdown` — no dependency, no HTML injection,
+//     the same component the TikTok section uses. This piece shipped without it while keeping the
+//     `md` class whose only job is to hand the whitespace over to that renderer, so every answer
+//     arrived as one run-on block with its `###` showing;
 //   - IT DOES NOT KEEP THE ANSWER. Nothing is stored, nothing is exported. Reloading loses it, and
 //     that is the honest behaviour for a page that promises nothing leaves;
 //   - IT DOES NOT CHECK WHAT THE MODEL SAYS. Nothing here can: that is the demonstration, and the
@@ -63,6 +64,8 @@ import { currentLocale } from '../../i18n/current';
 import { UI_BRAND } from '../copy';
 import { UI_IG_ANALYSE, UI_IG_SHELL } from '../copy.instagram';
 import { formatInt } from '../format';
+import { useSiteZipReady } from '../useSiteZipReady';
+import { Markdown } from '../v2/Markdown';
 import { dayMonthYear } from './dates';
 import type { ModuleProps } from './InstagramPage';
 import './analyse.css';
@@ -177,6 +180,9 @@ export function AnalyseModule({ report, readThread }: ModuleProps) {
   const [learn, setLearn] = useState(false);
   const [termOpen, setTermOpen] = useState(false);
   const [route, setRoute] = useState<'site' | 'local'>('site');
+  // Same question route B asks on the TikTok page, from the same home: the tutorial is
+  // duplicated, the FACT about the site is not.
+  const zipReady = useSiteZipReady(route === 'local');
   const [payloadOpen, setPayloadOpen] = useState(false);
   const [payloadCopied, setPayloadCopied] = useState(false);
   const [realTokens, setRealTokens] = useState<number | null>(null);
@@ -422,25 +428,18 @@ export function AnalyseModule({ report, readThread }: ModuleProps) {
 
       {/* ————— 1. Start the model ————— */}
       <section class="card ca-step">
-        {/* The system choice sits IN the heading: it commands everything the card shows next, and
-            it used to sit under the first sentence it governs. */}
         <div class="kit-head">
           <h2>
             <span class="ca-num">1</span> {t.step1}
           </h2>
           <span class="kit-spacer" />
-          {/* Le dépliant du terminal PRÉCÈDE le choix du système : c'est la marche la plus haute
-              du parcours, et celle qu'aucune commande copiable ne franchit. La reléguer sous la
-              rangée la faisait manquer par ceux à qui elle s'adresse. */}
-          <button
-            type="button"
-            class="learn-btn"
-            aria-expanded={termOpen}
-            onClick={() => setTermOpen(!termOpen)}
-          >
-            {t.terminalSummary}{' '}
-            {termOpen ? UI_IG_SHELL.learnGlyphOpen : UI_IG_SHELL.learnGlyphClosed}
-          </button>
+        </div>
+
+        {/* ⚠ LE MÊME AGENCEMENT QUE TIKTOK (décision Yul) : le choix du système quitte la ligne
+            du titre et prend la sienne, le dépliant du terminal poussé à son extrémité DROITE.
+            Deux rangées plutôt qu'une : à 22 px le titre de l'étape ne partage plus sa ligne avec
+            quatre boutons, et les deux produits cessent de ranger les mêmes commandes autrement. */}
+        <div class="an-os-row">
           <span class="an-os-k">{t.osLabel}</span>
           <div class="ca-os">
             {(['macos', 'windows', 'linux'] as Os[]).map((o) => (
@@ -455,6 +454,16 @@ export function AnalyseModule({ report, readThread }: ModuleProps) {
               </button>
             ))}
           </div>
+          <span class="kit-spacer" />
+          <button
+            type="button"
+            class="learn-btn"
+            aria-expanded={termOpen}
+            onClick={() => setTermOpen(!termOpen)}
+          >
+            {t.terminalSummary}{' '}
+            {termOpen ? UI_IG_SHELL.learnGlyphOpen : UI_IG_SHELL.learnGlyphClosed}
+          </button>
         </div>
 
         {termOpen && (
@@ -566,11 +575,13 @@ export function AnalyseModule({ report, readThread }: ModuleProps) {
                 build. The old objection to a downloadable copy — a channel going stale against the
                 online site — does not hold: same build, same content. The prototype pointed at a
                 `dist/` one builds oneself, which is true there and would be a lie here. */}
-            <p class="ca-p">{t.localDownload}</p>
+            <p class="ca-p">{zipReady === false ? t.localDownloadNoZip : t.localDownload}</p>
             <div class="an-zip">
-              <a class="an-zip-btn" href={`/${SITE_ZIP_NAME}`} download>
-                {t.localZipButton(SITE_ZIP_NAME)}
-              </a>
+              {zipReady !== false && (
+                <a class="an-zip-btn" href={`/${SITE_ZIP_NAME}`} download>
+                  {t.localZipButton(SITE_ZIP_NAME)}
+                </a>
+              )}
               <a
                 class="an-zip-src"
                 href={UI_BRAND.githubUrl}
@@ -818,8 +829,10 @@ export function AnalyseModule({ report, readThread }: ModuleProps) {
         {(out !== '' || running) && (
           <>
             <div class="ca-out md" ref={outRef}>
-              {out}
-              {running && <span class="ca-caret">▍</span>}
+              <Markdown
+                text={out}
+                {...(running && { trailing: <span class="ca-caret">▍</span> })}
+              />
             </div>
             {runStats !== null && (
               <p class="ca-detail tnum">

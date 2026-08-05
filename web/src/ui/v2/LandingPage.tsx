@@ -13,9 +13,10 @@
 // target behind would go stale at the first locale added, with nothing to signal it.
 
 import { useState } from 'preact/hooks';
-import { localeHref } from '../../i18n/current';
+import { currentLocale, localeHref } from '../../i18n/current';
+import type { Locale } from '../../i18n/locales';
 import { UI_CONSENT, UI_GUIDE, UI_LANDING } from '../copy';
-import { ExportGuide, type GuideTarget } from './ExportGuide';
+import { ExportGuide, type GuidePlatform, type GuideTarget } from './ExportGuide';
 import { EyeLogo } from './EyeLogo';
 import { NAVY } from './palette';
 import { SiteFooter } from './SiteFooter';
@@ -24,18 +25,31 @@ import { useIsMobile } from './useIsMobile';
 
 // Paths WITHOUT language: `localeHref` sets it at render time. Keeping them here as module
 // constants would have frozen the language at module LOAD, before the page is necessarily read.
-const DEMO_PATH = '/tiktok?demo';
-const ANALYSE_PATH = '/tiktok';
+//
+// ⚠ ONE ROUTE PER PLATFORM, and the journey now walks both. This page used to know a single
+// `ANALYSE_PATH`, hard-wired to TikTok: the consent modal opened, was ticked, and led to the TikTok
+// drop zone whichever card had been clicked. Instagram reached its analysis by a door of its own on
+// `/instagram`, outside this journey entirely — which is the door Yul asked to close.
+const ROUTE: Record<GuidePlatform, string> = { tiktok: '/tiktok', instagram: '/instagram' };
 
 /**
- * Whether the Instagram connector is reachable.
+ * The two card previews. Static assets under `public/`, like the export guide's screenshots —
+ * fetched from this origin, never from a CDN. A path is an address, not prose.
  *
- * NOT a flag to be forgotten: the card renders in full either way, because the reader needs to know
- * what the export contains BEFORE requesting it — the file takes days to arrive. What the flag
- * governs is only whether the two buttons lead to an analysis or to the export guide. The commit
- * that lands the connector flips it, and nothing else here moves.
+ * ⚠ TIKTOK'S IS PER-LANGUAGE AND INSTAGRAM'S IS NOT, and the asymmetry is the point rather than an
+ * oversight. TikTok's picture is a DEDUCTION CARD: every word in it — the heading, « 3 sources », the
+ * whole « what can be done with it » panel — is interface text, so a single file meant an English
+ * reader met a French screenshot as the only evidence of what the product does. Instagram's is the
+ * media universe: handles and shapes, no interface text, nothing to translate. A second file there
+ * would be two copies of one image, drifting.
+ *
+ * Both are renders of the synthetic personas, and TikTok's is reproducible rather than promised:
+ * `scripts/shoot-preview.mjs <locale>` shoots it from the site's own `?demo` route.
  */
-const INSTAGRAM_LIVE = false;
+const PREVIEW_SRC: Record<GuidePlatform, (locale: Locale) => string> = {
+  tiktok: (locale) => `/previews/tiktok.${locale}.webp`,
+  instagram: () => '/previews/instagram.webp',
+};
 
 /**
  * The URLs of the two resource rails — the language-independent SPINE, paired BY INDEX with
@@ -56,8 +70,17 @@ export const ACT_URLS: readonly string[] = [
   'https://www.privacyguides.org/en/tools/',
 ];
 
-function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: boolean }) {
+function ConsentModal({
+  platform,
+  onClose,
+  isMobile,
+}: {
+  platform: GuidePlatform;
+  onClose: () => void;
+  isMobile: boolean;
+}) {
   const [checked, setChecked] = useState(false);
+  const name = platform === 'instagram' ? UI_LANDING.instagramName : UI_LANDING.tiktokName;
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents: close on click outside the modal — Esc would be a plus, not a prerequisite.
     // biome-ignore lint/a11y/noStaticElementInteractions: closing veil, not a control — the ✕ button stays the accessible path.
@@ -136,10 +159,10 @@ function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: bo
               ...(isMobile ? M_FULL_BTN : {}),
             }}
             onClick={() => {
-              if (checked) window.location.href = localeHref(ANALYSE_PATH);
+              if (checked) window.location.href = localeHref(ROUTE[platform]);
             }}
           >
-            {UI_CONSENT.continueButton}
+            {UI_CONSENT.continueButton(name)}
           </button>
           {isMobile && (
             <button type="button" style={{ ...LATER_BTN, ...M_FULL_BTN }} onClick={onClose}>
@@ -153,7 +176,8 @@ function ConsentModal({ onClose, isMobile }: { onClose: () => void; isMobile: bo
 }
 
 export function LandingPage() {
-  const [consentOpen, setConsentOpen] = useState(false);
+  /** `null` = closed. It carries WHICH platform was clicked: the modal's button leads there. */
+  const [consentFor, setConsentFor] = useState<GuidePlatform | null>(null);
   // `null` = closed. The hero opens the guide on its picker; each platform card opens it straight
   // on its own steps.
   const [guideTarget, setGuideTarget] = useState<GuideTarget | null>(null);
@@ -166,23 +190,17 @@ export function LandingPage() {
     open: string;
     demo: string;
     accent: string;
-    live: boolean;
-    guide: GuideTarget;
+    platform: GuidePlatform;
   }) => (
     <div style={PLATFORM_CARD}>
-      {/* The card LEADS with the platform's name over a panel — the mockup's masthead, minus its
-          image. ⚠ THE PANEL IS EMPTY ON PURPOSE, in both cards. The mockup's previews are renders
-          of a REAL export (actual photographs), which cannot enter a public repo, and the v5
-          analysis page is about to change what a render even looks like — so a preview built now
-          would be a picture of a screen that no longer exists. Both get filled from the synthetic
-          persona once that page has settled. */}
-      <div style={PREVIEW}>
-        <span aria-hidden="true" style={PREVIEW_FADE} />
-        <div style={PREVIEW_ID}>
-          <span style={PREVIEW_NAME}>{p.name}</span>
-        </div>
-      </div>
+      {/* ⚠ THE CARD IS INVERTED (« Accueil v4 », 2026-08-05): the platform's NAME and the two
+          BUTTONS are at the top, the picture at the bottom. It used to open on a masthead — the
+          name set over the image — which meant the two things one comes to the card to do, know
+          which platform it is and start, sat at opposite ends with three paragraphs between them.
+          Read top to bottom it is now: which platform, what it holds, what to press, what it
+          looks like. */}
       <div style={isMobile ? M_PLATFORM_BODY : PLATFORM_BODY}>
+        <span style={PLATFORM_NAME}>{p.name}</span>
         <span style={PLATFORM_LEDE}>{p.lede}</span>
         <span style={DIVIDER} />
         <div style={BULLETS}>
@@ -199,20 +217,65 @@ export function LandingPage() {
             type="button"
             class="hv-br"
             style={{ ...PLATFORM_CTA, background: p.accent }}
-            onClick={() => (p.live ? setConsentOpen(true) : setGuideTarget(p.guide))}
+            onClick={() => setConsentFor(p.platform)}
           >
             {p.open}
           </button>
-          {p.live ? (
-            <a href={localeHref(DEMO_PATH)} class="hv-bd" style={PLATFORM_DEMO}>
-              {p.demo}
-            </a>
-          ) : (
-            <span style={PLATFORM_SOON_TAG}>{UI_LANDING.platformComingSoon}</span>
-          )}
+          {/* ⚠ BOTH CARDS ARE LIVE. A flag used to send the Instagram card to the export guide
+              instead of the analysis, and its demo link was replaced by a « bientôt disponible »
+              tag — the connector has landed, and the demo builds a real archive. */}
+          <a href={localeHref(`${ROUTE[p.platform]}?demo`)} class="hv-bd" style={PLATFORM_DEMO}>
+            {p.demo}
+          </a>
+        </div>
+      </div>
+
+      {/* ⚠ THE TWO PICTURES ARE RENDERS OF THE SYNTHETIC PERSONAS, which is the condition under
+          which this panel could be filled at all: the mockup's own previews were renders of a REAL
+          export, actual photographs, and no such image can enter a public repository. Instagram's
+          is the crowd of `?demo` accounts, TikTok's a deduction card built from the demo corpus —
+          both reproducible from the repo by opening `?demo`, neither carrying anyone's data. */}
+      <div style={isMobile ? M_PREVIEW : PREVIEW}>
+        <div style={PREVIEW_FRAME}>
+          {/* `alt=""`: the picture illustrates, it does not inform — the name, the lede and the
+              bullets above it carry everything a reader needs. */}
+          <img src={PREVIEW_SRC[p.platform](currentLocale())} alt="" style={PREVIEW_IMG} />
+          {/* ⚠ THE GRADIENT IS THE OTHER WAY UP than it was. Under a masthead it darkened the
+              BOTTOM so the name could be read over it; at the foot of the card it has the opposite
+              job — fade the picture's TOP edge into the content above, so the panel joins the card
+              instead of being stuck under it. */}
+          <span aria-hidden="true" style={PREVIEW_FADE} />
         </div>
       </div>
     </div>
+  );
+
+  /** ⚠ THE LEDE IS SEPARATE FROM WHAT FOLLOWS IT, and only because the eye is centred ON IT — see
+   *  the hero. Mobile stacks the two back together and never notices the seam. */
+  const heroLede = <p style={isMobile ? M_HERO_LEDE : HERO_LEDE_CELL}>{UI_LANDING.heroLede}</p>;
+
+  /** The call to action and the three guarantees. Written once: the desktop hero gives them a row of
+   *  their own under the lede, the mobile one stacks everything, and the two must not drift. */
+  const heroActions = (
+    <>
+      {/* Getting the archive is the first obstacle and by far the biggest — the guide is the
+          hero's call to action. Sized to its content, not to the column: it opens a modal,
+          it does not start the analysis, and a full-width filled button claimed otherwise. */}
+      <div style={CTA_ROW}>
+        <button type="button" class="hv-cta" style={CTA} onClick={() => setGuideTarget('pick')}>
+          {UI_GUIDE.openLabel}
+          <span style={CTA_ARROW}>→</span>
+        </button>
+      </div>
+      <div style={isMobile ? M_TRUST_COL : TRUST_ROW}>
+        {UI_LANDING.trust.map((t) => (
+          <span key={t} style={TRUST_ITEM}>
+            <span style={TRUST_DOT} />
+            {t}
+          </span>
+        ))}
+      </div>
+    </>
   );
 
   return (
@@ -221,39 +284,47 @@ export function LandingPage() {
 
       <div style={isMobile ? M_SHELL : SHELL}>
         {/* --- Hero ---------------------------------------------------------------------------- */}
-        <div style={isMobile ? undefined : HERO}>
-          <div style={isMobile ? M_HERO_COL : HERO_COL}>
-            <h1 style={isMobile ? M_HERO_TITLE : HERO_TITLE}>{UI_LANDING.heroTitle}</h1>
-            <p style={isMobile ? M_HERO_LEDE : HERO_LEDE}>{UI_LANDING.heroLede}</p>
-            {/* Getting the archive is the first obstacle and by far the biggest — the guide is the
-                hero's call to action. Sized to its content, not to the column: it opens a modal,
-                it does not start the analysis, and a full-width filled button claimed otherwise. */}
-            <div style={CTA_ROW}>
-              <button
-                type="button"
-                class="hv-cta"
-                style={CTA}
-                onClick={() => setGuideTarget('pick')}
-              >
-                {UI_GUIDE.openLabel}
-                <span style={CTA_ARROW}>→</span>
-              </button>
-            </div>
-            <div style={isMobile ? M_TRUST_COL : TRUST_ROW}>
-              {UI_LANDING.trust.map((t) => (
-                <span key={t} style={TRUST_ITEM}>
-                  <span style={TRUST_DOT} />
-                  {t}
-                </span>
-              ))}
+        {/* ⚠ THE TITLE SPANS BOTH COLUMNS, and that is what lets the eye exist at all.
+            The eye used to be a second grid track sized `auto` around an element declared
+            `width: 100%` — a circular definition, which resolves to zero: the eye was in the markup
+            and measured nothing on screen. Giving that track a real width would have taken 320 px
+            off the title's, dropping it from two balanced lines to three. So the title is lifted out
+            of the text column onto a row of its own, where it keeps the 830 px it always had, and
+            the eye faces the LEDE — which caps at 640 and was leaving that space empty anyway.
+
+            ⚠ AND EVERY CELL IS PLACED BY HAND. Three rows — title, paragraph, then the button and
+            the guarantees — because the eye is centred on the PARAGRAPH alone, to its right, and a
+            row holding anything else moves that centre: on the whole column it landed level with the
+            button, at that column's top it was still 60 px low.
+            ⚠ THE PLACEMENT IS NOT DECORATION. Left to auto-placement, grid filled row 2 column 2
+            with the button block and pushed the eye down to row 3 column 1, where a track of 640 px
+            stretched it across the paragraph. That is the state Yul saw. Four items, four explicit
+            addresses. */}
+        {isMobile ? (
+          <div style={M_HERO_COL}>
+            <h1 style={M_HERO_TITLE}>{UI_LANDING.heroTitle}</h1>
+            {heroLede}
+            {heroActions}
+          </div>
+        ) : (
+          <div style={HERO}>
+            <h1 style={HERO_TITLE_SPAN}>{UI_LANDING.heroTitle}</h1>
+            {heroLede}
+            <div style={HERO_ACTIONS_CELL}>{heroActions}</div>
+            {/* ⚠ A CELL OF ZERO HEIGHT, and that is the whole mechanism. The eye is 180 px tall and
+                the paragraph about 90: placed in that row as an ordinary item it would stretch the
+                row to its own height and push the button half a screen down. So the cell contributes
+                NO height — grid centres an empty box on the row, i.e. on the paragraph's middle —
+                and the eye hangs from that point, half above and half below. It overflows upward
+                beside the title's last line, which is free space: the title stops at 830 px and this
+                track starts at 870. */}
+            <div style={HERO_EYE_CELL}>
+              <div style={HERO_EYE}>
+                <EyeLogo variant="hero" />
+              </div>
             </div>
           </div>
-          {!isMobile && (
-            <div style={HERO_EYE}>
-              <EyeLogo variant="hero" />
-            </div>
-          )}
-        </div>
+        )}
 
         {/* --- The two connectors -------------------------------------------------------------- */}
         <div style={isMobile ? M_PLATFORM_GRID : PLATFORM_GRID}>
@@ -264,8 +335,7 @@ export function LandingPage() {
             open: UI_LANDING.instagramOpen,
             demo: UI_LANDING.instagramDemo,
             accent: NAVY.instagram,
-            live: INSTAGRAM_LIVE,
-            guide: 'instagram',
+            platform: 'instagram',
           })}
           {platformCard({
             name: UI_LANDING.tiktokName,
@@ -274,8 +344,7 @@ export function LandingPage() {
             open: UI_LANDING.tiktokOpen,
             demo: UI_LANDING.tiktokDemo,
             accent: NAVY.accent,
-            live: true,
-            guide: 'tiktok',
+            platform: 'tiktok',
           })}
           <div style={SOON_BOX}>
             <span style={SOON_TEXT}>{UI_LANDING.platformSoon}</span>
@@ -331,14 +400,13 @@ export function LandingPage() {
             {UI_LANDING.whyTextAfter}
           </p>
           <div style={WHY_LINKS}>
-            <a href={localeHref(DEMO_PATH)} class="hv-cy" style={WHY_LINK}>
+            {/* Instagram first, as in the cards above and in the export guide's picker. */}
+            <a href={localeHref(`${ROUTE.instagram}?demo`)} class="hv-bd" style={WHY_LINK}>
+              {UI_LANDING.whyDemoInstagram}
+            </a>
+            <a href={localeHref(`${ROUTE.tiktok}?demo`)} class="hv-cy" style={WHY_LINK}>
               {UI_LANDING.whyDemoTikTok}
             </a>
-            {INSTAGRAM_LIVE && (
-              <a href={localeHref(DEMO_PATH)} class="hv-bd" style={WHY_LINK}>
-                {UI_LANDING.whyDemoInstagram}
-              </a>
-            )}
           </div>
         </div>
 
@@ -365,7 +433,13 @@ export function LandingPage() {
         <SiteFooter />
       </div>
 
-      {consentOpen && <ConsentModal onClose={() => setConsentOpen(false)} isMobile={isMobile} />}
+      {consentFor !== null && (
+        <ConsentModal
+          platform={consentFor}
+          onClose={() => setConsentFor(null)}
+          isMobile={isMobile}
+        />
+      )}
       {guideTarget !== null && (
         <ExportGuide target={guideTarget} onClose={() => setGuideTarget(null)} />
       )}
@@ -578,11 +652,16 @@ const PAGE = { minHeight: '100vh', background: NAVY.bgPage, color: NAVY.textBrig
 const SHELL = { maxWidth: '1080px', margin: '0 auto', padding: '0 40px' } as const;
 const M_SHELL = { ...SHELL, padding: '0 20px' } as const;
 
+// Three rows: the title spanning both columns, the LEDE ALONE, then the call to action and the
+// guarantees. The eye takes the lede's row in the second column — see the hero's markup for why
+// that row has to hold nothing else.
 const HERO = {
   display: 'grid',
-  gridTemplateColumns: 'minmax(0, 1fr) auto',
+  // The eye's track has a real width — see the hero's comment on why `auto` could not.
+  gridTemplateColumns: 'minmax(0, 1fr) minmax(180px, 320px)',
   alignItems: 'center',
-  gap: '40px',
+  columnGap: '40px',
+  rowGap: '26px',
   padding: '104px 0 60px',
 } as const;
 const HERO_COL = {
@@ -590,10 +669,32 @@ const HERO_COL = {
   flexDirection: 'column',
   gap: '26px',
   minWidth: 0,
-  maxWidth: '830px',
 } as const;
 const M_HERO_COL = { ...HERO_COL, gap: '20px', padding: '52px 0 40px' } as const;
-const HERO_EYE = { minWidth: 0 } as const;
+/**
+ * ⚠ ZERO HEIGHT. It is a grid item so that the eye inherits the track's width and position, and it
+ * is `height: 0` so that the eye's 180 px never reach the row's sizing — the paragraph's row must
+ * stay the paragraph's height, or the button below it moves.
+ *
+ * `alignSelf: center` on a box of no height resolves to a single point: the row's middle, which is
+ * the paragraph's middle. The eye is hung from that point below.
+ */
+const HERO_EYE_CELL = {
+  gridColumn: 2,
+  gridRow: 2,
+  minWidth: 0,
+  height: 0,
+  alignSelf: 'center',
+  position: 'relative',
+} as const;
+/** Half above the anchor point, half below — which is what centres it on the lede. */
+const HERO_EYE = {
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: 0,
+  transform: 'translateY(-50%)',
+} as const;
 const HERO_TITLE = {
   margin: 0,
   fontSize: '66px',
@@ -602,6 +703,14 @@ const HERO_TITLE = {
   letterSpacing: '-0.038em',
   color: '#ffffff',
   textWrap: 'balance',
+} as const;
+/** ⚠ The 830 px MOVED HERE FROM THE COLUMN — it is the measure that gives this title its two
+ *  balanced lines, and it now travels with the title rather than with whatever else sits under it. */
+const HERO_TITLE_SPAN = {
+  ...HERO_TITLE,
+  gridColumn: '1 / -1',
+  gridRow: 1,
+  maxWidth: '830px',
 } as const;
 const M_HERO_TITLE = { ...HERO_TITLE, fontSize: '34px', lineHeight: 1.12 } as const;
 const HERO_LEDE = {
@@ -612,6 +721,11 @@ const HERO_LEDE = {
   maxWidth: '640px',
 } as const;
 const M_HERO_LEDE = { ...HERO_LEDE, fontSize: '15px' } as const;
+/** ⚠ ROW 2, COLUMN 1, EXPLICITLY — the row the eye is centred on. See the hero's markup for
+ *  what auto-placement did with these four items when none of them said where it went. */
+const HERO_LEDE_CELL = { ...HERO_LEDE, gridColumn: 1, gridRow: 2 } as const;
+/** Row 3, under the paragraph: the button and the guarantees, clear of the eye's row. */
+const HERO_ACTIONS_CELL = { ...HERO_COL, gridColumn: 1, gridRow: 3 } as const;
 
 // ⚠ The call to action OPENS A MODAL — it does not start the analysis. The mockup gives it the
 // recessed treatment for that reason, and sizes it to its content: a full-width filled button
@@ -675,41 +789,61 @@ const PLATFORM_CARD = {
   borderRadius: '22px',
   overflow: 'hidden',
 } as const;
-const PREVIEW = {
+/**
+ * ⚠ THE PICTURE IS INSET, NOT FULL-BLEED (Yul's decision). Edge to edge it read as a background
+ * rather than as a screenshot: at card width the crowd of accounts is a texture, and one cannot see
+ * that they ARE accounts. A margin of the card's own navy on all four sides does two things at
+ * once — it gives the image a frame the eye can stop at, and it takes enough width off it that the
+ * detail is legible instead of filling the space.
+ *
+ * The 16:10 box over 16:9 files is what crops them SIDEWAYS: `cover` on a container shorter than
+ * its image trims left and right, about 5 % each, and the whole height survives. That is the
+ * instruction, and the reason this stays 16:10 rather than being re-cut to the assets.
+ */
+const PREVIEW = { padding: '4px 18px 18px', background: NAVY.bgCard } as const;
+const M_PREVIEW = { ...PREVIEW, padding: '2px 14px 14px' } as const;
+/** Carries the rounding and the corner clip, so the veil follows the picture whatever the padding
+ *  around it — the mobile inset is not the desktop one, and an absolute veil measured against the
+ *  outer box would have had to know that. */
+const PREVIEW_FRAME = {
   position: 'relative',
-  aspectRatio: '16 / 10',
+  borderRadius: '14px',
   overflow: 'hidden',
   background: NAVY.bgInset,
 } as const;
+const PREVIEW_IMG = {
+  display: 'block',
+  width: '100%',
+  aspectRatio: '16 / 10',
+  objectFit: 'cover',
+} as const;
+/** Reversed: opaque at the TOP, fading out downward — see the markup. `pointer-events: none` so it
+ *  is a veil and not a surface. */
 const PREVIEW_FADE = {
   position: 'absolute',
   inset: 0,
+  pointerEvents: 'none',
   background:
-    'linear-gradient(180deg, rgba(7,11,24,.10) 0%, rgba(7,11,24,.05) 42%, rgba(14,20,42,.92) 100%)',
+    'linear-gradient(180deg, rgba(14,20,42,.92) 0%, rgba(7,11,24,.18) 34%, rgba(7,11,24,0) 68%)',
 } as const;
-const PREVIEW_ID = {
-  position: 'absolute',
-  left: '24px',
-  bottom: '20px',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '14px',
-} as const;
-const PREVIEW_NAME = {
+/** The platform's name, now at the head of the card rather than set over the picture. */
+const PLATFORM_NAME = {
   fontSize: '31px',
   fontWeight: 600,
   lineHeight: 1,
   letterSpacing: '-0.028em',
   color: '#ffffff',
 } as const;
+// The body now opens the card, so it carries the top margin the masthead used to; the bottom
+// padding shrinks because the picture's own inset follows it.
 const PLATFORM_BODY = {
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',
   flex: 1,
-  padding: '22px 26px 26px',
+  padding: '28px 26px 22px',
 } as const;
-const M_PLATFORM_BODY = { ...PLATFORM_BODY, padding: '20px 18px 22px' } as const;
+const M_PLATFORM_BODY = { ...PLATFORM_BODY, padding: '24px 18px 18px' } as const;
 const PLATFORM_LEDE = { fontSize: '13px', lineHeight: 1.55, color: NAVY.textMuted } as const;
 const DIVIDER = { height: '1px', background: NAVY.donutRest } as const;
 const BULLETS = { display: 'flex', flexDirection: 'column', gap: '11px' } as const;
@@ -755,12 +889,6 @@ const PLATFORM_DEMO = {
   padding: '15px 22px',
   textAlign: 'center',
   textDecoration: 'none',
-} as const;
-const PLATFORM_SOON_TAG = {
-  fontSize: '13px',
-  color: NAVY.textDim,
-  textAlign: 'center',
-  padding: '15px 22px',
 } as const;
 const SOON_BOX = {
   gridColumn: '1 / -1',
@@ -834,15 +962,18 @@ const STAT_LABEL = { fontSize: '14px', lineHeight: 1.5, color: NAVY.textBody } a
 const STAT_DIVIDER = { height: '1px', background: NAVY.borderCard } as const;
 
 // --- The tail: consequences, why, rails ---
+// ⚠ THE BOTTOM PADDING IS NOT COSMETIC — it was `0`, so the footer's last line sat flush against
+// the window's edge while every other page of the site wraps its footer in `0 40px 40px`. The home
+// page was the odd one out, and the tagline looked cut off rather than placed.
 const TAIL = {
   maxWidth: '1080px',
   margin: '0 auto',
-  padding: '92px 40px 0',
+  padding: '92px 40px 40px',
   display: 'flex',
   flexDirection: 'column',
   gap: '34px',
 } as const;
-const M_TAIL = { ...TAIL, padding: '56px 20px 0', gap: '26px' } as const;
+const M_TAIL = { ...TAIL, padding: '56px 20px 28px', gap: '26px' } as const;
 const SECTION_HEAD = {
   display: 'flex',
   flexDirection: 'column',

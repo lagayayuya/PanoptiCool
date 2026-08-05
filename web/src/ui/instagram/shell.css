@@ -66,28 +66,32 @@
   --ig-r-pill: 20px;
 }
 
+/* ⚠ A FLEX COLUMN, so the footer sits at the BOTTOM of the page rather than under the last line of
+   content. `100dvh` and not `100vh`: on a phone the latter counts the address bar as though it were
+   never there, which puts the footer just under the fold with nothing left to scroll to. */
 .ig-shell {
-  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   background: var(--ig-bg);
   background-image: radial-gradient(1100px 620px at 50% -8%, var(--ig-bg-top), transparent 70%);
   color: var(--ig-ink-bright);
 }
 
 .ig-stage {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
   max-width: 1240px;
   margin: 0 auto;
   padding: 40px 40px 80px;
 }
 
-/* --- Landing ------------------------------------------------------------------------------- */
-
-.ig-landing {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 720px;
-  padding: 40px 0 0;
-}
+/* --- The way in ---------------------------------------------------------------------------- */
+/* ⚠ THE LANDING'S OWN RULES ARE GONE with the landing itself (`.ig-landing`, `.ig-title`,
+   `.ig-stamp`, `.ig-lede`, the file overlay and the guarantees list). This journey now opens on the
+   shared « Dépose ton export » (`ui/v2/DropScreen`), reached from the home page like TikTok's. What
+   is left below is what that screen borrows for Instagram's second route and its two notes. */
 
 .ig-kicker {
   font-size: 13px;
@@ -95,28 +99,6 @@
   letter-spacing: 0.02em;
   color: var(--ig-muted);
   margin: 0;
-}
-
-.ig-title {
-  margin: 0;
-  font-size: 44px;
-  font-weight: 600;
-  line-height: 1.12;
-  letter-spacing: -0.03em;
-  color: #fff;
-  text-wrap: balance;
-}
-
-/* The platform's name is the subject of the sentence, and carries the connector's accent. */
-.ig-stamp {
-  color: var(--ig-stamp);
-}
-
-.ig-lede {
-  margin: 0;
-  font-size: 17px;
-  line-height: 1.65;
-  color: var(--ig-ink-dim);
 }
 
 .ig-actions {
@@ -149,22 +131,6 @@
   filter: none;
 }
 
-/* ⚠ The file input covers its label instead of being `display: none`. A hidden input is not
-   reliably activated by a label click in every engine — the same reason the TikTok drop zone has
-   always used this pattern. */
-.ig-file-label {
-  position: relative;
-  overflow: hidden;
-}
-.ig-file-input {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
-}
-
 .ig-btn-ghost {
   cursor: pointer;
   font: 500 15px / 1.2 inherit;
@@ -179,72 +145,22 @@
   border-color: var(--ig-accent);
 }
 
-.ig-hint,
-.ig-size-note {
+/* `.ig-size-note` went with the sentence it dressed — Yul removed « un export de plusieurs
+   gigaoctets s'ouvre… » from the perimeter, and a rule for prose nobody writes is a rule for
+   nobody. */
+.ig-hint {
   margin: 0;
   font-size: 14px;
   line-height: 1.6;
   color: var(--ig-muted);
 }
 
-.ig-guarantees {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
-}
-.ig-guarantees li {
-  display: flex;
-  gap: 12px;
-  font-size: 15px;
-  line-height: 1.55;
-  color: var(--ig-ink-dim);
-}
-.ig-dot {
-  flex: none;
-  width: 6px;
-  height: 6px;
-  margin-top: 9px;
-  border-radius: 50%;
-  background: var(--ig-accent);
-}
-
 /* --- Reading the archive ------------------------------------------------------------------- */
-
-.ig-analysing {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  max-width: 620px;
-  padding: 60px 0;
-}
-
-.ig-phase {
-  font-size: 20px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.ig-progress-track {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--ig-panel);
-  overflow: hidden;
-}
-.ig-progress-fill {
-  height: 100%;
-  background: var(--ig-accent);
-  transition: width 0.2s ease-out;
-}
-
-/* Tabular figures: a counter that shifts its digits while it climbs reads as instability. */
-.ig-progress-meta {
-  font-size: 14px;
-  color: var(--ig-muted);
-  font-variant-numeric: tabular-nums;
-}
+/* ⚠ THIS JOURNEY'S OWN WAITING SCREEN IS GONE (Yul's decision) — its column, its phase heading, its
+   progress bar and its counter. Both connectors now wait on the same screen, TikTok's
+   (`ui/v2/LoadingScreen`), because the two demos are one click apart from the home page and the
+   divergence showed the moment anyone tried both. The phase and the count survive as that screen's
+   one detail line; the bar does not. */
 
 /* --- Notices ------------------------------------------------------------------------------- */
 
@@ -399,9 +315,6 @@
 @media (max-width: 720px) {
   .ig-stage {
     padding: 24px 20px 56px;
-  }
-  .ig-title {
-    font-size: 30px;
   }
   .ig-dashboard {
     grid-template-columns: minmax(0, 1fr);

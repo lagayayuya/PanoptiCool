@@ -80,6 +80,19 @@ export const FR = {
   // does not fire (redirect disabled, bot, connection cut mid-flight): it is a net, not
   // a screen. It stays written here anyway — "no literal visible in a component" does not
   // relax because a text is rare, otherwise the rule no longer means anything.
+  /**
+   * ⚠ CE GROUPE EST LU DANS LES DEUX LANGUES À LA FOIS par `pages/404.astro`, et c'est le seul du
+   * catalogue dans ce cas. Une URL fautive n'appartient à aucun arbre de langue : la page ne peut
+   * pas deviner qui la lit, donc elle rend les deux blocs. Chaque fichier ne porte que SA langue —
+   * c'est la page qui importe les deux bundles, comme `head-copy.ts` le fait par paramètre.
+   */
+  UI_NOTFOUND: {
+    code: '404',
+    title: 'Cette page n’existe pas.',
+    body: 'Le lien est peut-être ancien, ou mal recopié. Rien n’est perdu pour autant : le site ne garde rien de toi, donc il n’y a rien à récupérer.',
+    home: 'Aller à l’accueil',
+  },
+
   UI_ROOT: {
     title: 'PanoptiCool',
     description: 'PanoptiCool — découvre ce que tes réseaux savent de toi.',
@@ -100,9 +113,9 @@ export const FR = {
   UI_HEAD: {
     homeTitle: 'PanoptiCool — Découvre ce que Instagram et TikTok savent de toi.',
     homeDescription:
-      "PanoptiCool ouvre ton export TikTok ou Instagram dans ton navigateur et te le rend lisible — 100 % local, rien n'est envoyé.",
-    analyseTitle: 'PanoptiCool — ce que TikTok pourrait déduire',
-    analyseDescription:
+      "PanoptiCool ouvre ton export Instagram ou TikTok dans ton navigateur et te le rend lisible — 100 % local, rien n'est envoyé.",
+    tiktokTitle: 'PanoptiCool — ce que TikTok pourrait déduire',
+    tiktokDescription:
       'Analyse ton export TikTok entièrement dans ton navigateur : rythmes, thèmes, signaux sensibles — rien ne quitte ton appareil.',
     instagramTitle: 'PanoptiCool — ce qu’Instagram a gardé de toi',
     instagramDescription:
@@ -115,6 +128,8 @@ export const FR = {
     // The alternative text of the share image. It was written ONCE, in French, in
     // `SiteHead.astro` — so the English tree served a French alt to every preview bot and every
     // screen reader that reached it.
+    notFoundTitle: 'PanoptiCool — page introuvable',
+    notFoundDescription: 'Cette adresse n’existe pas sur PanoptiCool.',
     ogImageAlt:
       'PanoptiCool — découvre ce que tes réseaux savent de toi. 100 % local, open source, sans compte.',
   },
@@ -264,7 +279,6 @@ export const FR = {
     tiktokDemo: 'Essayer la démo TikTok',
 
     platformSoon: 'YouTube, Google, X arrivent.',
-    platformComingSoon: 'Analyse bientôt disponible',
 
     // --- The right, and what it actually gets you ---
     rightTitle: 'Tu as le droit de récupérer tes données. Encore faut-il pouvoir les lire.',
@@ -480,7 +494,9 @@ export const FR = {
 
     consentCheckbox:
       'J’ai compris la nature de ces données et je choisis de consulter mon analyse.',
-    continueButton: 'Continuer vers l’export →',
+    /** ⚠ LA PLATEFORME EST NOMMÉE depuis que les deux connecteurs passent par cette porte : le
+     *  bouton menait à un seul parcours écrit en dur, et « l’export » ne disait plus lequel. */
+    continueButton: (platform: string) => `Continuer vers mon export ${platform} →`,
     laterButton: 'Pas maintenant',
   },
 
@@ -546,7 +562,7 @@ export const FR = {
       'Quelques exemples de ce sur quoi un coup de main serait précieux, sans que cette liste soit exhaustive ni classée par priorité.',
     helpItems: [
       'Enrichir les lexiques d’analyse, en français comme en anglais : proposer des mots, des expressions, des variantes familières. Aucune compétence technique requise.',
-      'Éplucher ton propre export pour repérer ce qu’on pourrait encore en tirer. L’analyse TikTok a été construite à partir du mien, où beaucoup de champs étaient vides : je n’ai jamais publié de contenu et la personnalisation publicitaire est désactivée sur mes comptes, des sections entières restent donc inexplorées. Ne m’envoie pas ton export, dis-moi juste ce que tu y trouves.',
+      'Éplucher ton propre export pour repérer ce qu’on pourrait encore en tirer. Le framework analytique a été construit à partir du mien, où beaucoup de champs étaient vides : Par exemple, la personnalisation publicitaire est désactivée sur mes comptes, des sections entières restent donc inexplorées. Ne m’envoie pas ton export, dis-moi juste ce que tu y trouves.',
       'Et plus largement : un retour, un bug, une formulation qui cloche, une critique, un conseil ou une idée.',
     ],
     helpGithub: 'Consulter le dépôt GitHub',
@@ -555,14 +571,20 @@ export const FR = {
 
   // --- 3. ANALYSIS · upload, loading, failures (`ui/v2/AnalysisPage.tsx`) ------------------------
   UI_ANALYSE: {
-    /** Drop zone. The verb changes with the device: one does not « glisse » with a finger. */
+    /** Drop zone. The verb changes with the device: one does not « glisse » with a finger.
+     *
+     * ⚠ THE PLATFORM IS A PARAMETER since the two connectors share this screen (`v2/DropScreen`).
+     * The sentences are turned so the name is never preceded by « de » — « reçu de TikTok » would
+     * need « reçu d'Instagram », and an elision decided by a template is a bug waiting for the
+     * third platform. */
     kicker: 'analyse locale',
-    titleDesktop: 'Dépose ton export TikTok',
-    titleMobile: 'Choisis ton export TikTok',
+    titleDesktop: (platform: string) => `Dépose ton export ${platform}`,
+    titleMobile: (platform: string) => `Choisis ton export ${platform}`,
     ledeLead: "Le fichier est lu et analysé entièrement sur cet appareil — il n'en sort jamais. ",
-    ledeDesktop: 'Glisse le .zip reçu de TikTok, ou clique pour le choisir.',
-    ledeMobile:
-      'Sélectionne le .zip reçu de TikTok (souvent dans « Fichiers » ou « Téléchargements »).',
+    ledeDesktop: (platform: string) =>
+      `Glisse le .zip que ${platform} t’a envoyé, ou clique pour le choisir.`,
+    ledeMobile: (platform: string) =>
+      `Sélectionne le .zip que ${platform} t’a envoyé (souvent dans « Fichiers » ou « Téléchargements »).`,
     dropMain: 'Glisse ton export ici',
     dropSub: 'ou clique pour choisir le fichier (.zip)',
     pickButtonMobile: 'Choisir mon fichier .zip',
@@ -570,9 +592,10 @@ export const FR = {
     loadingMain: 'Analyse en cours…',
     loadingSub: "tout se passe sur cet appareil, rien n'est envoyé.",
 
-    hintLead:
-      "Pas encore d'export ? Dans l'app TikTok : Profil → Paramètres → Compte → Télécharger tes données (format JSON). ",
-    hintDemoLink: 'Ou essaie avec des données fictives →',
+    /** ⚠ The menu path that used to sit here is GONE, replaced by the export guide's button: it
+     *  spelled out TikTok's five taps in one grey sentence — true for one platform only, and
+     *  unwritable for an Instagram flow that runs seven screens. */
+    hintDemoLink: 'Essayer avec des données fictives →',
 
     /** Site-bar badge once the analysis is rendered. Deliberately DISTINCT from `kicker`
      * above even though « analyse locale » repeats in `badgeReal`: they are two interface roles, and
@@ -908,6 +931,11 @@ export const FR = {
     // --- Route B · download the site and launch everything locally ---
     localDownloadText:
       'Télécharge la version locale du site — ici, ou depuis GitHub si tu veux vérifier le code :',
+    /** ⚠ AFFICHÉ À LA PLACE DU BOUTON quand l’archive n’a pas été produite (`site-zip.ts`). Il dit
+     *  une absence VOULUE, sans nommer la cause : la page ne la connaît pas, et le seul cas qui
+     *  compte pour qui lit est que le chemin d’à côté fonctionne à l’identique. */
+    localDownloadTextNoZip:
+      'L’archive n’est pas disponible depuis cette page : cette version du site ne l’a pas produite. C’est un choix, pas une panne — une archive incomplète t’aurait donné une carte muette sans te le dire. Récupère la source sur GitHub, la commande ci-dessous fonctionne à l’identique :',
     localZipButton: (zipName: string) => `⬇ ${zipName}`,
     localGithubLink: 'Vérifier la source sur GitHub ↗',
     localCmdText:

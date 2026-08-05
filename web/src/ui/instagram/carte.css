@@ -292,13 +292,18 @@
   color: var(--ig-ink-2);
   background: color-mix(in srgb, var(--ig-ink-2) 12%, transparent);
 }
-.maplibregl-ctrl-attrib {
-  background: color-mix(in srgb, var(--ig-panel) 80%, transparent) !important;
+/* ⚠ SCOPED TO `.carte-map` FOR ITS SPECIFICITY, not for its meaning — the attribution control has
+   no other home. MapLibre's own sheet is imported by the component and therefore lands AFTER this
+   one in the stream, so `.maplibregl-ctrl-attrib` alone lost on order and the two rules carried an
+   `!important`. One ancestor is enough to outrank it and leaves the declaration overridable, which
+   `!important` does not. */
+.carte-map .maplibregl-ctrl-attrib {
+  background: color-mix(in srgb, var(--ig-panel) 80%, transparent);
   font-size: 9px;
 }
-.maplibregl-ctrl-attrib a,
-.maplibregl-ctrl-attrib {
-  color: var(--ig-faint) !important;
+.carte-map .maplibregl-ctrl-attrib,
+.carte-map .maplibregl-ctrl-attrib a {
+  color: var(--ig-faint);
 }
 
 @media (max-width: 900px) {

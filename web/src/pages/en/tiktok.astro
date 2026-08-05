@@ -1,6 +1,6 @@
 ---
 // Analysis journey (2026-07-15 design rework, « PanoptiCool v4 — parcours guidé » mockup) —
-// English twin of `fr/analyse.astro`. `?demo` → synthetic export through the real engine;
+// English twin of `fr/tiktok.astro`. `?demo` → synthetic export through the real engine;
 // otherwise upload of the real export (drag & drop). All the interactivity lives in the single
 // `client:only` island (ADR-0002), as elsewhere.
 //
@@ -16,7 +16,7 @@ const locale = (Astro.currentLocale ?? DEFAULT_LOCALE) as Locale;
 const head = headCopy(locale);
 ---
 
-<Page title={head.analyseTitle} description={head.analyseDescription} path="/tiktok">
+<Page title={head.tiktokTitle} description={head.tiktokDescription} path="/tiktok">
   <style is:global slot="page-style">
     html {
       scroll-behavior: smooth;

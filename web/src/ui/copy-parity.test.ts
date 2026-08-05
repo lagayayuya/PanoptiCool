@@ -79,7 +79,10 @@ describe('copy — FR/EN parity', () => {
       'UI_IG_ANALYSE.warnCols',
       'UI_IG_IDENTITY.learnCols',
       'UI_IG_RAIL.items',
-      'UI_IG_SHELL.guarantees',
+      // ⚠ `UI_IG_SHELL.guarantees` LEFT THIS LIST when the Instagram landing that carried it was
+      // removed (2026-08-05) and Yul dropped the three sentences from the perimeter. Removing an
+      // entry here is the same knowing gesture as adding one: what it costs is that no test now
+      // holds a FR/EN length for that group, because that group no longer has an array.
       // ⚠ THE CONTROLS VEIL'S LINES ARE SEGMENTED, alternating plain and emphasised — so each line
       // is itself an array, and its LENGTH decides which words are set as a key cap. A translation
       // that merges two segments silently unbolds one. Three lines per pointer, and the equality

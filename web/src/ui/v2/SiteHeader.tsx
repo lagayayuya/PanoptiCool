@@ -71,7 +71,11 @@ export function SiteHeader({ badge, toc }: { badge?: string; toc?: readonly TocC
   const here = currentPath();
   const langGroup = (
     // biome-ignore lint/a11y/useSemanticElements: a <fieldset> would impose its form chrome — two controls suffice (mockup markup).
-    <div role="group" aria-label={UI_HEADER.langGroupAriaLabel} style={LANG_GROUP}>
+    <div
+      role="group"
+      aria-label={UI_HEADER.langGroupAriaLabel}
+      style={isMobile ? M_LANG_GROUP : LANG_GROUP}
+    >
       {LOCALES.map((locale) => {
         const label = LANG_LABEL[locale];
         const on = isMobile ? M_LANG_ON : LANG_ON;
@@ -320,13 +324,33 @@ const M_WORDMARK = {
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
 } as const;
-// The 44 px touch target is held by `minHeight`, NOT by the horizontal padding — which is why
-// tightening the latter to make room for the roadmap link costs nothing in accessibility.
+/**
+ * ⚠ THE 44 px IS ON THE GROUP, and it is the group that has the border.
+ *
+ * Each language button used to carry `minHeight: 44px` itself. The group's own 1 px frame then sat
+ * OUTSIDE those 44 px, so the selector stood 46 px tall between two 44 px icon buttons — visibly
+ * thicker, and off-centre with them. Fixing the child would have left the same class of bug
+ * standing: whichever element owns the border must be the one that owns the height, or the two
+ * numbers drift apart again at the first padding change. `border-box` here and on the icon links
+ * makes the declared height the MEASURED height on both, whatever the UA's default.
+ *
+ * The touch target does not shrink: the group is still 44 px tall and each button fills it.
+ */
+const M_LANG_GROUP = {
+  ...LANG_GROUP,
+  height: '44px',
+  boxSizing: 'border-box',
+  alignItems: 'stretch',
+  flex: 'none',
+} as const;
+// The horizontal padding alone now — the height comes from the group above.
 const M_LANG_BASE = {
   ...LANG_BASE,
+  display: 'flex',
+  alignItems: 'center',
+  boxSizing: 'border-box',
   fontSize: '12px',
-  padding: '13px 10px',
-  minHeight: '44px',
+  padding: '0 12px',
 } as const;
 const M_LANG_ON = { ...M_LANG_BASE, color: NAVY.bgPage, background: NAVY.accent } as const;
 const M_LANG_OFF = {
@@ -341,6 +365,7 @@ const M_ICON_LINK = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  boxSizing: 'border-box',
   width: '44px',
   height: '44px',
   color: NAVY.textSecondary,

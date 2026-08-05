@@ -42,7 +42,13 @@ interface Props {
   onClose: () => void;
 }
 
-const PLATFORMS: readonly GuidePlatform[] = ['tiktok', 'instagram'];
+/** ⚠ INSTAGRAM FIRST, here and everywhere the two are offered together: it is the richer export and
+ *  the one the product leads with. The order is the product's answer to « which one? ». */
+const PLATFORMS: readonly GuidePlatform[] = ['instagram', 'tiktok'];
+
+/** Each platform's page, WITHOUT the language — `localeHref`/`siteUrl` prefix it. Same spine as
+ *  `LandingPage`'s and `DropScreen`'s; a path is an address, not prose. */
+const ROUTE: Record<GuidePlatform, string> = { instagram: '/instagram', tiktok: '/tiktok' };
 
 /** Accent per platform — the only thing that changes colour between the two guides. */
 const ACCENT: Record<GuidePlatform, string> = {
@@ -153,9 +159,12 @@ function downloadReminder(platform: GuidePlatform): void {
       description: UI_GUIDE.reminderDescription,
       // `siteUrl`, NOT `location.origin`: the reminder is read days later, on a phone, by a
       // calendar that will follow that link. `location.origin` writes down wherever the page
-      // happened to be served from — it shipped `http://localhost:8080/fr/analyse` from a dev
+      // happened to be served from — it shipped `http://localhost:8080/fr/tiktok` from a dev
       // server, which is a link to nothing on anyone else's machine.
-      url: siteUrl(currentLocale(), '/tiktok'),
+      // ⚠ THE PLATFORM'S OWN PAGE, not TikTok's. This read `'/tiktok'` outright, so the reminder for
+      // an Instagram export — set days in advance, opened on a phone — landed the reader on the
+      // other connector's drop screen.
+      url: siteUrl(currentLocale(), ROUTE[platform]),
     },
     now,
     `panopticool-${platform}-${now.getTime()}@panopti.cool`,

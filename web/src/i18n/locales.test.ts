@@ -77,8 +77,8 @@ describe('pages declare their language instead of writing it', () => {
   // `locales.ts`'s procedure requires — the attribute lied. And it lies SILENTLY: the
   // hreflangs, the canonical and the sitemap are computed server-side and stay correct, while
   // `i18n/current.ts`, which READS this attribute, fabricates for all the islands links to the wrong
-  // language. Measured before the fix on `/en/analyse`: the selector showed FR active, the links
-  // pointed to `/fr`, and the language link doubled into `/en/en/analyse`.
+  // language. Measured before the fix on `/en/tiktok`: the selector showed FR active, the links
+  // pointed to `/fr`, and the language link doubled into `/en/en/tiktok`.
   //
   // Deriving the attribute from `Astro.currentLocale` makes the thing true by construction; this witness
   // keeps the gate, because the fault reintroduces itself from a simple copy-paste.

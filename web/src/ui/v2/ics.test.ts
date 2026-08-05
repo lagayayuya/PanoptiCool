@@ -21,7 +21,7 @@ const UID = 'panopticool-reminder-test@panopti.cool';
 const TEXT = {
   summary: 'Récupérer mon export TikTok',
   description: 'Le fichier devrait être prêt : retourne dans l’app, onglet « Télécharger ».',
-  url: 'https://panopti.cool/fr/analyse',
+  url: 'https://panopti.cool/fr/tiktok',
 };
 
 describe('buildReminderIcs', () => {
@@ -81,6 +81,6 @@ describe('buildReminderIcs', () => {
   // too. This one proves the builder actually carries the text through.
   it('carries the supplied text', () => {
     expect(ics).toContain('SUMMARY:Récupérer mon export TikTok');
-    expect(ics).toContain('URL:https://panopti.cool/fr/analyse');
+    expect(ics).toContain('URL:https://panopti.cool/fr/tiktok');
   });
 });

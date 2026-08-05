@@ -8,7 +8,14 @@ recopy it.
 
 PanoptiCool reads the data export a platform hands over to its user and shows them what an algorithm
 could deduce from it: the point is a demonstration of the system, never a verdict on the person.
-TikTok is the **first connector**, not the subject.
+
+⚠ **NO PLATFORM IS THE SUBJECT.** There are two connectors — Instagram and TikTok — and the rule
+they establish is the one that matters for everything added next: they share an engine seam and a
+doctrine, they do **not** share a report, and neither is a rendering of the other
+([ADR-0007](docs/adr/0007-le-joint-de-plateforme.md)). Anything written as if the product *were*
+TikTok, from a variable name to a sentence in the interface, is a defect of the same kind as a wrong
+value. Instagram is named first wherever the two are offered together: it is the richer export, and
+an arbitrary order read twice becomes a default connector in the reader's mind.
 
 **Two objectives arbitrate, and they are not finishing touches** (the README develops them — here,
 what they impose):
@@ -62,6 +69,12 @@ Any proposal that violates one of these points is rejected outright.
   protects the third parties present in an export without having asked for it — a private
   conversation contains the other person's messages — is that **the values never come out**. Consent
   opens the looking; it loosens nothing of the rule above.
+- ⚠ **Message content is read on a gesture, never by the analysis**
+  ([ADR-0008](docs/adr/0008-lecture-du-contenu-des-messages.md)). The Instagram connector counts
+  conversations; the TEXT of a thread is opened only when someone opens that thread or sends it to
+  their local model — on demand, in memory, never stored, never in a report. A pass that also read
+  the text would put message content into a structure the whole product handles freely, and from
+  there it reaches a golden or a log without anyone deciding it should.
 - **Sensitive inferences framed** as « ce qu'une plateforme *pourrait* déduire » — systemic, never a
   personal verdict. The doctrine is in
   [ADR-0003](docs/adr/0003-doctrine-constats-sensibles.md), its living catalog in

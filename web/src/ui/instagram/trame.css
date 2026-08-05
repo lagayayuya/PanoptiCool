@@ -53,11 +53,19 @@
 
 /* Raised under the tabs: the colour key is read BEFORE the grid, instead of having to travel its
    whole height to find it. */
+/* ⚠ `min-height` PINS THE ROW, and it is the grid below that pays otherwise. This line hosts the
+   hover readout, whose height was decided by its content: 14 px empty, 16 px with a title, and
+   19.5 px as soon as the title carried an EMOJI — an emoji is drawn from a fallback font whose line
+   box is taller than Archivo's, and `line-height: normal` hands the line over to whichever font
+   claims the most. Measured, in that order. Sweeping the pointer across the rows therefore moved
+   everything under this line by three and a half pixels per crossing, which reads as a heatmap
+   shivering under the mouse. The row is now one height, whatever is written in it. */
 .tr-scale {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+  min-height: 20px;
   font-size: 14px;
   color: var(--ig-muted);
 }
@@ -76,7 +84,16 @@
   padding-left: 12px;
   border-left: 1px solid var(--ig-line);
   font-size: 15px;
+  /* ⚠ IN PIXELS, NOT A RATIO, and never `normal` — see the row above. A ratio is still resolved
+     against whichever font wins the line, so an emoji would inflate it again. */
+  line-height: 20px;
   color: var(--ig-ink-2);
+  /* A long title wrapping to a second line moves the grid exactly as the emoji did. The readout is
+     a hover hint and the thread's full name is drawn in the grid's own left column, so it truncates
+     rather than pushes. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .tr-readout b {
   color: var(--ig-ink-bright);

@@ -172,3 +172,65 @@ the second connector. The engine's prose is already separate (`wording.instagram
 must not be merged: one says what the machine dares to deduce, the other what the interface says,
 and they are ratified under different constraints (ADR-0003 forbids the second person in one and
 the informal "tu" is the norm in the other).
+
+---
+
+## Addendum (2026-08-05): one journey, and where the seam moved
+
+The port left two products side by side. They shared an engine seam and shared nothing a visitor
+could see: Instagram had a front door of its own on `/instagram` — its own kicker, its own title, its
+own pair of buttons, its own guarantees — while the home page's consent modal knew how to walk toward
+TikTok and only TikTok. Two first screens for one journey.
+
+This addendum records what crossed the seam as a result, because the body of this ADR is a list of
+what may and may not be shared, and three things changed sides.
+
+### 1. The entry screen is shared, and the platform is a parameter
+
+`ui/v2/DropScreen.tsx` serves both connectors. The measure, the drop zone, the two actions and the
+footer are one component; what differs is passed in, and it is not decoration:
+
+- Instagram has a **second route** — the unzipped folder, Chromium only — and hands it in as `extras`;
+- Instagram states **guarantees** about reading message content (ADR-0008); TikTok's lede is the
+  whole promise.
+
+The paragraph that used to spell out TikTok's five taps is gone with it, replaced by the export
+guide's button. It was true for one platform, invisible to the people who needed it, and unwritable
+for an Instagram flow that runs seven screens.
+
+### 2. The consent modal names the platform it leads to
+
+`UI_CONSENT.continueButton` takes the platform's name, and the modal takes the route. It used to
+carry a single hard-wired `ANALYSE_PATH`. ⚠ The modal is the product's front door in the sense that
+matters — it is where the warning about what one is about to look at is made — so it must not be able
+to open onto a connector other than the one that was clicked.
+
+### 3. The waiting screen is shared, and Instagram gave up its progress bar
+
+`ui/v2/LoadingScreen.tsx`, TikTok's shape, for both. Instagram keeps the **phase and the count** as a
+single detail line, and that is not a half-measure: a TikTok export is a few megabytes and the
+spinner has stopped before it means anything, while an Instagram archive runs to gigabytes and takes
+minutes. A spinner alone, for minutes, is indistinguishable from a page that has hung.
+
+### 4. ⚠ What did NOT cross, and must not
+
+**The report, still** — the rule this ADR exists for is untouched. And the two **dossiers**: six
+pieces against four sections, with nothing to factor out. The shared surfaces above are all
+*pre-analysis*: they are what happens before the product knows what it is looking at, which is
+exactly the region where the two platforms have the same problem.
+
+### 5. Instagram is named first, everywhere the two are offered together
+
+The platform cards, the export guide's picker, the demo links, the sentence a preview bot reads. It
+is the richer export and the one the product leads with; a reader meeting an arbitrary order twice
+concludes there is a default connector, and the default was the wrong one.
+
+### 6. A note on `optimizeDeps`, because it cost several sessions
+
+`mmdb-lib` and `buffer` are imported dynamically so that a page which never draws a map never
+downloads the geo reader. In the **development server** that made them invisible to Vite's static
+scan: they were discovered mid-analysis, the dependency bundle was re-optimised, and the page was
+full-reloaded — putting the reader back on the drop screen with an empty console. Diagnosed from a
+performance trace, fixed by naming both in `optimizeDeps.include`. It never affected a built site.
+⚠ The list must follow `mmdb-geo-resolver.ts`: a dependency that stops being dynamic, or a third one
+that becomes so, belongs in that list the same day.

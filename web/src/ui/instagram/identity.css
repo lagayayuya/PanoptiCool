@@ -24,16 +24,14 @@
 }
 
 /* ================================= The hero =================================
-   The mockup sets an `auto-fit minmax(420px, 1fr)` here: at its own maximum width the content
-   column is 878 px, while two 420 tracks plus the gutter ask for 884 — so the hero ALWAYS folded,
-   the eye landing under the text rather than beside it. Explicit columns instead: the text takes
-   what is left, the eye keeps its width, and the stacking is asked for at the point where it
-   becomes useful rather than suffered. */
+   ⚠ THE EYE LEFT THIS HERO (Yul's decision) and went to the home page's, which is the only place
+   it says something: there it is the site's mark, above a title that introduces the product. Here
+   it sat beside the first datum of someone's own dossier, where a decorative logo competes with
+   the reading rather than opening it. The two-column grid went with it — one column, and the
+   `@media` block below no longer has a hero to unfold. */
 .idt-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 260px;
-  gap: 44px;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
   padding: 4px 0 8px;
 }
 .idt-hero-text {
@@ -63,12 +61,6 @@
   color: var(--ig-muted);
   max-width: 600px;
 }
-.idt-hero-eye {
-  width: 100%;
-  max-width: 260px;
-  justify-self: end;
-}
-
 /* =========================== The identity band =========================== */
 .idt-band {
   display: flex;
@@ -444,18 +436,6 @@
 @media (max-width: 900px) {
   .idt-h1 {
     font-size: 34px;
-  }
-  .idt-hero {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  /* The eye disappears when narrow (Yul's decision): placed under the text instead of beside
-     it, it illustrates nothing any more and pushes the first real datum half a screen down. It
-     stays at wide widths, where it holds its place in the composition. */
-  .idt-hero-eye {
-    display: none;
-    max-width: 200px;
-    justify-self: start;
   }
   .det-bars li {
     grid-template-columns: minmax(0, 1fr) 74px;

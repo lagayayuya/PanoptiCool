@@ -45,6 +45,8 @@ import {
 import { currentLocale } from '../../i18n/current';
 import { type InstagramRunInput, runInstagramAnalysis } from '../../lib/instagram-client';
 import { UI_IG_RAIL, UI_IG_SHELL } from '../copy.instagram';
+import { DropScreen } from '../v2/DropScreen';
+import { LoadingScreen } from '../v2/LoadingScreen';
 import { SiteFooter } from '../v2/SiteFooter';
 import { SiteHeader } from '../v2/SiteHeader';
 import { ModuleRail, type ModuleStatus } from './ModuleRail';
@@ -119,8 +121,19 @@ type Phase =
  *  this version does not know — and the interface must say so rather than render empty sections. */
 const LOW_COVERAGE_RATIO = 0.25;
 
+/** `?demo` in the URL AT LOAD. Read once, before the first render — these pages are `client:only`
+ *  islands, so `window` always exists by the time this runs. */
+function isDemoUrl(): boolean {
+  return typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('demo');
+}
+
 export function InstagramPage() {
-  const [phase, setPhase] = useState<Phase>({ kind: 'idle' });
+  // ⚠ `reading` FROM THE FIRST RENDER in demo mode. The effect that builds the archive only runs
+  // after that first paint, so an initial `idle` showed the drop screen for a frame before the
+  // waiting screen replaced it — the same flash the TikTok journey fixed the same way.
+  const [phase, setPhase] = useState<Phase>(() =>
+    isDemoUrl() ? { kind: 'reading' } : { kind: 'idle' },
+  );
   const [report, setReport] = useState<ReportPatch>({});
   const [coverage, setCoverage] = useState<InstagramReport['labelCoverage']>();
   const [geoMissing, setGeoMissing] = useState(false);
@@ -132,6 +145,8 @@ export function InstagramPage() {
   /** ⚠ KEPT AFTER THE ANALYSIS. The worker is thrown away when it finishes; the thread reader and
    *  the media resolver are on-demand paths that run here, from this same file. */
   const [source, setSource] = useState<Omit<InstagramRunInput, 'locale'>>();
+  /** `?demo` — the site bar says which of the two it is showing, as the TikTok journey does. */
+  const [demo, setDemo] = useState(false);
   const [readThread, setReadThread] = useState<ReadThread>();
   const [resolveMedia, setResolveMedia] = useState<ResolveMedia>();
 
@@ -179,9 +194,9 @@ export function InstagramPage() {
    * The chunk is dynamic: a visitor who never asks for the demo does not download its corpus.
    */
   useEffect(() => {
-    if (!new URLSearchParams(window.location.search).has('demo')) return;
+    if (!isDemoUrl()) return;
     let alive = true;
-    setPhase({ kind: 'reading' });
+    setDemo(true);
     void import('../../demo/instagram/export').then(({ buildInstagramDemoExport }) => {
       if (!alive) return;
       const { bytes, fileName } = buildInstagramDemoExport(currentLocale());
@@ -212,6 +227,44 @@ export function InstagramPage() {
       cancelled = true;
     };
   }, [active, loaded]);
+
+  /**
+   * ⚠ THE OTHER FIVE PIECES ARE FETCHED IN THE BACKGROUND once the dossier is on screen — Yul asked
+   * whether « Cette pièce arrive. » could stop appearing. It can, and this is the way that keeps
+   * what the lazy split is for.
+   *
+   * Making the six imports STATIC would also remove the placeholder, and would be the wrong trade:
+   * MapLibre and `three` would then land in the island's own chunk, so every visitor pays for the
+   * map and the 3-D scene before the first line of their identity renders — and ADR-0007's rule
+   * that none of it reaches the TikTok page would be much harder to keep. Here the imports stay
+   * dynamic and stay Instagram's; only their TIMING moves, from « when clicked » to « while the
+   * reader is busy with the first piece ».
+   *
+   * ⚠ ONE AT A TIME, not `Promise.all`. Six chunks at once — two of them heavy — compete with the
+   * worker that is still parsing the archive and with the media reads the pieces do on demand.
+   * Sequential costs nothing here: the reader is looking at the identity, not waiting on this.
+   *
+   * A failed prefetch is SWALLOWED, and that is deliberate: the click path above re-imports and
+   * would report it. Nothing here is worth a message, because nobody asked for anything yet.
+   */
+  useEffect(() => {
+    if (phase.kind !== 'ready') return;
+    let cancelled = false;
+    void (async () => {
+      for (const [id, load] of Object.entries(MODULE_LOADERS)) {
+        if (cancelled) return;
+        const Component = await load().catch(() => undefined);
+        if (cancelled) return;
+        if (Component !== undefined) {
+          setLoaded((prev) => (prev[id] === undefined ? { ...prev, [id]: Component } : prev));
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+    // ⚠ `phase.kind` ONLY. Depending on `loaded` would restart the sweep at each chunk that lands.
+  }, [phase.kind]);
 
   const analyze = useCallback((input: Omit<InstagramRunInput, 'locale'>) => {
     setPhase({ kind: 'reading' });
@@ -273,88 +326,55 @@ export function InstagramPage() {
   const lowCoverage =
     coverage !== undefined && coverage.matched < coverage.total * LOW_COVERAGE_RATIO;
 
-  return (
-    <div class="ig-shell">
-      <SiteHeader badge={UI_IG_SHELL.badgeReal} />
-      <main class="ig-stage">
-        {phase.kind === 'idle' && (
-          <div class="ig-landing">
-            <p class="ig-kicker">{UI_IG_SHELL.kicker}</p>
-            <h1 class="ig-title">
-              {UI_IG_SHELL.titleLead}
-              <span class="ig-stamp">{UI_IG_SHELL.titlePlatform}</span>
-              {UI_IG_SHELL.titleTail}
-            </h1>
-            <p class="ig-lede">{UI_IG_SHELL.lede}</p>
-
-            <div class="ig-actions">
-              {/* ⚠ THE INPUT IS A TRANSPARENT OVERLAY, NOT `display: none`. A hidden input is not
-                  reliably activated by its label across engines, and this is the same pattern the
-                  TikTok drop zone has always used (`AnalysisPage`'s `FILE_INPUT`). Reported: the
-                  first pick did nothing, the second worked. */}
-              <label class="ig-btn-primary ig-file-label">
-                {UI_IG_SHELL.openZip}
-                <input
-                  type="file"
-                  // Not `.zip` alone: macOS reports some archives with a MIME the extension filter
-                  // then hides, and a picker that greys out the right file is indistinguishable
-                  // from one that is broken.
-                  accept=".zip,application/zip,application/x-zip-compressed"
-                  class="ig-file-input"
-                  onChange={(e) => {
-                    const file = e.currentTarget.files?.[0];
-                    e.currentTarget.value = '';
-                    if (file !== undefined) analyze({ file });
-                  }}
-                />
-              </label>
-              {canPickFolder && (
+  if (phase.kind === 'idle') {
+    // ⚠ THE INSTAGRAM LANDING IS GONE (Yul's decision): its kicker, its title, its two buttons and
+    // its guarantees were a SECOND front door onto a journey the home page already opens — and the
+    // consent modal only knew how to walk toward TikTok's. Both connectors now arrive on the same
+    // « Dépose ton export », from `/fr` and `/en`. What was proper to Instagram survives as what it
+    // actually is: a second route (the unzipped folder) and two notes the other platform has no use
+    // for.
+    return (
+      <div class="ig-shell">
+        <SiteHeader badge={UI_IG_SHELL.badgeReal} />
+        <DropScreen
+          platform="instagram"
+          onFile={(file) => analyze({ file })}
+          extras={
+            canPickFolder ? (
+              <div class="ig-actions">
                 <button type="button" class="ig-btn-ghost" onClick={openFolder}>
                   {UI_IG_SHELL.openFolder}
                 </button>
-              )}
-            </div>
+                <span class="ig-hint">{UI_IG_SHELL.folderHint}</span>
+              </div>
+            ) : undefined
+          }
+        />
+      </div>
+    );
+  }
 
-            <p class="ig-size-note">{UI_IG_SHELL.sizeNote}</p>
-            {canPickFolder && <p class="ig-hint">{UI_IG_SHELL.folderHint}</p>}
+  if (phase.kind === 'reading') {
+    // ⚠ THE SAME WAIT AS TIKTOK (Yul's decision). This journey had a screen of its own — kicker,
+    // phase name, progress bar, counter — and the two are one click apart from the home page, so
+    // the divergence showed the moment anyone tried both demos. The bar goes with it; the PHASE and
+    // the COUNT do not, because a gigabyte archive spends minutes here and a bare spinner for
+    // minutes is indistinguishable from a page that has hung.
+    const p = phase.progress;
+    const detail =
+      p === undefined ? undefined : p.total > 0 ? `${p.phase} · ${p.done} / ${p.total}` : p.phase;
+    return (
+      <div class="ig-shell">
+        <SiteHeader badge={demo ? UI_IG_SHELL.badgeDemo : UI_IG_SHELL.badgeReal} />
+        <LoadingScreen {...(detail !== undefined && { detail })} />
+      </div>
+    );
+  }
 
-            <ul class="ig-guarantees">
-              {UI_IG_SHELL.guarantees.map((g) => (
-                <li key={g}>
-                  <span class="ig-dot" />
-                  {g}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {phase.kind === 'reading' && (
-          <div class="ig-analysing">
-            <p class="ig-kicker">{UI_IG_SHELL.analysingKicker}</p>
-            <div class="ig-phase">{phase.progress?.phase ?? UI_IG_SHELL.analysingKicker}</div>
-            <div class="ig-progress-track">
-              <div
-                class="ig-progress-fill"
-                style={{
-                  // No total yet means no percentage to show — a bar at 0 reads as stuck, and a
-                  // bar at a made-up figure lies. A short fixed sliver says « started ».
-                  width:
-                    phase.progress && phase.progress.total > 0
-                      ? `${Math.round((phase.progress.done / phase.progress.total) * 100)}%`
-                      : '18%',
-                }}
-              />
-            </div>
-            <div class="ig-progress-meta">
-              {phase.progress && phase.progress.total > 0
-                ? `${phase.progress.done} / ${phase.progress.total}`
-                : '…'}
-            </div>
-            <p class="ig-hint">{UI_IG_SHELL.analysingSub}</p>
-          </div>
-        )}
-
+  return (
+    <div class="ig-shell">
+      <SiteHeader badge={demo ? UI_IG_SHELL.badgeDemo : UI_IG_SHELL.badgeReal} />
+      <main class="ig-stage">
         {phase.kind === 'error' && (
           <div class="ig-error">
             <p class="ig-kicker">{UI_IG_SHELL.errorKicker}</p>

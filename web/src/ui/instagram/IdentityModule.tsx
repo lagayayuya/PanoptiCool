@@ -35,7 +35,6 @@ import type { IdentityReport } from '../../engine/instagram/identity';
 import type { InventoryReport } from '../../engine/instagram/inventory';
 import { UI_IG_IDENTITY, UI_IG_SHELL } from '../copy.instagram';
 import { formatDecimal, formatInt } from '../format';
-import { EyeLogo } from '../v2/EyeLogo';
 import { monthYear, monthYearLong } from './dates';
 import type { ModuleStatus } from './ModuleRail';
 import './identity.css';
@@ -128,9 +127,6 @@ export function IdentityModule({
           >
             {t.learnOpen} {learn ? UI_IG_SHELL.learnGlyphOpen : UI_IG_SHELL.learnGlyphClosed}
           </button>
-        </div>
-        <div class="idt-hero-eye">
-          <EyeLogo variant="hero" />
         </div>
       </section>
 

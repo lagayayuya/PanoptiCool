@@ -16,55 +16,94 @@ const head = headCopy(locale);
 ---
 
 <Page title={head.legalTitle} description={head.legalDescription} path="/mentions-legales">
+  {/* ⚠ THE MEASURE AND THE TYPE SCALE ARE THE SITE'S (Yul, 2026-08-05), and the gutter was the
+      complaint: 20 px where every other page keeps 40, in a column capped at 680 while the rest of
+      the site runs to 1080. Read one after the other, the legal page looked like a document from
+      another product — narrower, tighter, and set two sizes smaller than anything around it.
+
+      ⚠ THE PAGE IS STILL ZERO-JS, which is its whole value (see the header) and the reason it does
+      NOT gain the site bar and the footer along with the measure: both are Preact islands, and one
+      of them decides its layout from a hook that only runs once hydrated. A static copy of them
+      here would be a second footer to keep in step with the first. So the shell is aligned and the
+      chrome is not — knowingly, and it is the last thing that sets this page apart.
+
+      The prose keeps a measure of its OWN (760 px), narrower than the page: a legal text set across
+      a thousand pixels is one the eye loses the line of. That is the same split the rest of the site
+      makes — a 1080 shell, text blocks that stop well before its edge. */}
   <style is:global slot="page-style">
     main {
-      max-width: 680px;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 48px 20px 80px;
+      padding: 56px 40px 80px;
     }
     .back {
       display: inline-block;
-      font-size: 11px;
+      font-size: 13px;
       color: #8b98c0; /* NAVY.textMuted */
       text-decoration: none;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
     }
     .back:hover {
       color: #2fd4f0;
     }
     h1 {
-      font-size: 22px;
-      line-height: 1.3;
-      margin: 0 0 32px;
+      font-size: 38px;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      margin: 0 0 36px;
     }
     h2 {
-      font-size: 13px;
-      line-height: 1.4;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.25;
+      letter-spacing: -0.015em;
       color: #dde4f4; /* NAVY.textHeading */
-      margin: 36px 0 12px;
+      margin: 44px 0 14px;
     }
     p,
     li {
-      font-size: 12px;
-      line-height: 1.75;
+      font-size: 15px;
+      line-height: 1.7;
       color: #aab6d6; /* NAVY.textBody */
     }
+    /* The prose's own measure — see the note above on why it is not the page's. */
+    p,
+    ul {
+      max-width: 760px;
+    }
     p {
-      margin: 0 0 12px;
+      margin: 0 0 14px;
     }
     ul {
-      margin: 0 0 12px;
-      padding-left: 18px;
+      margin: 0 0 14px;
+      padding-left: 20px;
     }
     li {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
     strong {
       color: #c8d2e8; /* NAVY.textSecondary */
     }
     .dim {
-      font-size: 11px;
+      font-size: 13px;
       color: #66739a; /* NAVY.textDim */
+      margin-top: 40px;
+    }
+    /* The site's own threshold — the same 720 px `ui/v2/useIsMobile.ts` uses, and the same 480/20
+       column the mobile mock-ups give every other page. */
+    @media (max-width: 720px) {
+      main {
+        max-width: 480px;
+        padding: 36px 20px 56px;
+      }
+      h1 {
+        font-size: 27px;
+      }
+      h2 {
+        font-size: 18px;
+        margin: 34px 0 12px;
+      }
     }
   </style>
     <main>
@@ -115,10 +154,20 @@ const head = headCopy(locale);
 
       <h2>L'analyse par IA, si tu l'utilises</h2>
       <p>
-        La page de résultats propose de faire lire tes commentaires et tes recherches par un modèle
-        de langage. Ce modèle tourne <strong>sur ta propre machine</strong>, dans un serveur que tu
-        lances toi-même. Rien n'est envoyé à un tiers, et cette analyse ne démarre que sur un clic
-        explicite de ta part.
+        Les deux analyses proposent de faire lire une partie de ton export par un modèle de langage :
+        tes commentaires et tes recherches côté TikTok, <strong>le contenu d'une conversation</strong>
+        que tu choisis toi-même côté Instagram. Ce modèle tourne <strong>sur ta propre machine</strong>,
+        dans un serveur que tu lances toi-même. Rien n'est envoyé à un tiers, et cette analyse ne
+        démarre que sur un clic explicite de ta part.
+      </p>
+
+      <h2>Le contenu de tes messages</h2>
+      <p>
+        L'analyse Instagram ne lit pas tes conversations pour les afficher toutes : elle en compte
+        les volumes et les rythmes. Le <strong>texte</strong> d'un fil n'est lu que si tu ouvres ce
+        fil, ou si tu l'envoies au modèle local — dans les deux cas sur ton geste, en mémoire, et
+        sans être conservé. Fermer l'onglet suffit à ce qu'il n'en reste rien : il n'y a ni serveur,
+        ni base, ni fichier écrit.
       </p>
 
       <h2>Ce que PanoptiCool affiche</h2>

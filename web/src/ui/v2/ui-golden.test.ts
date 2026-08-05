@@ -168,6 +168,32 @@ function aiSeed(
   };
 }
 
+/**
+ * The home page's seeder. ⚠ IT USED TO BE `v === false ? true : v`, and that stopped opening
+ * anything the day the consent modal gained a platform: « open » is no longer a boolean but the
+ * name of the connector whose journey was clicked, so the state initialises to `null` and the old
+ * seed walked straight past it. The golden went on rendering the page with no modal at all — the
+ * legal prose it exists to freeze, gone, with the snapshot still updating cleanly.
+ *
+ * ⚠ TWO `null` STATES NOW, and only the first is one this file covers: `consentFor` is declared
+ * before `guideTarget`, which opens the export guide — deliberately out of this net (see the border
+ * above), and worth several hundred lines of screenshots and captions if it were seeded by
+ * accident. So the FIRST `null` is named and the rest pass through. The order of the two `useState`
+ * is the assumption; it is the one this file's header already declares, and it falls noisily.
+ *
+ * One instance PER CASE: the counter is consumed by the render it was built for.
+ */
+function landingSeed(): (init: unknown) => unknown {
+  let firstNull = true;
+  return (v) => {
+    if (v === null && firstNull) {
+      firstNull = false;
+      return 'instagram';
+    }
+    return v === false ? true : v;
+  };
+}
+
 const CASES: {
   name: string;
   mobile: boolean;
@@ -195,18 +221,19 @@ const CASES: {
   },
   { name: 'footer', mobile: false, seed: (v) => v, node: () => h(SiteFooter, null) },
 
-  // `LandingPage`: the `false → true` opens the consent modal, which carries most of
-  // the page's legal prose. Closed, the golden would see only the hero.
+  // `LandingPage`: the seeder opens the consent modal, which carries most of the page's legal
+  // prose. Closed, the golden would see only the hero. See `landingSeed` for what changed the day
+  // the modal stopped being a boolean.
   {
     name: 'landing-desktop',
     mobile: false,
-    seed: (v) => (v === false ? true : v),
+    seed: landingSeed(),
     node: () => h(LandingPage, null),
   },
   {
     name: 'landing-mobile',
     mobile: true,
-    seed: (v) => (v === false ? true : v),
+    seed: landingSeed(),
     node: () => h(LandingPage, null),
   },
 

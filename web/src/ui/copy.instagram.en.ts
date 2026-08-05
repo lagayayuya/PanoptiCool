@@ -26,28 +26,8 @@ export const EN_INSTAGRAM: InstagramCopy = {
     badgeDemo: 'Instagram · demo',
     badgeReal: 'Instagram · local analysis',
 
-    kicker: 'read-only · on your device',
-    titleLead: 'Here is what ',
-    titlePlatform: 'Instagram',
-    titleTail: ' kept about you.',
-    lede: 'Years of traces, handed over by the platform itself. We read them entirely on your device and show you the shape of the file. No verdict: a mirror.',
-
-    openZip: 'Open my export (.zip)',
     openFolder: 'or point at the unzipped folder',
-    folderHint:
-      'The folder route only works on Chrome, Edge, Brave or Arc. The .zip works everywhere.',
-
-    guarantees: [
-      'Nothing is uploaded, nothing is stored',
-      'Your messages are only read if you open a conversation, and are never kept',
-      'Works offline',
-    ],
-
-    sizeNote:
-      'An export of several gigabytes will open: the archive is read in pieces, never decompressed whole.',
-
-    analysingKicker: 'reading the file',
-    analysingSub: 'The pieces are built one after another while you explore.',
+    folderHint: '→ Only works on Chrome, Edge, Brave or Arc. The .zip works everywhere.',
 
     errorKicker: 'reading interrupted',
     errorRetry: 'Try again',
@@ -444,6 +424,11 @@ export const EN_INSTAGRAM: InstagramCopy = {
     localDownload:
       'Download the local version of the site — here, or from GitHub if you want to check the ' +
       'code:',
+    localDownloadNoZip:
+      'The archive is not available from this page: this build of the site did not produce one. ' +
+      'That is a choice rather than a fault — an incomplete archive would have handed you a dead ' +
+      'map without saying so. Get the source from GitHub instead, and the command below works ' +
+      'exactly the same:',
     localZipButton: (zipName: string) => `⬇ ${zipName}`,
     localGithubLink: 'Check the source on GitHub ↗',
     localCmd:

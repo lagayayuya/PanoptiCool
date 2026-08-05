@@ -18,12 +18,20 @@ decision and its reason freeze together.
 ## What the product asserts, and what it has verified
 
 - **"A platform"** designates the **thesis**. It holds for any platform whatsoever: the point is
-  systemic. TikTok is the first connector, not the subject.
+  systemic. No platform is the subject.
 - **"Measured"** designates what we have **verified**. It stops at **TikTok, in French**, on the
   self-described text portion of an export.
 
 Writing the measurement at the level of the system would promise a scope we do not have; bounding the
-thesis to TikTok would make an anti-TikTok tool. The reader must be able to tell the difference.
+thesis to one platform would make a tool against that platform. The reader must be able to tell the
+difference.
+
+> **Note (2026-08-05).** Instagram is now a second connector
+> ([ADR-0007](0007-le-joint-de-plateforme.md)), and the distinction above is unchanged by it — but it
+> is worth reading twice, because the temptation moves. The *thesis* still holds for any platform.
+> The *measurement* still stops where it stopped: the sensitive-findings benchmark was run on TikTok
+> data in French, and the Instagram connector does not extend it. What Instagram adds is a different
+> reading of a different archive, under the same doctrine — not a second measurement.
 
 ## Context
 

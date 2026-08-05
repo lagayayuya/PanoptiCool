@@ -27,30 +27,16 @@ export const FR_INSTAGRAM = {
     badgeDemo: 'Instagram · démo',
     badgeReal: 'Instagram · analyse locale',
 
-    kicker: 'lecture seule · sur ton appareil',
-    titleLead: 'Voilà ce qu’',
-    /** Rendered in the stamp colour: the platform's name is the subject of the sentence. */
-    titlePlatform: 'Instagram',
-    titleTail: ' a gardé de toi.',
-    lede: 'Des années de traces, remises par la plateforme elle-même. On les lit entièrement sur ton appareil et on te montre la forme du dossier. Pas de verdict : un miroir.',
-
-    openZip: 'Ouvrir mon export (.zip)',
+    /** ⚠ L'ACCUEIL PROPRE À INSTAGRAM A ÉTÉ SUPPRIMÉ (décision Yul) — son kicker, son titre en
+     *  trois fragments, son chapô et son bouton « Ouvrir mon export ». Les deux connecteurs entrent
+     *  désormais par le même écran « Dépose ton export » (`ui/v2/DropScreen`, groupe `UI_ANALYSE`),
+     *  atteint depuis l'accueil. Ce qui reste ici est ce qui n'appartient qu'à Instagram : la
+     *  seconde route et deux notes que l'autre plateforme n'a pas à dire. */
     openFolder: 'ou pointer le dossier décompressé',
     /** Shown only where the folder route can work — never as a complaint about the browser. */
-    folderHint: 'Le dossier ne marche que sur Chrome, Edge, Brave ou Arc. Le .zip marche partout.',
-
-    guarantees: [
-      'Rien n’est téléversé, rien n’est stocké',
-      'Le contenu de tes messages n’est lu que si tu ouvres une conversation, et n’est jamais conservé',
-      'Fonctionne hors connexion',
-    ],
+    folderHint: '→ Ne fonctionne que sur Chrome, Edge, Brave ou Arc. Le .zip marche partout.',
 
     /** ⚠ The honest shape of the size limit — a per-entry budget, never a promised total. */
-    sizeNote:
-      'Un export de plusieurs gigaoctets s’ouvre : l’archive est lue par morceaux, jamais décompressée en entier.',
-
-    analysingKicker: 'lecture du dossier',
-    analysingSub: 'Les pièces se construisent l’une après l’autre pendant que tu explores.',
 
     errorKicker: 'lecture interrompue',
     errorRetry: 'Réessayer',
@@ -469,6 +455,14 @@ export const FR_INSTAGRAM = {
      *  the archive is a build artifact of THIS site, so the two cannot drift. */
     localDownload:
       'Télécharge la version locale du site — ici, ou depuis GitHub si tu veux vérifier le code :',
+    /** ⚠ AFFICHÉ À LA PLACE DU BOUTON quand l’archive n’a pas été produite (`site-zip.ts`). Il dit
+     *  une absence VOULUE, sans nommer la cause : la page ne la connaît pas, et le seul point qui
+     *  compte pour qui lit est que le chemin d’à côté mène au même endroit. Jumeau de
+     *  `UI_AI.localDownloadTextNoZip` — même fait, dit à un lecteur qui n’a pas lu l’autre page. */
+    localDownloadNoZip:
+      'L’archive n’est pas disponible depuis cette page : cette version du site ne l’a pas produite. ' +
+      'C’est un choix, pas une panne — une archive incomplète t’aurait donné une carte muette sans ' +
+      'te le dire. Récupère la source sur GitHub, la commande ci-dessous fonctionne à l’identique :',
     localZipButton: (zipName: string) => `⬇ ${zipName}`,
     localGithubLink: 'Vérifier la source sur GitHub ↗',
     localCmd:

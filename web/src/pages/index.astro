@@ -30,6 +30,35 @@ const target = localePath(DEFAULT_LOCALE, '/');
   <head>
     <SiteHead title={UI_ROOT.title} description={UI_ROOT.description} path="/" />
     <meta http-equiv="refresh" content={`0; url=${target}`} />
+    {/*
+      ⚠ THE `meta refresh` ALONE LET THE PAGE PAINT FIRST — half a second of white page with a blue
+      link on it, reported on every first visit. That is what the tag does: it is a scheduled
+      navigation, not a suppressed render, so the browser lays out and paints the body while it
+      waits its turn.
+
+      This runs in the `<head>`, BEFORE the body is parsed: the document load is abandoned there and
+      nothing is ever painted. `replace` and not `href`, so the root leaves no history entry to go
+      back to — one would land on a page whose only job is to leave again.
+
+      The `meta refresh` STAYS, and so does the link: they are what answers when script is off, and
+      the tag is also what several link-preview bots follow. Three mechanisms for one redirect is
+      not redundancy here — each covers a client the other two do not.
+    */}
+    <script is:inline set:html={`location.replace(${JSON.stringify(target)})`} />
+    <style>
+      /* The page is unstyled by design — no font, no island (see the header). These four lines are
+         not a design: they keep the fallback from reading as a browser error page on the one
+         client that ever sees it. */
+      body {
+        margin: 0;
+        padding: 40px;
+        background: #070b18;
+        font: 16px/1.6 system-ui, sans-serif;
+      }
+      a {
+        color: #2fd4f0;
+      }
+    </style>
   </head>
   <body>
     <!-- Seen only if the redirect does not fire. A link, not a screen. -->
